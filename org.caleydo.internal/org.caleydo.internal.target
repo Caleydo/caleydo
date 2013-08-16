@@ -28,6 +28,7 @@
 <unit id="org.apache.commons.lang" version="2.6.0.v201205030909"/>
 <unit id="org.apache.commons.math" version="2.1.0.v201105210652"/>
 <unit id="org.apache.commons.compress" version="1.4.1.v201301140946"/>
+<unit id="org.apache.commons.logging" version="1.1.1.v201101211721"/>
 <unit id="org.eclipse.e4.ui.workbench.addons.swt" version="1.0.0.v20130515-1857"/>
 <repository location="http://dev.caleydo.org/nexus/content/groups/public-p2"/>
 <repository location="http://dev.caleydo.org/nexus/content/repositories/eclipse"/>
