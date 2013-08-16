@@ -108,4 +108,18 @@ abstract class APickingEntry {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("APickingEntry [pickingId=");
+		builder.append(pickingId);
+		builder.append(", objectId=");
+		builder.append(objectId);
+		builder.append(", dragging=");
+		builder.append(dragging);
+		builder.append(", lastPoint=");
+		builder.append(lastPoint);
+		builder.append("]");
+		return builder.toString();
+	}
 }

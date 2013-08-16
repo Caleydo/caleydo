@@ -415,7 +415,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 				if (sandbox != null)
 					sandbox.animator.stop();
 				display.dispose();
-			} catch (IllegalArgumentException | SecurityException e) {
+			} catch (Throwable e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
