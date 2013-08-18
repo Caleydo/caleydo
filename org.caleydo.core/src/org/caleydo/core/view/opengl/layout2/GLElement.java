@@ -704,6 +704,11 @@ public class GLElement implements IHasGLLayoutData {
 		}
 
 		@Override
+		public Rect getRectBounds() {
+			return GLElement.this.getRectBounds();
+		}
+
+		@Override
 		public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
 			return GLElement.this.getLayoutDataAs(clazz, default_);
 		}

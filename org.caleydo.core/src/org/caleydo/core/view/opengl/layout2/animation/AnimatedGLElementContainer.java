@@ -28,6 +28,7 @@ import org.caleydo.core.view.opengl.layout2.animation.AAnimation.EAnimationType;
 import org.caleydo.core.view.opengl.layout2.animation.InOutTransitions.IInTransition;
 import org.caleydo.core.view.opengl.layout2.animation.InOutTransitions.IOutTransition;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions.IMoveTransition;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.AGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
@@ -548,6 +549,11 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		@Override
 		public Vec4f getBounds() {
 			return this.after.copy();
+		}
+
+		@Override
+		public Rect getRectBounds() {
+			return new Rect(this.after);
 		}
 
 		@Override
