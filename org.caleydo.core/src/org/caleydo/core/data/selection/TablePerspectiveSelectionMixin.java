@@ -74,8 +74,8 @@ public final class TablePerspectiveSelectionMixin extends MultiSelectionManagerM
 	}
 
 	@Override
-	protected SelectionUpdateEvent createEvent() {
-		SelectionUpdateEvent event = super.createEvent();
+	protected SelectionUpdateEvent createEvent(Object sender) {
+		SelectionUpdateEvent event = super.createEvent(sender);
 		event.setEventSpace(getDataDomain().getDataDomainID());
 		return event;
 	}

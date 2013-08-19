@@ -53,19 +53,16 @@ public class MultiSelectionManagerMixin implements Iterable<SelectionManager> {
 
 	@ListenTo
 	private void onSelectionUpdate(SelectionUpdateEvent event) {
-		if (event.getSender() == this) // ignore event sent by myself
-			return;
 		SelectionDelta selectionDelta = event.getSelectionDelta();
 		final IDType idType = selectionDelta.getIDType();
 
 		for (SelectionManager selectionManager : selectionManagers) {
 			final IDType sidType = selectionManager.getIDType();
-			if (idType.resolvesTo(sidType)) {
+			if (idType.resolvesTo(sidType) && !(event.getSender() == selectionManager)) {
 				// Check for type that can be handled
 				selectionDelta = convert(selectionDelta, sidType);
 				selectionManager.setDelta(selectionDelta);
 				callback.onSelectionUpdate(selectionManager);
-				break;
 			}
 		}
 	}
@@ -79,18 +76,15 @@ public class MultiSelectionManagerMixin implements Iterable<SelectionManager> {
 
 	@ListenTo
 	private void onSelectionCommand(SelectionCommandEvent event) {
-		if (event.getSender() == this) // ignore event sent by myself
-			return;
 		IDCategory idCategory = event.getIdCategory();
 		SelectionCommand cmd = event.getSelectionCommand();
 
 		for (SelectionManager selectionManager : selectionManagers) {
 			final IDType sidType = selectionManager.getIDType();
-			if (idCategory == null || idCategory.isOfCategory(sidType)) {
+			// match but not send by me
+			if ((idCategory == null || idCategory.isOfCategory(sidType)) && !(event.getSender() == selectionManager)) {
 				selectionManager.executeSelectionCommand(cmd);
 				callback.onSelectionUpdate(selectionManager);
-				if (idCategory != null)
-					break;
 			}
 		}
 	}
@@ -117,14 +111,14 @@ public class MultiSelectionManagerMixin implements Iterable<SelectionManager> {
 
 	public final void fireSelectionDelta(SelectionManager manager) {
 		SelectionDelta selectionDelta = manager.getDelta();
-		SelectionUpdateEvent event = createEvent();
+		SelectionUpdateEvent event = createEvent(manager);
 		event.setSelectionDelta(selectionDelta);
 		EventPublisher.trigger(event);
 	}
 
-	protected SelectionUpdateEvent createEvent() {
+	protected SelectionUpdateEvent createEvent(Object sender) {
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
-		event.setSender(this);
+		event.setSender(sender);
 		return event;
 	}
 
