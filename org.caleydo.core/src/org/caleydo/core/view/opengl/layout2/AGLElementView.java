@@ -183,6 +183,16 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 			return;
 		}
 		final int deltaTimeMs = local.getDeltaTimeMs();
+
+		final GLGraphics g = prepareFrame(drawable, deltaTimeMs);
+
+		updateMouseLayer();
+		pickingPass(g);
+		layoutPass(deltaTimeMs);
+		renderPass(g);
+	}
+
+	private GLGraphics prepareFrame(GLAutoDrawable drawable, final int deltaTimeMs) {
 		GL2 gl = drawable.getGL().getGL2();
 		if (!wasVisible) {
 			//set the viewport again for mac bug 1476
@@ -201,26 +211,35 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 
 		final GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs);
 		g.clearError();
-		
+
 		float paddedWidth = getWidth();
 		float paddedHeight = getHeight();
-		
+
 		if (dirtyLayout) {
 			root.setBounds(0, 0, paddedWidth, paddedHeight);
 			root.relayout();
 			dirtyLayout = false;
 		}
+		return g;
+	}
 
-		// 1. pass: picking
-		Vec2f mousePos = pickingManager.getCurrentMousePos();
-		if (mousePos != null) {
-			root.getMouseLayer().setBounds(mousePos.x(), mousePos.y(), getWidth() - mousePos.x(),
-					getHeight() - mousePos.y());
-			root.getMouseLayer().relayout();
-		}
-
+	private void renderPass(final GLGraphics g) {
 		GLSanityCheck s = null;
-		assert (s = GLSanityCheck.create(gl)) != null;
+		assert (s = GLSanityCheck.create(g.gl)) != null;
+
+		root.render(g);
+
+		g.checkError();
+		assert s != null && s.verify(g.gl);
+	}
+
+	private void layoutPass(final int deltaTimeMs) {
+		root.layout(deltaTimeMs);
+	}
+
+	private void pickingPass(final GLGraphics g) {
+		GLSanityCheck s = null;
+		assert (s = GLSanityCheck.create(g.gl)) != null;
 		pickingManager.doPicking(g.gl, new Runnable() {
 			@Override
 			public void run() {
@@ -228,20 +247,17 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 			}
 		});
 		g.checkError();
-		assert s != null && s.verify(gl);
-
-		// 2. pass: layouting
-		root.layout(deltaTimeMs);
-
-		assert (s = GLSanityCheck.create(gl)) != null;
-		// 3. pass: rendering
-		root.render(g);
-
-		g.checkError();
-		assert s != null && s.verify(gl);
+		assert s != null && s.verify(g.gl);
 	}
 
-
+	private void updateMouseLayer() {
+		Vec2f mousePos = pickingManager.getCurrentMousePos();
+		if (mousePos != null) {
+			root.getMouseLayer().setBounds(mousePos.x(), mousePos.y(), getWidth() - mousePos.x(),
+					getHeight() - mousePos.y());
+			root.getMouseLayer().relayout();
+		}
+	}
 
 	/**
 	 * @return
