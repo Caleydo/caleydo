@@ -53,12 +53,14 @@ public class MultiSelectionManagerMixin implements Iterable<SelectionManager> {
 
 	@ListenTo
 	private void onSelectionUpdate(SelectionUpdateEvent event) {
+		if (event.getSender() == this)
+			return;
 		SelectionDelta selectionDelta = event.getSelectionDelta();
 		final IDType idType = selectionDelta.getIDType();
 
 		for (SelectionManager selectionManager : selectionManagers) {
 			final IDType sidType = selectionManager.getIDType();
-			if (idType.resolvesTo(sidType) && !(event.getSender() == selectionManager)) {
+			if (idType.resolvesTo(sidType) && event.getSender() != selectionManager) {
 				// Check for type that can be handled
 				selectionDelta = convert(selectionDelta, sidType);
 				selectionManager.setDelta(selectionDelta);
@@ -76,13 +78,15 @@ public class MultiSelectionManagerMixin implements Iterable<SelectionManager> {
 
 	@ListenTo
 	private void onSelectionCommand(SelectionCommandEvent event) {
+		if (event.getSender() == this)
+			return;
 		IDCategory idCategory = event.getIdCategory();
 		SelectionCommand cmd = event.getSelectionCommand();
 
 		for (SelectionManager selectionManager : selectionManagers) {
 			final IDType sidType = selectionManager.getIDType();
 			// match but not send by me
-			if ((idCategory == null || idCategory.isOfCategory(sidType)) && !(event.getSender() == selectionManager)) {
+			if ((idCategory == null || idCategory.isOfCategory(sidType)) && (event.getSender() != selectionManager)) {
 				selectionManager.executeSelectionCommand(cmd);
 				callback.onSelectionUpdate(selectionManager);
 			}
