@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.caleydo.core.data.collection.EDataType;
@@ -32,6 +33,8 @@ import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterConfiguration;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
+import org.caleydo.core.util.clusterer.algorithm.tree.ETreeClustererAlgo;
+import org.caleydo.core.util.clusterer.algorithm.tree.TreeClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.collection.Pair;
@@ -191,24 +194,38 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		}
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
 		dataSet.setDataProcessingDescription(dataProcessingDescription);
-		if (!settings.getCluster().equals("none")) {
 
-			ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
-			clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-			if (settings.getCluster().equals("kmeans")) {
-				KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
-				kMeansAlgo.setNumberOfClusters(5);
-				kMeansAlgo.setCacheVectors(true);
-				clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
-			} else {
-				AffinityClusterConfiguration affinityAlgo = new AffinityClusterConfiguration();
-				affinityAlgo.setClusterFactor(9);
-				affinityAlgo.setCacheVectors(true);
-				clusterConfiguration.setClusterAlgorithmConfiguration(affinityAlgo);
-			}
+		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
+		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		switch (settings.getCluster()) {
+		case NONE:
+			break;
+		case AFFINITY:
+			AffinityClusterConfiguration affinityAlgo = new AffinityClusterConfiguration();
+			affinityAlgo.setClusterFactor(9);
+			affinityAlgo.setCacheVectors(true);
+			clusterConfiguration.setClusterAlgorithmConfiguration(affinityAlgo);
 			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+			break;
+		case KMEANS:
+			KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
+			kMeansAlgo.setNumberOfClusters(5);
+			kMeansAlgo.setCacheVectors(true);
+			clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
+			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+			break;
+		case TREE:
+			TreeClusterConfiguration treeAlgo = new TreeClusterConfiguration();
+			treeAlgo.setTreeClustererAlgo(ETreeClustererAlgo.AVERAGE_LINKAGE);
+			clusterConfiguration.setClusterAlgorithmConfiguration(treeAlgo);
+			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+			break;
+		default:
+			log.log(Level.ALL, "Did not recognize option " + settings.getCluster());
 
 		}
+		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+
 		if (loadFullGenes) {
 			NumericalProperties numProp = dataSet.getDataDescription().getNumericalProperties();
 			// run z-score normalization on the rows
