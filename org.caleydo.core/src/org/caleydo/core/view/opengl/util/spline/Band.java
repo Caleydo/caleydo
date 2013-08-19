@@ -5,19 +5,18 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.util.spline;
 
-import static org.caleydo.core.view.opengl.util.spline.TesselatedPolygon.asDoubleArray;
 import gleem.linalg.Vec3f;
 
 import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import javax.media.opengl.glu.GLU;
-import javax.media.opengl.glu.GLUtessellator;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.util.gleem.ColoredVec3f;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 /**
@@ -174,23 +173,7 @@ public class Band implements ITesselatedPolygon {
 		if (moveByCurrentZ)
 			g.gl.glTranslatef(0, 0, g.z());
 
-		GLUtessellator tesselator = renderer.begin(g.gl);
-
-		GLU.gluTessBeginPolygon(tesselator, null);
-		{
-			GLU.gluTessBeginContour(tesselator);
-
-			for (Vec3f v : curveTop) {
-				GLU.gluTessVertex(tesselator, asDoubleArray(v), 0, v);
-			}
-			for (Vec3f v : curveBottom) {
-				GLU.gluTessVertex(tesselator, asDoubleArray(v), 0, v);
-			}
-
-			GLU.gluTessEndContour(tesselator);
-		}
-		GLU.gluTessEndPolygon(tesselator);
-		renderer.end();
+		renderer.render3(g, Iterables.concat(curveTop, curveBottom));
 
 		if (moveByCurrentZ)
 			g.gl.glTranslatef(0, 0, -g.z());

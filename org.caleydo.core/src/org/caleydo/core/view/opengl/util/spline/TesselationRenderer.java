@@ -13,6 +13,9 @@ import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUtessellator;
 import javax.media.opengl.glu.GLUtessellatorCallback;
 
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.util.gleem.ColoredVec3f;
+
 /**
  * a tesselation renderer supporting: {@link Vec3f}, {@link ColoredVec3f}, double[] and {@link Vec2f}
  *
@@ -194,4 +197,65 @@ public class TesselationRenderer {
 		}
 	}
 
+	/**
+	 * renders the given 3d vertices
+	 *
+	 * @param g
+	 * @param vertices
+	 */
+	public void render3(GLGraphics g, Iterable<Vec3f> vertices) {
+		GLUtessellator tesselator = begin(g.gl);
+		GLU.gluTessBeginPolygon(tesselator, null);
+		{
+			GLU.gluTessBeginContour(tesselator);
+
+			for (Vec3f v : vertices) {
+				GLU.gluTessVertex(tesselator, asDoubleArray(v), 0, v);
+			}
+
+			GLU.gluTessEndContour(tesselator);
+		}
+		GLU.gluTessEndPolygon(tesselator);
+		end();
+	}
+
+	/**
+	 * renderes the given 2d vertices
+	 *
+	 * @param g
+	 * @param vertices
+	 */
+	public void render2(GLGraphics g, Iterable<Vec2f> vertices) {
+		GLUtessellator tesselator = begin(g.gl);
+		GLU.gluTessBeginPolygon(tesselator, null);
+		{
+			GLU.gluTessBeginContour(tesselator);
+
+			for (Vec2f v : vertices) {
+				GLU.gluTessVertex(tesselator, asDoubleArray(v, g.z()), 0, v);
+			}
+
+			GLU.gluTessEndContour(tesselator);
+		}
+		GLU.gluTessEndPolygon(tesselator);
+		end();
+	}
+
+	/**
+	 * set the winding rule property
+	 *
+	 * @param windingRule
+	 */
+	public void setWindingRule(int windingRule) {
+		GLU.gluTessProperty(tesselator, GLU.GLU_TESS_WINDING_RULE, windingRule);
+	}
+
+
+	static double[] asDoubleArray(Vec3f v) {
+		return new double[] { v.x(), v.y(), v.z() };
+	}
+
+	static double[] asDoubleArray(Vec2f v, float z) {
+		return new double[] { v.x(), v.y(), z };
+	}
 }
