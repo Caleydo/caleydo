@@ -12,7 +12,7 @@ import java.util.TreeMap;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.function.FloatFunctions;
+import org.caleydo.core.util.function.ExpressionFunctions;
 import org.caleydo.core.util.function.IFloatFunction;
 
 /**
@@ -33,7 +33,7 @@ public class CompositeTextRenderer implements ITextRenderer {
 	private final IFloatFunction mapper;
 
 	public CompositeTextRenderer(ETextStyle style, int size, int... sizes) {
-		this(FloatFunctions.IDENTITY, style, size, sizes);
+		this(ExpressionFunctions.IDENTITY, style, size, sizes);
 	}
 
 	public CompositeTextRenderer(IFloatFunction mapper, ETextStyle style, int size, int... sizes) {

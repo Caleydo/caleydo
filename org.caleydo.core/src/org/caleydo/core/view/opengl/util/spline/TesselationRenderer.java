@@ -251,11 +251,11 @@ public class TesselationRenderer {
 	}
 
 
-	static double[] asDoubleArray(Vec3f v) {
+	public static double[] asDoubleArray(Vec3f v) {
 		return new double[] { v.x(), v.y(), v.z() };
 	}
 
-	static double[] asDoubleArray(Vec2f v, float z) {
+	public static double[] asDoubleArray(Vec2f v, float z) {
 		return new double[] { v.x(), v.y(), z };
 	}
 }

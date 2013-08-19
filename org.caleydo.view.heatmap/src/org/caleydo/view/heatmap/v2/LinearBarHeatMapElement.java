@@ -14,6 +14,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.table.TablePerspectiveFloatList;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.function.ExpressionFunctions;
 import org.caleydo.core.util.function.FloatFunctions;
 import org.caleydo.core.util.function.FloatStatistics;
 import org.caleydo.core.util.function.IFloatFunction;
@@ -106,7 +107,7 @@ public class LinearBarHeatMapElement extends AHeatMapElement {
 			FloatStatistics stats = FloatStatistics.of(new TablePerspectiveFloatList(tablePerspective));
 			normalize = FloatFunctions.normalize(stats.getMin(), stats.getMax());
 		} else {
-			normalize = FloatFunctions.IDENTITY;
+			normalize = ExpressionFunctions.IDENTITY;
 		}
 		this.normalizedCenter = normalize.apply(this.normalizedCenter);
 	}

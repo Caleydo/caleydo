@@ -19,21 +19,6 @@ public final class FloatFunctions {
 	}
 
 	/**
-	 * identity mapping
-	 */
-	public static final AFloatFunction IDENTITY = new AFloatFunction() {
-		@Override
-		public float apply(float in) {
-			return in;
-		}
-
-		@Override
-		public String toString() {
-			return "IDENTITY";
-		}
-	};
-
-	/**
 	 * clamps the given value between 0 and 1
 	 */
 	public static final AFloatFunction CLAMP01 = new AFloatFunction() {
@@ -47,7 +32,6 @@ public final class FloatFunctions {
 			return "clamp01";
 		}
 	};
-
 
 	/**
 	 * returns a function that normalizes the input
@@ -111,35 +95,6 @@ public final class FloatFunctions {
 			@Override
 			public String toString() {
 				return f.toString();
-			}
-		};
-	}
-
-	/**
-	 * composes the given function. For {@code f: A->B} and {@code g: B->C}, composition is defined as the function h
-	 * such that {@code h(a) == g(f(a))} for each {@code a}.
-	 * 
-	 * @param g
-	 * @param f
-	 * @return g(f(in))
-	 * @see <a href="//en.wikipedia.org/wiki/Function_composition">function composition</a>
-	 */
-	public static IFloatFunction compose(final IFloatFunction g, final IFloatFunction f) {
-		return new IFloatFunction() {
-
-			@Override
-			public Float apply(Float input) {
-				return g.apply(f.apply(input));
-			}
-
-			@Override
-			public float apply(float in) {
-				return g.apply(f.apply(in));
-			}
-
-			@Override
-			public String toString() {
-				return String.format("%s(%s)", g, f);
 			}
 		};
 	}
