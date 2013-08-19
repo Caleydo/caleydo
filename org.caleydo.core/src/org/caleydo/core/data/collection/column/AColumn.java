@@ -27,7 +27,7 @@ import org.caleydo.core.io.DataDescription;
  * <p>
  * This class provides only the base functionality. Data type specific implementations such as {@link NumericalColumn},
  * {@link CategoricalColumn} and {@link GenericColum} exist.
- * 
+ *
  * @author Alexander Lex
  */
 
@@ -40,7 +40,7 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	private EDataType rawDataType;
 
 	/** The default transformation of this column */
-	private String defaultDataTransformation = Table.Transformation.NONE;
+	private String defaultDataTransformation = Table.Transformation.LINEAR;
 
 	/** The id of this column, corresponds to the index of the column in the table */
 	private int id;
@@ -57,7 +57,9 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	public AColumn(DataDescription dataDescription) {
 		dataRepToContainerMap = new HashMap<>();
 		this.dataClass = dataDescription.getDataClass();
-		this.defaultDataTransformation = dataDescription.getDefaultDataTransformation();
+		if (dataDescription.getNumericalProperties() != null) {
+			this.defaultDataTransformation = dataDescription.getNumericalProperties().getDataTransformation();
+		}
 		this.rawDataType = dataDescription.getRawDataType();
 	}
 
@@ -164,7 +166,7 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	 * Creates all transformations and normalizes them into a format between 0 and 1
 	 */
 	public void normalize() {
-		dataRepToContainerMap.put(Table.Transformation.NONE, rawContainer.normalize());
+		dataRepToContainerMap.put(Table.Transformation.LINEAR, rawContainer.normalize());
 	}
 
 	/**

@@ -69,7 +69,7 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	 */
 	@Override
 	public void normalize() {
-		dataRepToContainerMap.put(Table.Transformation.NONE,
+		dataRepToContainerMap.put(Table.Transformation.LINEAR,
 				rawContainer.normalizeWithAtrificalExtrema(getMin(), getMax()));
 	}
 

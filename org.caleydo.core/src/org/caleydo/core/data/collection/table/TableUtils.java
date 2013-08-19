@@ -123,8 +123,8 @@ public class TableUtils {
 	 * @return
 	 */
 	private static String sanitize(String dataTransformation) {
-		if (Table.Transformation.NONE.equalsIgnoreCase(dataTransformation))
-			return Table.Transformation.NONE;
+		if (Table.Transformation.LINEAR.equalsIgnoreCase(dataTransformation))
+			return Table.Transformation.LINEAR;
 		if (NumericalTable.Transformation.LOG10.equalsIgnoreCase(dataTransformation))
 			return NumericalTable.Transformation.LOG10;
 		if (NumericalTable.Transformation.LOG2.equalsIgnoreCase(dataTransformation))

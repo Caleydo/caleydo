@@ -10,6 +10,7 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.util.Locale;
 
+import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -18,9 +19,11 @@ import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.DataSetSelectedEvent;
+import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ProjectMetaData;
+import org.caleydo.core.util.function.FloatStatistics;
 import org.caleydo.core.util.system.BrowserUtils;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IDataDomainBasedView;
@@ -28,6 +31,7 @@ import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.histogram.RcpGLColorMapperHistogramView;
 import org.caleydo.view.histogram.SerializedHistogramView;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -51,6 +55,8 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 	private TablePerspective tablePerspective;
 
 	private ExpandItem dataSetItem;
+	private ExpandItem processingItem;
+	private ExpandItem statsItem;
 	private ExpandItem tablePerspectiveItem;
 
 	private Label recordPerspectiveLabel;
@@ -64,6 +70,9 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 	private Label recordCount;
 	private Label dimensionLabel;
 	private Label dimensionCount;
+
+	private StyledText processingInfo;
+	private StyledText stats;
 
 	private ExpandItem histogramItem;
 	private RcpGLColorMapperHistogramView histogramView;
@@ -99,10 +108,13 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 		createProjectInfos(expandBar);
 		createDataSetInfos(expandBar);
+		createProcessingInfo(expandBar);
+		createStatsInfo(expandBar);
 
 		createTablePerspectiveInfos(expandBar);
 
 		createHistogramInfos(expandBar);
+
 
 		if (dataDomain == null) {
 			setDataDomain(DataDomainManager.get().getDataDomainByID(
@@ -135,6 +147,50 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 		dataSetItem.setControl(c);
 		dataSetItem.setHeight(c.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		dataSetItem.setExpanded(false);
+	}
+
+	private void createStatsInfo(ExpandBar expandBar) {
+		this.statsItem = new ExpandItem(expandBar, SWT.WRAP);
+		statsItem.setText("Dataset Stats");
+		Composite c = new Composite(expandBar, SWT.NONE);
+		c.setLayout(new GridLayout(1, false));
+
+		stats = new StyledText(c, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP);
+		stats.setBackgroundMode(SWT.INHERIT_FORCE);
+		stats.setText("No processing");
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd.heightHint = 60;
+		stats.setLayoutData(gd);
+		stats.setEditable(false);
+		stats.setWordWrap(true);
+
+		// transformationLabel.set
+		// transformationLabel.();
+
+		statsItem.setControl(c);
+		statsItem.setHeight(c.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+	}
+
+	private void createProcessingInfo(ExpandBar expandBar) {
+		this.processingItem = new ExpandItem(expandBar, SWT.WRAP);
+		processingItem.setText("Processing Info");
+		Composite c = new Composite(expandBar, SWT.NONE);
+		c.setLayout(new GridLayout(1, false));
+
+		processingInfo = new StyledText(c, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP);
+		processingInfo.setBackgroundMode(SWT.INHERIT_FORCE);
+		processingInfo.setText("No processing");
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd.heightHint = 60;
+		processingInfo.setLayoutData(gd);
+		processingInfo.setEditable(false);
+		processingInfo.setWordWrap(true);
+
+		// transformationLabel.set
+		// transformationLabel.();
+
+		processingItem.setControl(c);
+		processingItem.setHeight(c.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 	}
 
 	private void createTablePerspectiveInfos(ExpandBar expandBar) {
@@ -272,6 +328,56 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 			recordPerspectiveLabel.setText(recordName + ":");
 			dimensionPerspectiveLabel.setText(dimensionName + ":");
 
+			if (((ATableBasedDataDomain) dataDomain).getTable() instanceof NumericalTable) {
+				NumericalProperties numProp = dataDomain.getDataSetDescription().getDataDescription()
+						.getNumericalProperties();
+				String processingMessage = "";
+
+				if (numProp.getzScoreNormalization() != null) {
+					if (numProp.getzScoreNormalization().equals(NumericalProperties.ZSCORE_COLUMNS)) {
+						processingMessage += "Z-standardised on "
+								+ ((ATableBasedDataDomain) dataDomain).getColumnIDCategory() + "\n" + "";
+					} else if (numProp.getzScoreNormalization().equals(NumericalProperties.ZSCORE_ROWS)) {
+						processingMessage += "Z-standardised on "
+								+ ((ATableBasedDataDomain) dataDomain).getRowIDCategory() + System.lineSeparator();
+					}
+
+				}
+				if (numProp.getDataTransformation() != null) {
+					processingMessage += "Scale: " + numProp.getDataTransformation() + System.lineSeparator();
+				}
+				if (numProp.getClipToStdDevFactor() != null) {
+					processingMessage += "Clipped to " + numProp.getClipToStdDevFactor() + " std devs"
+							+ System.lineSeparator();
+				} else if (numProp.getMax() != null || numProp.getMin() != null) {
+					processingMessage += "Clipped to max: " + numProp.getMax() + ", min:" + numProp.getMin()
+							+ System.lineSeparator();
+				}
+				NumericalTable table = (NumericalTable) ((ATableBasedDataDomain) dataDomain).getTable();
+				if (table.getDataCenter() != null) {
+					processingMessage += "Centered at " + table.getDataCenter() + System.lineSeparator();
+				}
+				processingInfo.setText(processingMessage);
+
+				String n = System.lineSeparator();
+
+				FloatStatistics dsStats = table.getDatasetStatistics();
+				String statsMessage = "";
+				statsMessage += "Mean: " + dsStats.getMean() + n;
+				statsMessage += "Std. Dev.: " + dsStats.getSd() + n;
+				statsMessage += "Max: " + dsStats.getMax() + n;
+				statsMessage += "Min: " + dsStats.getMin() + n;
+				statsMessage += "Skewness: " + dsStats.getSkewness() + n;
+				statsMessage += "Kurtosis: " + dsStats.getKurtosis() + n;
+
+				stats.setText(statsMessage);
+			} else {
+				statsItem.setExpanded(false);
+				stats.setText("");
+				processingItem.setExpanded(false);
+				processingInfo.setText("");
+			}
+
 			if (tablePerspective != null) {
 				String tpLabel = "Persp.: " + tablePerspective.getLabel();
 				if (tpLabel.length() > stringLength)
@@ -342,7 +448,6 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 				GeneralManager.get().getViewManager().registerGLCanvasToAnimator(histogramView.getGLCanvas());
 				((Composite) histogramItem.getControl()).layout();
 			}
-
 
 			// If the default table perspective does not exist yet, we
 			// create it and set it to private so that it does not show up

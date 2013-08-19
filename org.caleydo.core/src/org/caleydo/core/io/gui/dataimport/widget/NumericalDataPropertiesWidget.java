@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.table.NumericalTable;
+import org.caleydo.core.data.collection.table.Table.Transformation;
 import org.caleydo.core.io.NumericalProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -271,10 +273,11 @@ public class NumericalDataPropertiesWidget {
 		gridData.widthHint = 120;
 		scalingCombo.setLayoutData(gridData);
 
-		String[] scalingOptions = { "Linear", "Log10", "Log2" };
-		scalingTextMap.put(0, "None");
-		scalingTextMap.put(1, "Log10");
-		scalingTextMap.put(2, "Log2");
+		String[] scalingOptions = { Transformation.LINEAR, NumericalTable.Transformation.LOG2,
+				NumericalTable.Transformation.LOG10 };
+		scalingTextMap.put(0, Transformation.LINEAR);
+		scalingTextMap.put(1, NumericalTable.Transformation.LOG2);
+		scalingTextMap.put(2, NumericalTable.Transformation.LOG10);
 		scalingCombo.setItems(scalingOptions);
 		scalingCombo.setEnabled(true);
 

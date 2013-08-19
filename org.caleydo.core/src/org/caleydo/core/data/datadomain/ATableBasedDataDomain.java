@@ -364,6 +364,18 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		return dimensionIDType;
 	}
 
+	public IDCategory getColumnIDCategory() {
+		if (isColumnDimension())
+			return dimensionIDCategory;
+		return recordIDCategory;
+	}
+
+	public IDCategory getRowIDCategory() {
+		if (isColumnDimension())
+			return recordIDCategory;
+		return dimensionIDCategory;
+	}
+
 	/**
 	 * @return the recordIDCategory, see {@link #recordIDCategory}
 	 */
