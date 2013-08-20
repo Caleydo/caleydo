@@ -51,7 +51,9 @@
 		<module>org.caleydo.view.treemap</module>
 		
 		<module>org.caleydo.vis.lineup</module>
+		
+		<module>org.caleydo.data.importer</module>
 
-		<module>org.caleydo.internal</module>
+		<module>org.caleydo.internal</module>		
 	</modules>
 </project>
