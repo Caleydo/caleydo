@@ -6,10 +6,11 @@
 package org.caleydo.data.tcga.internal.model;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.Collections;
 
 import org.caleydo.core.manager.GeneralManager;
@@ -39,12 +40,36 @@ public class RunOverview implements Comparable<RunOverview> {
 		File file = RemoteFile.of(new URL(prefix + json)).getOrLoad(true, new NullProgressMonitor());
 		if (file == null)
 			return false;
-		try (Reader r = new FileReader(file)) {
+		try (Reader r = Files.newBufferedReader(file.toPath(), Charset.defaultCharset())) {
 			JsonElement parse = new JsonParser().parse(r);
 			this.data = gson.fromJson(parse, Run.class);
 		}
 		Collections.sort(this.data.details);
 		return true;
+	}
+
+	/**
+	 * @param json
+	 *            setter, see {@link json}
+	 */
+	public void setJson(String json) {
+		this.json = json;
+	}
+
+	/**
+	 * @param label
+	 *            setter, see {@link label}
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	/**
+	 * @param id
+	 *            setter, see {@link id}
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	/**
@@ -79,6 +104,31 @@ public class RunOverview implements Comparable<RunOverview> {
 	@Override
 	public int compareTo(RunOverview o) {
 		return id.compareTo(o.id);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RunOverview other = (RunOverview) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 	public boolean isResolved() {

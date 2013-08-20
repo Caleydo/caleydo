@@ -6,12 +6,12 @@
 package org.caleydo.data.tcga.internal;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -49,6 +49,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
 
+import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
@@ -223,7 +224,7 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 	private RunOverview[] createModel(File file) {
 		Gson gson = new Gson();
 		RunOverview[] fromJson;
-		try (Reader r = new FileReader(file)) {
+		try (Reader r = Files.newReader(file, Charset.defaultCharset())) {
 			fromJson = gson.fromJson(r, RunOverview[].class);
 			Arrays.sort(fromJson, Collections.reverseOrder());
 			return fromJson;
