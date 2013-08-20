@@ -24,6 +24,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.view.RedrawViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
 import org.caleydo.core.util.color.mapping.IColorMappingUpdateListener;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
@@ -198,6 +199,8 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 			}
 		}
 
+		ColorMapper mapper = dataDomain.getTable().getColorMapper();
+
 		// GLHelperFunctions.drawSmallPointAt(gl, 0.01f, 0.01f, 1);
 		// GLHelperFunctions.drawSmallPointAt(gl, viewFrustum.getWidth() / 2, viewFrustum.getHeight() / 2, 1);
 		// GLHelperFunctions.drawSmallPointAt(gl, viewFrustum.getWidth() - 0.01f, viewFrustum.getHeight() - 0.01f, 1);
@@ -222,12 +225,10 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 			if (useColor) {
 				float[] color;
 
-
 				if (cHistogram != null) {
 					color = cHistogram.getColor(bucketCount).getRGB();// specific.getCategoryProperties().get(bucketCount).getColor().getRGBA();
 				} else {
-					color = dataDomain.getTable().getColorMapper()
-							.getColor(continuousColorDistance * iCount + continuousColorDistance / 2);
+					color = mapper.getColor(continuousColorDistance * iCount + continuousColorDistance / 2);
 				}
 				gl.glColor3fv(color, 0);
 			}
@@ -402,10 +403,17 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		double correspondingValue = ((NumericalTable) dataDomain.getTable()).getRawForNormalized(dataDomain.getTable()
 				.getDefaultDataTransformation(), normalizedValue);
 
+		textRenderer.setColor(Color.BLACK);
 		String text = Formatter.formatNumber(correspondingValue);
-		textRenderer.renderTextInBounds(gl, text, sideSpacing + normalizedValue * fRenderWidth
-				+ HistogramRenderStyle.CAPTION_SPACING, 0, 0.01f, pixelGLConverter.getGLWidthForPixelWidth(100),
-				pixelGLConverter.getGLHeightForPixelHeight(HistogramRenderStyle.SIDE_SPACING));
+		float x = sideSpacing + normalizedValue * fRenderWidth;
+		boolean alignRight = true;
+		if (normalizedValue > 0.5) {
+			alignRight = false;
+		}
+
+		textRenderer.renderTextInBounds(gl, text, x, pixelGLConverter.getGLHeightForPixelHeight(3), 0.01f,
+				pixelGLConverter.getGLWidthForPixelWidth(100),
+				pixelGLConverter.getGLHeightForPixelHeight(HistogramRenderStyle.SIDE_SPACING), alignRight);
 	}
 
 	/**
@@ -433,7 +441,6 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 
 		List<ColorMarkerPoint> markerPoints = dataDomain.getTable().getColorMapper().getMarkerPoints();
 		ColorMarkerPoint markerPoint = markerPoints.get(iColorMappingPointMoved);
-
 
 		if (bIsFirstTimeUpdateColor && bUpdateColorPointPosition) {
 			bIsFirstTimeUpdateColor = false;

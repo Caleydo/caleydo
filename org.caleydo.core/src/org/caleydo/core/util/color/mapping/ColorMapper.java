@@ -135,6 +135,7 @@ public class ColorMapper {
 	private void setUpMapping() {
 		Collections.sort(markerPoints);
 		List<ColorMarkerPoint> finalMarkerPoints = considerSpread();
+		// System.out.println(finalMarkerPoints.toString());
 		float srcValue, destValue;
 
 		for (int count = 0; count < finalMarkerPoints.size() - 1; count++) {
@@ -154,14 +155,16 @@ public class ColorMapper {
 			int colorRange = destIndex - srcIndex;
 
 			for (int innerCount = 0; innerCount <= colorRange; innerCount++) {
-				Color fColor = colorList.get(srcIndex + innerCount);
+				Color color = colorList.get(srcIndex + innerCount);
 				float divisor = (float) colorRange / (float) innerCount;
-				fColor.r = srcColor.r + (destColor.r - srcColor.r) / divisor;
-				fColor.g = srcColor.g + (destColor.g - srcColor.g) / divisor;
-				fColor.b = srcColor.b + (destColor.b - srcColor.b) / divisor;
-				fColor.a = srcColor.a + (destColor.a - srcColor.a) / divisor;
+				color.r = srcColor.r + (destColor.r - srcColor.r) / divisor;
+				color.g = srcColor.g + (destColor.g - srcColor.g) / divisor;
+				color.b = srcColor.b + (destColor.b - srcColor.b) / divisor;
+				color.a = srcColor.a + (destColor.a - srcColor.a) / divisor;
 			}
+
 		}
+		// System.out.println(colorList);
 	}
 
 	/**

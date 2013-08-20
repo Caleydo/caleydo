@@ -69,7 +69,7 @@ public class Table {
 	}
 
 	/** The data domain holding this table */
-	private final ATableBasedDataDomain dataDomain;
+	protected final ATableBasedDataDomain dataDomain;
 
 	/** The color-mapper for this table */
 	private ColorMapper colorMapper;
@@ -308,6 +308,8 @@ public class Table {
 	 * @return the colorMapper, see {@link #colorMapper}
 	 */
 	public ColorMapper getColorMapper() {
+
+
 		if (colorMapper == null) {
 			if (this instanceof NumericalTable && ((NumericalTable) this).getDataCenter() != null) {
 				colorMapper = ColorMapper.createDefaultThreeColorMapper();
@@ -317,6 +319,8 @@ public class Table {
 				colorMapper = ColorMapper.createDefaultTwoColorMapper();
 			}
 		}
+		// FIXME this is a hack due to a bug in colorMapper
+		colorMapper.update();
 		return colorMapper;
 	}
 

@@ -12,6 +12,8 @@ import org.caleydo.core.data.collection.column.NumericalColumn;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
+import org.caleydo.core.util.color.mapping.ColorMapper;
+import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
 import org.caleydo.core.util.function.FloatStatistics;
 import org.caleydo.core.util.function.IncrementalFloatStatistics;
 import org.caleydo.core.util.logging.Logger;
@@ -330,11 +332,30 @@ public class NumericalTable extends Table {
 			nColumn.setExternalMin(getMin());
 			nColumn.setExternalMax(getMax());
 			nColumn.normalize();
-			// FIXME - need to rethink this
+			// FIXME - need to re-think this
 			nColumn.log2();
 			nColumn.log10();
 
 		}
+
+		// setting the color marker points to 3 std devs
+		ColorMapper mapper = getColorMapper();
+		ColorMarkerPoint point = mapper.getMarkerPoints().get(0);
+		float raw = datasetStatistics.getMean() - 3 * datasetStatistics.getSd();
+		float normalized = (float) getNormalizedForRaw(defaultDataTransformation, raw);
+		if (normalized < 0)
+			normalized = 0;
+		point.setRightSpread(normalized);
+
+		point = mapper.getMarkerPoints().get(mapper.getMarkerPoints().size() - 1);
+		raw = datasetStatistics.getMean() + 3 * datasetStatistics.getSd();
+		normalized = (float) getNormalizedForRaw(defaultDataTransformation, raw);
+		float distance = 1 - normalized;
+		if (distance < 0)
+			distance = 0;
+		point.setLeftSpread(distance);
+		mapper.update();
+		// mapper.update();
 	}
 
 	/**
