@@ -101,7 +101,7 @@ public class LinearBarHeatMapElement extends AHeatMapElement {
 		super.onVAUpdate(tablePerspective);
 		Table table = tablePerspective.getDataDomain().getTable();
 		assert table instanceof NumericalTable;
-		this.normalizedCenter = (float) ((NumericalTable) table).getNormalizedForRaw(Table.Transformation.NONE, 0);
+		this.normalizedCenter = (float) ((NumericalTable) table).getNormalizedForRaw(Table.Transformation.LINEAR, 0);
 
 		if (scaleLocally) {
 			FloatStatistics stats = FloatStatistics.of(new TablePerspectiveFloatList(tablePerspective));
