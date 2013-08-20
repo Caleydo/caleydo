@@ -13,8 +13,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.media.opengl.GL;
-
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementAccessor;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
@@ -22,10 +20,6 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.IGLElementVisitor;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
-import org.caleydo.core.view.opengl.layout2.basic.RadioController;
-import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactories.GLElementSupplier;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
@@ -81,7 +75,11 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 	 * @return
 	 */
 	public GLElementContainer createButtonBar() {
-		return new ButtonBar();
+		return createButtonBarBuilder().build();
+	}
+
+	public ButtonBarBuilder createButtonBarBuilder() {
+		return new ButtonBarBuilder(this);
 	}
 
 	/**
@@ -307,65 +305,6 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 	 */
 	public static enum ELazyiness {
 		NONE, UNINITIALIZE, DESTROY
-	}
-
-	private class ButtonBar extends GLElementContainer implements ISelectionCallback, IActiveChangedCallback,
-			IGLRenderer {
-		private final RadioController controller = new RadioController(this);
-
-		public ButtonBar() {
-			setLayout(GLLayouts.flowHorizontal(2));
-
-			int i = 0;
-			for (GLElementSupplier sup : GLElementFactorySwitcher.this) {
-				GLButton b = new GLButton();
-				b.setPickingObjectId(i++);
-				b.setTooltip(sup.getLabel());
-				b.setLayoutData(sup);
-				b.setRenderer(this);
-				controller.add(b);
-				b.setSize(16, 16);
-				this.add(b);
-			}
-			setSize(this.size() * (16 + 2), 16);
-		}
-
-		@Override
-		public void render(GLGraphics g, float w, float h, GLElement parent) {
-			GLElementSupplier sub = parent.getLayoutDataAs(GLElementSupplier.class, null);
-			g.fillImage(g.getTexture(sub.getIcon()), 0, 0, w, h);
-			if (((GLButton) parent).isSelected()) {
-				g.gl.glEnable(GL.GL_BLEND);
-				g.gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
-				g.gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-				g.gl.glEnable(GL.GL_LINE_SMOOTH);
-				g.color(1, 1, 1, 0.5f).fillRoundedRect(0, 0, w, h, Math.min(w, h) * 0.25f);
-				g.gl.glPopAttrib();
-			}
-		}
-
-		@Override
-		protected void init(IGLElementContext context) {
-			super.init(context);
-			GLElementFactorySwitcher.this.onActiveChanged(this);
-			controller.setSelected(getActive());
-		}
-
-		@Override
-		protected void takeDown() {
-			GLElementFactorySwitcher.this.removeOnActiveChanged(this);
-			super.takeDown();
-		}
-
-		@Override
-		public void onSelectionChanged(GLButton button, boolean selected) {
-			GLElementFactorySwitcher.this.setActive(button.getPickingObjectId());
-		}
-
-		@Override
-		public void onActiveChanged(int active) {
-			controller.setSelected(active);
-		}
 	}
 
 	@Override
