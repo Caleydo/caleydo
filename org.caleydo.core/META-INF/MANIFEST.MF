@@ -198,6 +198,7 @@ Export-Package: org.caleydo.core.data.collection,
    org.caleydo.core.data.perspective.variable,
    org.eclipse.swt.widgets,
    org.caleydo.core.util.clusterer.initialization",
+ org.caleydo.core.util.clusterer.algorithm.tree,
  org.caleydo.core.util.clusterer.gui;
   uses:="org.caleydo.core.event,
    org.caleydo.core.gui.util,

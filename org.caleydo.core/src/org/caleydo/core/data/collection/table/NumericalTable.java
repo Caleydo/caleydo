@@ -61,7 +61,7 @@ public class NumericalTable extends Table {
 	 */
 	public double getRawForNormalized(String dataTransformation, double normalized) {
 
-		if (dataTransformation.equals(Table.Transformation.NONE)) {
+		if (dataTransformation.equals(Table.Transformation.LINEAR)) {
 			return getMin() + normalized * (getMax() - getMin());
 		} else if (dataTransformation.equals(Transformation.LOG2)) {
 			double logMin = MathHelper.log(getMin(), 2);
@@ -90,7 +90,7 @@ public class NumericalTable extends Table {
 	public double getNormalizedForRaw(String dataTransformation, double raw) {
 		double result;
 
-		if (dataTransformation == org.caleydo.core.data.collection.table.Table.Transformation.NONE) {
+		if (dataTransformation == org.caleydo.core.data.collection.table.Table.Transformation.LINEAR) {
 			result = raw;
 		} else if (dataTransformation == Transformation.LOG2) {
 			result = Math.log(raw) / Math.log(2);
@@ -317,6 +317,14 @@ public class NumericalTable extends Table {
 
 		}
 	}
+	
+	/**
+	 * @return the datasetStatistics, see {@link #datasetStatistics}
+	 */
+	public FloatStatistics getDatasetStatistics() {
+		return datasetStatistics;
+	}
+	
 
 	private FloatStatistics computeColumnStats(NumericalColumn<?, Float> nColumn) {
 		FloatStatistics.Builder stats = FloatStatistics.builder();

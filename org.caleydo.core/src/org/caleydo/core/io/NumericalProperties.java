@@ -69,10 +69,10 @@ public class NumericalProperties {
 	private Float clipToStdDevFactor = null;
 
 	/**
-	 * Determines whether and if so which transformation should be applied to the data (e.g. log2 transformation). This
-	 * is mapped to values of {@link EDataTransformation}.
+	 * Determines which transformation should be applied to the data (e.g. log2 transformation). This is mapped to
+	 * values of {@link EDataTransformation}.
 	 */
-	private String dataTransformation = Table.Transformation.NONE;
+	private String dataTransformation = Table.Transformation.LINEAR;
 
 	/**
 	 * Run a z-score normalization as pre-processing. Legal values are {@link #ZSCORE_COLUMNS} for normalizing within

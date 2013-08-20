@@ -64,8 +64,8 @@ public class Table {
 
 	public class Transformation {
 		/** Untransformed data */
-		public static final String NONE = "NONE";
-		public static final String INVERT = "INVERT";
+		public static final String LINEAR = "None";
+		public static final String INVERT = "Inverted";
 	}
 
 	/** The data domain holding this table */
@@ -78,7 +78,7 @@ public class Table {
 	 * The transformation delivered when calling the {@link #getNormalizedValue(Integer, Integer)} method without and
 	 * explicit transformation
 	 */
-	protected String defaultDataTransformation = Table.Transformation.NONE;
+	protected String defaultDataTransformation = Table.Transformation.LINEAR;
 
 	/** The columns of the table hashed by their column ID */
 	protected List<AColumn<?, ?>> columns;
