@@ -39,8 +39,8 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class DateRankColumnModel extends ABasicFilterableRankColumnModel implements IRankableColumnMixin,
-		IFilterColumnMixin {
+public final class DateRankColumnModel extends ABasicFilterableRankColumnModel implements IRankableColumnMixin,
+		IFilterColumnMixin, Cloneable {
 	private final Function<IRow, Date> data;
 
 	public enum DateMode {

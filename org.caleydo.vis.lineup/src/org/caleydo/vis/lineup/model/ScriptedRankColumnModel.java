@@ -55,8 +55,8 @@ import com.jogamp.common.util.IntObjectHashMap.Entry;
  * @author Samuel Gratzl
  *
  */
-public class ScriptedRankColumnModel extends AMultiRankColumnModel implements ICollapseableColumnMixin,
-		IFilterColumnMixin, ISnapshotableColumnMixin, IScriptedColumnMixin, IManualComparatorMixin {
+public final class ScriptedRankColumnModel extends AMultiRankColumnModel implements ICollapseableColumnMixin,
+		IFilterColumnMixin, ISnapshotableColumnMixin, IScriptedColumnMixin, IManualComparatorMixin, Cloneable {
 	private static final String DEFAULT_CODE = "return mean(values)";
 	private static final String DEFAULT_ORDER_CODE = "return -compare(a.value,b.value)";
 	private final static String prefix;
@@ -221,20 +221,15 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 		if (cacheMulti.containsKey(row.getIndex()))
 			return ((CacheRow) cacheMulti.get(row.getIndex()));
 		float[] s = new float[this.size()];
-		String[] raws = new String[s.length];
-		boolean[] inferred = new boolean[s.length];
 		for (int i = 0; i < s.length; ++i) {
 			ARankColumnModel child = get(i);
 			if (child instanceof IFloatRankableColumnMixin) {
 				s[i] = ((IFloatRankableColumnMixin)child).applyPrimitive(row);
-				inferred[i] = ((IFloatRankableColumnMixin) child).isValueInferred(row);
 			} else {
 				s[i] = Float.NaN;
-				inferred[i] = false;
 			}
-			raws[i] = get(i).getValue(row);
 		}
-		CacheRow cacheRow = new CacheRow(s, raws, inferred);
+		CacheRow cacheRow = new CacheRow(s);
 		cacheMulti.put(row.getIndex(), cacheRow);
 		return cacheRow;
 	}
@@ -321,7 +316,8 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 		CacheRow r2 = getCacheRow(o2);
 		if (codeOrder.equalsIgnoreCase(DEFAULT_ORDER_CODE)) {
 			// fast way
-			return -Float.compare(r1.value, r2.value);
+			// return -Float.compare(r1.value, r2.value);
+			return Float.compare(r2.value, r1.value);
 		} else
 			return runOrderScript(r1, r2);
 	}
@@ -421,39 +417,13 @@ public class ScriptedRankColumnModel extends AMultiRankColumnModel implements IC
 		parent.orderBy(model);
 	}
 
-	public static class CacheRow {
-		private final boolean[] inferred;
+	private static final class CacheRow {
 		private final float[] values;
-		private final String[] raws;
 		private Float value = null;
 
-		public CacheRow(float[] values, String[] raws, boolean[] inferred) {
-			this.raws = raws;
+		public CacheRow(float[] values) {
 			this.values = values;
-			this.inferred = inferred;
 		}
-
-		/**
-		 * @return the inferred, see {@link #inferred}
-		 */
-		public boolean[] getInferred() {
-			return inferred;
-		}
-
-		/**
-		 * @return the values, see {@link #values}
-		 */
-		public float[] getValues() {
-			return values;
-		}
-
-		/**
-		 * @return the raws, see {@link #raws}
-		 */
-		public String[] getRaws() {
-			return raws;
-		}
-
 		/**
 		 * @return the value, see {@link #value}
 		 */

@@ -52,8 +52,8 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel implements
-		IFilterColumnMixin, IMappedColumnMixin, IFloatRankableColumnMixin {
+public final class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel implements
+		IFilterColumnMixin, IMappedColumnMixin, IFloatRankableColumnMixin, Cloneable {
 	private static final int MAX_CATEGORY_COLORS = 8;
 
 	private final Function<IRow, CATEGORY_TYPE> data;

@@ -198,7 +198,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 
 	}
 
-	public class SelectionLabelProvider extends StyledCellLabelProvider {
+	private static class SelectionLabelProvider extends StyledCellLabelProvider {
 		@Override
 		protected void measure(Event event, Object element) {
 			super.measure(event, element);

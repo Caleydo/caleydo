@@ -43,9 +43,9 @@ import com.google.common.collect.Multiset;
  * @author Samuel Gratzl
  *
  */
-public class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> extends
+public final class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> extends
 		ABasicFilterableRankColumnModel implements
- IFilterColumnMixin, IGrabRemainingHorizontalSpace,
+ IFilterColumnMixin, IGrabRemainingHorizontalSpace, Cloneable,
 		IRankableColumnMixin {
 	private final Function<IRow, CATEGORY_TYPE> data;
 	private final Set<CATEGORY_TYPE> selection = new HashSet<>();

@@ -20,8 +20,8 @@ import com.google.common.collect.Iterators;
  * @author Samuel Gratzl
  *
  */
-public class PiecewiseMapping extends ScriptedMappingFunction implements Iterable<Entry<Float, Float>>,
-		IMappingFunction {
+public final class PiecewiseMapping extends ScriptedMappingFunction implements Iterable<Entry<Float, Float>>,
+		IMappingFunction, Cloneable {
 	private final SortedMap<Float, Float> mapping = new TreeMap<>();
 	// are the semantic mapping used or just the code
 	private boolean isDefinedMapping = true;
@@ -117,17 +117,18 @@ public class PiecewiseMapping extends ScriptedMappingFunction implements Iterabl
 				max_from = String.format(Locale.ENGLISH, "%.2g",mapping.firstKey());
 				max_to = String.format(Locale.ENGLISH, "%.2g",mapping.get(mapping.firstKey()));
 			}
-			b.append(String.format("if (value < %s) return NaN\n", min_from));
-			b.append(String.format("else if (value <= %s) return linear(%s, %s, value, %s, %s)\n",max_from,min_from,max_from,min_to,max_to));
+			b.append(String.format("if (value < %s) return NaN%n", min_from));
+			b.append(String.format("else if (value <= %s) return linear(%s, %s, value, %s, %s)%n", max_from, min_from,
+					max_from, min_to, max_to));
 		} else {
 			Map.Entry<Float, Float> last = null;
 			for (Map.Entry<Float, Float> entry : this) {
 				if (last == null) {
-					b.append(String.format(Locale.ENGLISH, "if (value < %.2g) return NaN\n", entry.getKey()));
+					b.append(String.format(Locale.ENGLISH, "if (value < %.2g) return NaN%n", entry.getKey()));
 				} else {
 					b.append(String
 							.format(Locale.ENGLISH,
-							"else if (value <= %2$.2g) return linear(%1$.2g, %2$.2g, value, %3$.2g, %4$.2g)\n",
+							"else if (value <= %2$.2g) return linear(%1$.2g, %2$.2g, value, %3$.2g, %4$.2g)%n",
 									last.getKey(), entry.getKey(), last.getValue(), entry.getValue()));
 				}
 				last = entry;

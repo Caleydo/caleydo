@@ -35,7 +35,7 @@ import com.google.common.collect.Iterables;
  * @author Samuel Gratzl
  *
  */
-public class RankTableModel implements IRankColumnParent {
+public final class RankTableModel implements IRankColumnParent, Cloneable {
 	public static final String PROP_SELECTED_ROW = "selectedRow";
 	public static final String PROP_COLUMNS = "columns";
 	public static final String PROP_POOL = "pool";

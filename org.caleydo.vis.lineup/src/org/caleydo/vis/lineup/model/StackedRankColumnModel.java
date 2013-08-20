@@ -36,8 +36,8 @@ import com.jogamp.common.util.IntObjectHashMap;
  * @author Samuel Gratzl
  *
  */
-public class StackedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin,
-		ICompressColumnMixin, ICollapseableColumnMixin, IFilterColumnMixin {
+public final class StackedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin,
+		ICompressColumnMixin, ICollapseableColumnMixin, IFilterColumnMixin, Cloneable {
 	public static final String PROP_ALIGNMENT = "alignment";
 	public static final String PROP_WEIGHTS = "weights";
 
@@ -329,7 +329,8 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		sortBy(new Comparator<ARankColumnModel>() {
 			@Override
 			public int compare(ARankColumnModel o1, ARankColumnModel o2) {
-				return -Float.compare((float) o1.getParentData(), (float) o2.getParentData());
+				// return -Float.compare((float) o1.getParentData(), (float) o2.getParentData());
+				return Float.compare((float) o2.getParentData(), (float) o1.getParentData());
 			}
 		});
 	}
