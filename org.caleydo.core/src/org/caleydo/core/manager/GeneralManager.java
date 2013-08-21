@@ -12,6 +12,7 @@ import static org.caleydo.data.loader.ResourceLocators.chain;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -105,8 +106,9 @@ public class GeneralManager {
 		if (Activator.version != null)
 			return Activator.version;
 		Properties p = new Properties();
-		try {
-			p.load(GeneralManager.class.getResourceAsStream("/version.properties"));
+		try (InputStream in = GeneralManager.class.getResourceAsStream("/version.properties")) {
+			if (in != null)
+				p.load(in);
 		} catch (IOException e) {
 			Logger.log(new Status(IStatus.ERROR, "org.caleydo.core", "can't parse: version.properties"));
 		}

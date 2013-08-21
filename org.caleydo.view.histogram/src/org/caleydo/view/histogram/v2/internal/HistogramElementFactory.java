@@ -38,6 +38,7 @@ public class HistogramElementFactory implements IGLElementFactory {
 
 		HistogramElement elem = new HistogramElement(data, detailLevel);
 		elem.setShowColorMapper(context.is("showColorMapper"));
+		elem.setShowMarkerLabels(context.is("showMarkerLabels"));
 		return elem;
 	}
 

@@ -92,13 +92,17 @@ public class NumericalTable extends Table {
 	public double getNormalizedForRaw(String dataTransformation, double raw) {
 		double result;
 
-		if (dataTransformation == org.caleydo.core.data.collection.table.Table.Transformation.LINEAR) {
+		switch (dataTransformation) {
+		case org.caleydo.core.data.collection.table.Table.Transformation.LINEAR:
 			result = raw;
-		} else if (dataTransformation == Transformation.LOG2) {
+			break;
+		case Transformation.LOG2:
 			result = Math.log(raw) / Math.log(2);
-		} else if (dataTransformation == Transformation.LOG10) {
+			break;
+		case Transformation.LOG10:
 			result = Math.log10(raw);
-		} else {
+			break;
+		default:
 			throw new IllegalStateException("Conversion raw to normalized not implemented for data rep"
 					+ dataTransformation);
 		}

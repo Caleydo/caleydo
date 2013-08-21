@@ -9,8 +9,10 @@ import gleem.linalg.Vec2f;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.caleydo.core.data.collection.CategoricalHistogram;
 import org.caleydo.core.data.collection.Histogram;
+import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
@@ -20,11 +22,14 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.util.PickingPool;
 import org.caleydo.core.view.opengl.layout2.view.ASingleTablePerspectiveElement;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.histogram.HistogramRenderStyle;
@@ -48,7 +53,8 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 	private int hoveredSpread = -1;
 	private boolean hoveredLeft = false;
 
-	private boolean showColorMapper;
+	private boolean showColorMapper = false;
+	private boolean showMarkerLabels = false;
 
 	public HistogramElement(TablePerspective tablePerspective) {
 		this(tablePerspective, EDetailLevel.HIGH);
@@ -67,8 +73,21 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 	 * @param showColorMapper
 	 *            setter, see {@link showColorMapper}
 	 */
-	public void setShowColorMapper(boolean showColorMapper) {
+	public HistogramElement setShowColorMapper(boolean showColorMapper) {
 		this.showColorMapper = showColorMapper;
+		repaintAll();
+		return this;
+	}
+
+	/**
+	 * @param showMarkerLabels
+	 *            setter, see {@link showMarkerLabels}
+	 */
+	public HistogramElement setShowMarkerLabels(boolean showMarkerLabels) {
+		this.showMarkerLabels = showMarkerLabels;
+		if (this.showColorMapper)
+			repaintAll();
+		return this;
 	}
 
 	/**
@@ -86,16 +105,30 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
+		final IPickingListener leftToolTip = context.getSWTLayer().createTooltip(new IPickingLabelProvider() {
+			@Override
+			public String getLabel(Pick pick) {
+				return HistogramElement.this.getLabel(pick, true);
+			}
+		});
 		leftSpreadPickingIds = new PickingPool(context, new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
-				onLinePicked(pick, getDataDomain(), true);
+				leftToolTip.pick(pick);
+				onLinePicked(pick, true);
+			}
+		});
+		final IPickingListener rightToolTip = context.getSWTLayer().createTooltip(new IPickingLabelProvider() {
+			@Override
+			public String getLabel(Pick pick) {
+				return HistogramElement.this.getLabel(pick, false);
 			}
 		});
 		rightSpreadPickingIds = new PickingPool(context, new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
-				onLinePicked(pick, getDataDomain(), false);
+				rightToolTip.pick(pick);
+				onLinePicked(pick, false);
 			}
 		});
 		int points = getDataDomain().getTable().getColorMapper().getMarkerPoints().size();
@@ -204,6 +237,8 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 		g.save();
 		g.move(padding,padding);
 
+		float lineHeight = this.showMarkerLabels ? h + padding - 1 : h;
+
 		List<ColorMarkerPoint> markerPoints = mapper.getMarkerPoints();
 
 		for(int i = 0; i < markerPoints.size(); ++i) {
@@ -228,11 +263,14 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 				if (hoveredLeft && hoveredSpread == i) {
 					g.lineWidth(3.f);
 				}
-				g.drawLine(from,0,from,h);
+				g.drawLine(from, 0, from, lineHeight);
 				if (hoveredLeft && hoveredSpread == i) {
 					g.lineWidth(1);
 				}
 				g.decZ();
+
+				if (spread > HistogramRenderStyle.SPREAD_CAPTION_THRESHOLD)
+					renderCaption(g, v - spread, w, h);
 			}
 
 			if (markerPoint.hasRightSpread()) {
@@ -249,16 +287,32 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 				if (!hoveredLeft && hoveredSpread == i) {
 					g.lineWidth(3.f);
 				}
-				g.drawLine(to, 0, to, h);
+				g.drawLine(to, 0, to, lineHeight);
 				if (!hoveredLeft && hoveredSpread == i) {
 					g.lineWidth(1);
 				}
 				g.decZ();
+
+				if (spread > HistogramRenderStyle.SPREAD_CAPTION_THRESHOLD)
+					renderCaption(g, v + spread, w, h);
 			}
+
+			renderCaption(g, v, w, h);
 		}
 
 		g.restore();
 
+	}
+
+	private void renderCaption(GLGraphics g, float value, float w, float h) {
+		String label = getMarkerPointValue(value);
+		if (StringUtils.isBlank(label))
+			return;
+
+		if (value <= 0.5)
+			g.drawText(label, value * w, h, 100, HistogramRenderStyle.SIDE_SPACING - 2);
+		else
+			g.drawText(label, value * w - 100, h, 100, HistogramRenderStyle.SIDE_SPACING - 2, VAlign.RIGHT);
 	}
 
 	/**
@@ -302,7 +356,29 @@ public class HistogramElement extends ASingleTablePerspectiveElement {
 
 	}
 
-	private void onLinePicked(Pick pick, ATableBasedDataDomain dataDomain, boolean isLeftSpread) {
+	final String getLabel(Pick pick, boolean isLeftSpread) {
+		ATableBasedDataDomain dataDomain = getDataDomain();
+		List<ColorMarkerPoint> markers = dataDomain.getTable().getColorMapper().getMarkerPoints();
+		final int selected = pick.getObjectID();
+		ColorMarkerPoint point = markers.get(selected);
+		return getMarkerPointValue(point.getMappingValue()
+				+ (isLeftSpread ? -point.getLeftSpread() : point.getRightSpread()));
+	}
+
+	private String getMarkerPointValue(float value) {
+		String text = null;
+		ATableBasedDataDomain dataDomain = getDataDomain();
+		if (dataDomain.getTable() instanceof NumericalTable) {
+			double correspondingValue = ((NumericalTable) dataDomain.getTable()).getRawForNormalized(dataDomain
+					.getTable().getDefaultDataTransformation(), value);
+
+			text = Formatter.formatNumber(correspondingValue);
+		}
+		return text;
+	}
+
+	final void onLinePicked(Pick pick, boolean isLeftSpread) {
+		ATableBasedDataDomain dataDomain = getDataDomain();
 		switch (pick.getPickingMode()) {
 		case MOUSE_RELEASED:
 			EventPublisher.trigger(new UpdateColorMappingEvent().from(this));

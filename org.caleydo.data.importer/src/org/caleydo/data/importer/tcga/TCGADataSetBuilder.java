@@ -222,9 +222,8 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			break;
 		default:
 			log.log(Level.ALL, "Did not recognize option " + settings.getCluster());
-
+			break;
 		}
-		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 
 		if (loadFullGenes) {
 			NumericalProperties numProp = dataSet.getDataDescription().getNumericalProperties();
