@@ -17,6 +17,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLRunnable;
 
+import org.apache.commons.lang.SystemUtils;
 import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.util.function.AFloatFunction;
 import org.caleydo.core.util.function.IFloatFunction;
@@ -46,6 +47,8 @@ public abstract class AGLCanvas implements IGLCanvas {
 			boolean r = !c.isDisposed() && c.isVisible();
 			if (r != visible) {
 				visible = r;
+				if (visible)
+					triggerResize();
 			}
 		}
 	};
@@ -58,7 +61,7 @@ public abstract class AGLCanvas implements IGLCanvas {
 				break;
 			case SWT.Show:
 				visible = true;
-
+				triggerResize();
 				break;
 			}
 		}
@@ -69,8 +72,20 @@ public abstract class AGLCanvas implements IGLCanvas {
 		if (s <= 0)
 			s = 1;
 		scale = s;
-
 		drawable.addGLEventListener(new ReshapeOnScaleChange());
+	}
+
+	/**
+	 *
+	 */
+	protected void triggerResize() {
+		if (!SystemUtils.IS_OS_MAC_OSX) // mac special
+			return;
+		Composite c = asComposite();
+		c.layout(true);
+		org.eclipse.swt.graphics.Point size = c.getSize();
+		// change the size of composite to force some surface updates, see #
+		c.setSize(size.x - 1, size.y);
 	}
 
 	protected void init(final Composite canvas) {
