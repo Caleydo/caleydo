@@ -5,10 +5,11 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.ui.pool;
 
-import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
+import static org.caleydo.vis.lineup.ui.RenderStyle.LABEL_HEIGHT;
 import gleem.linalg.Vec2f;
 
 import org.caleydo.core.util.color.Color;
+
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -26,10 +27,10 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
-import org.caleydo.vis.rank.config.IRankTableUIConfig;
-import org.caleydo.vis.rank.model.ARankColumnModel;
-import org.caleydo.vis.rank.model.RankTableModel;
-import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
+import org.caleydo.vis.lineup.config.IRankTableUIConfig;
+import org.caleydo.vis.lineup.model.ARankColumnModel;
+import org.caleydo.vis.lineup.model.RankTableModel;
+import org.caleydo.vis.lineup.model.mixin.IHideableColumnMixin;
 
 import com.google.common.collect.Iterables;
 

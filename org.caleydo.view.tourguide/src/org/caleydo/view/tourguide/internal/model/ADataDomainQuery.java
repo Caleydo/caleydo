@@ -15,7 +15,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.view.tourguide.internal.view.ui.ADataDomainElement;
-import org.caleydo.vis.rank.model.RankTableModel;
+import org.caleydo.vis.lineup.model.RankTableModel;
 
 import com.google.common.base.Predicate;
 

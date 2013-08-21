@@ -29,8 +29,8 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.tools.tar.TarEntry;
-import org.apache.tools.tar.TarInputStream;
+import org.apache.commons.compress.archivers.ArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.data.importer.tcga.model.TumorType;
 
@@ -255,17 +255,17 @@ public final class FirehoseProvider {
 			fileToExtract = "/" + tumor + fileToExtract;
 		}
 
-		TarInputStream tarIn = null;
+		TarArchiveInputStream tarIn = null;
 		OutputStream out = null;
 		try {
 			System.out.println("I: Extracting " + fileToExtract + " from " + inUrl + ".");
 			InputStream in = new BufferedInputStream(inUrl.openStream());
 
 			// ok we have the file
-			tarIn = new TarInputStream(new GZIPInputStream(in));
+			tarIn = new TarArchiveInputStream(new GZIPInputStream(in));
 
 			// search the correct entry
-			TarEntry act = tarIn.getNextEntry();
+			ArchiveEntry act = tarIn.getNextEntry();
 			while (act != null && !act.getName().endsWith(fileToExtract)) {
 				act = tarIn.getNextEntry();
 			}

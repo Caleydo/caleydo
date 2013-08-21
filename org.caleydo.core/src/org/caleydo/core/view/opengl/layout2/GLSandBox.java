@@ -9,6 +9,8 @@ import gleem.linalg.Vec2f;
 
 import java.awt.Dimension;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import javax.media.opengl.FPSCounter;
 import javax.media.opengl.GL;
@@ -32,6 +34,7 @@ import org.caleydo.core.view.opengl.canvas.MyAnimator;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
+import org.caleydo.core.view.opengl.layout2.internal.SandBoxLibraryLoader;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
@@ -364,24 +367,34 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	}
 
 	public static void main(String[] args, Class<? extends GLSandBox> toRun, Object... toRunArgs) {
-		new SandBoxLauncher(args, toRun, toRunArgs).run();
+		new SandBoxLauncher(args, toRun.getCanonicalName(), toRunArgs).run();
 	}
+
+
 
 	private static class SandBoxLauncher implements Runnable{
 		private final String[] args;
+		private final ClassLoader wrapper;
 		private final Class<? extends GLSandBox> toRun;
 		private final Object[] toRunArgs;
 		private GLSandBox sandbox;
 
 
-		public SandBoxLauncher(String[] args, Class<? extends GLSandBox> toRun, Object[] toRunArgs) {
+		public SandBoxLauncher(String[] args, String cannonicalClassToRun, Object[] toRunArgs) {
 			this.args = args;
-			this.toRun = toRun;
+			this.wrapper = new URLClassLoader(new URL[0], getClass().getClassLoader());
+			try {
+				this.toRun = wrapper.loadClass(cannonicalClassToRun).asSubclass(GLSandBox.class);
+			} catch (ClassNotFoundException e) {
+				throw new IllegalStateException();
+			}
 			this.toRunArgs = toRunArgs;
 		}
 
 		@Override
 		public void run() {
+			// use my class for library loading
+			System.setProperty("jnlp.launcher.class", SandBoxLibraryLoader.class.getCanonicalName());
 			try {
 				Display display = new Display();
 				final Shell splash = createSplash(display);
@@ -402,7 +415,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 				if (sandbox != null)
 					sandbox.animator.stop();
 				display.dispose();
-			} catch (IllegalArgumentException | SecurityException e) {
+			} catch (Throwable e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {

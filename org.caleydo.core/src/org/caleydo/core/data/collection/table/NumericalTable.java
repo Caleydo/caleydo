@@ -15,7 +15,6 @@ import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
 import org.caleydo.core.util.function.FloatStatistics;
-import org.caleydo.core.util.function.IncrementalFloatStatistics;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.math.MathHelper;
 import org.eclipse.core.runtime.IStatus;
@@ -264,26 +263,13 @@ public class NumericalTable extends Table {
 	 */
 	@Override
 	protected void normalize() {
-		IncrementalFloatStatistics dsStats = new IncrementalFloatStatistics();
-		IncrementalFloatStatistics postStats = new IncrementalFloatStatistics();
-		datasetStatistics = dsStats;
 
-		for (AColumn<?, ?> column : columns) {
-			NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
+		datasetStatistics = computeTableStats();
+
+		if (NumericalProperties.ZSCORE_ROWS.equals(numericalProperties.getzScoreNormalization())) {
+			FloatStatistics.Builder postStats = FloatStatistics.builder();
 			for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
-				dsStats.add((Float) nColumn.getRaw(rowCount));
-			}
-		}
-
-		if (numericalProperties.getzScoreNormalization() != null
-				&& numericalProperties.getzScoreNormalization().equals(NumericalProperties.ZSCORE_ROWS)) {
-			for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
-
-				IncrementalFloatStatistics stats = new IncrementalFloatStatistics();
-				for (AColumn<?, ?> column : columns) {
-					NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
-					stats.add((Float) nColumn.getRaw(rowCount));
-				}
+				FloatStatistics stats = computeRowStats(rowCount);
 				for (AColumn<?, ?> column : columns) {
 					@SuppressWarnings("unchecked")
 					NumericalColumn<?, Float> nColumn = (NumericalColumn<?, Float>) column;
@@ -293,26 +279,21 @@ public class NumericalTable extends Table {
 					postStats.add(zScore);
 				}
 			}
-			datasetStatistics = postStats;
-		}
-
-		if (numericalProperties.getzScoreNormalization() != null
-				&& numericalProperties.getzScoreNormalization().equals(NumericalProperties.ZSCORE_COLUMNS)) {
+			datasetStatistics = postStats.build();
+		} else if (NumericalProperties.ZSCORE_COLUMNS.equals(numericalProperties.getzScoreNormalization())) {
+			FloatStatistics.Builder postStats = FloatStatistics.builder();
 			for (AColumn<?, ?> column : columns) {
 				@SuppressWarnings("unchecked")
 				NumericalColumn<?, Float> nColumn = (NumericalColumn<?, Float>) column;
-				IncrementalFloatStatistics stats = new IncrementalFloatStatistics();
+				FloatStatistics stats = computeColumnStats(nColumn);
 
-				for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
-					stats.add(nColumn.getRaw(rowCount));
-				}
 				for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
 					float zScore = ((nColumn.getRaw(rowCount)) - stats.getMean()) / stats.getSd();
 					nColumn.setRaw(rowCount, zScore);
 					postStats.add(zScore);
 				}
 			}
-			datasetStatistics = postStats;
+			datasetStatistics = postStats.build();
 		}
 
 		if (numericalProperties.getClipToStdDevFactor() != null) {
@@ -357,13 +338,43 @@ public class NumericalTable extends Table {
 		mapper.update();
 		// mapper.update();
 	}
-
+	
 	/**
 	 * @return the datasetStatistics, see {@link #datasetStatistics}
 	 */
 	public FloatStatistics getDatasetStatistics() {
 		return datasetStatistics;
 	}
+	
+
+	private FloatStatistics computeColumnStats(NumericalColumn<?, Float> nColumn) {
+		FloatStatistics.Builder stats = FloatStatistics.builder();
+		for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
+			stats.add(nColumn.getRaw(rowCount));
+		}
+		return stats.build();
+	}
+
+	private FloatStatistics computeTableStats() {
+		FloatStatistics.Builder stats = FloatStatistics.builder();
+		for (AColumn<?, ?> column : columns) {
+			NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
+			for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
+				stats.add((Float) nColumn.getRaw(rowCount));
+			}
+		}
+		return stats.build();
+	}
+
+	private FloatStatistics computeRowStats(int row) {
+		FloatStatistics.Builder stats = FloatStatistics.builder();
+		for (AColumn<?, ?> column : columns) {
+			NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
+			stats.add((Float) nColumn.getRaw(row));
+		}
+		return stats.build();
+	}
+
 
 	// /**
 	// * Switch the representation of the data. When this is called the data in normalized is replaced with data

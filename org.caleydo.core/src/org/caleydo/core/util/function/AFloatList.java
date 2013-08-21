@@ -22,7 +22,7 @@ public abstract class AFloatList extends AbstractList<Float> implements IFloatLi
 	}
 
 	@Override
-	public float reduce(float start, IFloatReduction r) {
+	public final float reduce(float start, IFloatReduction r) {
 		return reduceImpl(this, start, r);
 	}
 
@@ -35,7 +35,7 @@ public abstract class AFloatList extends AbstractList<Float> implements IFloatLi
 	}
 
 	@Override
-	public IFloatList filter(IFloatPredicate p) {
+	public final IFloatList filter(IFloatPredicate p) {
 		return filterImpl(this, p);
 	}
 

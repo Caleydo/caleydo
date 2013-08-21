@@ -10,8 +10,8 @@ import org.caleydo.view.tourguide.internal.score.ExternalIDTypeScore;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
-import org.caleydo.vis.rank.data.AFloatFunction;
-import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.lineup.data.AFloatFunction;
+import org.caleydo.vis.lineup.model.IRow;
 
 
 /**

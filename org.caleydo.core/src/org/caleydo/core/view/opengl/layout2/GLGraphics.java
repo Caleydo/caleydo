@@ -24,6 +24,7 @@ import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
+import org.caleydo.core.view.opengl.util.gleem.ColoredVec2f;
 import org.caleydo.core.view.opengl.util.spline.ITesselatedPolygon;
 import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
@@ -669,6 +670,8 @@ public class GLGraphics {
 		gl.glBegin(mode);
 		for (Vec2f p : points) {
 			count++;
+			if (p instanceof ColoredVec2f)
+				color(((ColoredVec2f) p).getColor());
 			gl.glVertex3f(p.x(), p.y(), z);
 		}
 		gl.glEnd();

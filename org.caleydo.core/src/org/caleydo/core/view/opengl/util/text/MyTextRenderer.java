@@ -74,9 +74,9 @@ import javax.media.opengl.fixedfunc.GLPointerFunc;
 
 import org.caleydo.core.util.color.Color;
 
-import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GLExtensions;
 import com.jogamp.opengl.util.awt.TextRenderer;
@@ -212,7 +212,7 @@ public class MyTextRenderer {
 
 	public boolean isDirty;
 
-	private Cache<CharSequence, Rectangle2D> boundsCache = CacheBuilder.newBuilder().maximumSize(1000)
+	private LoadingCache<CharSequence, Rectangle2D> boundsCache = CacheBuilder.newBuilder().maximumSize(1000)
 			.build(new CacheLoader<CharSequence, Rectangle2D>() {
 				@Override
 				public Rectangle2D load(CharSequence arg0) throws Exception {

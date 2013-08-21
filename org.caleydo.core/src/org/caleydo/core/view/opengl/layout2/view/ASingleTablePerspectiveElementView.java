@@ -17,6 +17,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -29,13 +30,15 @@ import org.caleydo.core.view.opengl.layout2.GLElementDecorator;
 import com.google.common.base.Objects;
 
 /**
+ * a {@link AGLElementView} prepared for handling a single table perspective using
+ * {@link ISingleTablePerspectiveBasedView}
  *
  * @author Samuel Gratzl
  *
  */
 public abstract class ASingleTablePerspectiveElementView extends AGLElementView implements
 		ISingleTablePerspectiveBasedView {
-	protected TablePerspective tablePerspective;
+	private TablePerspective tablePerspective;
 
 	public ASingleTablePerspectiveElementView(IGLCanvas glCanvas, String viewType, String viewName) {
 		super(glCanvas, viewType, viewName);
@@ -116,7 +119,7 @@ public abstract class ASingleTablePerspectiveElementView extends AGLElementView 
 		EventPublisher.trigger(new TablePerspectivesChangedEvent(this).from(this));
 	}
 
-	@ListenTo
+	@ListenTo(sendToMe = true)
 	private void onAddTablePerspective(AddTablePerspectivesEvent event) {
 		Collection<TablePerspective> validTablePerspectives = getDataSupportDefinition().filter(
 				event.getTablePerspectives());
@@ -132,5 +135,11 @@ public abstract class ASingleTablePerspectiveElementView extends AGLElementView 
 	private void onRemoveTablePerspective(RemoveTablePerspectiveEvent event) {
 		if (Objects.equal(tablePerspective, event.getTablePerspective()))
 			setTablePerspective(null);
+	}
+
+	@ListenTo(sendToMe = true)
+	private void onReplaceTablePerspective(ReplaceTablePerspectiveEvent event) {
+		if (Objects.equal(tablePerspective, event.getOldPerspective()))
+			setTablePerspective(event.getNewPerspective());
 	}
 }

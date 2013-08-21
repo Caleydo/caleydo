@@ -7,6 +7,7 @@ package org.caleydo.core.event;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -249,6 +250,7 @@ public class EventListenerManager implements DisposeListener {
 	@Documented
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.METHOD)
+	@Inherited
 	public @interface ListenTo {
 		/**
 		 * determines if the {@link ADirectedEvent} has as its receiver our current listener object

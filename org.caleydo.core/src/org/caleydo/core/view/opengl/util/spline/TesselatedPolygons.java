@@ -43,10 +43,6 @@ public final class TesselatedPolygons {
 		return new TesselatedPolygon2(0, points);
 	}
 
-	public static ITesselatedPolygon coloredPolygon3(Collection<ColoredVec3f> points) {
-		return new ColoredTesselatedPolygon(0, points);
-	}
-
 	public static Band band(List<Pair<Vec3f, Vec3f>> anchorPoints) {
 		return band(anchorPoints, NUMBER_OF_SPLINE_POINTS);
 	}
@@ -142,4 +138,5 @@ public final class TesselatedPolygons {
 		});
 
 	}
+
 }

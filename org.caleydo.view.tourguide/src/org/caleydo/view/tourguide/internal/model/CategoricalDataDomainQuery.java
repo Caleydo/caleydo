@@ -37,12 +37,12 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.tourguide.internal.view.col.CategoricalPercentageRankColumnModel;
-import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
-import org.caleydo.vis.rank.model.ARankColumnModel;
-import org.caleydo.vis.rank.model.GroupRankColumnModel;
-import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.MultiCategoricalRankColumnModel;
-import org.caleydo.vis.rank.model.RankTableModel;
+import org.caleydo.vis.lineup.model.ACompositeRankColumnModel;
+import org.caleydo.vis.lineup.model.ARankColumnModel;
+import org.caleydo.vis.lineup.model.GroupRankColumnModel;
+import org.caleydo.vis.lineup.model.IRow;
+import org.caleydo.vis.lineup.model.MultiCategoricalRankColumnModel;
+import org.caleydo.vis.lineup.model.RankTableModel;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableSet;

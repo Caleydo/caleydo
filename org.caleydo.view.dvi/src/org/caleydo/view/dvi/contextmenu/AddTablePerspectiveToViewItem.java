@@ -26,8 +26,7 @@ public class AddTablePerspectiveToViewItem extends AContextMenuItem {
 		setLabel(view.getLabel());
 
 		AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
-		event.setReceiver(view);
-		event.setSender(this);
+		event.to(view).from(this);
 		registerEvent(event);
 	}
 

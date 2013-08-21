@@ -16,7 +16,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.vis.rank.model.RankTableModel;
+import org.caleydo.vis.lineup.model.RankTableModel;
 
 import com.google.common.collect.Lists;
 

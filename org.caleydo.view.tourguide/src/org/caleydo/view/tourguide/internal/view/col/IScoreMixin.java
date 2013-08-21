@@ -6,8 +6,8 @@
 package org.caleydo.view.tourguide.internal.view.col;
 
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
-import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.IHideableColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
 
 /**
  * @author Samuel Gratzl

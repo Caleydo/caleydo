@@ -9,11 +9,11 @@ import com.google.common.base.Function;
 
 /**
  * simple float specific function with primitive and wrapper handling
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public interface IFloatFunction extends Function<Float, Float> {
-	public float apply(float in);
+	public float apply(float v);
 }
 

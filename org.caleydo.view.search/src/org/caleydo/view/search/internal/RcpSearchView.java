@@ -220,11 +220,12 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 			@Override
 			public void keyPressed(KeyEvent event) {
 				switch (event.keyCode) {
-				case SWT.CR: {
+				case SWT.CR:
 					if (searchButton.isEnabled())
 						search(searchText.getText(), caseSensitive.getSelection(), regexSearch.getSelection());
 					break;
-				}
+				default:
+					break;
 				}
 			}
 		});

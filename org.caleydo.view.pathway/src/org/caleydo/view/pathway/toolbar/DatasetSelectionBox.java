@@ -84,7 +84,7 @@ public class DatasetSelectionBox extends ControlContribution {
 				// if (view instanceof GLPathway) {
 				// GLPathway pwView = (GLPathway) view;
 				AddTablePerspectivesEvent addTablePerspectivesEvent = new AddTablePerspectivesEvent();
-				addTablePerspectivesEvent.setReceiver(pathwayView);
+				addTablePerspectivesEvent.to(pathwayView);
 				TablePerspective tablePerspective = null;
 				if (dataSetChooser.getSelectionIndex() != 0) {
 					GeneticDataDomain dataDomain = candidateDataDomains.get(dataSetChooser.getSelectionIndex() - 1);

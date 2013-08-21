@@ -23,6 +23,10 @@ public final class Rect implements Cloneable {
 
 	}
 
+	public Rect(Vec4f xywh) {
+		this(xywh.x(), xywh.y(), xywh.z(), xywh.w());
+	}
+
 	public Rect(float x, float y, float width, float height) {
 		this.x = x;
 		this.y = y;

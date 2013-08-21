@@ -11,7 +11,7 @@ import org.apache.commons.lang.SystemUtils;
 import org.caleydo.core.gui.util.DisplayUtils;
 import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.function.AFloatFunction;
-import org.caleydo.core.util.function.FloatFunctions;
+import org.caleydo.core.util.function.ExpressionFunctions;
 import org.caleydo.core.util.function.IFloatFunction;
 import org.eclipse.swt.widgets.Display;
 
@@ -137,7 +137,7 @@ public enum Units implements IFloatFunction {
 
 	public IFloatFunction inverse() {
 		if (this == DIP)
-			return FloatFunctions.IDENTITY;
+			return ExpressionFunctions.IDENTITY;
 		return new AFloatFunction() {
 			@Override
 			public float apply(float in) {

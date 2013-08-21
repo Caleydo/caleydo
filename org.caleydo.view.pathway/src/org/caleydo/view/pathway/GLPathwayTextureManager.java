@@ -134,7 +134,7 @@ public class GLPathwayTextureManager {
 
 			if (!visiblePathways.contains(pathwayId)) {
 				// Remove and dispose texture
-				hashPathwayToTexture.remove(pathwayId).dispose(gl);
+				hashPathwayToTexture.remove(pathwayId).destroy(gl);
 			}
 		}
 	}

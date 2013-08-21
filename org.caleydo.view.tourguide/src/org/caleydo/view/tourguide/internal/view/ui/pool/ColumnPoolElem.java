@@ -12,7 +12,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.lineup.model.ARankColumnModel;
 
 /**
  * @author Samuel Gratzl

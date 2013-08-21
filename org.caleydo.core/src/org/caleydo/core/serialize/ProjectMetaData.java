@@ -19,9 +19,9 @@ import org.caleydo.core.manager.GeneralManager;
 
 /**
  * a bunch of meta data information with a generic catch all using a map
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 @XmlRootElement(name = "metadata")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -37,7 +37,7 @@ public class ProjectMetaData {
 		ProjectMetaData m = new ProjectMetaData();
 		m.setName("");
 		m.setCreationDate(new Date());
-		m.setVersion(GeneralManager.VERSION);
+		m.setVersion(GeneralManager.VERSION.toString());
 		return m;
 	}
 

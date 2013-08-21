@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>org.caleydo</groupId>
+		<artifactId>org.caleydo.parent</artifactId>
+		<version>3.0.2-SNAPSHOT</version>
+		<relativePath>org.caleydo.parent</relativePath>
+	</parent>
+	
+	<artifactId>aggregator</artifactId>
+	<packaging>pom</packaging>
+	<name>Caleydo Project Aggregator</name>
+	
+	<modules>
+		<module>org.caleydo.core</module>
+		<module>org.caleydo.data</module>
+		<module>org.caleydo.util.gleem</module>
+		<module>org.caleydo.util.bubblesets</module>
+		
+		<module>org.caleydo.datadomain.generic</module>
+		<module>org.caleydo.datadomain.genetic</module>
+		<module>org.caleydo.datadomain.pathway</module>
+		
+		<module>org.caleydo.data.tcga</module>
+		<module>org.caleydo.data.pathway.kegg</module>
+		<module>org.caleydo.data.pathway.wikipathways</module>
+		
+		<module>org.caleydo.view.info.dataset</module>
+		<module>org.caleydo.view.info.selection</module>
+
+		<module>org.caleydo.view.histogram</module>
+		<module>org.caleydo.view.heatmap</module>
+		<module>org.caleydo.view.bookmark</module>
+		<module>org.caleydo.view.dvi</module>
+		<module>org.caleydo.view.enroute</module>
+		<module>org.caleydo.view.entourage</module>
+		<module>org.caleydo.view.filter</module>
+		<module>org.caleydo.view.filterpipeline</module>
+		<module>org.caleydo.view.kaplanmeier</module>
+		<module>org.caleydo.view.parcoords</module>
+		<module>org.caleydo.view.pathway</module>
+		<module>org.caleydo.view.radial</module>
+		<module>org.caleydo.view.selectionbrowser</module>
+		<module>org.caleydo.view.stratomex</module>
+		<module>org.caleydo.view.search</module>
+		<module>org.caleydo.view.table</module>
+		<module>org.caleydo.view.tourguide</module>
+		<module>org.caleydo.view.treemap</module>
+		
+		<module>org.caleydo.vis.lineup</module>
+		
+		<module>org.caleydo.data.importer</module>
+
+		<module>org.caleydo.internal</module>		
+	</modules>
+</project>

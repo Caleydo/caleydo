@@ -34,6 +34,30 @@ public class TumorProject implements Comparable<TumorProject> {
 	}
 
 	/**
+	 * @param project
+	 *            setter, see {@link project}
+	 */
+	public void setProject(URL project) {
+		this.project = project;
+	}
+
+	/**
+	 * @param tumorAbbreviation
+	 *            setter, see {@link tumorAbbreviation}
+	 */
+	public void setTumorAbbreviation(String tumorAbbreviation) {
+		this.tumorAbbreviation = tumorAbbreviation;
+	}
+
+	/**
+	 * @param tumorName
+	 *            setter, see {@link tumorName}
+	 */
+	public void setTumorName(String tumorName) {
+		this.tumorName = tumorName;
+	}
+
+	/**
 	 * @return the parent, see {@link #parent}
 	 */
 	public Run getParent() {
@@ -52,4 +76,30 @@ public class TumorProject implements Comparable<TumorProject> {
 	public int compareTo(TumorProject o) {
 		return tumorAbbreviation.compareToIgnoreCase(o.tumorAbbreviation);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((tumorAbbreviation == null) ? 0 : tumorAbbreviation.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TumorProject other = (TumorProject) obj;
+		if (tumorAbbreviation == null) {
+			if (other.tumorAbbreviation != null)
+				return false;
+		} else if (!tumorAbbreviation.equals(other.tumorAbbreviation))
+			return false;
+		return true;
+	}
+
 }

@@ -10,9 +10,9 @@ import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 
 /**
  *
@@ -26,7 +26,7 @@ public final class IDCreator {
 	/**
 	 * class to atomic counter
 	 */
-	private static Cache<String, AtomicInteger> vmuniqueIds = CacheBuilder.newBuilder().build(
+	private static LoadingCache<String, AtomicInteger> vmuniqueIds = CacheBuilder.newBuilder().build(
 			new CacheLoader<String, AtomicInteger>() {
 				@Override
 				public AtomicInteger load(String arg0) throws Exception {

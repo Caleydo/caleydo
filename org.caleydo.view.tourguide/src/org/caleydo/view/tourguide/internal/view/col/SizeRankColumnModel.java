@@ -7,8 +7,8 @@ package org.caleydo.view.tourguide.internal.view.col;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
-import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.IntegerRankColumnModel;
+import org.caleydo.vis.lineup.model.IRow;
+import org.caleydo.vis.lineup.model.IntegerRankColumnModel;
 
 import com.google.common.base.Function;
 

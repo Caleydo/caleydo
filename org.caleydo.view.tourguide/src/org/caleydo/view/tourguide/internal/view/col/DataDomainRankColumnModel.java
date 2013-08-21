@@ -10,8 +10,8 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
-import org.caleydo.vis.rank.model.StringRankColumnModel;
-import org.caleydo.vis.rank.ui.detail.ValueElement;
+import org.caleydo.vis.lineup.model.StringRankColumnModel;
+import org.caleydo.vis.lineup.ui.detail.ValueElement;
 
 /**
  * @author Samuel Gratzl

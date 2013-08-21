@@ -152,7 +152,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		// System.out
 		// .println("TODO Convert and re-send selection from clinical to genetic");
 
-		if (delta.getIDType() == dimensionIDType) {
+		if (dimensionIDType.equals(delta.getIDType())) {
 			// for(ISeldelta)
 			SelectionUpdateEvent resendEvent = new SelectionUpdateEvent();
 			resendEvent.setEventSpace(this.dataDomainID);
@@ -235,7 +235,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	public void handleForeignSelectionCommand(String dataDomainType, IDCategory idCategory,
 			SelectionCommand selectionCommand) {
 
-		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE && idCategory == dimensionIDCategory) {
+		if (CLINICAL_DATADOMAIN_TYPE.equals(dataDomainType) && dimensionIDCategory.equals(idCategory)) {
 			SelectionCommandEvent newCommandEvent = new SelectionCommandEvent();
 			newCommandEvent.setSelectionCommand(selectionCommand);
 			newCommandEvent.setIDCategory(idCategory);

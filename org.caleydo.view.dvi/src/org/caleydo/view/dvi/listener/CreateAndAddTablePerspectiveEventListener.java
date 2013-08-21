@@ -27,8 +27,7 @@ public class CreateAndAddTablePerspectiveEventListener extends AEventListener<GL
 			CreateTablePerspectiveBeforeAddingEvent e = (CreateTablePerspectiveBeforeAddingEvent) event;
 
 			AddTablePerspectivesEvent addTablePerspectivesEvent = new AddTablePerspectivesEvent(e.getCreator().create());
-			addTablePerspectivesEvent.setReceiver(e.getReceiver());
-			addTablePerspectivesEvent.setSender(this);
+			addTablePerspectivesEvent.to(e.getReceiver()).from(this);
 			EventPublisher.trigger(addTablePerspectivesEvent);
 		}
 

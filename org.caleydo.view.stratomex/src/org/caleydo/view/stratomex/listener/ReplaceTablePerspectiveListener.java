@@ -20,7 +20,7 @@ public class ReplaceTablePerspectiveListener extends AEventListener<GLStratomex>
 	public void handleEvent(AEvent event) {
 		if (event instanceof ReplaceTablePerspectiveEvent) {
 			ReplaceTablePerspectiveEvent rEvent = (ReplaceTablePerspectiveEvent) event;
-			if (handler.getID() == rEvent.getViewID()) {
+			if (handler == rEvent.getReceiver()) {
 				handler.replaceTablePerspective(rEvent.getNewPerspective(),
 						rEvent.getOldPerspective());
 			}

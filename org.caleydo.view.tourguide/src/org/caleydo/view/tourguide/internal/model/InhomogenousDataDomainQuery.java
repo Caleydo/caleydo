@@ -19,7 +19,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.vis.rank.model.RankTableModel;
+import org.caleydo.vis.lineup.model.RankTableModel;
 
 /**
  * @author Samuel Gratzl

@@ -28,13 +28,13 @@ import org.caleydo.view.tourguide.api.score.ECombinedOperator;
 import org.caleydo.view.tourguide.internal.external.ScoreParseSpecification;
 import org.caleydo.view.tourguide.internal.serialize.IDTypeAdapter;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
-import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
-import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.primitives.Floats;
 
 /**
@@ -54,7 +54,8 @@ public final class ExternalIDTypeScore extends AExternalScore {
 
 	// cache my id type mapping results
 	@XmlTransient
-	private final Cache<Pair<IDType, Integer>, Optional<Integer>> mapping = CacheBuilder.newBuilder().maximumSize(1000)
+	private final LoadingCache<Pair<IDType, Integer>, Optional<Integer>> mapping = CacheBuilder.newBuilder()
+			.maximumSize(1000)
 			.build(new CacheLoader<Pair<IDType, Integer>, Optional<Integer>>() {
 				@Override
 				public Optional<Integer> load(Pair<IDType, Integer> arg0) {
