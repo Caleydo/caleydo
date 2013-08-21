@@ -319,7 +319,7 @@ public class Table {
 			}
 		}
 		// FIXME this is a hack due to a bug in colorMapper
-		colorMapper.update();
+		// colorMapper.update();
 		return colorMapper;
 	}
 

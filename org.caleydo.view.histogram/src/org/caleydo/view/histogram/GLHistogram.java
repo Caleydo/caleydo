@@ -272,7 +272,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 					iCount);
 
 			boolean bIsFirstOrLast = false;
-			float fPickingScaling = 0.8f;
+			float fPickingScaling = 1f;
 			if (iCount == 0 || iCount == markerPoints.size() - 1)
 				bIsFirstOrLast = true;
 
