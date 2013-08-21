@@ -309,7 +309,6 @@ public class Table {
 	 */
 	public ColorMapper getColorMapper() {
 
-
 		if (colorMapper == null) {
 			if (this instanceof NumericalTable && ((NumericalTable) this).getDataCenter() != null) {
 				colorMapper = ColorMapper.createDefaultThreeColorMapper();
@@ -532,8 +531,7 @@ public class Table {
 		else if (this instanceof CategoricalTable)
 			message = "Categorical ";
 
-		return message + "table for " + dataSetDescription.getDataSetName() + "(" + size() + ","
-				+ depth() + ")";
+		return message + "table for " + dataSetDescription.getDataSetName() + "(" + size() + "," + depth() + ")";
 	}
 
 	/**
@@ -600,15 +598,13 @@ public class Table {
 		Integer nrRecordsInSample = null;
 		if (isColumnDimension) {
 			if (dataSetDescription.getDataProcessingDescription() != null) {
-				nrRecordsInSample = dataSetDescription.getDataProcessingDescription()
-						.getNrRowsInSample();
+				nrRecordsInSample = dataSetDescription.getDataProcessingDescription().getNrRowsInSample();
 			}
 			recordIDs = getRowIDList();
 			sampleIDs = getColumnIDList();
 		} else {
 			if (dataSetDescription.getDataProcessingDescription() != null) {
-				nrRecordsInSample = dataSetDescription.getDataProcessingDescription()
-						.getNrColumnsInSample();
+				nrRecordsInSample = dataSetDescription.getDataProcessingDescription().getNrColumnsInSample();
 			}
 			recordIDs = getColumnIDList();
 			sampleIDs = getRowIDList();
@@ -625,7 +621,7 @@ public class Table {
 		triggerUpdateEvent();
 	}
 
-	Perspective createDefaultRecordPerspective(boolean sampled, List<Integer> recordIDs) {
+	private Perspective createDefaultRecordPerspective(boolean sampled, List<Integer> recordIDs) {
 
 		Perspective recordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
 		recordPerspective.setDefault(!sampled);
@@ -650,7 +646,8 @@ public class Table {
 		return recordPerspective;
 	}
 
-	List<Integer> sampleMostVariableDimensions(int sampleSize, List<Integer> recordIDs, List<Integer> dimensionIDs) {
+	private List<Integer> sampleMostVariableDimensions(int sampleSize, List<Integer> recordIDs,
+			List<Integer> dimensionIDs) {
 
 		if (dimensionIDs.size() <= sampleSize)
 			return dimensionIDs;
@@ -666,8 +663,11 @@ public class Table {
 				allDimsPerRecordArray[i] = getRaw(dimID, recordIDs.get(i));
 			}
 
-			allDimVar.add(new Pair<Float, Integer>(AdvancedFloatStatistics.of(allDimsPerRecordArray)
-					.getMedianAbsoluteDeviation(), dimID));
+			AdvancedFloatStatistics stats = AdvancedFloatStatistics.of(allDimsPerRecordArray);
+			// throwing out all values with more than 80% NAN
+			if (stats.getNaNs() < stats.getN() * 0.8) {
+				allDimVar.add(new Pair<Float, Integer>(stats.getMedianAbsoluteDeviation(), dimID));
+			}
 		}
 
 		Collections.sort(allDimVar, Collections.reverseOrder(Pair.<Float> compareFirst()));
@@ -688,15 +688,13 @@ public class Table {
 		Integer nrDimensionsInSample = null;
 		if (isColumnDimension) {
 			if (dataSetDescription.getDataProcessingDescription() != null) {
-				nrDimensionsInSample = dataSetDescription.getDataProcessingDescription()
-						.getNrColumnsInSample();
+				nrDimensionsInSample = dataSetDescription.getDataProcessingDescription().getNrColumnsInSample();
 			}
 			dimensionIDs = getColumnIDList();
 			recordIDs = getRowIDList();
 		} else {
 			if (dataSetDescription.getDataProcessingDescription() != null) {
-				nrDimensionsInSample = dataSetDescription.getDataProcessingDescription()
-						.getNrRowsInSample();
+				nrDimensionsInSample = dataSetDescription.getDataProcessingDescription().getNrRowsInSample();
 			}
 			dimensionIDs = getRowIDList();
 			recordIDs = getColumnIDList();
