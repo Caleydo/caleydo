@@ -73,7 +73,11 @@ public class LinearBarHeatMapElement extends AHeatMapElement {
 			if (fieldHeight <= 0)
 				continue;
 
+			if (i % 2 == 1) // alternate shading
+				g.color(0.95f).fillRect(0, y, w, fieldHeight);
+
 			float center = fieldHeight * (1 - normalizedCenter);
+
 			g.color(Color.GRAY).drawLine(0, y + center, w, y + center);
 			for (int j = 0; j < dimensionVA.size(); ++j) {
 				Integer dimensionID = dimensionVA.get(j);
