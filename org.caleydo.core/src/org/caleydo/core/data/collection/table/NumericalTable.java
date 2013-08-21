@@ -266,7 +266,8 @@ public class NumericalTable extends Table {
 
 		datasetStatistics = computeTableStats();
 
-		if (NumericalProperties.ZSCORE_ROWS.equals(numericalProperties.getzScoreNormalization())) {
+		if (numericalProperties != null
+				&& NumericalProperties.ZSCORE_ROWS.equals(numericalProperties.getzScoreNormalization())) {
 			FloatStatistics.Builder postStats = FloatStatistics.builder();
 			for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
 				FloatStatistics stats = computeRowStats(rowCount);
@@ -280,7 +281,8 @@ public class NumericalTable extends Table {
 				}
 			}
 			datasetStatistics = postStats.build();
-		} else if (NumericalProperties.ZSCORE_COLUMNS.equals(numericalProperties.getzScoreNormalization())) {
+		} else if (numericalProperties != null
+				&& NumericalProperties.ZSCORE_COLUMNS.equals(numericalProperties.getzScoreNormalization())) {
 			FloatStatistics.Builder postStats = FloatStatistics.builder();
 			for (AColumn<?, ?> column : columns) {
 				@SuppressWarnings("unchecked")
@@ -296,7 +298,7 @@ public class NumericalTable extends Table {
 			datasetStatistics = postStats.build();
 		}
 
-		if (numericalProperties.getClipToStdDevFactor() != null) {
+		if (numericalProperties != null && numericalProperties.getClipToStdDevFactor() != null) {
 			float nrDevs = numericalProperties.getClipToStdDevFactor();
 			setMax(datasetStatistics.getMean() + nrDevs * datasetStatistics.getSd());
 			setMin(datasetStatistics.getMean() - nrDevs * datasetStatistics.getSd());
@@ -338,14 +340,14 @@ public class NumericalTable extends Table {
 		mapper.update();
 		// mapper.update();
 	}
-	
+
 	/**
 	 * @return the datasetStatistics, see {@link #datasetStatistics}
 	 */
 	public FloatStatistics getDatasetStatistics() {
 		return datasetStatistics;
 	}
-	
+
 
 	private FloatStatistics computeColumnStats(NumericalColumn<?, Float> nColumn) {
 		FloatStatistics.Builder stats = FloatStatistics.builder();

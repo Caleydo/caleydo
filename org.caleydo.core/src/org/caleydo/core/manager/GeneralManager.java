@@ -71,6 +71,9 @@ public class GeneralManager {
 	 */
 	private volatile static GeneralManager instance;
 
+	private final ResourceLoader resourceLoader;
+	private final Logger logger = Logger.create(GeneralManager.class);
+
 	/**
 	 * In dry mode Caleydo runs without GUI. However, the core's functionality can be used without limitations. This is
 	 * for instance used when Caleydo project files are generated from XML files.
@@ -82,22 +85,18 @@ public class GeneralManager {
 	 **/
 	private SubMonitor progressMonitor;
 
-	private ViewManager viewManager;
-	private EventPublisher eventPublisher;
-	private ResourceLoader resourceLoader;
-	private SerializationManager serializationManager;
+
 	private IStatisticsPerformer rStatisticsPerformer;
 
 	private ProjectMetaData metaData = ProjectMetaData.createDefault();
 
-	private Logger logger = Logger.create(GeneralManager.class);
-
-	public void init() {
-		eventPublisher = EventPublisher.INSTANCE;
-		viewManager = ViewManager.get();
-		serializationManager = SerializationManager.get();
+	/**
+	 *
+	 */
+	private GeneralManager() {
 		resourceLoader = new ResourceLoader(chain(DATA_CLASSLOADER, FILE, URL));
 	}
+
 
 	/**
 	 * @return
@@ -125,7 +124,6 @@ public class GeneralManager {
 			synchronized (GeneralManager.class) {
 				if (instance == null) {
 					instance = new GeneralManager();
-					instance.init();
 				}
 			}
 		}
@@ -158,11 +156,11 @@ public class GeneralManager {
 	}
 
 	public ViewManager getViewManager() {
-		return viewManager;
+		return ViewManager.get();
 	}
 
 	public EventPublisher getEventPublisher() {
-		return eventPublisher;
+		return EventPublisher.INSTANCE;
 	}
 
 	public IStatisticsPerformer getRStatisticsPerformer() {
@@ -189,7 +187,7 @@ public class GeneralManager {
 	 * @return the {@link SerializationManager} of this caleydo application
 	 */
 	public SerializationManager getSerializationManager() {
-		return serializationManager;
+		return SerializationManager.get();
 	}
 
 	public static DataDomainManager getDataDomainManagerInstance() {
