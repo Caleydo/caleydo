@@ -30,7 +30,7 @@ import java.util.List;
  * @author Samuel Gratzl
  *
  */
-public class GLFlowLayout implements IGLLayout {
+public class GLFlowLayout implements IGLLayout2 {
 	protected final boolean horizontal;
 	protected final float gap;
 	protected final GLPadding padding;
@@ -42,7 +42,7 @@ public class GLFlowLayout implements IGLLayout {
 	}
 
 	@Override
-	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+	public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent) {
 		w -= padding.hor();
 		h -= padding.vert();
 		float freeSpace = (horizontal ? w : h) - gap * (children.size() - 1);
@@ -90,6 +90,7 @@ public class GLFlowLayout implements IGLLayout {
 				y_acc += child.getHeight() + gap;
 			}
 		}
+		return false;
 	}
 
 	protected static boolean isDefault(float v) {

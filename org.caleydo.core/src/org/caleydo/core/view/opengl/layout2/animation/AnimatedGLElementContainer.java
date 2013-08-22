@@ -30,8 +30,10 @@ import org.caleydo.core.view.opengl.layout2.animation.InOutTransitions.IOutTrans
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions.IMoveTransition;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.AGLLayoutElement;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayout2Adapter;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayout2;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 import com.google.common.collect.Iterables;
@@ -48,7 +50,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	protected static final Duration DEFAULT_DURATION = new Duration(DEFAULT_DURATION_INT);
 	protected static final Duration NO_DURATION = new Duration(NO);
 
-	private IGLLayout layout = GLLayouts.NONE;
+	private IGLLayout2 layout = GLLayouts.NONE;
 	// the static children
 	private final List<GLElement> children = new ArrayList<>(3);
 
@@ -68,6 +70,10 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	public AnimatedGLElementContainer(IGLLayout layout) {
+		this(new GLLayout2Adapter(layout));
+	}
+
+	public AnimatedGLElementContainer(IGLLayout2 layout) {
 		this.layout = layout;
 	}
 
@@ -147,8 +153,8 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	 * @param layout
 	 *            setter, see {@link layout}
 	 */
-	public final AnimatedGLElementContainer setLayout(IGLLayout layout) {
-		if (layout == this.layout)
+	public final AnimatedGLElementContainer setLayout(IGLLayout2 layout) {
+		if (this.layout == layout)
 			return this;
 		this.layout = layout;
 		relayout();
@@ -156,10 +162,13 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	/**
-	 * @return the layout, see {@link #layout}
+	 * @param layout
+	 *            setter, see {@link layout}
 	 */
-	public IGLLayout getLayout() {
-		return layout;
+	public final AnimatedGLElementContainer setLayout(IGLLayout layout) {
+		if (this.layout instanceof GLLayout2Adapter && ((GLLayout2Adapter) this.layout).getLayout() == layout)
+			return this;
+		return setLayout(new GLLayout2Adapter(layout));
 	}
 
 	/**
@@ -187,20 +196,21 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	protected final void layoutImpl() {
 		super.layoutImpl();
 		Vec2f size = getSize();
+		boolean relayout = false;
 		if (!enableAnimation) {
 			List<IGLLayoutElement> l = new ArrayList<>(children.size());
 			for (GLElement elem : children) {
 				if (elem.getVisibility() != EVisibility.NONE)
 					l.add(asLayoutElement(elem));
 			}
-			layout.doLayout(l, size.x(), size.y());
+			relayout = layout.doLayout(l, size.x(), size.y(), asLayoutElement(this));
 		} else if (dirtyAnimation || forceLayout) {
 			List<RecordingLayoutElement> l = new ArrayList<>(children.size());
 			for (GLElement elem : children) {
 				if (elem.getVisibility() != EVisibility.NONE)
 					l.add(new RecordingLayoutElement(asLayoutElement(elem)));
 			}
-			layout.doLayout(l, size.x(), size.y());
+			relayout = layout.doLayout(l, size.x(), size.y(), asLayoutElement(this));
 
 			for (RecordingLayoutElement elem : l) {
 				ALayoutAnimation anim = layoutAnimations.get(elem.wrappee);
@@ -214,6 +224,8 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 				}
 			}
 		}
+		if (relayout)
+			relayout();
 	}
 
 	@Override
