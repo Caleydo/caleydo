@@ -5,19 +5,23 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.manage;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
+import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.basic.RadioController;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
-import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayout2;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactories.GLElementSupplier;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactorySwitcher.IActiveChangedCallback;
@@ -50,13 +54,26 @@ public class ButtonBarBuilder {
 	private int size = 16;
 	private IGLRenderer renderer = BUTTON_RENDERER;
 	private IGLRenderer hoverEffect = null;
-	private IGLLayout layout = GLLayouts.flowHorizontal(2);
+	private IGLLayout2 layout = GLLayouts.flowHorizontal(2);
+
+	private final Collection<GLElement> prepend = new ArrayList<>(0);
+	private final Collection<GLElement> append = new ArrayList<>(0);
 
 	/**
 	 *
 	 */
 	public ButtonBarBuilder(GLElementFactorySwitcher switcher) {
 		this.switcher = switcher;
+	}
+
+	public ButtonBarBuilder prepend(GLElement elem) {
+		prepend.add(elem);
+		return this;
+	}
+
+	public ButtonBarBuilder append(GLElement elem) {
+		append.add(elem);
+		return this;
 	}
 
 	public ButtonBarBuilder renderWith(IGLRenderer renderer) {
@@ -74,7 +91,7 @@ public class ButtonBarBuilder {
 		return this;
 	}
 
-	public ButtonBarBuilder layoutUsing(IGLLayout layout) {
+	public ButtonBarBuilder layoutUsing(IGLLayout2 layout) {
 		this.layout = layout;
 		return this;
 	}
@@ -83,25 +100,128 @@ public class ButtonBarBuilder {
 		return layoutUsing(layout);
 	}
 
-	public GLElementContainer build() {
+	public GLElement build() {
 		return new ButtonBar(this);
 	}
 
-	public enum EButtonBarLayout implements IGLLayout {
-		HORIZONTAL, VERTICAL; // , SQUEEZE_BLOCK_3x3, SQUEEZE_HORIZONTAL, SQUEEZE_VERTICAL;
+	public static enum EButtonBarLayout implements IGLLayout2 {
+		HORIZONTAL, VERTICAL, SLIDE_LEFT, SLIDE_RIGHT, SLIDE_DOWN, HOVER_BLOCK_3x3;
 
 		@Override
-		public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+		public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent) {
+			if (children.isEmpty())
+				return false;
+
+			final boolean hovered = isHovered(parent);
+			final int size = children.size();
+			final int active = getActive(parent);
 			switch (this) {
 			case HORIZONTAL:
-				GLLayouts.flowHorizontal(2).doLayout(children, w, h);
-				break;
+				return GLLayouts.flowHorizontal(2).doLayout(children, w, h, parent);
 			case VERTICAL:
-				GLLayouts.flowVertical(2).doLayout(children, w, h);
+				return GLLayouts.flowVertical(2).doLayout(children, w, h, parent);
+			case SLIDE_LEFT:
+				if (hovered) {
+					int j = 0;
+					for (int i = 0; i < size; ++i)
+						if (i != active)
+							children.get(i).setBounds(-w * (++j), 0, w, h);
+				} else {
+					for (IGLLayoutElement child : children)
+						child.setBounds(-w, 0, 0, h);
+				}
+				children.get(active).setBounds(0, 0, w, h);
 				break;
-			// case SQUEEZE_BLOCK_3x3:
-			// block_3x3(children, w, h);
-			// break;
+			case SLIDE_RIGHT:
+				if (hovered) {
+					int j = 0;
+					for (int i = 0; i < size; ++i)
+						if (i != active)
+							children.get(i).setBounds(w * (++j), 0, w, h);
+				} else {
+					for (IGLLayoutElement child : children)
+						child.setBounds(w, 0, 0, h);
+				}
+				children.get(active).setBounds(0, 0, w, h);
+				break;
+			case SLIDE_DOWN:
+				if (hovered) {
+					int j = 0;
+					for (int i = 0; i < size; ++i)
+						if (i != active)
+							children.get(i).setBounds(0, h * (++j), w, h);
+				} else {
+					for (IGLLayoutElement child : children)
+						child.setBounds(0, h, 0, h);
+				}
+				children.get(active).setBounds(0, 0, w, h);
+				break;
+			case HOVER_BLOCK_3x3:
+				switch (size) {
+				case 1: // just close center it
+					children.get(0).setBounds(0, 0, w, h);
+					break;
+				case 2: // just a single one, just the first one
+					children.get(0).setBounds(0, 0, w, h);
+					children.get(1).hide();
+					break;
+				default:
+					if (hovered) { // show as a rect of 3x3
+						for (int i = 0; i < Math.min(3, size); ++i)
+							children.get(i).setBounds((i - 1) * w, -h, w, h);
+						if (size > 3)
+							children.get(3).setLocation(w, 0);
+						for (int i = 4; i < Math.min(4 + 3, size); ++i)
+							children.get(i).setBounds((5 - i) * w, h, w, h);
+						if (size > 7)
+							children.get(7).setBounds(-w, 0, w, h);
+					} else {
+						for (IGLLayoutElement child : children)
+							child.hide();
+					}
+					// center active
+					children.get(active).setBounds(0, 0, w, h);
+				}
+				break;
+			}
+			return false;
+		}
+
+		private int getActive(IGLLayoutElement parent) {
+			assert parent.asElement() instanceof ButtonBar;
+			return ((ButtonBar) parent.asElement()).getActive();
+		}
+
+		private boolean isHovered(IGLLayoutElement parent) {
+			assert parent.asElement() instanceof ButtonBar;
+			return ((ButtonBar) parent.asElement()).hovered;
+		}
+
+		public boolean isAnimated() {
+			return this.ordinal() >= SLIDE_LEFT.ordinal();
+		}
+
+		public boolean needCustomArea(boolean hovered, ButtonBar buttonBar) {
+			return hovered && buttonBar.size() > 2;
+		}
+
+		public void renderCustomArea(GLGraphics g, float w, float h, int size) {
+			g.color(Color.GRAY);
+			switch (this) {
+			case SLIDE_LEFT:
+				g.fillRect((-size + 1) * w, 0, size * w, h);
+				break;
+			case SLIDE_RIGHT:
+				g.fillRect(0, 0, (size) * w, h);
+				break;
+			case SLIDE_DOWN:
+				g.fillRect(0, 0, w, h * (size));
+				break;
+			case HOVER_BLOCK_3x3:
+				g.fillRect(-w, -h, w * 3, h * 3);
+				break;
+			default:
+				break;
 			}
 		}
 
@@ -141,14 +261,51 @@ public class ButtonBarBuilder {
 		// }
 	}
 
-	private static class ButtonBar extends GLElementContainer implements ISelectionCallback, IActiveChangedCallback {
+	private static class ButtonBar extends AnimatedGLElementContainer implements ISelectionCallback,
+			IActiveChangedCallback, IPickingListener {
+		private final EButtonBarLayout layout;
 		private final RadioController controller = new RadioController(this);
-		private final GLElementFactorySwitcher switcher;
+		final GLElementFactorySwitcher switcher;
+		final int prepended;
+
+		boolean hovered;
 
 		public ButtonBar(ButtonBarBuilder builder) {
 			setLayout(builder.layout);
 			this.switcher = builder.switcher;
+			this.switcher.onActiveChanged(this);
+			layout = toButtonBarLayout(builder.layout);
 
+			if (layout != null) {
+				setAnimateByDefault(true);
+				setDefaultMoveTransition(MoveTransitions.MOVE_LINEAR);
+				setVisibility(EVisibility.PICKABLE);
+				onPick(this);
+			} else {
+				setAnimateByDefault(false);
+			}
+
+			prepended = builder.prepend.size();
+			addAll(builder.prepend);
+			addButtons(builder);
+			addAll(builder.append);
+		}
+
+		/**
+		 * @return
+		 */
+		public int getActive() {
+			return switcher.getActive() + prepended;
+		}
+
+		private static EButtonBarLayout toButtonBarLayout(IGLLayout2 layout) {
+			if (!(layout instanceof EButtonBarLayout))
+				return null;
+			EButtonBarLayout l = (EButtonBarLayout) layout;
+			return l.isAnimated() ? l : null;
+		}
+
+		private void addButtons(ButtonBarBuilder builder) {
 			int i = 0;
 			for (GLElementSupplier sup : builder.switcher) {
 				GLButton b = new GLButton();
@@ -160,8 +317,52 @@ public class ButtonBarBuilder {
 					b.setHoverEffect(builder.hoverEffect);
 				controller.add(b);
 				b.setSize(builder.size, builder.size);
-				this.add(b);
+				this.add(b, 0);
 			}
+		}
+
+		/**
+		 * @param prepend
+		 */
+		private void addAll(Collection<GLElement> prepend) {
+			for (GLElement elem : prepend)
+				add(elem, 0);
+		}
+
+		@Override
+		public void pick(Pick pick) {
+			switch (pick.getPickingMode()) {
+			case MOUSE_OVER:
+				hovered = true;
+				relayout();
+				break;
+			case MOUSE_OUT:
+				hovered = false;
+				relayout();
+				break;
+			default:
+				break;
+			}
+		}
+
+		@Override
+		protected void renderImpl(GLGraphics g, float w, float h) {
+			boolean fat = layout != null && layout.needCustomArea(hovered, this);
+			if (fat) { // if we are rendering the 3x3 rect
+				g.incZ(0.5f);
+				assert layout != null;
+				layout.renderCustomArea(g, w, h, size());
+			}
+			super.renderImpl(g, w, h);
+			if (fat)
+				g.incZ(-0.5f);
+		}
+
+		@Override
+		protected void renderPickImpl(GLGraphics g, float w, float h) {
+			if (layout != null && layout.needCustomArea(hovered, this))
+				layout.renderCustomArea(g, w, h, size());
+			super.renderPickImpl(g, w, h);
 		}
 
 		@Override
@@ -185,60 +386,8 @@ public class ButtonBarBuilder {
 		@Override
 		public void onActiveChanged(int active) {
 			controller.setSelected(active);
-		}
-	}
-
-	private interface SqueezingLayout extends IGLLayout {
-		boolean needSqueezedArea(boolean hovered, GLElementContainer container);
-
-		void renderSqueezedArea(GLGraphics g, float w, float h);
-	}
-
-	private static class SqueezedButtonBar extends ButtonBar implements IPickingListener {
-		private boolean hovered;
-		private final SqueezingLayout squeezer;
-
-		public SqueezedButtonBar(ButtonBarBuilder builder) {
-			super(builder);
-			assert builder.layout instanceof SqueezingLayout;
-			this.squeezer = (SqueezingLayout) builder.layout;
-			setVisibility(EVisibility.PICKABLE);
-			this.onPick(this);
+			relayout();
 		}
 
-		@Override
-		public void pick(Pick pick) {
-			switch (pick.getPickingMode()) {
-			case MOUSE_OVER:
-				hovered = true;
-				relayout();
-				break;
-			case MOUSE_OUT:
-				hovered = false;
-				relayout();
-				break;
-			default:
-				break;
-			}
-		}
-
-		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
-			boolean fat = squeezer.needSqueezedArea(hovered, this);
-			if (fat) { // if we are rendering the 3x3 rect
-				g.incZ(0.5f);
-				squeezer.renderSqueezedArea(g, w, h);
-			}
-			super.renderImpl(g, w, h);
-			if (fat)
-				g.incZ(-0.5f);
-		}
-
-		@Override
-		protected void renderPickImpl(GLGraphics g, float w, float h) {
-			if (squeezer.needSqueezedArea(hovered, this))
-				squeezer.renderSqueezedArea(g, w, h);
-			super.renderPickImpl(g, w, h);
-		}
 	}
 }
