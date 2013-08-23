@@ -50,7 +50,7 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 	private void addGeneralToolBar() {
 
 		Group group = new Group(parentComposite, SWT.NULL);
-		group.setLayout(new FillLayout());
+		group.setLayout(new FillLayout(SWT.VERTICAL));
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// group.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
@@ -61,9 +61,12 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 
 		final ToolBar toolBar = new ToolBar(group, SWT.WRAP);
 		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
+		final ToolBar toolBarLine2 = new ToolBar(group, SWT.WRAP);
+		ToolBarManager toolBarManager2 = new ToolBarManager(toolBarLine2);
 
 		IMenuService menuService = (IMenuService) PlatformUI.getWorkbench().getService(IMenuService.class);
-		menuService.populateContributionManager(toolBarManager, "toolbar:org.caleydo.core.gui.toolbar");
+		menuService.populateContributionManager(toolBarManager, "toolbar:org.caleydo.core.gui.toolbar1");
+		menuService.populateContributionManager(toolBarManager2, "toolbar:org.caleydo.core.gui.toolbar2");
 
 		toolBarManager.update(true);
 	}

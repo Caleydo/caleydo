@@ -317,7 +317,7 @@
       </menuContribution>
       <menuContribution
             allPopups="false"
-            locationURI="toolbar:org.caleydo.core.gui.toolbar">
+            locationURI="toolbar:org.caleydo.core.gui.toolbar1">
          <command
                commandId="org.caleydo.core.startup.open"
                icon="resources/icons/general/open.png"
@@ -342,9 +342,10 @@
                label="&amp;Save Project"
                style="push">
          </command>
-         <separator
-               name="org.caleydo.core.separator1">
-         </separator>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.caleydo.core.gui.toolbar2">
          <command
                commandId="org.caleydo.core.io.gui.import_data"
                icon="resources/icons/general/snapshot.png"
