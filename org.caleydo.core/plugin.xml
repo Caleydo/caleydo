@@ -101,7 +101,7 @@
             name="Exit">
       </command>
       <command
-            defaultHandler="org.caleydo.core.gui.FullScreenHandler"
+            defaultHandler="org.caleydo.core.gui.command.FullScreenHandler"
             id="org.caleydo.core.gui.fullscreen"
             name="Full Screen">
       </command>
@@ -116,7 +116,12 @@
             name="Import Data">
       </command>
       <command
-            defaultHandler="org.caleydo.core.io.gui.SaveProjectHandler"
+            defaultHandler="org.caleydo.core.gui.command.TakeSnapshotHandler"
+            id="org.caleydo.core.io.gui.snapshot"
+            name="Take Snapshot">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.gui.command.SaveProjectHandler"
             id="org.caleydo.core.io.gui.save_project"
             name="Save Project">
       </command>
@@ -154,6 +159,11 @@
             defaultHandler="org.caleydo.core.internal.startup.OpenProjectCommand"
             id="org.caleydo.core.startup.open"
             name="Open Project">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.gui.command.ClearSelectionsHandler"
+            id="org.caleydo.core.startup.clearselections"
+            name="Clear Selections">
       </command>
 
    </extension>
@@ -305,6 +315,68 @@
             </command>
          </menu>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.caleydo.core.gui.toolbar1">
+         <command
+               commandId="org.caleydo.core.startup.open"
+               icon="resources/icons/general/open.png"
+               label="&amp;Open Project"
+               style="push">
+         </command>
+         <command
+               commandId="org.caleydo.core.io.gui.import_data"
+               icon="resources/icons/general/import_data.png"
+               label="&amp;Import Data"
+               style="push">
+         </command>
+         <command
+               commandId="org.caleydo.core.io.gui.export_data"
+               icon="resources/icons/general/export_data.png"
+               label="&amp;Export Data"
+               style="push">
+         </command>
+         <command
+               commandId="org.caleydo.core.io.gui.save_project"
+               icon="resources/icons/general/save.png"
+               label="&amp;Save Project"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.caleydo.core.gui.toolbar2">
+         <command
+               commandId="org.caleydo.core.io.gui.import_data"
+               icon="resources/icons/general/snapshot.png"
+               label="&amp;Take Snapshot"
+               style="push"
+               tooltip="Take a Snapshot">
+            <visibleWhen
+                  checkEnabled="false">
+               <not>
+                  <systemTest
+                        property="osgi.os"
+                        value="win32">
+                  </systemTest>
+               </not>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.caleydo.core.startup.clearselections"
+               icon="resources/icons/general/clear_selections.png"
+               label="Clea&amp;r Selections"
+               style="push"
+               tooltip="Clears all selected elements">
+         </command>
+         <command
+               commandId="org.caleydo.core.util.clusterer.gui.cluster"
+               icon="resources/icons/general/clustering.png"
+               label="Start &amp;Clustering"
+               style="push"
+               tooltip="Trigger the clustering creation">
+         </command>
+      </menuContribution>
    </extension>
       <extension
          point="org.eclipse.ui.preferencePages">
@@ -386,5 +458,27 @@
          <initializer
                class="org.caleydo.core.internal.MyPreferences">
          </initializer>
+      </extension>
+      <extension
+            point="org.eclipse.ui.bindings">
+         <key
+               commandId="org.caleydo.core.io.gui.save_project"
+               schemeId="org.caleydo.scheme"
+               sequence="M1+S">
+         </key>
+         <key
+               commandId="org.caleydo.core.startup.open"
+               schemeId="org.caleydo.scheme"
+               sequence="M1+O">
+         </key>
+         <key
+               commandId="org.caleydo.core.startup.clearselections"
+               schemeId="org.caleydo.scheme"
+               sequence="M1+R">
+         </key>
+         <scheme
+               id="org.caleydo.scheme"
+               name="Caleydo Key Bindings">
+         </scheme>
       </extension>
 </plugin>

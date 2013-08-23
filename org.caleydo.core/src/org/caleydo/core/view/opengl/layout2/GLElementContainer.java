@@ -14,8 +14,10 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import org.caleydo.core.view.opengl.layout2.layout.GLLayout2Adapter;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayout2;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 import com.google.common.collect.Iterators;
@@ -28,7 +30,7 @@ import com.google.common.collect.Iterators;
  *
  */
 public class GLElementContainer extends GLElement implements IGLElementParent, Iterable<GLElement> {
-	private IGLLayout layout = GLLayouts.NONE;
+	private IGLLayout2 layout = GLLayouts.NONE;
 	private final List<GLElement> children = new ArrayList<>(3);
 
 	public GLElementContainer() {
@@ -36,6 +38,10 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	}
 
 	public GLElementContainer(IGLLayout layout) {
+		this(new GLLayout2Adapter(layout));
+	}
+
+	public GLElementContainer(IGLLayout2 layout) {
 		this.layout = layout;
 	}
 
@@ -43,12 +49,22 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	 * @param layout
 	 *            setter, see {@link layout}
 	 */
-	public final GLElementContainer setLayout(IGLLayout layout) {
-		if (layout == this.layout)
+	public final GLElementContainer setLayout(IGLLayout2 layout) {
+		if (this.layout == layout)
 			return this;
 		this.layout = layout;
 		relayout();
 		return this;
+	}
+
+	/**
+	 * @param layout
+	 *            setter, see {@link layout}
+	 */
+	public final GLElementContainer setLayout(IGLLayout layout) {
+		if (this.layout instanceof GLLayout2Adapter && ((GLLayout2Adapter) this.layout).getLayout() == layout)
+			return this;
+		return setLayout(new GLLayout2Adapter(layout));
 	}
 
 	@Override
@@ -63,7 +79,9 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		super.layoutImpl();
 		List<IGLLayoutElement> l = asLayoutElements();
 		Vec2f size = getSize();
-		layout.doLayout(l, size.x(), size.y());
+		boolean relayout = layout.doLayout(l, size.x(), size.y(), layoutElement);
+		if (relayout)
+			relayout();
 	}
 
 	private List<IGLLayoutElement> asLayoutElements() {

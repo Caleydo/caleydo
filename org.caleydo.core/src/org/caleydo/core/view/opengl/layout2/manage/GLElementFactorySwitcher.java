@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementAccessor;
-import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IGLElementParent;
@@ -70,14 +69,10 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 	}
 
 	/**
-	 * creates a button bar able to switch between the different views
-	 *
+	 * create a new {@link ButtonBarBuilder} for this switcher
+	 * 
 	 * @return
 	 */
-	public GLElementContainer createButtonBar() {
-		return createButtonBarBuilder().build();
-	}
-
 	public ButtonBarBuilder createButtonBarBuilder() {
 		return new ButtonBarBuilder(this);
 	}

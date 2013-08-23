@@ -1,16 +1,14 @@
-/*******************************************************************************
- * Caleydo - Visualization for Molecular Biology - http://caleydo.org
- * Copyright (c) The Caleydo Team. All rights reserved.
- * Licensed under the new BSD license, available at http://caleydo.org/license
- ******************************************************************************/
-package org.caleydo.core.gui.toolbar.action;
+package org.caleydo.core.gui.command;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -25,24 +23,16 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-public class TakeSnapshotAction extends SimpleAction {
-	/**
-	 * Constructor without arguments. In this case a snapshot from the whole workbench is made.
-	 */
-	public TakeSnapshotAction() {
-		super("Take snapshot", "resources/icons/general/snapshot.png");
-	}
+public class TakeSnapshotHandler extends AbstractHandler implements IHandler {
 
 	@Override
-	public void run() {
-		super.run();
-
+	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Display display = PlatformUI.getWorkbench().getDisplay();
 		Shell shell = display.getActiveShell();
 
 		String path = getFilePath(shell);
 		if (path == null)
-			return;
+			return null;
 
 		// Image image = null;
 		// try {
@@ -113,6 +103,7 @@ public class TakeSnapshotAction extends SimpleAction {
 		Logger.log(new Status(IStatus.INFO, this.toString(), message));
 
 		MessageDialog.openInformation(shell, "Screenshot", message);
+		return null;
 	}
 
 	private static String getFilePath(Shell shell) {

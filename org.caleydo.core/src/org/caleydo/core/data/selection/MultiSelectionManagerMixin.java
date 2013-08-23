@@ -113,11 +113,22 @@ public class MultiSelectionManagerMixin implements Iterable<SelectionManager> {
 		return Iterators.unmodifiableIterator(selectionManagers.iterator());
 	}
 
-	public final void fireSelectionDelta(SelectionManager manager) {
+	/**
+	 * fire the selection delta for the given {@link SelectionManager}
+	 * 
+	 * @param manager
+	 * @return whether a delta was fired
+	 */
+	public final boolean fireSelectionDelta(SelectionManager manager) {
+		if (!manager.hasSomeDelta())
+			return false;
 		SelectionDelta selectionDelta = manager.getDelta();
+		if (selectionDelta.isEmpty()) // nothing to do
+			return false;
 		SelectionUpdateEvent event = createEvent(manager);
 		event.setSelectionDelta(selectionDelta);
 		EventPublisher.trigger(event);
+		return true;
 	}
 
 	protected SelectionUpdateEvent createEvent(Object sender) {

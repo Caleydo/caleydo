@@ -72,6 +72,8 @@ public class RoundedRectRenderer {
 	}
 
 	public static int render(GLGraphics g, float x, float y, float w, float h, float radius, int segments, int flags) {
+		if (w < radius * 2 || h < radius * 2)
+			return 0;
 		assert w >= radius * 2 : "w" + w + " " + radius;
 		assert h >= radius * 2 : "h" + h + " " + radius;
 		assert radius > 0 : "radius <= 0";

@@ -5,27 +5,10 @@
  ******************************************************************************/
 package org.caleydo.core.gui.toolbar;
 
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.caleydo.core.gui.command.AOpenViewHandler;
 
-public class OpenGeneralToolbarHandler
-	extends AbstractHandler
-	implements IHandler {
-
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(RcpToolBarView.ID);
-		}
-		catch (PartInitException e) {
-			e.printStackTrace();
-		}
-
-		return null;
+public class OpenGeneralToolbarHandler extends AOpenViewHandler {
+	public OpenGeneralToolbarHandler() {
+		super(RcpToolBarView.ID, SINGLE);
 	}
 }
