@@ -177,7 +177,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		}
 
 		renderHistogram(gl);
-		if (renderColorBars && detailLevel != EDetailLevel.LOW)
+		if (renderColorBars)// && detailLevel != EDetailLevel.LOW)
 			renderColorBars(gl);
 		gl.glEndList();
 	}
