@@ -308,7 +308,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 							+ dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType, pickingID);
 					contextMenuCreator.addContextMenuItem(menuItem);
 				}
-
+				return;
 			default:
 				return;
 			}

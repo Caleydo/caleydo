@@ -264,7 +264,7 @@ public class GLPathwayAugmentationRenderer {
 
 	private void renderQuad(final GL2 gl, float nodeWidth, float nodeHeight) {
 
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glNormal3f(0.0f, 0.0f, 1.0f);
 		gl.glVertex3f(0, 0, PathwayRenderStyle.Z_OFFSET);
 		gl.glVertex3f(nodeWidth, 0, PathwayRenderStyle.Z_OFFSET);
@@ -581,9 +581,7 @@ public class GLPathwayAugmentationRenderer {
 
 					// rendering the std-dev box
 					if (!stdDev.isNaN()) {
-
 						renderStdDevBar(gl, width, height, stdDev);
-
 					}
 
 					// Handle selection highlighting of element
@@ -636,16 +634,18 @@ public class GLPathwayAugmentationRenderer {
 					// from the mean.
 					// FIXME We guess the mean to be 0.5 in normalized space if we don't know better.
 					float dsMean = 0.5f;
+					// we scale the deviation
+					float scaleConstant = 20;
 					if (mappingPerspective.getDataDomain().getTable() instanceof NumericalTable) {
 						NumericalTable table = (NumericalTable) mappingPerspective.getDataDomain().getTable();
 						dsMean = table.getDatasetStatistics().getMean();
 						dsMean = (float) table.getNormalizedForRaw(table.getDefaultDataTransformation(), dsMean);
 					}
-					// we scale the deviation by 10
-					int scaleConstant = 10;
+
 					float deviation = 1 + Math.abs(dsMean - (float) average.getArithmeticMean()) * scaleConstant;
-					// if (deviation < 1)
-					// deviation = 1;
+					// limit to 4 times the size
+					if (deviation > 4)
+						deviation = 4;
 					renderQuad(gl, width * deviation, height * deviation);
 					// gl.glCallList(upscaledFilledEnzymeNodeDisplayListId);
 
