@@ -155,6 +155,11 @@
             id="org.caleydo.core.startup.open"
             name="Open Project">
       </command>
+      <command
+            defaultHandler="org.caleydo.core.gui.command.ClearSelectionsHandler"
+            id="org.caleydo.core.startup.clearselections"
+            name="Clear Selections">
+      </command>
 
    </extension>
    <extension
@@ -386,5 +391,13 @@
          <initializer
                class="org.caleydo.core.internal.MyPreferences">
          </initializer>
+      </extension>
+      <extension
+            point="org.eclipse.ui.bindings">
+         <key
+               commandId="org.caleydo.core.startup.clearselections"
+               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+               sequence="M1+R">
+         </key>
       </extension>
 </plugin>
