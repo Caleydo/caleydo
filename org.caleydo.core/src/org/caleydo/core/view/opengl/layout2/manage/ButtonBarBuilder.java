@@ -206,7 +206,7 @@ public class ButtonBarBuilder {
 		}
 
 		public void renderCustomArea(GLGraphics g, float w, float h, int size) {
-			g.color(Color.GRAY);
+			g.color(Color.WHITE);
 			switch (this) {
 			case SLIDE_LEFT:
 				g.fillRect((-size + 1) * w, 0, size * w, h);
