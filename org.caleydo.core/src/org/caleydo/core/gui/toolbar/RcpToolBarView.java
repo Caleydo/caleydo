@@ -5,24 +5,17 @@
  ******************************************************************************/
 package org.caleydo.core.gui.toolbar;
 
-import java.util.ArrayList;
-
-import org.caleydo.core.gui.toolbar.action.ClearSelectionsAction;
-import org.caleydo.core.gui.toolbar.action.OpenProjectAction;
-import org.caleydo.core.gui.toolbar.action.SaveProjectAction;
-import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
-import org.caleydo.core.gui.toolbar.action.TakeSnapshotAction;
-import org.caleydo.core.io.gui.ExportDataAction;
-import org.caleydo.core.io.gui.ImportDataAction;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.ISizeProvider;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.menus.IMenuService;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -39,16 +32,12 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 
 	private Composite parentComposite;
 
-	private ArrayList<Group> viewSpecificGroups;
-
 	@Override
 	public void createPartControl(Composite parent) {
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
 
 		parentComposite.setLayout(new GridLayout(1, false));
 		this.parentComposite = parentComposite;
-
-		viewSpecificGroups = new ArrayList<Group>();
 
 		addGeneralToolBar();
 	}
@@ -58,22 +47,10 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 
 	}
 
-	@Override
-	public void dispose() {
-		for (int i = 0; i < 10; ++i) {
-			System.gc();
-			System.runFinalization();
-		}
-		super.dispose();
-	}
-
 	private void addGeneralToolBar() {
 
 		Group group = new Group(parentComposite, SWT.NULL);
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
-		layout.marginHeight = layout.marginWidth = 0;
-		group.setLayout(layout);
+		group.setLayout(new FillLayout());
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// group.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
@@ -81,36 +58,14 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 		// Needed to simulate toolbar wrapping which is not implemented for
 		// linux
 		// See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
-		ArrayList<ToolBar> alToolBar = new ArrayList<ToolBar>();
-		ArrayList<IToolBarManager> alToolBarManager = new ArrayList<IToolBarManager>();
 
-		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
+		final ToolBar toolBar = new ToolBar(group, SWT.WRAP);
 		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
-		alToolBar.add(toolBar);
-		alToolBarManager.add(toolBarManager);
 
-		final ToolBar toolBar2 = new ToolBar(group, SWT.WRAP | SWT.FLAT);
-		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
-		alToolBar.add(toolBar2);
-		alToolBarManager.add(toolBarManager2);
-
-		toolBarManager.add(new OpenProjectAction());
-		toolBarManager.add(new ImportDataAction());
-		toolBarManager.add(new ExportDataAction());
-
-		if (!System.getProperty("os.name").startsWith("Windows"))
-			toolBarManager.add(new TakeSnapshotAction());
-
-		toolBarManager2.add(new SaveProjectAction());
-		toolBarManager2.add(new ClearSelectionsAction());
-		toolBarManager2.add(new StartClusteringAction());
+		IMenuService menuService = (IMenuService) PlatformUI.getWorkbench().getService(IMenuService.class);
+		menuService.populateContributionManager(toolBarManager, "toolbar:org.caleydo.core.gui.toolbar");
 
 		toolBarManager.update(true);
-
-		if (toolBarManager2.isEmpty())
-			toolBarManager2.dispose();
-		else
-			toolBarManager2.update(true);
 	}
 
 	@Override
@@ -127,21 +82,4 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 	public int getSizeFlags(boolean width) {
 		return SWT.MIN;
 	}
-
-	public Composite getParentComposite() {
-		return parentComposite;
-	}
-
-	public void setParentComposite(Composite parentComposite) {
-		this.parentComposite = parentComposite;
-	}
-
-	public ArrayList<Group> getViewSpecificGroups() {
-		return viewSpecificGroups;
-	}
-
-	public void setViewSpecificGroups(ArrayList<Group> viewSpecificGroups) {
-		this.viewSpecificGroups = viewSpecificGroups;
-	}
-
 }
