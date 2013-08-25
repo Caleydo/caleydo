@@ -375,12 +375,21 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	private void selectBrick(GLBrick brick) {
 		boolean handled = false;
+
+		// Replace sampled dimension perspective with full one
+		TablePerspective tablePerspective = brick.getBrickColumn().getTablePerspective();
+		ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
+		Perspective dimension = dataDomain.getTable().getDefaultDimensionPerspective(false);
+		// if it does not exist, it will be created
+		tablePerspective = dataDomain.getTablePerspective(tablePerspective.getRecordPerspective().getPerspectiveID(),
+						dimension.getPerspectiveID());
+
 		switch (selectionMode) {
 		case STRATIFICATION:
-			handled = wizard.onSelected(brick.getBrickColumn().getTablePerspective());
+			handled = wizard.onSelected(tablePerspective);
 			break;
 		case GROUP:
-			handled = wizard.onSelected(brick.getBrickColumn().getTablePerspective(), brick.getTablePerspective()
+			handled = wizard.onSelected(tablePerspective, brick.getTablePerspective()
 					.getRecordGroup());
 			break;
 		}
