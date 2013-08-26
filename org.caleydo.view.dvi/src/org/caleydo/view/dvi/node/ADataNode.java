@@ -5,7 +5,11 @@
  ******************************************************************************/
 package org.caleydo.view.dvi.node;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
@@ -68,6 +72,20 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 	@Override
 	public String getLabel() {
 		return dataDomain.getLabel();
+	}
+
+	public List<TablePerspective> getVisibleTablePerspectives() {
+		List<TablePerspective> visibleTablePerspectives = new ArrayList<>();
+		for (TablePerspective tablePerspective : getTablePerspectives()) {
+			for (ViewNode viewNode : view.getViewNodes()) {
+				if (viewNode.getTablePerspectives().contains(tablePerspective)) {
+					visibleTablePerspectives.add(tablePerspective);
+					break;
+				}
+			}
+		}
+
+		return visibleTablePerspectives;
 	}
 
 }

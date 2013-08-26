@@ -19,8 +19,8 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.PickingType;
+import org.caleydo.view.dvi.node.ADataNode;
 import org.caleydo.view.dvi.node.IDVINode;
-import org.caleydo.view.dvi.node.TableBasedDataNode;
 
 public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer {
 
@@ -30,13 +30,13 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 	private final static int TEXT_HEIGHT_PIXELS = 13;
 	private final static int SIDE_SPACING_PIXELS = 20;
 
-	private List<TablePerspectiveRenderer> dimensionGroupRenderers;
+	private List<TablePerspectiveRenderer> tablePerspectiveRenderers;
 
 	public TablePerspectiveListRenderer(IDVINode node, GLDataViewIntegrator view,
 			DragAndDropController dragAndDropController, List<TablePerspective> tablePerspectives) {
 		super(node, view, dragAndDropController);
 
-		dimensionGroupRenderers = new ArrayList<TablePerspectiveRenderer>();
+		tablePerspectiveRenderers = new ArrayList<TablePerspectiveRenderer>();
 		setTablePerspectives(tablePerspectives);
 		registerPickingListeners();
 	}
@@ -49,23 +49,26 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 
 	@Override
 	public void setTablePerspectives(List<TablePerspective> tablePerspectives) {
-		dimensionGroupRenderers.clear();
+		tablePerspectiveRenderers.clear();
 		for (TablePerspective tablePerspective : tablePerspectives) {
 			if (tablePerspective.isPrivate() || !view.isTablePerspectiveShownByView(tablePerspective))
 				continue;
 
 			TablePerspectiveRenderer tablePerspectiveRenderer = new TablePerspectiveRenderer(tablePerspective, view,
- node);
+					node);
 			tablePerspectiveRenderer.setTextHeightPixels(TEXT_HEIGHT_PIXELS);
 			tablePerspectiveRenderer.setTextRotation(isUpsideDown ? TablePerspectiveRenderer.TEXT_ROTATION_90
 					: TablePerspectiveRenderer.TEXT_ROTATION_270);
 			tablePerspectiveRenderer.setActive(true);
-			dimensionGroupRenderers.add(tablePerspectiveRenderer);
+			tablePerspectiveRenderers.add(tablePerspectiveRenderer);
 		}
 	}
 
 	@Override
 	public void renderContent(GL2 gl) {
+
+		if (tablePerspectiveRenderers == null || tablePerspectiveRenderers.isEmpty())
+			return;
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
@@ -78,11 +81,10 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 		bottomObjectPositions.clear();
 		topObjectPositions.clear();
 
-		for (TablePerspectiveRenderer tablePerspectiveRenderer : dimensionGroupRenderers) {
+		for (TablePerspectiveRenderer tablePerspectiveRenderer : tablePerspectiveRenderers) {
 
 			int pickingID = view.getPickingManager().getPickingID(view.getID(),
-					PickingType.DATA_CONTAINER.name() + node.getID(),
- tablePerspectiveRenderer.hashCode());
+					PickingType.DATA_CONTAINER.name() + node.getID(), tablePerspectiveRenderer.hashCode());
 
 			gl.glPushName(pickingID);
 			if (pickingIDsToBePushed != null) {
@@ -110,11 +112,11 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 			Point2D bottomPosition2 = new Point2D.Float(currentPosX + dimensionGroupWidth, 0);
 			Point2D topPosition1 = new Point2D.Float(currentPosX, y);
 			Point2D topPosition2 = new Point2D.Float(currentPosX + dimensionGroupWidth, y);
-			bottomObjectPositions.put(tablePerspectiveRenderer.getTablePerspective(),
-					new Pair<Point2D, Point2D>(bottomPosition1, bottomPosition2));
+			bottomObjectPositions.put(tablePerspectiveRenderer.getTablePerspective(), new Pair<Point2D, Point2D>(
+					bottomPosition1, bottomPosition2));
 			topObjectPositions.put(tablePerspectiveRenderer.getTablePerspective(),
 
-					new Pair<Point2D, Point2D>(topPosition1, topPosition2));
+			new Pair<Point2D, Point2D>(topPosition1, topPosition2));
 
 			currentPosX += step;
 		}
@@ -128,7 +130,7 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 
 	@Override
 	public int getMinHeightPixels() {
-		List<TablePerspective> tablePerspectives = node instanceof TableBasedDataNode ? ((TableBasedDataNode) node)
+		List<TablePerspective> tablePerspectives = node instanceof ADataNode ? ((ADataNode) node)
 				.getVisibleTablePerspectives() : node.getTablePerspectives();
 
 		return tablePerspectives.size() > 0 ? MAX_TEXT_WIDTH_PIXELS : 0;
@@ -136,7 +138,7 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 	}
 
 	private int getDimensionGroupsWidthPixels() {
-		List<TablePerspective> tablePerspectives = node instanceof TableBasedDataNode ? ((TableBasedDataNode) node)
+		List<TablePerspective> tablePerspectives = node instanceof ADataNode ? ((ADataNode) node)
 				.getVisibleTablePerspectives() : node.getTablePerspectives();
 
 		return (tablePerspectives.size() * MIN_COMP_GROUP_WIDTH_PIXELS)
@@ -149,7 +151,7 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
 		float maxTextWidth = Float.MIN_VALUE;
-		List<TablePerspective> tablePerspectives = node instanceof TableBasedDataNode ? ((TableBasedDataNode) node)
+		List<TablePerspective> tablePerspectives = node instanceof ADataNode ? ((ADataNode) node)
 				.getVisibleTablePerspectives() : node.getTablePerspectives();
 
 		for (TablePerspective tablePerspective : tablePerspectives) {
@@ -168,7 +170,7 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 	public void setUpsideDown(boolean isUpsideDown) {
 		this.isUpsideDown = isUpsideDown;
 
-		for (TablePerspectiveRenderer renderer : dimensionGroupRenderers) {
+		for (TablePerspectiveRenderer renderer : tablePerspectiveRenderers) {
 			renderer.setTextRotation(isUpsideDown ? TablePerspectiveRenderer.TEXT_ROTATION_90
 					: TablePerspectiveRenderer.TEXT_ROTATION_270);
 		}
@@ -183,7 +185,7 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 
 	@Override
 	protected Collection<TablePerspectiveRenderer> getDimensionGroupRenderers() {
-		return dimensionGroupRenderers;
+		return tablePerspectiveRenderers;
 	}
 
 	@Override

@@ -433,20 +433,6 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 	}
 
-	public List<TablePerspective> getVisibleTablePerspectives() {
-		List<TablePerspective> visibleTablePerspectives = new ArrayList<>();
-		for (TablePerspective tablePerspective : getTablePerspectives()) {
-			for (ViewNode viewNode : view.getViewNodes()) {
-				if (viewNode.getTablePerspectives().contains(tablePerspective)) {
-					visibleTablePerspectives.add(tablePerspective);
-					break;
-				}
-			}
-		}
-
-		return visibleTablePerspectives;
-	}
-
 	@Override
 	public List<TablePerspective> getTablePerspectives() {
 

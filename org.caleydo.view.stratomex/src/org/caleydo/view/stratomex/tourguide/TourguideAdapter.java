@@ -1005,7 +1005,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		PathwayTablePerspective pathwayDimensionGroup = new PathwayTablePerspective(dataDomain, pathwayDataDomain,
 				record, dimension, pathway);
 
-		pathwayDimensionGroup.setPrivate(true);
+		// pathwayDimensionGroup.setPrivate(true);
 		pathwayDataDomain.addTablePerspective(pathwayDimensionGroup);
 
 		return pathwayDimensionGroup;
