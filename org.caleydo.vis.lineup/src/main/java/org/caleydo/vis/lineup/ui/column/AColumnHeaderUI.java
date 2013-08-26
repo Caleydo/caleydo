@@ -395,6 +395,16 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				}
 			});
 			buttons.addButton(b, "Show rank delta", RenderStyle.ICON_SHOW_RANK_DELTA, RenderStyle.ICON_HIDE_RANK_DELTA);
+
+			b = new GLButton(GLButton.EButtonMode.BUTTON);
+			b.setCallback(new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					m.createDeltaColumn();
+				}
+			});
+			buttons.addButton(b, "Add Rank Delta Column", RenderStyle.ICON_ADD_RANK_DELTA,
+					RenderStyle.ICON_ADD_RANK_DELTA);
 		}
 		if (model instanceof ISearchableColumnMixin) {
 			final ISearchableColumnMixin m = (ISearchableColumnMixin) model;

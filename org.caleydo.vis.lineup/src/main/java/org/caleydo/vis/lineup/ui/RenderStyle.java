@@ -88,6 +88,7 @@ public class RenderStyle {
 
 	public static final URL ICON_SHOW_RANK_DELTA = icon("chart_down_color.png");
 	public static final URL ICON_HIDE_RANK_DELTA = icon("chart_down_color_disabled.png");
+	public static final URL ICON_ADD_RANK_DELTA = icon("chart_down_color_add.png");
 
 	public static final URL ICON_ALIGN_FISH = icon("align_fish.jpg");
 	public static final URL ICON_ALIGN_UNIFORM = icon("align_uniform.png");

@@ -9,6 +9,7 @@ package org.caleydo.vis.lineup.ui.detail;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
@@ -112,7 +113,7 @@ public class ScoreBarElement extends ValueElement {
 		float widthPerRepeat = 16;
 		float repeated = w / widthPerRepeat;
 
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glTexCoord2f(0, 0);
 		gl.glVertex3f(x, y, z);
 		gl.glTexCoord2f(repeated, 0);

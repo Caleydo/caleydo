@@ -67,6 +67,21 @@ public final class RankRankColumnModel extends ARankColumnModel implements IGLRe
 		return showRankDelta;
 	}
 
+	/**
+	 *
+	 */
+	public void createDeltaColumn() {
+		final RankTableModel table = getTable();
+
+		RankDeltaRankColumnModel d = new RankDeltaRankColumnModel();
+		table.add(table.indexOf(this) + 1, d);
+		ColumnRanker b_r = getMyRanker();
+		ColumnRanker a_r = table.getPreviousRanker(b_r);
+
+		d.add((ARankColumnModel) a_r.getOrderBy().clone());
+		d.add((ARankColumnModel) b_r.getOrderBy().clone());
+	}
+
 	@Override
 	public String getValue(IRow row) {
 		ColumnRanker ranker = getMyRanker();

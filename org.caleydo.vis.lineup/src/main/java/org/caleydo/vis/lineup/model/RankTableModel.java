@@ -64,7 +64,7 @@ public final class RankTableModel implements IRankColumnParent, Cloneable {
 	private final PropertyChangeListener refilter = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			refilter((IFilterColumnMixin) evt.getSource());
+			refilter((IRankColumnModel) evt.getSource());
 		}
 	};
 
@@ -503,7 +503,7 @@ public final class RankTableModel implements IRankColumnParent, Cloneable {
 */
 	}
 
-	protected void refilter(IFilterColumnMixin source) {
+	protected void refilter(IRankColumnModel source) {
 		for (ColumnRanker r : findAllColumnRankers())
 			r.dirtyFilter();
 		// findCorrespondingRanker((IRankColumnModel) evt.getSource()).dirtyFilter();// TODO Auto-generated method stub
