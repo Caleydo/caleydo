@@ -8,6 +8,7 @@ package org.caleydo.vis.lineup.ui.detail;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
@@ -73,7 +74,7 @@ public class StarsValueElement extends ValueElement {
 			tex.enable(gl);
 			tex.bind(gl);
 
-			gl.glBegin(GL2.GL_QUADS);
+			gl.glBegin(GL2GL3.GL_QUADS);
 			gl.glTexCoord2f(-(1 - v) * model.getStars(), 0);
 			gl.glVertex3f(w * v, 0, z);
 			gl.glTexCoord2f(0, 0);
@@ -93,7 +94,7 @@ public class StarsValueElement extends ValueElement {
 		tex.enable(gl);
 		tex.bind(gl);
 
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glTexCoord2f(0, 0);
 		gl.glVertex3f(0, 0, z);
 		gl.glTexCoord2f(v * model.getStars(), 0);

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package gleem.linalg.open;
 
@@ -15,7 +15,7 @@ public class Mat4f_GeneraRotfScale extends Mat4f_GeneralRotf {
 	protected Vec3f scale;
 
 	/**
-	 * 
+	 *
 	 */
 	public Mat4f_GeneraRotfScale() {
 
@@ -76,7 +76,7 @@ public class Mat4f_GeneraRotfScale extends Mat4f_GeneralRotf {
 		int iLength = 5;
 
 		for (int i = 0; i < iLength; i++) {
-			inPoint.setX((float) i + xStart);
+			inPoint.setX(i + xStart);
 			Vec3f outPoint = this.xformPt(inPoint);
 
 			System.out.println("IN: " + inPoint.toString() + "\nOUT: "
