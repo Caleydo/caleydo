@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -440,7 +441,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 			float y = remainingItemCount * ySingleSampleSize;
 
-			gl.glBegin(GL2.GL_QUADS);
+			gl.glBegin(GL2GL3.GL_QUADS);
 			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing, z);
 			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
 			currentTimeBin += timeBinStepSize;

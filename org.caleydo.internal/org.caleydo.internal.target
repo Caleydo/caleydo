@@ -17,7 +17,6 @@
 <unit id="org.caleydo.thirdparty.jogl-natives-windows-i586" version="2.0.2"/>
 <unit id="org.caleydo.thirdparty.jgrapht" version="0.8.3"/>
 <unit id="org.caleydo.thirdparty.pathvisio" version="31.0.0"/>
-<unit id="org.caleydo.thirdparty.jsr305" version="2.0.1"/>
 <repository location="http://dev.caleydo.org/nexus/content/repositories/thirdparty/.meta/p2"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
