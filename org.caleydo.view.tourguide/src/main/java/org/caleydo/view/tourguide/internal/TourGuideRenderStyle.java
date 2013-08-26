@@ -7,6 +7,8 @@ package org.caleydo.view.tourguide.internal;
 
 
 
+import java.net.URL;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.StyledColor;
@@ -20,8 +22,9 @@ public class TourGuideRenderStyle extends GeneralRenderStyle {
 		super(viewFrustum);
 	}
 
-	private static final String ICON_PREFIX = "resources/icons/view/tourguide/";
-
+	private static final URL icon(String icon) {
+		return TourGuideRenderStyle.class.getResource("/org/caleydo/view/tourguide/icons/" + icon);
+	}
 	public static final Color COLOR_STRATOMEX_ROW = RenderStyle.COLOR_SELECTED_ROW;
 
 	public static final StyledColor COLOR_PREVIEW_BORDER_ROW = new StyledColor(SelectionType.SELECTION.getColor())
@@ -34,11 +37,11 @@ public class TourGuideRenderStyle extends GeneralRenderStyle {
 			.setDashing(2,
 			0xAAAA);
 
-	public static final String ICON_FILTER = ICON_PREFIX + "filter.png";
-	public static final String ICON_FILTER_DISABLED = ICON_PREFIX + "filter_disabled.png";
-	public static final String ICON_ADD = ICON_PREFIX + "add.png";
-	public static final String ICON_ADD_COLOR = ICON_PREFIX + "add_color.png";
-	public static final String ICON_BASKET = ICON_PREFIX + "basket.png";
+	public static final URL ICON_FILTER = icon("filter.png");
+	public static final URL ICON_FILTER_DISABLED = icon("filter_disabled.png");
+	public static final URL ICON_ADD = icon("add.png");
+	public static final URL ICON_ADD_COLOR = icon("add_color.png");
+	public static final URL ICON_BASKET = icon("basket.png");
 
 
 	public static Color stratomexHitGroup() {
