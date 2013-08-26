@@ -13,8 +13,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
-import org.caleydo.vis.lineup.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IManualComparatorMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
 
@@ -291,12 +291,12 @@ public class ColumnRanker implements Iterable<IRow> {
 			}
 			order = newOrder;
 			ranks = newRanks;
-		} else if (orderBy instanceof IFloatRankableColumnMixin && !(orderBy instanceof IManualComparatorMixin)) {
-			IFloatRankableColumnMixin orderByF = (IFloatRankableColumnMixin) orderBy;
-			List<IntFloat> targetOrderItems = new ArrayList<>(data.size());
+		} else if (orderBy instanceof IDoubleRankableColumnMixin && !(orderBy instanceof IManualComparatorMixin)) {
+			IDoubleRankableColumnMixin orderByF = (IDoubleRankableColumnMixin) orderBy;
+			List<IntDouble> targetOrderItems = new ArrayList<>(data.size());
 			for (int i = 0; i < data.size(); ++i) {
 				if (includeInRanking(i)) {
-					targetOrderItems.add(new IntFloat(i, orderByF.applyPrimitive(data.get(i))));
+					targetOrderItems.add(new IntDouble(i, orderByF.applyPrimitive(data.get(i))));
 				}
 			}
 			final int size = targetOrderItems.size() - filteredOutInfluenceRanking.cardinality();
@@ -309,10 +309,10 @@ public class ColumnRanker implements Iterable<IRow> {
 			newRanks.setKeyNotFoundValue(-1);
 
 			int offset = 0;
-			float last = Float.NaN;
+			double last = Double.NaN;
 			int j = 0;
 			for (int i = 0; i < newOrder.length; ++i) {
-				for (IntFloat vi = targetOrderItems.get(j); filteredOutInfluenceRanking.get(vi.id); vi = targetOrderItems
+				for (IntDouble vi = targetOrderItems.get(j); filteredOutInfluenceRanking.get(vi.id); vi = targetOrderItems
 						.get(++j)) {
 					// skip all filtered elements but handle exaequo
 					if (last == vi.value)
@@ -321,7 +321,7 @@ public class ColumnRanker implements Iterable<IRow> {
 						offset = 0;
 					last = vi.value;
 				}
-				IntFloat pair = targetOrderItems.get(j++);
+				IntDouble pair = targetOrderItems.get(j++);
 				final int ri = pair.id;
 				final int rank = j - 1;
 				if (last == pair.value) {
@@ -408,27 +408,27 @@ public class ColumnRanker implements Iterable<IRow> {
 		return filter.get(i) || filteredOutInfluenceRanking.get(i);
 	}
 
-	private static final class IntFloat implements Comparable<IntFloat> {
+	private static final class IntDouble implements Comparable<IntDouble> {
 		private final int id;
-		private final float value;
+		private final double value;
 
-		public IntFloat(int id, float value) {
+		public IntDouble(int id, double value) {
 			this.id = id;
 			this.value = value;
 		}
 
 		@Override
-		public int compareTo(IntFloat o) {
+		public int compareTo(IntDouble o) {
 			return -nanCompare(value, o.value, false);
 		}
 	}
 
-	public static int nanCompare(float a, float b, boolean isNaNLarge) {
-		boolean n1 = Float.isNaN(a);
-		boolean n2 = Float.isNaN(b);
+	public static int nanCompare(double a, double b, boolean isNaNLarge) {
+		boolean n1 = Double.isNaN(a);
+		boolean n2 = Double.isNaN(b);
 		if (n1 != n2)
 			return (n1 ? 1 : -1) * (isNaNLarge ? 1 : -1);
-		return Float.compare(a, b);
+		return Double.compare(a, b);
 	}
 
 	public int getVisualRank(IRow row) {

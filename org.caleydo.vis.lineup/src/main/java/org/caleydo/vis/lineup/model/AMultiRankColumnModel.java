@@ -17,8 +17,8 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.util.function.AFloatList;
-import org.caleydo.core.util.function.IFloatList;
+import org.caleydo.core.util.function.ADoubleList;
+import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -27,9 +27,9 @@ import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.lineup.internal.event.AnnotationEditEvent;
 import org.caleydo.vis.lineup.internal.ui.TitleDescriptionDialog;
+import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IExplodeableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
-import org.caleydo.vis.lineup.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMultiColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankColumnModel;
@@ -38,7 +38,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 
 import com.google.common.collect.Iterables;
-import com.google.common.primitives.Floats;
+import com.google.common.primitives.Doubles;
 
 /**
  * a {@link ACompositeRankColumnModel} which is rankable
@@ -208,15 +208,15 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		context.getPopupLayer().show(m, new Rect(location.x(), location.y() + size.y(), 200, m.getSize().y()));
 	}
 
-	protected GLElement createEditFilterPopup(IFloatList data, GLElement summary) {
+	protected GLElement createEditFilterPopup(IDoubleList data, GLElement summary) {
 		return new ScoreFilter(this, data, summary);
 	}
 
-	private IFloatList asRawData() {
+	private IDoubleList asRawData() {
 		final List<IRow> data2 = getTable().getFilteredData();
-		return new AFloatList() {
+		return new ADoubleList() {
 			@Override
-			public float getPrimitive(int index) {
+			public double getPrimitive(int index) {
 				return applyPrimitive(data2.get(index));
 			}
 
@@ -226,8 +226,8 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 			}
 
 			@Override
-			public float[] toPrimitiveArray() {
-				return Floats.toArray(this);
+			public double[] toPrimitiveArray() {
+				return Doubles.toArray(this);
 			}
 		};
 	}
@@ -239,17 +239,17 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	}
 
 	protected boolean filterEntry(IRow row) {
-		float f = applyPrimitive(row);
-		return !Float.isNaN(f) && f >= filterMin && f <= filterMax;
+		double f = applyPrimitive(row);
+		return !Double.isNaN(f) && f >= filterMin && f <= filterMax;
 	}
 
 	@Override
 	public boolean canAdd(ARankColumnModel model) {
-		return model instanceof IFloatRankableColumnMixin && super.canAdd(model);
+		return model instanceof IDoubleRankableColumnMixin && super.canAdd(model);
 	}
 
 	@Override
-	public final Float apply(IRow row) {
+	public final Double apply(IRow row) {
 		return applyPrimitive(row);
 	}
 
@@ -292,7 +292,7 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	public final boolean[] isValueInferreds(IRow row) {
 		boolean[] r = new boolean[size()];
 		int i = 0;
-		for(IFloatRankableColumnMixin child : Iterables.filter(this, IFloatRankableColumnMixin.class))
+		for(IDoubleRankableColumnMixin child : Iterables.filter(this, IDoubleRankableColumnMixin.class))
 			r[i++] = child.isValueInferred(row);
 		return r;
 	}

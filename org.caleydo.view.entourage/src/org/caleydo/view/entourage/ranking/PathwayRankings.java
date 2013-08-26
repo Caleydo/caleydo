@@ -21,8 +21,8 @@ package org.caleydo.view.entourage.ranking;
 
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.vis.lineup.data.AFloatFunction;
-import org.caleydo.vis.lineup.data.IFloatFunction;
+import org.caleydo.vis.lineup.data.ADoubleFunction;
+import org.caleydo.vis.lineup.data.IDoubleFunction;
 import org.caleydo.vis.lineup.model.IRow;
 
 /**
@@ -44,10 +44,10 @@ public final class PathwayRankings {
 		}
 
 		@Override
-		public IFloatFunction<IRow> getRankingFunction() {
-			return new AFloatFunction<IRow>() {
+		public IDoubleFunction<IRow> getRankingFunction() {
+			return new ADoubleFunction<IRow>() {
 				@Override
-				public float applyPrimitive(IRow in) {
+				public double applyPrimitive(IRow in) {
 					PathwayRow r = (PathwayRow) in;
 					return r.getPathway().vertexSet().size();
 				}
@@ -69,14 +69,14 @@ public final class PathwayRankings {
 		}
 
 		@Override
-		public IFloatFunction<IRow> getRankingFunction() {
-			return new AFloatFunction<IRow>() {
+		public IDoubleFunction<IRow> getRankingFunction() {
+			return new ADoubleFunction<IRow>() {
 				@Override
-				public float applyPrimitive(IRow in) {
+				public double applyPrimitive(IRow in) {
 
 					PathwayRow r = (PathwayRow) in;
-					return (float) PathwayManager.get().getNumEquivalentVertexReps(pathway, r.getPathway())
-							/ (float) PathwayManager.get().filterEquivalentVertexReps(r.getPathway()).size();
+					return (double) PathwayManager.get().getNumEquivalentVertexReps(pathway, r.getPathway())
+							/ (double) PathwayManager.get().filterEquivalentVertexReps(r.getPathway()).size();
 				}
 			};
 		}

@@ -5,25 +5,24 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import org.caleydo.core.util.color.Color;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 
 /**
  * basic implementation of a {@link IScore} that is based on groups including caching implementation
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public abstract class AComputedGroupScore extends DefaultLabelProvider implements IScore {
-	protected Map<Integer, Float> scores = new ConcurrentHashMap<>();
+	protected Map<Integer, Double> scores = new ConcurrentHashMap<>();
 	private final Color color;
 	private final Color bgColor;
 
@@ -38,16 +37,16 @@ public abstract class AComputedGroupScore extends DefaultLabelProvider implement
 		return scores.containsKey(g.getID());
 	}
 
-	public final void put(Group elem, float value) {
+	public final void put(Group elem, double value) {
 		scores.put(elem.getID(), value);
 	}
 
 	@Override
-	public float apply(IComputeElement elem, Group g) {
+	public double apply(IComputeElement elem, Group g) {
 		if (g == null)
-			return Float.NaN;
-		Float f = scores.get(g.getID());
-		return f == null ? Float.NaN : f.floatValue();
+			return Double.NaN;
+		Double f = scores.get(g.getID());
+		return f == null ? Double.NaN : f.doubleValue();
 	}
 
 	@Override

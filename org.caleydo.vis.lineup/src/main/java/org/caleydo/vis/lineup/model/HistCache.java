@@ -7,7 +7,7 @@ package org.caleydo.vis.lineup.model;
 
 import static org.caleydo.vis.lineup.ui.RenderStyle.binsForWidth;
 
-import org.caleydo.vis.lineup.data.IFloatFunction;
+import org.caleydo.vis.lineup.data.IDoubleFunction;
 
 /**
  * wrapper for a {@link SimpleHistogram} with caching strategies
@@ -30,7 +30,7 @@ public class HistCache {
 	 *            the mapping function to convert the data into floats
 	 * @return its histogram
 	 */
-	public SimpleHistogram get(float width, Iterable<IRow> it, IFloatFunction<IRow> map) {
+	public SimpleHistogram get(float width, Iterable<IRow> it, IDoubleFunction<IRow> map) {
 		// Stopwatch w = new Stopwatch();
 		int bins;
 		if (hist != null) {
@@ -66,12 +66,12 @@ public class HistCache {
 		return hist;
 	}
 
-	private int countValidEntries(Iterable<IRow> it, IFloatFunction<IRow> map) {
+	private int countValidEntries(Iterable<IRow> it, IDoubleFunction<IRow> map) {
 		// Stopwatch w = new Stopwatch().start();
 		int valid = 0;
 		for (IRow row : it) {
-			float v = map.applyPrimitive(row);
-			if (!Float.isNaN(v))
+			double v = map.applyPrimitive(row);
+			if (!Double.isNaN(v))
 				valid++;
 		}
 		// System.out.println("valid: " + valid + " and " + invalid + " " + w);

@@ -24,7 +24,7 @@ import org.caleydo.vis.lineup.model.StackedRankColumnModel;
 import org.caleydo.vis.lineup.model.StackedRankColumnModel.Alignment;
 import org.caleydo.vis.lineup.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.ICompressColumnMixin;
-import org.caleydo.vis.lineup.model.mixin.IMultiColumnMixin.MultiFloat;
+import org.caleydo.vis.lineup.model.mixin.IMultiColumnMixin.MultiDouble;
 import org.caleydo.vis.lineup.ui.RenderStyle;
 
 /**
@@ -168,7 +168,7 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 		if (index < 0)
 			return 0;
 		float x = 0;
-		MultiFloat vs = model.getSplittedValue(data);
+		MultiDouble vs = model.getSplittedValue(data);
 		if (index < combinedAlign) {
 			for (int i = index; i < combinedAlign; ++i)
 				x += (1 - vs.values[i]) * weights[i];
@@ -185,11 +185,11 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 		if (index < 0)
 			return 0;
 		float x = 0;
-		MultiFloat vs = model.getSplittedValue(data);
-		float me = vs.values[index] * weights[index];
+		MultiDouble vs = model.getSplittedValue(data);
+		double me = vs.values[index] * weights[index];
 		BitSet larger = new BitSet(vs.values.length);
 		for(int i = 0; i < vs.values.length; ++i) {
-			float o = vs.values[i]*weights[i];
+			double o = vs.values[i] * weights[i];
 			larger.set(i, o > me || (o == me && i > index));
 		}
 		for (int i = 0; i < index; ++i) {

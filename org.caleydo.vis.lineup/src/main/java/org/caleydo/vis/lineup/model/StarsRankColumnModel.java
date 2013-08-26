@@ -8,13 +8,13 @@ package org.caleydo.vis.lineup.model;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.util.function.FloatFunctions;
+import org.caleydo.core.util.function.DoubleFunctions;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.vis.lineup.data.AFloatFunction;
-import org.caleydo.vis.lineup.data.IFloatFunction;
+import org.caleydo.vis.lineup.data.ADoubleFunction;
+import org.caleydo.vis.lineup.data.IDoubleFunction;
 import org.caleydo.vis.lineup.model.mixin.ICollapseableColumnMixin;
-import org.caleydo.vis.lineup.model.mixin.IFloatRankableColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.ISetableColumnMixin;
@@ -28,16 +28,16 @@ import com.jogamp.common.util.IntObjectHashMap;
  * @author Samuel Gratzl
  *
  */
-public final class StarsRankColumnModel extends ARankColumnModel implements IFloatRankableColumnMixin,
+public final class StarsRankColumnModel extends ARankColumnModel implements IDoubleRankableColumnMixin,
 		IHideableColumnMixin, ICollapseableColumnMixin, Cloneable,
 		ISetableColumnMixin {
 	private final int stars;
-	private final IFloatFunction<IRow> data;
+	private final IDoubleFunction<IRow> data;
 	private final IntObjectHashMap valueOverrides = new IntObjectHashMap(3);
 
 	private final HistCache cacheHist = new HistCache();
 
-	public StarsRankColumnModel(IFloatFunction<IRow> data, IGLRenderer header, Color color, Color bgColor, int stars) {
+	public StarsRankColumnModel(IDoubleFunction<IRow> data, IGLRenderer header, Color color, Color bgColor, int stars) {
 		super(color, bgColor);
 		this.stars = stars;
 		this.data = data;
@@ -71,19 +71,19 @@ public final class StarsRankColumnModel extends ARankColumnModel implements IFlo
 	}
 
 	@Override
-	public Float apply(IRow row) {
+	public Double apply(IRow row) {
 		return applyPrimitive(row);
 	}
 
-	protected float map(float value, boolean handleNaNs) {
-		if (Float.isNaN(value) && handleNaNs)
+	protected double map(double value, boolean handleNaNs) {
+		if (Double.isNaN(value) && handleNaNs)
 			return 0;
 		return value;
 	}
 
-	public float getRaw(IRow in) {
+	public double getRaw(IRow in) {
 		if (valueOverrides.containsKey(in.getIndex())) {
-			return (Float) valueOverrides.get(in.getIndex());
+			return (Double) valueOverrides.get(in.getIndex());
 		}
 		return data.applyPrimitive(in);
 	}
@@ -120,20 +120,20 @@ public final class StarsRankColumnModel extends ARankColumnModel implements IFlo
 		return format(getRaw(row));
 	}
 
-	private String format(float raw) {
+	private String format(double raw) {
 		return Formatter.formatNumber(raw);
 	}
 
 	@Override
-	public float applyPrimitive(IRow in) {
-		float v = map(getRaw(in), true);
+	public double applyPrimitive(IRow in) {
+		double v = map(getRaw(in), true);
 		v /= stars;
-		return FloatFunctions.CLAMP01.apply(v);
+		return DoubleFunctions.CLAMP01.apply(v);
 	}
 
 	@Override
 	public int compare(IRow o1, IRow o2) {
-		return Float.compare(applyPrimitive(o1), applyPrimitive(o2));
+		return Double.compare(applyPrimitive(o1), applyPrimitive(o2));
 	}
 
 	@Override
@@ -155,15 +155,15 @@ public final class StarsRankColumnModel extends ARankColumnModel implements IFlo
 
 	@Override
 	public boolean isValueInferred(IRow row) {
-		float v = getRaw(row);
-		return Float.isNaN(v);
+		double v = getRaw(row);
+		return Double.isNaN(v);
 	}
 
 	@Override
 	public SimpleHistogram getHist(float width) {
-		return cacheHist.get(width, getMyRanker(), new AFloatFunction<IRow>() {
+		return cacheHist.get(width, getMyRanker(), new ADoubleFunction<IRow>() {
 			@Override
-			public float applyPrimitive(IRow in) {
+			public double applyPrimitive(IRow in) {
 				return map(getRaw(in), false);
 			}
 		});

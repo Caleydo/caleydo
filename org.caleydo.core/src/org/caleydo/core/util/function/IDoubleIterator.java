@@ -5,17 +5,13 @@
  ******************************************************************************/
 package org.caleydo.core.util.function;
 
+import java.util.Iterator;
+
 /**
- * a view on a {@link IFloatList}
- * 
  * @author Samuel Gratzl
- * 
+ *
  */
-public interface IFloatListView extends IFloatList {
-	/**
-	 * persists this view and returns a new {@link IFloatList} with the data
-	 * 
-	 * @return
-	 */
-	IFloatList toList();
+public interface IDoubleIterator extends Iterator<Double> {
+	double nextPrimitive();
 }
+

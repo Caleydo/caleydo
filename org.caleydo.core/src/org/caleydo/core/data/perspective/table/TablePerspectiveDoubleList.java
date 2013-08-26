@@ -10,24 +10,24 @@ import java.util.Iterator;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.virtualarray.VAIterator;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.util.function.AFloatList;
-import org.caleydo.core.util.function.IFloatIterator;
-import org.caleydo.core.util.function.IFloatList;
+import org.caleydo.core.util.function.ADoubleList;
+import org.caleydo.core.util.function.IDoubleIterator;
+import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.util.function.Utils;
 
 /**
- * the normalized table perspective data as an {@link IFloatList}
+ * the normalized table perspective data as an {@link IDoubleList}
  *
  * @author Samuel Gratzl
  *
  */
-public class TablePerspectiveFloatList extends AFloatList {
+public class TablePerspectiveDoubleList extends ADoubleList {
 	private final Table table;
 	private final VirtualArray dim;
 	private final VirtualArray rec;
 	private final int size;
 
-	public TablePerspectiveFloatList(TablePerspective tablePerspective) {
+	public TablePerspectiveDoubleList(TablePerspective tablePerspective) {
 		this.table = tablePerspective.getDataDomain().getTable();
 		this.dim = tablePerspective.getDimensionPerspective().getVirtualArray();
 		this.rec = tablePerspective.getRecordPerspective().getVirtualArray();
@@ -35,7 +35,7 @@ public class TablePerspectiveFloatList extends AFloatList {
 	}
 
 	@Override
-	public float getPrimitive(int index) {
+	public double getPrimitive(int index) {
 		// split in row / col
 		int nrCols = dim.size();
 		int recordIndex = index / nrCols;
@@ -52,7 +52,7 @@ public class TablePerspectiveFloatList extends AFloatList {
 	}
 
 	@Override
-	public IFloatIterator iterator() {
+	public IDoubleIterator iterator() {
 		if (isEmpty())
 			return Utils.EMPTY;
 		if (this.dim.size() == 1) // single col
@@ -62,7 +62,7 @@ public class TablePerspectiveFloatList extends AFloatList {
 		return new Itr();
 	}
 
-	private class SingleItr implements IFloatIterator {
+	private class SingleItr implements IDoubleIterator {
 		private final VAIterator va;
 		private final Integer id;
 		private final boolean singleIsDim;
@@ -87,7 +87,7 @@ public class TablePerspectiveFloatList extends AFloatList {
 		}
 
 		@Override
-		public Float next() {
+		public Double next() {
 			return nextPrimitive();
 		}
 
@@ -97,7 +97,7 @@ public class TablePerspectiveFloatList extends AFloatList {
 		}
 
 		@Override
-		public float nextPrimitive() {
+		public double nextPrimitive() {
 			if (singleIsDim)
 				return table.getNormalizedValue(id, va.next());
 			else
@@ -106,7 +106,7 @@ public class TablePerspectiveFloatList extends AFloatList {
 
 	}
 
-	private class Itr implements IFloatIterator {
+	private class Itr implements IDoubleIterator {
 		private final Iterator<Integer> recItr = rec.iterator();
 		private Integer recID;
 		private Iterator<Integer> dimItr = dim.iterator();
@@ -117,7 +117,7 @@ public class TablePerspectiveFloatList extends AFloatList {
 		}
 
 		@Override
-		public Float next() {
+		public Double next() {
 			return nextPrimitive();
 		}
 
@@ -128,7 +128,7 @@ public class TablePerspectiveFloatList extends AFloatList {
 		}
 
 		@Override
-		public float nextPrimitive() {
+		public double nextPrimitive() {
 			if (recID == null && recItr.hasNext()) // init
 				recID = recItr.next();
 			float v = table.getNormalizedValue(dimItr.next(), recID);

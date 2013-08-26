@@ -9,78 +9,78 @@ import java.util.AbstractList;
 import java.util.BitSet;
 
 /**
- * basic implementation of a {@link IFloatList}
+ * basic implementation of a {@link IDoubleList}
  *
  * @author Samuel Gratzl
  *
  */
-public abstract class AFloatList extends AbstractList<Float> implements IFloatList {
+public abstract class ADoubleList extends AbstractList<Double> implements IDoubleList {
 
 	@Override
-	public final IFloatListView map(IFloatFunction f) {
-		return new TransformedFloatListView(this, f);
+	public final IDoubleListView map(IDoubleFunction f) {
+		return new TransformedDoubleListView(this, f);
 	}
 
 	@Override
-	public final float reduce(float start, IFloatReduction r) {
+	public final double reduce(double start, IDoubleReduction r) {
 		return reduceImpl(this, start, r);
 	}
 
-	private float reduceImpl(AFloatList list, float start, IFloatReduction r) {
-		float result = start;
-		for (IFloatIterator it = list.iterator(); it.hasNext();) {
+	private double reduceImpl(ADoubleList list, double start, IDoubleReduction r) {
+		double result = start;
+		for (IDoubleIterator it = list.iterator(); it.hasNext();) {
 			result = r.reduce(result, it.nextPrimitive());
 		}
 		return result;
 	}
 
 	@Override
-	public final IFloatList filter(IFloatPredicate p) {
+	public final IDoubleList filter(IDoublePredicate p) {
 		return filterImpl(this, p);
 	}
 
-	public static IFloatList filterImpl(AFloatList list, IFloatPredicate p) {
+	public static IDoubleList filterImpl(ADoubleList list, IDoublePredicate p) {
 		BitSet si = new BitSet();
 		int i = 0;
-		for (IFloatIterator it = list.iterator(); it.hasNext(); i++) {
+		for (IDoubleIterator it = list.iterator(); it.hasNext(); i++) {
 			if (p.apply(it.nextPrimitive()))
 				si.set(i);
 		}
 		int s = si.cardinality();
-		float[] data = new float[s];
+		double[] data = new double[s];
 		i = 0;
 		for (int j = si.nextSetBit(0); j >= 0; j = si.nextSetBit(j + 1)) {
 			data[i++] = list.getPrimitive(j);
 		}
-		return new ArrayFloatList(data);
+		return new ArrayDoubleList(data);
 	}
 
 	@Override
-	public final Float get(int index) {
+	public final Double get(int index) {
 		return getPrimitive(index);
 	}
 
 	@Override
-	public float[] toPrimitiveArray() {
+	public double[] toPrimitiveArray() {
 		int s = size();
-		float[] data = new float[s];
+		double[] data = new double[s];
 		for (int i = 0; i < s; ++i)
 			data[i] = getPrimitive(i);
 		return data;
 	}
 
 	@Override
-	public IFloatIterator iterator() {
-		return new IFloatIterator() {
+	public IDoubleIterator iterator() {
+		return new IDoubleIterator() {
 			int cursor = 0;
 
 			@Override
 			public void remove() {
-				AFloatList.this.remove(cursor - 1);
+				ADoubleList.this.remove(cursor - 1);
 			}
 
 			@Override
-			public Float next() {
+			public Double next() {
 				return nextPrimitive();
 			}
 
@@ -90,7 +90,7 @@ public abstract class AFloatList extends AbstractList<Float> implements IFloatLi
 			}
 
 			@Override
-			public float nextPrimitive() {
+			public double nextPrimitive() {
 				return get(cursor++);
 			}
 		};

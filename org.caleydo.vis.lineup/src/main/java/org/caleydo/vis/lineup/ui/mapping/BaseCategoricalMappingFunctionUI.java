@@ -18,7 +18,7 @@ import java.util.Map;
 import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.util.function.FloatFunctions;
+import org.caleydo.core.util.function.DoubleFunctions;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
@@ -106,7 +106,7 @@ public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer impl
 		int bins = binsForWidth(w, histSum);
 		SimpleHistogram hist = new SimpleHistogram(bins);
 		for(int i = 0; i < this.hist.length; ++i) {
-			float v = model.applyPrimitive(order.get(i));
+			double v = model.applyPrimitive(order.get(i));
 			hist.add(v);
 		}
 		return hist;
@@ -139,7 +139,7 @@ public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer impl
 		Vec2f size = getSize();
 		float delta = dv / size.x();
 		// float factor = y / size.y();
-		float to = FloatFunctions.CLAMP01.apply(point.to + delta);
+		double to = DoubleFunctions.CLAMP01.apply(point.to + delta);
 		point.to = to;
 		model.put(order.get(point.index), to);
 		point.repaintAll();
@@ -226,9 +226,9 @@ public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer impl
 	class Point extends PickableGLElement {
 		private boolean hovered;
 		private int index;
-		private float to;
+		private double to;
 
-		public Point(int index, float to) {
+		public Point(int index, double to) {
 			this.index = index;
 			this.to = to;
 		}
@@ -238,11 +238,11 @@ public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer impl
 			Color color = this.hovered ? Color.RED : Color.BLACK;
 			g.color(color);
 			float f = normalizeRaw(index);
-			float t = to;
+			double t = to;
 
 			float x2 = f * w;
 			if (to >= 0) {
-				float x1 = t * w;
+				float x1 = (float) t * w;
 				g.drawLine(x1, 0, x2, h);
 				g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), -5 + x1, -5, 10, 10, color);
 				g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), -5 + x2, h - 5, 10, 10, color);
@@ -260,7 +260,7 @@ public class BaseCategoricalMappingFunctionUI<T> extends GLElementContainer impl
 			g.lineWidth(2);
 			g.color(Color.BLUE);
 			float x2 = normalizeRaw(index) * w;
-			float x1 = to * w;
+			float x1 = (float) to * w;
 			if (to >= 0) {
 				g.drawLine(x1, 0, x2, h);
 				g.fillRect(x1 - 5, -5, 10, 10);

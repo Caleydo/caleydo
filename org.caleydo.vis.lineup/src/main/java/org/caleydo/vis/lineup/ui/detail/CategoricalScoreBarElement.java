@@ -26,7 +26,7 @@ public class CategoricalScoreBarElement extends ScoreBarElement {
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		final IRow r = getLayoutDataAs(IRow.class, null); // current row
-		float v = model.applyPrimitive(r);
+		double v = model.applyPrimitive(r);
 		boolean inferred = model.isValueInferred(r);
 		Color color = ((CategoricalRankRankColumnModel<?>) model).getColor(r);
 		renderValue(g, w, h, r, v, inferred, false, color, color);

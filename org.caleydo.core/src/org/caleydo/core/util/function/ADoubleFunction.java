@@ -5,15 +5,15 @@
  ******************************************************************************/
 package org.caleydo.core.util.function;
 
-import com.google.common.base.Predicate;
-
 /**
- * simple float specific function with primitive and wrapper handling
+ * basic implementation of a {@link IDoubleFunction}
  *
  * @author Samuel Gratzl
  *
  */
-public interface IFloatPredicate extends Predicate<Float> {
-	public boolean apply(float in);
+public abstract class ADoubleFunction implements IDoubleFunction {
+	@Override
+	public final Double apply(Double v) {
+		return Double.valueOf(apply(v.doubleValue()));
+	}
 }
-

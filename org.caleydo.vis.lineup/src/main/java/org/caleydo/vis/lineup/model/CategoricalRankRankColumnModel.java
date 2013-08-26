@@ -30,8 +30,8 @@ import org.caleydo.vis.lineup.config.IRankTableUIConfig;
 import org.caleydo.vis.lineup.internal.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.ui.CatFilterDalog;
 import org.caleydo.vis.lineup.model.mapping.ICategoricalMappingFunction;
+import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
-import org.caleydo.vis.lineup.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.lineup.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.lineup.ui.IColumnRenderInfo;
@@ -53,7 +53,7 @@ import com.google.common.base.Function;
  *
  */
 public final class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel implements
-		IFilterColumnMixin, IMappedColumnMixin, IFloatRankableColumnMixin, Cloneable {
+		IFilterColumnMixin, IMappedColumnMixin, IDoubleRankableColumnMixin, Cloneable {
 	private static final int MAX_CATEGORY_COLORS = 8;
 
 	private final Function<IRow, CATEGORY_TYPE> data;
@@ -165,18 +165,18 @@ public final class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicF
 	}
 
 	@Override
-	public float applyPrimitive(IRow in) {
+	public double applyPrimitive(IRow in) {
 		return mapping.applyPrimitive(getCatValue(in));
 	}
 
 	@Override
-	public Float apply(IRow in) {
+	public Double apply(IRow in) {
 		return applyPrimitive(in);
 	}
 
 	@Override
 	public int compare(IRow o1, IRow o2) {
-		return Float.compare(applyPrimitive(o1), applyPrimitive(o2));
+		return Double.compare(applyPrimitive(o1), applyPrimitive(o2));
 	}
 
 	@Override

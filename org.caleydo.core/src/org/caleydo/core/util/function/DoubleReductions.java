@@ -10,12 +10,12 @@ package org.caleydo.core.util.function;
  * @author Samuel Gratzl
  *
  */
-public class FloatReductions {
-	public enum EReduceOperations implements IFloatReduction {
+public class DoubleReductions {
+	public enum EReduceOperations implements IDoubleReduction {
 		PRODUCT, SUM, MIN, MAX, SUB, DIVIDE;
 
 		@Override
-		public float reduce(float a, float b) {
+		public double reduce(double a, double b) {
 			switch (this) {
 			case PRODUCT:
 				return a * b;

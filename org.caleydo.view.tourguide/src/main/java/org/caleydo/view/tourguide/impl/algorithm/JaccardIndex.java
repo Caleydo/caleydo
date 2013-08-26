@@ -49,7 +49,7 @@ public class JaccardIndex implements IGroupAlgorithm {
 	}
 
 	@Override
-	public float compute(Set<Integer> a, Group ag, Set<Integer> b, Group bg, IProgressMonitor monitior) {
+	public double compute(Set<Integer> a, Group ag, Set<Integer> b, Group bg, IProgressMonitor monitior) {
 		return Statistics.jaccardIndex(a, b);
 	}
 }

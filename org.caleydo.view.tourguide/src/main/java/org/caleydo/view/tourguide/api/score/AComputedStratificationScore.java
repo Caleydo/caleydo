@@ -5,13 +5,12 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import org.caleydo.core.util.color.Color;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
@@ -21,7 +20,7 @@ import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
  *
  */
 public abstract class AComputedStratificationScore extends DefaultLabelProvider implements IScore {
-	protected final Map<String, Float> scores = new ConcurrentHashMap<>();
+	protected final Map<String, Double> scores = new ConcurrentHashMap<>();
 	private final Color color;
 	private final Color bgColor;
 
@@ -36,14 +35,14 @@ public abstract class AComputedStratificationScore extends DefaultLabelProvider 
 		return scores.containsKey(elem.getPersistentID());
 	}
 
-	public final void put(IComputeElement elem, float value) {
+	public final void put(IComputeElement elem, double value) {
 		scores.put(elem.getPersistentID(), value);
 	}
 
 	@Override
-	public final float apply(IComputeElement elem, Group g) {
-		Float f = scores.get(elem.getPersistentID());
-		return f == null ? Float.NaN : f.floatValue();
+	public final double apply(IComputeElement elem, Group g) {
+		Double f = scores.get(elem.getPersistentID());
+		return f == null ? Double.NaN : f.doubleValue();
 	}
 
 	@Override

@@ -5,15 +5,15 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.data;
 
-import com.google.common.base.Function;
-
 /**
- * float special version of a {@link Function} to avoid boxing primitives
- * 
+ * basic implementation of a {@link IDoubleFunction}
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public interface IFloatFunction<F> extends Function<F, Float> {
-	float applyPrimitive(F in);
+public abstract class ADoubleFunction<F> implements IDoubleFunction<F> {
+	@Override
+	public final Double apply(F in) {
+		return applyPrimitive(in);
+	}
 }
-

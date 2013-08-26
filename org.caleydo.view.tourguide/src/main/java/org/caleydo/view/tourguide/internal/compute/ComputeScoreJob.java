@@ -162,7 +162,7 @@ public class ComputeScoreJob extends AScoreJob {
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
 
-				float v = algorithm.compute(tocompute, ag, reference, null, monitor);
+				double v = algorithm.compute(tocompute, ag, reference, null, monitor);
 
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
@@ -194,7 +194,7 @@ public class ComputeScoreJob extends AScoreJob {
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
 
-				float v = algorithm.compute(tocompute, ag, reference, score.getGroup(), monitor);
+				double v = algorithm.compute(tocompute, ag, reference, score.getGroup(), monitor);
 
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;

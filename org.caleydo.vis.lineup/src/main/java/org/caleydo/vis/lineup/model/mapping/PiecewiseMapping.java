@@ -20,13 +20,13 @@ import com.google.common.collect.Iterators;
  * @author Samuel Gratzl
  *
  */
-public final class PiecewiseMapping extends ScriptedMappingFunction implements Iterable<Entry<Float, Float>>,
+public final class PiecewiseMapping extends ScriptedMappingFunction implements Iterable<Entry<Double, Double>>,
 		IMappingFunction, Cloneable {
-	private final SortedMap<Float, Float> mapping = new TreeMap<>();
+	private final SortedMap<Double, Double> mapping = new TreeMap<>();
 	// are the semantic mapping used or just the code
 	private boolean isDefinedMapping = true;
 
-	public PiecewiseMapping(float fromMin, float fromMax) {
+	public PiecewiseMapping(double fromMin, double fromMax) {
 		super(fromMin, fromMax);
 		reset();
 	}
@@ -52,8 +52,8 @@ public final class PiecewiseMapping extends ScriptedMappingFunction implements I
 			case 1: // TODO
 				return false;
 			case 2:
-				float k1 = mapping.firstKey();
-				float k2 = mapping.lastKey();
+				double k1 = mapping.firstKey();
+				double k2 = mapping.lastKey();
 				// linear combination or inverse
 				return mapping.get(k1) > mapping.get(k2);
 			default:
@@ -87,10 +87,10 @@ public final class PiecewiseMapping extends ScriptedMappingFunction implements I
 	public void reset() {
 		super.reset();
 		mapping.clear();
-		if (!Float.isNaN(getFromMin())) {
+		if (!Double.isNaN(getFromMin())) {
 			put(getFromMin(), 0);
 		}
-		if (!Float.isNaN(getFromMax())) {
+		if (!Double.isNaN(getFromMax())) {
 			put(getFromMax(), 1);
 		}
 		this.isDefinedMapping = true;
@@ -121,8 +121,8 @@ public final class PiecewiseMapping extends ScriptedMappingFunction implements I
 			b.append(String.format("else if (value <= %s) return linear(%s, %s, value, %s, %s)%n", max_from, min_from,
 					max_from, min_to, max_to));
 		} else {
-			Map.Entry<Float, Float> last = null;
-			for (Map.Entry<Float, Float> entry : this) {
+			Map.Entry<Double, Double> last = null;
+			for (Map.Entry<Double, Double> entry : this) {
 				if (last == null) {
 					b.append(String.format(Locale.ENGLISH, "if (value < %.2g) return NaN%n", entry.getKey()));
 				} else {
@@ -138,11 +138,11 @@ public final class PiecewiseMapping extends ScriptedMappingFunction implements I
 		return b.toString();
 	}
 
-	public void put(float from, float to) {
+	public void put(double from, double to) {
 		mapping.put(from, to);
 	}
 
-	public void update(float oldFrom, float oldTo, float from, float to) {
+	public void update(double oldFrom, double oldTo, double from, double to) {
 		if (oldFrom == from && oldTo == to)
 			return;
 		mapping.remove(oldFrom);
@@ -150,7 +150,7 @@ public final class PiecewiseMapping extends ScriptedMappingFunction implements I
 	}
 
 	@Override
-	public Iterator<Entry<Float, Float>> iterator() {
+	public Iterator<Entry<Double, Double>> iterator() {
 		return Iterators.unmodifiableIterator(mapping.entrySet().iterator());
 	}
 
@@ -158,7 +158,7 @@ public final class PiecewiseMapping extends ScriptedMappingFunction implements I
 		return mapping.size();
 	}
 
-	public void remove(float from) {
+	public void remove(double from) {
 		mapping.remove(from);
 	}
 
@@ -168,93 +168,93 @@ public final class PiecewiseMapping extends ScriptedMappingFunction implements I
 	}
 
 	@Override
-	public float apply(float in) {
-		if (Float.isNaN(in))
+	public double apply(double in) {
+		if (Double.isNaN(in))
 			return in;
 
 		if (!isDefinedMapping)
 			return super.apply(in);
 
 		if (mapping.size() < 2) {// default
-			float[] m0 = getMappedMin();
-			float[] m1 = getMappedMax();
+			double[] m0 = getMappedMin();
+			double[] m1 = getMappedMax();
 			return JavaScriptFunctions.linear(m0[0], m1[0], in, m0[1], m1[1]);
 		}
 		if (mapping.containsKey(in))
 			return mapping.get(in);
 
-		Float first = mapping.firstKey();
-		Float last = mapping.lastKey();
+		Double first = mapping.firstKey();
+		Double last = mapping.lastKey();
 
 		if (in < first || in > last)
-			return Float.NaN;
+			return Double.NaN;
 		if (mapping.size() == 2) {
 			return JavaScriptFunctions.linear(first, last, in, mapping.get(first), mapping.get(last));
 		} else {
-			SortedMap<Float, Float> before = mapping.headMap(in);
+			SortedMap<Double, Double> before = mapping.headMap(in);
 			if (before.isEmpty()) // outside of the range
-				return Float.NaN;
-			Float start = before.lastKey();
-			Float startTo = before.get(start);
-			SortedMap<Float, Float> after = mapping.tailMap(in);
+				return Double.NaN;
+			Double start = before.lastKey();
+			Double startTo = before.get(start);
+			SortedMap<Double, Double> after = mapping.tailMap(in);
 			if (after.isEmpty())
-				return Float.NaN;
-			Float end = after.firstKey();
-			Float endTo = after.get(end);
+				return Double.NaN;
+			Double end = after.firstKey();
+			Double endTo = after.get(end);
 			return JavaScriptFunctions.linear(start, end, in, startTo, endTo);
 		}
 	}
 
 
 	@Override
-	public float[] getMappedMin() {
+	public double[] getMappedMin() {
 		if (!isDefinedMapping)
 			return super.getMappedMin();
 		if (mapping.isEmpty())
-			return new float[] { getActMin(), 0 };
-		float k = mapping.firstKey();
+			return new double[] { getActMin(), 0 };
+		double k = mapping.firstKey();
 		if (mapping.size() == 1 && isDefaultMin(k)) {
-			return new float[] { getActMin(), 0 };
+			return new double[] { getActMin(), 0 };
 		}
-		return new float[] { k, mapping.get(k) };
+		return new double[] { k, mapping.get(k) };
 	}
 
 	@Override
-	public float getMinTo() {
+	public double getMinTo() {
 		if (!isDefinedMapping)
 			return super.getMinTo();
 		if (mapping.isEmpty() || mapping.size() == 1 && isDefaultMin(mapping.firstKey()))
 			return 0;
-		float min = Float.POSITIVE_INFINITY;
-		for (Float v : this.mapping.values())
+		double min = Double.POSITIVE_INFINITY;
+		for (Double v : this.mapping.values())
 			min = Math.min(min, v);
 		return min;
 	}
 
 	@Override
-	public float getMaxTo() {
+	public double getMaxTo() {
 		if (!isDefinedMapping)
 			return super.getMaxTo();
 		if (mapping.isEmpty() || mapping.size() == 1 && !isDefaultMin(mapping.firstKey()))
 			return 1;
-		float max = Float.NEGATIVE_INFINITY;
-		for (Float v : this.mapping.values())
+		double max = Double.NEGATIVE_INFINITY;
+		for (Double v : this.mapping.values())
 			max = Math.max(max, v);
 		return max;
 	}
 
 
 	@Override
-	public float[] getMappedMax() {
+	public double[] getMappedMax() {
 		if (!isDefinedMapping)
 			return super.getMappedMax();
 		if (mapping.isEmpty())
-			return new float[] { getActMax(), 1 };
-		float k = mapping.lastKey();
+			return new double[] { getActMax(), 1 };
+		double k = mapping.lastKey();
 		if (mapping.size() == 1 && !isDefaultMin(k)) {
-			return new float[] { getActMax(), 1 };
+			return new double[] { getActMax(), 1 };
 		}
-		return new float[] { k, mapping.get(k) };
+		return new double[] { k, mapping.get(k) };
 	}
 
 	@Override
@@ -273,8 +273,8 @@ public final class PiecewiseMapping extends ScriptedMappingFunction implements I
 		test(1, t.apply(1));
 		test(0.5f, t.apply(0.5f));
 		test(0.75f, t.apply(0.75f));
-		test(Float.NaN, t.apply(-0.1f));
-		test(Float.NaN, t.apply(1.1f));
+		test(Double.NaN, t.apply(-0.1f));
+		test(Double.NaN, t.apply(1.1f));
 
 		t.clear();
 		System.out.println("test 0->1");
@@ -284,8 +284,8 @@ public final class PiecewiseMapping extends ScriptedMappingFunction implements I
 		test(1, t.apply(0));
 		test(0, t.apply(1));
 		test(0.25f, t.apply(0.75f));
-		test(Float.NaN, t.apply(-0.1f));
-		test(Float.NaN, t.apply(1.1f));
+		test(Double.NaN, t.apply(-0.1f));
+		test(Double.NaN, t.apply(1.1f));
 
 		System.out.println("test -1->1, 0->0, +1->1");
 		t.put(0, 0);
@@ -298,21 +298,21 @@ public final class PiecewiseMapping extends ScriptedMappingFunction implements I
 		test(1, t.apply(-1));
 		test(0.5f, t.apply(0.5f));
 		test(0.1f, t.apply(-0.1f));
-		test(Float.NaN, t.apply(1.1f));
+		test(Double.NaN, t.apply(1.1f));
 
-		// PiecewiseMapping p = new PiecewiseMapping(Float.NaN, Float.NaN);
-		// p.setActStatistics(new FloatStatistics(-1, 1, 0, 0, 0, 0));
+		// PiecewiseMapping p = new PiecewiseMapping(Double.NaN, Double.NaN);
+		// p.setActStatistics(new DoubleStatistics(-1, 1, 0, 0, 0, 0));
 		// System.out.println(p.toJavaScript());
-		// p = new PiecewiseMapping(0, Float.NaN);
-		// p.setActStatistics(new FloatStatistics(0, 100, 0, 0, 0, 0));
+		// p = new PiecewiseMapping(0, Double.NaN);
+		// p.setActStatistics(new DoubleStatistics(0, 100, 0, 0, 0, 0));
 		// System.out.println(p.toJavaScript());
-		// p = new PiecewiseMapping(Float.NaN, 1);
-		// p.setActStatistics(new FloatStatistics(-10, 10, 0, 0, 0, 0));
+		// p = new PiecewiseMapping(Double.NaN, 1);
+		// p.setActStatistics(new DoubleStatistics(-10, 10, 0, 0, 0, 0));
 		// System.out.println(p.toJavaScript());
 	}
 
-	private static void test(float expected, float actual) {
-		if (expected != actual && !(Float.isNaN(expected) && Float.isNaN(actual)))
+	private static void test(double expected, double actual) {
+		if (expected != actual && !(Double.isNaN(expected) && Double.isNaN(actual)))
 			System.err.println("wrong: " + expected + " actual: " + actual);
 	}
 

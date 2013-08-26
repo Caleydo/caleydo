@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.entourage.ranking;
 
-import org.caleydo.vis.lineup.data.IFloatFunction;
+import org.caleydo.vis.lineup.data.IDoubleFunction;
 import org.caleydo.vis.lineup.model.IRow;
 
 /**
@@ -40,5 +40,5 @@ public interface IPathwayRanking {
 	 * 
 	 * @return The function that is used to rank pathways
 	 */
-	public IFloatFunction<IRow> getRankingFunction();
+	public IDoubleFunction<IRow> getRankingFunction();
 }

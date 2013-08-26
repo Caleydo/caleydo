@@ -19,7 +19,7 @@ import org.caleydo.view.tourguide.spi.score.IScore;
 public interface IComputedStratificationScore extends IRegisteredScore {
 	/**
 	 * already in the cache?
-	 * 
+	 *
 	 * @param a
 	 * @return
 	 */
@@ -27,22 +27,22 @@ public interface IComputedStratificationScore extends IRegisteredScore {
 
 	/**
 	 * put the result in the cache
-	 * 
+	 *
 	 * @param a
 	 * @param value
 	 */
-	void put(IComputeElement a, float value);
+	void put(IComputeElement a, double value);
 
 	/**
 	 * returns the algorithm to compute this score
-	 * 
+	 *
 	 * @return
 	 */
 	IStratificationAlgorithm getAlgorithm();
 
 	/**
 	 * returns the filter apply for skipping invalid combination pairs
-	 * 
+	 *
 	 * @return
 	 */
 	IComputeScoreFilter getFilter();

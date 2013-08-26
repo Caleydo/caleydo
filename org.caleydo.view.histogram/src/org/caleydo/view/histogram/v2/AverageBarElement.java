@@ -8,11 +8,11 @@ package org.caleydo.view.histogram.v2;
 import gleem.linalg.Vec2f;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.table.TablePerspectiveFloatList;
+import org.caleydo.core.data.perspective.table.TablePerspectiveDoubleList;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
-import org.caleydo.core.util.function.FloatStatistics;
+import org.caleydo.core.util.function.DoubleStatistics;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -26,7 +26,7 @@ import org.caleydo.core.view.opengl.layout2.view.ASingleTablePerspectiveElement;
 public class AverageBarElement extends ASingleTablePerspectiveElement {
 	private final EDetailLevel detailLevel;
 
-	private FloatStatistics stats;
+	private DoubleStatistics stats;
 
 	public AverageBarElement(TablePerspective tablePerspective) {
 		this(tablePerspective, EDetailLevel.HIGH);
@@ -51,7 +51,7 @@ public class AverageBarElement extends ASingleTablePerspectiveElement {
 
 	@Override
 	public void onVAUpdate(TablePerspective tablePerspective) {
-		this.stats = FloatStatistics.of(new TablePerspectiveFloatList(tablePerspective));
+		this.stats = DoubleStatistics.of(new TablePerspectiveDoubleList(tablePerspective));
 		super.onVAUpdate(tablePerspective);
 	}
 	/**
@@ -72,13 +72,13 @@ public class AverageBarElement extends ASingleTablePerspectiveElement {
 		float hi = Math.min(h * 0.5f, 30);
 		float ys = hi * 0.1f;
 		float y = (h - hi) * 0.5f;
-		float v = w * stats.getMean();
+		float v = w * (float) stats.getMean();
 		g.color(getTablePerspective().getDataDomain().getColor());
 		g.fillRect(0, y, v, hi);
 		if (RenderStyle.COLOR_BORDER != null)
 			g.color(RenderStyle.COLOR_BORDER).drawRect(0, y, v, hi);
 
-		float vd = w * stats.getSd();
+		float vd = w * (float) stats.getSd();
 		g.color(Color.BLACK);
 		float center = h * 0.5f;
 		g.drawLine(v - vd, center, v + vd, center);

@@ -6,27 +6,27 @@
 package org.caleydo.core.util.function;
 
 /**
- * a {@link IFloatListView} that applies a {@link IFloatFunction} to the underlying data
+ * a {@link IDoubleListView} that applies a {@link IDoubleFunction} to the underlying data
  *
  * @author Samuel Gratzl
  *
  */
-public final class TransformedFloatListView extends AFloatList implements IFloatListView {
-	private final AFloatList underlying;
-	private final IFloatFunction f;
+public final class TransformedDoubleListView extends ADoubleList implements IDoubleListView {
+	private final ADoubleList underlying;
+	private final IDoubleFunction f;
 
-	public TransformedFloatListView(AFloatList underlying, IFloatFunction f) {
+	public TransformedDoubleListView(ADoubleList underlying, IDoubleFunction f) {
 		this.underlying = underlying;
 		this.f = f;
 	}
 
 	@Override
-	public float getPrimitive(int index) {
+	public double getPrimitive(int index) {
 		return f.apply(underlying.getPrimitive(index));
 	}
 
 	@Override
-	public Float remove(int index) {
+	public Double remove(int index) {
 		return underlying.remove(index);
 	}
 
@@ -36,8 +36,8 @@ public final class TransformedFloatListView extends AFloatList implements IFloat
 	}
 
 	@Override
-	public IFloatList toList() {
-		return new ArrayFloatList(toPrimitiveArray());
+	public IDoubleList toList() {
+		return new ArrayDoubleList(toPrimitiveArray());
 	}
 }
 

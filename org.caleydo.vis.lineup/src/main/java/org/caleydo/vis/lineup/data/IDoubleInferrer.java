@@ -3,17 +3,21 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.core.util.function;
+package org.caleydo.vis.lineup.data;
+
+import org.caleydo.core.util.function.IDoubleIterator;
 
 /**
- * basic implementation of a {@link IFloatFunction}
+ * interface describing a method that combines a list of floats to a single value, e.g. its mean
  *
  * @author Samuel Gratzl
  *
  */
-public abstract class AFloatFunction implements IFloatFunction {
-	@Override
-	public final Float apply(Float v) {
-		return Float.valueOf(apply(v.floatValue()));
-	}
+public interface IDoubleInferrer {
+	/**
+	 * combines the given list with the given size to a new float value
+	 *
+	 * @return
+	 */
+	double infer(IDoubleIterator it, int size);
 }

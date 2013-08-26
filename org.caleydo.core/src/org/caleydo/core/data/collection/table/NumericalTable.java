@@ -14,7 +14,7 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
-import org.caleydo.core.util.function.FloatStatistics;
+import org.caleydo.core.util.function.DoubleStatistics;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.math.MathHelper;
 import org.eclipse.core.runtime.IStatus;
@@ -44,7 +44,7 @@ public class NumericalTable extends Table {
 
 	private final NumericalProperties numericalProperties;
 
-	private FloatStatistics datasetStatistics;
+	private DoubleStatistics datasetStatistics;
 
 	/**
 	 * @param dataDomain
@@ -272,30 +272,30 @@ public class NumericalTable extends Table {
 
 		if (numericalProperties != null
 				&& NumericalProperties.ZSCORE_ROWS.equals(numericalProperties.getzScoreNormalization())) {
-			FloatStatistics.Builder postStats = FloatStatistics.builder();
+			DoubleStatistics.Builder postStats = DoubleStatistics.builder();
 			for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
-				FloatStatistics stats = computeRowStats(rowCount);
+				DoubleStatistics stats = computeRowStats(rowCount);
 				for (AColumn<?, ?> column : columns) {
 					@SuppressWarnings("unchecked")
 					NumericalColumn<?, Float> nColumn = (NumericalColumn<?, Float>) column;
-					float zScore = ((nColumn.getRaw(rowCount)) - stats.getMean()) / stats.getSd();
+					double zScore = ((nColumn.getRaw(rowCount)) - stats.getMean()) / stats.getSd();
 
-					nColumn.setRaw(rowCount, zScore);
+					nColumn.setRaw(rowCount, (float) zScore);
 					postStats.add(zScore);
 				}
 			}
 			datasetStatistics = postStats.build();
 		} else if (numericalProperties != null
 				&& NumericalProperties.ZSCORE_COLUMNS.equals(numericalProperties.getzScoreNormalization())) {
-			FloatStatistics.Builder postStats = FloatStatistics.builder();
+			DoubleStatistics.Builder postStats = DoubleStatistics.builder();
 			for (AColumn<?, ?> column : columns) {
 				@SuppressWarnings("unchecked")
 				NumericalColumn<?, Float> nColumn = (NumericalColumn<?, Float>) column;
-				FloatStatistics stats = computeColumnStats(nColumn);
+				DoubleStatistics stats = computeColumnStats(nColumn);
 
 				for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
-					float zScore = ((nColumn.getRaw(rowCount)) - stats.getMean()) / stats.getSd();
-					nColumn.setRaw(rowCount, zScore);
+					double zScore = ((nColumn.getRaw(rowCount)) - stats.getMean()) / stats.getSd();
+					nColumn.setRaw(rowCount, (float) zScore);
 					postStats.add(zScore);
 				}
 			}
@@ -328,7 +328,7 @@ public class NumericalTable extends Table {
 		// setting the color marker points to 3 std devs
 		ColorMapper mapper = getColorMapper();
 		ColorMarkerPoint point = mapper.getMarkerPoints().get(0);
-		float raw = datasetStatistics.getMean() - 3 * datasetStatistics.getSd();
+		double raw = datasetStatistics.getMean() - 3 * datasetStatistics.getSd();
 		float normalized = (float) getNormalizedForRaw(defaultDataTransformation, raw);
 		if (normalized < 0)
 			normalized = 0;
@@ -348,21 +348,21 @@ public class NumericalTable extends Table {
 	/**
 	 * @return the datasetStatistics, see {@link #datasetStatistics}
 	 */
-	public FloatStatistics getDatasetStatistics() {
+	public DoubleStatistics getDatasetStatistics() {
 		return datasetStatistics;
 	}
 
 
-	private FloatStatistics computeColumnStats(NumericalColumn<?, Float> nColumn) {
-		FloatStatistics.Builder stats = FloatStatistics.builder();
+	private DoubleStatistics computeColumnStats(NumericalColumn<?, Float> nColumn) {
+		DoubleStatistics.Builder stats = DoubleStatistics.builder();
 		for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
 			stats.add(nColumn.getRaw(rowCount));
 		}
 		return stats.build();
 	}
 
-	private FloatStatistics computeTableStats() {
-		FloatStatistics.Builder stats = FloatStatistics.builder();
+	private DoubleStatistics computeTableStats() {
+		DoubleStatistics.Builder stats = DoubleStatistics.builder();
 		for (AColumn<?, ?> column : columns) {
 			NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
 			for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
@@ -372,8 +372,8 @@ public class NumericalTable extends Table {
 		return stats.build();
 	}
 
-	private FloatStatistics computeRowStats(int row) {
-		FloatStatistics.Builder stats = FloatStatistics.builder();
+	private DoubleStatistics computeRowStats(int row) {
+		DoubleStatistics.Builder stats = DoubleStatistics.builder();
 		for (AColumn<?, ?> column : columns) {
 			NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
 			stats.add((Float) nColumn.getRaw(row));

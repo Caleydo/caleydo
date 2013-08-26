@@ -16,6 +16,7 @@ public class TemplateHighlightRenderer extends ColorRenderer {
 	public TemplateHighlightRenderer() {
 		super(new float[] { 0.95f, .95f, .95f, 1.f });
 		setBorderColor(Color.DARK_GRAY.getRGBA());
+		setBorderWidth(2);
 		setDrawBorder(true);
 	}
 

@@ -54,12 +54,12 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 		this.clear();
 		if (model.isDefinedMapping()) {
 			if (model.isMappingDefault()) {
-				if (Float.isNaN(model.getFromMin()))
+				if (Double.isNaN(model.getFromMin()))
 					this.add(new PointLinePoint(model.getActMin(), 0, true));
-				if (Float.isNaN(model.getFromMax()))
+				if (Double.isNaN(model.getFromMax()))
 					this.add(new PointLinePoint(model.getActMax(), 1, true));
 			}
-			for (Map.Entry<Float, Float> entry : model) {
+			for (Map.Entry<Double, Double> entry : model) {
 				this.add(new PointLinePoint(entry.getKey(), entry.getValue(), false));
 			}
 		}
@@ -118,21 +118,21 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 			child.setBounds(0, 0, w, h);
 	}
 
-	public void drag(PointLinePoint point, EDragMode mode, float dv) {
+	public void drag(PointLinePoint point, EDragMode mode, double dv) {
 		if (dv == 0) // no change
 			return;
 		float max = isHorizontal ? getSize().x() : -getSize().y();
 
-		float from = normalizeRaw(point.from) + (mode == EDragMode.BOTH || mode == EDragMode.FROM ? (dv / max) : 0);
-		float to = point.to + (mode == EDragMode.BOTH || mode == EDragMode.TO ? (dv / max) : 0);
+		double from = normalizeRaw(point.from) + (mode == EDragMode.BOTH || mode == EDragMode.FROM ? (dv / max) : 0);
+		double to = point.to + (mode == EDragMode.BOTH || mode == EDragMode.TO ? (dv / max) : 0);
 		updateMapping(point, from, to);
 		repaintMapping();
 		this.relayout();
 	}
 
-	private void updateMapping(PointLinePoint current, float from, float to) {
-		float oldFrom = current.from;
-		float oldTo = current.to;
+	private void updateMapping(PointLinePoint current, double from, double to) {
+		double oldFrom = current.from;
+		double oldTo = current.to;
 
 		from = (from < 0 ? 0 : (from > 1 ? 1 : from));
 		to = (to < 0 ? 0 : (to > 1 ? 1 : to));
@@ -191,8 +191,8 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 
 		at = at / (isHorizontal ? size.x() : size.y());
 
-		float from;
-		float to;
+		double from;
+		double to;
 		switch (mode) {
 		case FROM:
 			from = (isHorizontal ? at : (1 - at));
@@ -244,16 +244,16 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 	class PointLinePoint extends PickableGLElement {
 		private boolean hovered;
 		private boolean pseudo;
-		private float from;
-		private float to;
+		private double from;
+		private double to;
 
-		public PointLinePoint(float from, float to, boolean pseudo) {
+		public PointLinePoint(double from, double to, boolean pseudo) {
 			this.from = from;
 			this.to = to;
 			this.pseudo = pseudo;
 		}
 
-		public void set(float from, float to) {
+		public void set(double from, double to) {
 			this.from = from;
 			this.to = to;
 		}
@@ -262,18 +262,18 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			Color color = this.hovered ? Color.RED : Color.BLACK;
 			g.color(color);
-			float f = normalizeRaw(from);
-			float t = to;
+			double f = normalizeRaw(from);
+			double t = to;
 			if (!pseudo) {
 				if (isHorizontal) {
-					float x2 = f * w;
-					float x1 = t * w;
+					float x2 = (float) f * w;
+					float x1 = (float) t * w;
 					g.drawLine(x1, 0, x2, h);
 					g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), -5 + x1, -5, 10, 10, color);
 					g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), -5 + x2, h - 5, 10, 10, color);
 				} else {
-					float y1 = (1 - f) * h;
-					float y2 = (1 - t) * h;
+					float y1 = (float) (1 - f) * h;
+					float y2 = (float) (1 - t) * h;
 					g.drawLine(0, y1, w, y2);
 					g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), -5, -5 + y1, 10, 10, color);
 					g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), w - 5, -5 + y2, 10, 10, color);
@@ -283,14 +283,14 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 				g.gl.glLineStipple(2, (short) 0xAAAA);
 				g.lineWidth(2);
 				if (isHorizontal) {
-					float x2 = f * w;
-					float x1 = t * w;
+					float x2 = (float) f * w;
+					float x1 = (float) t * w;
 					g.drawLine(x1, 0, x2, h);
 					g.drawCircle(x1, 0, 5);
 					g.drawCircle(x2, h, 5);
 				} else {
-					float y1 = (1 - f) * h;
-					float y2 = (1 - t) * h;
+					float y1 = (float) (1 - f) * h;
+					float y2 = (float) (1 - t) * h;
 					g.drawLine(0, y1, w, y2);
 					g.drawCircle(0, y1, 5);
 					g.drawCircle(w, y2, 5);
@@ -304,14 +304,14 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 		protected void renderPickImpl(GLGraphics g, float w, float h) {
 			g.lineWidth(2);
 			if (isHorizontal) {
-				float x2 = normalizeRaw(from) * w;
-				float x1 = to * w;
+				float x2 = (float) normalizeRaw(from) * w;
+				float x1 = (float) to * w;
 				g.drawLine(x1, 0, x2, h);
 				g.fillRect(x1 - 5, -5, 10, 10);
 				g.fillRect(x2 - 5, h - 5, 10, 10);
 			} else {
-				float y1 = (1 - normalizeRaw(from)) * h;
-				float y2 = (1 - to) * h;
+				float y1 = (float) (1 - normalizeRaw(from)) * h;
+				float y2 = (float) (1 - to) * h;
 				g.drawLine(0, y1, w, y2);
 				g.fillRect(-5, y1 - 5, 10, 10);
 				g.fillRect(w - 5, y2 - 5, 10, 10);

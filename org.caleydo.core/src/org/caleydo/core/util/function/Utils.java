@@ -10,14 +10,14 @@ package org.caleydo.core.util.function;
  *
  */
 public class Utils {
-	public static final IFloatIterator EMPTY = new IFloatIterator() {
+	public static final IDoubleIterator EMPTY = new IDoubleIterator() {
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public Float next() {
+		public Double next() {
 			return null;
 		}
 
@@ -27,7 +27,7 @@ public class Utils {
 		}
 
 		@Override
-		public float nextPrimitive() {
+		public double nextPrimitive() {
 			return 0;
 		}
 	};

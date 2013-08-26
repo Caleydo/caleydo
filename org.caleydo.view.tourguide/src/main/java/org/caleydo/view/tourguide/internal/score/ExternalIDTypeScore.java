@@ -35,7 +35,7 @@ import com.google.common.base.Optional;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.primitives.Floats;
+import com.google.common.primitives.Doubles;
 
 /**
  * @author Samuel Gratzl
@@ -50,7 +50,7 @@ public final class ExternalIDTypeScore extends AExternalScore {
 	private IDType idType;
 	private ECombinedOperator operator;
 	private boolean isRank;
-	private Map<Integer, Float> scores = new HashMap<>();
+	private Map<Integer, Double> scores = new HashMap<>();
 
 	// cache my id type mapping results
 	@XmlTransient
@@ -72,7 +72,7 @@ public final class ExternalIDTypeScore extends AExternalScore {
 	}
 
 	public ExternalIDTypeScore(String label, ScoreParseSpecification spec, IDType idType, boolean isRank,
-			Map<Integer, Float> scores) {
+			Map<Integer, Double> scores) {
 		super(label, spec);
 		this.idType = idType;
 		this.isRank = isRank;
@@ -99,12 +99,12 @@ public final class ExternalIDTypeScore extends AExternalScore {
 	}
 
 	@Override
-	public float apply(IComputeElement elem, Group g) {
+	public double apply(IComputeElement elem, Group g) {
 		if (!isCompatible(elem.getIdType()) && !isCompatible(elem.getDimensionIdType())) {
 			// can't map
 			return Float.NaN;
 		}
-		Collection<Float> scores = new ArrayList<>();
+		Collection<Double> scores = new ArrayList<>();
 
 		if (isCompatible(elem.getIdType())) {
 			final IDType target = elem.getIdType();
@@ -113,7 +113,7 @@ public final class ExternalIDTypeScore extends AExternalScore {
 					Optional<Integer> my = mapping.get(Pair.make(target, id));
 					if (!my.isPresent())
 						continue;
-					Float s = this.scores.get(my.get());
+					Double s = this.scores.get(my.get());
 					if (s == null)
 						continue;
 					scores.add(s);
@@ -129,7 +129,7 @@ public final class ExternalIDTypeScore extends AExternalScore {
 					Optional<Integer> my = mapping.get(Pair.make(target, id));
 					if (!my.isPresent())
 						continue;
-					Float s = this.scores.get(my.get());
+					Double s = this.scores.get(my.get());
 					if (s == null)
 						continue;
 					scores.add(s);
@@ -139,10 +139,10 @@ public final class ExternalIDTypeScore extends AExternalScore {
 			}
 		}
 		if (scores.isEmpty())
-			return Float.NaN;
+			return Double.NaN;
 		if (scores.size() == 1)
-			return scores.iterator().next().floatValue();
-		return operator.combine(Floats.toArray(scores));
+			return scores.iterator().next().doubleValue();
+		return operator.combine(Doubles.toArray(scores));
 	}
 
 	@Override

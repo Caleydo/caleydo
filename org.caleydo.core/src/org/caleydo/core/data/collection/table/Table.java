@@ -28,7 +28,7 @@ import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.mapping.ColorMapper;
-import org.caleydo.core.util.function.AdvancedFloatStatistics;
+import org.caleydo.core.util.function.AdvancedDoubleStatistics;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -652,10 +652,10 @@ public class Table {
 		if (dimensionIDs.size() <= sampleSize)
 			return dimensionIDs;
 
-		List<Pair<Float, Integer>> allDimVar = new ArrayList<Pair<Float, Integer>>();
+		List<Pair<Double, Integer>> allDimVar = new ArrayList<Pair<Double, Integer>>();
 
 		for (Integer dimID : dimensionIDs) {
-			float[] allDimsPerRecordArray = new float[recordIDs.size()];
+			double[] allDimsPerRecordArray = new double[recordIDs.size()];
 
 			for (int i = 0; i < recordIDs.size(); i++) {
 				// allDimsPerRecordArray[i] = dataDomain.getNormalizedValue(dataDomain.getDimensionIDType(), dimID,
@@ -663,19 +663,19 @@ public class Table {
 				allDimsPerRecordArray[i] = getRaw(dimID, recordIDs.get(i));
 			}
 
-			AdvancedFloatStatistics stats = AdvancedFloatStatistics.of(allDimsPerRecordArray);
+			AdvancedDoubleStatistics stats = AdvancedDoubleStatistics.of(allDimsPerRecordArray);
 			// throwing out all values with more than 80% NAN
 			if (stats.getNaNs() < stats.getN() * 0.8) {
-				allDimVar.add(new Pair<Float, Integer>(stats.getMedianAbsoluteDeviation(), dimID));
+				allDimVar.add(new Pair<Double, Integer>(stats.getMedianAbsoluteDeviation(), dimID));
 			}
 		}
 
-		Collections.sort(allDimVar, Collections.reverseOrder(Pair.<Float> compareFirst()));
+		Collections.sort(allDimVar, Collections.reverseOrder(Pair.<Double> compareFirst()));
 
 		allDimVar = allDimVar.subList(0, sampleSize);
 
 		List<Integer> sampledDimensionIDs = new ArrayList<>();
-		for (Pair<Float, Integer> recordVar : allDimVar) {
+		for (Pair<Double, Integer> recordVar : allDimVar) {
 			sampledDimensionIDs.add(recordVar.getSecond());
 		}
 		return sampledDimensionIDs;

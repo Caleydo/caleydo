@@ -10,7 +10,6 @@ import gleem.linalg.Vec2f;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Rectangle2D.Float;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -19,8 +18,6 @@ import javax.media.opengl.GLRunnable;
 
 import org.apache.commons.lang.SystemUtils;
 import org.caleydo.core.internal.MyPreferences;
-import org.caleydo.core.util.function.AFloatFunction;
-import org.caleydo.core.util.function.IFloatFunction;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
@@ -28,6 +25,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+
+import com.google.common.base.Function;
 
 /**
  * @author Samuel Gratzl
@@ -148,7 +147,7 @@ public abstract class AGLCanvas implements IGLCanvas {
 	}
 
 	@Override
-	public Float toDIP(Rectangle viewArea_raw) {
+	public Rectangle2D.Float toDIP(Rectangle viewArea_raw) {
 		return new Rectangle2D.Float(toDIP(viewArea_raw.x), toDIP(viewArea_raw.y), toDIP(viewArea_raw.width),
 				toDIP(viewArea_raw.height));
 	}
@@ -159,11 +158,11 @@ public abstract class AGLCanvas implements IGLCanvas {
 	}
 
 	@Override
-	public IFloatFunction toRawPixelFunction() {
-		return new AFloatFunction() {
+	public Function<Float, Float> toRawPixelFunction() {
+		return new Function<Float, Float>() {
 			@Override
-			public float apply(float dip) {
-				return toRawPixel(dip);
+			public Float apply(Float dip) {
+				return (float) toRawPixel(dip);
 			}
 		};
 	}

@@ -45,10 +45,10 @@ import org.caleydo.view.entourage.GLWindow;
 import org.caleydo.vis.lineup.config.IRankTableUIConfig;
 import org.caleydo.vis.lineup.config.RankTableConfigBase;
 import org.caleydo.vis.lineup.config.RankTableUIConfigBase;
-import org.caleydo.vis.lineup.data.FloatInferrers;
+import org.caleydo.vis.lineup.data.DoubleInferrers;
 import org.caleydo.vis.lineup.layout.RowHeightLayouts;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
-import org.caleydo.vis.lineup.model.FloatRankColumnModel;
+import org.caleydo.vis.lineup.model.DoubleRankColumnModel;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.StringRankColumnModel;
@@ -263,11 +263,11 @@ public class RankingElement extends GLElementContainer {
 		applyFilter();
 	}
 
-	private FloatRankColumnModel createDefaultFloatRankColumnModel(IPathwayRanking ranking) {
-		FloatRankColumnModel column = new FloatRankColumnModel(ranking.getRankingFunction(), GLRenderers.drawText(
+	private DoubleRankColumnModel createDefaultFloatRankColumnModel(IPathwayRanking ranking) {
+		DoubleRankColumnModel column = new DoubleRankColumnModel(ranking.getRankingFunction(), GLRenderers.drawText(
 				ranking.getRankingCriterion(), VAlign.CENTER), org.caleydo.core.util.color.Color.GRAY,
 				org.caleydo.core.util.color.Color.LIGHT_GRAY, new PiecewiseMapping(0,
-				Float.NaN), FloatInferrers.MEAN);
+				Float.NaN), DoubleInferrers.MEAN);
 		column.setWidth(50);
 		return column;
 	}
@@ -289,7 +289,7 @@ public class RankingElement extends GLElementContainer {
 	 */
 	public void setRanking(IPathwayRanking ranking) {
 		// this.ranking = ranking;
-		FloatRankColumnModel newRankModel = createDefaultFloatRankColumnModel(ranking);
+		DoubleRankColumnModel newRankModel = createDefaultFloatRankColumnModel(ranking);
 		if (table.getColumns().size() > 1) {
 			table.replace(currentRankColumnModel, newRankModel);
 		} else {

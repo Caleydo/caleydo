@@ -7,31 +7,31 @@ package org.caleydo.vis.lineup.data;
 
 import java.util.Arrays;
 
-import org.caleydo.core.util.function.FloatStatistics;
-import org.caleydo.core.util.function.IFloatIterator;
+import org.caleydo.core.util.function.DoubleStatistics;
+import org.caleydo.core.util.function.IDoubleIterator;
 
 /**
- * factory class for {@link IFloatInferrer}
+ * factory class for {@link IDoubleInferrer}
  *
  * @author Samuel Gratzl
  *
  */
-public class FloatInferrers {
-	public static IFloatInferrer MEAN = new IFloatInferrer() {
+public class DoubleInferrers {
+	public static IDoubleInferrer MEAN = new IDoubleInferrer() {
 		@Override
-		public float infer(IFloatIterator it, int size) {
-			return FloatStatistics.of(it).getMean();
+		public double infer(IDoubleIterator it, int size) {
+			return DoubleStatistics.of(it).getMean();
 		}
 	};
 
-	public static IFloatInferrer MEDIAN = new IFloatInferrer() {
+	public static IDoubleInferrer MEDIAN = new IDoubleInferrer() {
 		@Override
-		public float infer(IFloatIterator it, int size) {
-			float[] tmp = new float[size];
+		public double infer(IDoubleIterator it, int size) {
+			double[] tmp = new double[size];
 			int i = 0;
 			while (it.hasNext()) {
-				float v = it.nextPrimitive();
-				if (Float.isNaN(v))
+				double v = it.nextPrimitive();
+				if (Double.isNaN(v))
 					continue;
 				tmp[i++] = v;
 			}
@@ -50,10 +50,10 @@ public class FloatInferrers {
 	 * @param value
 	 * @return
 	 */
-	public static IFloatInferrer fix(final float value) {
-		return new IFloatInferrer() {
+	public static IDoubleInferrer fix(final double value) {
+		return new IDoubleInferrer() {
 			@Override
-			public float infer(IFloatIterator it, int size) {
+			public double infer(IDoubleIterator it, int size) {
 				return value;
 			}
 		};

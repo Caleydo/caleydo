@@ -91,7 +91,7 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 
 		// parse data
 		@SuppressWarnings("unchecked")
-		HashMap<K, Float>[] scores = new HashMap[columnsToRead.size()];
+		HashMap<K, Double>[] scores = new HashMap[columnsToRead.size()];
 		for (int i = 0; i < scores.length; ++i)
 			scores[i] = new HashMap<>();
 
@@ -107,7 +107,7 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 			// read data
 			for (int i = 0; i < columnsToRead.size(); ++i) {
 				String score = columns[columnsToRead.get(i)];
-				Float s = parseFloat(score);
+				Double s = parseDouble(score);
 				if (s == null)
 					continue;
 				if (scores[i].containsKey(mappedID)) {
@@ -118,7 +118,7 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 		}
 		monitor.setWorkRemaining(10);
 		for (int i = 0; i < scores.length; ++i) {
-			Map<K, Float> s = scores[i];
+			Map<K, Double> s = scores[i];
 			if (s.isEmpty())
 				continue;
 			if (spec.isNormalizeScores())
@@ -129,25 +129,25 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 	/**
 	 * @param hashMap
 	 */
-	protected final Map<K, Float> normalizeScores(Map<K, Float> map) {
+	protected final Map<K, Double> normalizeScores(Map<K, Double> map) {
 		if (map.size() <= 1)
 			return map;
 
 		// 1. find min/max
-		Iterator<Float> it = map.values().iterator();
-		float min, max;
+		Iterator<Double> it = map.values().iterator();
+		double min, max;
 
 		min = max = it.next();
 		while (it.hasNext()) {
-			float v = it.next();
+			double v = it.next();
 			if (v < min)
 				min = v;
 			else if (v > max)
 				max = v;
 		}
 		// 2. transform
-		for (Map.Entry<K, Float> entry : map.entrySet()) {
-			float v = entry.getValue();
+		for (Map.Entry<K, Double> entry : map.entrySet()) {
+			double v = entry.getValue();
 			entry.setValue((v - min) / (max - min));
 		}
 		return map;
@@ -180,15 +180,15 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 			return;
 
 		monitor.setWorkRemaining(10);
-		float delta;
+		double delta;
 		if (spec.isNormalizeScores()) { // convert to score
 			delta = -1.f / (ranks.size() - 1);
 		} else { // use rank
 			delta = 1.f;
 		}
-		Map<K, Float> scores = new HashMap<>(ranks.size());
+		Map<K, Double> scores = new HashMap<>(ranks.size());
 
-		float act = 1.f;
+		double act = 1.f;
 		for (K rank : ranks) {
 			scores.put(rank, act);
 			act += delta;
@@ -198,13 +198,13 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 
 	protected abstract K extractID(String originalID);
 
-	protected abstract ISerializeableScore createScore(String label, boolean isRank, Map<K, Float> scores);
+	protected abstract ISerializeableScore createScore(String label, boolean isRank, Map<K, Double> scores);
 
-	protected final static Float parseFloat(String score) {
+	protected final static Double parseDouble(String score) {
 		if (score == null || score.trim().isEmpty())
 			return null;
 		try {
-			return Float.parseFloat(score);
+			return Double.parseDouble(score);
 		} catch (NumberFormatException e) {
 			log.warn("can't parse: " + score);
 			return null;

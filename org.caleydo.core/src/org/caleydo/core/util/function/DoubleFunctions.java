@@ -8,22 +8,22 @@ package org.caleydo.core.util.function;
 import com.google.common.base.Function;
 
 /**
- * factory for various {@link IFloatFunction}s
+ * factory for various {@link IDoubleFunction}s
  *
  * @author Samuel Gratzl
  *
  */
-public final class FloatFunctions {
-	private FloatFunctions() {
+public final class DoubleFunctions {
+	private DoubleFunctions() {
 
 	}
 
 	/**
 	 * clamps the given value between 0 and 1
 	 */
-	public static final AFloatFunction CLAMP01 = new AFloatFunction() {
+	public static final ADoubleFunction CLAMP01 = new ADoubleFunction() {
 		@Override
-		public float apply(float in) {
+		public double apply(double in) {
 			return (in < 0 ? 0 : (in > 1 ? 1 : in));
 		}
 
@@ -44,11 +44,11 @@ public final class FloatFunctions {
 	 * @param max
 	 * @return
 	 */
-	public static IFloatFunction normalize(final float min, float max) {
-		final float delta = max - min;
-		return new AFloatFunction() {
+	public static IDoubleFunction normalize(final double min, double max) {
+		final double delta = max - min;
+		return new ADoubleFunction() {
 			@Override
-			public float apply(float in) {
+			public double apply(double in) {
 				return (in - min) / delta;
 			}
 
@@ -60,17 +60,17 @@ public final class FloatFunctions {
 	}
 
 	/**
-	 * reverse operation of {@link #normalize(float, float)}
+	 * reverse operation of {@link #normalize(double, double)}
 	 *
 	 * @param min
 	 * @param max
 	 * @return
 	 */
-	public static IFloatFunction unnormalize(final float min, float max) {
-		final float delta = max - min;
-		return new AFloatFunction() {
+	public static IDoubleFunction unnormalize(final double min, double max) {
+		final double delta = max - min;
+		return new ADoubleFunction() {
 			@Override
-			public float apply(float in) {
+			public double apply(double in) {
 				return delta * in + min;
 			}
 
@@ -81,14 +81,14 @@ public final class FloatFunctions {
 		};
 	}
 
-	public static IFloatFunction wrap(final Function<Float,Float> f) {
-		return new IFloatFunction() {
+	public static IDoubleFunction wrap(final Function<Double, Double> f) {
+		return new IDoubleFunction() {
 			@Override
-			public final Float apply(Float in) {
+			public final Double apply(Double in) {
 				return f.apply(in);
 			}
 			@Override
-			public float apply(float in) {
+			public double apply(double in) {
 				return f.apply(in);
 			}
 

@@ -222,7 +222,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 				}
 
 				@Override
-				public float compute(Set<Integer> a, Group ag, Set<Integer> b, Group bg, IProgressMonitor monitor) {
+				public double compute(Set<Integer> a, Group ag, Set<Integer> b, Group bg, IProgressMonitor monitor) {
 					// me versus the rest
 					return underlying.compute(a, ag, Sets.difference(b, a), bg, monitor);
 				}
@@ -292,7 +292,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 		}
 
 		@Override
-		public final float apply(IComputeElement elem, Group g) {
+		public final double apply(IComputeElement elem, Group g) {
 			return LogRank.getPValue(logRankScore.apply(elem, g));
 		}
 

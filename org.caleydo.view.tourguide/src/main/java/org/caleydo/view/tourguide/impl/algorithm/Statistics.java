@@ -37,7 +37,7 @@ public final class Statistics {
 
 	/**
 	 * computes the rand index, see <a href="http://en.wikipedia.org/wiki/Rand_index">Rand_Index</a> in Wikipedia
-	 * 
+	 *
 	 * @param x
 	 *            the collection of groups of the first stratification
 	 * @param y
@@ -102,7 +102,7 @@ public final class Statistics {
 
 	/**
 	 * computes the adjusted rand, see <a href="http://en.wikipedia.org/wiki/Rand_index">Rand_Index</a> in Wikipedia
-	 * 
+	 *
 	 * @param x
 	 *            the collection of groups of the first stratification
 	 * @param y
@@ -156,7 +156,7 @@ public final class Statistics {
 	 *            the ids of the second set
 	 * @return its jaccard index
 	 */
-	public static float jaccardIndex(Collection<Integer> a, Collection<Integer> b) {
+	public static double jaccardIndex(Collection<Integer> a, Collection<Integer> b) {
 		int intersection = 0;
 		for (Integer ai : a) {
 			if (b.contains(ai))
@@ -164,7 +164,7 @@ public final class Statistics {
 		}
 		int union = b.size() + a.size() - intersection;
 		// intersect(a,b) / union(a,b)
-		float score = union == 0 ? 0.f : (float) intersection / union;
+		double score = union == 0 ? 0. : (double) intersection / union;
 		return score;
 	}
 
@@ -232,37 +232,37 @@ public final class Statistics {
 	 *            the number of survived samples in b after the experiment
 	 * @return
 	 */
-	public static float logRank(List<Float> as, int asurvived, List<Float> bs, int bsurvived) {
-		SortedSet<Float> distinct = new TreeSet<>(as);
+	public static double logRank(List<Double> as, int asurvived, List<Double> bs, int bsurvived) {
+		SortedSet<Double> distinct = new TreeSet<>(as);
 		distinct.addAll(bs);
 		int ai = 0, bi = 0;
 
-		float nom = 0, denom = 0;
+		double nom = 0, denom = 0;
 
-		for (float j : distinct) {
+		for (double j : distinct) {
 			// 1
-			float o1j = 0;
+			double o1j = 0;
 			while (ai < as.size() && as.get(ai) == j) {
 				o1j++; // find act
 				ai++;
 			}
-			float n1j = as.size() + asurvived - ai; // rest
+			double n1j = as.size() + asurvived - ai; // rest
 			// 2
-			float o2j = 0;
+			double o2j = 0;
 			while (bi < bs.size() && bs.get(bi) == j) {
 				o2j++; // find act
 				bi++;
 			}
-			float n2j = bs.size() + bsurvived - bi; // rest
+			double n2j = bs.size() + bsurvived - bi; // rest
 
-			float e1j = n1j == 0 ? 0 : (o1j + o2j) * n1j / (n1j + n2j);
-			float vj = (n1j == 0 || n2j == 0) ? 0 : (n1j * n2j * (o1j + o2j) * (n1j + n2j - o1j - o2j))
+			double e1j = n1j == 0 ? 0 : (o1j + o2j) * n1j / (n1j + n2j);
+			double vj = (n1j == 0 || n2j == 0) ? 0 : (n1j * n2j * (o1j + o2j) * (n1j + n2j - o1j - o2j))
 					/ ((n1j + n2j) * (n1j + n2j) * (n1j + n2j - 1));
 
 			nom += o1j - e1j;
 			denom += vj;
 		}
-		float z = (nom * nom) / denom;
+		double z = (nom * nom) / denom;
 		return z;
 	}
 

@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.model.mixin;
 
-import org.caleydo.vis.lineup.data.IFloatFunction;
+import org.caleydo.vis.lineup.data.IDoubleFunction;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.SimpleHistogram;
 
@@ -16,7 +16,7 @@ import org.caleydo.vis.lineup.model.SimpleHistogram;
  * @author Samuel Gratzl
  *
  */
-public interface IFloatRankableColumnMixin extends IRankableColumnMixin, IFloatFunction<IRow> {
+public interface IDoubleRankableColumnMixin extends IRankableColumnMixin, IDoubleFunction<IRow> {
 
 	boolean isValueInferred(IRow row);
 

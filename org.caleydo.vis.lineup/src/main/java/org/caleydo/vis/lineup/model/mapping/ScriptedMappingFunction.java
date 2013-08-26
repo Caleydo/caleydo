@@ -51,7 +51,7 @@ public class ScriptedMappingFunction extends AMappingFunction {
 		postfix = b.toString();
 	}
 
-	public ScriptedMappingFunction(float fromMin, float fromMax) {
+	public ScriptedMappingFunction(double fromMin, double fromMax) {
 		super(fromMin, fromMax);
 		this.engine = createEngine();
 		this.script = null;
@@ -127,23 +127,23 @@ public class ScriptedMappingFunction extends AMappingFunction {
 	}
 
 	@Override
-	public float[] getMappedMin() {
+	public double[] getMappedMin() {
 		// TODO no idea how to compute that out of a script
-		return new float[] { getActMin(), 0 };
+		return new double[] { getActMin(), 0 };
 	}
 
 	@Override
-	public float[] getMappedMax() {
-		return new float[] { getActMax(), 1 };
+	public double[] getMappedMax() {
+		return new double[] { getActMax(), 1 };
 	}
 
 	@Override
-	public float getMaxTo() {
+	public double getMaxTo() {
 		return 1;
 	}
 
 	@Override
-	public float getMinTo() {
+	public double getMinTo() {
 		return 0;
 	}
 
@@ -153,24 +153,24 @@ public class ScriptedMappingFunction extends AMappingFunction {
 	}
 
 	@Override
-	public float apply(float in) {
+	public double apply(double in) {
 		try {
 			Bindings bindings = engine.createBindings();
 			bindings.put("v", in);
 			addBindings(bindings);
 			CompiledScript c = compileScript();
 			if (c == null)
-				return Float.NaN;
+				return Double.NaN;
 			Object r = compileScript().eval(bindings);
 			if (r instanceof Number)
-				return ((Number) r).floatValue();
+				return ((Number) r).doubleValue();
 		} catch (MappedValueException e) {
 			return e.getValue();
 		} catch (ScriptException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return Float.NaN;
+		return Double.NaN;
 	}
 
 	public static void main(String[] args) {

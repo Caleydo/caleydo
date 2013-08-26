@@ -3,15 +3,17 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.core.util.function;
+package org.caleydo.vis.lineup.data;
 
-import java.util.Iterator;
+import com.google.common.base.Function;
 
 /**
+ * float special version of a {@link Function} to avoid boxing primitives
+ *
  * @author Samuel Gratzl
  *
  */
-public interface IFloatIterator extends Iterator<Float> {
-	float nextPrimitive();
+public interface IDoubleFunction<F> extends Function<F, Double> {
+	double applyPrimitive(F in);
 }
 

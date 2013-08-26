@@ -14,7 +14,7 @@ import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
-import org.caleydo.core.util.function.FloatStatistics;
+import org.caleydo.core.util.function.DoubleStatistics;
 
 /**
  * Tree clusterer
@@ -405,10 +405,10 @@ public class TreeClusterer extends AClusterer {
 				isto++;
 			}
 		}
-		FloatStatistics stats = FloatStatistics.of(values);
+		DoubleStatistics stats = DoubleStatistics.of(values);
 
-		float averageExpressionvalue = stats.getMean();
-		float deviation = stats.getSd();
+		float averageExpressionvalue = (float) stats.getMean();
+		float deviation = (float) stats.getSd();
 
 		node.setAverageExpressionValue(averageExpressionvalue);
 		// Setting an float array for the representative element in each node causes a very big xml-file when

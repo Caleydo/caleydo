@@ -20,24 +20,24 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.util.function.AFloatList;
-import org.caleydo.core.util.function.FloatStatistics;
-import org.caleydo.core.util.function.IFloatList;
+import org.caleydo.core.util.function.ADoubleList;
+import org.caleydo.core.util.function.DoubleStatistics;
+import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.lineup.config.IRankTableUIConfig;
-import org.caleydo.vis.lineup.data.IFloatFunction;
-import org.caleydo.vis.lineup.data.IFloatInferrer;
+import org.caleydo.vis.lineup.data.IDoubleFunction;
+import org.caleydo.vis.lineup.data.IDoubleInferrer;
 import org.caleydo.vis.lineup.internal.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.ui.FloatFilterDialog;
 import org.caleydo.vis.lineup.internal.ui.FloatFilterDialog.FilterChecked;
 import org.caleydo.vis.lineup.model.mapping.IMappingFunction;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
-import org.caleydo.vis.lineup.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.ISetableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.ISnapshotableColumnMixin;
@@ -49,22 +49,22 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
-import com.google.common.primitives.Floats;
+import com.google.common.primitives.Doubles;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implements IMappedColumnMixin,
-		IFloatRankableColumnMixin, ISetableColumnMixin, ISnapshotableColumnMixin {
+public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel implements IMappedColumnMixin,
+		IDoubleRankableColumnMixin, ISetableColumnMixin, ISnapshotableColumnMixin {
 
 	private final IMappingFunction mapping;
-	private final IFloatInferrer missingValueInferer;
+	private final IDoubleInferrer missingValueInferer;
 
 	private final NumberFormat formatter;
 
-	protected final IFloatFunction<IRow> data;
-	private final Map<IRow, Float> valueOverrides = new HashMap<>(3);
+	protected final IDoubleFunction<IRow> data;
+	private final Map<IRow, Double> valueOverrides = new HashMap<>(3);
 	private final ICallback<IMappingFunction> callback = new ICallback<IMappingFunction>() {
 		@Override
 		public void on(IMappingFunction data) {
@@ -77,24 +77,24 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			dirtyDataStats = true;
-			missingValue = Float.NaN;
+			missingValue = Double.NaN;
 		}
 	};
 
 	private final HistCache cacheHist = new HistCache();
 	private boolean dirtyDataStats = true;
-	private float missingValue = Float.NaN;
+	private double missingValue = Double.NaN;
 
 	private boolean filterNotMappedEntries = true;
 	private boolean filterMissingEntries = false;
 
-	public FloatRankColumnModel(IFloatFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
-			PiecewiseMapping mapping, IFloatInferrer missingValue) {
+	public DoubleRankColumnModel(IDoubleFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
+			PiecewiseMapping mapping, IDoubleInferrer missingValue) {
 		this(data, header, color, bgColor, mapping, missingValue, NumberFormat.getInstance(Locale.ENGLISH));
 	}
 
-	public FloatRankColumnModel(IFloatFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
-			PiecewiseMapping mapping, IFloatInferrer missingValue, NumberFormat formatter) {
+	public DoubleRankColumnModel(IDoubleFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
+			PiecewiseMapping mapping, IDoubleInferrer missingValue, NumberFormat formatter) {
 		super(color, bgColor);
 		this.data = data;
 		this.mapping = mapping;
@@ -103,7 +103,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		setHeaderRenderer(header);
 	}
 
-	public FloatRankColumnModel(FloatRankColumnModel copy) {
+	public DoubleRankColumnModel(DoubleRankColumnModel copy) {
 		super(copy);
 		this.data = copy.data;
 		this.mapping = copy.mapping.clone();
@@ -118,8 +118,8 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	@Override
-	public FloatRankColumnModel clone() {
-		return new FloatRankColumnModel(this);
+	public DoubleRankColumnModel clone() {
+		return new DoubleRankColumnModel(this);
 	}
 
 	@Override
@@ -171,11 +171,11 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		super.takeDown();
 	}
 
-	private IFloatList asRawData() {
+	private IDoubleList asRawData() {
 		final List<IRow> data2 = getTable().getFilteredData();
-		return new AFloatList() {
+		return new ADoubleList() {
 			@Override
-			public float getPrimitive(int index) {
+			public double getPrimitive(int index) {
 				return getRaw(data2.get(index));
 			}
 
@@ -185,15 +185,15 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			}
 
 			@Override
-			public float[] toPrimitiveArray() {
-				return Floats.toArray(this);
+			public double[] toPrimitiveArray() {
+				return Doubles.toArray(this);
 			}
 		};
 	}
 
-	private float computeMissingValue() {
-		if (Float.isNaN(missingValue)) {
-			IFloatList list = asRawData();
+	private double computeMissingValue() {
+		if (Double.isNaN(missingValue)) {
+			IDoubleList list = asRawData();
 			missingValue = missingValueInferer.infer(list.iterator(), list.size());
 		}
 		return missingValue;
@@ -201,7 +201,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	private void checkMapping() {
 		if (dirtyDataStats) {
-			FloatStatistics stats = FloatStatistics.of(asRawData().iterator());
+			DoubleStatistics stats = DoubleStatistics.of(asRawData().iterator());
 			mapping.setActStatistics(stats);
 			dirtyDataStats = false;
 			invalidAllFilter();
@@ -209,20 +209,20 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	@Override
-	public Float apply(IRow row) {
+	public Double apply(IRow row) {
 		return applyPrimitive(row);
 	}
 
 	@Override
-	public float applyPrimitive(IRow row) {
-		float value = getRaw(row);
-		if (Float.isNaN(value))
+	public double applyPrimitive(IRow row) {
+		double value = getRaw(row);
+		if (Double.isNaN(value))
 			value = computeMissingValue();
 		checkMapping();
 		return mapping.apply(value);
 	}
 
-	protected float getRaw(IRow row) {
+	protected double getRaw(IRow row) {
 		if (valueOverrides.containsKey(row))
 			return valueOverrides.get(row);
 		return data.applyPrimitive(row);
@@ -243,10 +243,10 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		if (value == null) {
 			valueOverrides.remove(row);
 		} else if (value.length() == 0) {
-			valueOverrides.put(row, Float.NaN);
+			valueOverrides.put(row, Double.NaN);
 		} else {
 			try {
-				valueOverrides.put(row, Float.parseFloat(value));
+				valueOverrides.put(row, Double.parseDouble(value));
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
@@ -254,7 +254,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		cacheHist.invalidate();
 		invalidAllFilter();
 		dirtyDataStats = true;
-		missingValue = Float.NaN;
+		missingValue = Double.NaN;
 		propertySupport.firePropertyChange(PROP_MAPPING, null, data);
 	}
 
@@ -265,7 +265,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	@Override
 	public int compare(IRow o1, IRow o2) {
-		return Float.compare(applyPrimitive(o1), applyPrimitive(o2));
+		return Double.compare(applyPrimitive(o1), applyPrimitive(o2));
 	}
 
 	@Override
@@ -275,13 +275,13 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	@Override
 	public boolean isValueInferred(IRow row) {
-		return Float.isNaN(getRaw(row));
+		return Double.isNaN(getRaw(row));
 	}
 
-	private String format(float value) {
-		if (Float.isNaN(value))
+	private String format(double value) {
+		if (Double.isNaN(value))
 			value = computeMissingValue();
-		if (Float.isNaN(value))
+		if (Double.isNaN(value))
 			return "";
 		if (formatter != null)
 			return formatter.format(value);
@@ -341,7 +341,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
 				FloatFilterDialog dialog = new FloatFilterDialog(canvas.getShell(), getTitle(), summary,
-						filterNotMappedEntries, filterMissingEntries, FloatRankColumnModel.this, getTable()
+						filterNotMappedEntries, filterMissingEntries, DoubleRankColumnModel.this, getTable()
 								.hasSnapshots(), loc);
 				dialog.open();
 			}
@@ -351,34 +351,34 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	@Override
 	protected void updateMask(BitSet todo, List<IRow> rows, BitSet mask) {
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
-			float v = getRaw(rows.get(i));
-			if (filterMissingEntries && Float.isNaN(v)) {
+			double v = getRaw(rows.get(i));
+			if (filterMissingEntries && Double.isNaN(v)) {
 				mask.set(i, false);
 				continue;
 			}
-			if (Float.isNaN(v))
+			if (Double.isNaN(v))
 				v = computeMissingValue();
 
-			if (!filterNotMappedEntries || Float.isNaN(v)) {
+			if (!filterNotMappedEntries || Double.isNaN(v)) {
 				mask.set(i, true);
 				continue;
 			}
 
 			checkMapping();
-			float f = mapping.apply(v);
-			mask.set(i, !Float.isNaN(f));
+			double f = mapping.apply(v);
+			mask.set(i, !Double.isNaN(f));
 		}
 	}
 
 	static class MyScoreSummary extends ScoreSummary {
-		public MyScoreSummary(IFloatRankableColumnMixin model, boolean interactive) {
+		public MyScoreSummary(IDoubleRankableColumnMixin model, boolean interactive) {
 			super(model, interactive);
 		}
 
 		@ListenTo(sendToMe = true)
 		private void onFilterChanged(FilterEvent event) {
 			FilterChecked f = (FilterChecked) event.getFilter();
-			((FloatRankColumnModel) model).setFilter(f, event.isFilterGlobally(), event.isFilterRankIndendent());
+			((DoubleRankColumnModel) model).setFilter(f, event.isFilterGlobally(), event.isFilterRankIndendent());
 		}
 
 	}

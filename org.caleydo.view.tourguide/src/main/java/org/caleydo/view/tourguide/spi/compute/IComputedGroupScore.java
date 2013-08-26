@@ -20,7 +20,7 @@ import org.caleydo.view.tourguide.spi.score.IScore;
 public interface IComputedGroupScore extends IRegisteredScore {
 	/**
 	 * already in the cache?
-	 * 
+	 *
 	 * @param a
 	 * @return
 	 */
@@ -28,22 +28,22 @@ public interface IComputedGroupScore extends IRegisteredScore {
 
 	/**
 	 * put the result in the cache
-	 * 
+	 *
 	 * @param a
 	 * @param value
 	 */
-	void put(Group ag, float value);
+	void put(Group ag, double value);
 
 	/**
 	 * returns the algorithm to compute this score
-	 * 
+	 *
 	 * @return
 	 */
 	IGroupAlgorithm getAlgorithm();
 
 	/**
 	 * returns the filter apply for skipping invalid combination pairs
-	 * 
+	 *
 	 * @return
 	 */
 	IComputeScoreFilter getFilter();

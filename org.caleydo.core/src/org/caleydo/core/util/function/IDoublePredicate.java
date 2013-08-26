@@ -5,11 +5,15 @@
  ******************************************************************************/
 package org.caleydo.core.util.function;
 
+import com.google.common.base.Predicate;
 
 /**
+ * simple double specific function with primitive and wrapper handling
+ *
  * @author Samuel Gratzl
  *
  */
-public interface IFloatReduction {
-	float reduce(float a, float b);
+public interface IDoublePredicate extends Predicate<Double> {
+	public boolean apply(double in);
 }
+

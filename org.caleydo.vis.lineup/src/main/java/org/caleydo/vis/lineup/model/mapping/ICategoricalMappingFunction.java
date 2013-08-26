@@ -5,13 +5,13 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.model.mapping;
 
-import org.caleydo.vis.lineup.data.IFloatFunction;
+import org.caleydo.vis.lineup.data.IDoubleFunction;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface ICategoricalMappingFunction<T> extends IFloatFunction<T> {
+public interface ICategoricalMappingFunction<T> extends IDoubleFunction<T> {
 
 	ICategoricalMappingFunction<T> clone();
 

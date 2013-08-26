@@ -5,14 +5,13 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import org.caleydo.core.util.color.Color;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -91,8 +90,8 @@ public class MultiScore extends DefaultLabelProvider implements IScore, Iterable
 	}
 
 	@Override
-	public final float apply(IComputeElement elem, Group g) {
-		return Float.NaN;
+	public final double apply(IComputeElement elem, Group g) {
+		return Double.NaN;
 	}
 
 	@Override

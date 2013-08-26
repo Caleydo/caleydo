@@ -36,25 +36,27 @@ public class StarsValueElement extends ValueElement {
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		final IRow r = getLayoutDataAs(IRow.class, null); // current row
-		float v = model.applyPrimitive(r);
+		double v = model.applyPrimitive(r);
 
-		if (Float.isNaN(v) || v <= 0)
+		if (Double.isNaN(v) || v <= 0)
 			return;
+
+		float v_f = (float) v;
 
 		IColumnRenderInfo info = getRenderInfo();
 		if (info.isCollapsed()) {
 			// if collapsed use a brightness encoding
-			g.color(1 - v, 1 - v, 1 - v, 1);
+			g.color(1 - v_f, 1 - v_f, 1 - v_f, 1);
 			g.fillRect(0, 1, w - 2, h - 2);
 		} else {
 			if (h >= 10) { // is selected, render the value
 				float hi = Math.min(16, h);
 				float yi = (h - hi) * 0.5f;
 				g.move(0, yi);
-				renderStars(g, v, w, hi, (info.hasFreeSpace() && info.getAlignment() == VAlign.LEFT));
+				renderStars(g, v_f, w, hi, (info.hasFreeSpace() && info.getAlignment() == VAlign.LEFT));
 				g.move(0, -yi);
 			} else {
-				g.color(model.getColor()).fillRect(0, 1, w * v, h - 2);
+				g.color(model.getColor()).fillRect(0, 1, w * v_f, h - 2);
 			}
 		}
 	}
@@ -111,8 +113,8 @@ public class StarsValueElement extends ValueElement {
 	@Override
 	public String getTooltip() {
 		final IRow r = getLayoutDataAs(IRow.class, null); // current row
-		float v = model.getRaw(r);
-		if (Float.isNaN(v) || v < 0)
+		double v = model.getRaw(r);
+		if (Double.isNaN(v) || v < 0)
 			return null;
 		boolean inferred = model.isValueInferred(r);
 		return Formatter.formatNumber(v) + " stars" + (inferred ? "*" : "");
@@ -127,9 +129,9 @@ public class StarsValueElement extends ValueElement {
 			g.fillRect(0, 0, w, h);
 		} else {
 			final IRow r = getLayoutDataAs(IRow.class, null); // current row
-			float v = model.applyPrimitive(r);
-			if (!Float.isNaN(v) && v > 0)
-				g.fillRect(0, 0, w * v, h);
+			double v = model.applyPrimitive(r);
+			if (!Double.isNaN(v) && v > 0)
+				g.fillRect(0, 0, w * (float) v, h);
 		}
 	}
 }

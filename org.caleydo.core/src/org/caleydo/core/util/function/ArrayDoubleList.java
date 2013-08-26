@@ -5,15 +5,33 @@
  ******************************************************************************/
 package org.caleydo.core.util.function;
 
-import com.google.common.base.Function;
+import java.util.Arrays;
 
 /**
- * simple float specific function with primitive and wrapper handling
+ * a {@link IDoubleList} based on an array
  *
  * @author Samuel Gratzl
  *
  */
-public interface IFloatFunction extends Function<Float, Float> {
-	public float apply(float v);
-}
+public class ArrayDoubleList extends ADoubleList {
+	private final double[] data;
 
+	public ArrayDoubleList(double[] data) {
+		this.data = data;
+	}
+
+	@Override
+	public double getPrimitive(int index) {
+		return data[index];
+	}
+
+	@Override
+	public int size() {
+		return data.length;
+	}
+
+	@Override
+	public double[] toPrimitiveArray() {
+		return Arrays.copyOf(data, data.length);
+	}
+}

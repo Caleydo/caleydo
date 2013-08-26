@@ -11,7 +11,7 @@ import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
-import org.caleydo.vis.lineup.data.AFloatFunction;
+import org.caleydo.vis.lineup.data.ADoubleFunction;
 import org.caleydo.vis.lineup.model.IRow;
 
 
@@ -23,7 +23,7 @@ import org.caleydo.vis.lineup.model.IRow;
  * @author Samuel Gratzl
  *
  */
-public class MaxGroupCombiner extends AFloatFunction<IRow> {
+public class MaxGroupCombiner extends ADoubleFunction<IRow> {
 
 	private final IScore score;
 
@@ -35,7 +35,7 @@ public class MaxGroupCombiner extends AFloatFunction<IRow> {
 	}
 
 	@Override
-	public float applyPrimitive(IRow in) {
+	public double applyPrimitive(IRow in) {
 		AScoreRow row = (AScoreRow) in;
 		if (score instanceof IStratificationScore && !(score instanceof IGroupScore)) {
 			return score.apply(row, null); // as group independent
@@ -53,13 +53,13 @@ public class MaxGroupCombiner extends AFloatFunction<IRow> {
 			return getMax(row);
 	}
 
-	private float getMax(AScoreRow row) {
-		float v = Float.NaN;
+	private double getMax(AScoreRow row) {
+		double v = Double.NaN;
 		for(Group g : row.getGroups()) {
-			float vg = score.apply(row, g);
-			if (Float.isNaN(vg))
+			double vg = score.apply(row, g);
+			if (Double.isNaN(vg))
 				continue;
-			if (Float.isNaN(v) || vg > v)
+			if (Double.isNaN(v) || vg > v)
 				v = vg;
 		}
 		return v;
@@ -74,13 +74,13 @@ public class MaxGroupCombiner extends AFloatFunction<IRow> {
 		}
 
 		// combine groups
-		float v = Float.NaN;
+		double v = Double.NaN;
 		Group gm = null;
 		for (Group g : row.getGroups()) {
-			float vg = score.apply(row, g);
-			if (Float.isNaN(vg))
+			double vg = score.apply(row, g);
+			if (Double.isNaN(vg))
 				continue;
-			if (Float.isNaN(v) || vg > v) {
+			if (Double.isNaN(v) || vg > v) {
 				v = vg;
 				gm = g;
 			}

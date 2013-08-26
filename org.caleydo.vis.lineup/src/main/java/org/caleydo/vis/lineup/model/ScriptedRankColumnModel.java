@@ -29,8 +29,8 @@ import org.caleydo.vis.lineup.model.mapping.JavaScriptFunctions;
 import org.caleydo.vis.lineup.model.mapping.MappedValueException;
 import org.caleydo.vis.lineup.model.mapping.ScriptedMappingFunction;
 import org.caleydo.vis.lineup.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
-import org.caleydo.vis.lineup.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IManualComparatorMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
@@ -212,21 +212,21 @@ public final class ScriptedRankColumnModel extends AMultiRankColumnModel impleme
 	}
 
 	@Override
-	public MultiFloat getSplittedValue(IRow row) {
+	public MultiDouble getSplittedValue(IRow row) {
 		CacheRow f = getCacheRow(row);
-		return new MultiFloat(-1, f.values);
+		return new MultiDouble(-1, f.values);
 	}
 
 	private CacheRow getCacheRow(IRow row) {
 		if (cacheMulti.containsKey(row.getIndex()))
 			return ((CacheRow) cacheMulti.get(row.getIndex()));
-		float[] s = new float[this.size()];
+		double[] s = new double[this.size()];
 		for (int i = 0; i < s.length; ++i) {
 			ARankColumnModel child = get(i);
-			if (child instanceof IFloatRankableColumnMixin) {
-				s[i] = ((IFloatRankableColumnMixin)child).applyPrimitive(row);
+			if (child instanceof IDoubleRankableColumnMixin) {
+				s[i] = ((IDoubleRankableColumnMixin)child).applyPrimitive(row);
 			} else {
-				s[i] = Float.NaN;
+				s[i] = Double.NaN;
 			}
 		}
 		CacheRow cacheRow = new CacheRow(s);
@@ -235,13 +235,13 @@ public final class ScriptedRankColumnModel extends AMultiRankColumnModel impleme
 	}
 
 	@Override
-	public float applyPrimitive(IRow row) {
+	public double applyPrimitive(IRow row) {
 		if (children.isEmpty())
 			return 0;
 		if (cacheMulti.containsKey(row.getIndex()) && ((CacheRow) cacheMulti.get(row.getIndex())).getValue() != null)
 			return ((CacheRow) cacheMulti.get(row.getIndex())).value;
 
-		float v = runScript(getCacheRow(row));
+		double v = runScript(getCacheRow(row));
 		((CacheRow) cacheMulti.get(row.getIndex())).value = v;
 		return v;
 	}
@@ -268,7 +268,7 @@ public final class ScriptedRankColumnModel extends AMultiRankColumnModel impleme
 		return RenderStyle.STACKED_COLUMN_PADDING * 2 + RenderStyle.COLUMN_SPACE * size();
 	}
 
-	private float runScript(CacheRow row) {
+	private double runScript(CacheRow row) {
 		try {
 			Bindings bindings = engine.createBindings();
 			bindings.put("weights", getWeights());
@@ -276,17 +276,17 @@ public final class ScriptedRankColumnModel extends AMultiRankColumnModel impleme
 			bindings.put("mode", "apply");
 			CompiledScript c = compileScript();
 			if (c == null)
-				return Float.NaN;
+				return Double.NaN;
 			Object r = compileScript().eval(bindings);
 			if (r instanceof Number)
-				return ((Number) r).floatValue();
+				return ((Number) r).doubleValue();
 		} catch (MappedValueException e) {
 			return e.getValue();
 		} catch (ScriptException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return Float.NaN;
+		return Double.NaN;
 	}
 
 	private int runOrderScript(CacheRow a, CacheRow b) {
@@ -317,14 +317,14 @@ public final class ScriptedRankColumnModel extends AMultiRankColumnModel impleme
 		if (codeOrder.equalsIgnoreCase(DEFAULT_ORDER_CODE)) {
 			// fast way
 			// return -Float.compare(r1.value, r2.value);
-			return Float.compare(r2.value, r1.value);
+			return Double.compare(r2.value, r1.value);
 		} else
 			return runOrderScript(r1, r2);
 	}
 
 	@Override
 	public boolean isValueInferred(IRow row) {
-		for (IFloatRankableColumnMixin child : Iterables.filter(this, IFloatRankableColumnMixin.class))
+		for (IDoubleRankableColumnMixin child : Iterables.filter(this, IDoubleRankableColumnMixin.class))
 			if (child.isValueInferred(row))
 				return true;
 		return false;
@@ -418,16 +418,16 @@ public final class ScriptedRankColumnModel extends AMultiRankColumnModel impleme
 	}
 
 	private static final class CacheRow {
-		private final float[] values;
-		private Float value = null;
+		private final double[] values;
+		private Double value = null;
 
-		public CacheRow(float[] values) {
+		public CacheRow(double[] values) {
 			this.values = values;
 		}
 		/**
 		 * @return the value, see {@link #value}
 		 */
-		public Float getValue() {
+		public Double getValue() {
 			return value;
 		}
 	}

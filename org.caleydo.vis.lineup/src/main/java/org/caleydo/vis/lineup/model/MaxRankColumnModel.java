@@ -13,8 +13,8 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.vis.lineup.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
-import org.caleydo.vis.lineup.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.ISnapshotableColumnMixin;
@@ -102,44 +102,44 @@ public final class MaxRankColumnModel extends AMultiRankColumnModel implements I
 	}
 
 	@Override
-	public MultiFloat getSplittedValue(IRow row) {
+	public MultiDouble getSplittedValue(IRow row) {
 		if (children.isEmpty())
-			return new MultiFloat(-1);
-		float max = Float.NEGATIVE_INFINITY;
+			return new MultiDouble(-1);
+		double max = Double.NEGATIVE_INFINITY;
 		int maxIndex = -1;
-		float[] vs = new float[size()];
+		double[] vs = new double[size()];
 		int i = 0;
 		for (ARankColumnModel col : this) {
-			float v = ((IFloatRankableColumnMixin) col).applyPrimitive(row);
+			double v = ((IDoubleRankableColumnMixin) col).applyPrimitive(row);
 			vs[i++] = v;
-			if (!Float.isNaN(v) && v > max) {
+			if (!Double.isNaN(v) && v > max) {
 				maxIndex = i - 1;
 				max = v;
 			}
 		}
-		return new MultiFloat(maxIndex, vs);
+		return new MultiDouble(maxIndex, vs);
 	}
 
 	@Override
-	public float applyPrimitive(IRow row) {
+	public double applyPrimitive(IRow row) {
 		if (children.isEmpty())
 			return 0;
-		float max = Float.NEGATIVE_INFINITY;
+		double max = Float.NEGATIVE_INFINITY;
 		for (ARankColumnModel col : this) {
-			float v = ((IFloatRankableColumnMixin) col).applyPrimitive(row);
-			if (Float.isNaN(v))
+			double v = ((IDoubleRankableColumnMixin) col).applyPrimitive(row);
+			if (Double.isNaN(v))
 				continue;
 			max = Math.max(max, v);
 		}
-		if (max == Float.NEGATIVE_INFINITY) {
-			max = Float.NaN;
+		if (max == Double.NEGATIVE_INFINITY) {
+			max = Double.NaN;
 		}
 		return max;
 	}
 
 	@Override
 	public int compare(IRow o1, IRow o2) {
-		return Float.compare(applyPrimitive(o1), applyPrimitive(o2));
+		return Double.compare(applyPrimitive(o1), applyPrimitive(o2));
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public final class MaxRankColumnModel extends AMultiRankColumnModel implements I
 		int repr = getSplittedValue(row).repr;
 		if (repr < 0)
 			return false;
-		return (((IFloatRankableColumnMixin) get(repr)).isValueInferred(row));
+		return (((IDoubleRankableColumnMixin) get(repr)).isValueInferred(row));
 	}
 
 	private class RepaintingGLElement extends MultiScoreBarElement {

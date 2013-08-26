@@ -67,7 +67,7 @@ public class ExternalIDTypeScoreParser extends AExternalScoreParser<ScoreParseSp
 	 * @see org.caleydo.view.tourguide.data.load.AExternalScoreParser#addScore(java.lang.String, boolean, java.util.Map)
 	 */
 	@Override
-	protected ExternalIDTypeScore createScore(String label, boolean isRank, Map<Integer, Float> scores) {
+	protected ExternalIDTypeScore createScore(String label, boolean isRank, Map<Integer, Double> scores) {
 		return new ExternalIDTypeScore(label, spec, this.targetIDType, isRank, scores);
 	}
 }

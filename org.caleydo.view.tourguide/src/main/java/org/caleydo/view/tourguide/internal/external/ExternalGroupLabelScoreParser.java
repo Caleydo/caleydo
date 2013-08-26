@@ -21,7 +21,7 @@ public class ExternalGroupLabelScoreParser extends AExternalScoreParser<GroupLab
 	}
 
 	@Override
-	protected ExternalGroupLabelScore createScore(String label, boolean isRank, Map<String, Float> scores) {
+	protected ExternalGroupLabelScore createScore(String label, boolean isRank, Map<String, Double> scores) {
 		return new ExternalGroupLabelScore(label, spec, scores);
 	}
 

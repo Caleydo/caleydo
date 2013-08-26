@@ -23,7 +23,7 @@ import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ProjectMetaData;
-import org.caleydo.core.util.function.FloatStatistics;
+import org.caleydo.core.util.function.DoubleStatistics;
 import org.caleydo.core.util.system.BrowserUtils;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IDataDomainBasedView;
@@ -361,7 +361,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 				String n = System.lineSeparator();
 
-				FloatStatistics dsStats = table.getDatasetStatistics();
+				DoubleStatistics dsStats = table.getDatasetStatistics();
 				String statsMessage = "";
 				statsMessage += "Mean: " + dsStats.getMean() + n;
 				statsMessage += "Std. Dev.: " + dsStats.getSd() + n;

@@ -14,95 +14,96 @@ import java.util.Arrays;
  *
  */
 public class JavaScriptFunctions {
-	public static int compare(float a, float b) {
-		return Float.compare(a, b);
+	public static int compare(double a, double b) {
+		return Double.compare(a, b);
 	}
-	public static float linear(float start, float end, float in, float startTo, float endTo) {
-		if (Float.isNaN(in))
+
+	public static double linear(double start, double end, double in, double startTo, double endTo) {
+		if (Double.isNaN(in))
 			return in;
 		if (in < start)
-			return Float.NaN;
+			return Double.NaN;
 		if (in > end)
-			return Float.NaN;
+			return Double.NaN;
 		// linear interpolation between start and end
-		float v = (in - start) / (end - start); // to ratio
+		double v = (in - start) / (end - start); // to ratio
 		// to mapped value
-		float r = startTo + v * (endTo - startTo);
+		double r = startTo + v * (endTo - startTo);
 
 		// finally clamp
 		return clamp01(r);
 	}
 
 
-	public static float clamp01(float in) {
-		if (Float.isNaN(in))
+	public static double clamp01(double in) {
+		if (Double.isNaN(in))
 			return in;
 		return (in < 0 ? 0 : (in > 1 ? 1 : in));
 	}
 
-	public static float clamp(float in, float min, float max) {
-		if (Float.isNaN(in))
+	public static double clamp(double in, double min, double max) {
+		if (Double.isNaN(in))
 			return in;
 		return (in < min ? min : (in > max ? max : in));
 	}
 
-	public static float normalize(float in, float min, float max) {
-		if (Float.isNaN(in))
+	public static double normalize(double in, double min, double max) {
+		if (Double.isNaN(in))
 			return in;
 		return clamp01((in - min) / (max - min));
 	}
 
-	public static float log(float in) {
-		return (float) Math.log(in);
+	public static double log(double in) {
+		return Math.log(in);
 	}
 
-	public static float log10(float in) {
-		return (float) Math.log10(in);
+	public static double log10(double in) {
+		return Math.log10(in);
 	}
 
-	public static float max(float[] in) {
+	public static double max(double[] in) {
 		if (in.length == 0)
-			return Float.NaN;
-		float m = in[0];
+			return Double.NaN;
+		double m = in[0];
 		for (int i = 1; i < in.length; ++i)
 			if (in[i] > m)
 				m = in[i];
 		return m;
 	}
 
-	public static float min(float[] in) {
+	public static double min(double[] in) {
 		if (in.length == 0)
-			return Float.NaN;
-		float m = in[0];
+			return Double.NaN;
+		double m = in[0];
 		for (int i = 1; i < in.length; ++i)
 			if (in[i] < m)
 				m = in[i];
 		return m;
 	}
 
-	public static float sum(float[] in) {
-		float m = 0;
+	public static double sum(double[] in) {
+		double m = 0;
 		for (int i = 0; i < in.length; ++i)
 			m += in[i];
 		return m;
 	}
 
-	public static float mean(float[] in) {
+	public static double mean(double[] in) {
 		if (in.length == 0)
 			return 0;
 		return sum(in) / in.length;
 	}
 
-	public static float geometricMean(float[] data) {
+	public static double geometricMean(double[] data) {
 		if (data.length == 0)
 			return 1;
-		float c = 1;
+		double c = 1;
 		for (int i = 0; i < data.length; ++i)
 			c *= data[i];
-		return (float) Math.pow(c, 1. / data.length);
+		return Math.pow(c, 1. / data.length);
 	}
 
-	public static float median(float[] data) {
+	public static double median(double[] data) {
 		if (data.length == 0)
 			return 0;
 		data = Arrays.copyOf(data, data.length);

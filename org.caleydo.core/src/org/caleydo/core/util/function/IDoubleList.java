@@ -8,19 +8,19 @@ package org.caleydo.core.util.function;
 import java.util.List;
 
 /**
- * a special version of a {@link List} for float handling
+ * a special version of a {@link List} for double handling
  *
  * @author Samuel Gratzl
  *
  */
-public interface IFloatList extends List<Float> {
+public interface IDoubleList extends List<Double> {
 	/**
 	 * returns the primitive version of {@link #get(int)}
 	 *
 	 * @param index
 	 * @return
 	 */
-	float getPrimitive(int index);
+	double getPrimitive(int index);
 
 	/**
 	 * returns a view of this list where, the given function will be applied
@@ -28,30 +28,30 @@ public interface IFloatList extends List<Float> {
 	 * @param f
 	 * @return
 	 */
-	IFloatListView map(IFloatFunction f);
+	IDoubleListView map(IDoubleFunction f);
 
 	/**
-	 * return a {@link IFloatList} only with the elements matching the {@link IFloatPredicate}
+	 * return a {@link IDoubleList} only with the elements matching the {@link IDoublePredicate}
 	 *
 	 * @param p
 	 * @return
 	 */
-	IFloatList filter(IFloatPredicate p);
+	IDoubleList filter(IDoublePredicate p);
 
 	/**
-	 * reduces/fold the data using the given start value and the given {@link IFloatReduction} function
+	 * reduces/fold the data using the given start value and the given {@link IDoubleReduction} function
 	 *
 	 * @param start
 	 * @param r
 	 * @return
 	 */
-	float reduce(float start, IFloatReduction r);
+	double reduce(double start, IDoubleReduction r);
 
 	@Override
-	IFloatIterator iterator();
+	IDoubleIterator iterator();
 
 	/**
 	 * @return a fresh copy of the data as primitive array
 	 */
-	float[] toPrimitiveArray();
+	double[] toPrimitiveArray();
 }
