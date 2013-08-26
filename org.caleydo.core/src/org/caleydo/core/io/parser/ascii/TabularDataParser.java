@@ -314,6 +314,7 @@ public class TabularDataParser extends ATextParser {
 						try {
 							if (cellContent.equals("NA")) {
 								naCounter++;
+								targetColumn.addUnknown();
 								break;
 							}
 
@@ -335,6 +336,7 @@ public class TabularDataParser extends ATextParser {
 
 							if (cellContent.equals("NA")) {
 								naCounter++;
+								targetIntColumn.addUnknown();
 								break;
 							}
 
