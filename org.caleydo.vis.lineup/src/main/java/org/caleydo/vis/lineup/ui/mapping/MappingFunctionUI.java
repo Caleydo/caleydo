@@ -9,6 +9,7 @@ import static org.caleydo.vis.lineup.ui.RenderStyle.LABEL_HEIGHT;
 import static org.caleydo.vis.lineup.ui.RenderStyle.binsForWidth;
 
 import java.awt.Dimension;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -165,7 +166,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 	public void addMode(AMappingFunctionMode<?> mode) {
 		modes.add(mode);
 		GLButton b = new GLButton(EButtonMode.BUTTON);
-		final String icon =mode.getIcon();
+		final URL icon = mode.getIcon();
 		b.setRenderer(GLRenderers.fillImage(icon));
 		b.setSelectedRenderer(new IGLRenderer() {
 			@Override

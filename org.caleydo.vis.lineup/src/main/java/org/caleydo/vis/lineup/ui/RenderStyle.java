@@ -7,6 +7,8 @@ package org.caleydo.vis.lineup.ui;
 
 
 
+import java.net.URL;
+
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.picking.AdvancedPick;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -58,56 +60,59 @@ public class RenderStyle {
 
 	}
 
-	private static final String ICON_PREFIX = "resources/icons/vis/rank/";
-	public static final String ICON_TRASH = ICON_PREFIX + "user_trash_full.png";
-	public static final String ICON_CIRCLE = ICON_PREFIX + "circle.png";
-	public static final String ICON_ARROW = ICON_PREFIX + "arrow.png";
-	public static final String ICON_FILTER_DISABLED = ICON_PREFIX + "filter_disabled.png";
-	public static final String ICON_FILTER = ICON_PREFIX + "filter.png";
-	public static final String ICON_MAPPING = ICON_PREFIX + "filter.png";
-	public static final String ICON_EXPLODE = ICON_PREFIX + "dynamite.png";
-	public static final String ICON_EDIT_ANNOTATION = ICON_PREFIX + "note_edit.png";
-	public static final String ICON_COLLAPSE = ICON_PREFIX + "bullet_toggle_plus.png";
-	public static final String ICON_UNCOLLAPSE = ICON_PREFIX + "bullet_toggle_minus.png";
-	public static final String ICON_COMPRESS = ICON_PREFIX + "bullet_arrow_left.png";
-	public static final String ICON_UNCOMPRESS = ICON_PREFIX + "bullet_arrow_right.png";
+	private static final URL icon(String icon) {
+		return RenderStyle.class.getResource("/org/caleydo/vis/lineup/icons/" + icon);
+	}
 
-	public static final String ICON_SMALL_HEADER_ON = ICON_PREFIX + "bullet_arrow_up.png";
-	public static final String ICON_SMALL_HEADER_OFF = ICON_PREFIX + "bullet_arrow_down.png";
+	public static final URL ICON_TRASH = icon("user_trash_full.png");
+	public static final URL ICON_CIRCLE = icon("circle.png");
+	public static final URL ICON_ARROW = icon("arrow.png");
+	public static final URL ICON_FILTER_DISABLED = icon("filter_disabled.png");
+	public static final URL ICON_FILTER = icon("filter.png");
+	public static final URL ICON_MAPPING = icon("filter.png");
+	public static final URL ICON_EXPLODE = icon("dynamite.png");
+	public static final URL ICON_EDIT_ANNOTATION = icon("note_edit.png");
+	public static final URL ICON_COLLAPSE = icon("bullet_toggle_plus.png");
+	public static final URL ICON_UNCOLLAPSE = icon("bullet_toggle_minus.png");
+	public static final URL ICON_COMPRESS = icon("bullet_arrow_left.png");
+	public static final URL ICON_UNCOMPRESS = icon("bullet_arrow_right.png");
 
-	public static final String ICON_HIDE = ICON_PREFIX + "delete.png";
-	public static final String ICON_DRAG = ICON_PREFIX + "drag.png";
-	public static final String ICON_ALIGN_CLASSIC = ICON_PREFIX + "align_classic.png";
-	public static final String ICON_ALIGN_STACKED = ICON_PREFIX + "align_stacked.png";
-	public static final String ICON_ALIGN_STACKED_ORDERED = ICON_PREFIX + "align_ordered.png";
+	public static final URL ICON_SMALL_HEADER_ON = icon("bullet_arrow_up.png");
+	public static final URL ICON_SMALL_HEADER_OFF = icon("bullet_arrow_down.png");
 
-	public static final String ICON_SHOW_RANK_DELTA = ICON_PREFIX + "chart_down_color.png";
-	public static final String ICON_HIDE_RANK_DELTA = ICON_PREFIX + "chart_down_color_disabled.png";
+	public static final URL ICON_HIDE = icon("delete.png");
+	public static final URL ICON_DRAG = icon("drag.png");
+	public static final URL ICON_ALIGN_CLASSIC = icon("align_classic.png");
+	public static final URL ICON_ALIGN_STACKED = icon("align_stacked.png");
+	public static final URL ICON_ALIGN_STACKED_ORDERED = icon("align_ordered.png");
 
-	public static final String ICON_ALIGN_FISH = ICON_PREFIX + "align_fish.jpg";
-	public static final String ICON_ALIGN_UNIFORM = ICON_PREFIX + "align_uniform.png";
+	public static final URL ICON_SHOW_RANK_DELTA = icon("chart_down_color.png");
+	public static final URL ICON_HIDE_RANK_DELTA = icon("chart_down_color_disabled.png");
 
-	public static final String ICON_FREEZE = ICON_PREFIX + "camera_add.png";
+	public static final URL ICON_ALIGN_FISH = icon("align_fish.jpg");
+	public static final URL ICON_ALIGN_UNIFORM = icon("align_uniform.png");
 
-	public static final String ICON_MAPPING_CROSS_LEFT = ICON_PREFIX + "cross_left.png";
-	public static final String ICON_MAPPING_CROSS_RIGHT = ICON_PREFIX + "cross_right.png";
-	public static final String ICON_MAPPING_PAR_HOR = ICON_PREFIX + "par_hor.png";
-	public static final String ICON_MAPPING_PAR_VERT = ICON_PREFIX + "par_vert.png";
-	public static final String ICON_MAPPING_RESET = ICON_PREFIX + "arrow_undo.png";
+	public static final URL ICON_FREEZE = icon("camera_add.png");
 
-	public static final String ICON_STAR = ICON_PREFIX + "star.png";
-	public static final String ICON_STAR_DISABLED = ICON_PREFIX + "star_disabled.png";
-	public static final String ICON_FIND = ICON_PREFIX + "find.png";
+	public static final URL ICON_MAPPING_CROSS_LEFT = icon("cross_left.png");
+	public static final URL ICON_MAPPING_CROSS_RIGHT = icon("cross_right.png");
+	public static final URL ICON_MAPPING_PAR_HOR = icon("par_hor.png");
+	public static final URL ICON_MAPPING_PAR_VERT = icon("par_vert.png");
+	public static final URL ICON_MAPPING_RESET = icon("arrow_undo.png");
 
-	public static final String ICON_ADD_SEPARATOR = ICON_PREFIX + "table_relationship.png";
-	public static final String ICON_ADD_STACKED = ICON_PREFIX + "table_sum_add.png";
-	public static final String ICON_ADD_NESTED = ICON_PREFIX + "table_nested_add.png";
-	public static final String ICON_ADD_SCRIPTED = ICON_PREFIX + "table_scripted_add.png";
+	public static final URL ICON_STAR = icon("star.png");
+	public static final URL ICON_STAR_DISABLED = icon("star_disabled.png");
+	public static final URL ICON_FIND = icon("find.png");
 
-	public static final String ICON_COMPLEX_MAPPING = ICON_PREFIX + "hatching.png";
+	public static final URL ICON_ADD_SEPARATOR = icon("table_relationship.png");
+	public static final URL ICON_ADD_STACKED = icon("table_sum_add.png");
+	public static final URL ICON_ADD_NESTED = icon("table_nested_add.png");
+	public static final URL ICON_ADD_SCRIPTED = icon("table_scripted_add.png");
 
-	public static final String ICON_SORT_BY_WEIGHT = ICON_PREFIX + "sortByWeight.png";
-	public static final String ICON_EDIT_CODE = ICON_PREFIX + "script_js_edit.png";
+	public static final URL ICON_COMPLEX_MAPPING = icon("hatching.png");
+
+	public static final URL ICON_SORT_BY_WEIGHT = icon("sortByWeight.png");
+	public static final URL ICON_EDIT_CODE = icon("script_js_edit.png");
 	/**
 	 * space between columns
 	 */

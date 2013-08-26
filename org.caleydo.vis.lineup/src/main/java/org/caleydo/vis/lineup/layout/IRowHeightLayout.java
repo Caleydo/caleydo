@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.layout;
 
+import java.net.URL;
+
 import org.caleydo.vis.lineup.model.ColumnRanker;
 import org.caleydo.vis.lineup.model.RankTableModel;
 
@@ -16,7 +18,7 @@ import org.caleydo.vis.lineup.model.RankTableModel;
  */
 public interface IRowHeightLayout {
 	/**
-	 * 
+	 *
 	 * @param ranker
 	 *            the current relevant {@link ColumnRanker}
 	 * @param h
@@ -37,5 +39,5 @@ public interface IRowHeightLayout {
 	/**
 	 * @return a representative path to an icon of this layout
 	 */
-	String getIcon();
+	URL getIcon();
 }

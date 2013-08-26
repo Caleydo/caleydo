@@ -7,6 +7,8 @@ package org.caleydo.vis.lineup.ui.mapping;
 
 import static org.caleydo.vis.lineup.ui.RenderStyle.HIST_HEIGHT;
 
+import java.net.URL;
+
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -28,7 +30,7 @@ public class MappingParallelUI<T extends IMappingFunction> extends AMappingFunct
 	}
 
 	@Override
-	public String getIcon() {
+	public URL getIcon() {
 		return isHorizontal ? RenderStyle.ICON_MAPPING_PAR_HOR : RenderStyle.ICON_MAPPING_PAR_VERT;
 	}
 

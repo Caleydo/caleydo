@@ -8,6 +8,8 @@ package org.caleydo.vis.lineup.ui.mapping;
 import static org.caleydo.vis.lineup.ui.RenderStyle.HIST_HEIGHT;
 import gleem.linalg.Vec2f;
 
+import java.net.URL;
+
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.lineup.model.mapping.IMappingFunction;
@@ -28,7 +30,7 @@ public class MappingCrossUI<T extends IMappingFunction> extends AMappingFunction
 	}
 
 	@Override
-	public String getIcon() {
+	public URL getIcon() {
 		return isNormalLeft ? RenderStyle.ICON_MAPPING_CROSS_LEFT : RenderStyle.ICON_MAPPING_CROSS_RIGHT;
 	}
 

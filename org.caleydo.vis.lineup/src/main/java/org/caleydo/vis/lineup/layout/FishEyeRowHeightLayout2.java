@@ -7,6 +7,7 @@ package org.caleydo.vis.lineup.layout;
 
 import gleem.linalg.Vec2f;
 
+import java.net.URL;
 import java.util.BitSet;
 
 import org.caleydo.vis.lineup.model.ColumnRanker;
@@ -36,7 +37,7 @@ class FishEyeRowHeightLayout2 implements IRowHeightLayout {
 	}
 
 	@Override
-	public String getIcon() {
+	public URL getIcon() {
 		return RenderStyle.ICON_ALIGN_FISH;
 	}
 

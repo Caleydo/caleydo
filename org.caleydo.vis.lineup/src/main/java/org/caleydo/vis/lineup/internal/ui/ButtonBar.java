@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.internal.ui;
 
-import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -40,11 +40,11 @@ public class ButtonBar extends GLElementContainer  {
 	}
 
 
-	public GLButton addButton(GLButton b, String label, String deselectedImage, String selectedImage) {
+	public GLButton addButton(GLButton b, String label, URL deselectedImage, URL selectedImage) {
 		return addButton(size(), b, label, deselectedImage, selectedImage);
 	}
 
-	public GLButton addButton(int index, GLButton b, String label, String deselectedImage, String selectedImage) {
+	public GLButton addButton(int index, GLButton b, String label, URL deselectedImage, URL selectedImage) {
 		b.setTooltip(label);
 		b.setRenderer(new ImageRenderer(deselectedImage));
 		b.setSelectedRenderer(new ImageRenderer(selectedImage));
@@ -95,14 +95,8 @@ public class ButtonBar extends GLElementContainer  {
 		// item.setType(EContextMenuType.CHECK);
 		// item.setState(elem.isSelected());
 		// }
-		String imagePath = toImagePath(elem.isSelected() ? elem.getSelectedRenderer() : elem.getRenderer());
-		if (imagePath != null) {
-			@SuppressWarnings("resource")
-			InputStream in = locator.get(imagePath);
-			if (in != null)
-				item.setImageInputStream(in);
-		}
-
+		URL imagePath = toImagePath(elem.isSelected() ? elem.getSelectedRenderer() : elem.getRenderer());
+		item.setImageURL(imagePath);
 		return item;
 	}
 
@@ -112,7 +106,7 @@ public class ButtonBar extends GLElementContainer  {
 		b.setSelected(!b.isSelected());
 	}
 
-	private String toImagePath(IGLRenderer renderer) {
+	private URL toImagePath(IGLRenderer renderer) {
 		if (renderer instanceof ImageRenderer) {
 			return ((ImageRenderer) renderer).image;
 		}
@@ -120,9 +114,9 @@ public class ButtonBar extends GLElementContainer  {
 	}
 
 	private static class ImageRenderer implements IGLRenderer {
-		private final String image;
+		private final URL image;
 
-		public ImageRenderer(String image) {
+		public ImageRenderer(URL image) {
 			this.image = image;
 		}
 

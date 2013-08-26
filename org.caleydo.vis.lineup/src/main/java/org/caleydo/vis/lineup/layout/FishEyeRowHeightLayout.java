@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.layout;
 
+import java.net.URL;
 import java.util.BitSet;
 
 import org.caleydo.vis.lineup.model.ColumnRanker;
@@ -34,7 +35,7 @@ class FishEyeRowHeightLayout implements IRowHeightLayout {
 	}
 
 	@Override
-	public String getIcon() {
+	public URL getIcon() {
 		return RenderStyle.ICON_ALIGN_FISH;
 	}
 

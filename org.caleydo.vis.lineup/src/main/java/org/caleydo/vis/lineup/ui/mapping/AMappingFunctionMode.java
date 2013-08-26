@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.ui.mapping;
 
+import java.net.URL;
+
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
@@ -25,7 +27,7 @@ public abstract class AMappingFunctionMode<T extends IMappingFunction> extends G
 
 	public abstract void reset();
 
-	public abstract String getIcon();
+	public abstract URL getIcon();
 
 	public abstract void doLayout(IGLLayoutElement rawHist, IGLLayoutElement normHist, IGLLayoutElement specific,
 			float x, float y, float w, float h);
