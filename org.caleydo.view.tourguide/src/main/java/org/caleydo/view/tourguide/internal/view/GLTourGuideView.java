@@ -332,7 +332,7 @@ public class GLTourGuideView extends AGLElementView {
 		// reset all string and integer filters
 		for (ARankColumnModel model : table.getFlatColumns()) {
 			if (model instanceof StringRankColumnModel)
-				((StringRankColumnModel) model).setFilter(null, true);
+				((StringRankColumnModel) model).setFilter(null, true, false);
 			else if (model instanceof SizeRankColumnModel)
 				((SizeRankColumnModel) model).setFilter(null, null);
 		}

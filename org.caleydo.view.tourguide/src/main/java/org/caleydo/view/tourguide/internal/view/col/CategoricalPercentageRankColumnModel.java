@@ -30,7 +30,7 @@ public class CategoricalPercentageRankColumnModel extends FloatRankColumnModel {
 		super(data, GLRenderers.drawText("% " + label), color, bgColor, new PiecewiseMapping(0, max), FloatInferrers
 				.fix(Float.NaN));
 		this.dataDomain = dataDomain;
-		setFilter(false, false, true);
+		setFilter(false, false, true, false);
 	}
 
 	/**

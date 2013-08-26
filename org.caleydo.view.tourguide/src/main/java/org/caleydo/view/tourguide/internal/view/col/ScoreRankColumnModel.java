@@ -42,7 +42,7 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 				this.headerMode = EHeaderMode.STRAT;
 		}
 		setHeaderRenderer(this);
-		setFilter(true, false, false);
+		setFilter(true, false, false, false);
 	}
 
 	public ScoreRankColumnModel(ScoreRankColumnModel copy) {
