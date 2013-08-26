@@ -314,9 +314,9 @@ public class TabularDataParser extends ATextParser {
 							targetColumn.add(floatValue);
 						} catch (NumberFormatException nfe) {
 							parsingErrorOccured = true;
-							numberParsingErrorMessage.append( "column " + (columnDescription.getColumn()) + ", line "
+							numberParsingErrorMessage.append("column " + (columnDescription.getColumn()) + ", line "
 									+ (lineCounter + dataSetDescription.getNumberOfHeaderLines())
-									+ ". Cell content was: " + cellContent + "\n" );
+									+ ". Cell content was: " + cellContent + "\n");
 							targetColumn.addUnknown();
 						}
 
@@ -331,9 +331,9 @@ public class TabularDataParser extends ATextParser {
 
 						} catch (NumberFormatException nfe) {
 							parsingErrorOccured = true;
-							numberParsingErrorMessage.append( "column " + (columnDescription.getColumn()) + ", line "
+							numberParsingErrorMessage.append("column " + (columnDescription.getColumn()) + ", line "
 									+ (lineCounter + dataSetDescription.getNumberOfHeaderLines())
-									+ ". Cell content was: " + cellContent + "\n" );
+									+ ". Cell content was: " + cellContent + "\n");
 							targetIntColumn.addUnknown();
 						}
 

@@ -77,7 +77,7 @@
          </property>
          <property
                name="aboutText"
-               value="Caleydo - Visualization for Molecular Biology&#x0A;http:// caleydo.org&#x0A;&#x0A;Copyright 2008 - 2013  by the Caleydo Team.&#x0A;Caleydo is open-source software licenced under the New BSD license.">
+               value="Caleydo - Visualization for Molecular Biology&#x0A;http://caleydo.org&#x0A;&#x0A;Copyright 2008 - 2013  by the Caleydo Team.&#x0A;Caleydo is open-source software licenced under the New BSD license.">
          </property>
       </product>
    </extension>
