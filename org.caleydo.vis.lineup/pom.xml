@@ -10,8 +10,4 @@
 	</parent>
 	<artifactId>org.caleydo.vis.lineup</artifactId>
 	<packaging>eclipse-plugin</packaging>
-	
-	<build>
-		<sourceDirectory>src</sourceDirectory>
-	</build>
 </project>
