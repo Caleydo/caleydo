@@ -32,14 +32,13 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.config.IRankTableUIConfig;
-import org.caleydo.vis.lineup.model.SimpleHistogram;
 import org.caleydo.vis.lineup.model.CategoricalRankRankColumnModel.CategoryInfo;
+import org.caleydo.vis.lineup.model.SimpleHistogram;
 import org.caleydo.vis.lineup.model.mapping.BaseCategoricalMappingFunction;
 import org.caleydo.vis.lineup.model.mapping.ICategoricalMappingFunction;
 import org.caleydo.vis.lineup.ui.RenderStyle;
 
 /**
- * FIXME not implemented
  *
  * @author Samuel Gratzl
  *

@@ -26,8 +26,8 @@ import org.caleydo.vis.lineup.ui.detail.ValueElement;
  * @author Samuel Gratzl
  *
  */
-public class GroupRankColumnModel extends ACompositeRankColumnModel implements IHideableColumnMixin,
-		IExplodeableColumnMixin,
+public final class GroupRankColumnModel extends ACompositeRankColumnModel implements IHideableColumnMixin,
+		IExplodeableColumnMixin, Cloneable,
 		IGLRenderer {
 	private String title = null;
 

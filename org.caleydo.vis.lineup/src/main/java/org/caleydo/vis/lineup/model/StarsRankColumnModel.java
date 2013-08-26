@@ -28,8 +28,8 @@ import com.jogamp.common.util.IntObjectHashMap;
  * @author Samuel Gratzl
  *
  */
-public class StarsRankColumnModel extends ARankColumnModel implements IFloatRankableColumnMixin, IHideableColumnMixin,
-		ICollapseableColumnMixin,
+public final class StarsRankColumnModel extends ARankColumnModel implements IFloatRankableColumnMixin,
+		IHideableColumnMixin, ICollapseableColumnMixin, Cloneable,
 		ISetableColumnMixin {
 	private final int stars;
 	private final IFloatFunction<IRow> data;

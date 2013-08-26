@@ -29,8 +29,8 @@ import org.caleydo.vis.lineup.ui.detail.ValueElement;
  * @author Samuel Gratzl
  *
  */
-public class MaxRankColumnModel extends AMultiRankColumnModel implements ICollapseableColumnMixin,
-		IFilterColumnMixin, ISnapshotableColumnMixin {
+public final class MaxRankColumnModel extends AMultiRankColumnModel implements ICollapseableColumnMixin,
+		IFilterColumnMixin, ISnapshotableColumnMixin, Cloneable {
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override

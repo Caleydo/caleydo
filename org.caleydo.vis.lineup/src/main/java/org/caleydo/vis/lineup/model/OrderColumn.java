@@ -5,9 +5,9 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.model;
 
-import org.caleydo.core.util.color.Color;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.Display;
  * @author Samuel Gratzl
  *
  */
-public class OrderColumn extends ARankColumnModel implements IAnnotatedColumnMixin, IHideableColumnMixin,
-		ICollapseableColumnMixin, IGLRenderer {
+public final class OrderColumn extends ARankColumnModel implements IAnnotatedColumnMixin, IHideableColumnMixin,
+		ICollapseableColumnMixin, IGLRenderer, Cloneable {
 	private String description = "";
 	private String title = "Separator";
 	private final ColumnRanker ranker;

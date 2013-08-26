@@ -20,8 +20,8 @@ import org.caleydo.vis.lineup.ui.detail.ValueElement;
  * @author Samuel Gratzl
  *
  */
-public class RankRankColumnModel extends ARankColumnModel implements IGLRenderer, ICollapseableColumnMixin,
-		IHideableColumnMixin {
+public final class RankRankColumnModel extends ARankColumnModel implements IGLRenderer, ICollapseableColumnMixin,
+		IHideableColumnMixin, Cloneable {
 	public static final String PROP_SHOW_RANK_DELTA = "showRankDelta";
 
 	private boolean showRankDelta = false;
