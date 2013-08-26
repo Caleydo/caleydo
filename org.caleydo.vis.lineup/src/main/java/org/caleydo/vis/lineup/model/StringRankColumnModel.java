@@ -170,7 +170,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
 				StringFilterDialog dialog = new StringFilterDialog(canvas.getShell(), getTitle(), filterStrategy
-						.getHint(), summary, filter, isGlobalFilter, getTable().hasSnapshots(), loc);
+						.getHint(), summary, filter, StringRankColumnModel.this, getTable().hasSnapshots(), loc);
 				dialog.open();
 			}
 		});
@@ -248,18 +248,17 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		table.setSelectedRow(null);
 	}
 
-	public void setFilter(String filter, boolean isFilterGlobally) {
+	public void setFilter(String filter, boolean isFilterGlobally, boolean isRankIndependentFilter) {
 		if (filter != null && filter.trim().length() == 0)
 			filter = null;
-		if (Objects.equals(filter, this.filter) && this.isGlobalFilter == isFilterGlobally)
+		if (Objects.equals(filter, this.filter) && this.isGlobalFilter == isFilterGlobally
+				&& this.isRankIndependentFilter == isRankIndependentFilter)
 			return;
 		invalidAllFilter();
-		if (Objects.equals(filter, this.filter)) {
-			setGlobalFilter(isFilterGlobally);
-		} else {
-			this.isGlobalFilter = isFilterGlobally;
-			propertySupport.firePropertyChange(PROP_FILTER, this.filter, this.filter = filter);
-		}
+		this.filter = filter;
+		this.isGlobalFilter = isFilterGlobally;
+		this.isRankIndependentFilter = isRankIndependentFilter;
+		propertySupport.firePropertyChange(PROP_FILTER, false, true);
 	}
 
 	@Override
@@ -317,7 +316,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 		@ListenTo(sendToMe = true)
 		private void onSetFilter(FilterEvent event) {
-			setFilter((String) event.getFilter(), event.isFilterGlobally());
+			setFilter((String) event.getFilter(), event.isFilterGlobally(), event.isFilterRankIndendent());
 		}
 
 		@ListenTo(sendToMe = true)

@@ -38,7 +38,7 @@ public class StringSearchDialog extends AFilterDialog {
 	private Button wrapSearch;
 
 	public StringSearchDialog(Shell parentShell, String title, String hint, Object receiver, String filter, Point loc) {
-		super(parentShell, "Search in " + title, receiver, false, false, loc);
+		super(parentShell, "Search in " + title, receiver, null, false, loc);
 		this.hint = hint;
 		this.filter = filter;
 		this.setShellStyle(SWT.CLOSE);

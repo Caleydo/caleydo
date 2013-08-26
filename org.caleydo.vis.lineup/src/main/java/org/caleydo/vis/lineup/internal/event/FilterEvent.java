@@ -16,6 +16,7 @@ import org.caleydo.core.event.ADirectedEvent;
 public class FilterEvent extends ADirectedEvent {
 	private Object filter;
 	private boolean filterGlobally;
+	private boolean filterRankIndendent;
 	private boolean filterNA;
 
 	/**
@@ -26,11 +27,19 @@ public class FilterEvent extends ADirectedEvent {
 		this.filter = filter;
 	}
 
-	public FilterEvent(Object filter, boolean filterNA, boolean filterGlobally) {
+	public FilterEvent(Object filter, boolean filterNA, boolean filterGlobally, boolean filterRankIndendent) {
 		super();
 		this.filterNA = filterNA;
 		this.filter = filter;
 		this.filterGlobally = filterGlobally;
+		this.filterRankIndendent = filterRankIndendent;
+	}
+
+	/**
+	 * @return the filterRankIndendent, see {@link #filterRankIndendent}
+	 */
+	public boolean isFilterRankIndendent() {
+		return filterRankIndendent;
 	}
 
 	/**

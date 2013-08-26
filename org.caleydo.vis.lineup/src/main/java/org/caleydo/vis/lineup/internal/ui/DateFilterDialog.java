@@ -8,8 +8,10 @@ package org.caleydo.vis.lineup.internal.ui;
 import java.util.Calendar;
 
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.vis.lineup.internal.event.DateFilterEvent;
+import org.caleydo.core.util.collection.Pair;
+import org.caleydo.vis.lineup.internal.event.FilterEvent;
 import org.caleydo.vis.lineup.model.DateRankColumnModel.DateMode;
+import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -34,8 +36,8 @@ public class DateFilterDialog extends AFilterDialog {
 
 
 	public DateFilterDialog(Shell parentShell, String title, Object receiver, Calendar min, Calendar max,
-			boolean filterGlobally, boolean hasSnapshots, Point loc, DateMode mode) {
-		super(parentShell, "Filter " + title, receiver, filterGlobally, hasSnapshots, loc);
+			IFilterColumnMixin model, boolean hasSnapshots, Point loc, DateMode mode) {
+		super(parentShell, "Filter " + title, receiver, model, hasSnapshots, loc);
 		this.before = min;
 		this.after = max;
 		this.mode = mode;
@@ -106,6 +108,7 @@ public class DateFilterDialog extends AFilterDialog {
 		layout.marginWidth = 0;
 		layout.verticalSpacing = 0;
 		p.setLayout(layout);
+		p.setLayoutData(twoColumns(new GridData(SWT.FILL, SWT.CENTER, true, true)));
 
 		GridData d = new GridData(SWT.LEFT, SWT.CENTER, true, true);
 		d.widthHint = getCharWith(composite, 50);
@@ -121,18 +124,20 @@ public class DateFilterDialog extends AFilterDialog {
 		afterUI.setLayoutData(d);
 		set(afterUI, after, mode);
 
-		createApplyGlobally(composite);
-		addOKButton(composite, false);
+		addButtonAndOption(composite);
 	}
 
 	@Override
 	protected void triggerEvent(boolean cancel) {
 		if (cancel) {
-			EventPublisher.trigger(new DateFilterEvent(before, after).to(receiver));
+			EventPublisher.trigger(new FilterEvent(Pair.make(before, after), false, filterGlobally,
+					filterRankIndependent)
+					.to(receiver));
 			return;
 		}
 		Calendar b = get(beforeUI, mode);
 		Calendar a = get(afterUI, mode);
-		EventPublisher.trigger(new DateFilterEvent(b, a).to(receiver));
+		EventPublisher.trigger(new FilterEvent(Pair.make(b, a), false, isFilterGlobally(), isFilterRankIndependent())
+				.to(receiver));
 	}
 }

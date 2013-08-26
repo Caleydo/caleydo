@@ -7,6 +7,7 @@ package org.caleydo.vis.lineup.internal.ui;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.vis.lineup.internal.event.IntegerFilterEvent;
+import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
@@ -32,8 +33,8 @@ public class IntegerFilterDialog extends AFilterDialog {
 
 
 	public IntegerFilterDialog(Shell parentShell, String title, Object receiver, int min, int max,
-			boolean filterGlobally, boolean hasSnapshots, Point loc) {
-		super(parentShell, "Filter " + title, receiver, filterGlobally, hasSnapshots, loc);
+			IFilterColumnMixin model, boolean hasSnapshots, Point loc) {
+		super(parentShell, "Filter " + title, receiver, model, hasSnapshots, loc);
 		this.min = min;
 		this.max = max;
 	}
@@ -79,8 +80,7 @@ public class IntegerFilterDialog extends AFilterDialog {
 			maxUI.setText(max + "");
 		maxUI.addVerifyListener(isNumber);
 
-		createApplyGlobally(composite);
-		addOKButton(composite, false);
+		addButtonAndOption(composite);
 	}
 
 	@Override

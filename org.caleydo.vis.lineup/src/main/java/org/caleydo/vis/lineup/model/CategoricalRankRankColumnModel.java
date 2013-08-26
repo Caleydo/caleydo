@@ -136,23 +136,23 @@ public final class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicF
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
 				CatFilterDalog<CATEGORY_TYPE> dialog = new CatFilterDalog<>(canvas.getShell(), getTitle(), summary,
-						metaData, selection, isGlobalFilter, getTable().hasSnapshots(), loc, false, "");
+						metaData, selection, CategoricalRankRankColumnModel.this, getTable().hasSnapshots(), loc,
+						false, "");
 				dialog.open();
 			}
 		});
 	}
 
-	protected void setFilter(Collection<CATEGORY_TYPE> filter, boolean isGlobalFilter) {
+	protected void setFilter(Collection<CATEGORY_TYPE> filter, boolean isGlobalFilter, boolean isRankIndependentFilter) {
+		if (filter.equals(this.selection) && this.isGlobalFilter == isGlobalFilter
+				&& this.isRankIndependentFilter == isRankIndependentFilter)
+			return;
 		invalidAllFilter();
-		Set<CATEGORY_TYPE> bak = new HashSet<>(this.selection);
 		this.selection.clear();
 		this.selection.addAll(filter);
-		if (this.selection.equals(bak)) {
-			setGlobalFilter(isGlobalFilter);
-		} else {
-			this.isGlobalFilter = isGlobalFilter;
-			propertySupport.firePropertyChange(PROP_FILTER, bak, this.selection);
-		}
+		this.isGlobalFilter = isGlobalFilter;
+		this.isRankIndependentFilter = isRankIndependentFilter;
+		propertySupport.firePropertyChange(PROP_FILTER, false, true);
 	}
 
 	@Override
@@ -288,7 +288,8 @@ public final class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicF
 		@SuppressWarnings("unchecked")
 		@ListenTo(sendToMe = true)
 		private void onSetFilter(FilterEvent event) {
-			setFilter((Collection<CATEGORY_TYPE>) event.getFilter(), event.isFilterGlobally());
+			setFilter((Collection<CATEGORY_TYPE>) event.getFilter(), event.isFilterGlobally(),
+					event.isFilterRankIndendent());
 		}
 
 	}

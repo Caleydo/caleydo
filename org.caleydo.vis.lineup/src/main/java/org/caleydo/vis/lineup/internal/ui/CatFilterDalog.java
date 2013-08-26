@@ -16,6 +16,7 @@ import java.util.Set;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.vis.lineup.internal.event.FilterEvent;
 import org.caleydo.vis.lineup.model.CategoricalRankRankColumnModel.CategoryInfo;
+import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -51,9 +52,9 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 	private CheckboxTreeViewer fViewer;
 
 	public CatFilterDalog(Shell parentShell, String title, Object receiver, Map<CATEGORY_TYPE, ?> metaData,
-			Set<CATEGORY_TYPE> selection, boolean filterGlobally, boolean hasSnapshots, Point loc, boolean filterNA,
+			Set<CATEGORY_TYPE> selection, IFilterColumnMixin model, boolean hasSnapshots, Point loc, boolean filterNA,
 			String labelNA) {
-		super(parentShell, "Filter " + title, receiver, filterGlobally, hasSnapshots, loc);
+		super(parentShell, "Filter " + title, receiver, model, hasSnapshots, loc);
 		this.metaData = metaData;
 		this.selection = new LinkedHashSet<>(selection);
 		this.filterNA = filterNA;
@@ -115,14 +116,15 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 		treeWidget.setLayoutData(data);
 		treeWidget.setFont(composite.getFont());
 
-		createApplyGlobally(composite);
-		addOKButton(composite, true);
+		addButtonAndOption(composite);
 	}
+
 
 	@Override
 	protected void triggerEvent(boolean cancel) {
 		if (cancel) {
-			EventPublisher.trigger(new FilterEvent(selection, filterNA, filterGlobally).to(receiver));
+			EventPublisher.trigger(new FilterEvent(selection, filterNA, filterGlobally, filterRankIndependent)
+					.to(receiver));
 			return;
 		}
 		Object[] result = fViewer.getCheckedElements();
@@ -134,7 +136,8 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 			else
 				r.add(result[i]);
 		}
-		EventPublisher.trigger(new FilterEvent(r, filterNA, isFilterGlobally()).to(receiver));
+		EventPublisher
+				.trigger(new FilterEvent(r, filterNA, isFilterGlobally(), isFilterRankIndependent()).to(receiver));
 	}
 
 	/**

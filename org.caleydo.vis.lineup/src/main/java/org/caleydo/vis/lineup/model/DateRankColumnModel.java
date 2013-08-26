@@ -23,7 +23,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.vis.lineup.internal.event.DateFilterEvent;
+import org.caleydo.vis.lineup.internal.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.ui.DateFilterDialog;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
@@ -132,22 +132,37 @@ public final class DateRankColumnModel extends ABasicFilterableRankColumnModel i
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
 				DateFilterDialog dialog = new DateFilterDialog(canvas.getShell(), getTitle(), summary, from, to,
-						isGlobalFilter, getTable().hasSnapshots(), loc, mode);
+						DateRankColumnModel.this, getTable().hasSnapshots(), loc, mode);
 				dialog.open();
 			}
 		});
 	}
 
 	/**
+	 * @param c
+	 * @param b
 	 * @param min2
 	 * @param max2
 	 */
-	public void setFilter(Calendar from2, Calendar to2) {
+	public void setFilter(Calendar from2, Calendar to2, boolean filterGlobally, boolean filterRankIndependent) {
 		invalidAllFilter();
 		Pair<Calendar, Calendar> old = Pair.make(from, to);
 		from = from2;
 		to = to2;
+		this.isGlobalFilter = filterGlobally;
+		this.isRankIndependentFilter = filterRankIndependent;
 		propertySupport.firePropertyChange(PROP_FILTER, old, Pair.make(from, to));
+	}
+
+	/**
+	 * @param first
+	 * @param second
+	 * @param filterGlobally
+	 * @param filterRankIndendent
+	 */
+	public void setFilter(Date first, Date second, boolean filterGlobally, boolean filterRankIndendent) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -232,8 +247,10 @@ public final class DateRankColumnModel extends ABasicFilterableRankColumnModel i
 		}
 
 		@ListenTo(sendToMe = true)
-		private void onSetFilter(DateFilterEvent event) {
-			setFilter(event.getBefore(), event.getAfter());
+		private void onSetFilter(FilterEvent event) {
+			@SuppressWarnings("unchecked")
+			Pair<Calendar, Calendar> p = (Pair<Calendar, Calendar>) event.getFilter();
+			setFilter(p.getFirst(), p.getSecond(), event.isFilterGlobally(), event.isFilterRankIndendent());
 		}
 
 		@Override
@@ -253,5 +270,6 @@ public final class DateRankColumnModel extends ABasicFilterableRankColumnModel i
 			// g.drawText(b.toString(), 4, 18, w - 4, 12);
 		}
 	}
+
 
 }

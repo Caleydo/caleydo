@@ -27,6 +27,7 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 	private final BitSet mask = new BitSet();
 	private final BitSet maskInvalid = new BitSet();
 	protected boolean isGlobalFilter = false;
+	protected boolean isRankIndependentFilter = false;
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
@@ -55,6 +56,7 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 		this.mask.or(copy.mask);
 		this.maskInvalid.or(copy.maskInvalid);
 		this.isGlobalFilter = copy.isGlobalFilter;
+		this.isRankIndependentFilter = copy.isRankIndependentFilter;
 	}
 
 	@Override
@@ -80,6 +82,14 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 	}
 
 	/**
+	 * @return the isRankIndependentFilter, see {@link #isRankIndependentFilter}
+	 */
+	@Override
+	public boolean isRankIndependentFilter() {
+		return isRankIndependentFilter;
+	}
+
+	/**
 	 * @param isGlobalFilter
 	 *            setter, see {@link isGlobalFilter}
 	 */
@@ -88,6 +98,14 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 			return;
 		this.propertySupport.firePropertyChange(IFilterColumnMixin.PROP_FILTER, this.isGlobalFilter,
 				this.isGlobalFilter = isGlobalFilter);
+
+	}
+
+	public void setIsRankIndependentFilter(boolean isRankIndependentFilter) {
+		if (this.isRankIndependentFilter == isRankIndependentFilter)
+			return;
+		this.propertySupport.firePropertyChange(IFilterColumnMixin.PROP_FILTER, this.isRankIndependentFilter,
+				this.isRankIndependentFilter = isRankIndependentFilter);
 
 	}
 
@@ -100,7 +118,7 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 	public abstract boolean isFiltered();
 
 	@Override
-	public final void filter(List<IRow> data, BitSet mask) {
+	public final void filter(List<IRow> data, BitSet mask, BitSet mask_filteredOutInfluenceRanking) {
 		if (!isFiltered())
 			return;
 		if (!maskInvalid.isEmpty()) {
@@ -110,6 +128,8 @@ public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel i
 			maskInvalid.andNot(todo);
 		}
 		mask.and(this.mask);
+		if (!isRankIndependentFilter) // mark that the masked out are persistent
+			mask_filteredOutInfluenceRanking.and(this.mask);
 	}
 
 	protected abstract void updateMask(BitSet todo, List<IRow> data, BitSet mask);

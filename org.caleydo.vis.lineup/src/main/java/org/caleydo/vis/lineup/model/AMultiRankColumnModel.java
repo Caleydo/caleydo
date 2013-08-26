@@ -53,6 +53,7 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	private float filterMin = 0;
 	private float filterMax = 1;
 	private boolean isGlobalFilter = false;
+	private boolean isRankIndependentFilter = false;
 	private final HistCache cacheHist = new HistCache();
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -88,6 +89,7 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		this.filterMin = copy.filterMin;
 		this.filterMax = copy.filterMax;
 		this.isGlobalFilter = copy.isGlobalFilter;
+		this.isRankIndependentFilter = copy.isRankIndependentFilter;
 	}
 
 	@Override
@@ -129,11 +131,26 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 				this.isGlobalFilter = isGlobalFilter);
 	}
 
+	public void setIsRankIndependentFilter(boolean isRankIndependentFilter) {
+		if (this.isRankIndependentFilter == isRankIndependentFilter)
+			return;
+		this.propertySupport.firePropertyChange(IFilterColumnMixin.PROP_FILTER, this.isRankIndependentFilter,
+				this.isRankIndependentFilter = isRankIndependentFilter);
+
+	}
+
+	/**
+	 * @return the isRankIndependentFilter, see {@link #isRankIndependentFilter}
+	 */
+	public boolean isRankIndependentFilter() {
+		return isRankIndependentFilter;
+	}
+
 	protected final void invalidAllFilter() {
 		maskInvalid.set(0, getTable().getDataSize());
 	}
 
-	public final void filter(List<IRow> data, BitSet mask) {
+	public final void filter(List<IRow> data, BitSet mask, BitSet mask_filteredOutInfluenceRanking) {
 		if (!isFiltered())
 			return;
 		if (!maskInvalid.isEmpty()) {
@@ -143,6 +160,8 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 			maskInvalid.andNot(todo);
 		}
 		mask.and(this.mask);
+		if (!isRankIndependentFilter) // mark that the masked out are persistent
+			mask_filteredOutInfluenceRanking.and(this.mask);
 	}
 
 	public boolean isFiltered() {

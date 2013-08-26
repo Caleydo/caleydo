@@ -304,26 +304,33 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	/**
+	 * @param c
+	 * @param filterGlobally
 	 * @param filterNotMappedEntries
 	 *            setter, see {@link filterNotMappedEntries}
 	 */
-	public void setFilter(FloatFilterDialog.FilterChecked checked) {
+	public void setFilter(FloatFilterDialog.FilterChecked checked, boolean filterGlobally,
+			boolean filterRankIndependently) {
 		if (this.filterNotMappedEntries == checked.isFilterNotMapped()
 				&& this.filterMissingEntries == checked.isFilterMissing()
-				&& this.isGlobalFilter == checked.isGlobalFiltering())
+ && this.isGlobalFilter == filterGlobally
+				&& this.isRankIndependentFilter == filterRankIndependently)
 			return;
-		FilterChecked bak = new FilterChecked(filterNotMappedEntries, filterMissingEntries, isGlobalFilter);
+		FilterChecked bak = new FilterChecked(filterNotMappedEntries, filterMissingEntries);
 
 		this.filterMissingEntries = checked.isFilterMissing();
 		this.filterNotMappedEntries = checked.isFilterNotMapped();
-		this.isGlobalFilter = checked.isGlobalFiltering();
+		this.isGlobalFilter = filterGlobally;
+		this.isRankIndependentFilter = filterRankIndependently;
 		invalidAllFilter();
 		cacheHist.invalidate();
 		propertySupport.firePropertyChange(IFilterColumnMixin.PROP_FILTER, bak, checked);
 	}
 
-	public void setFilter(boolean filterNotMappedEntries, boolean filterMissingEntries, boolean isGlobalFilter) {
-		setFilter(new FilterChecked(filterNotMappedEntries, filterMissingEntries, isGlobalFilter));
+	public void setFilter(boolean filterNotMappedEntries, boolean filterMissingEntries, boolean isGlobalFilter,
+			boolean filterRankIndependently) {
+		setFilter(new FilterChecked(filterNotMappedEntries, filterMissingEntries), isGlobalFilter,
+				filterRankIndependently);
 	}
 
 	@Override
@@ -334,7 +341,8 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
 				FloatFilterDialog dialog = new FloatFilterDialog(canvas.getShell(), getTitle(), summary,
-						filterNotMappedEntries, filterMissingEntries, isGlobalFilter, getTable().hasSnapshots(), loc);
+						filterNotMappedEntries, filterMissingEntries, FloatRankColumnModel.this, getTable()
+								.hasSnapshots(), loc);
 				dialog.open();
 			}
 		});
@@ -370,7 +378,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		@ListenTo(sendToMe = true)
 		private void onFilterChanged(FilterEvent event) {
 			FilterChecked f = (FilterChecked) event.getFilter();
-			((FloatRankColumnModel) model).setFilter(f);
+			((FloatRankColumnModel) model).setFilter(f, event.isFilterGlobally(), event.isFilterRankIndendent());
 		}
 
 	}

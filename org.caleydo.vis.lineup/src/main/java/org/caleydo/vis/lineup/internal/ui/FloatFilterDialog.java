@@ -8,6 +8,7 @@ package org.caleydo.vis.lineup.internal.ui;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.vis.lineup.internal.event.FilterEvent;
+import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -34,8 +35,8 @@ public class FloatFilterDialog extends AFilterDialog {
 
 
 	public FloatFilterDialog(Shell parentShell, String title, Object receiver, boolean filterNotMapped,
-			boolean filterMissing, boolean filterGlobally, boolean hasSnapshots, Point loc) {
-		super(parentShell, "Filter " + title, receiver, filterGlobally, hasSnapshots, loc);
+			boolean filterMissing, IFilterColumnMixin model, boolean hasSnapshots, Point loc) {
+		super(parentShell, "Filter " + title, receiver, model, hasSnapshots, loc);
 		this.filterMissing = filterMissing;
 		this.filterNotMapped = filterNotMapped;
 	}
@@ -70,8 +71,7 @@ public class FloatFilterDialog extends AFilterDialog {
 		filterNotMappedUI.addSelectionListener(adapter);
 		filterMissingUI.addSelectionListener(adapter);
 
-		createApplyGlobally(composite);
-		addOKButton(composite, true);
+		addButtonAndOption(composite);
 	}
 
 	@Override
@@ -84,18 +84,17 @@ public class FloatFilterDialog extends AFilterDialog {
 			a = filterNotMappedUI.getSelection();
 			b = filterMissingUI.getSelection();
 		}
-		EventPublisher.trigger(new FilterEvent(new FilterChecked(a, b, isFilterGlobally())).to(receiver));
+		EventPublisher.trigger(new FilterEvent(new FilterChecked(a, b), false, isFilterGlobally(),
+				isFilterRankIndependent()).to(receiver));
 	}
 
 	public static class FilterChecked {
 		private boolean filterNotMapped;
 		private boolean filterMissing;
-		private boolean globalFiltering;
 
-		public FilterChecked(boolean filterNotMapped, boolean filterMissing, boolean globalFiltering) {
+		public FilterChecked(boolean filterNotMapped, boolean filterMissing) {
 			this.filterNotMapped = filterNotMapped;
 			this.filterMissing = filterMissing;
-			this.globalFiltering = globalFiltering;
 		}
 
 		/**
@@ -110,13 +109,6 @@ public class FloatFilterDialog extends AFilterDialog {
 		 */
 		public boolean isFilterNotMapped() {
 			return filterNotMapped;
-		}
-
-		/**
-		 * @return the globalFiltering, see {@link #globalFiltering}
-		 */
-		public boolean isGlobalFiltering() {
-			return globalFiltering;
 		}
 	}
 }

@@ -128,28 +128,25 @@ public final class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<C
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
 				CatFilterDalog<CATEGORY_TYPE> dialog = new CatFilterDalog<>(canvas.getShell(), getTitle(), summary,
-						metaData, selection, isGlobalFilter, getTable().hasSnapshots(), loc, filterNA, labelNA);
+						metaData, selection, CategoricalRankColumnModel.this, getTable().hasSnapshots(), loc, filterNA,
+						labelNA);
 				dialog.open();
 			}
 		});
 	}
 
-	protected void setFilter(Collection<CATEGORY_TYPE> filter, boolean isFilterNA, boolean isGlobalFilter) {
+	protected void setFilter(Collection<CATEGORY_TYPE> filter, boolean isFilterNA, boolean isGlobalFilter,
+			boolean isRankIndependentFilter) {
+		if (filter.equals(selection) && isFilterNA == this.filterNA && this.isGlobalFilter == isGlobalFilter
+				&& this.isRankIndependentFilter == isRankIndependentFilter)
+			return;
 		invalidAllFilter();
-		Set<CATEGORY_TYPE> bak = new HashSet<>(this.selection);
 		this.selection.clear();
 		this.selection.addAll(filter);
-		boolean sameSelection=this.selection.equals(bak);
-		if (sameSelection && this.filterNA == isFilterNA) {
-			setGlobalFilter(isGlobalFilter);
-		} else if (!sameSelection){
-			this.isGlobalFilter = isGlobalFilter;
-			this.filterNA = isFilterNA;
-			propertySupport.firePropertyChange(PROP_FILTER, bak, this.selection);
-		} else if (this.filterNA != isFilterNA) {
-			this.isGlobalFilter = isGlobalFilter;
-			propertySupport.firePropertyChange(PROP_FILTER, this.filterNA, this.filterNA = isFilterNA);
-		}
+		this.isGlobalFilter = isGlobalFilter;
+		this.filterNA = isFilterNA;
+		this.isRankIndependentFilter = isRankIndependentFilter;
+		propertySupport.firePropertyChange(PROP_FILTER, false, true);
 	}
 
 	@Override
@@ -243,7 +240,8 @@ public final class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<C
 		@SuppressWarnings("unchecked")
 		@ListenTo(sendToMe = true)
 		private void onSetFilter(FilterEvent event) {
-			setFilter((Collection<CATEGORY_TYPE>) event.getFilter(), event.isFilterNA(), event.isFilterGlobally());
+			setFilter((Collection<CATEGORY_TYPE>) event.getFilter(), event.isFilterNA(), event.isFilterGlobally(),
+					event.isFilterRankIndendent());
 		}
 	}
 

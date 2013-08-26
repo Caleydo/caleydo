@@ -30,9 +30,14 @@ public class ColumnRanker implements Iterable<IRow> {
 	public static final String PROP_ORDER = "order";
 
 	/**
-	 * current filter to select data
+	 * current filter to select data true ... visible false ... invsibile
 	 */
 	private BitSet filter;
+	/**
+	 * which entries of the 0-filter map still influence the ranking true ... filter = false + should still influence
+	 * the rank
+	 */
+	private BitSet filteredOutInfluenceRanking;
 	private boolean dirtyFilter = true;
 
 	/**
@@ -218,13 +223,18 @@ public class ColumnRanker implements Iterable<IRow> {
 			new_ = new BitSet(data.size());
 			new_.set(0, data.size());
 		}
+		// set of items should be filtered out but still influence the ranking
+		BitSet new_InfluenceRanking = new BitSet(data.size());
+		new_InfluenceRanking.set(0, data.size());
 
 		for (Iterator<IFilterColumnMixin> it = findAllFiltered(); it.hasNext();) {
-			it.next().filter(data, new_);
+			it.next().filter(data, new_, new_InfluenceRanking);
 		}
+		new_InfluenceRanking.andNot(new_); // mask out all the visible entries
 
 		dirtyOrder = true;
 		filter = new_;
+		filteredOutInfluenceRanking = new_InfluenceRanking;
 		order();
 	}
 
@@ -251,28 +261,33 @@ public class ColumnRanker implements Iterable<IRow> {
 		if (orderBy == null) {
 			List<IRow> targetOrderItems = new ArrayList<>(data.size());
 			for (int i = 0; i < data.size(); ++i) {
-				if (!filter.get(i))
+				if (includeInRanking(i))
 					continue;
 				targetOrderItems.add(data.get(i));
 			}
-			int[] newOrder = new int[targetOrderItems.size()];
+			final int size = orderedSize(targetOrderItems);
+			int[] newOrder = new int[size];
 			deltas = new int[newOrder.length];
 			IntIntHashMap newRanks = new IntIntHashMap(newOrder.length);
 			newRanks.setKeyNotFoundValue(-1);
+			int j = 0;
 			for (int i = 0; i < newOrder.length; ++i) {
-				IRow r = targetOrderItems.get(i);
+				while (filteredOutInfluenceRanking.get(targetOrderItems.get(j).getIndex()))
+					j++; // skip all filtered elements
+				IRow r = targetOrderItems.get(j++);
+				final int rank = j - 1;
 				final int ri = r.getIndex();
 				newOrder[i] = ri;
-				exaequoOffsets.put(i, -i);
+				exaequoOffsets.put(rank, -rank);
 				if (ranks.get(ri) < 0) {// was not visible
 					anyDelta = true;
 					deltas[i] = Integer.MIN_VALUE;
 				} else {
-					int delta = i - ranks.get(ri);
+					int delta = rank - ranks.get(ri);
 					deltas[i] = delta;
 					anyDelta = anyDelta || delta != 0;
 				}
-				newRanks.put(ri, i);
+				newRanks.put(ri, rank);
 			}
 			order = newOrder;
 			ranks = newRanks;
@@ -280,84 +295,117 @@ public class ColumnRanker implements Iterable<IRow> {
 			IFloatRankableColumnMixin orderByF = (IFloatRankableColumnMixin) orderBy;
 			List<IntFloat> targetOrderItems = new ArrayList<>(data.size());
 			for (int i = 0; i < data.size(); ++i) {
-				if (filter.get(i)) {
+				if (includeInRanking(i)) {
 					targetOrderItems.add(new IntFloat(i, orderByF.applyPrimitive(data.get(i))));
 				}
 			}
+			final int size = targetOrderItems.size() - filteredOutInfluenceRanking.cardinality();
+
 			Collections.sort(targetOrderItems);
 
-			int[] newOrder = new int[targetOrderItems.size()];
+			int[] newOrder = new int[size];
 			deltas = new int[newOrder.length];
 			IntIntHashMap newRanks = new IntIntHashMap(newOrder.length);
 			newRanks.setKeyNotFoundValue(-1);
 
 			int offset = 0;
 			float last = Float.NaN;
-			for (int i = 0; i < targetOrderItems.size(); ++i) {
-				IntFloat pair = targetOrderItems.get(i);
+			int j = 0;
+			for (int i = 0; i < newOrder.length; ++i) {
+				for (IntFloat vi = targetOrderItems.get(j); filteredOutInfluenceRanking.get(vi.id); vi = targetOrderItems
+						.get(++j)) {
+					// skip all filtered elements but handle exaequo
+					if (last == vi.value)
+						offset++;
+					else
+						offset = 0;
+					last = vi.value;
+				}
+				IntFloat pair = targetOrderItems.get(j++);
 				final int ri = pair.id;
-				newOrder[i] = pair.id;
+				final int rank = j - 1;
 				if (last == pair.value) {
 					offset++;
-					exaequoOffsets.put(i, offset);
+					exaequoOffsets.put(rank, offset);
 				} else {
 					offset = 0;
 				}
+				last = pair.value;
+				newOrder[i] = pair.id;
 				if (ranks.get(ri) < 0) {// was not visible
 					anyDelta = true;
 					deltas[i] = Integer.MIN_VALUE;
 				} else {
-					int delta = i - ranks.get(ri);
+					int delta = rank - ranks.get(ri);
 					deltas[i] = delta;
 					anyDelta = anyDelta || delta != 0;
 				}
-				newRanks.put(ri, i);
-				last = pair.value;
+				newRanks.put(ri, rank);
 			}
 			order = newOrder;
 			ranks = newRanks;
 		} else {
 			List<IRow> targetOrderItems = new ArrayList<>(data.size());
 			for (int i = 0; i < data.size(); ++i) {
-				if (filter.get(i)) {
+				if (includeInRanking(i)) {
 					targetOrderItems.add(data.get(i));
 				}
 			}
 			Collections.sort(targetOrderItems, orderBy);
+			final int size = orderedSize(targetOrderItems);
 
-			int[] newOrder = new int[targetOrderItems.size()];
+			int[] newOrder = new int[size];
 			deltas = new int[newOrder.length];
 			IntIntHashMap newRanks = new IntIntHashMap(newOrder.length);
 			newRanks.setKeyNotFoundValue(-1);
 
 			int offset = 0;
 			IRow last = null;
-			for (int i = 0; i < targetOrderItems.size(); ++i) {
-				IRow pair = targetOrderItems.get(i);
-				final int ri = pair.getIndex();
-				newOrder[i] = pair.getIndex();
-				if (last != null && orderBy.compare(last, pair) == 0) {
+			int j = 0;
+			for (int i = 0; i < newOrder.length; ++i) {
+				for (IRow r = targetOrderItems.get(j); filteredOutInfluenceRanking.get(r.getIndex()); r = targetOrderItems
+						.get(++j)) {
+					// skip all filtered elements but handle exaequo
+					if (last != null && orderBy.compare(last, r) == 0)
+						offset++;
+					else
+						offset = 0;
+					last = r;
+				}
+				IRow r = targetOrderItems.get(j++);
+				final int ri = r.getIndex();
+				final int rank = j - 1;
+				newOrder[i] = r.getIndex();
+				if (last != null && orderBy.compare(last, r) == 0) {
 					offset++;
-					exaequoOffsets.put(i, offset);
+					exaequoOffsets.put(rank, offset);
 				} else {
 					offset = 0;
 				}
+				last = r;
 				if (ranks.get(ri) < 0) {// was not visible
 					anyDelta = true;
 					deltas[i] = Integer.MIN_VALUE;
 				} else {
-					int delta = i - ranks.get(ri);
+					int delta = rank - ranks.get(ri);
 					deltas[i] = delta;
 					anyDelta = anyDelta || delta != 0;
 				}
-				newRanks.put(ri, i);
-				last = pair;
+				newRanks.put(ri, rank);
 			}
 			order = newOrder;
 			ranks = newRanks;
 		}
 		if (anyDelta)
 			propertySupport.firePropertyChange(PROP_ORDER, deltas, order);
+	}
+
+	private int orderedSize(List<IRow> targetOrderItems) {
+		return targetOrderItems.size() - filteredOutInfluenceRanking.cardinality();
+	}
+
+	private boolean includeInRanking(int i) {
+		return filter.get(i) || filteredOutInfluenceRanking.get(i);
 	}
 
 	private static final class IntFloat implements Comparable<IntFloat> {
