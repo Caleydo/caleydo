@@ -40,6 +40,7 @@ import org.caleydo.view.tourguide.impl.algorithm.GeneSetMappedAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.PGSEAAlgorithm;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
+import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.lineup.config.RankTableConfigBase;
@@ -62,16 +63,13 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	private IRegisteredScore createGSEA(String label, Perspective reference, Group group) {
 		if (label == null)
 			label = reference.getLabel() + " " + group.getLabel();
-		return new GeneSetScore(label, new GSEAAlgorithm(reference, group, 1.0f, false), false, new PiecewiseMapping(
-				-1, 1));
+		return new GeneSetScore(label, new GSEAAlgorithm(reference, group, 1.0f, false), new PiecewiseMapping(-1, 1));
 	}
 
 	private IRegisteredScore createPGSEA(String label, Perspective reference, Group group) {
 		if (label == null)
 			label = reference.getLabel() + " " + group.getLabel();
-		return new GeneSetScore(label, new PGSEAAlgorithm(reference, group),
- false, new PiecewiseMapping(Float.NaN,
-				Float.NaN));
+		return new GeneSetScore(label, new PGSEAAlgorithm(reference, group), new PiecewiseMapping(Float.NaN, Float.NaN));
 	}
 
 	@Override
@@ -131,20 +129,20 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 		{
 			GSEAAlgorithm algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f, false);
-			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false,
-					new PiecewiseMapping(-1, +1));
+			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, new PiecewiseMapping(-1,
+					+1));
 			// IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true);
 			col.add(new ScoreEntry("Gene Set Enrichment Analysis of group", gsea));
 		}
 
 		{
 			PGSEAAlgorithm algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
-			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false,
-					new PiecewiseMapping(Float.NaN, Float.NaN));
+			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, new PiecewiseMapping(
+					Float.NaN, Float.NaN));
 			PiecewiseMapping m = new PiecewiseMapping(0, 1);
 			m.put(0, 1);
 			m.put(1, 0);
-			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true, m);
+			IScore pValue = new GeneSetPValueScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), m, gsea);
 			col.add(new ScoreEntry("Parametric Gene Set Enrichment Analysis of group", gsea, pValue));
 		}
 		return col;
@@ -156,7 +154,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	 */
 	private static boolean isGoodDataDomain(IDataDomain dataDomain) {
 		if (!PathwayOracle.canBeUnderlying(dataDomain) || !(dataDomain instanceof ATableBasedDataDomain))
-				return false;
+			return false;
 		ATableBasedDataDomain d = (ATableBasedDataDomain) dataDomain;
 		return d.getTable().isDataHomogeneous() && d.getTable() instanceof NumericalTable;
 	}
@@ -273,9 +271,39 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	public static class GeneSetScore extends DefaultComputedStratificationScore {
 		private final PiecewiseMapping mapping;
 
-		public GeneSetScore(String label, IStratificationAlgorithm algorithm, boolean isPValue, PiecewiseMapping mapping) {
-			super(label, algorithm, ComputeScoreFilters.ALL, isPValue ? color.darker() : color, bgColor);
+		public GeneSetScore(String label, IStratificationAlgorithm algorithm, PiecewiseMapping mapping) {
+			super(label, algorithm, ComputeScoreFilters.ALL, color, bgColor);
 			this.mapping = mapping;
+		}
+
+		@Override
+		public boolean supports(EDataDomainQueryMode mode) {
+			return mode == EDataDomainQueryMode.PATHWAYS;
+		}
+
+		@Override
+		public PiecewiseMapping createMapping() {
+			return mapping.clone();
+		}
+	}
+
+	public static class GeneSetPValueScore extends DefaultComputedStratificationScore implements IDecoratedScore {
+		private final PiecewiseMapping mapping;
+		private final IScore underlying;
+
+		public GeneSetPValueScore(String label, IStratificationAlgorithm algorithm, PiecewiseMapping mapping,
+				IScore underlying) {
+			super(label, algorithm, ComputeScoreFilters.ALL, color.darker(), bgColor);
+			this.mapping = mapping;
+			this.underlying = underlying;
+		}
+
+		/**
+		 * @return the underlying, see {@link #underlying}
+		 */
+		@Override
+		public IScore getUnderlying() {
+			return underlying;
 		}
 
 		@Override
@@ -328,7 +356,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	 */
 	public static IScore[] createScore(TablePerspective strat, Group group, boolean createGSEA) {
 		if (group == null) {
-			//TODO
+			// TODO
 			return new IScore[0];
 		} else {
 			// now we have the data for the stuff
@@ -340,14 +368,14 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 			IScore s;
 			if (createGSEA) {
 				algorithm = new GSEAAlgorithm(perspective, group, 1.0f, false);
-				s = new GeneSetScore(label, algorithm, false, new PiecewiseMapping(-1, 1));
+				s = new GeneSetScore(label, algorithm, new PiecewiseMapping(-1, 1));
 			} else {
 				algorithm = new PGSEAAlgorithm(perspective, group);
-				IScore gsea = new GeneSetScore(prefix, algorithm, false, new PiecewiseMapping(Float.NaN, Float.NaN));
+				IScore gsea = new GeneSetScore(prefix, algorithm, new PiecewiseMapping(Float.NaN, Float.NaN));
 				PiecewiseMapping m = new PiecewiseMapping(0, 1);
 				m.put(0, 1);
 				m.put(1, 0);
-				IScore pValue = new GeneSetScore(prefix + "P-Value", algorithm.asPValue(), true, m);
+				IScore pValue = new GeneSetPValueScore(prefix + "P-Value", algorithm.asPValue(), m, gsea);
 				MultiScore s2 = new MultiScore(label, color, bgColor, RankTableConfigBase.NESTED_MODE);
 				s2.add(pValue);
 				s2.add(gsea);

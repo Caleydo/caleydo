@@ -7,6 +7,7 @@ package org.caleydo.view.tourguide.internal.model;
 
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.internal.score.ExternalIDTypeScore;
+import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
@@ -16,11 +17,11 @@ import org.caleydo.vis.lineup.model.IRow;
 
 /**
  * the current strategy up to now is to show just a single stratification but here the maximal value for a group score,
- * 
+ *
  * therefore if we have a group score
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class MaxGroupCombiner extends AFloatFunction<IRow> {
 
@@ -43,6 +44,16 @@ public class MaxGroupCombiner extends AFloatFunction<IRow> {
 			// working on dimension ids just once
 			return score.apply(row, null);
 		}
+		if (score instanceof IDecoratedScore) {
+			Group g = MaxGroupCombiner.getMax(in, ((IDecoratedScore) score).getUnderlying());
+			if (g == null)
+				return Float.NaN;
+			return score.apply(row, g);
+		} else
+			return getMax(row);
+	}
+
+	private float getMax(AScoreRow row) {
 		float v = Float.NaN;
 		for(Group g : row.getGroups()) {
 			float vg = score.apply(row, g);
