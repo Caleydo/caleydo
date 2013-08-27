@@ -164,13 +164,13 @@ public class TourguideAdapter implements IStratomexAdapter {
 	public void renderAddDependentButton(GL2 gl, float x, float y, float w, float h, int id) {
 		if (!hasTourGuide() || isWizardActive()) // not more than one at the same time
 			return;
-		renderButton(gl, x, y, w, h, 24, stratomex, ADD_DEPENDENT_PICKING_TYPE, id, "add.png");
+		renderButton(gl, x, y, w, h, 24, stratomex, ADD_DEPENDENT_PICKING_TYPE, id, "add_dependent.png");
 	}
 
 	public void renderAddInDependentButton(GL2 gl, float x, float y, float w, float h, int id) {
 		if (!hasTourGuide() || isWizardActive()) // not more than one at the same time
 			return;
-		renderButton(gl, x, y, w, h, 24, stratomex, ADD_INDEPENDENT_PICKING_TYPE, id, "add.png");
+		renderButton(gl, x, y, w, h, 24, stratomex, ADD_INDEPENDENT_PICKING_TYPE, id, "add_independent.png");
 	}
 
 	public void renderConfirmButton(GL2 gl, float x, float y, float w, float h) {
