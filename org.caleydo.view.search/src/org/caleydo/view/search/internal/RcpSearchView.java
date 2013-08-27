@@ -238,7 +238,7 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		caseSensitive.setText("Case sensitive");
 
 		regexSearch = new Button(row, SWT.CHECK);
-		regexSearch.setText("Regular Expression");
+		regexSearch.setText("Regular expression");
 
 	}
 
@@ -365,6 +365,7 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		// update layouts
 		results.layout();
 		resultsScrolled.setMinSize(results.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		root.layout();
 	}
 
 	protected void deleteOldSearchResult(boolean dispose) {
@@ -451,7 +452,7 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 	 */
 	private Group createResultTable(Composite composite, IDCategory category, final Map<IDType, Set<?>> foundIdTypes) {
 		Group group = new Group(results, SWT.SHADOW_ETCHED_IN);
-		final GridData gd = new GridData(SWT.FILL, SWT.TOP, true, false);
+		final GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		group.setLayoutData(gd);
 		group.setLayout(new FillLayout());
 		group.setText(category.getCategoryName());

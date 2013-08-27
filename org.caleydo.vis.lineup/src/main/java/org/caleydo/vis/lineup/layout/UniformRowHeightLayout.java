@@ -26,8 +26,9 @@ class UniformRowHeightLayout implements IRowHeightLayout {
 	@Override
 	public IRowLayoutInstance layout(ColumnRanker ranker, float h, int size, int offset, boolean forceOffset,
 			IRowLayoutInstance previous) {
-		final int selectedRank = ranker.getSelectedRank();
-		final int selectedIndex = selectedRank < 0 ? -1 : ranker.get(selectedRank).getIndex();
+		final int selectedIndex = ranker.get(ranker.getSelectedRank()) == null ? -1 : ranker.get(
+				ranker.getSelectedRank()).getIndex();
+		final int selectedRank = selectedIndex < 0 ? -1 : ranker.getSelectedRank();
 
 		final int visibleRows = (int) Math.round(Math.floor((h - 3) / ROW_HEIGHT));
 		int[] order = ranker.getOrder();
