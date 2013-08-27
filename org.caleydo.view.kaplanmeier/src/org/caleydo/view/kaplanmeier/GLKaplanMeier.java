@@ -38,6 +38,7 @@ import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer.EAlignmentX;
+import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer.EAlignmentY;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
@@ -350,9 +351,11 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 			if (isXAxis) {
 				lineLabelRenderer.setLineOffsetPixels(-AXIS_TICK_LABEL_SPACING_PIXELS);
 				lineLabelRenderer.setXCentered(true);
+				lineLabelRenderer.setAlignmentX(EAlignmentX.RIGHT);
 			} else {
 				lineLabelRenderer.setLineOffsetPixels(AXIS_TICK_LABEL_SPACING_PIXELS);
 				lineLabelRenderer.setYCentered(true);
+				lineLabelRenderer.setAlignmentY(EAlignmentY.MIDDLE);
 			}
 			lineCrossingRenderer.setLineWidth(2);
 			axis.addAttributeRenderer(lineCrossingRenderer);
