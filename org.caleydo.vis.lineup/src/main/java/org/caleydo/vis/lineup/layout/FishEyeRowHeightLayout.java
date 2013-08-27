@@ -55,8 +55,9 @@ class FishEyeRowHeightLayout implements IRowHeightLayout {
 	@Override
 	public IRowLayoutInstance layout(ColumnRanker ranker, float h, int size, int offset, boolean forceOffset,
 			IRowLayoutInstance previous) {
-		int selectedRank = ranker.getSelectedRank();
-		final int selectedIndex = selectedRank < 0 ? -1 : ranker.get(selectedRank).getIndex();
+		final int selectedIndex = ranker.get(ranker.getSelectedRank()) == null ? -1 : ranker.get(
+				ranker.getSelectedRank()).getIndex();
+		int selectedRank = selectedIndex < 0 ? -1 : ranker.getSelectedRank();
 		if (selectedRank < 0)
 			selectedRank = 0;
 

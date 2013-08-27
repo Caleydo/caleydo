@@ -55,7 +55,7 @@ public class ColumnRanker implements Iterable<IRow> {
 	 */
 	private int[] order;
 	private IntIntHashMap ranks = new IntIntHashMap();
-	private final IntIntHashMap exaequoOffsets = new IntIntHashMap();
+	private final IntIntHashMap visualRanks = new IntIntHashMap();
 	private boolean dirtyOrder = true;
 
 	private IRankableColumnMixin orderBy;
@@ -92,7 +92,7 @@ public class ColumnRanker implements Iterable<IRow> {
 		this.visible = clone.visible;
 		this.dirtyVisible = clone.dirtyVisible;
 		this.order = clone.order;
-		this.exaequoOffsets.putAll(clone.exaequoOffsets);
+		this.visualRanks.putAll(clone.visualRanks);
 		this.dirtyOrder = clone.dirtyOrder;
 	}
 
@@ -217,15 +217,15 @@ public class ColumnRanker implements Iterable<IRow> {
 		// System.out.println("filter");
 		// start with data mask
 		BitSet new_;
-		if (dataMask != null)
+
+		if (dataMask != null) {
 			new_ = (BitSet) dataMask.clone();
-		else {
+		} else {
 			new_ = new BitSet(data.size());
 			new_.set(0, data.size());
 		}
 		// set of items should be filtered out but still influence the ranking
-		BitSet new_InfluenceRanking = new BitSet(data.size());
-		new_InfluenceRanking.set(0, data.size());
+		BitSet new_InfluenceRanking = (BitSet) new_.clone();
 
 		for (Iterator<IFilterColumnMixin> it = findAllFiltered(); it.hasNext();) {
 			it.next().filter(data, new_, new_InfluenceRanking);
@@ -253,12 +253,12 @@ public class ColumnRanker implements Iterable<IRow> {
 		// by what
 		orderBy = findFirstRankable();
 
-		exaequoOffsets.clear();
+		visualRanks.clear();
 
 		//BitSet filter = getTable().getDefaultFilter().getFilter();
 
 		final List<IRow> data = getTable().getData();
-		if (orderBy == null) {
+		if (orderBy == null) { // no order
 			List<IRow> targetOrderItems = new ArrayList<>(data.size());
 			for (int i = 0; i < data.size(); ++i) {
 				if (includeInRanking(i))
@@ -275,10 +275,11 @@ public class ColumnRanker implements Iterable<IRow> {
 				while (filteredOutInfluenceRanking.get(targetOrderItems.get(j).getIndex()))
 					j++; // skip all filtered elements
 				IRow r = targetOrderItems.get(j++);
-				final int rank = j - 1;
+				final int rank = i;
+				final int visualRank = j - 1;
 				final int ri = r.getIndex();
 				newOrder[i] = ri;
-				exaequoOffsets.put(rank, -rank);
+				visualRanks.put(rank, visualRank);
 				if (ranks.get(ri) < 0) {// was not visible
 					anyDelta = true;
 					deltas[i] = Integer.MIN_VALUE;
@@ -323,13 +324,16 @@ public class ColumnRanker implements Iterable<IRow> {
 				}
 				IntFloat pair = targetOrderItems.get(j++);
 				final int ri = pair.id;
-				final int rank = j - 1;
+				final int rank = i;
+				int visualRank = j - 1;
 				if (last == pair.value) {
 					offset++;
-					exaequoOffsets.put(rank, offset);
+					visualRank -= offset;
 				} else {
 					offset = 0;
 				}
+				if (visualRank != rank)
+					visualRanks.put(rank, visualRank);
 				last = pair.value;
 				newOrder[i] = pair.id;
 				if (ranks.get(ri) < 0) {// was not visible
@@ -374,14 +378,17 @@ public class ColumnRanker implements Iterable<IRow> {
 				}
 				IRow r = targetOrderItems.get(j++);
 				final int ri = r.getIndex();
-				final int rank = j - 1;
+				final int rank = i;
+				int visualRank = j - 1;
 				newOrder[i] = r.getIndex();
 				if (last != null && orderBy.compare(last, r) == 0) {
 					offset++;
-					exaequoOffsets.put(rank, offset);
+					visualRank -= offset;
 				} else {
 					offset = 0;
 				}
+				if (visualRank != rank)
+					visualRanks.put(rank, visualRank);
 				last = r;
 				if (ranks.get(ri) < 0) {// was not visible
 					anyDelta = true;
@@ -396,8 +403,18 @@ public class ColumnRanker implements Iterable<IRow> {
 			order = newOrder;
 			ranks = newRanks;
 		}
+		assert plausibleRanks(order, ranks);
 		if (anyDelta)
 			propertySupport.firePropertyChange(PROP_ORDER, deltas, order);
+	}
+
+	private static boolean plausibleRanks(int[] order2, IntIntHashMap ranks2) {
+		if (order2.length != ranks2.size())
+			return false;
+		for (int i : order2)
+			if (!ranks2.containsKey(i))
+				return false;
+		return true;
 	}
 
 	private int orderedSize(List<IRow> targetOrderItems) {
@@ -435,8 +452,8 @@ public class ColumnRanker implements Iterable<IRow> {
 		int r = ranks.get(row.getIndex());
 		if (r < 0)
 			return -1;
-		if (exaequoOffsets.containsKey(r)) {
-			return r - exaequoOffsets.get(r) + 1;
+		if (visualRanks.containsKey(r)) {
+			return visualRanks.get(r) + 1;
 		}
 		return r + 1;
 	}
