@@ -232,7 +232,7 @@ public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 	}
 
 	@Override
-	protected void layoutImpl() {
+	protected void layoutImpl(int deltaTimeMs) {
 		Vec2f size = getSize().copy();
 		if (recordLabels.show()) {
 			size.setX(size.x() - textWidth);

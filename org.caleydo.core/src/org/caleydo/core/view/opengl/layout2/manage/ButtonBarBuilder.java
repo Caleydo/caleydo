@@ -108,7 +108,8 @@ public class ButtonBarBuilder {
 		HORIZONTAL, VERTICAL, SLIDE_LEFT, SLIDE_RIGHT, SLIDE_DOWN, HOVER_BLOCK_3x3;
 
 		@Override
-		public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent) {
+		public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent,
+				int deltaTimeMs) {
 			if (children.isEmpty())
 				return false;
 
@@ -117,9 +118,9 @@ public class ButtonBarBuilder {
 			final int active = getActive(parent);
 			switch (this) {
 			case HORIZONTAL:
-				return GLLayouts.flowHorizontal(2).doLayout(children, w, h, parent);
+				return GLLayouts.flowHorizontal(2).doLayout(children, w, h, parent, deltaTimeMs);
 			case VERTICAL:
-				return GLLayouts.flowVertical(2).doLayout(children, w, h, parent);
+				return GLLayouts.flowVertical(2).doLayout(children, w, h, parent, deltaTimeMs);
 			case SLIDE_LEFT:
 				if (hovered) {
 					int j = 0;

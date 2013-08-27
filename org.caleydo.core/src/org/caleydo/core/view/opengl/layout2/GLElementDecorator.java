@@ -93,15 +93,15 @@ public class GLElementDecorator extends GLElement implements IGLElementParent {
 	}
 
 	@Override
-	protected void layoutImpl() {
+	protected void layoutImpl(int deltaTimeMs) {
 		if (content != null) {
 			Vec2f size = getSize();
-			layoutContent(content.layoutElement, size.x(), size.y());
+			layoutContent(content.layoutElement, size.x(), size.y(), deltaTimeMs);
 		}
-		super.layoutImpl();
+		super.layoutImpl(deltaTimeMs);
 	}
 
-	protected void layoutContent(IGLLayoutElement content, float w, float h) {
+	protected void layoutContent(IGLLayoutElement content, float w, float h, int deltaTimeMs) {
 		content.setBounds(0, 0, w, h);
 	}
 

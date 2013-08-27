@@ -75,11 +75,11 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	}
 
 	@Override
-	protected final void layoutImpl() {
-		super.layoutImpl();
+	protected final void layoutImpl(int deltaTimeMs) {
+		super.layoutImpl(deltaTimeMs);
 		List<IGLLayoutElement> l = asLayoutElements();
 		Vec2f size = getSize();
-		boolean relayout = layout.doLayout(l, size.x(), size.y(), layoutElement);
+		boolean relayout = layout.doLayout(l, size.x(), size.y(), layoutElement, deltaTimeMs);
 		if (relayout)
 			relayout();
 	}

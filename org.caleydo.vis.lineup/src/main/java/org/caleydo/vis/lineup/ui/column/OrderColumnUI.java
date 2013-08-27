@@ -8,14 +8,13 @@ package org.caleydo.vis.lineup.ui.column;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
-import org.caleydo.core.util.color.Color;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -156,7 +155,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 	}
 
 	@Override
-	protected void layoutImpl() {
+	protected void layoutImpl(int deltaTimeMs) {
 		if (!becauseOfSelectedRow)
 			rowLayoutInstance = null;
 		becauseOfSelectedRow = false;
@@ -166,7 +165,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		scrollOffset = rowLayoutInstance.getOffset();
 		scrollBar.setBounds(rowLayoutInstance.getOffset(), rowLayoutInstance.getNumVisibles(),
 				rowLayoutInstance.getSize());
-		super.layoutImpl();
+		super.layoutImpl(deltaTimeMs);
 	}
 
 	/**

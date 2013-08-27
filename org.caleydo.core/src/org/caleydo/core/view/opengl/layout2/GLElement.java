@@ -125,7 +125,10 @@ public class GLElement implements IHasGLLayoutData {
 	 * indicator whether the layouting should run next time
 	 */
 	private boolean dirtyLayout = true;
-
+	/**
+	 * accumulated delta time between the layout runs
+	 */
+	private int deltaLayoutDirty = 0;
 	/**
 	 * the z value to add before the value should be rendered
 	 */
@@ -280,8 +283,11 @@ public class GLElement implements IHasGLLayoutData {
 	 * checks if the layout is dirty and it is is so perform the layouting
 	 */
 	public void layout(int deltaTimeMs) {
-		if (dirtyLayout)
-			layoutImpl();
+		if (dirtyLayout) {
+			deltaLayoutDirty += deltaTimeMs;
+			layoutImpl(deltaLayoutDirty);
+			deltaLayoutDirty = 0;
+		}
 	}
 
 	public static boolean areValidBounds(float x, float y, float w, float h) {
@@ -647,8 +653,10 @@ public class GLElement implements IHasGLLayoutData {
 
 	/**
 	 * trigger to layout this element
+	 *
+	 * @param deltaTimeMs
 	 */
-	protected void layoutImpl() {
+	protected void layoutImpl(int deltaTimeMs) {
 		dirtyLayout = false;
 		if (context != null) {
 			cache.invalidate(context.getDisplayListPool());

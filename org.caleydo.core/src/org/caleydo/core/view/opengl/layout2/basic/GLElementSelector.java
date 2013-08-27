@@ -69,8 +69,8 @@ public abstract class GLElementSelector extends GLElement implements IGLElementP
 	}
 
 	@Override
-	protected final void layoutImpl() {
-		super.layoutImpl();
+	protected final void layoutImpl(int deltaTimeMs) {
+		super.layoutImpl(deltaTimeMs);
 		Vec2f size = getSize();
 		if (lazy) {
 			GLElement selected = getSelected();

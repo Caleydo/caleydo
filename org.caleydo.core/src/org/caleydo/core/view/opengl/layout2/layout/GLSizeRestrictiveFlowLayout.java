@@ -31,7 +31,8 @@ public class GLSizeRestrictiveFlowLayout extends GLFlowLayout {
 	}
 
 	@Override
-	public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent) {
+	public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent,
+			int deltaTimeMs) {
 		w -= padding.hor();
 		h -= padding.vert();
 		float freeSpace = (horizontal ? w : h) - gap * (children.size() - 1);
