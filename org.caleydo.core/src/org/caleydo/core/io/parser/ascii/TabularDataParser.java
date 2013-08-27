@@ -255,8 +255,10 @@ public class TabularDataParser extends ATextParser {
 		List<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
 
 		int lineCounter = 0;
-		StringBuffer numberParsingErrorMessage = new StringBuffer("Could not parse a number in file "
-				+ dataSetDescription.getDataSetName() + " at path " + filePath + "\n at the following locations: \n");
+		StringBuilder numberParsingErrorMessage = new StringBuilder("Could not parse a number in file ")
+				.append(dataSetDescription.getDataSetName()).append(" at path ").append(filePath)
+				.append("\n at the following locations: \n");
+		final int numberParsingErrorMessageEmpty = numberParsingErrorMessage.length();
 
 		// ------------- ID parsing stuff ------------------------------
 		IDSpecification rowIDSpecification = dataSetDescription.getRowIDSpecification();
@@ -312,7 +314,7 @@ public class TabularDataParser extends ATextParser {
 						float floatValue;
 						FloatContainer targetColumn = (FloatContainer) targetRawContainer.get(count);
 						try {
-							if (cellContent.equals("NA")) {
+							if ("NA".equals(cellContent)) {
 								naCounter++;
 								targetColumn.addUnknown();
 								break;
@@ -321,9 +323,10 @@ public class TabularDataParser extends ATextParser {
 							floatValue = Float.parseFloat(cellContent);
 							targetColumn.add(floatValue);
 						} catch (NumberFormatException nfe) {
-							numberParsingErrorMessage.append("column " + (columnDescription.getColumn()) + ", line "
-									+ (lineCounter + dataSetDescription.getNumberOfHeaderLines())
-									+ ". Cell content was: " + cellContent + "\n");
+							numberParsingErrorMessage.append("column ").append(columnDescription.getColumn())
+									.append(", line ")
+									.append(lineCounter + dataSetDescription.getNumberOfHeaderLines())
+									.append(". Cell content was: ").append(cellContent).append("\n");
 							targetColumn.addUnknown();
 						}
 
@@ -334,7 +337,7 @@ public class TabularDataParser extends ATextParser {
 						IContainer<Integer> targetIntColumn = (IContainer<Integer>) targetRawContainer.get(count);
 						try {
 
-							if (cellContent.equals("NA")) {
+							if ("NA".equals(cellContent)) {
 								naCounter++;
 								targetIntColumn.addUnknown();
 								break;
@@ -344,9 +347,10 @@ public class TabularDataParser extends ATextParser {
 							targetIntColumn.add(intValue);
 
 						} catch (NumberFormatException nfe) {
-							numberParsingErrorMessage.append("column " + (columnDescription.getColumn()) + ", line "
-									+ (lineCounter + dataSetDescription.getNumberOfHeaderLines())
-									+ ". Cell content was: " + cellContent + "\n");
+							numberParsingErrorMessage.append("column ").append(columnDescription.getColumn())
+									.append(", line ")
+									.append(lineCounter + dataSetDescription.getNumberOfHeaderLines())
+									.append(". Cell content was: ").append(cellContent).append("\n");
 							targetIntColumn.addUnknown();
 						}
 
@@ -380,10 +384,10 @@ public class TabularDataParser extends ATextParser {
 		}
 
 		if (naCounter > 0) {
-			numberParsingErrorMessage.append("Number of parsed NA values: " + naCounter);
+			numberParsingErrorMessage.append("Number of parsed NA values: ").append(naCounter);
 		}
 
-		if (numberParsingErrorMessage.length() > 0) {
+		if (numberParsingErrorMessage.length() > numberParsingErrorMessageEmpty) {
 			Logger.log(new Status(IStatus.ERROR, this.toString(), numberParsingErrorMessage.toString()));
 		}
 		monitor.done();
