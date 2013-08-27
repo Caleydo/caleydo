@@ -21,7 +21,8 @@ public final class GLLayout2Adapter implements IGLLayout2 {
 	}
 
 	@Override
-	public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent) {
+	public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent,
+			int deltaTimeMs) {
 		layout.doLayout(children, w, h);
 		return false;
 	}

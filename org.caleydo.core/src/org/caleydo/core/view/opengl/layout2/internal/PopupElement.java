@@ -71,9 +71,10 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		resize.setVisibility(isFlagSet(FLAG_RESIZEABLE) ? EVisibility.PICKABLE : EVisibility.HIDDEN);
 		this.add(resize);
 
-		if (bounds != null)
-			this.setBounds(bounds.x(), bounds.y(), bounds.width(), bounds.height()
-					+ (isFlagSet(FLAG_HAS_HEADER) ? 8 : 0));
+		if (bounds != null) {
+			this.setSize(bounds.width(), bounds.height() + (isFlagSet(FLAG_HAS_HEADER) ? 8 : 0));
+			this.setLayoutData(bounds.xy()); // store the encoded location within the layout data
+		}
 		setVisibility(EVisibility.PICKABLE); // as a barrier to the underlying
 	}
 

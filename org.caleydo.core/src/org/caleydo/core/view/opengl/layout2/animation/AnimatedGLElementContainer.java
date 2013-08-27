@@ -193,8 +193,8 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	@Override
-	protected final void layoutImpl() {
-		super.layoutImpl();
+	protected final void layoutImpl(int deltaTimeMs) {
+		super.layoutImpl(deltaTimeMs);
 		Vec2f size = getSize();
 		boolean relayout = false;
 		if (!enableAnimation) {
@@ -203,14 +203,14 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 				if (elem.getVisibility() != EVisibility.NONE)
 					l.add(asLayoutElement(elem));
 			}
-			relayout = layout.doLayout(l, size.x(), size.y(), asLayoutElement(this));
+			relayout = layout.doLayout(l, size.x(), size.y(), asLayoutElement(this), deltaTimeMs);
 		} else if (dirtyAnimation || forceLayout) {
 			List<RecordingLayoutElement> l = new ArrayList<>(children.size());
 			for (GLElement elem : children) {
 				if (elem.getVisibility() != EVisibility.NONE)
 					l.add(new RecordingLayoutElement(asLayoutElement(elem)));
 			}
-			relayout = layout.doLayout(l, size.x(), size.y(), asLayoutElement(this));
+			relayout = layout.doLayout(l, size.x(), size.y(), asLayoutElement(this), deltaTimeMs);
 
 			for (RecordingLayoutElement elem : l) {
 				ALayoutAnimation anim = layoutAnimations.get(elem.wrappee);
@@ -296,8 +296,10 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		for (GLElement child : this)
+		for (GLElement child : this) {
+			GLElementAccessor.setParent(child, this);
 			GLElementAccessor.init(child, context);
+		}
 	}
 
 	private void setup(GLElement child) {
@@ -316,6 +318,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 
 	private void takeDown(GLElement child, boolean checkLayoutAnimations) {
 		GLElementAccessor.takeDown(child);
+		GLElementAccessor.setParent(child, null);
 		if (checkLayoutAnimations) {
 			layoutAnimations.remove(asLayoutElement(child));
 		}

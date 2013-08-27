@@ -22,7 +22,8 @@ public class GLLayouts {
 	 */
 	public static final IGLLayout2 NONE = new IGLLayout2() {
 		@Override
-		public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent) {
+		public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent,
+				int deltaTimeMs) {
 			return false;
 		}
 	};
@@ -32,7 +33,8 @@ public class GLLayouts {
 	 */
 	public static final IGLLayout2 LAYERS = new IGLLayout2() {
 		@Override
-		public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent) {
+		public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent,
+				int deltaTimeMs) {
 			for (IGLLayoutElement child : children) {
 				float x = defaultValue(child.getSetX(), 0);
 				float y = defaultValue(child.getSetY(), 0);
