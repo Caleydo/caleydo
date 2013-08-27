@@ -216,12 +216,15 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 		super.init(context);
 		if (lazy == ELazyiness.NONE) {
 			for (GLElement instance : instances) {
+				GLElementAccessor.setParent(instance, this);
 				GLElementAccessor.init(instance, context);
 			}
 		} else {
 			GLElement selected = getActiveElement();
-			if (selected != null)
+			if (selected != null) {
+				GLElementAccessor.setParent(selected, this);
 				GLElementAccessor.init(selected, context);
+			}
 		}
 	}
 

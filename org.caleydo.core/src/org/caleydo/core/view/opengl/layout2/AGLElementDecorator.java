@@ -55,8 +55,10 @@ public abstract class AGLElementDecorator extends GLElement implements IGLElemen
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		if (content != null)
+		if (content != null) {
+			content.setParent(this);
 			content.init(context);
+		}
 	}
 
 	@Override

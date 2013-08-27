@@ -134,8 +134,10 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		for (GLElement child : this)
+		for (GLElement child : this) {
+			child.setParent(this);
 			child.init(context);
+		}
 	}
 
 	private void setup(GLElement child) {
@@ -158,6 +160,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 			GLElement e = it.next();
 			if (context != null)
 				e.takeDown();
+			e.setParent(null);
 			it.remove();
 		}
 		if (size > 0) // had deleted something
@@ -197,6 +200,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	public final boolean remove(GLElement child) {
 		if (children.remove(child)) {
 			child.takeDown();
+			child.setParent(null);
 			relayout();
 			return true;
 		}
@@ -224,6 +228,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	@Override
 	public final boolean moved(GLElement child) {
 		children.remove(child);
+		child.setParent(null);
 		relayout();
 		return context != null;
 	}

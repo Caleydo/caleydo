@@ -49,8 +49,10 @@ public abstract class GLElementSelector extends GLElement implements IGLElementP
 		if (!this.lazy && context != null) {
 			// init the rest
 			for (GLElement child : this) {
-				if (!GLElementAccessor.isInitialized(child))
+				if (!GLElementAccessor.isInitialized(child)) {
+					GLElementAccessor.setParent(child, this);
 					GLElementAccessor.init(child, context);
+				}
 			}
 		}
 	}
@@ -94,8 +96,10 @@ public abstract class GLElementSelector extends GLElement implements IGLElementP
 		if (index < 0)
 			return null;
 		GLElement s = children.get(index);
-		if (!GLElementAccessor.isInitialized(s) && context != null)
+		if (!GLElementAccessor.isInitialized(s) && context != null) {
+			GLElementAccessor.setParent(s, this);
 			GLElementAccessor.init(s, context);
+		}
 		return s;
 	}
 
@@ -118,11 +122,15 @@ public abstract class GLElementSelector extends GLElement implements IGLElementP
 		super.init(context);
 		if (lazy) {
 			GLElement selected = getSelected();
-			if (selected != null)
+			if (selected != null) {
+				GLElementAccessor.setParent(selected, this);
 				GLElementAccessor.init(selected, context);
+			}
 		} else {
-			for (GLElement child : this)
+			for (GLElement child : this) {
+				GLElementAccessor.setParent(child, this);
 				GLElementAccessor.init(child, context);
+			}
 		}
 	}
 

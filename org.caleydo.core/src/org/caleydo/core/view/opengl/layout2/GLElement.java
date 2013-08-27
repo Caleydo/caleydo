@@ -647,8 +647,8 @@ public class GLElement implements IHasGLLayoutData {
 			context.unregisterPickingListener(pickingID);
 			pickingID = -1;
 		}
-		this.parent = null;
 		this.context = null;
+		this.parent = null;
 	}
 
 	/**

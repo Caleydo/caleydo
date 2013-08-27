@@ -296,8 +296,10 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		for (GLElement child : this)
+		for (GLElement child : this) {
+			GLElementAccessor.setParent(child, this);
 			GLElementAccessor.init(child, context);
+		}
 	}
 
 	private void setup(GLElement child) {
@@ -316,6 +318,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 
 	private void takeDown(GLElement child, boolean checkLayoutAnimations) {
 		GLElementAccessor.takeDown(child);
+		GLElementAccessor.setParent(child, null);
 		if (checkLayoutAnimations) {
 			layoutAnimations.remove(asLayoutElement(child));
 		}
