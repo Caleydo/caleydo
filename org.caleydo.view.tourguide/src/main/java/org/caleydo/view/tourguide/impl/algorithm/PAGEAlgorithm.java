@@ -29,13 +29,13 @@ import com.google.common.collect.Sets;
  * @author Samuel Gratzl
  *
  */
-public class PGSEAAlgorithm extends AGSEAAlgorithm {
+public class PAGEAlgorithm extends AGSEAAlgorithm {
 	private Map<Integer, Float> foldChanges = Maps.newHashMap();
 	private float foldChangesMean;
 	private float foldChangesSD;
 
 
-	public PGSEAAlgorithm(Perspective perspective, Group group) {
+	public PAGEAlgorithm(Perspective perspective, Group group) {
 		super(perspective, group);
 	}
 
@@ -130,11 +130,11 @@ public class PGSEAAlgorithm extends AGSEAAlgorithm {
 
 	@Override
 	public String getAbbreviation() {
-		return "PGSEA";
+		return "PAGE";
 	}
 
 	@Override
 	public String getDescription() {
-		return "PGSEA score against ";
+		return "PAGE score against ";
 	}
 }

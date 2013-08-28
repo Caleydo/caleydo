@@ -37,7 +37,7 @@ import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm.GSEAAlgorithmPValue;
 import org.caleydo.view.tourguide.impl.algorithm.GSEAAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.GeneSetMappedAlgorithm;
-import org.caleydo.view.tourguide.impl.algorithm.PGSEAAlgorithm;
+import org.caleydo.view.tourguide.impl.algorithm.PAGEAlgorithm;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
@@ -66,10 +66,10 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		return new GeneSetScore(label, new GSEAAlgorithm(reference, group, 1.0f, false), new PiecewiseMapping(-1, 1));
 	}
 
-	private IRegisteredScore createPGSEA(String label, Perspective reference, Group group) {
+	private IRegisteredScore createPAGE(String label, Perspective reference, Group group) {
 		if (label == null)
 			label = reference.getLabel() + " " + group.getLabel();
-		return new GeneSetScore(label, new PGSEAAlgorithm(reference, group), new PiecewiseMapping(Float.NaN, Float.NaN));
+		return new GeneSetScore(label, new PAGEAlgorithm(reference, group), new PiecewiseMapping(Float.NaN, Float.NaN));
 	}
 
 	@Override
@@ -82,11 +82,11 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 			String disabled = !hasGoodOnes(existing) ? "At least one valid numerical GENE stratification must already be visible"
 					: null;
 			IState target = stateMachine.addState("GSEA", new CreateGSEAState(browse, true));
-			IState target2 = stateMachine.addState("PGSEA", new CreateGSEAState(browse, false));
+			IState target2 = stateMachine.addState("PAGE", new CreateGSEAState(browse, false));
 			stateMachine.addTransition(start, new SimpleTransition(target,
 					"Find with GSEA based on displayed stratification", disabled));
 			stateMachine.addTransition(start, new SimpleTransition(target2,
-					"Find with PGSEA based on displayed stratification", disabled));
+					"Find with PAGE based on displayed stratification", disabled));
 		}
 
 		// auto mode
@@ -136,7 +136,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		}
 
 		{
-			PGSEAAlgorithm algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
+			PAGEAlgorithm algorithm = new PAGEAlgorithm(strat.getRecordPerspective(), group);
 			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, new PiecewiseMapping(
 					Float.NaN, Float.NaN));
 			PiecewiseMapping m = new PiecewiseMapping(0, 1);
@@ -262,7 +262,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		@Override
 		protected IRegisteredScore createScore(String label, Perspective strat, Group g) {
 			if (parametricUI.getSelection()) {
-				return createPGSEA(label, strat, g);
+				return createPAGE(label, strat, g);
 			} else
 				return createGSEA(label, strat, g);
 		}
@@ -363,19 +363,19 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 			AGSEAAlgorithm algorithm;
 			Perspective perspective = strat.getRecordPerspective();
 			Perspective genes = strat.getDimensionPerspective();
-			String prefix = createGSEA ? "GSEA" : "PGSEA";
+			String prefix = createGSEA ? "GSEA" : "PAGE";
 			String label = String.format(prefix + " of %s", perspective.getLabel());
 			IScore s;
 			if (createGSEA) {
 				algorithm = new GSEAAlgorithm(perspective, group, 1.0f, false);
 				s = new GeneSetScore(label, algorithm, new PiecewiseMapping(-1, 1));
 			} else {
-				algorithm = new PGSEAAlgorithm(perspective, group);
+				algorithm = new PAGEAlgorithm(perspective, group);
 				IScore gsea = new GeneSetScore(prefix, algorithm, new PiecewiseMapping(Float.NaN, Float.NaN));
 				PiecewiseMapping m = new PiecewiseMapping(0, 1);
 				m.put(0, 1);
 				m.put(1, 0);
-				IScore pValue = new GeneSetPValueScore(prefix + "P-Value", algorithm.asPValue(), m, gsea);
+				IScore pValue = new GeneSetPValueScore(prefix + " P-Value", algorithm.asPValue(), m, gsea);
 				MultiScore s2 = new MultiScore(label, color, bgColor, RankTableConfigBase.NESTED_MODE);
 				s2.add(pValue);
 				s2.add(gsea);
