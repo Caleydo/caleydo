@@ -391,8 +391,8 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 			if (Float.isNaN(normalizedValue)) {
 				// we assume that those who don't have an entry are still alive.
 				dataVector.add(1f);
-			}
-			dataVector.add(normalizedValue);
+			} else
+				dataVector.add(normalizedValue);
 		}
 
 		Collections.sort(dataVector);
