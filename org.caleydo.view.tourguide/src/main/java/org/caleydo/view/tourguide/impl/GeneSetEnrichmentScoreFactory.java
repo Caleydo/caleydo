@@ -69,7 +69,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	private IRegisteredScore createPAGE(String label, Perspective reference, Group group) {
 		if (label == null)
 			label = reference.getLabel() + " " + group.getLabel();
-		return new GeneSetScore(label, new PAGEAlgorithm(reference, group), new PiecewiseMapping(Float.NaN, Float.NaN));
+		return new GeneSetScore(label, new PAGEAlgorithm(reference, group), dynamicAbsolute());
 	}
 
 	@Override
@@ -137,15 +137,26 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 		{
 			PAGEAlgorithm algorithm = new PAGEAlgorithm(strat.getRecordPerspective(), group);
-			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, new PiecewiseMapping(
-					Float.NaN, Float.NaN));
-			PiecewiseMapping m = new PiecewiseMapping(0, 1);
-			m.put(0, 1);
-			m.put(1, 0);
+			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, dynamicAbsolute());
+			PiecewiseMapping m = inverse();
 			IScore pValue = new GeneSetPValueScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), m, gsea);
 			col.add(new ScoreEntry("Parametric Gene Set Enrichment Analysis of group", gsea, pValue));
 		}
 		return col;
+	}
+
+	private static PiecewiseMapping inverse() {
+		PiecewiseMapping m = new PiecewiseMapping(0, 1);
+		m.put(0, 1);
+		m.put(1, 0);
+		return m;
+	}
+
+	private static PiecewiseMapping dynamicAbsolute() {
+		PiecewiseMapping m = new PiecewiseMapping(Float.NaN, Float.NaN);
+		// absolute with max borders
+		m.fromJavaScript("return linear(0,Math.max(abs(value_min),abs(value_max)),abs(value),0,1)");
+		return m;
 	}
 
 	/**
@@ -371,10 +382,8 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 				s = new GeneSetScore(label, algorithm, new PiecewiseMapping(-1, 1));
 			} else {
 				algorithm = new PAGEAlgorithm(perspective, group);
-				IScore gsea = new GeneSetScore(prefix, algorithm, new PiecewiseMapping(Float.NaN, Float.NaN));
-				PiecewiseMapping m = new PiecewiseMapping(0, 1);
-				m.put(0, 1);
-				m.put(1, 0);
+				IScore gsea = new GeneSetScore(prefix, algorithm, dynamicAbsolute());
+				PiecewiseMapping m = inverse();
 				IScore pValue = new GeneSetPValueScore(prefix + " P-Value", algorithm.asPValue(), m, gsea);
 				MultiScore s2 = new MultiScore(label, color, bgColor, RankTableConfigBase.NESTED_MODE);
 				s2.add(pValue);

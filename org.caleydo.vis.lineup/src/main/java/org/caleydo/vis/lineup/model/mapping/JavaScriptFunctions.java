@@ -52,6 +52,10 @@ public class JavaScriptFunctions {
 		return clamp01((in - min) / (max - min));
 	}
 
+	public static float abs(float in) {
+		return Math.abs(in);
+	}
+
 	public static float log(float in) {
 		return (float) Math.log(in);
 	}
