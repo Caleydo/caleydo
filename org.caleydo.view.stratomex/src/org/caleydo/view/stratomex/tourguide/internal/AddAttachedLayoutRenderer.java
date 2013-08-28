@@ -30,7 +30,7 @@ public class AddAttachedLayoutRenderer extends ALayoutRenderer implements IPicki
 		this.id = view.getID();
 		this.tourguide = tourguide;
 		this.left = left;
-		view.getStratomexView().addTypePickingListener(this, EPickingType.BRICK.name());
+		view.getStratomexView().addTypePickingListener(this, EPickingType.BRICK_PENETRATING.name());
 	}
 
 	@Override
