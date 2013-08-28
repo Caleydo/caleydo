@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex.tourguide.internal;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
@@ -41,10 +42,16 @@ public class AddAttachedLayoutRenderer extends ALayoutRenderer implements IPicki
 		float h1px = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 		float hi = h1px * 24;
 		float wi = w1px * 24;
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+
 		if (left) {
 			tourguide.renderAddInDependentButton(gl, -wi - w1px * 2, y - hi * 2, wi, hi, id);
 		} else
 			tourguide.renderAddDependentButton(gl, x + w1px * 2, y - hi * 2, wi, hi, id);
+
+		gl.glPopAttrib();
 	}
 
 	@Override

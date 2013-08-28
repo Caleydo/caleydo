@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLException;
 
 import org.caleydo.core.manager.GeneralManager;
@@ -86,7 +87,7 @@ public final class TextureManager {
 
 	/**
 	 * load a texture once, using the specified {@link ITextureLoader}
-	 * 
+	 *
 	 * @param texture
 	 * @param locator
 	 * @return
@@ -234,8 +235,13 @@ public final class TextureManager {
 
 		TextureCoords texCoords = texture.getImageTexCoords();
 
+		// as textures are pre multiplied
+		// gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		// gl.glEnable(GL.GL_BLEND);
+		// gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+
 		gl.glColor4fv(color.getRGBA(), 0);
-		gl.glBegin(GL2.GL_POLYGON);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), lowerLeftCorner.z());
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -246,6 +252,8 @@ public final class TextureManager {
 		gl.glVertex3f(upperLeftCorner.x(), upperLeftCorner.y(), upperLeftCorner.z());
 
 		gl.glEnd();
+
+		// gl.glPopAttrib();
 
 		texture.disable(gl);
 	}
