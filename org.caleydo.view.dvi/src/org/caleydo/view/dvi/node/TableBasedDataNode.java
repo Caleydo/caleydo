@@ -458,12 +458,25 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 				ATableBasedDataDomain foreignDataDomain = perspectiveRenderer.getDataDomain();
 				if (foreignDataDomain != this.dataDomain) {
 					if (perspectiveRenderer.isRecordPerspective()) {
+						if (this.dataDomain.getRecordIDCategory() != foreignDataDomain.getRecordIDCategory())
+							continue;
 						Perspective recordPerspective = foreignDataDomain.getTable().getRecordPerspective(
 								perspectiveRenderer.getPerspectiveID());
+
 
 						Perspective convertedPerspective = this.dataDomain.convertForeignPerspective(recordPerspective);
 						convertedPerspective.setDefault(false);
 						this.dataDomain.getTable().registerRecordPerspective(convertedPerspective);
+					} else {
+						if (this.dataDomain.getDimensionIDCategory() != foreignDataDomain.getDimensionIDCategory())
+							continue;
+						Perspective dimensionPerspective = foreignDataDomain.getTable().getDimensionPerspective(
+								perspectiveRenderer.getPerspectiveID());
+
+						Perspective convertedPerspective = this.dataDomain
+								.convertForeignPerspective(dimensionPerspective);
+						convertedPerspective.setDefault(false);
+						this.dataDomain.getTable().registerDimensionPerspective(convertedPerspective);
 					}
 				}
 				// tablePerspectives.add(dimensionGroupRenderer.getTablePerspective());
