@@ -70,7 +70,7 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 
 	/**
 	 * create a new {@link ButtonBarBuilder} for this switcher
-	 * 
+	 *
 	 * @return
 	 */
 	public ButtonBarBuilder createButtonBarBuilder() {
@@ -197,8 +197,8 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 	}
 
 	@Override
-	protected final void layoutImpl() {
-		super.layoutImpl();
+	protected final void layoutImpl(int deltaTimeMs) {
+		super.layoutImpl(deltaTimeMs);
 		Vec2f size = getSize();
 		if (lazy == ELazyiness.NONE) {
 			for (GLElement instance : instances) {
@@ -216,12 +216,15 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 		super.init(context);
 		if (lazy == ELazyiness.NONE) {
 			for (GLElement instance : instances) {
+				GLElementAccessor.setParent(instance, this);
 				GLElementAccessor.init(instance, context);
 			}
 		} else {
 			GLElement selected = getActiveElement();
-			if (selected != null)
+			if (selected != null) {
+				GLElementAccessor.setParent(selected, this);
 				GLElementAccessor.init(selected, context);
+			}
 		}
 	}
 
