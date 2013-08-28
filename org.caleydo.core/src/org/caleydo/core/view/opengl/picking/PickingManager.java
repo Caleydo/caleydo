@@ -4,6 +4,7 @@
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
+
 import gleem.linalg.Vec2f;
 
 import java.awt.Point;
@@ -11,6 +12,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -411,6 +413,8 @@ public class PickingManager {
 
 			Set<Integer> processedViews = new HashSet<Integer>();
 
+			List<Integer> currentPickedObjectIDs = new ArrayList<>(iAlPickedObjectId);
+
 			// We have to add a MOUSE_OUT on other remote rendered views, if a
 			// picking event occurred
 			for (int pickingID : iAlPickedObjectId) {
@@ -514,31 +518,45 @@ public class PickingManager {
 										// but different view ID).
 										// FIXME: THIS IS PROBABLY ONE OF THE WORST HACKS EVER! FIX BY USING NEW
 										// PICKINGMANGER
-										if (!(glView.getViewType().equals("org.caleydo.view.stratomex"))
-												|| (!pickingType.equals(pickAssociatedValues.getSecond()) && previousPick
-														.getObjectID() != getPickedObjectIDFromPickingID(pickedViewID,
-														pickAssociatedValues.getSecond(), pickingID))) {
+										// if (!(glView.getViewType().equals("org.caleydo.view.stratomex"))
+										// || (!pickingType.equals(pickAssociatedValues.getSecond()) && previousPick
+										// .getObjectID() != getPickedObjectIDFromPickingID(pickedViewID,
+										// pickAssociatedValues.getSecond(), pickingID))) {
 
-											ViewSpecificHitListContainer hitContainer = hashViewIDToViewSpecificHitListContainer
-													.get(viewID);
-											if (hitContainer == null) {
-												hitContainer = new ViewSpecificHitListContainer();
-												hashViewIDToViewSpecificHitListContainer.put(viewID, hitContainer);
+										ViewSpecificHitListContainer hitContainer = hashViewIDToViewSpecificHitListContainer
+												.get(viewID);
+										if (hitContainer == null) {
+											hitContainer = new ViewSpecificHitListContainer();
+											hashViewIDToViewSpecificHitListContainer.put(viewID, hitContainer);
+										}
+
+										boolean picksExist = false;
+										for (String pT : hitContainer.getPickingTypes()) {
+											if (hitContainer.getPicksForPickingType(pT).size() > 0) {
+												picksExist = true;
+												break;
 											}
-											// if (hitContainer.getPickingTypes().size() <= 0) {
+										}
+
+										// Only add a mouse out if the object was currently not picked
+										if (!picksExist
+												&& !currentPickedObjectIDs.contains(getPickingID(viewID, pickingType,
+														previousPick.getObjectID()))) {
 											Pick pick = new Pick(previousPick.getObjectID(), PickingMode.MOUSE_OUT,
 													pickDIPPoint, glMouseListener.getDIPPickedPointDragStart(),
 													fMinimumZValue);
 											hitContainer.addPicksForPickingType(pickingType, pick, true);
 
 											processedViews.add(viewID);
-											// }
+											hashViewIDToPreviousViewSpecificHitListContainer.put(viewID,
+													new ViewSpecificHitListContainer());
 										}
+										// }
 									}
 								}
 							}
-							hashViewIDToPreviousViewSpecificHitListContainer.put(viewID,
-									new ViewSpecificHitListContainer());
+							// hashViewIDToPreviousViewSpecificHitListContainer.put(viewID,
+							// new ViewSpecificHitListContainer());
 						}
 
 					}
@@ -690,6 +708,7 @@ public class PickingManager {
 	public void flushHits(int viewID, String ePickingType) {
 
 		if (hashViewIDToViewSpecificHitListContainer.get(viewID) != null) {
+			// hashViewIDToViewSpecificHitListContainer.get(viewID).hashPickingTypeToPicks.remove(ePickingType);
 			hashViewIDToViewSpecificHitListContainer.get(viewID).getPicksForPickingType(ePickingType).clear();
 		}
 	}
@@ -788,7 +807,6 @@ public class PickingManager {
 		for (int iNameCount = 0; iNameCount < iNumberOfNames; iNameCount++) {
 			iAlPickedObjectId.add(iArPickingBuffer[iNearestObjectIndex + 3 + iNameCount]);
 		}
-
 		return iAlPickedObjectId;
 		// iPickingBufferCounter += iNumberOfNames;
 
