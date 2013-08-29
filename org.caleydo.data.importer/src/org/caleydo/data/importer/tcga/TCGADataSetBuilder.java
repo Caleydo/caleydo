@@ -317,12 +317,12 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 				.getCategoricalClassDescription();
 		cats.setCategoryType(ECategoryType.ORDINAL);
 		cats.setRawDataType(EDataType.INTEGER);
-		cats.addCategoryProperty(-2, "Homozygous deletion", Color.BLUE);
-		cats.addCategoryProperty(-1, "Heterozygous deletion", Color.BLUE.getColorWithSpecificBrighness(0.5f));
+		// Use ColorBrewer color map and replace salmon with light red
+		cats.addCategoryProperty(-2, "Homozygous deletion", ColorBrewer.RdBu.get(4).get(3));
+		cats.addCategoryProperty(-1, "Heterozygous deletion", ColorBrewer.RdBu.get(4).get(2));
 		cats.addCategoryProperty(0, "NORMAL", Color.NEUTRAL_GREY);
-		cats.addCategoryProperty(1, "Low level amplification", Color.RED.getColorWithSpecificBrighness(0.5f));
-		cats.addCategoryProperty(2, "High level amplification", Color.RED);
-		cats.applyColorScheme(ColorBrewer.RdBu, 0, true);
+		cats.addCategoryProperty(1, "Low level amplification", Color.LIGHT_RED);
+		cats.addCategoryProperty(2, "High level amplification", ColorBrewer.RdBu.get(4).get(0));
 
 		// File cnmfGroupingFile = fileProvider.extractAnalysisRunFile("cnmf.membership.txt",
 		// "CopyNumber_Clustering_CNMF", LEVEL);
