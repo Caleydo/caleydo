@@ -246,4 +246,9 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 	public int getDefaultWidth() {
 		return 0;
 	}
+
+	@Override
+	public boolean distributeBricksUniformly() {
+		return true;
+	}
 }
