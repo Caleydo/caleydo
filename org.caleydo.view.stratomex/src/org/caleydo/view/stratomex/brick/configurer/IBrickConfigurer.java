@@ -108,4 +108,9 @@ public interface IBrickConfigurer {
 	 */
 	public int getDefaultWidth();
 
+	/**
+	 * @return True if the bricks should be distributed uniformly within the brick column, false otherwise.
+	 */
+	public boolean distributeBricksUniformly();
+
 }
