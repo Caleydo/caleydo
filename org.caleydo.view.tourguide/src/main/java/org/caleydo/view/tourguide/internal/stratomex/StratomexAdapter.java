@@ -205,7 +205,7 @@ public class StratomexAdapter {
 	private void updateTableBased(ITablePerspectiveScoreRow old, ITablePerspectiveScoreRow new_,
 			Collection<IScore> visibleColumns, IScore sortedBy) {
 		TablePerspective strat = new_ == null ? null : new_.asTablePerspective();
-		Group group = new_ == null ? null : MaxGroupCombiner.getMax(new_, sortedBy);
+		Group group = new_ == null ? null : MaxGroupCombiner.select(new_, sortedBy);
 
 		// handle stratification changes
 		if (currentPreview != null && strat != null) { // update

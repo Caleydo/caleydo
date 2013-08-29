@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.score;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,9 +14,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.view.tourguide.api.score.GroupSelectors;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.internal.external.GroupLabelParseSpecification;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
+import org.caleydo.view.tourguide.spi.score.IGroupBasedScore;
 
 import com.google.common.base.Objects;
 
@@ -27,7 +30,7 @@ import com.google.common.base.Objects;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class ExternalGroupLabelScore extends AExternalScore implements ISerializeableScore {
+public final class ExternalGroupLabelScore extends AExternalScore implements ISerializeableScore, IGroupBasedScore {
 	private String perspectiveKey;
 	private Map<String, Float> scores = new HashMap<>();
 
@@ -56,6 +59,11 @@ public final class ExternalGroupLabelScore extends AExternalScore implements ISe
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(getLabel(), perspectiveKey);
+	}
+
+	@Override
+	public Group select(IComputeElement elem, Collection<Group> groups) {
+		return GroupSelectors.MAX.select(this, elem, groups);
 	}
 
 	@Override

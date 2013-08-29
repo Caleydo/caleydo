@@ -8,6 +8,7 @@ package org.caleydo.view.tourguide.internal.model;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.internal.score.ExternalIDTypeScore;
 import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
+import org.caleydo.view.tourguide.spi.score.IGroupBasedScore;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
@@ -44,34 +45,29 @@ public class MaxGroupCombiner extends AFloatFunction<IRow> {
 			// working on dimension ids just once
 			return score.apply(row, null);
 		}
-		if (score instanceof IDecoratedScore) {
-			Group g = MaxGroupCombiner.getMax(in, ((IDecoratedScore) score).getUnderlying());
-			if (g == null)
-				return Float.NaN;
-			return score.apply(row, g);
-		} else
-			return getMax(row);
+		IGroupBasedScore sg = null;
+		if (score instanceof IGroupBasedScore)
+			sg = (IGroupBasedScore) score;
+		if (score instanceof IDecoratedScore && ((IDecoratedScore) score).getUnderlying() instanceof IGroupBasedScore)
+			sg = (IGroupBasedScore) ((IDecoratedScore) score).getUnderlying();
+		assert sg != null;
+		Group group = sg.select(row, row.getGroups());
+		if (group == null)
+			return Float.NaN;
+		return score.apply(row, group);
 	}
 
-	private float getMax(AScoreRow row) {
-		float v = Float.NaN;
-		for(Group g : row.getGroups()) {
-			float vg = score.apply(row, g);
-			if (Float.isNaN(vg))
-				continue;
-			if (Float.isNaN(v) || vg > v)
-				v = vg;
-		}
-		return v;
-	}
-
-	public static Group getMax(IRow in, IScore score) {
+	public static Group select(IRow in, IScore score) {
 		if (score == null)
 			return null;
 		AScoreRow row = (AScoreRow) in;
 		if (score instanceof IStratificationScore && !(score instanceof IGroupScore)) {
 			return null;
 		}
+
+		assert score instanceof IGroupScore;
+		IGroupScore sg = (IGroupScore) score;
+		Group group = sg.select(row, row.getGroups());
 
 		// combine groups
 		float v = Float.NaN;

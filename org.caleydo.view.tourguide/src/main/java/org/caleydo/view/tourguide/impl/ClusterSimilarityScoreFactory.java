@@ -48,13 +48,14 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 	private final static Color bgColor = new Color("#ffe6d5");
 
 	private IRegisteredScore createJaccard(String label, Perspective reference, Group group) {
-		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(), null, color, bgColor);
+		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(), null, null, color,
+				bgColor);
 	}
 
 	private IRegisteredScore createMutualExclusive(String label, Perspective reference, Group group,
 			CategoryProperty<?> property) {
 		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(),
-				new MutualExclusiveScoreFilter(property), color, bgColor);
+				new MutualExclusiveScoreFilter(property), null, color, bgColor);
 	}
 
 	@Override
