@@ -437,12 +437,13 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		gl.glEnd();
 		gl.glPopName();
 
+
 		// The full brick content will not be rendered with DetailLevel.LOW
 		if (brickColumn.getDetailLevel() != EDetailLevel.LOW || isHeaderBrick)
 			layoutManager.render(gl);
 
-
 		gl.glPopName();
+
 
 		// gl.glCallList(baseDisplayListIndex);
 
