@@ -347,7 +347,7 @@
             allPopups="false"
             locationURI="toolbar:org.caleydo.core.gui.toolbar2">
          <command
-               commandId="org.caleydo.core.io.gui.import_data"
+               commandId="org.caleydo.core.io.gui.snapshot"
                icon="resources/icons/general/snapshot.png"
                label="&amp;Take Snapshot"
                style="push"
