@@ -128,9 +128,9 @@ public final class FirehoseProvider {
 
 	public Pair<File, Boolean> findmRNAseqMatrixFile(boolean loadFullGenes) {
 		if (loadFullGenes) {
-			File r = extractDataRunFile(".uncv1.mRNAseq_RPKM_log2.txt", "mRNAseq_Preprocess", LEVEL);
+			File r = extractDataRunFile(".uncv2.mRNAseq_RSEM_normalized_log2.txt", "mRNAseq_Preprocess", LEVEL);
 			if (r == null)
-				r = extractDataRunFile(".uncv2.mRNAseq_RSEM_normalized_log2.txt",
+				r = extractDataRunFile(".uncv1.mRNAseq_RPKM_log2.txt",
 						"mRNAseq_Preprocess", LEVEL);
 			if (r != null)
 				return Pair.make(r, true);
@@ -149,9 +149,10 @@ public final class FirehoseProvider {
 
 	public Pair<File, Boolean> findmicroRNAseqMatrixFile(boolean loadFullGenes) {
 		if (loadFullGenes) {
-			File r = extractAnalysisRunFile(getFileName(".miRseq_RPKM_log2.txt"), "miRseq_Preprocess", LEVEL);
+			File r = extractAnalysisRunFile(getFileName(".uncv2.miRseq_RSEM_normalized_log2.txt"), "miRseq_Preprocess",
+					LEVEL);
 			if (r == null)
-				r = extractAnalysisRunFile(getFileName(".uncv2.miRseq_RSEM_normalized_log2.txt"), "miRseq_Preprocess",
+				r = extractAnalysisRunFile(getFileName(".miRseq_RPKM_log2.txt"), "miRseq_Preprocess",
 						LEVEL);
 			if (r != null)
 				return Pair.make(r, true);
