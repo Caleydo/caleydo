@@ -8,7 +8,6 @@ package org.caleydo.view.tourguide.internal;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -16,7 +15,7 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends Plugin {
+public class Activator extends AbstractUIPlugin {
 	private static final String ID = "org.caleydo.view.tourguide";
 
 	// The shared instance
@@ -49,7 +48,7 @@ public class Activator extends Plugin {
 
 	/**
 	 * returns the {@link IResourceLocator} for this view
-	 * 
+	 *
 	 * @return
 	 */
 	public static IResourceLocator getResourceLocator() {
@@ -59,7 +58,7 @@ public class Activator extends Plugin {
 
 	/**
 	 * see {@link #getResourceLocator()} wrapped as a {@link ResourceLoader}
-	 * 
+	 *
 	 * @return
 	 */
 	public static ResourceLoader getResourceLoader() {

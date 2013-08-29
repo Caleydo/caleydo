@@ -15,6 +15,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.compute.IComputeScoreFilter;
 
@@ -40,7 +41,10 @@ public class MutualExclusiveScoreFilter implements IComputeScoreFilter {
 		if (!(dataDomainA instanceof ATableBasedDataDomain)
 				|| !canHaveMutualExclusiveScore((ATableBasedDataDomain) dataDomainA))
 			return false;
-		return Objects.equals(property.getCategoryName(), itemGroup.getLabel());
+		boolean r = Objects.equals(property.getCategoryName(), itemGroup.getLabel());
+		if (!r)
+			return false;
+		return ComputeScoreFilters.TOO_SMALL.doCompute(item, itemGroup, reference, bg);
 	}
 
 	public static List<?> getProperties(ATableBasedDataDomain dataDomain) {

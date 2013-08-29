@@ -96,6 +96,7 @@ import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.StringRankColumnModel;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.lineup.model.mixin.IAnnotatedColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.IRankColumnModel;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.lineup.ui.RankTableKeyListener;
 import org.caleydo.vis.lineup.ui.RankTableUIMouseKeyListener;
@@ -585,8 +586,14 @@ public class GLTourGuideView extends AGLElementView {
 
 	private IScore getSortedByScore() {
 		IRankableColumnMixin orderBy = table.getMyRanker(null).getOrderBy();
-		if (orderBy instanceof IScoreMixin)
-			return ((IScoreMixin) orderBy).getScore();
+		return toRankedScore(orderBy);
+	}
+
+	private IScore toRankedScore(IRankColumnModel model) {
+		if (model instanceof IScoreMixin)
+			return ((IScoreMixin) model).getScore();
+		if (model instanceof ACompositeRankColumnModel)
+			return toRankedScore(((ACompositeRankColumnModel) model).get(0));
 		return null;
 	}
 
