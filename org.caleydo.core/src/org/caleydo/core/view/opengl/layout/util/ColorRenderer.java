@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.layout.util;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -207,12 +208,19 @@ public class ColorRenderer extends APickableLayoutRenderer {
 
 			// gl.glColor3f(0.3f, 0.3f, 0.3f);
 			gl.glColor4fv(borderColor, 0);
-			gl.glBegin(GL2.GL_LINE_LOOP);
+			gl.glBegin(GL.GL_LINES);
 
-			gl.glVertex3f(0, 0, 0.01f);
-			gl.glVertex3f(x, 0, 0.01f);
-			gl.glVertex3f(x, y, 0.01f);
-			gl.glVertex3f(0, y, 0.01f);
+			gl.glVertex3f(0, 0, 0);
+			gl.glVertex3f(x, 0, 0);
+
+			gl.glVertex3f(0, 0, 0);
+			gl.glVertex3f(0, y, 0);
+
+			gl.glVertex3f(0, y, 0);
+			gl.glVertex3f(x, y, 0);
+
+			gl.glVertex3f(x, 0, 0);
+			gl.glVertex3f(x, y, 0);
 
 			gl.glEnd();
 
