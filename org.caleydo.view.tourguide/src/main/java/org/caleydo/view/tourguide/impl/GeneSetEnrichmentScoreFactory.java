@@ -19,12 +19,14 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedStratificationScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.score.ui.ACreateGroupScoreDialog;
-import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
+import org.caleydo.view.tourguide.api.state.ABrowseState;
 import org.caleydo.view.tourguide.api.state.EWizardMode;
 import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectGroupState;
@@ -76,13 +78,16 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, EWizardMode mode,
 			TablePerspective source) {
 		IState start = stateMachine.get(IStateMachine.ADD_PATHWAY);
-		BrowsePathwayState browse = (BrowsePathwayState) stateMachine.get(IStateMachine.BROWSE_PATHWAY);
 
 		if (mode == EWizardMode.GLOBAL) {
 			String disabled = !hasGoodOnes(existing) ? "At least one valid numerical GENE stratification must already be visible"
 					: null;
-			IState target = stateMachine.addState("GSEA", new CreateGSEAState(browse, true));
-			IState target2 = stateMachine.addState("PAGE", new CreateGSEAState(browse, false));
+			UpdateAndBrowsePathways browseG = new UpdateAndBrowsePathways(true);
+			stateMachine.addState("browseAndUpdateGSEA", browseG);
+			UpdateAndBrowsePathways browseP = new UpdateAndBrowsePathways(false);
+			stateMachine.addState("browseAndUpdatePAGE", browseP);
+			IState target = stateMachine.addState("GSEA", new CreateGSEAState(browseG, true));
+			IState target2 = stateMachine.addState("PAGE", new CreateGSEAState(browseP, false));
 			stateMachine.addTransition(start, new SimpleTransition(target,
 					"Find with GSEA based on displayed stratification", disabled));
 			stateMachine.addTransition(start, new SimpleTransition(target2,
@@ -181,10 +186,10 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	}
 
 	private class CreateGSEAState extends SimpleState implements ISelectGroupState {
-		private final BrowsePathwayState target;
+		private final UpdateAndBrowsePathways target;
 		private final boolean createGSEA;
 
-		public CreateGSEAState(BrowsePathwayState target, boolean createGSEA) {
+		public CreateGSEAState(UpdateAndBrowsePathways target, boolean createGSEA) {
 			super("Select query group by clicking on a framed block of one of the displayed columns");
 			this.target = target;
 			this.createGSEA = createGSEA;
@@ -209,6 +214,53 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 			// switch to a preview pathway
 			target.setUnderlying(strat.getRecordPerspective());
 			reactions.switchTo(target);
+		}
+	}
+
+	private class UpdateAndBrowsePathways extends ABrowseState implements ISelectGroupState {
+		protected Perspective underlying;
+		protected PathwayGraph pathway;
+		private final boolean createGSEA;
+
+		public UpdateAndBrowsePathways(boolean createGSEA) {
+			super(EDataDomainQueryMode.PATHWAYS, "Select a pathway in the LineUp to preview.\n"
+					+ "Then confirm or cancel your selection" + "Change query by clicking on other block at any time");
+			this.createGSEA = createGSEA;
+		}
+
+		@Override
+		public boolean apply(Pair<TablePerspective, Group> pair) {
+			return true;
+		}
+
+		@Override
+		public boolean isSelectAllSupported() {
+			return true;
+		}
+
+		/**
+		 * @param underlying
+		 *            setter, see {@link underlying}
+		 */
+		public final void setUnderlying(Perspective underlying) {
+			this.underlying = underlying;
+		}
+
+		@Override
+		public void onUpdate(UpdatePathwayPreviewEvent event, IReactions adapter) {
+			pathway = event.getPathway();
+			adapter.replacePathwayTemplate(underlying, event.getPathway(), false, true);
+		}
+
+		@Override
+		public void select(TablePerspective strat, Group group, IReactions reactions) {
+			IScore[] score = createScore(strat, group, createGSEA);
+			reactions.addScoreToTourGuide(EDataDomainQueryMode.PATHWAYS, score);
+
+			// switch to a preview pathway
+			underlying = strat.getRecordPerspective();
+			if (pathway != null)
+				reactions.replacePathwayTemplate(underlying, pathway, false, true);
 		}
 	}
 
