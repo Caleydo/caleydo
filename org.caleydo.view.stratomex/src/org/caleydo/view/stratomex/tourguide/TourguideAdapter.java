@@ -801,7 +801,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	@Override
 	public void replaceTemplate(TablePerspective with, IBrickConfigurer config, boolean extra, Color highlight) {
-		List<Pair<Integer, BrickColumn>> added;
+		List<Pair<Integer, BrickColumn>> added = null;
 		final List<TablePerspective> withL = Collections.singletonList(with);
 
 		if (highlight != null)
@@ -841,6 +841,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 				}
 			} else {
 				BrickColumn wizardPreview = wizardPreviews.get(0);
+				if (wizardPreview.getTablePerspective().equals(with)) // replace with itself
+					return;
 				added = stratomex.addTablePerspectives(withL, config, wizardPreview, true);
 				stratomex.removeTablePerspective(wizardPreview.getTablePerspective());
 				if (added.size() > 0) {
@@ -862,7 +864,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 				wizardPreviews.add(added.get(0).getSecond());
 			}
 		}
-		if (added.size() > 0) {
+		if (added != null && !added.isEmpty()) {
 			wizardPreviews.get(0).getLayout()
 					.clearForegroundRenderers(ALayoutRenderer.class, GLContext.getCurrentGL().getGL2());
 			wizardPreviews.get(0).getLayout().addForeGroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));
