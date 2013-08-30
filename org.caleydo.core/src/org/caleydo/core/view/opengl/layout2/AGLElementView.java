@@ -36,6 +36,7 @@ import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Stopwatch;
 
 /**
  * a {@link IGLView} based on {@link GLElement}s its NOT a {@link AGLView}
@@ -184,12 +185,32 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		}
 		final int deltaTimeMs = local.getDeltaTimeMs();
 
-		final GLGraphics g = prepareFrame(drawable, deltaTimeMs);
+//		Stopwatch w = new Stopwatch().start();
+//		StringBuilder b = new StringBuilder();
+//
+//		Stopwatch wi = new Stopwatch().start();
 
+		final GLGraphics g = prepareFrame(drawable, deltaTimeMs);
 		updateMouseLayer();
+
+//		b.append(" prepare/picking/layout/render: ").append(wi).append("\t");
+//
+//		wi.reset().start();
+
 		pickingPass(g);
+
+//		b.append(wi).append('\t');
+//		wi.reset().start();
+
 		layoutPass(deltaTimeMs);
+
+//		b.append(wi).append('\t');
+//		wi.reset().start();
+
 		renderPass(g);
+
+//		b.append(wi).append('\t').append(w);
+//		 System.out.println(b);
 	}
 
 	private GLGraphics prepareFrame(GLAutoDrawable drawable, final int deltaTimeMs) {
