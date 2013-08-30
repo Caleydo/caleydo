@@ -8,8 +8,8 @@ package org.caleydo.core.view.opengl.layout2;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
+import java.net.URL;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -24,6 +24,7 @@ import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
+import org.caleydo.core.view.opengl.util.gleem.ColoredVec2f;
 import org.caleydo.core.view.opengl.util.spline.ITesselatedPolygon;
 import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
@@ -76,6 +77,8 @@ public class GLGraphics {
 	 * gl context locals for once per context
 	 */
 	private final GLContextLocal local;
+
+	private final Vec3f[] pool = { new Vec3f(), new Vec3f(), new Vec3f(), new Vec3f() };
 
 	public GLGraphics(GL2 gl, GLContextLocal local, boolean originInTopLeft, int deltaTimeMs) {
 		this.gl = gl;
@@ -351,8 +354,19 @@ public class GLGraphics {
 		return fillImage(getTexture(texture), x, y, w, h);
 	}
 
+	/**
+	 * renders a texture within the given rect
+	 */
+	public GLGraphics fillImage(URL texture, float x, float y, float w, float h) {
+		return fillImage(getTexture(texture), x, y, w, h);
+	}
+
 	public Texture getTexture(String texture) {
 		return local.getTextures().get(texture, new ResourceLoader(locator));
+	}
+
+	public Texture getTexture(URL texture) {
+		return local.getTextures().get(texture);
 	}
 
 	/**
@@ -372,10 +386,15 @@ public class GLGraphics {
 		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
 			return this;
 		stats.incImage();
-		Vec3f lowerLeftCorner = new Vec3f(x, y, z);
-		Vec3f lowerRightCorner = new Vec3f(x + w, y, z);
-		Vec3f upperRightCorner = new Vec3f(x + w, y + h, z);
-		Vec3f upperLeftCorner = new Vec3f(x, y + h, z);
+
+		Vec3f lowerLeftCorner = pool[0];
+		lowerLeftCorner.set(x, y, z);
+		Vec3f lowerRightCorner = pool[1];
+		lowerRightCorner.set(x + w, y, z);
+		Vec3f upperRightCorner = pool[2];
+		upperRightCorner.set(x + w, y + h, z);
+		Vec3f upperLeftCorner = pool[3];
+		upperLeftCorner.set(x, y + h, z);
 
 		if (originInTopLeft)
 			local.getTextures().renderTexture(gl, texture, upperLeftCorner, upperRightCorner, lowerRightCorner,
@@ -456,11 +475,45 @@ public class GLGraphics {
 			return this;
 		if (text == null || text.trim().isEmpty())
 			return this;
-		if (text.indexOf('\n') < 0)
-			return drawText(Collections.singletonList(text), x, y, w, h, 0, valign, style);
-		else {
+		if (text.indexOf('\n') < 0) {
+			return drawSingleTextLine(text, x, y, w, h, valign, style);
+		} else {
 			return drawText(Arrays.asList(text.split("\n")), x, y, w, h, 0, valign, style);
 		}
+	}
+
+	private GLGraphics drawSingleTextLine(String text, float x, float y, float w, float h, VAlign valign,
+			ETextStyle style) {
+		stats.incText(text.length());
+		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
+			return this;
+		ITextRenderer font = selectFont(style);
+		if (originInTopLeft && !font.isOriginTopLeft()) {
+			gl.glPushMatrix();
+			gl.glTranslatef(0, y + h, 0);
+			y = 0;
+			gl.glScalef(1, -1, 1);
+		}
+		float hi = h;
+		float xi = x;
+		switch (valign) {
+		case CENTER:
+			xi += w * 0.5f - Math.min(font.getTextWidth(text, hi), w) * 0.5f;
+			break;
+		case RIGHT:
+			xi += w - Math.min(font.getTextWidth(text, hi), w);
+			break;
+		default:
+			break;
+		}
+		font.renderTextInBounds(gl, text, xi, y, z + 0.25f, w, hi);
+
+		if (font.isDirty())
+			stats.dirtyTextTexture();
+
+		if (originInTopLeft && !font.isOriginTopLeft())
+			gl.glPopMatrix();
+		return this;
 	}
 
 	public GLGraphics drawText(List<String> lines, float x, float y, float w, float h, float lineSpace, VAlign valign,
@@ -617,6 +670,8 @@ public class GLGraphics {
 		gl.glBegin(mode);
 		for (Vec2f p : points) {
 			count++;
+			if (p instanceof ColoredVec2f)
+				color(((ColoredVec2f) p).getColor());
 			gl.glVertex3f(p.x(), p.y(), z);
 		}
 		gl.glEnd();

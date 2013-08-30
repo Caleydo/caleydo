@@ -17,7 +17,6 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -167,7 +166,7 @@ public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea
 		for (IDraggable draggable : draggables) {
 			if (draggable instanceof TablePerspectiveRenderer) {
 				TablePerspectiveRenderer dimensionGroupRenderer = (TablePerspectiveRenderer) draggable;
-				tablePerspectives.add(dimensionGroupRenderer.getTablePerspective());
+				tablePerspectives.add(dimensionGroupRenderer.createOrGetTablePerspective());
 			}
 		}
 
@@ -177,8 +176,7 @@ public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea
 			TablePerspective tablePerspective = tablePerspectives.get(0);
 			AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(
 					tablePerspective);
-			event.setReceiver((IMultiTablePerspectiveBasedView) representedView);
-			event.setSender(this);
+			event.to(representedView).from(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 			if (tablePerspective instanceof PathwayTablePerspective) {

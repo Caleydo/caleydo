@@ -52,7 +52,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 	@Override
 	public void init() {
-		if (rowID == null)
+		if (resolvedRowID == null)
 			return;
 		average = TablePerspectiveStatistics.calculateAverage(columnPerspective.getVirtualArray(), dataDomain,
 				resolvedRowIDType, resolvedRowID);

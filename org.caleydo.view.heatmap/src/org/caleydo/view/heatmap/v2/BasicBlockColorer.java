@@ -9,6 +9,8 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.color.Color;
 
 /**
+ * basic {@link IBlockColorer} implementation
+ *
  * @author Samuel Gratzl
  *
  */
@@ -21,9 +23,11 @@ public class BasicBlockColorer implements IBlockColorer {
 
 	@Override
 	public Color apply(int recordID, int dimensionID, ATableBasedDataDomain dataDomain, boolean deSelected) {
+		// get value
 		float[] color = dataDomain.getTable().getColor(dimensionID, recordID);
+		// is selected
 		float opacity = deSelected ? 0.3f : 1.0f;
-
+		// to a color
 		return new Color(color[0], color[1], color[2], opacity);
 	}
 }

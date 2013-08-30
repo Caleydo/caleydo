@@ -1,0 +1,8 @@
+# @title egit settings
+# @description egit settings
+# @task_type LASTMOD
+#
+# Created by the Workspace Mechanic Preference Recorder
+#Mon Aug 26 09:02:08 CEST 2013
+file_export_version=3.0
+/instance/org.eclipse.egit.ui/resourcehistory_follow_renames=true

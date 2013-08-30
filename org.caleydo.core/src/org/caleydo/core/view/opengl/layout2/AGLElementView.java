@@ -7,8 +7,6 @@ package org.caleydo.core.view.opengl.layout2;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Point;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -17,7 +15,6 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
-import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.AView;
@@ -29,6 +26,7 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLView;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.util.GLSanityCheck;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.SimplePickingManager;
@@ -59,17 +57,23 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	private boolean dirtyLayout = true;
 
 	private boolean visible = true;
+	private boolean wasVisible = true;
 	private GLContextLocal local;
 	private final ISWTLayer swtLayer;
 
 	public AGLElementView(IGLCanvas glCanvas, String viewType, String viewName) {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), glCanvas.asComposite(),
-				viewType,
+		super(viewType,
 				viewName);
 		this.canvas = glCanvas;
 		this.swtLayer = new SWTLayer(glCanvas);
 		this.canvas.addGLEventListener(this);
 		this.canvas.addMouseListener(pickingManager.getListener());
+		this.canvas.asComposite().addDisposeListener(eventListeners);
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		return GLLayouts.resolveLayoutDatas(clazz, default_, canvas, this.local);
 	}
 
 	protected final GLElement getRoot() {
@@ -102,11 +106,6 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		return null;
 	}
 
-	@Override
-	public void initFromSerializableRepresentation(ASerializedView serializedView) {
-
-	}
-
 	protected IResourceLocator createResourceLocator() {
 		return ResourceLocators.chain(ResourceLocators.classLoader(getClass().getClassLoader()),
 				ResourceLocators.DATA_CLASSLOADER, ResourceLocators.FILE);
@@ -123,6 +122,8 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	public void initialize() {
 		super.initialize();
 		GeneralManager.get().getViewManager().registerView(this, true);
+		// already here after we are registered and before the maybe first time view
+		eventListeners.register(this);
 	}
 
 	@Override
@@ -131,19 +132,24 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		IResourceLocator locator = createResourceLocator();
 		TextureManager textures = createTextureManager(locator);
 
-		local = new GLContextLocal(textures, locator);
+		local = new GLContextLocal(textures, locator, canvas);
 
 		AGLView.initGLContext(gl);
 
 		gl.glLoadIdentity();
 
-		eventListeners.register(this);
+		initScene();
 
+		local.getTimeDelta().reset();
+
+		canvas.requestFocus();
+
+	}
+
+	protected void initScene() {
 		this.root = new WindowGLElement(createRoot());
 		this.root.setParent(this);
 		this.root.init(this);
-
-		local.getTimeDelta().reset();
 	}
 
 	@Override
@@ -172,11 +178,28 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	public void display(GLAutoDrawable drawable) {
 		eventListeners.processEvents();
 
-		if (!visible)
+		if (!isVisible()) {
+			wasVisible = false;
 			return;
-
+		}
 		final int deltaTimeMs = local.getDeltaTimeMs();
+
+		final GLGraphics g = prepareFrame(drawable, deltaTimeMs);
+
+		updateMouseLayer();
+		pickingPass(g);
+		layoutPass(deltaTimeMs);
+		renderPass(g);
+	}
+
+	private GLGraphics prepareFrame(GLAutoDrawable drawable, final int deltaTimeMs) {
 		GL2 gl = drawable.getGL().getGL2();
+		if (!wasVisible) {
+			//set the viewport again for mac bug 1476
+			gl.glViewport(0,0,canvas.asGLAutoDrawAble().getWidth(), canvas.asGLAutoDrawAble().getHeight());
+			wasVisible = true;
+		}
+
 		// clear screen
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
@@ -197,16 +220,26 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 			root.relayout();
 			dirtyLayout = false;
 		}
+		return g;
+	}
 
-		// 1. pass: picking
-		Point mousePos = pickingManager.getCurrentMousePos();
-		if (mousePos != null) {
-			root.getMouseLayer().setBounds(mousePos.x, mousePos.y, getWidth() - mousePos.x, getHeight() - mousePos.y);
-			root.getMouseLayer().relayout();
-		}
-
+	private void renderPass(final GLGraphics g) {
 		GLSanityCheck s = null;
-		assert (s = GLSanityCheck.create(gl)) != null;
+		assert (s = GLSanityCheck.create(g.gl)) != null;
+
+		root.render(g);
+
+		g.checkError();
+		assert s != null && s.verify(g.gl);
+	}
+
+	private void layoutPass(final int deltaTimeMs) {
+		root.layout(deltaTimeMs);
+	}
+
+	private void pickingPass(final GLGraphics g) {
+		GLSanityCheck s = null;
+		assert (s = GLSanityCheck.create(g.gl)) != null;
 		pickingManager.doPicking(g.gl, new Runnable() {
 			@Override
 			public void run() {
@@ -214,27 +247,31 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 			}
 		});
 		g.checkError();
-		assert s != null && s.verify(gl);
-
-		// 2. pass: layouting
-		root.layout(deltaTimeMs);
-
-		assert (s = GLSanityCheck.create(gl)) != null;
-		// 3. pass: rendering
-		root.render(g);
-
-		g.checkError();
-		assert s != null && s.verify(gl);
+		assert s != null && s.verify(g.gl);
 	}
 
+	private void updateMouseLayer() {
+		Vec2f mousePos = pickingManager.getCurrentMousePos();
+		if (mousePos != null) {
+			root.getMouseLayer().setBounds(mousePos.x(), mousePos.y(), getWidth() - mousePos.x(),
+					getHeight() - mousePos.y());
+			root.getMouseLayer().relayout();
+		}
+	}
 
+	/**
+	 * @return
+	 */
+	private boolean isVisible() {
+		return visible && canvas.isVisible();
+	}
 
 	@Override
 	public final void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		GL2 gl = drawable.getGL().getGL2();
 
-		viewFrustum.setRight(width);
-		viewFrustum.setBottom(height);
+		viewFrustum.setRight(canvas.getDIPWidth());
+		viewFrustum.setBottom(canvas.getDIPHeight());
 
 		gl.glViewport(x, y, width, height);
 		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);

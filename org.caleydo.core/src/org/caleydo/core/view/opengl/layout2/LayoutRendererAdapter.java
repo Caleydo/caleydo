@@ -18,6 +18,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 
@@ -62,10 +63,15 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 		this.eventListeners = EventListenerManagers.createQueued();
 		this.eventSpace = eventSpace;
 
-		this.local = new GLContextLocal(view.getTextureManager(), locator);
+		this.local = new GLContextLocal(view.getTextureManager(), locator, view.getParentGLCanvas());
 
 		this.root.setParent(this);
 		this.root.init(this);
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		return GLLayouts.resolveLayoutDatas(clazz, default_, view, this.local);
 	}
 
 	@Override
@@ -105,10 +111,10 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 		// 0,h w,h
 		gl.glTranslatef(0, y, 0);
 		gl.glScalef(x / w, -y / h, 1);
-		int hh = view.getParentGLCanvas().getHeight();
+		float hh = view.getParentGLCanvas().getDIPHeight();
 
-		this.location = new Vec2f(pixelGLConverter.getPixelWidthForCurrentGLTransform(gl), hh
-				- pixelGLConverter.getPixelHeightForCurrentGLTransform(gl));
+		this.location = pixelGLConverter.getCurrentPixelPos(gl);
+		this.location.setY(hh - this.location.y());
 
 		if (dirty) {
 			root.setBounds(0, 0, w, h);

@@ -34,9 +34,4 @@ public class SerializedParallelCoordinatesView extends ASerializedSingleTablePer
 	public String getViewType() {
 		return GLParallelCoordinates.VIEW_TYPE;
 	}
-
-	@Override
-	public String getViewClassType() {
-		return GLParallelCoordinates.class.getName();
-	}
 }

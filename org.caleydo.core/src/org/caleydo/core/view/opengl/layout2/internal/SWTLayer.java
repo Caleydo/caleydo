@@ -9,6 +9,7 @@ import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -19,6 +20,10 @@ import org.eclipse.swt.widgets.Display;
  */
 public class SWTLayer implements ISWTLayer {
 	private final IGLCanvas canvas;
+	/**
+	 * cache current cursor to avoid setting to the same value
+	 */
+	private int cursor = -1;
 
 	/**
 	 * @param asComposite
@@ -33,12 +38,20 @@ public class SWTLayer implements ISWTLayer {
 	}
 
 	@Override
+	public final IPickingListener createTooltip(IPickingLabelProvider label) {
+		return canvas.createTooltip(label);
+	}
+
+	@Override
 	public final void showContextMenu(Iterable<? extends AContextMenuItem> items) {
 		canvas.showPopupMenu(items);
 	}
 
 	@Override
 	public final void setCursor(final int swtCursorConst) {
+		if (cursor == swtCursorConst)
+			return;
+		cursor = swtCursorConst;
 		run(new ISWTLayerRunnable() {
 			@Override
 			public void run(Display display, Composite canvas) {

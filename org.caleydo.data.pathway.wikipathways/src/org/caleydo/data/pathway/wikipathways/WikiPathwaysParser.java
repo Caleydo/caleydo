@@ -7,9 +7,9 @@ package org.caleydo.data.pathway.wikipathways;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,12 +31,14 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
-import org.caleydo.datadomain.pathway.manager.IPathwayResourceLoader;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.pathvisio.core.model.ConverterException;
 import org.pathvisio.core.model.GpmlFormat;
 import org.pathvisio.core.model.ObjectType;
@@ -44,7 +46,7 @@ import org.pathvisio.core.model.Pathway;
 import org.pathvisio.core.model.PathwayElement;
 import org.pathvisio.core.model.PathwayImporter;
 
-public class WikiPathwaysParser implements IPathwayParser {
+public class WikiPathwaysParser implements IPathwayParser, IRunnableWithProgress {
 
 	/**
 	 * Maps wikipathway db names to idtypes in caleydo.
@@ -60,52 +62,35 @@ public class WikiPathwaysParser implements IPathwayParser {
 	}
 
 	@Override
+	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+		PathwayManager pathwayManager = PathwayManager.get();
+		pathwayManager.preparePathwayData(EPathwayDatabaseType.WIKIPATHWAYS, monitor);
+	}
+
+	@Override
 	public void parse() {
 		PathwayManager pathwayManager = PathwayManager.get();
+		File baseDir = pathwayManager.preparePathwayData(EPathwayDatabaseType.WIKIPATHWAYS, new NullProgressMonitor());
+		Organism organism = GeneticMetaData.getOrganism();
+		if (baseDir == null)
+			throw new IllegalStateException("Cannot load pathways from organism " + organism);
 
-		IPathwayResourceLoader resourceLoader = pathwayManager
-				.getPathwayResourceLoader(EPathwayDatabaseType.WIKIPATHWAYS);
 		PathwayDatabase pathwayDatabase = pathwayManager.getPathwayDatabaseByType(EPathwayDatabaseType.WIKIPATHWAYS);
 
-		Organism organism = GeneticMetaData.getOrganism();
-		String pathwayListFileName = null;
-
-		if (organism == Organism.HOMO_SAPIENS) {
-			pathwayListFileName = PathwayListGenerator.LIST_FILE_WIKIPATHWAYS_HOMO_SAPIENS;
-		} else if (organism == Organism.MUS_MUSCULUS) {
-			pathwayListFileName = PathwayListGenerator.LIST_FILE_WIKIPATHWAYS_MUS_MUSCULUS;
-		} else {
-			throw new IllegalStateException("Cannot load pathways from organism " + organism);
-		}
-
-		BufferedReader pathwayListFile = resourceLoader.getResource(pathwayListFileName);
-		String line = null;
-
-
-		try {
-			File tmpPathwayFile = File.createTempFile("tmppathway", "gpml");
-
+		try (BufferedReader pathwayListFile = new BufferedReader(new FileReader(new File(baseDir, "metadata.txt")))) {
+			String line = null;
 			while ((line = pathwayListFile.readLine()) != null) {
 				String[] tokens = line.split("\\s");
 
-				Files.copy(resourceLoader.getInputSource(pathwayDatabase.getXMLPath() + tokens[0]).getByteStream(),
-						tmpPathwayFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
+				File pathwayFile = new File(baseDir, tokens[0]);
 				PathwayImporter importer = new GpmlFormat();
-				Pathway pathway = importer.doImport(tmpPathwayFile);
+				Pathway pathway = importer.doImport(pathwayFile);
 				createPathwayGraph(pathway, tokens[0].substring(0, tokens[0].length() - 5), Integer.valueOf(tokens[1])
-						.intValue(), Integer.valueOf(tokens[2]).intValue());
+						.intValue(), Integer.valueOf(tokens[2]).intValue(), baseDir);
 
 			}
 		} catch (IOException | ConverterException e) {
-			throw new IllegalStateException("Error reading pathway list file " + pathwayListFileName);
-		} finally {
-			if (pathwayListFile != null) {
-				try {
-					pathwayListFile.close();
-				} catch (IOException e) {
-				}
-			}
+			throw new IllegalStateException("Error reading pathway list file");
 		}
 	}
 
@@ -121,13 +106,14 @@ public class WikiPathwaysParser implements IPathwayParser {
 	 *            Width of the image in pixels.
 	 * @param pixelHeight
 	 *            Height of the image in pixels.
+	 * @param baseDir
 	 */
-	private void createPathwayGraph(Pathway pathway, String imageFileName, int pixelWidth, int pixelHeight) {
+	private void createPathwayGraph(Pathway pathway, String imageFileName, int pixelWidth, int pixelHeight, File baseDir) {
 		PathwayManager pathwayManager = PathwayManager.get();
 		PathwayItemManager pathwayItemManager = PathwayItemManager.get();
 
 		PathwayGraph pathwayGraph = pathwayManager.createPathway(EPathwayDatabaseType.WIKIPATHWAYS, imageFileName,
-				pathway.getMappInfo().getMapInfoName(), imageFileName + ".png", "");
+				pathway.getMappInfo().getMapInfoName(), new File(baseDir, imageFileName + ".png"), "");
 		pathwayGraph.setWidth(pixelWidth);
 		pathwayGraph.setHeight(pixelHeight);
 

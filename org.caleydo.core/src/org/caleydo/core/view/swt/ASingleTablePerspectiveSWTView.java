@@ -22,14 +22,12 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
-import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * @author Samuel Gratzl
@@ -43,8 +41,8 @@ public abstract class ASingleTablePerspectiveSWTView extends AView implements IS
 
 	protected TablePerspective tablePerspective;
 
-	public ASingleTablePerspectiveSWTView(Composite parentComposite, String viewType, String viewName) {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), parentComposite, viewType,
+	public ASingleTablePerspectiveSWTView(String viewType, String viewName) {
+		super(viewType,
 				viewName);
 	}
 

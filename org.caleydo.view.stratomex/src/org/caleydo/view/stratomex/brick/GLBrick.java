@@ -5,7 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex.brick;
 
-import java.awt.Point;
+import gleem.linalg.Vec2f;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,10 +32,11 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
-import org.caleydo.core.event.data.DataDomainUpdateEvent;
+import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.gui.util.RenameNameDialog;
@@ -62,8 +64,8 @@ import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.ATimedMouseOutPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -79,6 +81,8 @@ import org.caleydo.view.stratomex.brick.layout.CollapsedBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
+import org.caleydo.view.stratomex.brick.layout.ToolBar;
+import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
 import org.caleydo.view.stratomex.brick.ui.RectangleCoordinates;
 import org.caleydo.view.stratomex.brick.ui.RelationIndicatorRenderer;
 import org.caleydo.view.stratomex.column.BrickColumn;
@@ -93,7 +97,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -101,9 +104,9 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * Individual Brick for StratomeX
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, ILayoutedElement, IDraggable,
 		IMultiFormChangeListener, IEventBasedSelectionManagerUser {
@@ -114,8 +117,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	private LayoutManager layoutManager;
 	private ElementLayout wrappingLayout;
 
-	private int baseDisplayListIndex;
-	private boolean isBaseDisplayListDirty = true;
+	// private int baseDisplayListIndex;
+	// private boolean isBaseDisplayListDirty = true;
 
 	@XmlTransient
 	protected final EventListenerManager listeners = EventListenerManagers.wrap(this);
@@ -245,9 +248,12 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	private IBrickConfigurer brickConfigurer;
 
 	private final Collection<IContextMenuBrickFactory> contextMenuFactories;
+	private APickingListener pickingListener;
 
-	public GLBrick(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+	private ATimedMouseOutPickingListener brickPickingListener;
+
+	public GLBrick(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		contextMenuFactories = createContextMenuFactories();
 		textRenderer = new CaleydoTextRenderer(24);
@@ -276,9 +282,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	public void initialize() {
 		super.initialize();
 		tablePerspectiveSelectionManager = new EventBasedSelectionManager(this, TablePerspective.DATA_CONTAINER_IDTYPE);
-		tablePerspectiveSelectionManager.registerEventListeners();
 		recordGroupSelectionManager = new EventBasedSelectionManager(this, dataDomain.getRecordGroupIDType());
-		recordGroupSelectionManager.registerEventListeners();
 		// dataDomain.cloneRecordGroupSelectionManager().clone();
 
 		if (brickLayoutConfiguration == null) {
@@ -306,7 +310,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	@Override
 	public void init(GL2 gl) {
-		baseDisplayListIndex = gl.glGenLists(1);
+		// baseDisplayListIndex = gl.glGenLists(1);
 
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 		layoutManager.setUseDisplayLists(true);
@@ -327,7 +331,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Triggers a dialog to rename the specified group.
-	 * 
+	 *
 	 * @param groupID
 	 *            ID of the group that shall be renamed.
 	 */
@@ -340,11 +344,15 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 			@Override
 			public void run() {
-				String r = RenameNameDialog.show(getParentComposite().getShell(), "Rename '" + getLabel() + "' to",
-						getLabel());
+				String r = RenameNameDialog.show(getParentGLCanvas().asComposite().getShell(), "Rename '" + getLabel()
+						+ "' to", getLabel());
 				if (r != null) {
 					label = r;
 					tablePerspective.setLabel(label, false);
+					VirtualArray va = getBrickColumn().getTablePerspective().getRecordPerspective().getVirtualArray();
+					int groupIndex = tablePerspective.getRecordGroup().getGroupIndex();
+					Group group = va.getGroupList().get(groupIndex);
+					group.setLabel(label);
 					setDisplayListDirty();
 
 					if (brickLayoutConfiguration instanceof DefaultBrickLayoutTemplate)
@@ -406,12 +414,15 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		processEvents();
 		handleBrickResize(gl);
 
-		if (isBaseDisplayListDirty)
-			buildBaseDisplayList(gl);
+		// if (isBaseDisplayListDirty)
+		// buildBaseDisplayList(gl);
 
 		GLStratomex stratomex = getBrickColumn().getStratomexView();
+		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
+				EPickingType.BRICK_PENETRATING.name(), getID()));
 		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(), EPickingType.BRICK.name(), getID()));
-		gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BRICK.name(), getID()));
+
+		// gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BRICK.name(), getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
 		gl.glTranslatef(0, 0, 0.1f);
 
@@ -424,15 +435,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		gl.glVertex3f(wrappingLayout.getSizeScaledX(), wrappingLayout.getSizeScaledY(), zpos);
 		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), zpos);
 		gl.glEnd();
+		gl.glPopName();
 
-		gl.glPopName();
-		gl.glPopName();
 
 		// The full brick content will not be rendered with DetailLevel.LOW
 		if (brickColumn.getDetailLevel() != EDetailLevel.LOW || isHeaderBrick)
 			layoutManager.render(gl);
 
-		gl.glCallList(baseDisplayListIndex);
+		gl.glPopName();
+
+
+		// gl.glCallList(baseDisplayListIndex);
 
 		gl.glTranslatef(0, 0, -0.1f);
 	}
@@ -449,13 +462,13 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	}
 
-	private void buildBaseDisplayList(GL2 gl) {
-		gl.glNewList(baseDisplayListIndex, GL2.GL_COMPILE);
-		// templateRenderer.updateLayout();
-
-		gl.glEndList();
-		isBaseDisplayListDirty = false;
-	}
+	// private void buildBaseDisplayList(GL2 gl) {
+	// gl.glNewList(baseDisplayListIndex, GL2.GL_COMPILE);
+	// // templateRenderer.updateLayout();
+	//
+	// gl.glEndList();
+	// isBaseDisplayListDirty = false;
+	// }
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -489,19 +502,16 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			return;
 		}
 
-		Point currentPoint = glMouseListener.getPickedPoint();
-
-		float[] pointCordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-				currentPoint.y);
+		Vec2f pointCordinates = pixelGLConverter.convertMouseCoord2GL(glMouseListener.getDIPPickedPoint());
 
 		if (Float.isNaN(previousXCoordinate)) {
-			previousXCoordinate = pointCordinates[0];
-			previousYCoordinate = pointCordinates[1];
+			previousXCoordinate = pointCordinates.x();
+			previousYCoordinate = pointCordinates.y();
 			return;
 		}
 
-		float changeX = pointCordinates[0] - previousXCoordinate;
-		float changeY = -(pointCordinates[1] - previousYCoordinate);
+		float changeX = pointCordinates.x() - previousXCoordinate;
+		float changeY = -(pointCordinates.y() - previousYCoordinate);
 
 		float width = wrappingLayout.getSizeScaledX();
 		float height = wrappingLayout.getSizeScaledY();
@@ -522,8 +532,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			newHeight = minHeight;
 		}
 
-		previousXCoordinate = pointCordinates[0];
-		previousYCoordinate = pointCordinates[1];
+		previousXCoordinate = pointCordinates.x();
+		previousYCoordinate = pointCordinates.y();
 
 		wrappingLayout.setAbsoluteSizeX(newWidth);
 		wrappingLayout.setAbsoluteSizeY(newHeight);
@@ -545,7 +555,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Set the {@link GLStratomex} view managing this brick, which is needed for environment information.
-	 * 
+	 *
 	 * @param stratomex
 	 */
 	public void setStratomex(GLStratomex stratomex) {
@@ -554,7 +564,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Set the {@link BrickColumn} this brick belongs to.
-	 * 
+	 *
 	 * @param brickColumn
 	 */
 	public void setBrickColumn(BrickColumn brickColumn) {
@@ -563,7 +573,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Returns the {@link BrickColumn} this brick belongs to.
-	 * 
+	 *
 	 * @return
 	 */
 	public BrickColumn getBrickColumn() {
@@ -585,7 +595,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Updates the width and height of the brick according to the specified renderer.
-	 * 
+	 *
+	 * @param gl
+	 *
 	 * @param viewType
 	 *            ID of the renderer in {@link #multiFormRenderer}.
 	 */
@@ -676,7 +688,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	/**
 	 * Sets the {@link ABrickLayoutConfiguration} for this brick, specifying its appearance. If the specified view type
 	 * is valid, it will be set, otherwise the default view type will be set.
-	 * 
+	 *
 	 * @param newBrickLayout
 	 * @param viewType
 	 */
@@ -719,7 +731,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	@Override
 	public void unregisterEventListeners() {
-
+		super.unregisterEventListeners();
 		if (renameListener != null) {
 			eventPublisher.removeListener(renameListener);
 			renameListener = null;
@@ -753,6 +765,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			eventPublisher.removeListener(exportBrickDataEventListener);
 			exportBrickDataEventListener = null;
 		}
+
+		listeners.unregisterAll();
+
+		unregisterPickingListeners();
 	}
 
 	private void registerPickingListeners() {
@@ -815,17 +831,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				selectElementsByGroup(select);
 
 				if (!isHeaderBrick && !(brickLayoutConfiguration instanceof DetailBrickLayoutTemplate)) {
-					Point point = pick.getPickedPoint();
+					Vec2f point = pick.getPickedPoint();
 					DragAndDropController dragAndDropController = stratomex.getDragAndDropController();
 
 					dragAndDropController.clearDraggables();
-					dragAndDropController.setDraggingStartPosition(new Point(point.x, point.y));
+					dragAndDropController.setDraggingStartPosition(point.copy());
 					dragAndDropController.addDraggable(GLBrick.this);
 					dragAndDropController.setDraggingMode("BrickDrag" + brickColumn.getID());
 					stratomex.setDisplayListDirty();
 				}
 
-				DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
+				DataSetSelectedEvent event = new DataSetSelectedEvent(tablePerspective);
 				event.setSender(this);
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}
@@ -896,11 +912,55 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				isBrickResizeActive = true;
 			}
 		}, EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
+
+		brickPickingListener = new ATimedMouseOutPickingListener() {
+
+			@Override
+			public void mouseOver(Pick pick) {
+				super.mouseOver(pick);
+				if (pick.getObjectID() == getID())
+					showWidgets(true);
+				else
+					showWidgets(false);
+
+			}
+
+			@Override
+			protected void timedMouseOut(Pick pick) {
+				// TODO Auto-generated method stub
+				if (pick.getObjectID() == getID())
+					showWidgets(false);
+			}
+		};
+
+		getStratomex().addTypePickingListener(brickPickingListener, EPickingType.BRICK_PENETRATING.name());
+	}
+
+	private void unregisterPickingListeners() {
+		stratomex.removeTypePickingListener(brickPickingListener, EPickingType.BRICK_PENETRATING.name());
+		stratomex.removeAllIDPickingListeners(EPickingType.BRICK.name(), getID());
+		if (isHeaderBrick) {
+			stratomex.removeAllIDPickingListeners(EPickingType.DIMENSION_GROUP.name(), brickColumn.getID());
+		}
+		stratomex.removeAllIDPickingListeners(EPickingType.BRICK_TITLE.name(), getID());
+		stratomex.removeAllIDPickingListeners(EPickingType.MOVE_VERTICALLY_HANDLE.name(), getID());
+	}
+
+	public void showWidgets(boolean show) {
+		ToolBar toolbar = brickLayoutConfiguration.getToolBar();
+		if (toolbar != null) {
+			toolbar.setHide(!show);
+		}
+		HandleRenderer handleRenderer = brickLayoutConfiguration.getHandleRenderer();
+		if (handleRenderer != null) {
+			handleRenderer.setHide(!show);
+		}
+		setDisplayListDirty();
 	}
 
 	/**
 	 * create the context menu entries to switch the dimension perspectives
-	 * 
+	 *
 	 * @return
 	 */
 	protected static AContextMenuItem createChooseDimensionPerspectiveEntries(BrickColumn column) {
@@ -910,7 +970,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			dims.add(table.getDimensionPerspective(id));
 		}
 		Perspective dim = column.getTablePerspective().getDimensionPerspective();
-		GroupContextMenuItem item = new GroupContextMenuItem("Used dimension perspective");
+		GroupContextMenuItem item = new GroupContextMenuItem("Used Dimension Perspective");
 
 		for (Perspective d : dims)
 			item.add(new GenericContextMenuItem(d.getLabel(), EContextMenuType.CHECK,
@@ -920,7 +980,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Only to be called via a {@link RelationsUpdatedListener} upon a {@link RelationsUpdatedEvent}.
-	 * 
+	 *
 	 * TODO: add parameters to check whether this brick needs to be updated
 	 */
 	public void relationsUpdated() {
@@ -937,7 +997,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Set the layout that this view is embedded in
-	 * 
+	 *
 	 * @param wrappingLayout
 	 */
 	public void setLayout(ElementLayout wrappingLayout) {
@@ -946,7 +1006,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Returns the layout that this view is wrapped in, which is created by the same instance that creates the view.
-	 * 
+	 *
 	 * @return
 	 */
 	@Override
@@ -968,7 +1028,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Returns the selection manager responsible for managing selections of data containers.
-	 * 
+	 *
 	 * @return
 	 */
 	public SelectionManager getTablePerspectiveSelectionManager() {
@@ -1007,7 +1067,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Sets this brick collapsed
-	 * 
+	 *
 	 * @return how much this has affected the height of the brick.
 	 */
 	public void collapse() {
@@ -1051,7 +1111,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Sets, whether view switching by this brick should affect other bricks in the dimension group.
-	 * 
+	 *
 	 * @param isGlobalViewSwitching
 	 */
 	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
@@ -1219,6 +1279,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	protected void destroyViewSpecificContent(GL2 gl) {
 		if (layoutManager != null)
 			layoutManager.destroy(gl);
+		if (this.viewSwitchingBar != null)
+			this.viewSwitchingBar.destroy(gl);
+		if (this.brickLayoutConfiguration != null) {
+			this.brickLayoutConfiguration.destroy();
+		}
 	}
 
 	/**
@@ -1313,7 +1378,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Sets the specified renderer to be displayed.
-	 * 
+	 *
 	 * @param rendererID
 	 *            ID of the renderer in {@link #multiFormRenderer}, i.e., the local renderer ID.
 	 */
@@ -1351,7 +1416,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	/**
 	 * Associates global, i.e., brick-column wide IDs to identify similar renderers for bricks of the same type (segment
 	 * vs. header), to the local renderer IDs used in {@link #multiFormRenderer}.
-	 * 
+	 *
 	 * @param globalRendererID
 	 *            Global renderer ID.
 	 * @param localRendererID
@@ -1364,7 +1429,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Gets the local renderer ID used by {@link #multiFormRenderer} for a global ID.
-	 * 
+	 *
 	 * @param globalRendererID
 	 *            Global renderer ID.
 	 * @return The local renderer ID, -1 if no local ID could be found for the specified global ID.
@@ -1377,7 +1442,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	/**
 	 * Gets the global renderer ID for a local ID.
-	 * 
+	 *
 	 * @param localRendererID
 	 *            Local renderer ID.
 	 * @return The global renderer ID, -1 if no global ID could be found for the specified local ID.

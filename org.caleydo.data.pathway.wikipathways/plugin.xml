@@ -14,5 +14,11 @@
            class="org.caleydo.data.pathway.wikipathways.WikiPathwaysParser">
      </PathwayParser>
   </extension>
+  <extension
+        point="org.caleydo.core.CacheInitializer">
+     <initializer
+           class="org.caleydo.data.pathway.wikipathways.WikiPathwaysParser">
+     </initializer>
+  </extension>
 
 </plugin>

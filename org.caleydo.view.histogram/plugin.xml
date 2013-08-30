@@ -108,4 +108,32 @@
          </dataDomain>
       </association>
    </extension>
+   <extension
+         point="org.caleydo.ui.GLElementFactory">
+      <factory
+            factory="org.caleydo.view.histogram.v2.internal.HistogramElementFactory"
+            icon="resources/icons/chart_bar.png"
+            name="Histogram">
+      </factory>
+      <factory
+            factory="org.caleydo.view.histogram.v2.internal.AverageBarElementFactory"
+            icon="resources/icons/chart_averagebar.png"
+            name="Average Bar">
+      </factory>
+      <factory
+            factory="org.caleydo.view.histogram.v2.internal.DistributionBarElementFactory"
+            icon="resources/icons/chart_distribution.png"
+            name="Distribution (Bar)">
+      </factory>
+      <factory
+            factory="org.caleydo.view.histogram.v2.internal.DistributionPieElementFactory"
+            icon="resources/icons/chart_pie.png"
+            name="Distribution (Pie)">
+      </factory>
+      <factory
+            factory="org.caleydo.view.histogram.v2.internal.DistributionHistogramElementFactory"
+            icon="resources/icons/chart_bar.png"
+            name="Histogram">
+      </factory>
+   </extension>
 </plugin>

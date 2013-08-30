@@ -11,10 +11,13 @@ import static org.caleydo.data.loader.ResourceLocators.URL;
 import static org.caleydo.data.loader.ResourceLocators.chain;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.id.object.IDCreator;
+import org.caleydo.core.internal.Activator;
 import org.caleydo.core.internal.ConsoleFlags;
 import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.core.serialize.SerializationManager;
@@ -25,9 +28,12 @@ import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
+import org.osgi.framework.Version;
 
 /**
  * General manager that contains all module managers.
@@ -45,30 +51,29 @@ public class GeneralManager {
 	 * This is the current version of Caleydo. The value must be the same as specified in the plugin/bundle. We need to
 	 * access the version before the workbench is started. Therefore we have to set it hardcoded at this point.
 	 */
-	public static final String VERSION = "3.0";
+	public static final Version VERSION = readVersion();
 
 	public static final String PLUGIN_ID = "org.caleydo.core";
 
-	/**
-	 * The template for the concrete Caleydo folder, ie CALEYDO_FOLDER. This is used for example in XML files and is
-	 * then replaced with the concrete folder
-	 */
-	public static final String USER_HOME = "user.home";
-	public static final String CALEYDO_FOLDER_TEMPLATE = "caleydo.folder";
-
 	/** The major version number determines the name of the Caleydo folder **/
-	public static final String CALEYDO_FOLDER = ".caleydo_" + VERSION.substring(0, 3);
+	private static final String CALEYDO_FOLDER = ".caleydo_" + VERSION.getMajor() + "." + VERSION.getMinor();
 
 	// public static final String CALEYDO_HOME_PATH =
 	// Platform.getLocation().toOSString()+ File.separator;
-	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME) + File.separator + CALEYDO_FOLDER
+	public static final String CALEYDO_HOME_PATH = System.getProperty("user.home") + File.separator + CALEYDO_FOLDER
 			+ File.separator;
 	public static final String CALEYDO_LOG_PATH = CALEYDO_HOME_PATH + "logs" + File.separator;
+
+	public static final String DATA_URL_PREFIX = "http://data.icg.tugraz.at/caleydo/download/" + VERSION.getMajor()
+			+ "." + VERSION.getMinor() + "/";
 
 	/**
 	 * General manager as a singleton
 	 */
 	private volatile static GeneralManager instance;
+
+	private final ResourceLoader resourceLoader;
+	private final Logger logger = Logger.create(GeneralManager.class);
 
 	/**
 	 * In dry mode Caleydo runs without GUI. However, the core's functionality can be used without limitations. This is
@@ -81,24 +86,34 @@ public class GeneralManager {
 	 **/
 	private SubMonitor progressMonitor;
 
-	private ViewManager viewManager;
-	private EventPublisher eventPublisher;
-	private IDCreator idCreator;
-	private ResourceLoader resourceLoader;
-	private SerializationManager serializationManager;
+
 	private IStatisticsPerformer rStatisticsPerformer;
 
 	private ProjectMetaData metaData = ProjectMetaData.createDefault();
 
-	private Logger logger = Logger.create(GeneralManager.class);
-
-
-	public void init() {
-		eventPublisher = EventPublisher.INSTANCE;
-		viewManager = ViewManager.get();
-		idCreator = new IDCreator();
-		serializationManager = SerializationManager.get();
+	/**
+	 *
+	 */
+	private GeneralManager() {
 		resourceLoader = new ResourceLoader(chain(DATA_CLASSLOADER, FILE, URL));
+	}
+
+
+	/**
+	 * @return
+	 */
+	private static Version readVersion() {
+		if (Activator.version != null)
+			return Activator.version;
+		Properties p = new Properties();
+		try (InputStream in = GeneralManager.class.getResourceAsStream("/version.properties")) {
+			if (in != null)
+				p.load(in);
+		} catch (IOException e) {
+			Logger.log(new Status(IStatus.ERROR, "org.caleydo.core", "can't parse: version.properties"));
+		}
+		String v = p.getProperty("caleydo.version", "1.0.0.unknown");
+		return Version.parseVersion(v);
 	}
 
 	/**
@@ -111,7 +126,6 @@ public class GeneralManager {
 			synchronized (GeneralManager.class) {
 				if (instance == null) {
 					instance = new GeneralManager();
-					instance.init();
 				}
 			}
 		}
@@ -144,15 +158,11 @@ public class GeneralManager {
 	}
 
 	public ViewManager getViewManager() {
-		return viewManager;
+		return ViewManager.get();
 	}
 
 	public EventPublisher getEventPublisher() {
-		return eventPublisher;
-	}
-
-	public IDCreator getIDCreator() {
-		return idCreator;
+		return EventPublisher.INSTANCE;
 	}
 
 	public IStatisticsPerformer getRStatisticsPerformer() {
@@ -179,7 +189,7 @@ public class GeneralManager {
 	 * @return the {@link SerializationManager} of this caleydo application
 	 */
 	public SerializationManager getSerializationManager() {
-		return serializationManager;
+		return SerializationManager.get();
 	}
 
 	public static DataDomainManager getDataDomainManagerInstance() {
@@ -210,7 +220,8 @@ public class GeneralManager {
 	public static boolean canLoadDataCreatedFor(String caleydoVersion) {
 		if (caleydoVersion == null)
 			return false;
-		return VERSION.equalsIgnoreCase(caleydoVersion);
+		Version tocheck = Version.parseVersion(caleydoVersion);
+		return VERSION.getMajor() == tocheck.getMajor() && VERSION.getMinor() == tocheck.getMinor();
 	}
 
 	public void setSplashProgressMonitor(IProgressMonitor splashProgressMonitor) {

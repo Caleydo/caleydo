@@ -17,7 +17,6 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * Single OpenGL2 tissue view
@@ -40,9 +39,9 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	/**
 	 * Constructor.
 	 */
-	public GLTexture(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLTexture(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 	}
 
@@ -54,7 +53,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
 
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 		init(gl);
 	}
 

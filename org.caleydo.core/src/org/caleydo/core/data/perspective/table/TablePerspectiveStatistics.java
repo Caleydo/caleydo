@@ -10,7 +10,9 @@ package org.caleydo.core.data.perspective.table;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.CategoricalHistogram;
@@ -23,8 +25,12 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  * <p>
@@ -57,7 +63,7 @@ public class TablePerspectiveStatistics {
 
 	private TTest tTest;
 
-	private HashMap<IDType, HashMap<Integer, Average>> mapIDTypeToIDToAverage = new HashMap<>();
+	private Map<IDType, Map<Set<Integer>, Average>> mapIDTypeToIDToAverage = new HashMap<>();
 
 	/**
 	 * The optional number of buckets f or the histogram.
@@ -225,9 +231,8 @@ public class TablePerspectiveStatistics {
 						histogram.add(bucketIndex, recordID);
 					}
 				}
-
 			}
-			return histogram;
+			return histogram.optimize();
 		}
 
 	}
@@ -251,6 +256,10 @@ public class TablePerspectiveStatistics {
 	}
 
 	public Average getAverage(IDType idType, Integer id) {
+		return getAverage(idType, Collections.singleton(id));
+	}
+
+	public Average getAverage(IDType idType, Collection<Integer> ids) {
 		IDType targetIDtype;
 
 		if (referenceTablePerspective.getRecordPerspective().getIdType().getIDCategory().isOfCategory(idType)) {
@@ -262,26 +271,25 @@ public class TablePerspectiveStatistics {
 			throw new IllegalArgumentException("IDType specified (" + idType + ") invalid for table perspective "
 					+ referenceTablePerspective);
 		}
+		IDMappingManager mapper = IDMappingManagerRegistry.get().getIDMappingManager(idType);
+		IIDTypeMapper<Integer, Integer> idTypeMapper = mapper.getIDTypeMapper(idType, targetIDtype);
 
-		Set<Integer> resolvedIDs = IDMappingManagerRegistry.get().getIDMappingManager(idType)
-				.getIDAsSet(idType, targetIDtype, id);
-		if (resolvedIDs == null)
+		Set<Integer> targetIDs = idTypeMapper.apply(ids);
+		if (targetIDs == null || targetIDs.isEmpty())
 			return null;
-		for (Integer resolvedID : resolvedIDs) {
-			HashMap<Integer, Average> idToAverage = mapIDTypeToIDToAverage.get(targetIDtype);
-			if (idToAverage == null) {
-				// I assume we're working with approximately 500 values at a time
-				idToAverage = new HashMap<>(500);
-				mapIDTypeToIDToAverage.put(targetIDtype, idToAverage);
-			}
-			Average average = idToAverage.get(resolvedID);
-			if (average == null) {
-				average = calculateAverage(targetIDtype, resolvedID);
-				idToAverage.put(id, average);
-			}
-			return average;
+		targetIDs = ImmutableSet.copyOf(targetIDs);
+		Map<Set<Integer>, Average> idToAverage = mapIDTypeToIDToAverage.get(targetIDtype);
+		if (idToAverage == null) {
+			// I assume we're working with approximately 500 values at a time
+			idToAverage = new HashMap<>(500);
+			mapIDTypeToIDToAverage.put(targetIDtype, idToAverage);
 		}
-		return null;
+		Average average = idToAverage.get(targetIDs);
+		if (average == null) {
+			average = calculateAverage(targetIDtype, targetIDs);
+			idToAverage.put(targetIDs, average);
+		}
+		return average;
 	}
 
 	/**
@@ -336,11 +344,15 @@ public class TablePerspectiveStatistics {
 		}
 	}
 
-	private Average calculateAverage(IDType idType, Integer id) {
+	private Average calculateAverage(IDType idType, Collection<Integer> ids) {
 		return calculateAverage(referenceTablePerspective.getOppositePerspective(idType).getVirtualArray(),
-				referenceTablePerspective.getDataDomain(), idType, id);
+				referenceTablePerspective.getDataDomain(), idType, ids);
 	}
 
+	public static Average calculateAverage(VirtualArray virtualArray, ATableBasedDataDomain dataDomain,
+			IDType objectIDType, Integer objectID) {
+		return calculateAverage(virtualArray, dataDomain, objectIDType, Collections.singleton(objectID));
+	}
 	/**
 	 * <p>
 	 * Calculates the average and the standard deviation for the values of one dimension or record in the data table.
@@ -363,8 +375,8 @@ public class TablePerspectiveStatistics {
 	 * @return
 	 */
 	public static Average calculateAverage(VirtualArray virtualArray, ATableBasedDataDomain dataDomain,
-			IDType objectIDType, Integer objectID) {
-		if (objectID == null || virtualArray.size() == 0)
+			IDType objectIDType, Collection<Integer> objectIDs) {
+		if (objectIDs == null || objectIDs.isEmpty() || virtualArray.size() == 0)
 			return null;
 		Average averageDimension = new Average();
 		double sumOfValues = 0;
@@ -392,14 +404,14 @@ public class TablePerspectiveStatistics {
 		if (!dataDomain.hasIDType(resolvedObjectIDType)) {
 			resolvedObjectIDType = dataDomain.getPrimaryIDType(objectIDType);
 
-			ids = IDMappingManagerRegistry.get().getIDMappingManager(objectIDType)
-					.getIDAsSet(objectIDType, resolvedObjectIDType, objectID);
+			IIDTypeMapper<Integer, Integer> idTypeMapper = IDMappingManagerRegistry.get()
+					.getIDMappingManager(objectIDType).getIDTypeMapper(objectIDType, resolvedObjectIDType);
+			ids = idTypeMapper.apply(objectIDs);
 
 			if (ids == null)
 				return null;
 		} else {
-			ids = new ArrayList<Integer>(1);
-			ids.add(objectID);
+			ids = objectIDs;
 		}
 		// IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(virtualArrayIDType);
 

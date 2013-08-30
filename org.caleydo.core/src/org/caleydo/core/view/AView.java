@@ -12,11 +12,13 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.SelectionCommandEvent;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.base.AUniqueObject;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+
+import com.google.common.base.Preconditions;
 
 /**
  * Abstract class that is the base of all view representations. It holds the the
@@ -27,13 +29,13 @@ import org.eclipse.swt.widgets.Display;
 public abstract class AView extends AUniqueObject implements IView {
 
 	/** The plugin name of the view, e.g. org.caleydo.view.parallel.coordinates */
-	private String viewType;
+	private final String viewType;
 
 	/**
 	 * The human readable view name used to identifying the type of the view,
 	 * e.g. "Parallel Coordinates"
 	 */
-	private String viewName = "Unspecified view name";
+	private final String viewName;
 
 	/**
 	 * A custom label of the view, including, for example info on the dataset it
@@ -49,11 +51,7 @@ public abstract class AView extends AUniqueObject implements IView {
 
 	public String icon = "resources/icons/general/no_icon_available.png";
 
-	protected GeneralManager generalManager;
-
-	protected EventPublisher eventPublisher;
-
-	protected Composite parentComposite;
+	protected final EventPublisher eventPublisher;
 
 	/**
 	 * The number that identifies the concrete view among all instances of its
@@ -69,19 +67,13 @@ public abstract class AView extends AUniqueObject implements IView {
 	 * @param viewName
 	 *            TODO
 	 */
-	public AView(int viewID, Composite parentComposite, String viewType, String viewName) {
-		super(viewID);
+	public AView(String viewType, String viewName) {
+		super(IDCreator.createPersistentIntID(AView.class));
 
-		this.viewType = viewType;
-		this.viewName = viewName;
-		if (viewType == null || viewName == null) {
-			throw new IllegalStateException("One of these was not defined: viewType: "
-					+ viewType + " viewName: " + viewName);
-		}
+		this.viewType = Preconditions.checkNotNull(viewType,"viewType is null");
+		this.viewName = Preconditions.checkNotNull(viewName,"viewName is null");
 		label = viewName;
-		generalManager = GeneralManager.get();
-		eventPublisher = generalManager.getEventPublisher();
-		this.parentComposite = parentComposite;
+		eventPublisher = EventPublisher.INSTANCE;
 	}
 
 	/**
@@ -114,6 +106,7 @@ public abstract class AView extends AUniqueObject implements IView {
 	/**
 	 * @return A Copy of the datadomain set of this view.
 	 */
+	@Override
 	public Set<IDataDomain> getDataDomains() {
 		return new HashSet<IDataDomain>();
 	}
@@ -126,10 +119,6 @@ public abstract class AView extends AUniqueObject implements IView {
 	@Override
 	public boolean isDataView() {
 		return false;
-	}
-
-	public Composite getParentComposite() {
-		return parentComposite;
 	}
 
 	protected static void initViewType() {
@@ -183,6 +172,14 @@ public abstract class AView extends AUniqueObject implements IView {
 		this.label = label;
 
 		updateRCPViewPartName();
+	}
+
+	@Override
+	public void initFromSerializableRepresentation(ASerializedView serializedView) {
+		if (!serializedView.isLabelDefault())
+			setLabel(serializedView.getViewLabel(), false);
+		else
+			setLabel(this.getDefaultLabel(), true);
 	}
 
 	private void updateRCPViewPartName() {

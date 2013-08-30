@@ -7,7 +7,6 @@ package org.caleydo.datadomain.pathway;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -19,6 +18,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
@@ -32,6 +32,7 @@ import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.datadomain.pathway.parser.KEGGParser;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -64,11 +65,6 @@ public class PathwayDataDomain extends ADataDomain {
 	private List<PathwayTablePerspective> tablePerspectives = new ArrayList<PathwayTablePerspective>();
 
 	/**
-	 * Counter used for determining the extension that together with the type builds the data domain ID.
-	 */
-	private static final AtomicInteger extensionID = new AtomicInteger();
-
-	/**
 	 * ID category for metabolites.
 	 */
 	protected IDCategory metaboliteIDCategory;
@@ -84,7 +80,7 @@ public class PathwayDataDomain extends ADataDomain {
 	public PathwayDataDomain() {
 
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER
-				+ extensionID.getAndDecrement());
+				+ IDCreator.createPersistentID(PathwayDataDomain.class));
 
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
@@ -131,13 +127,10 @@ public class PathwayDataDomain extends ADataDomain {
 
 		PathwayManager pathwayManager = PathwayManager.get();
 
-		PathwayDatabase pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.KEGG, "data/xml/",
-				"data/images/", "");
+		PathwayDatabase pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.KEGG);
+		KEGGParser.parse(pathwayDatabase);
 
-		pathwayManager.loadPathwaysByType(pathwayDatabase);
-
-		pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.WIKIPATHWAYS, "data/xml/",
-				"data/images/", "");
+		pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.WIKIPATHWAYS);
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint point = registry.getExtensionPoint("org.caleydo.data.pathway.PathwayParser");

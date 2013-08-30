@@ -8,12 +8,14 @@ package org.caleydo.core.view.opengl.layout2;
 import gleem.linalg.Vec2f;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import javax.media.opengl.FPSCounter;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAnimatorControl;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
@@ -22,14 +24,18 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
+import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import org.caleydo.core.view.opengl.canvas.MyAnimator;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
+import org.caleydo.core.view.opengl.layout2.internal.SandBoxLibraryLoader;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -49,8 +55,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import com.jogamp.opengl.util.FPSAnimator;
-
 /**
  * acts as a sandbox for elements, just use {@link GLSandBox#main(String[], GLElement)} and provide a element, and run the
  * application to open a window with the element shown, without the need of the whole caleydo / eclipse overhead
@@ -63,7 +67,7 @@ import com.jogamp.opengl.util.FPSAnimator;
  *
  */
 public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementContext {
-	private final FPSAnimator animator;
+	private final GLAnimatorControl animator;
 	private final WindowGLElement root;
 
 	private final ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 100, 100, 0, -20, 20);
@@ -103,8 +107,9 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		this.padding = padding;
 		canvas.addGLEventListener(this);
 
-		this.animator = new FPSAnimator(canvas.asGLAutoDrawAble(), 30);
-		animator.setPrintExceptions(true);
+		this.animator = new MyAnimator(MyPreferences.getFPS());
+
+		this.animator.add(canvas.asGLAutoDrawAble());
 		canvas.asGLAutoDrawAble().setAutoSwapBufferMode(true);
 
 		// ENABLE to print the fps to System.err
@@ -135,6 +140,11 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		caps.setDoubleBuffered(true);
 		caps.setAlphaBits(8);
 		return caps;
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		return GLLayouts.resolveLayoutDatas(clazz, default_, canvas, this.local);
 	}
 
 	/**
@@ -275,7 +285,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		gl.glLoadIdentity();
 		gl.glTranslatef(0.375f, 0.375f, 0);
 
-
 		float paddedWidth = getWidth() - padding.left - padding.right;
 		float paddedHeight = getHeight() - padding.top - padding.bottom;
 		g.move(padding.left, padding.right);
@@ -294,10 +303,10 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 			}
 		};
 
-		Point mousePos = pickingManager.getCurrentMousePos();
+		Vec2f mousePos = pickingManager.getCurrentMousePos();
 		if (mousePos != null) {
-			root.getMouseLayer().setBounds(mousePos.x - padding.left, mousePos.y - padding.top,
-					getWidth() - mousePos.x, getHeight() - mousePos.y);
+			root.getMouseLayer().setBounds(mousePos.x() - padding.left, mousePos.y() - padding.top,
+					getWidth() - mousePos.x(), getHeight() - mousePos.y());
 			root.getMouseLayer().relayout();
 		}
 		pickingManager.doPicking(g.gl, toRender);
@@ -328,8 +337,8 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		GL2 gl = drawable.getGL().getGL2();
 
-		viewFrustum.setRight(width);
-		viewFrustum.setBottom(height);
+		viewFrustum.setRight(canvas.getDIPWidth());
+		viewFrustum.setBottom(canvas.getDIPHeight());
 
 		gl.glViewport(x, y, width, height);
 		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
@@ -358,24 +367,34 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	}
 
 	public static void main(String[] args, Class<? extends GLSandBox> toRun, Object... toRunArgs) {
-		new SandBoxLauncher(args, toRun, toRunArgs).run();
+		new SandBoxLauncher(args, toRun.getCanonicalName(), toRunArgs).run();
 	}
+
+
 
 	private static class SandBoxLauncher implements Runnable{
 		private final String[] args;
+		private final ClassLoader wrapper;
 		private final Class<? extends GLSandBox> toRun;
 		private final Object[] toRunArgs;
 		private GLSandBox sandbox;
 
 
-		public SandBoxLauncher(String[] args, Class<? extends GLSandBox> toRun, Object[] toRunArgs) {
+		public SandBoxLauncher(String[] args, String cannonicalClassToRun, Object[] toRunArgs) {
 			this.args = args;
-			this.toRun = toRun;
+			this.wrapper = new URLClassLoader(new URL[0], getClass().getClassLoader());
+			try {
+				this.toRun = wrapper.loadClass(cannonicalClassToRun).asSubclass(GLSandBox.class);
+			} catch (ClassNotFoundException e) {
+				throw new IllegalStateException();
+			}
 			this.toRunArgs = toRunArgs;
 		}
 
 		@Override
 		public void run() {
+			// use my class for library loading
+			System.setProperty("jnlp.launcher.class", SandBoxLibraryLoader.class.getCanonicalName());
 			try {
 				Display display = new Display();
 				final Shell splash = createSplash(display);
@@ -396,16 +415,13 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 				if (sandbox != null)
 					sandbox.animator.stop();
 				display.dispose();
-			} catch (IllegalArgumentException | SecurityException e) {
+			} catch (Throwable e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (java.lang.NoClassDefFoundError e) {
-				// expected error as we aren't part of eclipse
-				System.exit(0);
 			} finally {
 				System.err.flush();
 				System.out.flush();
-				// System.exit(0);
+				System.exit(0);
 			}
 		}
 

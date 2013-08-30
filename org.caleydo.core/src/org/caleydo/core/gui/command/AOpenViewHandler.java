@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.gui.command;
 
+import java.util.UUID;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -18,19 +20,28 @@ import org.eclipse.ui.handlers.HandlerUtil;
  *
  */
 public abstract class AOpenViewHandler extends AbstractHandler implements IHandler {
+	protected static final boolean MULTIPLE = true;
+	protected static final boolean SINGLE = false;
+
 	private final String view;
+	private final boolean allowMultiple;
 
 	protected AOpenViewHandler(String view) {
+		this(view, false);
+	}
+
+	protected AOpenViewHandler(String view, boolean allowMultiple) {
 		this.view = view;
+		this.allowMultiple = allowMultiple;
 	}
 
 	@Override
 	public final Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			IWorkbenchPage activePage = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
-			int secondary = getNextSecondaryId();
-			if (secondary >= 0) { // multipe ones
-				activePage.showView(view, Integer.toString(secondary), IWorkbenchPage.VIEW_ACTIVATE);
+			if (allowMultiple) { // multipe ones
+				activePage.showView(view, Integer.toString(UUID.randomUUID().hashCode(), Character.MAX_RADIX),
+						IWorkbenchPage.VIEW_ACTIVATE);
 			} else { // single one
 				activePage.showView(view);
 			}
@@ -40,14 +51,5 @@ public abstract class AOpenViewHandler extends AbstractHandler implements IHandl
 		}
 
 		return null;
-	}
-
-	/**
-	 * override and return a secondary id to use for each newly created view to support multiple view instances
-	 * 
-	 * @return
-	 */
-	protected int getNextSecondaryId() {
-		return -1;
 	}
 }

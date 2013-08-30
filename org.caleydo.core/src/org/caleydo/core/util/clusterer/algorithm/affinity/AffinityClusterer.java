@@ -16,6 +16,7 @@ import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.logging.Logger;
 
 import com.google.common.base.Stopwatch;
+import com.jogamp.common.util.IntObjectHashMap;
 
 /**
  * Affinity propagation clusterer. See <a href="http://www.psi.toronto.edu/affinitypropagation/faq.html"> affinity
@@ -51,6 +52,8 @@ public class AffinityClusterer extends ALinearClusterer {
 	private final int maxIterations = 800;
 	private final int convIterations = 100;
 
+	private IntObjectHashMap cache;
+
 
 	public AffinityClusterer(ClusterConfiguration config, int progressMultiplier, int progressOffset) {
 		super(config, progressMultiplier, progressOffset);
@@ -63,6 +66,11 @@ public class AffinityClusterer extends ALinearClusterer {
 		this.s = new float[this.nrSimilarities];
 		this.i = new int[this.nrSimilarities];
 		this.k = new int[this.nrSimilarities];
+
+		if (c.isCacheVectors())
+			cache = new IntObjectHashMap();
+		else
+			cache = null;
 	}
 
 	/**
@@ -73,71 +81,97 @@ public class AffinityClusterer extends ALinearClusterer {
 	 * @return in case of error a negative value will be returned.
 	 */
 	private int determineSimilarities() {
+		Stopwatch w = new Stopwatch().start();
 		final EDistanceMeasure distanceMeasure = config.getDistanceMeasure();
 		rename("Determine Similarities for " + getPerspectiveLabel() + " clustering");
 
 		int counter = 1;
 
-		float[] dArInstance1 = new float[oppositeVA.size()];
-		float[] instance2 = new float[oppositeVA.size()];
+		final int vaSize = va.size();
+		final int oppositeSize = oppositeVA.size();
+		float[] dArInstance1 = new float[oppositeSize];
+		float[] instance2 = new float[oppositeSize];
 
-		int icnt1 = 0, icnt2 = 0, isto = 0;
 		int count = 0;
 
+		if (cache != null) {
+			// build cache
+			for (int i = 0; i < vaSize; ++i) {
+				Integer vid = va.get(i);
+				cache.put(vid, fillVector(null, vid));
+			}
+		}
 
-		for (Integer vaID : va) {
+		// TODO: aren't the distances symmetrical so why compute everything
+		for (int va_i = 0; va_i < vaSize; ++va_i) {
+			Integer vaID = va.get(va_i);
+
 			if (isClusteringCanceled) {
 				progress(100, true);
 				return -2;
 			}
 
-			int tempPercentage = (int) ((float) icnt1 / va.size() * 100);
+			int tempPercentage = (int) ((float) va_i / vaSize * 100);
 
 			if (counter == tempPercentage) {
 				progress(counter, false);
 				counter++;
 			}
 
-			isto = 0;
-			for (Integer oppositeID : oppositeVA) {
-				dArInstance1[isto] = table.getDataDomain().getNormalizedValue(oppositeVA.getIdType(), oppositeID,
-						va.getIdType(), vaID);
-				isto++;
-			}
+			fillVector(dArInstance1, vaID);
 
-			icnt2 = 0;
-			for (Integer vaID2 : va) {
-				isto = 0;
-				for (Integer oppositeID2 : oppositeVA) {
-					instance2[isto] = table.getDataDomain().getNormalizedValue(oppositeVA.getIdType(), oppositeID2,
-							va.getIdType(), vaID2);
-					isto++;
-				}
+			for (int va_j = 0; va_j < vaSize; ++va_j) {
+				if (va_i == va_j)
+					continue;
+				Integer vaID2 = va.get(va_j);
+				fillVector(instance2, vaID2);
 
-				if (icnt1 != icnt2) {
-					s[count] = -distanceMeasure.apply(dArInstance1, instance2);
-					i[count] = va.indexOf(vaID);
-					k[count] = va.indexOf(vaID2);
-					count++;
-				}
-				icnt2++;
+				s[count] = -distanceMeasure.apply(dArInstance1, instance2);
+				i[count] = va_i; // va.indexOf(vaID);
+				k[count] = va_j; // va.indexOf(vaID2);
+				count++;
 			}
-			icnt1++;
 			eventListeners.processEvents();
 		}
 
 		// determine median of the similarity values
 		float median = ClusterHelper.median(s);
 
-		for (Integer recordIndex : va) {
+		for (int va_i = 0; va_i < vaSize; ++va_i) {
 			s[count] = median * clusterFactor;
-			i[count] = va.indexOf(recordIndex);
-			k[count] = va.indexOf(recordIndex);
+			i[count] = va_i; // va.indexOf(recordIndex);
+			k[count] = va_i; // va.indexOf(recordIndex);
 			count++;
 		}
 
 		progressScaled(25);
+		log.debug("determined similarities: " + w);
+
+		cache = null;
 		return 0;
+	}
+
+	protected float[] getValue(float[] vector, Integer vid) {
+		return cache != null ? (float[]) cache.get(vid) : fillVector(vector, vid);
+	}
+
+	/**
+	 * fills the given vector with the data for the given id
+	 *
+	 * @param values
+	 * @param vaID
+	 * @return
+	 */
+	private float[] fillVector(float[] values, Integer vaID) {
+		if (values == null)
+			values = new float[oppositeVA.size()];
+		int i = 0;
+		for (Integer oppositeVaID : oppositeVA) {
+			float v = table.getDataDomain().getNormalizedValue(va.getIdType(), vaID, oppositeVA.getIdType(),
+					oppositeVaID);
+			values[i++] = v;
+		}
+		return values;
 	}
 
 	private PerspectiveInitializationData affinityPropagation() {
@@ -347,15 +381,18 @@ public class AffinityClusterer extends ALinearClusterer {
 		} else {
 			progress(100, true);
 			log.error("Affinity clustering could not identify any clusters.");
+			log.debug("affinity propagation " + w);
 			return null;
 
 		}
 		if (isConverged == false) {
 			progress(100, true);
 			log.error("Affinity propagation did not converge!");
+			log.debug("affinity propagation " + w);
 			return null;
 		}
 
+		log.debug("affinity propagation " + w);
 		return postProcess(idx, alExamples);
 	}
 

@@ -10,9 +10,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterConfiguration;
-import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
 import org.caleydo.core.util.clusterer.algorithm.nominal.NominalClusterConfiguration;
 import org.caleydo.core.util.clusterer.algorithm.tree.TreeClusterConfiguration;

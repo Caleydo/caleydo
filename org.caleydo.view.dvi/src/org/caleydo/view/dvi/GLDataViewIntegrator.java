@@ -20,17 +20,12 @@ import java.util.UUID;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.graph.DataDomainGraph;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventPublisher;
@@ -64,7 +59,8 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.dvi.event.ApplySpecificGraphLayoutEvent;
-import org.caleydo.view.dvi.event.CreateTablePerspectiveEvent;
+import org.caleydo.view.dvi.event.CreateAndRenameTablePerspectiveEvent;
+import org.caleydo.view.dvi.event.CreateTablePerspectiveBeforeAddingEvent;
 import org.caleydo.view.dvi.event.CreateViewFromTablePerspectiveEvent;
 import org.caleydo.view.dvi.event.OpenViewEvent;
 import org.caleydo.view.dvi.event.RenameLabelHolderEvent;
@@ -74,7 +70,8 @@ import org.caleydo.view.dvi.layout.AGraphLayout;
 import org.caleydo.view.dvi.layout.TwoLayeredGraphLayout;
 import org.caleydo.view.dvi.layout.edge.rendering.AEdgeRenderer;
 import org.caleydo.view.dvi.listener.ApplySpecificGraphLayoutEventListener;
-import org.caleydo.view.dvi.listener.CreateTablePerspectiveEventListener;
+import org.caleydo.view.dvi.listener.CreateAndAddTablePerspectiveEventListener;
+import org.caleydo.view.dvi.listener.CreateAndRenameTablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.CreateViewFromTablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.DataDomainChangedListener;
 import org.caleydo.view.dvi.listener.DataDomainEventListener;
@@ -100,6 +97,7 @@ import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -153,9 +151,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	/**
 	 * Constructor.
 	 */
-	public GLDataViewIntegrator(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLDataViewIntegrator(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		connectionBandRenderer = new ConnectionBandRenderer();
 
@@ -175,6 +173,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		displayListIndex = gl.glGenLists(1);
 
 		// Register keyboard listener to GL2 canvas
+		final Composite parentComposite = parentGLCanvas.asComposite();
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -205,7 +204,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 		init(gl);
 		pixelGLConverter = glParentView.getPixelGLConverter();
 	}
@@ -362,10 +361,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			this.waitForMinSizeApplication = waitForMinSizeApplication;
 			isMinSizeApplied = false;
 
-			EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 			SetMinViewSizeEvent event = new SetMinViewSizeEvent(this);
 			event.setMinViewSize(minViewWidthPixels, minViewHeightPixels);
-			eventPublisher.triggerEvent(event);
+			EventPublisher.trigger(event);
 			// parentComposite.getParent();
 		}
 		// }
@@ -413,14 +411,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDVIView serializedForm = new SerializedDVIView();
-		serializedForm.setViewID(this.getID());
-		return serializedForm;
-	}
-
-	@Override
-	public void initFromSerializableRepresentation(ASerializedView ser) {
-
+		return new SerializedDVIView(this);
 	}
 
 	@Override
@@ -449,10 +440,6 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		listeners.register(NewDataDomainLoadedEvent.class, newDataDomainEventListener);
 		listeners.register(RemoveDataDomainEvent.class, newDataDomainEventListener);
 
-		CreateTablePerspectiveEventListener addTablePerspectiveEventListener = new CreateTablePerspectiveEventListener();
-		addTablePerspectiveEventListener.setHandler(this);
-		listeners.register(CreateTablePerspectiveEvent.class, addTablePerspectiveEventListener);
-
 		OpenViewEventListener openViewEventListener = new OpenViewEventListener();
 		openViewEventListener.setHandler(this);
 		listeners.register(OpenViewEvent.class, openViewEventListener);
@@ -463,31 +450,39 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		ApplySpecificGraphLayoutEventListener applySpecificGraphLayoutEventListener = new ApplySpecificGraphLayoutEventListener();
 		applySpecificGraphLayoutEventListener.setHandler(this);
-		eventPublisher.addListener(ApplySpecificGraphLayoutEvent.class, applySpecificGraphLayoutEventListener);
+		listeners.register(ApplySpecificGraphLayoutEvent.class, applySpecificGraphLayoutEventListener);
 
 		MinSizeAppliedEventListener minSizeAppliedEventListener = new MinSizeAppliedEventListener();
 		minSizeAppliedEventListener.setHandler(this);
-		eventPublisher.addListener(MinSizeAppliedEvent.class, minSizeAppliedEventListener);
+		listeners.register(MinSizeAppliedEvent.class, minSizeAppliedEventListener);
 
 		ShowDataConnectionsEventListener showDataConnectionsEventListener = new ShowDataConnectionsEventListener();
 		showDataConnectionsEventListener.setHandler(this);
-		eventPublisher.addListener(ShowDataConnectionsEvent.class, showDataConnectionsEventListener);
+		listeners.register(ShowDataConnectionsEvent.class, showDataConnectionsEventListener);
 
 		RecordVAUpdateEventListener recordVAUpdateEventListener = new RecordVAUpdateEventListener();
 		recordVAUpdateEventListener.setHandler(this);
-		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateEventListener);
+		listeners.register(RecordVAUpdateEvent.class, recordVAUpdateEventListener);
 
 		DimensionVAUpdateEventListener dimensionVAUpdateEventListener = new DimensionVAUpdateEventListener();
 		dimensionVAUpdateEventListener.setHandler(this);
-		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateEventListener);
+		listeners.register(DimensionVAUpdateEvent.class, dimensionVAUpdateEventListener);
 
 		ShowViewWithoutDataEventListener showViewWithoutDataEventListener = new ShowViewWithoutDataEventListener();
 		showViewWithoutDataEventListener.setHandler(this);
-		eventPublisher.addListener(ShowViewWithoutDataEvent.class, showViewWithoutDataEventListener);
+		listeners.register(ShowViewWithoutDataEvent.class, showViewWithoutDataEventListener);
 
 		RenameLabelHolderEventListener renameLabelHolderEventListener = new RenameLabelHolderEventListener();
 		renameLabelHolderEventListener.setHandler(this);
-		eventPublisher.addListener(RenameLabelHolderEvent.class, renameLabelHolderEventListener);
+		listeners.register(RenameLabelHolderEvent.class, renameLabelHolderEventListener);
+
+		CreateAndAddTablePerspectiveEventListener createAndAddTablePerspectiveEventListener = new CreateAndAddTablePerspectiveEventListener();
+		createAndAddTablePerspectiveEventListener.setHandler(this);
+		listeners.register(CreateTablePerspectiveBeforeAddingEvent.class, createAndAddTablePerspectiveEventListener);
+
+		CreateAndRenameTablePerspectiveEventListener createAndRenameTablePerspectiveEventListener = new CreateAndRenameTablePerspectiveEventListener();
+		createAndRenameTablePerspectiveEventListener.setHandler(this);
+		listeners.register(CreateAndRenameTablePerspectiveEvent.class, createAndRenameTablePerspectiveEventListener);
 	}
 
 	@Override
@@ -549,6 +544,10 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 					}
 				}
 			}
+			for (ADataNode dataNode : dataNodes) {
+				dataNode.update();
+			}
+
 			applyAutomaticLayout = true;
 			setDisplayListDirty();
 		}
@@ -582,10 +581,17 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		dataGraph.removeNode(viewNode);
 		viewNodes.remove(viewNode);
+		if (dragAndDropController.getDropArea() == viewNode)
+			dragAndDropController.setDropArea(null);
+		graphLayout.cleanupNode(viewNode);
 		viewNode.destroy();
 
 		if (viewNode == currentMouseOverNode)
 			currentMouseOverNode = null;
+
+		for (ADataNode dataNode : dataNodes) {
+			dataNode.update();
+		}
 
 		// applyAutomaticLayout = true;
 		setDisplayListDirty();
@@ -610,6 +616,10 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		Set<IDataDomain> dataDomainsOfView = view.getDataDomains();
 		if (dataDomainsOfView != null) {
 			viewNode.update();
+			// Update data nodes, which might hide tableperspectives now missing in the
+			for (ADataNode dataNode : dataNodes) {
+				dataNode.update();
+			}
 			updateGraphEdgesOfViewNode(viewNode);
 		}
 	}
@@ -766,118 +776,10 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		return stringBuffer.toString();
 	}
 
-	/**
-	 * FIXME: DOKU!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !!!!!!!!!!!
-	 *
-	 * @param dataDomain
-	 * @param recordPerspectiveID
-	 * @param createRecordPerspective
-	 * @param recordVA
-	 * @param recordGroup
-	 * @param dimensionPerspectiveID
-	 * @param createDimensionPerspective
-	 * @param dimensionVA
-	 * @param dimensionGroup
-	 */
-	public void createTablePerspective(final ATableBasedDataDomain dataDomain, final String recordPerspectiveID,
-			final boolean createRecordPerspective, final VirtualArray recordVA, final Group recordGroup,
-			final String dimensionPerspectiveID, final boolean createDimensionPerspective,
-			final VirtualArray dimensionVA, final Group dimensionGroup) {
-
-		final String recordPerspectiveLabel = (createRecordPerspective) ? (recordGroup.getLabel()) : dataDomain
-				.getTable().getRecordPerspective(recordPerspectiveID).getLabel();
-
-		final String dimensionPerspectiveLabel = (createDimensionPerspective) ? (dimensionGroup.getLabel())
-				: dataDomain.getTable().getDimensionPerspective(dimensionPerspectiveID).getLabel();
-
-		parentComposite.getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-
-				IInputValidator validator = new IInputValidator() {
-					@Override
-					public String isValid(String newText) {
-						if (newText.equalsIgnoreCase(""))
-							return "Please enter a name for the table perspective.";
-						else
-							return null;
-					}
-				};
-
-				String tablePerspectiveLabel = dataDomain.getLabel() + " - " + recordPerspectiveLabel + "/"
-						+ dimensionPerspectiveLabel;
-
-				boolean alwaysUseDefaultNameButton = MyPreferences.isAwaysUseTablePerspectiveDefaultName();
-
-				if (!alwaysUseDefaultNameButton) {
-					TablePerspectiveNameInputDialog dialog = new TablePerspectiveNameInputDialog(new Shell(),
-							"Create Table Perspective", "Name", tablePerspectiveLabel, validator);
-
-					if (dialog.open() != Window.OK)
-						return;
-
-					tablePerspectiveLabel = dialog.getValue();
-				}
-
-				String currentDimensionPerspeciveID = dimensionPerspectiveID;
-				String currentRecordPerspeciveID = recordPerspectiveID;
-
-				Perspective dimensionPerspective = null;
-
-				if (createDimensionPerspective) {
-					dimensionPerspective = new Perspective(dataDomain, dataDomain.getDimensionIDType());
-					List<Integer> indices = dimensionVA.getIDsOfGroup(dimensionGroup.getGroupIndex());
-					PerspectiveInitializationData data = new PerspectiveInitializationData();
-					data.setData(indices);
-					dimensionPerspective.init(data);
-					dimensionPerspective.setLabel(dimensionPerspectiveLabel, true);
-					// TODO: Shall we really set it private?
-					dimensionPerspective.setPrivate(true);
-					dimensionGroup.setPerspectiveID(dimensionPerspective.getPerspectiveID());
-					dataDomain.getTable().registerDimensionPerspective(dimensionPerspective);
-					currentDimensionPerspeciveID = dimensionPerspective.getPerspectiveID();
-				} else {
-					dimensionPerspective = dataDomain.getTable().getDimensionPerspective(dimensionPerspectiveID);
-				}
-
-				Perspective recordPerspective = null;
-
-				if (createRecordPerspective) {
-					recordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
-					List<Integer> indices = recordVA.getIDsOfGroup(recordGroup.getGroupIndex());
-					PerspectiveInitializationData data = new PerspectiveInitializationData();
-					data.setData(indices);
-					recordPerspective.init(data);
-					recordPerspective.setLabel(recordPerspectiveLabel, true);
-					// TODO: Shall we really set it private?
-					recordPerspective.setPrivate(true);
-					recordGroup.setPerspectiveID(recordPerspective.getPerspectiveID());
-					dataDomain.getTable().registerRecordPerspective(recordPerspective);
-					currentRecordPerspeciveID = recordPerspective.getPerspectiveID();
-				} else {
-					recordPerspective = dataDomain.getTable().getRecordPerspective(recordPerspectiveID);
-				}
-
-				TablePerspective tablePerspective = dataDomain.getTablePerspective(currentRecordPerspeciveID,
-						currentDimensionPerspeciveID);
-				if (!alwaysUseDefaultNameButton)
-					tablePerspective.setLabel(tablePerspectiveLabel, false);
-
-				if (tablePerspective.isPrivate()) {
-					tablePerspective.setPrivate(false);
-
-					DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
-					event.setSender(this);
-					GeneralManager.get().getEventPublisher().triggerEvent(event);
-				}
-			}
-		});
-	}
-
 	public void openView(final IView view) {
 		final CaleydoRCPViewPart viewPart = GeneralManager.get().getViewManager().getViewPartFromView(view);
 
-		parentComposite.getDisplay().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 
@@ -894,7 +796,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 	public void createViewWithoutData(final String viewID) {
 
-		parentComposite.getDisplay().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 
@@ -911,7 +813,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 	public void createView(final String viewID, final IDataDomain dataDomain, final TablePerspective tablePerspective) {
 
-		parentComposite.getDisplay().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 
@@ -987,7 +889,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			// relativePosition.getSecond() * drawingAreaHeight));
 			// }
 
-			// updateMinWindowSize(true);
+			SetMinViewSizeEvent event = new SetMinViewSizeEvent(this);
+			event.setMinViewSize(minViewWidthPixels, minViewHeightPixels);
+			EventPublisher.trigger(event);
 		}
 	}
 
@@ -1028,7 +932,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	 * @param labelHolder
 	 */
 	public void renameLabelHolder(final ILabelHolder labelHolder) {
-		parentComposite.getDisplay().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 
@@ -1058,6 +962,14 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 				}
 			}
 		});
+	}
+
+	public boolean isTablePerspectiveShownByView(TablePerspective tablePerspective) {
+		for (ViewNode viewNode : viewNodes) {
+			if (viewNode.getTablePerspectives().contains(tablePerspective))
+				return true;
+		}
+		return false;
 	}
 
 }

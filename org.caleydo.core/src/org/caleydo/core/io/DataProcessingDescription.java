@@ -8,19 +8,16 @@ package org.caleydo.core.io;
 import java.util.ArrayList;
 
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
+import org.caleydo.core.util.function.AdvancedFloatStatistics;
 
 /**
  * <p>
- * This class contains information on how to process the loaded data. Common
- * examples are clustering of rows or columns or filtering, sampling.
+ * This class contains information on how to process the loaded data. Common examples are clustering of rows or columns
+ * or filtering, sampling.
  * </p>
- * <p>
- * Currently only clustering is implemented
- * </p>
- * 
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class DataProcessingDescription {
 
@@ -28,9 +25,8 @@ public class DataProcessingDescription {
 	 * <p>
 	 * A list of configurations on how to cluster the column data. Only the
 	 * {@link ClusterConfiguration#setDistanceMeasure(org.caleydo.core.util.clusterer.initialization.EDistanceMeasure)}
-	 * and the specific parameters of the concrete implementation of the cluster
-	 * configuration need to be set, <b>but not the source or target
-	 * dimensions/records</b>.
+	 * and the specific parameters of the concrete implementation of the cluster configuration need to be set, <b>but
+	 * not the source or target dimensions/records</b>.
 	 * </p>
 	 * <p>
 	 * Optional.
@@ -42,8 +38,9 @@ public class DataProcessingDescription {
 	private ArrayList<ClusterConfiguration> rowClusterConfigurations;
 
 	/**
-	 * The number of columns we want to keep in the random sample. If null no
-	 * sampling is done.
+	 * Setting this variable triggers sampling of columns to the number of elements specified. If null no sampling is
+	 * done. Sampling uses the most variable elements, using Median Absolute Deviation (see
+	 * {@link AdvancedFloatStatistics})
 	 */
 	private Integer nrColumnsInSample = null;
 
@@ -54,22 +51,19 @@ public class DataProcessingDescription {
 	 * @param columnClusterConfigurations
 	 *            setter, see {@link #columnClusterConfigurations}
 	 */
-	public void setColumnClusterConfigurations(
-			ArrayList<ClusterConfiguration> columnClusterConfigurations) {
+	public void setColumnClusterConfigurations(ArrayList<ClusterConfiguration> columnClusterConfigurations) {
 		this.columnClusterConfigurations = columnClusterConfigurations;
 	}
 
 	/**
-	 * @return the columnClusterConfigurations, see
-	 *         {@link #columnClusterConfigurations}
+	 * @return the columnClusterConfigurations, see {@link #columnClusterConfigurations}
 	 */
 	public ArrayList<ClusterConfiguration> getColumnClusterConfigurations() {
 		return columnClusterConfigurations;
 	}
 
 	/** Adds a cluster configuration to {@link #columnClusterConfigurations} */
-	public void addColumnClusterConfiguration(
-			ClusterConfiguration columnClusterConfiguration) {
+	public void addColumnClusterConfiguration(ClusterConfiguration columnClusterConfiguration) {
 		if (columnClusterConfiguration != null) {
 			columnClusterConfigurations = new ArrayList<ClusterConfiguration>(3);
 		}
@@ -80,14 +74,12 @@ public class DataProcessingDescription {
 	 * @param rowClusterConfigurations
 	 *            setter, see {@link #rowClusterConfigurations}
 	 */
-	public void setRowClusterConfigurations(
-			ArrayList<ClusterConfiguration> rowClusterConfigurations) {
+	public void setRowClusterConfigurations(ArrayList<ClusterConfiguration> rowClusterConfigurations) {
 		this.rowClusterConfigurations = rowClusterConfigurations;
 	}
 
 	/**
-	 * @return the rowClusterConfigurations, see
-	 *         {@link #rowClusterConfigurations}
+	 * @return the rowClusterConfigurations, see {@link #rowClusterConfigurations}
 	 */
 	public ArrayList<ClusterConfiguration> getRowClusterConfigurations() {
 		return rowClusterConfigurations;

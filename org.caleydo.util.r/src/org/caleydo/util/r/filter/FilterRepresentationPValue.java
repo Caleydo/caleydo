@@ -75,7 +75,7 @@ public class FilterRepresentationPValue extends
 				final Slider pValueSlider = new Slider(infoComposite, SWT.HORIZONTAL);
 
 				if (pValue == -1) {
-					pValueMax = histogram.getMax();
+					pValueMax = 0; // FIXME was histogram.getMax()
 					pValue = pValueMax;
 				}
 

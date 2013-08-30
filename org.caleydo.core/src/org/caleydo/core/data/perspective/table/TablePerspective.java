@@ -10,7 +10,6 @@ package org.caleydo.core.data.perspective.table;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,8 +26,10 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
+import org.caleydo.core.util.base.IUniqueObject;
 
 /**
  * <p>
@@ -67,16 +68,14 @@ import org.caleydo.core.util.base.IDefaultLabelHolder;
  */
 @XmlType
 @XmlRootElement
-public class TablePerspective implements IDefaultLabelHolder {
+public class TablePerspective implements IDefaultLabelHolder, IUniqueObject {
 	public static final IDCategory DATA_CONTAINER = IDCategory.registerInternalCategory("DATA_CONTAINER");
 	public static final IDType DATA_CONTAINER_IDTYPE = IDType.registerInternalType("DataContainers", DATA_CONTAINER,
 			EDataType.INTEGER);
 
-	/** The static counter used to create unique ids */
-	private static final AtomicInteger idCounter = new AtomicInteger();
-
 	/** The unique id of the data container */
-	private int id;
+	@XmlTransient
+	private final int id = IDCreator.createVMUniqueID(TablePerspective.class);
 
 	/** The key, which is created by using a function of the perspective IDs */
 	private String tablePerspectiveKey;
@@ -134,7 +133,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 * Object holding respectively calculating all forms of (statistical) meta-data for this container
 	 */
 	@XmlTransient
-	protected TablePerspectiveStatistics tablePerspectiveStatistics;
+	protected TablePerspectiveStatistics tablePerspectiveStatistics = new TablePerspectiveStatistics(this);
 
 	/**
 	 * The parent table perspective that has created this perspective as a child, e.g., using
@@ -164,14 +163,10 @@ public class TablePerspective implements IDefaultLabelHolder {
 		createKey();
 	}
 
-	{
-		id = idCounter.incrementAndGet();
-		tablePerspectiveStatistics = new TablePerspectiveStatistics(this);
-	}
-
 	/**
 	 * @return the id, see {@link #id}
 	 */
+	@Override
 	public int getID() {
 		return id;
 	}
@@ -310,6 +305,13 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 */
 	public TablePerspectiveStatistics getContainerStatistics() {
 		return tablePerspectiveStatistics;
+	}
+
+	/**
+	 * invalidate the statistics, e.g. if the underlying data have changed
+	 */
+	public void invalidateContainerStatistics() {
+		tablePerspectiveStatistics = new TablePerspectiveStatistics(this);
 	}
 
 	/**

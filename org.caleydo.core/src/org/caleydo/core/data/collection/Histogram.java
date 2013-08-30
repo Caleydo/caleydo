@@ -6,6 +6,12 @@
 package org.caleydo.core.data.collection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import com.google.common.collect.ImmutableSortedSet;
 
 /**
  * Histogram holds the data structure of a histogram. It is based on an ArrayList<Integer> and maps the relevant
@@ -23,29 +29,22 @@ public class Histogram {
 	private static int bucketCounter = 0;
 
 	/**
-	 * One entry per bucket in the list, the value of a cell corresponds to the number of buckets
+	 * One entry per bucket in the list, the value of a cell corresponds to the number of buckets + one for the nans
 	 */
-	private ArrayList<Integer> histogram;
-
-	/** Dedicated bucket for NAN values */
-	private Integer nanCount = 0;
+	private final int[] histogram;
 
 	/**
 	 * Contains the IDs of the elements in the buckets in the ArrayList and an Identifier as the first member of the
 	 * pair. Same order as {@link #histogram}.
 	 */
-	private ArrayList<ArrayList<Integer>> ids;
-
-	/** Same as {@link #ids} but for the dedicate NAN bucket */
-	private ArrayList<Integer> nanIDs = new ArrayList<Integer>();
+	private final List<SortedSet<Integer>> ids;
 
 	private int sizeOfBiggestBucket = -1;
 
-	private float min;
-	private float max;
-
 	/** The id of the first bucket in this histogram instance. */
-	private int firstBucketID;
+	private final int firstBucketID;
+
+	private final int nanIndex;
 
 	/**
 	 * Constructor initializing the Histogram with the specified number of buckets
@@ -58,12 +57,25 @@ public class Histogram {
 			firstBucketID = bucketCounter;
 			bucketCounter += numberOfBuckets;
 		}
-		histogram = new ArrayList<Integer>(numberOfBuckets);
-		ids = new ArrayList<ArrayList<Integer>>();
-		for (int count = 0; count < numberOfBuckets; count++) {
-			histogram.add(0);
-			ids.add(new ArrayList<Integer>(new ArrayList<Integer>()));
+		histogram = new int[numberOfBuckets + 1];
+		ids = new ArrayList<>(numberOfBuckets + 1);
+		nanIndex = numberOfBuckets;
+		for (int i = 0; i < histogram.length; i++) {
+			ids.add(new TreeSet<Integer>());
 		}
+	}
+
+	/**
+	 * optimize the data structure to be immutable
+	 *
+	 * @return
+	 */
+	public Histogram optimize() {
+		// optimize the data structures to immutables for faster access
+		for (int i = 0; i < ids.size(); ++i) {
+			ids.set(i, ImmutableSortedSet.copyOf(ids.get(i)));
+		}
+		return this;
 	}
 
 	/**
@@ -76,10 +88,10 @@ public class Histogram {
 	 * @return the value previously at this position
 	 */
 	public void add(int bucketNumber, Integer objectID) {
-		Integer bucketSize = histogram.get(bucketNumber);
-		histogram.set(bucketNumber, ++bucketSize);
-		if (bucketSize > sizeOfBiggestBucket)
-			sizeOfBiggestBucket = bucketSize;
+		int act = histogram[bucketNumber];
+		histogram[bucketNumber] = ++act;
+		if (act > sizeOfBiggestBucket)
+			sizeOfBiggestBucket = act;
 
 		ids.get(bucketNumber).add(objectID);
 
@@ -89,9 +101,7 @@ public class Histogram {
 
 	/** Adds an object to the dedicated NaN bucket. */
 	public void addNAN(Integer objectID) {
-
-		nanCount += 1;
-		nanIDs.add(objectID);
+		add(nanIndex, objectID);
 	}
 
 	/**
@@ -100,33 +110,33 @@ public class Histogram {
 	 * @param bucketNumber
 	 * @return
 	 */
-	public Integer get(int bucketNumber) {
-		return histogram.get(bucketNumber);
+	public int get(int bucketNumber) {
+		return histogram[bucketNumber];
 	}
 
 	/**
 	 * @return the nanCount, see {@link #nanCount}
 	 */
-	public Integer getNanCount() {
-		return nanCount;
+	public int getNanCount() {
+		return get(nanIndex);
 	}
 
 	/**
 	 * @return the nanIDs, see {@link #nanIDs}
 	 */
-	public ArrayList<Integer> getNanIDs() {
-		return nanIDs;
+	public SortedSet<Integer> getNanIDs() {
+		return getIDsForBucket(nanIndex);
 	}
 
 	public Integer getBucketID(int bucketNumber) {
-		return new Integer(bucketNumber + firstBucketID);
+		return Integer.valueOf(bucketNumber + firstBucketID);
 	}
 
-	public ArrayList<Integer> getIDsForBucketFromBucketID(Integer bucketID) {
-		return ids.get(bucketID - firstBucketID);
+	public SortedSet<Integer> getIDsForBucketFromBucketID(Integer bucketID) {
+		return getIDsForBucket(bucketID - firstBucketID);
 	}
 
-	public ArrayList<Integer> getIDsForBucket(int bucketNumber) {
+	public SortedSet<Integer> getIDsForBucket(int bucketNumber) {
 		return ids.get(bucketNumber);
 	}
 
@@ -136,7 +146,7 @@ public class Histogram {
 	 * @return the size
 	 */
 	public int size() {
-		return histogram.size();
+		return histogram.length - 1; // for nan
 	}
 
 	/**
@@ -144,24 +154,16 @@ public class Histogram {
 	 *
 	 * @return the largest value
 	 */
-	public Integer getLargestValue() {
+	public int getLargestValue() {
 		return sizeOfBiggestBucket;
 	}
 
-	public void setMin(float min) {
-		this.min = min;
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Histogram [histogram=");
+		builder.append(Arrays.toString(histogram));
+		builder.append("]");
+		return builder.toString();
 	}
-
-	public void setMax(float max) {
-		this.max = max;
-	}
-
-	public float getMax() {
-		return max;
-	}
-
-	public float getMin() {
-		return min;
-	}
-
 }

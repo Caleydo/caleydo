@@ -7,6 +7,8 @@ package org.caleydo.core.view.opengl.layout2;
 
 import gleem.linalg.Vec4f;
 
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
+
 /**
  * a layer above the content, i.e. for popups
  *
@@ -14,10 +16,26 @@ import gleem.linalg.Vec4f;
  *
  */
 public interface IPopupLayer {
+	/**
+	 * closeable popup
+	 */
 	int FLAG_CLOSEABLE = 1 << 0;
+	/**
+	 * resizeable popup
+	 */
 	int FLAG_RESIZEABLE = 1 << 1;
+	/**
+	 * moveable popup
+	 */
 	int FLAG_MOVEABLE = 1 << 2;
+	/**
+	 * border around the popup
+	 */
 	int FLAG_BORDER = 1 << 3;
+	/**
+	 * collapse by double clicking the header
+	 */
+	int FLAG_COLLAPSABLE = 1 << 4;
 	int FLAG_ALL = FLAG_CLOSEABLE | FLAG_RESIZEABLE | FLAG_MOVEABLE | FLAG_BORDER;
 
 	/**
@@ -28,17 +46,18 @@ public interface IPopupLayer {
 	 * @param bounds
 	 *            its bounds
 	 */
-	void show(GLElement popup, Vec4f bounds);
+	void show(GLElement popup, Rect bounds);
 
 	/**
 	 * shows a popup with the given content and the given bounds
 	 *
 	 * @param popup
 	 * @param bounds
+	 *            (x,y: if negative count from the right side, if NaN centering), if null fullscreen
 	 * @param flags
 	 *            see {@link #FLAG_CLOSEABLE} and others
 	 */
-	void show(GLElement popup, Vec4f bounds, int flags);
+	void show(GLElement popup, Rect bounds, int flags);
 
 	/**
 	 * hides a popup again

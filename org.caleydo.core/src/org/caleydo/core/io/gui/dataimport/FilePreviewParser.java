@@ -11,13 +11,18 @@ package org.caleydo.core.io.gui.dataimport;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * Parses the preview of a file and stores it in a data matrix.
@@ -48,10 +53,27 @@ public class FilePreviewParser {
 	public FilePreviewParser() {
 	}
 
+	public void parseWithProgress(Shell shell, final String fileName, final String delimiter,
+			final boolean parseAllRows,
+			final int maxRowsToParse) {
+		ProgressMonitorDialog dialog = new ProgressMonitorDialog(shell);
+
+		try {
+			dialog.run(true, false, new IRunnableWithProgress() {
+
+				@Override
+				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+					parse(fileName, delimiter, parseAllRows, maxRowsToParse, monitor);
+				}
+			});
+		} catch (Exception e) {
+			Logger.log(new Status(IStatus.ERROR, this.toString(), "Dataset loading failed: " + e.getMessage()));
+		}
+	}
+
 	/**
-	 * Parses the specified file and stores the data in {@link #dataMatrix}.
-	 * Additionally, the {@link #totalNumberOfRows} and
-	 * {@link #totalNumberOfColumns} are set accordingly.
+	 * Parses the specified file and stores the data in {@link #dataMatrix}. Additionally, the
+	 * {@link #totalNumberOfRows} and {@link #totalNumberOfColumns} are set accordingly.
 	 *
 	 * @param fileName
 	 *            Filename that specifies the file to be parsed.
@@ -60,20 +82,20 @@ public class FilePreviewParser {
 	 * @param parseAllRows
 	 *            Determines whether all rows of the file should be parsed.
 	 * @param maxRowsToParse
-	 *            The number of rows that should be parsed if parseAllRows is
-	 *            false.
+	 *            The number of rows that should be parsed if parseAllRows is false.
 	 */
-	public void parse(String fileName, String delimiter, boolean parseAllRows,
-			int maxRowsToParse) {
+	public void parse(String fileName, String delimiter, boolean parseAllRows, int maxRowsToParse,
+			IProgressMonitor monitor) {
 
 		reset();
 
 		// Read preview
 		try {
-			BufferedReader file = GeneralManager.get().getResourceLoader()
-					.getResource(fileName);
+			BufferedReader file = GeneralManager.get().getResourceLoader().getResource(fileName);
 
 			String line = "";
+
+			monitor.beginTask("Loading file " + fileName, IProgressMonitor.UNKNOWN);
 
 			while ((line = file.readLine()) != null) {
 
@@ -81,8 +103,7 @@ public class FilePreviewParser {
 
 					String[] row = line.split(delimiter);
 					int currentNumberOfColumns = row.length;
-					List<String> currentDataRow = new ArrayList<String>(
-							currentNumberOfColumns);
+					List<String> currentDataRow = new ArrayList<String>(currentNumberOfColumns);
 
 					for (int i = 0; i < currentNumberOfColumns; i++) {
 						currentDataRow.add(row[i]);
@@ -91,8 +112,7 @@ public class FilePreviewParser {
 					if (currentNumberOfColumns > totalNumberOfColumns) {
 						for (List<String> previousDataRow : dataMatrix) {
 							int previousRowLength = previousDataRow.size();
-							for (int i = 0; i < currentNumberOfColumns
-									- previousRowLength; i++) {
+							for (int i = 0; i < currentNumberOfColumns - previousRowLength; i++) {
 								previousDataRow.add("");
 							}
 						}
@@ -107,19 +127,17 @@ public class FilePreviewParser {
 					dataMatrix.add(currentDataRow);
 				}
 				totalNumberOfRows++;
-
+				monitor.worked(1);
 			}
-
-			Logger.log(new Status(IStatus.INFO, "FilePreviewParser",
-					"Preview data loaded from '" + fileName + "'!"));
+			file.close();
+			Logger.log(new Status(IStatus.INFO, "FilePreviewParser", "Preview data loaded from '" + fileName + "'!"));
 
 		} catch (FileNotFoundException e) {
-			Logger.log(new Status(IStatus.ERROR, "FilePreviewParser", "File '" + fileName
-					+ "' not found!"));
+			Logger.log(new Status(IStatus.ERROR, "FilePreviewParser", "File '" + fileName + "' not found!"));
 			reset();
 		} catch (IOException ioe) {
-			Logger.log(new Status(IStatus.ERROR, "FilePreviewParser",
-					"Input/output problem while reading file '" + fileName + "'!"));
+			Logger.log(new Status(IStatus.ERROR, "FilePreviewParser", "Input/output problem while reading file '"
+					+ fileName + "'!"));
 			reset();
 		}
 	}

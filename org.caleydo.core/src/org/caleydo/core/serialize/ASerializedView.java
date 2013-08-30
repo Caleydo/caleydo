@@ -6,15 +6,17 @@
 package org.caleydo.core.serialize;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
  * Basic abstract class for all serialized view representations. A serialized
  * view is used to store a view to disk or transmit it over network.
- * 
+ *
  * @author Werner Puff
  * @author Alexander Lex
  * @author Marc Streit
@@ -23,58 +25,29 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 @XmlType
 public abstract class ASerializedView {
 
-	/**
-	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
-	 */
+	private String viewLabel = "NOT SET viewLabel";
+	private boolean isLabelDefault = true;
+
 	public ASerializedView() {
 	}
 
-	protected int viewID;
-
-	protected String viewType;
-
-	protected String viewLabel = "NOT SET viewLabel";
-
-	/**
-	 * The full qualified view class name needed for the creation of views using
-	 * reflections.
-	 */
-	protected String viewClassType;
-
-	/**
-	 * Gets the view-id as used by ViewManager implementations
-	 * 
-	 * @return view-id of the serialized view
-	 */
-	public int getViewID() {
-		return viewID;
-	}
-
-	/**
-	 * Sets the view-id as used by ViewManager implementations
-	 * 
-	 * @param view
-	 *            -id of the serialized view
-	 */
-	public void setViewID(int viewID) {
-		this.viewID = viewID;
+	public ASerializedView(IView view) {
+		isLabelDefault = view.isLabelDefault();
+		viewLabel = view.getLabel();
 	}
 
 	/**
 	 * Retrieves the id of the view as used within the GUI-framework.
-	 * 
+	 *
 	 * @return GUI-related view-id.
 	 */
+	@XmlTransient
 	public abstract String getViewType();
-
-	public void setViewType(String viewType) {
-		this.viewType = viewType;
-	}
 
 	/**
 	 * Gets the according view frustum for the view. Overwrite method in
 	 * subclass if a different frustum is needed.
-	 * 
+	 *
 	 * @return ViewFrustum for open-gl rendering
 	 */
 	public ViewFrustum getViewFrustum() {
@@ -82,16 +55,32 @@ public abstract class ASerializedView {
 	}
 
 	/**
-	 * Determines the full qualified class name of the view.
+	 * @return the viewLabel, see {@link #viewLabel}
 	 */
-	public String getViewClassType() {
-		return null;
+	public final String getViewLabel() {
+		return viewLabel;
 	}
 
 	/**
-	 * @return the viewLabel, see {@link #viewLabel}
+	 * @param viewLabel
+	 *            setter, see {@link viewLabel}
 	 */
-	public String getViewLabel() {
-		return viewLabel;
+	public final void setViewLabel(String viewLabel) {
+		this.viewLabel = viewLabel;
+	}
+
+	/**
+	 * @return the isLabelDefault, see {@link #isLabelDefault}
+	 */
+	public final boolean isLabelDefault() {
+		return isLabelDefault;
+	}
+
+	/**
+	 * @param isLabelDefault
+	 *            setter, see {@link isLabelDefault}
+	 */
+	public final void setLabelDefault(boolean isLabelDefault) {
+		this.isLabelDefault = isLabelDefault;
 	}
 }

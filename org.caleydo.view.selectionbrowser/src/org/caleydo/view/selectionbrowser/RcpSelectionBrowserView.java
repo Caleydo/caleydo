@@ -5,9 +5,6 @@
  ******************************************************************************/
 package org.caleydo.view.selectionbrowser;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
@@ -21,7 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * View showing selections.
- * 
+ *
  * @author Marc Streit
  */
 public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
@@ -29,13 +26,7 @@ public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 	public static String VIEW_TYPE = "org.caleydo.view.selectionbrowser";
 
 	public RcpSelectionBrowserView() {
-		super();
-
-		try {
-			viewContext = JAXBContext.newInstance(SerializedSelectionBrowserView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		super(SerializedSelectionBrowserView.class);
 	}
 
 	@Override

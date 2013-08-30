@@ -50,6 +50,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.EnableFreePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
@@ -81,6 +82,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	protected List<TablePerspective> tablePerspectives = new ArrayList<>();
 	protected GLPathway pathwayView;
 	protected boolean isPathSelectionMode = false;
+	protected boolean isFreePathSelectionMode = false;
 	protected APathwayPathRenderer selectedPathRenderer;
 	private BranchPathEventSpaceListener branchPathEventSpaceListener = new BranchPathEventSpaceListener();
 	private VertexRepComparator comparator = new VertexRepComparator();
@@ -231,8 +233,8 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	private APathwayPathRenderer addPath(List<List<PathwayVertexRep>> pathSegments) {
 		VerticalPathRenderer renderer = new VerticalPathRenderer(view, tablePerspectives);
 
-		renderer.setUpdateStrategy(new FixedPathUpdateStrategy(renderer, eventSpace, isPathSelectionMode, this,
-				selectedPathSegments));
+		renderer.setUpdateStrategy(new FixedPathUpdateStrategy(renderer, eventSpace, isPathSelectionMode,
+				isFreePathSelectionMode, this, selectedPathSegments));
 		renderer.pathwayPathEventSpace = eventSpace;
 		// renderer.setTablePerspectives(tablePerspectives);
 		renderer.setPathway(pathway);
@@ -385,6 +387,15 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onEnablePathSelection(EnablePathSelectionEvent event) {
 		isPathSelectionMode = event.isPathSelectionMode();
+		if (isPathSelectionMode)
+			isFreePathSelectionMode = false;
+	}
+
+	@ListenTo(restrictExclusiveToEventSpace = true)
+	public void onEnableFreePathSelection(EnableFreePathSelectionEvent event) {
+		isFreePathSelectionMode = event.isEnabled();
+		if (isFreePathSelectionMode)
+			isPathSelectionMode = false;
 	}
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
@@ -397,19 +408,42 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 		List<List<PathwayVertexRep>> selectedPathSegments = event.getPathSegmentsAsVertexList();
 
-		boolean isSelectedPathShown = false;
-		if (selectedPathRenderer != null) {
-			isSelectedPathShown = PathUtil
-					.isPathShown(selectedPathRenderer.pathSegments, selectedPathSegments, pathway);
-			if (isSelectedPathShown)
+		if (isFreePathSelectionMode) {
+			List<PathwayVertexRep> selectedPathVertexReps = PathUtil.flattenSegments(selectedPathSegments);
+			boolean allVerticesShown = true;
+			for (PathwayVertexRep vertexRep : selectedPathVertexReps) {
+				if (vertexRep.getPathway() == pathway) {
+					boolean vertexShown = false;
+					for (APathwayPathRenderer renderer : renderers.keySet()) {
+						List<PathwayVertexRep> currentPathVertexReps = PathUtil.flattenSegments(renderer.pathSegments);
+						if (currentPathVertexReps.contains(vertexRep)) {
+							vertexShown = true;
+							break;
+						}
+					}
+					if (!vertexShown) {
+						allVerticesShown = false;
+						break;
+					}
+				}
+			}
+			if (allVerticesShown)
 				return;
-		}
+		} else {
+			boolean isSelectedPathShown = false;
+			if (selectedPathRenderer != null) {
+				isSelectedPathShown = PathUtil.isPathShown(selectedPathRenderer.pathSegments, selectedPathSegments,
+						pathway);
+				if (isSelectedPathShown)
+					return;
+			}
 
-		for (APathwayPathRenderer renderer : renderers.keySet()) {
-			isSelectedPathShown = PathUtil.isPathShown(renderer.pathSegments, selectedPathSegments, pathway);
-			if (isSelectedPathShown) {
-				selectedPathRenderer = renderer;
-				return;
+			for (APathwayPathRenderer renderer : renderers.keySet()) {
+				isSelectedPathShown = PathUtil.isPathShown(renderer.pathSegments, selectedPathSegments, pathway);
+				if (isSelectedPathShown) {
+					selectedPathRenderer = renderer;
+					return;
+				}
 			}
 		}
 

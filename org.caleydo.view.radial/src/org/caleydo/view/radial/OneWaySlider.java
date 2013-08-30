@@ -9,17 +9,16 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.awt.Font;
-import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
@@ -226,27 +225,24 @@ public class OneWaySlider extends AGLGUIElement {
 
 	/**
 	 * Method that handles the dragging of the slider.
-	 *
+	 * 
 	 * @param gl
 	 *            Gl object.
 	 * @param glMouseListener
-	 *            Current mouse listener, used for determining the current mouse
-	 *            position.
+	 *            Current mouse listener, used for determining the current mouse position.
+	 * @param pixelGLConverter
 	 * @return True, if the slider has been dragged, false otherwise.
 	 */
-	public boolean handleDragging(GL2 gl, GLMouseListener glMouseListener) {
+	public boolean handleDragging(GL2 gl, GLMouseListener glMouseListener, PixelGLConverter pixelGLConverter) {
 
 		if (!bIsDragging && !bIsBodySelected) {
 			return false;
 		}
 
-		Point currentPoint = glMouseListener.getPickedPoint();
+		Vec2f pointCordinates = pixelGLConverter.convertMouseCoord2GL(glMouseListener.getDIPPickedPoint());
 
-		float[] fArTargetWorldCoordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-						currentPoint.y);
 
-		float fYCoordinate = fArTargetWorldCoordinates[1];
+		float fYCoordinate = pointCordinates.y();
 
 		if (bIsDraggingFirstTime) {
 			fDraggingBottomSpacing = fYCoordinate - fSlidingElementDrawingPosition;

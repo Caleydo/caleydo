@@ -205,7 +205,10 @@ public class GroupingParser extends ATextParser {
 				data.setData(sortedIDs, clusterSizes, sampleElements, clusterNames);
 				String groupLabel = listOfGroupNames.get(groupListCount);
 				if (groupLabel.equals(DEFAULT_GROUP_NAME)) {
-					if (groupingSpecifications.getGroupingName() != null) {
+					if (groupingSpecifications.getGroupingNames() != null) {
+						groupLabel = clusterSizes.size() + " "
+								+ groupingSpecifications.getGroupingNames().get(groupListCount);
+					} else if (groupingSpecifications.getGroupingName() != null) {
 						groupLabel = clusterSizes.size() + " " + groupingSpecifications.getGroupingName();
 					} else {
 						groupLabel = clusterSizes.size() + " Clusters";
@@ -219,6 +222,7 @@ public class GroupingParser extends ATextParser {
 			throw new IllegalStateException("Could not read file: " + groupingSpecifications.getDataSourcePath());
 		} finally {
 			monitor.done();
+			reader.close();
 		}
 	}
 

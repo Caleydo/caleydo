@@ -9,14 +9,12 @@ import gleem.linalg.Vec2f;
 
 import java.util.List;
 
-import javax.media.opengl.GL2;
-
+import org.apache.commons.lang.StringUtils;
+import org.caleydo.core.data.collection.CategoricalHistogram;
 import org.caleydo.core.data.collection.Histogram;
+import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.selection.SelectionManager;
-import org.caleydo.core.data.selection.TablePerspectiveSelectionMixin;
-import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.RedrawViewEvent;
@@ -24,11 +22,14 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.util.PickingPool;
+import org.caleydo.core.view.opengl.layout2.view.ASingleTablePerspectiveElement;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.histogram.HistogramRenderStyle;
@@ -38,27 +39,62 @@ import org.caleydo.view.histogram.HistogramRenderStyle;
  *
  * @author Samuel Gratzl
  */
-public class HistogramElement extends GLElement implements
-		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback {
-	private static float[] SPREAD_LINE_COLOR = { 0.5f, 0.5f, 0.5f };
 
-	@DeepScan
-	protected final TablePerspectiveSelectionMixin mixin;
+public class HistogramElement extends ASingleTablePerspectiveElement {
+
+	private static Color SPREAD_LINE_COLOR = new Color(0.5f, 0.5f, 0.5f);
+
 
 	private PickingPool leftSpreadPickingIds;
 	private PickingPool rightSpreadPickingIds;
 
 	private final EDetailLevel detailLevel;
 
+	private int hoveredSpread = -1;
+	private boolean hoveredLeft = false;
+
+	private boolean showColorMapper = false;
+	private boolean showMarkerLabels = false;
+
 	public HistogramElement(TablePerspective tablePerspective) {
 		this(tablePerspective, EDetailLevel.HIGH);
 	}
 
 	public HistogramElement(TablePerspective tablePerspective, EDetailLevel detailLevel) {
-		this.mixin = new TablePerspectiveSelectionMixin(tablePerspective, this);
+		super(tablePerspective);
 		this.detailLevel = detailLevel;
 		setPicker(null);
-		setVisibility(detailLevel.ordinal() > EDetailLevel.LOW.ordinal() ? EVisibility.PICKABLE : EVisibility.VISIBLE);
+		setVisibility(detailLevel.ordinal() > EDetailLevel.MEDIUM.ordinal() ? EVisibility.PICKABLE
+				: EVisibility.VISIBLE);
+		this.showColorMapper = detailLevel.ordinal() > EDetailLevel.LOW.ordinal();
+	}
+
+	/**
+	 * @param showColorMapper
+	 *            setter, see {@link showColorMapper}
+	 */
+	public HistogramElement setShowColorMapper(boolean showColorMapper) {
+		this.showColorMapper = showColorMapper;
+		repaintAll();
+		return this;
+	}
+
+	/**
+	 * @param showMarkerLabels
+	 *            setter, see {@link showMarkerLabels}
+	 */
+	public HistogramElement setShowMarkerLabels(boolean showMarkerLabels) {
+		this.showMarkerLabels = showMarkerLabels;
+		if (this.showColorMapper)
+			repaintAll();
+		return this;
+	}
+
+	/**
+	 * @return the showColorMapper, see {@link #showColorMapper}
+	 */
+	public boolean isShowColorMapper() {
+		return showColorMapper;
 	}
 
 	@Override
@@ -69,16 +105,30 @@ public class HistogramElement extends GLElement implements
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
+		final IPickingListener leftToolTip = context.getSWTLayer().createTooltip(new IPickingLabelProvider() {
+			@Override
+			public String getLabel(Pick pick) {
+				return HistogramElement.this.getLabel(pick, true);
+			}
+		});
 		leftSpreadPickingIds = new PickingPool(context, new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
-				onLinePicked(pick, getDataDomain(), true);
+				leftToolTip.pick(pick);
+				onLinePicked(pick, true);
+			}
+		});
+		final IPickingListener rightToolTip = context.getSWTLayer().createTooltip(new IPickingLabelProvider() {
+			@Override
+			public String getLabel(Pick pick) {
+				return HistogramElement.this.getLabel(pick, false);
 			}
 		});
 		rightSpreadPickingIds = new PickingPool(context, new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
-				onLinePicked(pick, getDataDomain(), false);
+				rightToolTip.pick(pick);
+				onLinePicked(pick, false);
 			}
 		});
 		int points = getDataDomain().getTable().getColorMapper().getMarkerPoints().size();
@@ -95,23 +145,7 @@ public class HistogramElement extends GLElement implements
 		super.takeDown();
 	}
 
-	@Override
-	public void onVAUpdate(TablePerspective tablePerspective) {
-		repaintAll();
-	}
 
-	@Override
-	public void onSelectionUpdate(SelectionManager manager) {
-		repaintAll();
-	}
-
-	private TablePerspective getTablePerspective() {
-		return mixin.getTablePerspective();
-	}
-
-	private ATableBasedDataDomain getDataDomain() {
-		return getTablePerspective().getDataDomain();
-	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
@@ -119,50 +153,61 @@ public class HistogramElement extends GLElement implements
 		ATableBasedDataDomain dataDomain = getDataDomain();
 		g.save();
 		g.move(padding, padding);
-		renderHist(g, getTablePerspective().getContainerStatistics().getHistogram(), w - padding * 2, h - padding * 2,
+		Histogram hist = getTablePerspective().getContainerStatistics().getHistogram();
+		renderHist(g, hist, w - padding * 2, h - padding * 2,
 				dataDomain.getTable().getColorMapper());
+		if (hist instanceof CategoricalHistogram)
+			showColorMapper = false;
 		g.restore();
 
-		if (detailLevel.ordinal() > EDetailLevel.LOW.ordinal())
+
+		if (showColorMapper)
 			renderColorMapper(g, w, h, dataDomain.getTable().getColorMapper());
 	}
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (detailLevel.ordinal() > EDetailLevel.LOW.ordinal() && getVisibility() == EVisibility.PICKABLE)
+		if (showColorMapper && getVisibility() == EVisibility.PICKABLE)
 			renderColorMapperPick(g, w, h, getDataDomain().getTable().getColorMapper());
 		super.renderPickImpl(g, w, h);
 	}
 
 	public static void renderHist(GLGraphics g, Histogram hist, float w, float h, ColorMapper mapper) {
 
-		float factor = h / hist.getLargestValue();
-		float delta = w / hist.size();
-		float colorDelta = 1.f / (hist.size() - 1);
-		g.gl.glPushAttrib(GL2.GL_LINE_BIT);
+		final float factor = h / hist.getLargestValue();
+		final float delta = w / hist.size();
+		final float colorDelta = 1.f / (hist.size() - 1);
 
 		final float lineWidth = Math.min(delta - 1, 25);
 		final float lineWidthHalf = lineWidth * 0.5f;
-		if (lineWidth < 10)
-			g.lineWidth(lineWidth);
 		float x = delta / 2;
 
+		CategoricalHistogram colored_hist = null;
+		if (hist instanceof CategoricalHistogram) {
+			colored_hist = (CategoricalHistogram) hist;
+		}
+		g.lineWidth(0.3f);
+
+		g.save().move(0, h - 1);
+		g.color(Color.DARK_GRAY).drawLine(0, 0, w, 0);
 		g.color(Color.GRAY);
 		for (int i = 0; i < hist.size(); ++i) {
-			if (mapper != null) {
+			if (colored_hist != null) {
+				g.color(colored_hist.getColor(i));
+			} else if (mapper != null) {
 				g.color(mapper.getColor(i * colorDelta));
 			}
 			float v = -hist.get(i) * factor;
 
 			if (v <= -1) {
-				if (lineWidth < 10)
-					g.drawLine(x, 0, x, v);
-				else
-					g.fillRect(x - lineWidthHalf, 0, lineWidth, v);
+				g.fillRect(x - lineWidthHalf, 0, lineWidth, v);
+				if (RenderStyle.COLOR_BORDER != null)
+					g.color(RenderStyle.COLOR_BORDER).drawRect(x - lineWidthHalf, 0, lineWidth, v);
 			}
 			x += delta;
 		}
-		g.gl.glPopAttrib();
+		g.restore();
+		g.lineWidth(1);
 	}
 
 	private float getPadding() {
@@ -192,12 +237,14 @@ public class HistogramElement extends GLElement implements
 		g.save();
 		g.move(padding,padding);
 
+		float lineHeight = this.showMarkerLabels ? h + padding - 1 : h;
+
 		List<ColorMarkerPoint> markerPoints = mapper.getMarkerPoints();
 
 		for(int i = 0; i < markerPoints.size(); ++i) {
 			ColorMarkerPoint markerPoint = markerPoints.get(i);
 			// the left polygon between the central line and the spread
-			org.caleydo.core.util.color.Color color = markerPoint.getColor();
+			Color color = markerPoint.getColor();
 			g.color(color.r,color.g,color.b,0.3f);
 
 			final float v = markerPoint.getMappingValue();
@@ -213,8 +260,17 @@ public class HistogramElement extends GLElement implements
 				// the left spread line
 				g.color(SPREAD_LINE_COLOR);
 				g.incZ();
-				g.drawLine(from,0,from,h);
+				if (hoveredLeft && hoveredSpread == i) {
+					g.lineWidth(3.f);
+				}
+				g.drawLine(from, 0, from, lineHeight);
+				if (hoveredLeft && hoveredSpread == i) {
+					g.lineWidth(1);
+				}
 				g.decZ();
+
+				if (spread > HistogramRenderStyle.SPREAD_CAPTION_THRESHOLD)
+					renderCaption(g, v - spread, w, h);
 			}
 
 			if (markerPoint.hasRightSpread()) {
@@ -228,13 +284,35 @@ public class HistogramElement extends GLElement implements
 				// the right spread line
 				g.color(SPREAD_LINE_COLOR);
 				g.incZ();
-				g.drawLine(to, 0, to, h);
+				if (!hoveredLeft && hoveredSpread == i) {
+					g.lineWidth(3.f);
+				}
+				g.drawLine(to, 0, to, lineHeight);
+				if (!hoveredLeft && hoveredSpread == i) {
+					g.lineWidth(1);
+				}
 				g.decZ();
+
+				if (spread > HistogramRenderStyle.SPREAD_CAPTION_THRESHOLD)
+					renderCaption(g, v + spread, w, h);
 			}
+
+			renderCaption(g, v, w, h);
 		}
 
 		g.restore();
 
+	}
+
+	private void renderCaption(GLGraphics g, float value, float w, float h) {
+		String label = getMarkerPointValue(value);
+		if (StringUtils.isBlank(label))
+			return;
+
+		if (value <= 0.5)
+			g.drawText(label, value * w, h, 100, HistogramRenderStyle.SIDE_SPACING - 2);
+		else
+			g.drawText(label, value * w - 100, h, 100, HistogramRenderStyle.SIDE_SPACING - 2, VAlign.RIGHT);
 	}
 
 	/**
@@ -278,10 +356,42 @@ public class HistogramElement extends GLElement implements
 
 	}
 
-	private void onLinePicked(Pick pick, ATableBasedDataDomain dataDomain, boolean isLeftSpread) {
+	final String getLabel(Pick pick, boolean isLeftSpread) {
+		ATableBasedDataDomain dataDomain = getDataDomain();
+		List<ColorMarkerPoint> markers = dataDomain.getTable().getColorMapper().getMarkerPoints();
+		final int selected = pick.getObjectID();
+		ColorMarkerPoint point = markers.get(selected);
+		return getMarkerPointValue(point.getMappingValue()
+				+ (isLeftSpread ? -point.getLeftSpread() : point.getRightSpread()));
+	}
+
+	private String getMarkerPointValue(float value) {
+		String text = null;
+		ATableBasedDataDomain dataDomain = getDataDomain();
+		if (dataDomain.getTable() instanceof NumericalTable) {
+			double correspondingValue = ((NumericalTable) dataDomain.getTable()).getRawForNormalized(dataDomain
+					.getTable().getDefaultDataTransformation(), value);
+
+			text = Formatter.formatNumber(correspondingValue);
+		}
+		return text;
+	}
+
+	final void onLinePicked(Pick pick, boolean isLeftSpread) {
+		ATableBasedDataDomain dataDomain = getDataDomain();
 		switch (pick.getPickingMode()) {
 		case MOUSE_RELEASED:
 			EventPublisher.trigger(new UpdateColorMappingEvent().from(this));
+			break;
+		case MOUSE_OVER:
+			hoveredSpread = pick.getObjectID();
+			hoveredLeft = isLeftSpread;
+			repaint();
+			break;
+		case MOUSE_OUT:
+			hoveredSpread = -1;
+			hoveredLeft = isLeftSpread;
+			repaint();
 			break;
 		case CLICKED:
 			pick.setDoDragging(true);
@@ -291,15 +401,18 @@ public class HistogramElement extends GLElement implements
 			final int selected = pick.getObjectID();
 			ColorMarkerPoint point = markers.get(selected);
 			final float dv = pick.getDx() / (getSize().x() - getPadding() * 2);
+			if (dv == 0)
+				break;
 			//clamp values in the neighbor range
 			float v = dv;
 			if (isLeftSpread) {
-				v += point.getLeftSpread();
+				v = -v + point.getLeftSpread();
 				if (v < 0.01f)
 					v = 0.01f;
 				if (selected > 0) {
 					ColorMarkerPoint prev = markers.get(selected-1);
-					v = Math.max(v, point.getMappingValue()-(prev.getMappingValue()+prev.getRightSpread()+0.01f));
+					float maxv = (prev.getMappingValue() + prev.getRightSpread() + 0.01f);
+					v = Math.min(v, point.getMappingValue() - maxv);
 				}
 				if (v != point.getLeftSpread()) {
 					point.setLeftSpread(v);
@@ -333,23 +446,16 @@ public class HistogramElement extends GLElement implements
 		repaintAll();
 	}
 
-	@Override
-	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
-		if (Vec2f.class.isAssignableFrom(clazz))
-			return clazz.cast(getMinSize());
-		return super.getLayoutDataAs(clazz, default_);
-	}
 
+	@Override
 	public final Vec2f getMinSize() {
 		switch (detailLevel) {
 		case HIGH:
 			return new Vec2f(300, 300);
 		case MEDIUM:
 			return new Vec2f(100, 100);
-		case LOW:
-			return new Vec2f(40, 40);
 		default:
-			return new Vec2f(40, 40);
+			return new Vec2f(40, 80);
 		}
 	}
 }

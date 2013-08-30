@@ -81,7 +81,9 @@ public class AddGroupingsPageMediator {
 		GroupingParseSpecification groupingParseSpecification = importGroupingDialog.call();
 		if (groupingParseSpecification != null) {
 			groupingParseSpecifications.add(groupingParseSpecification);
-			groupingList.add(groupingParseSpecification.getGroupingName());
+			for (String groupingName : groupingParseSpecification.getGroupingNames()) {
+				groupingList.add(groupingName);
+			}
 		}
 	}
 
@@ -115,7 +117,7 @@ public class AddGroupingsPageMediator {
 				groupingParseSpecifications.add(groupingIndex, groupingParseSpecification);
 
 				groupingList.remove(groupingIndex);
-				groupingList.add(groupingParseSpecification.getGroupingName(), groupingIndex);
+				groupingList.add(groupingParseSpecification.getGroupingNames().get(groupingIndex), groupingIndex);
 			}
 		}
 	}
@@ -190,8 +192,9 @@ public class AddGroupingsPageMediator {
 		if (dataSetDescription.getColumnGroupingSpecifications() != null) {
 			columnGroupingSpecifications = dataSetDescription.getColumnGroupingSpecifications();
 			page.columnGroupingsList.removeAll();
+			int groupingCount = 0;
 			for (GroupingParseSpecification groupingParseSpecification : columnGroupingSpecifications) {
-				page.columnGroupingsList.add(groupingParseSpecification.getGroupingName());
+				page.columnGroupingsList.add(groupingParseSpecification.getGroupingNames().get(groupingCount++));
 			}
 		} else {
 			// keep grouping specifications in datasetdesciption synchronized
@@ -201,8 +204,9 @@ public class AddGroupingsPageMediator {
 		if (dataSetDescription.getRowGroupingSpecifications() != null) {
 			rowGroupingSpecifications = dataSetDescription.getRowGroupingSpecifications();
 			page.rowGroupingsList.removeAll();
+			int groupingCount = 0;
 			for (GroupingParseSpecification groupingParseSpecification : rowGroupingSpecifications) {
-				page.rowGroupingsList.add(groupingParseSpecification.getGroupingName());
+				page.rowGroupingsList.add(groupingParseSpecification.getGroupingNames().get(groupingCount++));
 			}
 		} else {
 			// keep grouping specifications in datasetdesciption synchronized

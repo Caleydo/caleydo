@@ -8,7 +8,7 @@ package org.caleydo.core.view.opengl.layout2;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
-import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
@@ -125,7 +125,10 @@ public class GLElement implements IHasGLLayoutData {
 	 * indicator whether the layouting should run next time
 	 */
 	private boolean dirtyLayout = true;
-
+	/**
+	 * accumulated delta time between the layout runs
+	 */
+	private int deltaLayoutDirty = 0;
 	/**
 	 * the z value to add before the value should be rendered
 	 */
@@ -167,6 +170,8 @@ public class GLElement implements IHasGLLayoutData {
 
 	@Override
 	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		if (clazz.isInstance(this))
+			return clazz.cast(this);
 		return GLLayouts.resolveLayoutData(clazz, layoutData, default_);
 	}
 
@@ -278,8 +283,11 @@ public class GLElement implements IHasGLLayoutData {
 	 * checks if the layout is dirty and it is is so perform the layouting
 	 */
 	public void layout(int deltaTimeMs) {
-		if (dirtyLayout)
-			layoutImpl();
+		if (dirtyLayout) {
+			deltaLayoutDirty += deltaTimeMs;
+			layoutImpl(deltaLayoutDirty);
+			deltaLayoutDirty = 0;
+		}
 	}
 
 	public static boolean areValidBounds(float x, float y, float w, float h) {
@@ -492,17 +500,6 @@ public class GLElement implements IHasGLLayoutData {
 	}
 
 	/**
-	 * see {@link #toRelative(Vec2f)} for {@link Point}
-	 *
-	 * @param absolute
-	 * @return
-	 */
-	public final Vec2f toRelative(Point absolute) {
-		return toRelative(new Vec2f(absolute.x, absolute.y));
-	}
-
-
-	/**
 	 * returns the layouted size of this element
 	 *
 	 * @return
@@ -518,6 +515,14 @@ public class GLElement implements IHasGLLayoutData {
 	 */
 	public final Vec4f getBounds() {
 		return bounds_layout.bounds();
+	}
+
+	public final Rectangle2D getRectangleBounds() {
+		return bounds_layout.asRectangle2D();
+	}
+
+	public final Rect getRectBounds() {
+		return bounds_layout.clone();
 	}
 
 	/**
@@ -558,9 +563,9 @@ public class GLElement implements IHasGLLayoutData {
 	 * triggers that me and my parents get repainted
 	 */
 	public void repaint() {
-		int bak = 0;
+		// int bak = 0;
 		if (context != null)
-			bak = cache.invalidate(context.getDisplayListPool());
+			cache.invalidate(context.getDisplayListPool());
 		if (parent != null /* && bak > 0 */)
 			parent.repaint();
 	}
@@ -569,9 +574,9 @@ public class GLElement implements IHasGLLayoutData {
 	 * triggers that me and my parents get repaint the picking representation
 	 */
 	public void repaintPick() {
-		int bak = 0;
+		// int bak = 0;
 		if (context != null)
-			bak = pickCache.invalidate(context.getDisplayListPool());
+			pickCache.invalidate(context.getDisplayListPool());
 		if (parent != null /* && bak > 0 */)
 			parent.repaintPick();
 	}
@@ -604,6 +609,20 @@ public class GLElement implements IHasGLLayoutData {
 	}
 
 	/**
+	 * finds a parent in the hierarchy that is of the specific instance
+	 *
+	 * @param satisfies
+	 * @return
+	 */
+	protected final <T> T findParent(Class<T> isInstanceOf) {
+		IGLElementParent act = parent;
+		while (act != null && !(isInstanceOf.isInstance(act))) {
+			act = parent.getParent();
+		}
+		return isInstanceOf.cast(act);
+	}
+
+	/**
 	 * setup method, when adding a child to a parent
 	 * @param context
 	 */
@@ -628,14 +647,16 @@ public class GLElement implements IHasGLLayoutData {
 			context.unregisterPickingListener(pickingID);
 			pickingID = -1;
 		}
-		this.parent = null;
 		this.context = null;
+		this.parent = null;
 	}
 
 	/**
 	 * trigger to layout this element
+	 *
+	 * @param deltaTimeMs
 	 */
-	protected void layoutImpl() {
+	protected void layoutImpl(int deltaTimeMs) {
 		dirtyLayout = false;
 		if (context != null) {
 			cache.invalidate(context.getDisplayListPool());
@@ -688,6 +709,11 @@ public class GLElement implements IHasGLLayoutData {
 		@Override
 		public Vec4f getBounds() {
 			return GLElement.this.getBounds();
+		}
+
+		@Override
+		public Rect getRectBounds() {
+			return GLElement.this.getRectBounds();
 		}
 
 		@Override

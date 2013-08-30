@@ -9,6 +9,7 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 
 /**
  * accessor for an element seen by a {@link IGLLayout}
@@ -81,8 +82,13 @@ public interface IGLLayoutElement extends IHasGLLayoutData {
 	Vec4f getBounds();
 
 	/**
+	 * @return
+	 */
+	Rect getRectBounds();
+
+	/**
 	 * returns the set width of the element, i.e the width that was directly set by the element and not by the layout
-	 *
+	 * 
 	 * @return
 	 */
 	float getSetWidth();

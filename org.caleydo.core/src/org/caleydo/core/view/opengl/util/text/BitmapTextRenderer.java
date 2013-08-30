@@ -45,7 +45,6 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 	 */
 	private Color color = Color.BLACK;
 
-
 	public BitmapTextRenderer(Font base) {
 		super(base);
 	}
@@ -85,10 +84,13 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 		this.color = color;
 	}
 
-
-
 	@Override
 	public void renderTextInBounds(GL2 gl, String text, float x, float y, float z, float w, float h) {
+		renderTextInBounds(gl, text, x, y, z, w, h, true);
+	}
+
+	@Override
+	public void renderTextInBounds(GL2 gl, String text, float x, float y, float z, float w, float h, boolean alignRight) {
 		GlyphVector glyphVector = get(text);
 		if (glyphVector == null)
 			return;
@@ -115,7 +117,6 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 		gl.glTranslatef(0, baseLine, 0);
 
 		gl.glBegin(GL2.GL_QUADS);
-
 
 		final int p = PADDING;
 
@@ -147,7 +148,6 @@ public final class BitmapTextRenderer extends ABitmapTextRenderer implements ITe
 			gl.glVertex2d(target.getX() - p, target.getMaxY() + p);
 		}
 		gl.glEnd();
-
 
 		gl.glPopMatrix();
 		gl.glPopAttrib();

@@ -36,7 +36,6 @@ public class PathwayRemoteViewCreator implements IRemoteViewCreator {
 				.get()
 				.getViewManager()
 				.createGLView(GLPathway.class, remoteRenderingView.getParentGLCanvas(),
-						remoteRenderingView.getParentComposite(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
 
 		if (tablePerspectives.size() > 0) {

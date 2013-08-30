@@ -17,18 +17,21 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAnimatorControl;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.internal.ConsoleFlags;
+import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.canvas.MyAnimator;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.awt.AWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.newt.NEWTGLCanvasFactory;
@@ -46,7 +49,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
@@ -56,7 +58,6 @@ import org.osgi.framework.Bundle;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import com.jogamp.opengl.util.FPSAnimator;
 
 /**
  * Manage all canvas, view and canvas objects.
@@ -83,7 +84,7 @@ public class ViewManager extends AManager<IView> {
 	 */
 	// private Map<AGLView, Set<AGLView>> hashTopLevelView2ViewsToBeDestroyed = new HashMap<AGLView, Set<AGLView>>();
 
-	private FPSAnimator fpsAnimator;
+	private GLAnimatorControl fpsAnimator;
 
 	private PickingManager pickingManager = new PickingManager();
 
@@ -484,21 +485,22 @@ public class ViewManager extends AManager<IView> {
 
 
 	public void startAnimator() {
-
-		if (fpsAnimator == null)
-			fpsAnimator = new FPSAnimator(30);
+		if (fpsAnimator == null) {
+			// FPSAnimator f = new FPSAnimator(30);
+			// f.setIgnoreExceptions(true);
+			// f.setPrintExceptions(true);
+			// fpsAnimator = f;
+			fpsAnimator = new MyAnimator(MyPreferences.getFPS());
+		}
 
 		if (!fpsAnimator.isAnimating())
 			fpsAnimator.start();
-
-		fpsAnimator.setIgnoreExceptions(true);
-		fpsAnimator.setPrintExceptions(true);
 
 		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start animator"));
 	}
 
 	public void stopAnimator() {
-		if (fpsAnimator != null && fpsAnimator.isAnimating())
+		if (fpsAnimator != null)
 			fpsAnimator.stop();
 
 		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Stop animator"));
@@ -519,14 +521,14 @@ public class ViewManager extends AManager<IView> {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public AGLView createGLView(Class<? extends AGLView> viewClass, IGLCanvas glCanvas, Composite parentComposite,
+	public AGLView createGLView(Class<? extends AGLView> viewClass, IGLCanvas glCanvas,
 			ViewFrustum viewFrustum) {
 
 		AGLView view;
 		try {
-			Class[] argTypes = { IGLCanvas.class, Composite.class, ViewFrustum.class };
+			Class[] argTypes = { IGLCanvas.class, ViewFrustum.class };
 			Constructor aConstructor = viewClass.getConstructor(argTypes);
-			view = (AGLView) aConstructor.newInstance(glCanvas, parentComposite, viewFrustum);
+			view = (AGLView) aConstructor.newInstance(glCanvas, viewFrustum);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new IllegalStateException("Cannot create GL view " + viewClass);

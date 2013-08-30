@@ -12,9 +12,8 @@ import com.google.common.base.Function;
 
 
 /**
- * A pair of values, inspired by STL Caution: when using the compare function
- * only the first element of the pair is used
- *
+ * A pair of values, inspired by STL
+ * 
  * @author Alexander Lex
  * @param <T>
  *            first type

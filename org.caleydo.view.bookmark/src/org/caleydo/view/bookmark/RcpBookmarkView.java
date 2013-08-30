@@ -5,11 +5,9 @@
  ******************************************************************************/
 package org.caleydo.view.bookmark;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.view.bookmark.toolbar.ExportDataAction;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpBookmarkView extends ARcpGLViewPart {
@@ -18,20 +16,14 @@ public class RcpBookmarkView extends ARcpGLViewPart {
 	 * Constructor.
 	 */
 	public RcpBookmarkView() {
-		super();
-
-		try {
-			viewContext = JAXBContext.newInstance(SerializedBookmarkView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		super(SerializedBookmarkView.class);
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLBookmarkView(glCanvas, parent, serializedView.getViewFrustum());
+		view = new GLBookmarkView(glCanvas, serializedView.getViewFrustum());
 		initializeView();
 		createPartControlGL();
 	}
@@ -43,12 +35,7 @@ public class RcpBookmarkView extends ARcpGLViewPart {
 	}
 
 	@Override
-	public String getViewGUIID() {
-		return GLBookmarkView.VIEW_TYPE;
-	}
-
-	@Override
-	public void addToolBarContent() {
+	public void addToolBarContent(IToolBarManager toolBarManager) {
 		toolBarManager.add(new ExportDataAction());
 	}
 

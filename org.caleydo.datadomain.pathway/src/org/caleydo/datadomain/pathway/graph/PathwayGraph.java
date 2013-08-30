@@ -5,19 +5,25 @@
  ******************************************************************************/
 package org.caleydo.datadomain.pathway.graph;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
-import org.caleydo.core.id.object.ManagedObjectType;
-import org.caleydo.core.manager.GeneralManager;
+import javax.media.opengl.GLException;
+
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.util.base.IUniqueObject;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedMultigraph;
 
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureIO;
+
 /**
  * Overall graph that holds all pathways
- * 
+ *
  * @author Marc Streit
  */
 public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEdge>
@@ -33,7 +39,7 @@ public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEd
 
 	private String title;
 
-	private String imageLink;
+	private File image;
 
 	private String externalLink;
 
@@ -42,16 +48,17 @@ public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEd
 	private int height = -1;
 
 	public PathwayGraph(final EPathwayDatabaseType type, final String name,
-			final String title, final String imageLink, final String link) {
+ final String title, final File image,
+			final String link) {
 
 		super(DefaultEdge.class);
 
-		id = GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY);
+		id = IDCreator.createPersistentIntID(PathwayGraph.class);
 
 		this.type = type;
 		this.name = name;
 		this.title = title;
-		this.imageLink = imageLink;
+		this.image = image;
 		this.externalLink = link;
 	}
 
@@ -67,11 +74,6 @@ public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEd
 	public final String getTitle() {
 		return title;
 	}
-
-	public final String getImageLink() {
-		return imageLink;
-	}
-
 	public final String getExternalLink() {
 		return externalLink;
 	}
@@ -103,7 +105,7 @@ public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEd
 
 	/**
 	 * Returns the internal unique-id as hashcode
-	 * 
+	 *
 	 * @return internal unique-id as hashcode
 	 */
 	@Override
@@ -114,7 +116,7 @@ public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEd
 	/**
 	 * Checks if the given object is equals to this one by comparing the
 	 * internal unique-id
-	 * 
+	 *
 	 * @return <code>true</code> if the 2 objects are equal, <code>false</code>
 	 *         otherwise
 	 */
@@ -130,6 +132,15 @@ public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEd
 	@Override
 	public int compareTo(PathwayGraph o) {
 		return this.title.compareToIgnoreCase(o.getTitle());
+	}
+
+	public Texture getTexture() {
+		try {
+			return TextureIO.newTexture(image, true);
+		} catch (GLException | IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

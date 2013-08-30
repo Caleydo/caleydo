@@ -18,7 +18,6 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.PreviewTable.IPreviewCallback;
-import org.caleydo.core.io.gui.dataimport.widget.LabelWidget;
 import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
 import org.caleydo.core.io.gui.dataimport.widget.RowConfigWidget;
 import org.caleydo.core.util.base.ICallback;
@@ -28,12 +27,21 @@ import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.system.BrowserUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
+import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Spinner;
 
 /**
  * Dialog for loading groupings for datasets.
@@ -50,13 +58,21 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 	/**
 	 * Textfield for the grouping name.
 	 */
-	private LabelWidget label;
+	// private LabelWidget label;
 
 	private LoadFileWidget loadFile;
 
 	private RowConfigWidget rowConfig;
 
 	private PreviewTable previewTable;
+
+	private Button useGroupingNamesFromRowButton;
+
+	private Button useCustomGroupingNamesButton;
+
+	private Spinner rowWithGroupingNamesSpinner;
+
+	private Label groupingNamesRowLabel;
 
 	/**
 	 * The row id category for which groupings should be loaded.
@@ -67,6 +83,11 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 	 * The {@link GroupingParseSpecification} created using this {@link #dialog} .
 	 */
 	private final GroupingParseSpecification spec;
+
+	private int numRowsInFile = 0;
+
+	private List<String> customGroupingNames = new ArrayList<>();
+	private boolean useCustomGroupingNames = false;
 
 	/**
 	 * @param parentShell
@@ -82,17 +103,18 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		if (existing == null) {
 			spec.setDelimiter("\t");
 			spec.setNumberOfHeaderLines(1);
+			spec.setRowOfColumnIDs(0);
 		} else {
-			this.spec.setColumnIDSpecification(spec.getColumnIDSpecification());
-			this.spec.setColumnOfRowIds(spec.getColumnOfRowIds());
-			this.spec.setColumns(spec.getColumns());
-			this.spec.setContainsColumnIDs(spec.isContainsColumnIDs());
-			this.spec.setDataSourcePath(spec.getDataSourcePath());
-			this.spec.setDelimiter(spec.getDelimiter());
-			this.spec.setGroupingName(spec.getGroupingName());
-			this.spec.setNumberOfHeaderLines(spec.getNumberOfHeaderLines());
-			this.spec.setRowIDSpecification(spec.getRowIDSpecification());
-			this.spec.setRowOfColumnIDs(spec.getRowOfColumnIDs());
+			this.spec.setColumnIDSpecification(existing.getColumnIDSpecification());
+			this.spec.setColumnOfRowIds(existing.getColumnOfRowIds());
+			this.spec.setColumns(existing.getColumns());
+			this.spec.setContainsColumnIDs(existing.isContainsColumnIDs());
+			this.spec.setDataSourcePath(existing.getDataSourcePath());
+			this.spec.setDelimiter(existing.getDelimiter());
+			this.spec.setGroupingNames(existing.getGroupingNames());
+			this.spec.setNumberOfHeaderLines(existing.getNumberOfHeaderLines());
+			this.spec.setRowIDSpecification(existing.getRowIDSpecification());
+			this.spec.setRowOfColumnIDs(existing.getRowOfColumnIDs());
 		}
 	}
 
@@ -110,8 +132,8 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		GridLayout layout = new GridLayout(numGridCols, false);
 		parentComposite.setLayout(layout);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gd.widthHint = 600;
-		gd.heightHint = 650;
+		gd.widthHint = 900;
+		gd.heightHint = 670;
 		parentComposite.setLayoutData(gd);
 
 		loadFile = new LoadFileWidget(parentComposite, "Open Grouping File", new ICallback<String>() {
@@ -119,14 +141,24 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 			public void on(String data) {
 				onSelectFile(data);
 			}
-		});
+		}, new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 
-		label = new LabelWidget(parentComposite, "Grouping Name");
+		// label = new LabelWidget(parentComposite, "Grouping Name");
 
 		rowConfig = new RowConfigWidget(parentComposite, new IntegerCallback() {
 			@Override
 			public void on(int data) {
 				previewTable.onNumHeaderRowsChanged(data);
+				if (data == 0) {
+
+					if (!useCustomGroupingNames) {
+						onUseCustomGroupingNames();
+						useCustomGroupingNamesButton.setSelection(true);
+						useGroupingNamesFromRowButton.setSelection(false);
+					}
+				} else if (data < rowWithGroupingNamesSpinner.getSelection()) {
+					rowWithGroupingNamesSpinner.setSelection(data);
+				}
 			}
 		}, new IntegerCallback() {
 			@Override
@@ -144,7 +176,9 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 				return previewTable.getValue(rowConfig.getNumHeaderRows(), rowConfig.getColumnOfRowID() - 1);
 			}
 		});
-		rowConfig.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
+		rowConfig.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+
+		createGroupingNameGroup();
 
 		previewTable = new PreviewTable(parentComposite, this.spec, new IPreviewCallback() {
 			@Override
@@ -158,6 +192,126 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		parentComposite.pack();
 
 		return parent;
+	}
+
+	private void createGroupingNameGroup() {
+		Group groupingNameGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		groupingNameGroup.setText("Grouping Names");
+		groupingNameGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		groupingNameGroup.setLayout(new GridLayout(2, false));
+
+		useGroupingNamesFromRowButton = new Button(groupingNameGroup, SWT.RADIO);
+		useGroupingNamesFromRowButton.setText("Use Grouping Names from Header Row");
+		useGroupingNamesFromRowButton.setSelection(true);
+		useGroupingNamesFromRowButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 2, 1));
+		useGroupingNamesFromRowButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				onUseGroupingNamesFromRows();
+			}
+		});
+
+		groupingNamesRowLabel = new Label(groupingNameGroup, SWT.NONE);
+		groupingNamesRowLabel.setText("Row with Grouping Names");
+
+		rowWithGroupingNamesSpinner = new Spinner(groupingNameGroup, SWT.BORDER);
+		rowWithGroupingNamesSpinner.setMaximum(Integer.MAX_VALUE);
+		rowWithGroupingNamesSpinner.setMinimum(1);
+		rowWithGroupingNamesSpinner.setIncrement(1);
+		rowWithGroupingNamesSpinner.setSelection(1);
+		GridData gridData = new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1);
+		gridData.widthHint = 70;
+		rowWithGroupingNamesSpinner.setLayoutData(gridData);
+		rowWithGroupingNamesSpinner.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+				int rowWithGroupingNames = rowWithGroupingNamesSpinner.getSelection();
+				previewTable.onRowOfColumnIDChanged(rowWithGroupingNames);
+				if (rowWithGroupingNames > spec.getNumberOfHeaderLines()) {
+					previewTable.onNumHeaderRowsChanged(rowWithGroupingNames);
+					rowConfig.setNumHeaderRows(rowWithGroupingNames);
+				}
+			}
+		});
+
+		useCustomGroupingNamesButton = new Button(groupingNameGroup, SWT.RADIO);
+		useCustomGroupingNamesButton.setText("Use Custom Grouping Names");
+		useCustomGroupingNamesButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 2, 1));
+		useCustomGroupingNamesButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				onUseCustomGroupingNames();
+			}
+		});
+		setGroupingNamesGroupEnabled(false);
+	}
+
+	private void onUseGroupingNamesFromRows() {
+		if (!useCustomGroupingNames)
+			return;
+		groupingNamesRowLabel.setEnabled(true);
+		rowWithGroupingNamesSpinner.setEnabled(true);
+		int rowWithGroupingNames = rowWithGroupingNamesSpinner.getSelection();
+		previewTable.onRowOfColumnIDChanged(rowWithGroupingNames);
+		if (rowWithGroupingNames > spec.getNumberOfHeaderLines()) {
+			previewTable.onNumHeaderRowsChanged(rowWithGroupingNames);
+			rowConfig.setNumHeaderRows(rowWithGroupingNames);
+		}
+		previewTable.clearCustomHeaderRows();
+		useCustomGroupingNames = false;
+	}
+
+	private void onUseCustomGroupingNames() {
+		if (useCustomGroupingNames)
+			return;
+		groupingNamesRowLabel.setEnabled(false);
+		rowWithGroupingNamesSpinner.setEnabled(false);
+		previewTable.onRowOfColumnIDChanged(-1);
+		customGroupingNames.clear();
+		int groupingNumber = 1;
+		for (int i = 1; i <= previewTable.getNumColumns(); i++) {
+			if (i == rowConfig.getColumnOfRowID()) {
+				customGroupingNames.add("");
+			} else {
+				customGroupingNames.add("Grouping " + groupingNumber);
+				groupingNumber++;
+			}
+		}
+		previewTable.addCustomHeaderRow(new IDataProvider() {
+
+			@Override
+			public void setDataValue(int columnIndex, int rowIndex, Object newValue) {
+				if (columnIndex + 1 == rowConfig.getColumnOfRowID())
+					return;
+				customGroupingNames.set(columnIndex, newValue.toString());
+			}
+
+			@Override
+			public int getRowCount() {
+				return 1;
+			}
+
+			@Override
+			public Object getDataValue(int columnIndex, int rowIndex) {
+				if (columnIndex + 1 == rowConfig.getColumnOfRowID())
+					return "";
+				return customGroupingNames.get(columnIndex);
+			}
+
+			@Override
+			public int getColumnCount() {
+				return customGroupingNames.size();
+			}
+		}, true);
+		useCustomGroupingNames = true;
+	}
+
+	private void setGroupingNamesGroupEnabled(boolean enabled) {
+		useGroupingNamesFromRowButton.setEnabled(enabled);
+		groupingNamesRowLabel.setEnabled(enabled ? useGroupingNamesFromRowButton.getSelection() : false);
+		rowWithGroupingNamesSpinner.setEnabled(enabled ? useGroupingNamesFromRowButton.getSelection() : false);
+		useCustomGroupingNamesButton.setEnabled(enabled);
 	}
 
 	@Override
@@ -189,8 +343,8 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 	private void initWidgetsFromGroupParseSpecification() {
 		this.loadFile.setFileName(spec.getDataSourcePath());
 
-		this.label.setText(spec.getGroupingName());
-		this.label.setEnabled(true);
+		// this.label.setText(spec.getGroupingName());
+		// this.label.setEnabled(true);
 
 		this.rowConfig.setCategoryID(rowIDCategory);
 		this.rowConfig.setNumHeaderRows(spec.getNumberOfHeaderLines());
@@ -205,8 +359,8 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 
 		this.loadFile.setFileName("");
 
-		this.label.setText("");
-		this.label.setEnabled(false);
+		// this.label.setText("");
+		// this.label.setEnabled(false);
 
 		this.rowConfig.setCategoryID(rowIDCategory);
 		this.rowConfig.setEnabled(false);
@@ -231,7 +385,23 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		spec.setColumns(selectedColumns);
 		spec.setRowIDSpecification(this.rowConfig.getIDSpecification());
 		spec.setContainsColumnIDs(false);
-		spec.setGroupingName(this.label.getText());
+		List<String> groupingNames = new ArrayList<>();
+		if (useCustomGroupingNames) {
+			for (int i = 0; i < customGroupingNames.size(); i++) {
+				if (selectedColumns.contains(i)) {
+					groupingNames.add(customGroupingNames.get(i));
+				}
+			}
+
+		} else {
+			for (int i = 0; i < previewTable.getNumColumns(); i++) {
+				if (selectedColumns.contains(i)) {
+					groupingNames.add(previewTable.getValue(spec.getRowOfColumnIDs(), i));
+				}
+			}
+		}
+		spec.setGroupingNames(groupingNames);
+
 	}
 
 	@Override
@@ -243,15 +413,17 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 	}
 
 	public void onSelectFile(String inputFileName) {
-		this.label.setText(inputFileName.substring(inputFileName.lastIndexOf(File.separator) + 1,
-				inputFileName.lastIndexOf(".")));
+		// this.label.setText(inputFileName.substring(inputFileName.lastIndexOf(File.separator) + 1,
+		// inputFileName.lastIndexOf(".")));
 
 		spec.setDataSourcePath(inputFileName);
 
-		this.label.setEnabled(true);
+		// this.label.setEnabled(true);
 		this.rowConfig.setEnabled(true);
+		setGroupingNamesGroupEnabled(true);
 
 		this.previewTable.generatePreview(true);
+		numRowsInFile = previewTable.getNumRows();
 		// this.parentComposite.layout(true, true);
 	}
 
@@ -261,5 +433,12 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		this.rowConfig.determineConfigFromPreview(dataMatrix, this.rowIDCategory);
 		// parentComposite.pack();
 		parentComposite.layout(true);
+	}
+
+	/**
+	 * @return the numRowsInFile, see {@link #numRowsInFile}
+	 */
+	public int getNumRowsInFile() {
+		return numRowsInFile;
 	}
 }

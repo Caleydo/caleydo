@@ -77,7 +77,7 @@ public class TCGATask extends ATCGATask {
 
 		log.info("Post Processing project file for tumor type " + tumorType + " for analysis run " + run);
 		for (TCGADataSet set : project) {
-			new TCGAPostprocessingTask(set, settings).invoke();
+			new TCGAPostprocessingTask(set).invoke();
 		}
 
 		final String projectOutputPath = runSpecificOutputPath + run + "_" + tumorType + ".cal";
@@ -201,7 +201,7 @@ public class TCGATask extends ATCGATask {
 
 		public ClinicalInfos(ATableBasedDataDomain dataDomain) {
 			count = dataDomain.getTable().depth();
-			VirtualArray dimensionVA = dataDomain.getTable().getDefaultDimensionPerspective().getVirtualArray();
+			VirtualArray dimensionVA = dataDomain.getTable().getDefaultDimensionPerspective(false).getVirtualArray();
 			for (int dimensionID : dimensionVA) {
 				parameters.add(dataDomain.getDimensionLabel(dimensionID));
 			}

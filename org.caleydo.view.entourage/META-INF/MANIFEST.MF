@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Subgraph
+Bundle-SymbolicName: org.caleydo.view.entourage;singleton:=true
+Bundle-Version: 
+Bundle-Activator: org.caleydo.view.entourage.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.caleydo.core;bundle-version="",
+ org.caleydo.datadomain.genetic;bundle-version="",
+ org.caleydo.datadomain.pathway;bundle-version="",
+ org.caleydo.util.bubblesets;bundle-version="",
+ org.caleydo.vis.lineup;bundle-version=""
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.caleydo.view.entourage,
+ org.caleydo.view.entourage.command.handler,
+ org.caleydo.view.entourage.contextmenu,
+ org.caleydo.view.entourage.datamapping,
+ org.caleydo.view.entourage.event,
+ org.caleydo.view.entourage.ranking,
+ org.caleydo.view.entourage.toolbar

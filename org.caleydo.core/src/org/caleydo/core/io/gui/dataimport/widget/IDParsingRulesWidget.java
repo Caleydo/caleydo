@@ -278,13 +278,14 @@ public class IDParsingRulesWidget {
 	 * @param idTypeParsingRules
 	 */
 	private void fillWidgets(IDTypeParsingRules idTypeParsingRules) {
-		keepCaseButton.setSelection(true);
 		if (idTypeParsingRules != null) {
 
 			if (idTypeParsingRules.isToLowerCase()) {
 				toLowerCaseButton.setSelection(true);
 			} else if (idTypeParsingRules.isToUpperCase()) {
 				toUpperCaseButton.setSelection(true);
+			} else {
+				keepCaseButton.setSelection(true);
 			}
 			// else {
 			// keepCaseButton.setSelection(true);
@@ -302,6 +303,8 @@ public class IDParsingRulesWidget {
 			if (subStringExpression != null) {
 				substringRegExTextField.setText(subStringExpression);
 			}
+		} else {
+			keepCaseButton.setSelection(true);
 		}
 		updatePreview();
 	}

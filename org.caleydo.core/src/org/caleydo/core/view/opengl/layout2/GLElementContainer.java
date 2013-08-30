@@ -14,8 +14,10 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import org.caleydo.core.view.opengl.layout2.layout.GLLayout2Adapter;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayout2;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 import com.google.common.collect.Iterators;
@@ -28,7 +30,7 @@ import com.google.common.collect.Iterators;
  *
  */
 public class GLElementContainer extends GLElement implements IGLElementParent, Iterable<GLElement> {
-	private IGLLayout layout = GLLayouts.NONE;
+	private IGLLayout2 layout = GLLayouts.NONE;
 	private final List<GLElement> children = new ArrayList<>(3);
 
 	public GLElementContainer() {
@@ -36,6 +38,10 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	}
 
 	public GLElementContainer(IGLLayout layout) {
+		this(new GLLayout2Adapter(layout));
+	}
+
+	public GLElementContainer(IGLLayout2 layout) {
 		this.layout = layout;
 	}
 
@@ -43,12 +49,22 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	 * @param layout
 	 *            setter, see {@link layout}
 	 */
-	public final GLElementContainer setLayout(IGLLayout layout) {
-		if (layout == this.layout)
+	public final GLElementContainer setLayout(IGLLayout2 layout) {
+		if (this.layout == layout)
 			return this;
 		this.layout = layout;
 		relayout();
 		return this;
+	}
+
+	/**
+	 * @param layout
+	 *            setter, see {@link layout}
+	 */
+	public final GLElementContainer setLayout(IGLLayout layout) {
+		if (this.layout instanceof GLLayout2Adapter && ((GLLayout2Adapter) this.layout).getLayout() == layout)
+			return this;
+		return setLayout(new GLLayout2Adapter(layout));
 	}
 
 	@Override
@@ -59,11 +75,13 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	}
 
 	@Override
-	protected final void layoutImpl() {
-		super.layoutImpl();
+	protected final void layoutImpl(int deltaTimeMs) {
+		super.layoutImpl(deltaTimeMs);
 		List<IGLLayoutElement> l = asLayoutElements();
 		Vec2f size = getSize();
-		layout.doLayout(l, size.x(), size.y());
+		boolean relayout = layout.doLayout(l, size.x(), size.y(), layoutElement, deltaTimeMs);
+		if (relayout)
+			relayout();
 	}
 
 	private List<IGLLayoutElement> asLayoutElements() {
@@ -116,8 +134,10 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		for (GLElement child : this)
+		for (GLElement child : this) {
+			child.setParent(this);
 			child.init(context);
+		}
 	}
 
 	private void setup(GLElement child) {
@@ -127,7 +147,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 			//internal move
 			children.remove(child);
 		} else if (ex != null) {
-			doInit = ex.moved(child);
+			doInit = !ex.moved(child);
 		}
 		child.setParent(this);
 		if (doInit && context != null)
@@ -140,6 +160,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 			GLElement e = it.next();
 			if (context != null)
 				e.takeDown();
+			e.setParent(null);
 			it.remove();
 		}
 		if (size > 0) // had deleted something
@@ -179,6 +200,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	public final boolean remove(GLElement child) {
 		if (children.remove(child)) {
 			child.takeDown();
+			child.setParent(null);
 			relayout();
 			return true;
 		}
@@ -195,7 +217,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 
 	/**
 	 * sorts the children according to the given comparator
-	 * 
+	 *
 	 * @param comparator
 	 */
 	public final void sortBy(Comparator<GLElement> comparator) {
@@ -206,6 +228,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	@Override
 	public final boolean moved(GLElement child) {
 		children.remove(child);
+		child.setParent(null);
 		relayout();
 		return context != null;
 	}
@@ -256,6 +279,14 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		};
 	}
 
+	/**
+	 * repaints the children and ensures that the there is no repaint loop
+	 */
+	public final void repaintChildren() {
+		for (GLElement child : children)
+			GLElementAccessor.repaintDown(child);
+	}
+
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
@@ -263,6 +294,14 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		for(GLElement child : children)
 			child.render(g);
 		g.decZ();
+	}
+
+	/**
+	 * repaints the children and ensures that the there is no repaint loop
+	 */
+	public final void repaintPickChildren() {
+		for (GLElement child : children)
+			GLElementAccessor.repaintPickDown(child);
 	}
 
 	@Override

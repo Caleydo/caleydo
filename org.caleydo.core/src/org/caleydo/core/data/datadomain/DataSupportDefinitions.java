@@ -5,8 +5,12 @@
  ******************************************************************************/
 package org.caleydo.core.data.datadomain;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.collection.table.NumericalTable;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+
+import com.google.common.base.Predicate;
 
 /**
  * factory class for {@link IDataSupportDefinition}s
@@ -53,6 +57,32 @@ public final class DataSupportDefinitions {
 	};
 
 	/**
+	 * returns true if the datadomains is homogeneous or it is just a single column of an inhomogenous data domain
+	 */
+	public static final Predicate<TablePerspective> homogenousColumns = new Predicate<TablePerspective>() {
+		@Override
+		public boolean apply(TablePerspective in) {
+			return in != null
+ && (homogenousTables.apply(in) || getSingleColumnDataClass(in) != null);
+		}
+	};
+
+	public static final Predicate<TablePerspective> numericalColumns = new Predicate<TablePerspective>() {
+		@Override
+		public boolean apply(TablePerspective in) {
+			return in != null && (numericalTables.apply(in) || getSingleColumnDataClass(in) == EDataClass.REAL_NUMBER);
+		}
+	};
+
+	public static final Predicate<TablePerspective> categoricalColumns = new Predicate<TablePerspective>() {
+		@Override
+		public boolean apply(TablePerspective in) {
+			return in != null
+					&& (categoricalTables.apply(in) || getSingleColumnDataClass(in) == EDataClass.CATEGORICAL);
+		}
+	};
+
+	/**
 	 * Default definition that can be used if all {@link DataDomain}s are supported.
 	 */
 	public static final IDataSupportDefinition all = new ADataSupportDefinition() {
@@ -71,5 +101,16 @@ public final class DataSupportDefinitions {
 		};
 	}
 
+	/**
+	 * @param in
+	 * @return
+	 */
+	protected static EDataClass getSingleColumnDataClass(TablePerspective in) {
+		if (in.getDimensionPerspective().getVirtualArray().size() > 1)
+			return null; // multi column
+		int dimensionId = in.getDimensionPerspective().getVirtualArray().get(0);
+		int recordId = in.getRecordPerspective().getVirtualArray().get(0);
+		return in.getDataDomain().getTable().getDataClass(dimensionId, recordId);
+	}
 
 }

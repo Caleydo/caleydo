@@ -23,6 +23,7 @@ import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.EnableFreePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
@@ -124,7 +125,6 @@ public abstract class APathUpdateStrategy implements IListenerOwner {
 		renderer.addTablePerspectives(event.getTablePerspectives());
 	}
 
-
 	@ListenTo
 	public void onRemoveTablePerspectives(RemoveTablePerspectiveEvent event) {
 		renderer.tablePerspectives.remove(event.getTablePerspective());
@@ -147,6 +147,9 @@ public abstract class APathUpdateStrategy implements IListenerOwner {
 	public abstract void onEnablePathSelection(EnablePathSelectionEvent event);
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
+	public abstract void onEnableFreePathSelection(EnableFreePathSelectionEvent event);
+
+	@ListenTo(restrictExclusiveToEventSpace = true)
 	public abstract void onSelectedPathChanged(PathwayPathSelectionEvent event);
 
 	/**
@@ -167,4 +170,12 @@ public abstract class APathUpdateStrategy implements IListenerOwner {
 	 */
 	public abstract boolean isPathChangePermitted(List<List<PathwayVertexRep>> newPath);
 
+	/**
+	 * Tells whether it is allowed to remove the nodes that are not the first or the last node of the path.
+	 *
+	 * @return
+	 */
+	public boolean isInnerNodeRemovalAllowed() {
+		return false;
+	}
 }

@@ -5,9 +5,6 @@
  ******************************************************************************/
 package org.caleydo.view.filter;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.filter.Filter;
@@ -24,6 +21,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.view.filter.listener.FilterUpdateListener;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
@@ -65,14 +63,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 	 * Constructor.
 	 */
 	public RcpFilterView() {
-		super();
-
-		try {
-			viewContext = JAXBContext.newInstance(SerializedFilterView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
-
+		super(SerializedFilterView.class);
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
 	}
@@ -279,7 +270,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 	}
 
 	@Override
-	public void addToolBarContent() {
+	public void addToolBarContent(IToolBarManager toolBarManager) {
 		toolBarManager.add(new UseRandomSamplingAction());
 	}
 }

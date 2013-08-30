@@ -13,7 +13,7 @@ package org.caleydo.core.util.function;
  */
 public abstract class AFloatFunction implements IFloatFunction {
 	@Override
-	public final Float apply(Float in) {
-		return Float.valueOf(apply(in.floatValue()));
+	public final Float apply(Float v) {
+		return Float.valueOf(apply(v.floatValue()));
 	}
 }

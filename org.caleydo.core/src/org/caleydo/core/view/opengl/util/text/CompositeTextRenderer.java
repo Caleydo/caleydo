@@ -5,14 +5,13 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.util.text;
 
-
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.function.FloatFunctions;
+import org.caleydo.core.util.function.ExpressionFunctions;
 import org.caleydo.core.util.function.IFloatFunction;
 
 /**
@@ -33,7 +32,7 @@ public class CompositeTextRenderer implements ITextRenderer {
 	private final IFloatFunction mapper;
 
 	public CompositeTextRenderer(ETextStyle style, int size, int... sizes) {
-		this(FloatFunctions.IDENTITY, style, size, sizes);
+		this(ExpressionFunctions.IDENTITY, style, size, sizes);
 	}
 
 	public CompositeTextRenderer(IFloatFunction mapper, ETextStyle style, int size, int... sizes) {
@@ -58,7 +57,6 @@ public class CompositeTextRenderer implements ITextRenderer {
 			t.setColor(color);
 	}
 
-
 	@Override
 	public float getTextWidth(String text, float height) {
 		CaleydoTextRenderer best = selectBest(height);
@@ -67,6 +65,11 @@ public class CompositeTextRenderer implements ITextRenderer {
 
 	@Override
 	public void renderTextInBounds(GL2 gl, String text, float x, float y, float z, float w, float h) {
+		renderTextInBounds(gl, text, x, y, z, w, h, true);
+	}
+
+	@Override
+	public void renderTextInBounds(GL2 gl, String text, float x, float y, float z, float w, float h, boolean alignRight) {
 		CaleydoTextRenderer best = selectBest(h);
 		best.renderTextInBounds(gl, text, x, y, z, w, h);
 	}
@@ -97,6 +100,5 @@ public class CompositeTextRenderer implements ITextRenderer {
 	public boolean isOriginTopLeft() {
 		return false;
 	}
-
 
 }

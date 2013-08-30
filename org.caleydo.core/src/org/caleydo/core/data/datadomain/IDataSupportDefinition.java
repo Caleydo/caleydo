@@ -24,7 +24,9 @@ import com.google.common.base.Predicate;
  *
  */
 public interface IDataSupportDefinition extends Predicate<IDataDomain> {
-	public List<TablePerspective> filter(Collection<TablePerspective> tablePerspectives);
+	List<TablePerspective> filter(Collection<TablePerspective> tablePerspectives);
 
-	public Predicate<TablePerspective> asTablePerspectivePredicate();
+	boolean apply(TablePerspective tablePerspective);
+
+	Predicate<TablePerspective> asTablePerspectivePredicate();
 }

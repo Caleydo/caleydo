@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Caleydo Data Importer
 Bundle-SymbolicName: org.caleydo.data.importer;singleton:=true
-Bundle-Version: 3.0
+Bundle-Version: 
 Export-Package: 
  org.caleydo.data.importer;uses:="org.eclipse.core.runtime,org.eclipse.equinox.app,org.osgi.framework",
  org.caleydo.data.importer.jkubioinfo,
@@ -10,10 +10,10 @@ Export-Package:
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: www.caleydo.org
-Require-Bundle: org.caleydo.core;bundle-version="2.2",
- org.caleydo.datadomain.generic;bundle-version="2.2",
- org.caleydo.datadomain.genetic;bundle-version="2.2",
- org.caleydo.datadomain.pathway;bundle-version="2.2",
- com.google.gson;bundle-version="2.1.0"
+Require-Bundle: org.caleydo.core;bundle-version="",
+ org.caleydo.datadomain.generic;bundle-version="",
+ org.caleydo.datadomain.genetic;bundle-version="",
+ org.caleydo.datadomain.pathway;bundle-version="",
+ com.google.gson;bundle-version="2.1.0",
+ org.apache.commons.compress;bundle-version="1.4.1"
 Bundle-Activator: org.caleydo.data.importer.Activator
-Import-Package: org.apache.tools.tar

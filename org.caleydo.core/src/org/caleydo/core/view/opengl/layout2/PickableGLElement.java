@@ -62,7 +62,7 @@ public class PickableGLElement extends GLElement {
 
 	/**
 	 * sets the picking object id to use
-	 * 
+	 *
 	 * @param objectId
 	 *            setter, see {@link objectId}
 	 */
@@ -127,6 +127,10 @@ public class PickableGLElement extends GLElement {
 			break;
 		case MOUSE_RELEASED:
 			onMouseReleased(pick);
+			break;
+		case MOUSE_WHEEL:
+			onMouseWheel(pick);
+			break;
 		}
 
 	}
@@ -158,6 +162,10 @@ public class PickableGLElement extends GLElement {
 	}
 
 	protected void onClicked(Pick pick) {
+
+	}
+
+	protected void onMouseWheel(Pick pick) {
 
 	}
 }

@@ -11,16 +11,14 @@ import java.util.Collection;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import javax.media.opengl.glu.GLU;
-import javax.media.opengl.glu.GLUtessellator;
 
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 
 /**
  * a simple tesselated polygon
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 final class TesselatedPolygon implements ITesselatedPolygon {
 	private final int windingRule;
@@ -54,26 +52,9 @@ final class TesselatedPolygon implements ITesselatedPolygon {
 
 	@Override
 	public void fill(GLGraphics g, TesselationRenderer renderer) {
-		GLUtessellator tesselator = renderer.begin(g.gl);
-
 		if (windingRule != 0) {
-			GLU.gluTessProperty(tesselator, GLU.GLU_TESS_WINDING_RULE, windingRule);
+			renderer.setWindingRule(windingRule);
 		}
-		GLU.gluTessBeginPolygon(tesselator, null);
-		{
-			GLU.gluTessBeginContour(tesselator);
-
-			for (Vec3f v : points) {
-				GLU.gluTessVertex(tesselator, asDoubleArray(v), 0, v);
-			}
-
-			GLU.gluTessEndContour(tesselator);
-		}
-		GLU.gluTessEndPolygon(tesselator);
-		renderer.end();
-	}
-
-	static double[] asDoubleArray(Vec3f v) {
-		return new double[] { v.x(), v.y(), v.z() };
+		renderer.render3(g, points);
 	}
 }

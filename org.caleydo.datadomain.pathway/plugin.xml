@@ -15,4 +15,10 @@
             class="org.caleydo.datadomain.pathway.internal.PathwaySerializationAddon">
       </addon>
    </extension>
+   <extension
+         point="org.caleydo.core.CacheInitializer">
+      <initializer
+            class="org.caleydo.datadomain.pathway.parser.KEGGParser">
+      </initializer>
+   </extension>
 </plugin>

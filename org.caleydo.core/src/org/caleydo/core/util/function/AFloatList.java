@@ -22,7 +22,7 @@ public abstract class AFloatList extends AbstractList<Float> implements IFloatLi
 	}
 
 	@Override
-	public float reduce(float start, IFloatReduction r) {
+	public final float reduce(float start, IFloatReduction r) {
 		return reduceImpl(this, start, r);
 	}
 
@@ -35,7 +35,7 @@ public abstract class AFloatList extends AbstractList<Float> implements IFloatLi
 	}
 
 	@Override
-	public IFloatList filter(IFloatPredicate p) {
+	public final IFloatList filter(IFloatPredicate p) {
 		return filterImpl(this, p);
 	}
 
@@ -58,6 +58,15 @@ public abstract class AFloatList extends AbstractList<Float> implements IFloatLi
 	@Override
 	public final Float get(int index) {
 		return getPrimitive(index);
+	}
+
+	@Override
+	public float[] toPrimitiveArray() {
+		int s = size();
+		float[] data = new float[s];
+		for (int i = 0; i < s; ++i)
+			data[i] = getPrimitive(i);
+		return data;
 	}
 
 	@Override

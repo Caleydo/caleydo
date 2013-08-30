@@ -5,7 +5,6 @@
  ******************************************************************************/
 package org.caleydo.core.util.base;
 
-import java.util.Comparator;
 
 
 /**
@@ -41,10 +40,5 @@ public class DefaultLabelProvider implements ILabelHolder {
 	}
 
 
-	public static final Comparator<ILabelProvider> BY_LABEL = new Comparator<ILabelProvider>() {
-		@Override
-		public int compare(ILabelProvider dd1, ILabelProvider dd2) {
-			return String.CASE_INSENSITIVE_ORDER.compare(dd1.getLabel(),dd2.getLabel());
-		}
-	};
+
 }

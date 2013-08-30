@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package gleem.linalg.open;
 
@@ -25,7 +25,7 @@ public class Mat4f_GeneralRotf {
 	protected Mat4f matrix;
 
 	/**
-	 * 
+	 *
 	 */
 	public Mat4f_GeneralRotf() {
 
@@ -41,7 +41,7 @@ public class Mat4f_GeneralRotf {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public Mat4f_GeneralRotf(final Vec3f centerOfRotation, final Rotf rotation) {
 
@@ -119,7 +119,7 @@ public class Mat4f_GeneralRotf {
 
 	/**
 	 * Get a deep copy of the internal matrix.
-	 * 
+	 *
 	 * @return the matrix
 	 */
 	public final Mat4f getMatrix() {
@@ -155,7 +155,7 @@ public class Mat4f_GeneralRotf {
 		int iLength = 5;
 
 		for (int i = 0; i < iLength; i++) {
-			inPoint.setX((float) i + xStart);
+			inPoint.setX(i + xStart);
 			Vec3f outPoint = this.xformPt(inPoint);
 
 			System.out.println("IN: " + inPoint.toString() + "\nOUT: "
@@ -176,7 +176,7 @@ public class Mat4f_GeneralRotf {
 
 	/**
 	 * transforms the input point
-	 * 
+	 *
 	 * @see gleem.linalg.Mat4f#xformPt(Vec3f, Vec3f)
 	 * @see gleem.linalg.open.Mat4f_GeneralRotf#xformPt(Vec3f, Vec3f)
 	 * @param src

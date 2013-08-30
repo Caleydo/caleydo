@@ -7,6 +7,7 @@ package org.caleydo.core.view.contextmenu;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public abstract class AContextMenuItem {
 	/**
 	 * an optional input stream to a image, which should be shown
 	 */
-	private InputStream imageInputStream;
+	private URL imageURL;
 
 	public void setLabel(String label) {
 		this.label = label;
@@ -129,17 +130,17 @@ public abstract class AContextMenuItem {
 	}
 
 	/**
-	 * @param imageInputStream
-	 *            setter, see {@link imageInputStream}
+	 * @param imageURL
+	 *            setter, see {@link imageURL}
 	 */
-	public void setImageInputStream(InputStream imageInputStream) {
-		this.imageInputStream = imageInputStream;
+	public void setImageURL(URL imageURL) {
+		this.imageURL = imageURL;
 	}
 
 	public Image getImage(Device device) {
-		if (imageInputStream == null)
+		if (imageURL == null)
 			return null;
-		try (InputStream in = imageInputStream) {
+		try (InputStream in = imageURL.openStream()) {
 			return new Image(device, in);
 		} catch (IOException e) {
 			e.printStackTrace();

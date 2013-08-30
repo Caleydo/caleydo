@@ -34,6 +34,11 @@ import com.google.gson.GsonBuilder;
  *
  */
 public class Settings {
+
+	public static enum ClusterOptions {
+		NONE, AFFINITY, KMEANS, TREE;
+	}
+
 	private static String CALEYDO_JNLP_GENERATOR_URL = "http://data.icg.tugraz.at/caleydo/download/webstart_"
 			+ GeneralManager.VERSION + "/{0}_{1}.jnlp"; // jnlpgenerator.php?date={0}&tumor={1}";
 
@@ -71,6 +76,7 @@ public class Settings {
 
 	@Argument(required = true, usage = "the dates on the analysis runs as argument list separated by spaces")
 	private List<String> analysisRuns = null;
+
 	@Option(name = "-d", required = false, usage = "the dates of the data runs to use default the same as the analysis runs")
 	private List<String> dataRuns = null;
 
@@ -87,6 +93,9 @@ public class Settings {
 
 	@Option(name = "-b", aliases = { "--batch" }, usage = "batch size of parallel top tasks default \"4\"")
 	private int batchSize = 4;
+
+	@Option(name = "-cg", required = false, aliases = { "--cluster" }, usage = "cluster genes with options {tree|kmeans|none|affinity}, default \"tree\"")
+	private ClusterOptions cluster = ClusterOptions.TREE;
 
 	// create path of archive search directory
 	// 0 .. analysisRun
@@ -116,9 +125,6 @@ public class Settings {
 
 	private Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().setDateFormat("yyyy_MM_dd")
 			.create();
-
-
-
 
 	public boolean validate() {
 		if (dataRuns == null)
@@ -216,10 +222,10 @@ public class Settings {
 		if (this.tumorTypes == null || this.tumorTypes.isEmpty())
 			return TumorType.values();
 		List<TumorType> types = new ArrayList<>();
-		for(String t : tumorTypes) {
+		for (String t : tumorTypes) {
 			TumorType type = TumorType.byName(t);
 			if (type == null) {
-				System.err.println("unknown tumor type: "+t);
+				System.err.println("unknown tumor type: " + t);
 			} else
 				types.add(type);
 		}
@@ -238,8 +244,7 @@ public class Settings {
 		return r;
 	}
 
-	public FirehoseProvider createFirehoseProvider(TumorType tumor, Date analysisRunIdentifier,
-			Date dataRunIdentifier) {
+	public FirehoseProvider createFirehoseProvider(TumorType tumor, Date analysisRunIdentifier, Date dataRunIdentifier) {
 		return new FirehoseProvider(tumor, analysisRunIdentifier, dataRunIdentifier, this);
 	}
 
@@ -263,6 +268,13 @@ public class Settings {
 		return batchSize;
 	}
 
+	/**
+	 * @return the cluster, see {@link #cluster}
+	 */
+	public ClusterOptions getCluster() {
+		return cluster;
+	}
+
 	public URL getDataURL(Date run, TumorType tumor, String tumorSample, String pipelineName, int level)
 			throws MalformedURLException {
 		String file = MessageFormat.format(dataFilePattern, run, tumor, tumorSample, pipelineName, level);
@@ -280,7 +292,6 @@ public class Settings {
 	public String getReportUrl(Date run, TumorType tumor) {
 		return MessageFormat.format(reportPattern, run, tumor);
 	}
-
 
 	/**
 	 * @return the gson, see {@link #gson}

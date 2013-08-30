@@ -5,9 +5,10 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.basic;
 
-import org.caleydo.core.util.color.Color;
 import java.util.Locale;
 
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
@@ -52,6 +53,11 @@ public class GLSlider extends PickableGLElement {
 	 */
 	private float value = 0.5f;
 
+	/**
+	 * if the user uses the mouse wheel to manipulate the value, how many DIPs are one mouse wheel rotation
+	 */
+	private float wheelInc = 1f;
+
 	private boolean hovered = false;
 	private boolean dragged = false;
 
@@ -79,7 +85,16 @@ public class GLSlider extends PickableGLElement {
 	public GLSlider(float min, float max, float value) {
 		this.min = min;
 		this.max = max;
-		this.value = value;
+		this.value = clamp(value);
+	}
+
+	/**
+	 * @param wheelInc
+	 *            setter, see {@link wheelInc}
+	 */
+	public GLSlider setWheelInc(float wheelInc) {
+		this.wheelInc = wheelInc;
+		return this;
 	}
 
 	/**
@@ -157,7 +172,7 @@ public class GLSlider extends PickableGLElement {
 	 *            setter, see {@link value}
 	 */
 	public GLSlider setValue(float value) {
-		value = Math.max(min, Math.min(max, value));
+		value = clamp(value);
 		if (this.value == value)
 			return this;
 		this.value = value;
@@ -171,7 +186,7 @@ public class GLSlider extends PickableGLElement {
 			return this;
 		this.min = min;
 		this.max = max;
-		this.value = Math.max(min, Math.min(max, value));
+		this.value = clamp(value);
 		repaintAll();
 		return this;
 	}
@@ -220,7 +235,7 @@ public class GLSlider extends PickableGLElement {
 		boolean showMinMaxText = minMaxVisibility.show(dragged, hovered);
 
 		if (isHorizontal) {
-			float x = mapValue(w);
+			float x = mapValue(w) + 1;
 			g.fillRect(x, 0, Math.min(BAR_WIDTH, w - x), h);
 			if (showMinMaxText) {
 				g.textColor(Color.DARK_GRAY);
@@ -231,7 +246,7 @@ public class GLSlider extends PickableGLElement {
 			if (showText)
 				g.drawText(format(value), 2, 2, w - 4, h - 8, VAlign.CENTER);
 		} else {
-			float y = mapValue(h);
+			float y = mapValue(h) + 1;
 			g.fillRect(0, y, w, Math.min(BAR_WIDTH, h - y));
 			if (showText || showMinMaxText)
 				g.save().gl.glRotatef(90, 0, 0, 1);
@@ -254,18 +269,22 @@ public class GLSlider extends PickableGLElement {
 	}
 
 	private float mapValue(float total) {
-		total -= BAR_WIDTH;
+		total -= BAR_WIDTH + 2;
 		float range = max - min;
 		float factor = total / range;
-		return value * factor;
+		return (value - min) * factor;
 	}
 
 	private float unmapValue(float v) {
 		float total = isHorizontal ? getSize().x() : getSize().y();
-		total -= BAR_WIDTH;
+		total -= BAR_WIDTH + 2;
 		float range = max - min;
 		float factor = total / range;
-		return Math.max(min, Math.min(max, v / factor));
+		return clamp(v / factor + min);
+	}
+
+	private float clamp(float v) {
+		return Math.max(min, Math.min(max, v));
 	}
 
 	@Override
@@ -294,6 +313,12 @@ public class GLSlider extends PickableGLElement {
 		dragged = false;
 		hovered = false;
 		repaint();
+	}
+
+	@Override
+	protected void onMouseWheel(Pick pick) {
+		setValue(unmapValue(mapValue(getSize().x()) + ((IMouseEvent) (pick)).getWheelRotation() * wheelInc));
+		repaintAll();
 	}
 
 	@Override
@@ -345,7 +370,7 @@ public class GLSlider extends PickableGLElement {
 	public static void main(String[] args) {
 		GLElementContainer c = new GLElementContainer(GLLayouts.flowHorizontal(2));
 		c.add(new GLElement());
-		c.add(new GLSlider(0, 1, 0.2f).setHorizontal(true).setMinMaxVisibility(EValueVisibility.VISIBLE_DRAGGED)
+		c.add(new GLSlider(1, 20, 0.2f).setHorizontal(true).setMinMaxVisibility(EValueVisibility.VISIBLE_DRAGGED)
 				.setSize(-1, 32));
 		c.add(new GLElement());
 		GLSandBox.main(args, c);

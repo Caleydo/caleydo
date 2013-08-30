@@ -11,31 +11,26 @@ package org.caleydo.core.util.function;
  *
  */
 public class FloatReductions {
-	public static final IFloatReduction SUM = new IFloatReduction() {
-		@Override
-		public float reduce(float a, float b) {
-			return a + b;
-		}
-	};
+	public enum EReduceOperations implements IFloatReduction {
+		PRODUCT, SUM, MIN, MAX, SUB, DIVIDE;
 
-	public static final IFloatReduction MAX = new IFloatReduction() {
 		@Override
 		public float reduce(float a, float b) {
-			return Math.max(a, b);
+			switch (this) {
+			case PRODUCT:
+				return a * b;
+			case SUM:
+				return a + b;
+			case MIN:
+				return Math.min(a, b);
+			case MAX:
+				return Math.max(a, b);
+			case SUB:
+				return a - b;
+			case DIVIDE:
+				return a / b;
+			}
+			throw new IllegalStateException();
 		}
-	};
-
-	public static final IFloatReduction MIN = new IFloatReduction() {
-		@Override
-		public float reduce(float a, float b) {
-			return Math.min(a, b);
-		}
-	};
-
-	public static final IFloatReduction PRODUCT = new IFloatReduction() {
-		@Override
-		public float reduce(float a, float b) {
-			return a * b;
-		}
-	};
+	}
 }

@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.caleydo.core.data.collection.EDataType;
@@ -28,8 +29,12 @@ import org.caleydo.core.io.FileUtil;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.ParsingRule;
+import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterConfiguration;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
+import org.caleydo.core.util.clusterer.algorithm.tree.ETreeClustererAlgo;
+import org.caleydo.core.util.clusterer.algorithm.tree.TreeClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.collection.Pair;
@@ -45,31 +50,30 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 	private final String dataSetName;
 	private final EDataSetType dataSetType;
-	private boolean loadSampledGenes;
+	private boolean loadFullGenes;
 
 	private final FirehoseProvider fileFinder;
 
 	private final Settings settings;
 
-	private TCGADataSetBuilder(EDataSetType datasetType, String dataSetName,
-			FirehoseProvider fileProvider, boolean loadSampledGenes, Settings settings) {
+	private TCGADataSetBuilder(EDataSetType datasetType, String dataSetName, FirehoseProvider fileProvider,
+			boolean loadSampledGenes, Settings settings) {
 		this.dataSetType = datasetType;
 		this.dataSetName = dataSetName;
-		this.loadSampledGenes = loadSampledGenes;
+		this.loadFullGenes = !loadSampledGenes;
 		this.fileFinder = fileProvider;
 		this.settings = settings;
 
 	}
 
-	public static ForkJoinTask<TCGADataSet> create(EDataSetType datasetType,
-			FirehoseProvider fileProvider, boolean loadSampledGenes, Settings settings) {
+	public static ForkJoinTask<TCGADataSet> create(EDataSetType datasetType, FirehoseProvider fileProvider,
+			boolean loadSampledGenes, Settings settings) {
 		return create(datasetType, datasetType.getName(), fileProvider, loadSampledGenes, settings);
 	}
 
-	public static ForkJoinTask<TCGADataSet> create(EDataSetType datasetType,
-			String dataSetName, FirehoseProvider fileProvider, boolean loadSampledGenes, Settings settings) {
-		return new TCGADataSetBuilder(datasetType, dataSetName, fileProvider, loadSampledGenes,
-				settings);
+	public static ForkJoinTask<TCGADataSet> create(EDataSetType datasetType, String dataSetName,
+			FirehoseProvider fileProvider, boolean loadSampledGenes, Settings settings) {
+		return new TCGADataSetBuilder(datasetType, dataSetName, fileProvider, loadSampledGenes, settings);
 	}
 
 	@Override
@@ -84,47 +88,49 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 		final IDSpecification geneRowID = TCGADefinitions.createGeneIDSpecificiation();
 
-		final IDSpecification proteinRowID = new IDSpecification("protein", "protein");
+		final IDSpecification proteinRowID = geneRowID; // ticket #1497 new IDSpecification("protein", "protein");
 		final IDSpecification microRNARowID = new IDSpecification("microRNA", "microRNA");
 		final IDSpecification clinicalRowID = new IDSpecification("TCGA_SAMPLE", "TCGA_SAMPLE");
 
 		IDTypeParsingRules clinicalSampleIDTypeParsingRules = new IDTypeParsingRules();
-		clinicalSampleIDTypeParsingRules.setSubStringExpression("tcga\\-");
-		clinicalSampleIDTypeParsingRules.setToLowerCase(true);
+		clinicalSampleIDTypeParsingRules.setSubStringExpression("TCGA\\-");
+		clinicalSampleIDTypeParsingRules.setToUpperCase(true);
 		clinicalRowID.setIdTypeParsingRules(clinicalSampleIDTypeParsingRules);
 
 		DataSetDescription desc = null;
 		switch (dataSetType) {
 		case mRNA:
 			desc = setUpClusteredMatrixData(dataSetType, geneRowID, sampleID,
-					fileFinder.findmRNAMatrixFile(loadSampledGenes));
+					fileFinder.findmRNAMatrixFile(loadFullGenes));
 			break;
 		case mRNAseq:
-			desc =  setUpClusteredMatrixData(dataSetType, geneRowID, sampleID,
-					fileFinder.findmRNAseqMatrixFile(loadSampledGenes));
+			desc = setUpClusteredMatrixData(dataSetType, geneRowID, sampleID,
+					fileFinder.findmRNAseqMatrixFile(loadFullGenes));
 			break;
 		case microRNA:
-			desc =  setUpClusteredMatrixData(dataSetType, microRNARowID, sampleID,
-					fileFinder.findmicroRNAMatrixFile(loadSampledGenes));
+			desc = setUpClusteredMatrixData(dataSetType, microRNARowID, sampleID,
+					fileFinder.findmicroRNAMatrixFile(loadFullGenes));
 			break;
 		case microRNAseq:
-			desc =  setUpClusteredMatrixData(dataSetType, microRNARowID, seqSampleID,
-					fileFinder.findmicroRNAseqMatrixFile(loadSampledGenes));
+			desc = setUpClusteredMatrixData(dataSetType, microRNARowID, seqSampleID,
+					fileFinder.findmicroRNAseqMatrixFile(loadFullGenes));
 			break;
 		case methylation:
-			desc =  setUpClusteredMatrixData(dataSetType, geneRowID, sampleID, fileFinder.findMethylationMatrixFile());
+			desc = setUpClusteredMatrixData(dataSetType, geneRowID, sampleID,
+					fileFinder.findMethylationMatrixFile(loadFullGenes));
 			break;
 		case RPPA:
-			desc =  setUpClusteredMatrixData(dataSetType, proteinRowID, sampleID, fileFinder.findRPPAMatrixFile());
+			desc = setUpClusteredMatrixData(dataSetType, proteinRowID, sampleID,
+					fileFinder.findRPPAMatrixFile(loadFullGenes));
 			break;
 		case clinical:
-			desc =  setUpClinicalData(clinicalRowID, clinicalColumnID);
+			desc = setUpClinicalData(clinicalRowID, clinicalColumnID);
 			break;
 		case mutation:
-			desc =  setUpMutationData(geneRowID, sampleID);
+			desc = setUpMutationData(geneRowID, sampleID);
 			break;
 		case copyNumber:
-			desc =  setUpCopyNumberData(geneRowID, sampleID);
+			desc = setUpCopyNumberData(geneRowID, sampleID);
 			break;
 		}
 		if (desc == null)
@@ -133,15 +139,18 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 	}
 
 	private DataSetDescription setUpClusteredMatrixData(EDataSetType type, IDSpecification rowIDSpecification,
-			IDSpecification columnIDSpecification, File matrixFile) {
-		if (matrixFile == null)
+			IDSpecification columnIDSpecification, Pair<File, Boolean> pair) {
+		if (pair == null || pair.getFirst() == null)
 			return null;
+		final File matrixFile = pair.getFirst();
+		final boolean loadFullGenes = pair.getSecond();
 
 		DataSetDescription dataSet = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		dataSet.setDataSetName(dataSetName);
 		dataSet.setColor(dataSetType.getColor());
 		dataSet.setDataSourcePath(matrixFile.getPath());
-		if (loadSampledGenes) {
+
+		if (!loadFullGenes) {
 			// the gct files have 3 header lines and are centered<
 			dataSet.setNumberOfHeaderLines(3);
 			dataSet.getDataDescription().getNumericalProperties().setDataCenter(0d);
@@ -149,7 +158,6 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			// the files with all the genes have the ids in the first row, then a row with "signal" and then the data
 			dataSet.setNumberOfHeaderLines(2);
 			dataSet.setRowOfColumnIDs(0);
-
 		}
 
 		ParsingRule parsingRule = new ParsingRule();
@@ -165,48 +173,70 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 		File cnmfGroupingFile = fileFinder.findCNMFGroupingFile(type);
 		if (cnmfGroupingFile != null) {
-			GroupingParseSpecification grouping = new GroupingParseSpecification(
-					cnmfGroupingFile.getPath());
+			GroupingParseSpecification grouping = new GroupingParseSpecification(cnmfGroupingFile.getPath());
 			grouping.setContainsColumnIDs(false);
 			grouping.setRowIDSpecification(columnIDSpecification);
 			grouping.setGroupingName("CNMF Clustering");
 			dataSet.addColumnGroupingSpecification(grouping);
 		} else {
-			System.out.println("Warning can't find cnmf grouping file");
+			System.out.println("Warning: Can't find CNMF grouping file");
 		}
 
 		File hierarchicalGroupingFile = fileFinder.findHiearchicalGrouping(type);
 		if (hierarchicalGroupingFile != null) {
-			GroupingParseSpecification grouping = new GroupingParseSpecification(
-					hierarchicalGroupingFile.getPath());
+			GroupingParseSpecification grouping = new GroupingParseSpecification(hierarchicalGroupingFile.getPath());
 			grouping.setContainsColumnIDs(false);
 			grouping.setRowIDSpecification(columnIDSpecification);
 			grouping.setGroupingName("Hierarchical Clustering");
 			dataSet.addColumnGroupingSpecification(grouping);
 		} else {
-			System.out.println("Warning can't find hierarchical grouping file");
+			System.out.println("Warning: Can't find hierarchical grouping file");
 		}
-
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
-		{
-			ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
-			clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-			KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
-			kMeansAlgo.setNumberOfClusters(5);
-			clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
-			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
-		}
 		dataSet.setDataProcessingDescription(dataProcessingDescription);
 
-		if (loadSampledGenes) {
+		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
+		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		switch (settings.getCluster()) {
+		case NONE:
+			break;
+		case AFFINITY:
+			AffinityClusterConfiguration affinityAlgo = new AffinityClusterConfiguration();
+			affinityAlgo.setClusterFactor(9);
+			affinityAlgo.setCacheVectors(true);
+			clusterConfiguration.setClusterAlgorithmConfiguration(affinityAlgo);
+			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+			break;
+		case KMEANS:
+			KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
+			kMeansAlgo.setNumberOfClusters(5);
+			kMeansAlgo.setCacheVectors(true);
+			clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
+			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+			break;
+		case TREE:
+			TreeClusterConfiguration treeAlgo = new TreeClusterConfiguration();
+			treeAlgo.setTreeClustererAlgo(ETreeClustererAlgo.AVERAGE_LINKAGE);
+			clusterConfiguration.setClusterAlgorithmConfiguration(treeAlgo);
+			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+			break;
+		default:
+			log.log(Level.ALL, "Did not recognize option " + settings.getCluster());
+			break;
+		}
+
+		if (loadFullGenes) {
+			NumericalProperties numProp = dataSet.getDataDescription().getNumericalProperties();
+			// run z-score normalization on the rows
+			numProp.setzScoreNormalization(NumericalProperties.ZSCORE_ROWS);
+			// clip to 4 std-devs
+			numProp.setClipToStdDevFactor(4f);
 			// here we turn on sampling to 1500
 			dataProcessingDescription.setNrRowsInSample(1500);
 		}
 
 		return dataSet;
 	}
-
-
 
 	private DataSetDescription setUpMutationData(IDSpecification geneIDSpecification,
 			IDSpecification sampleIDSpecification) {
@@ -243,7 +273,6 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		cats.addCategoryProperty(1, "Mutated", Color.RED);
 		return dataSet;
 
-
 		// IDSpecification mutationSampleIDSpecification = new
 		// IDSpecification();
 		// mutationSampleIDSpecification.setIdCategory("TCGA_SAMPLE");
@@ -260,7 +289,6 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		// mutationSampleIDSpecification
 		// .setIdTypeParsingRules(mutationSampleIDTypeParsingRules);
 	}
-
 
 	private DataSetDescription setUpCopyNumberData(IDSpecification rwoIDSpecification,
 			IDSpecification sampleIDSpecification) {
@@ -289,12 +317,12 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 				.getCategoricalClassDescription();
 		cats.setCategoryType(ECategoryType.ORDINAL);
 		cats.setRawDataType(EDataType.INTEGER);
-		cats.addCategoryProperty(-2, "Homozygous deletion", Color.BLUE);
-		cats.addCategoryProperty(-1, "Heterozygous deletion", Color.BLUE.getColorWithSpecificBrighness(0.5f));
+		// Use ColorBrewer color map and replace salmon with light red
+		cats.addCategoryProperty(-2, "Homozygous deletion", ColorBrewer.RdBu.get(4).get(3));
+		cats.addCategoryProperty(-1, "Heterozygous deletion", ColorBrewer.RdBu.get(4).get(2));
 		cats.addCategoryProperty(0, "NORMAL", Color.NEUTRAL_GREY);
-		cats.addCategoryProperty(1, "Low level amplification", Color.RED.getColorWithSpecificBrighness(0.5f));
-		cats.addCategoryProperty(2, "High level amplification", Color.RED);
-		cats.applyColorScheme(ColorBrewer.RdBu, 0, true);
+		cats.addCategoryProperty(1, "Low level amplification", Color.LIGHT_RED);
+		cats.addCategoryProperty(2, "High level amplification", ColorBrewer.RdBu.get(4).get(0));
 
 		// File cnmfGroupingFile = fileProvider.extractAnalysisRunFile("cnmf.membership.txt",
 		// "CopyNumber_Clustering_CNMF", LEVEL);

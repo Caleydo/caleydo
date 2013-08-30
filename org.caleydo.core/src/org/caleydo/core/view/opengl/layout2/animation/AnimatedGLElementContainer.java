@@ -28,9 +28,12 @@ import org.caleydo.core.view.opengl.layout2.animation.AAnimation.EAnimationType;
 import org.caleydo.core.view.opengl.layout2.animation.InOutTransitions.IInTransition;
 import org.caleydo.core.view.opengl.layout2.animation.InOutTransitions.IOutTransition;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions.IMoveTransition;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.AGLLayoutElement;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayout2Adapter;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayout2;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 import com.google.common.collect.Iterables;
@@ -42,10 +45,12 @@ import com.google.common.collect.Iterators;
  *
  */
 public class AnimatedGLElementContainer extends GLElement implements IGLElementParent, Iterable<GLElement> {
-	public static final int DEFAULT_DURATION = 300;
+	private static final int DEFAULT_DURATION_INT = 300;
 	public static final int NO = 0;
+	protected static final Duration DEFAULT_DURATION = new Duration(DEFAULT_DURATION_INT);
+	protected static final Duration NO_DURATION = new Duration(NO);
 
-	private IGLLayout layout = GLLayouts.NONE;
+	private IGLLayout2 layout = GLLayouts.NONE;
 	// the static children
 	private final List<GLElement> children = new ArrayList<>(3);
 
@@ -55,7 +60,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	private boolean dirtyAnimation = true;
 	private boolean forceLayout = true;
 
-	private int defaultDuration = DEFAULT_DURATION;
+	private Duration defaultDuration = DEFAULT_DURATION;
 	private IMoveTransition defaultMoveTransition = MoveTransitions.MOVE_AND_GROW_LINEAR;
 	private IInTransition defaultInTransition = InOutTransitions.SLIDE_HOR_IN;
 	private IOutTransition defaultOutTransition = InOutTransitions.SLIDE_HOR_OUT;
@@ -65,7 +70,19 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	public AnimatedGLElementContainer(IGLLayout layout) {
+		this(new GLLayout2Adapter(layout));
+	}
+
+	public AnimatedGLElementContainer(IGLLayout2 layout) {
 		this.layout = layout;
+	}
+
+	private static Duration asDuration(int duration) {
+		if (duration == DEFAULT_DURATION_INT)
+			return DEFAULT_DURATION;
+		if (duration == NO)
+			return NO_DURATION;
+		return new Duration(duration);
 	}
 
 	/**
@@ -86,7 +103,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	 *            setter, see {@link animateByDefault}
 	 */
 	public AnimatedGLElementContainer setAnimateByDefault(boolean animateByDefault) {
-		this.defaultDuration = animateByDefault ? 300 : 0;
+		this.defaultDuration = animateByDefault ? DEFAULT_DURATION : NO_DURATION;
 		return this;
 	}
 
@@ -122,7 +139,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	 *            setter, see {@link defaultDuration}
 	 */
 	public AnimatedGLElementContainer setDefaultDuration(int defaultDuration) {
-		this.defaultDuration = defaultDuration;
+		this.defaultDuration = asDuration(defaultDuration);
 		return this;
 	}
 
@@ -136,8 +153,8 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	 * @param layout
 	 *            setter, see {@link layout}
 	 */
-	public final AnimatedGLElementContainer setLayout(IGLLayout layout) {
-		if (layout == this.layout)
+	public final AnimatedGLElementContainer setLayout(IGLLayout2 layout) {
+		if (this.layout == layout)
 			return this;
 		this.layout = layout;
 		relayout();
@@ -145,10 +162,13 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	/**
-	 * @return the layout, see {@link #layout}
+	 * @param layout
+	 *            setter, see {@link layout}
 	 */
-	public IGLLayout getLayout() {
-		return layout;
+	public final AnimatedGLElementContainer setLayout(IGLLayout layout) {
+		if (this.layout instanceof GLLayout2Adapter && ((GLLayout2Adapter) this.layout).getLayout() == layout)
+			return this;
+		return setLayout(new GLLayout2Adapter(layout));
 	}
 
 	/**
@@ -173,23 +193,24 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	@Override
-	protected final void layoutImpl() {
-		super.layoutImpl();
+	protected final void layoutImpl(int deltaTimeMs) {
+		super.layoutImpl(deltaTimeMs);
 		Vec2f size = getSize();
+		boolean relayout = false;
 		if (!enableAnimation) {
 			List<IGLLayoutElement> l = new ArrayList<>(children.size());
 			for (GLElement elem : children) {
 				if (elem.getVisibility() != EVisibility.NONE)
 					l.add(asLayoutElement(elem));
 			}
-			layout.doLayout(l, size.x(), size.y());
+			relayout = layout.doLayout(l, size.x(), size.y(), asLayoutElement(this), deltaTimeMs);
 		} else if (dirtyAnimation || forceLayout) {
 			List<RecordingLayoutElement> l = new ArrayList<>(children.size());
 			for (GLElement elem : children) {
 				if (elem.getVisibility() != EVisibility.NONE)
 					l.add(new RecordingLayoutElement(asLayoutElement(elem)));
 			}
-			layout.doLayout(l, size.x(), size.y());
+			relayout = layout.doLayout(l, size.x(), size.y(), asLayoutElement(this), deltaTimeMs);
 
 			for (RecordingLayoutElement elem : l) {
 				ALayoutAnimation anim = layoutAnimations.get(elem.wrappee);
@@ -198,11 +219,13 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 					continue;
 				}
 				if (elem.hasChanged()) { // create a move animation
-					anim = createMoveAnimation(elem.wrappee, elem.before, elem.after, defaultDuration);
+					anim = createMoveAnimation(elem.wrappee, elem.before, elem.after);
 					layoutAnimations.put(elem.wrappee, anim);
 				}
 			}
 		}
+		if (relayout)
+			relayout();
 	}
 
 	@Override
@@ -235,30 +258,31 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		anim.init(before, after);
 	}
 
-	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem, Vec4f before, Vec4f after, int duration) {
-		if (defaultDuration == 0) {
+	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem, Vec4f before, Vec4f after) {
+		final Duration duration = elem.getLayoutDataAs(Duration.class, defaultDuration);
+		if (duration.getDuration() == 0) {
 			DummyAnimation d = new DummyAnimation(EAnimationType.MOVE);
 			d.init(before, after);
 			return d;
 		}
 		final IMoveTransition animation = elem.getLayoutDataAs(IMoveTransition.class, defaultMoveTransition);
-		MoveAnimation anim = new MoveAnimation(duration, animation);
+		MoveAnimation anim = new MoveAnimation(duration.getDuration(), animation);
 		anim.init(before, after);
 		return anim;
 	}
 
-	protected ALayoutAnimation createInAnimation(IGLLayoutElement elem, int duration,
+	protected ALayoutAnimation createInAnimation(IGLLayoutElement elem, Duration duration,
 			IInTransition animation) {
-		if (defaultDuration == 0)
+		if (duration.getDuration() == 0)
 			return new DummyAnimation(EAnimationType.IN);
-		return new InAnimation(duration, animation);
+		return new InAnimation(duration.getDuration(), animation);
 	}
 
-	protected ALayoutAnimation createOutAnimation(IGLLayoutElement elem, int duration,
+	protected ALayoutAnimation createOutAnimation(IGLLayoutElement elem, Duration duration,
 			IOutTransition animation) {
-		if (defaultDuration == 0)
+		if (duration.getDuration() == 0)
 			return new DummyAnimation(EAnimationType.OUT);
-		return new OutAnimation(duration, animation);
+		return new OutAnimation(duration.getDuration(), animation);
 	}
 
 	@Override
@@ -272,8 +296,10 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		for (GLElement child : this)
+		for (GLElement child : this) {
+			GLElementAccessor.setParent(child, this);
 			GLElementAccessor.init(child, context);
+		}
 	}
 
 	private void setup(GLElement child) {
@@ -283,7 +309,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 			// internal move
 			children.remove(child);
 		} else if (ex != null) {
-			doInit = ex.moved(child);
+			doInit = !ex.moved(child);
 		}
 		GLElementAccessor.setParent(child, this);
 		if (doInit && context != null)
@@ -292,6 +318,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 
 	private void takeDown(GLElement child, boolean checkLayoutAnimations) {
 		GLElementAccessor.takeDown(child);
+		GLElementAccessor.setParent(child, null);
 		if (checkLayoutAnimations) {
 			layoutAnimations.remove(asLayoutElement(child));
 		}
@@ -302,18 +329,20 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	public final void add(GLElement child) {
-		add(child, defaultDuration);
+		add(children.size(), child);
 	}
 
 	public final void add(int index, GLElement child) {
-		add(index, child, defaultDuration, child.getLayoutDataAs(IInTransition.class, defaultInTransition));
+		add(index, child, child.getLayoutDataAs(Duration.class, defaultDuration),
+				child.getLayoutDataAs(IInTransition.class, defaultInTransition));
 	}
 
 	public final void add(GLElement child, int duration) {
-		add(children.size(), child, duration, child.getLayoutDataAs(IInTransition.class, defaultInTransition));
+		add(children.size(), child, asDuration(duration),
+				child.getLayoutDataAs(IInTransition.class, defaultInTransition));
 	}
 
-	public final void add(int index, GLElement child, int duration, IInTransition animation) {
+	public final void add(int index, GLElement child, Duration duration, IInTransition animation) {
 		if (child.getParent() == this) {
 			int from = indexOf(child);
 			if (from < index) // as we remove before we insert
@@ -345,7 +374,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	public final void remove(GLElement child) {
-		remove(child, defaultDuration);
+		remove(child, child.getLayoutDataAs(Duration.class, defaultDuration));
 	}
 
 	public final void remove(int index) {
@@ -353,13 +382,17 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	public final void remove(GLElement child, int duration) {
+		remove(child, asDuration(duration));
+	}
+
+	public final void remove(GLElement child, Duration duration) {
 		remove(child, duration, child.getLayoutDataAs(IOutTransition.class, defaultOutTransition));
 	}
 
-	public final void remove(GLElement child, int duration, IOutTransition animation) {
+	public final void remove(GLElement child, Duration duration, IOutTransition animation) {
 		assert child.getParent() == this;
 		children.remove(child);
-		if (duration <= 0)
+		if (duration.getDuration() <= 0)
 			takeDown(child, true);
 		else {
 			IGLLayoutElement l = asLayoutElement(child);
@@ -374,8 +407,11 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	public final void clear() {
 		clear(defaultDuration);
 	}
-
 	public final void clear(int duration) {
+		clear(asDuration(duration));
+	}
+
+	public final void clear(Duration duration) {
 		List<GLElement> seenIn = new ArrayList<>(children);
 		for (GLElement s : seenIn)
 			remove(s, duration);
@@ -397,14 +433,15 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	/**
 	 * calls this method to set the size of a child in a managed way, as if you set the size of an element the recording
 	 * can't restore the old value
-	 * 
+	 *
 	 * @param child
 	 * @param w
 	 * @param h
 	 */
 	public final void resizeChild(GLElement child, float w, float h) {
 		final IMoveTransition animation = child.getLayoutDataAs(IMoveTransition.class, defaultMoveTransition);
-		ManualMoveAnimation anim = new ManualMoveAnimation(defaultDuration, animation, child.getBounds());
+		final Duration duration = child.getLayoutDataAs(Duration.class, defaultDuration);
+		ManualMoveAnimation anim = new ManualMoveAnimation(duration.getDuration(), animation, child.getBounds());
 		child.setSize(w, h);
 		layoutAnimations.put(GLElementAccessor.asLayoutElement(child), anim);
 	}
@@ -439,6 +476,14 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		layoutAnimations.clear();
 	}
 
+	/**
+	 * repaints the children and ensures that the there is no repaint loop
+	 */
+	public final void repaintChildren() {
+		for (GLElement child : children)
+			GLElementAccessor.repaintDown(child);
+	}
+
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
@@ -447,6 +492,14 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		}
 		if (!layoutAnimations.isEmpty())
 			repaintAll();
+	}
+
+	/**
+	 * repaints the children and ensures that the there is no repaint loop
+	 */
+	public final void repaintPickChildren() {
+		for (GLElement child : children)
+			GLElementAccessor.repaintPickDown(child);
 	}
 
 	@Override
@@ -511,6 +564,11 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		@Override
 		public Vec4f getBounds() {
 			return this.after.copy();
+		}
+
+		@Override
+		public Rect getRectBounds() {
+			return new Rect(this.after);
 		}
 
 		@Override

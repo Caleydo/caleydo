@@ -20,8 +20,9 @@ import org.caleydo.core.io.gui.dataimport.widget.table.INoArgumentCallback;
 import org.caleydo.core.io.gui.dataimport.widget.table.PreviewTableWidget;
 import org.caleydo.core.util.base.BooleanCallback;
 import org.caleydo.core.util.base.ICallback;
+import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Widget;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * @author Samuel Gratzl
@@ -107,8 +108,23 @@ public class PreviewTable {
 		// });
 	}
 
+	/**
+	 * @return the dataMatrix, see {@link #dataMatrix}
+	 */
+	public List<List<String>> getDataMatrix() {
+		return dataMatrix;
+	}
+
 	public Composite getTable() {
 		return this.previewTable.getTable();
+	}
+
+	public void addCustomHeaderRow(IDataProvider dataProvider, boolean isEditable) {
+		previewTable.addCustomHeaderRows(dataProvider, isEditable);
+	}
+
+	public void clearCustomHeaderRows() {
+		previewTable.clearCustomHeaderRows();
 	}
 
 	private void loadTransposedFile() {
@@ -127,14 +143,16 @@ public class PreviewTable {
 	 *
 	 */
 	public void createDataPreviewTableFromFile() {
-		parser.parse(isTransposed ? transposedDataFile.getAbsolutePath() : spec.getDataSourcePath(),
-				spec.getDelimiter(), true, PreviewTableWidget.MAX_PREVIEW_TABLE_ROWS);
+		parser.parseWithProgress(Display.getCurrent().getActiveShell(),
+				isTransposed ? transposedDataFile.getAbsolutePath() : spec.getDataSourcePath(), spec.getDelimiter(),
+				true, PreviewTableWidget.MAX_PREVIEW_TABLE_ROWS);
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
 		this.previewTable.createTableFromMatrix(dataMatrix, totalNumberOfColumns);
 		previewCallback.on(totalNumberOfColumns, parser.getTotalNumberOfRows(), dataMatrix);
 		// previewTable.updateVisibleColumns(totalNumberOfColumns);
-		this.previewTable.updateTableColors(spec.getNumberOfHeaderLines(), -1, spec.getColumnOfRowIds());
+		this.previewTable.updateTableColors(spec.getNumberOfHeaderLines(),
+				spec.getRowOfColumnIDs() == null ? -1 : spec.getRowOfColumnIDs(), spec.getColumnOfRowIds());
 	}
 
 	public Collection<Integer> getSelectedColumns() {
@@ -199,7 +217,8 @@ public class PreviewTable {
 	public void onNumHeaderRowsChanged(int numHeaderRows) {
 		try {
 			spec.setNumberOfHeaderLines(numHeaderRows);
-			previewTable.updateTableColors(spec.getNumberOfHeaderLines(), -1, spec.getColumnOfRowIds());
+			previewTable.updateTableColors(spec.getNumberOfHeaderLines(),
+					spec.getRowOfColumnIDs() == null ? -1 : spec.getRowOfColumnIDs(), spec.getColumnOfRowIds());
 		} catch (NumberFormatException exc) {
 
 		}
@@ -219,7 +238,14 @@ public class PreviewTable {
 	 */
 	public void onColumnOfRowIDChanged(int column) {
 		spec.setColumnOfRowIds(column - 1);
-		previewTable.updateTableColors(spec.getNumberOfHeaderLines(), -1, spec.getColumnOfRowIds());
+		previewTable.updateTableColors(spec.getNumberOfHeaderLines(),
+				spec.getRowOfColumnIDs() == null ? -1 : spec.getRowOfColumnIDs(), spec.getColumnOfRowIds());
+	}
+
+	public void onRowOfColumnIDChanged(int row) {
+		spec.setRowOfColumnIDs(row > 0 ? row - 1 : null);
+		previewTable.updateTableColors(spec.getNumberOfHeaderLines(),
+				spec.getRowOfColumnIDs() == null ? -1 : spec.getRowOfColumnIDs(), spec.getColumnOfRowIds());
 	}
 
 	public void onDelimiterChanged(String delimiter) {
@@ -244,5 +270,17 @@ public class PreviewTable {
 
 	public interface IPreviewCallback {
 		public void on(int numColumn, int numRow, List<? extends List<String>> dataMatrix);
+	}
+
+	public int getNumRows() {
+		if (dataMatrix == null)
+			return 0;
+		return dataMatrix.size();
+	}
+
+	public int getNumColumns() {
+		if (dataMatrix == null || dataMatrix.isEmpty())
+			return 0;
+		return dataMatrix.get(0).size();
 	}
 }

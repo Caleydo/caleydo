@@ -15,6 +15,12 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy;
 import org.caleydo.view.heatmap.v2.spacing.UniformSpacingCalculator.UniformSpacingImpl;
 
+/**
+ * fish eye {@link ISpacingStrategy}
+ *
+ * @author Samuel Gratzl
+ *
+ */
 public class FishEyeSpacingCalculator implements ISpacingStrategy {
 
 	private final float minSelectionSize;
@@ -29,9 +35,9 @@ public class FishEyeSpacingCalculator implements ISpacingStrategy {
 	@Override
 	public ISpacingLayout apply(Perspective perspective, SelectionManager selectionManager, boolean hideHidden,
 			float size) {
-		VirtualArray va = perspective.getVirtualArray();
+		final VirtualArray va = perspective.getVirtualArray();
 		int nrRecordElements = perspective.getVirtualArray().size();
-		if (hideHidden) {
+		if (hideHidden) { // remove hidden
 			nrRecordElements -= selectionManager.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
 		}
 
@@ -40,8 +46,8 @@ public class FishEyeSpacingCalculator implements ISpacingStrategy {
 		if (fieldSize >= minSelectionSize) { // we have at least the min selection size can use uniform
 			return new UniformSpacingImpl(fieldSize);
 		}
-		BitSet selectedIndices = getSelectedIndices(selectionManager, va);
-		int selected = selectedIndices.cardinality();
+		final BitSet selectedIndices = getSelectedIndices(selectionManager, va);
+		final int selected = selectedIndices.cardinality();
 
 		if (selectedIndices.isEmpty()) //nothing selected
 			return new UniformSpacingImpl(fieldSize);
@@ -50,46 +56,108 @@ public class FishEyeSpacingCalculator implements ISpacingStrategy {
 		float lastSize = 0;
 
 		final int spread = computeSpread(size);
-		if (spread <= 0) {
-			//just the selections with the min size else the rest
-			fieldSize = (size - selected * minSelectionSize) / (nrRecordElements - selected);
-			float acc = 0;
-			for (int i = 0; i < nrRecordElements; ++i) {
-				positions[i] = acc;
-				lastSize = selectedIndices.get(i) ? minSelectionSize : fieldSize;
-				acc += lastSize;
-			}
+		if (selected * minSelectionSize > size) { // too many selected just scale them and show them
+			lastSize = justSelections(nrRecordElements, selectedIndices, positions, size);
+		} else if (spread <= 0) {
+			lastSize = selectionAndLinearRest(size, nrRecordElements, selectedIndices, selected, positions);
 		} else {
-			// multi spread
-			BitSet spreadSelected = new BitSet(selectedIndices.size());
-			for (int i = selectedIndices.nextSetBit(0); i >= 0; i = selectedIndices.nextSetBit(i+1)) {
-				for (int j = Math.max(0, i - spread); j <= Math.min(i + spread, nrRecordElements - 1); ++j)
-					spreadSelected.set(j);
-				spreadSelected.clear(i);
-		    }
-			int spreadSize = spreadSelected.cardinality();
-			// TODO correctly determine
-			fieldSize = (size - selected * minSelectionSize) / (nrRecordElements - selected); // first guess
-			float level1Size = (minSelectionSize + fieldSize) * 0.5f;
-			fieldSize = (size - selected * minSelectionSize - spreadSize * level1Size)
-					/ (nrRecordElements - selected - spreadSize);
-
-			float acc = 0;
-			for (int i = 0; i < nrRecordElements; ++i) {
-				positions[i] = acc;
-				lastSize = selectedIndices.get(i) ? minSelectionSize : spreadSelected.get(i) ? level1Size : fieldSize;
-				acc += lastSize;
-			}
+			lastSize = fishEyed(size, nrRecordElements, selectedIndices, selected, positions, spread);
 		}
 
 		return new DeterminedSpacingImpl(positions, lastSize);
 	}
 
-	protected int computeSpread(float size) {
+	/**
+	 * real fish eye
+	 *
+	 * @return
+	 */
+	private float fishEyed(final float size, final int nrRecordElements, final BitSet selectedIndices,
+			final int selected,
+			float[] positions, final int spread) {
+		// the elements that are spreaded
+		BitSet spreadSelected = toSpreadedBitSet(nrRecordElements, selectedIndices, spread);
+		final int spreadSize = spreadSelected.cardinality();
+
+		// TODO correctly determine
+		float fieldSize = (size - selected * minSelectionSize) / (nrRecordElements - selected); // first guess
+		float level1Size = (minSelectionSize + fieldSize) * 0.5f;
+		fieldSize = (size - selected * minSelectionSize - spreadSize * level1Size)
+				/ (nrRecordElements - selected - spreadSize);
+		if (fieldSize < 0) { // corner case
+			fieldSize = 0;
+			level1Size = (size - selected * minSelectionSize) / (spreadSize);
+		}
+
+		float acc = 0;
+		float lastSize = 0;
+		for (int i = 0; i < nrRecordElements; ++i) {
+			positions[i] = acc;
+			lastSize = selectedIndices.get(i) ? minSelectionSize : spreadSelected.get(i) ? level1Size : fieldSize;
+			acc += lastSize;
+		}
+
+		return lastSize;
+	}
+
+	private static BitSet toSpreadedBitSet(int nrRecordElements, final BitSet selectedIndices, final int spread) {
+		BitSet spreadSelected = new BitSet(selectedIndices.size());
+		for (int i = selectedIndices.nextSetBit(0); i >= 0; i = selectedIndices.nextSetBit(i+1)) {
+			for (int j = Math.max(0, i - spread); j <= Math.min(i + spread, nrRecordElements - 1); ++j)
+				spreadSelected.set(j);
+		}
+		spreadSelected.andNot(selectedIndices); // clear the primary ones
+		return spreadSelected;
+	}
+
+	/**
+	 * render the selection with its minsize and the rest the remaining space linearly
+	 *
+	 * @return
+	 */
+	private float selectionAndLinearRest(float size, int nrRecordElements, final BitSet selectedIndices,
+			final int selected, float[] positions) {
+		//just the selections with the min size else the rest
+		float fieldSize = (size - selected * minSelectionSize) / (nrRecordElements - selected);
+		float acc = 0;
+		float lastSize = 0;
+		for (int i = 0; i < nrRecordElements; ++i) {
+			positions[i] = acc;
+			lastSize = selectedIndices.get(i) ? minSelectionSize : fieldSize;
+			acc += lastSize;
+		}
+		return lastSize;
+	}
+
+	/**
+	 * render just the selections uniformly and the rest ignore
+	 *
+	 * @return
+	 */
+	private static float justSelections(int nrRecordElements, final BitSet selectedIndices, float[] positions,
+			float size) {
+		float acc = 0;
+		float fieldSize = size / selectedIndices.cardinality();
+		float lastSize = 0;
+		for (int i = 0; i < nrRecordElements; ++i) {
+			positions[i] = acc;
+			lastSize = selectedIndices.get(i) ? fieldSize : 0;
+			acc += lastSize;
+		}
+		return lastSize;
+	}
+
+	private int computeSpread(float size) {
 		return (int) (size / (minSelectionSize * 3));
 	}
 
-	protected BitSet getSelectedIndices(SelectionManager selectionManager, VirtualArray va) {
+	/**
+	 * returns a bitset containing the selected indices
+	 * @param selectionManager
+	 * @param va
+	 * @return
+	 */
+	private BitSet getSelectedIndices(SelectionManager selectionManager, VirtualArray va) {
 		BitSet selectedIndices = new BitSet();
 		for (Integer selected : selectionManager.getElements(SelectionType.SELECTION)) {
 			if (selectionManager.checkStatus(GLHeatMap.SELECTION_HIDDEN, selected))
@@ -125,6 +193,17 @@ public class FishEyeSpacingCalculator implements ISpacingStrategy {
 			if (index == positions.length - 1)
 				return lastSize;
 			return positions[index + 1] - positions[index];
+		}
+
+		@Override
+		public int getIndex(float position) {
+			for (int i = 0; i < positions.length; ++i) {
+				if (position < positions[i])
+					return i - 1;
+			}
+			if (position < (positions[positions.length - 1] + lastSize))
+				return positions.length - 1;
+			return -1;
 		}
 	}
 }

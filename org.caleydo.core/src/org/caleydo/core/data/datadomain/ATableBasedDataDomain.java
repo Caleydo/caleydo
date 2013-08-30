@@ -314,8 +314,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/** Returns the data container made up of the default perspectives */
 	public TablePerspective getDefaultTablePerspective() {
-		return getTablePerspective(table.getDefaultRecordPerspective().getPerspectiveID(), table
-				.getDefaultDimensionPerspective().getPerspectiveID());
+		return getTablePerspective(table.getDefaultRecordPerspective(false).getPerspectiveID(), table
+				.getDefaultDimensionPerspective(false).getPerspectiveID());
 	}
 
 	/**
@@ -362,6 +362,18 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 */
 	public IDType getDimensionIDType() {
 		return dimensionIDType;
+	}
+
+	public IDCategory getColumnIDCategory() {
+		if (isColumnDimension())
+			return dimensionIDCategory;
+		return recordIDCategory;
+	}
+
+	public IDCategory getRowIDCategory() {
+		if (isColumnDimension())
+			return recordIDCategory;
+		return dimensionIDCategory;
 	}
 
 	/**
@@ -842,10 +854,11 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		foreignPerspective.setCrossDatasetID(foreignPerspective.getPerspectiveID());
 
 		IDType localIDType = getPrimaryIDType(foreignPerspective.getIdType());
-		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(localIDType);
-
 		if (foreignPerspective.getIdType() == localIDType)
 			return foreignPerspective;
+
+		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(localIDType);
+
 
 		VirtualArray foreignVA = foreignPerspective.getVirtualArray();
 
@@ -865,14 +878,19 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		}
 
 		int count = 0;
+		int unmapped = 0;
 		IIDTypeMapper<Integer, Integer> mapper = idMappingManager.getIDTypeMapper(foreignVA.getIdType(), localIDType);
 		for (Integer foreignVAID : foreignVA) {
 			Set<Integer> localVAIDS = mapper.apply(foreignVAID);
-			if (localVAIDS == null)
+			if (localVAIDS == null) {
+				unmapped++;
 				continue;
+			}
 			for (Integer localVAID : localVAIDS) {
-				if (localVAID == null)
+				if (localVAID == null) {
+					unmapped++;
 					continue;
+				}
 				indices.add(localVAID);
 				int groupIndex = groupList.getGroupOfVAIndex(foreignVA.indexOf(foreignVAID)).getGroupIndex();
 				groupSizes.set(groupIndex, groupSizes.get(groupIndex) + 1);
@@ -882,9 +900,17 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 		}
 
+		if (unmapped > 0) {
+			Logger.log(new Status(IStatus.INFO, this.toString(), "Failed to convert " + unmapped
+					+ " elements when converting " + foreignPerspective + " with size "
+					+ foreignPerspective.getVirtualArray().size() + " for this data domain."));
+
+		}
+
 		data.setData(indices, groupSizes, sampleElements, groupNames);
 
 		Perspective localPerspective = new Perspective(this, localIDType);
+		localPerspective.setUnmappedElements(unmapped);
 		localPerspective.setCrossDatasetID(foreignPerspective.getCrossDatasetID());
 		localPerspective.setIDType(localIDType);
 		localPerspective.init(data);

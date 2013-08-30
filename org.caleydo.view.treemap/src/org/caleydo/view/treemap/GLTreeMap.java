@@ -48,7 +48,6 @@ import org.caleydo.view.treemap.listener.ToggleColoringModeListener;
 import org.caleydo.view.treemap.listener.ToggleLabelEvent;
 import org.caleydo.view.treemap.listener.ToggleLabelListener;
 import org.caleydo.view.treemap.preferences.MyPreferences;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * Control Class for a single treemap. Handles interaction and events. Calls TreemapRenderer to display the treemap.
@@ -103,9 +102,9 @@ public class GLTreeMap extends ATableBasedView {
 	private UpdateColorMappingListener updateViewListener;
 	LevelHighlightingListener levelHighlightingListener;
 
-	public GLTreeMap(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLTreeMap(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 		renderer = new TreeMapRenderer();
 		renderer.setNodeFrame(MyPreferences.isDrawClusterFrame(), Color.WHITE);
 
@@ -146,7 +145,7 @@ public class GLTreeMap extends ATableBasedView {
 
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 		init(gl);
 	}
 

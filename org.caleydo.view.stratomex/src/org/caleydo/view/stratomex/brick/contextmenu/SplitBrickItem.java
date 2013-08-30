@@ -20,9 +20,9 @@ public class SplitBrickItem extends AContextMenuItem {
 	public SplitBrickItem(Integer connectionBandID, Boolean splitLeftBrick) {
 		if (splitLeftBrick)
 
-			setLabel("Split left brick");
+			setLabel("Split Left Brick");
 		else
-			setLabel("Split right brick");
+			setLabel("Split Right Brick");
 
 		SplitBrickEvent event = new SplitBrickEvent(connectionBandID, splitLeftBrick);
 		event.setSender(this);

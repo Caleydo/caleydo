@@ -23,11 +23,6 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedMultiTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedView;
@@ -37,7 +32,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -53,7 +47,7 @@ import org.eclipse.ui.part.ViewPart;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOwner {
+public abstract class CaleydoRCPViewPart extends ViewPart {
 
 	/** serialized representation of the view to initialize the view itself */
 	protected ASerializedView serializedView;
@@ -61,27 +55,16 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	/** {@link JAXBContext} for view (de-)serialization */
 	protected JAXBContext viewContext;
 
-	protected static ArrayList<IAction> alToolbar;
-
-	protected EventPublisher eventPublisher = null;
-
 	protected AView view;
-
-	/**
-	 * Flat determines whether a view changes its content when another data domain is selected.
-	 */
-	protected boolean isSupportView = false;
 
 	protected Composite parentComposite;
 
-	protected IToolBarManager toolBarManager;
-
-	@Override
-	public void init(IViewSite site) throws PartInitException {
-		super.init(site);
-		eventPublisher = GeneralManager.get().getEventPublisher();
-		toolBarManager = getViewSite().getActionBars().getToolBarManager();
-		registerEventListeners();
+	public CaleydoRCPViewPart(Class<? extends ASerializedView> serializedViewClass) {
+		try {
+			viewContext = JAXBContext.newInstance(serializedViewClass);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContext", ex);
+		}
 	}
 
 	@Override
@@ -90,27 +73,26 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 		parentComposite.setLayout(new GridLayout(1, false));
 	}
 
+	protected final void fillToolBar() {
+		IViewSite s = getViewSite();
+		if (s == null)
+			return;
+		addToolBarContent(getViewSite().getActionBars().getToolBarManager());
+	}
+
 	/**
 	 * Empty toolbar in base classe. If views need a toolbar, they need to override this method.
+	 *
+	 * @param toolBarManager
+	 *            TODO
 	 */
-	public void addToolBarContent() {
+	protected void addToolBarContent(IToolBarManager toolBarManager) {
 
 	}
 
 	@Override
 	public void setPartName(String partName) {
 		super.setPartName(partName);
-	}
-
-	/**
-	 * Generates and returns a list of all views, caleydo-view-parts and gl-views, contained in this view.
-	 *
-	 * @return list of all views contained in this view
-	 */
-	public List<IView> getAllViews() {
-		List<IView> views = new ArrayList<IView>();
-		views.add(getView());
-		return views;
 	}
 
 	public IView getView() {
@@ -123,8 +105,9 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 
 	@Override
 	public void dispose() {
-		unregisterEventListeners();
 		RCPViewManager.get().removeRCPView(this.getViewSite().getSecondaryId());
+		this.parentComposite = null;
+		this.view = null;
 		super.dispose();
 	}
 
@@ -238,7 +221,6 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	 * @param serializedView
 	 */
 	protected void determineDataConfiguration(ASerializedView serializedView, boolean letUserChoose) {
-
 		if (!(serializedView instanceof ASerializedSingleTablePerspectiveBasedView))
 			return;
 
@@ -411,55 +393,6 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	 * @return
 	 */
 	public boolean isSupportView() {
-		return isSupportView;
-	}
-
-	@Override
-	public void registerEventListeners() {
-
-		// selectionUpdateListener = new ExtendedSelectionUpdateListener();
-		// selectionUpdateListener.setHandler(this);
-		// eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-		// if (selectionUpdateListener != null) {
-		// eventPublisher.removeListener(selectionUpdateListener);
-		// selectionUpdateListener = null;
-		// }
-	}
-
-	//
-	// @Override
-	// public void handleSelectionUpdate(SelectionDelta selectionDelta, String dataDomainID) {
-	//
-	// if (!isSupportView())
-	// return;
-	//
-	// ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
-	// dataDomainID);
-	// if (dataDomain == null)
-	// return;
-	//
-	// if (this instanceof IDataDomainBasedView) {
-	// ((IDataDomainBasedView) this).setDataDomain(dataDomain);
-	// } else if (this.getView() instanceof IDataDomainBasedView) {
-	// ((IDataDomainBasedView) (this)).setDataDomain(dataDomain);
-	// }
-	// }
-
-	@Override
-	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
-
-		if (parentComposite == null || parentComposite.isDisposed())
-			return;
-
-		parentComposite.getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				listener.handleEvent(event);
-			}
-		});
+		return false;
 	}
 }

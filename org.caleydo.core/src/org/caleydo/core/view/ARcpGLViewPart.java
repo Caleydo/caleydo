@@ -5,20 +5,13 @@
  ******************************************************************************/
 package org.caleydo.core.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLView;
-import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -36,20 +29,8 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	protected IGLCanvas glCanvas;
 	protected MinimumSizeComposite minSizeComposite;
 
-	/**
-	 * Constructor.
-	 */
-	public ARcpGLViewPart() {
-		super();
-	}
-
 	public ARcpGLViewPart(Class<? extends ASerializedView> serializedViewClass) {
-		this();
-		try {
-			viewContext = JAXBContext.newInstance(serializedViewClass);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		super(serializedViewClass);
 	}
 
 	@Override
@@ -97,7 +78,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	public void createPartControlGL() {
 		GeneralManager.get().getViewManager().registerRCPView(this, view);
 
-		addToolBarContent();
+		fillToolBar();
 	}
 
 	@Override
@@ -110,29 +91,12 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 
 	@Override
 	public void dispose() {
-		super.dispose();
 		GeneralManager.get().getViewManager().unregisterRCPView(this, view);
+		super.dispose();
 		view = null;
+		glCanvas = null;
 		minSizeComposite = null;
 		// getGLView().destroy();
-	}
-
-	@Override
-	public List<IView> getAllViews() {
-
-		List<IView> views = new ArrayList<IView>();
-		views.add(getGLView());
-		if (getGLView() instanceof IGLRemoteRenderingView) {
-			List<AGLView> renderedViews = ((IGLRemoteRenderingView) getGLView())
-					.getRemoteRenderedViews();
-			if (renderedViews != null) {
-				for (AGLView view : renderedViews) {
-					views.add(view);
-				}
-			}
-		}
-
-		return views;
 	}
 
 	public IGLView getGLView() {
@@ -142,13 +106,6 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	public IGLCanvas getGLCanvas() {
 		return glCanvas;
 	}
-
-	/**
-	 * Returns the rcp-ID of the view
-	 *
-	 * @return rcp-ID of the view
-	 */
-	public abstract String getViewGUIID();
 
 	/** Returns a current serializable snapshot of the view */
 	@Override

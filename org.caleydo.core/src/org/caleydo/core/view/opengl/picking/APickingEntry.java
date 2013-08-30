@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
-import java.awt.Point;
+import gleem.linalg.Vec2f;
 
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 
@@ -30,11 +30,11 @@ abstract class APickingEntry {
 	/**
 	 * the first mouse position used by dragging
 	 */
-	private Point dragStart;
+	private Vec2f dragStart;
 	/**
 	 * the last mouse position used by dragging
 	 */
-	private Point lastPoint;
+	private Vec2f lastPoint;
 
 	public APickingEntry(int objectId) {
 		this.objectId = objectId;
@@ -47,20 +47,20 @@ abstract class APickingEntry {
 	 * @param mouse
 	 * @param depth
 	 */
-	public void fire(PickingMode mode, Point mouse, float depth, boolean isAnyDragging, IMouseEvent event) {
+	public void fire(PickingMode mode, float depth, boolean isAnyDragging, IMouseEvent event) {
+		Vec2f mouse = event.getPoint();
 		if ((mode == PickingMode.CLICKED || mode == PickingMode.DRAGGED || mode == PickingMode.MOUSE_MOVED)
 				&& dragStart == null) {
-			dragStart = lastPoint = (Point) mouse.clone();
+			dragStart = lastPoint = mouse.copy();
 		}
 
 		Pick pick;
 		if (mode == PickingMode.DRAGGED || mode == PickingMode.MOUSE_MOVED) {
-			int dx = mouse.x - lastPoint.x;
-			int dy = mouse.y - lastPoint.y;
-			pick = new AdvancedPick(objectId, mode, mouse, dragStart, depth, dx, dy, isAnyDragging, event);
+			Vec2f dv = mouse.minus(lastPoint);
+			pick = new AdvancedPick(objectId, mode, dragStart, depth, dv, isAnyDragging, event);
 			lastPoint = mouse;
 		} else
-			pick = new AdvancedPick(objectId, mode, mouse, dragStart, depth, 0, 0, isAnyDragging, event);
+			pick = new AdvancedPick(objectId, mode, dragStart, depth, new Vec2f(0, 0), isAnyDragging, event);
 		pick.setDoDragging(dragging);
 
 		fire(pick);
@@ -108,4 +108,18 @@ abstract class APickingEntry {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("APickingEntry [pickingId=");
+		builder.append(pickingId);
+		builder.append(", objectId=");
+		builder.append(objectId);
+		builder.append(", dragging=");
+		builder.append(dragging);
+		builder.append(", lastPoint=");
+		builder.append(lastPoint);
+		builder.append("]");
+		return builder.toString();
+	}
 }

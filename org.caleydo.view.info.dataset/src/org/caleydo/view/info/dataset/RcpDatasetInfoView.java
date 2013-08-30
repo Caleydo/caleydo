@@ -10,19 +10,20 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.util.Locale;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
+import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
-import org.caleydo.core.event.data.DataDomainUpdateEvent;
+import org.caleydo.core.event.data.DataSetSelectedEvent;
+import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ProjectMetaData;
+import org.caleydo.core.util.function.FloatStatistics;
 import org.caleydo.core.util.system.BrowserUtils;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IDataDomainBasedView;
@@ -30,6 +31,7 @@ import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.histogram.RcpGLColorMapperHistogramView;
 import org.caleydo.view.histogram.SerializedHistogramView;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -43,38 +45,57 @@ import org.eclipse.swt.widgets.Link;
  * Data meta view showing details about a data table.
  *
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomainBasedView<IDataDomain> {
 
 	public static final String VIEW_TYPE = "org.caleydo.view.info.dataset";
 
 	private IDataDomain dataDomain;
+	private TablePerspective tablePerspective;
 
 	private ExpandItem dataSetItem;
+	private ExpandItem processingItem;
+	private ExpandItem statsItem;
+	private ExpandItem tablePerspectiveItem;
+
+	private Label recordPerspectiveLabel;
+	private Label recordPerspectiveCount;
+	// private Label unmappedRecordElements;
+	private Label dimensionPerspectiveLabel;
+	private Label dimensionPerspectiveCount;
+	// private Label unmappedDimensionElements;
+
 	private Label recordLabel;
 	private Label recordCount;
 	private Label dimensionLabel;
 	private Label dimensionCount;
 
+	private StyledText processingInfo;
+	private StyledText stats;
+
 	private ExpandItem histogramItem;
 	private RcpGLColorMapperHistogramView histogramView;
 
-	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
+	private final EventListenerManager listeners = EventListenerManagers.createSWTDirect();
 
 	/**
 	 * Constructor.
 	 */
 	public RcpDatasetInfoView() {
-		super();
+		super(SerializedDatasetInfoView.class);
+		listeners.register(this);
+	}
 
-		eventPublisher = GeneralManager.get().getEventPublisher();
-		isSupportView = true;
+	@Override
+	public void dispose() {
+		listeners.unregisterAll();
+		super.dispose();
+	}
 
-		try {
-			viewContext = JAXBContext.newInstance(SerializedDatasetInfoView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+	@Override
+	public boolean isSupportView() {
+		return true;
 	}
 
 	@Override
@@ -87,7 +108,13 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 		createProjectInfos(expandBar);
 		createDataSetInfos(expandBar);
+		createProcessingInfo(expandBar);
+		createStatsInfo(expandBar);
+
+		createTablePerspectiveInfos(expandBar);
+
 		createHistogramInfos(expandBar);
+
 
 		if (dataDomain == null) {
 			setDataDomain(DataDomainManager.get().getDataDomainByID(
@@ -122,6 +149,83 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 		dataSetItem.setExpanded(false);
 	}
 
+	private void createStatsInfo(ExpandBar expandBar) {
+		this.statsItem = new ExpandItem(expandBar, SWT.WRAP);
+		statsItem.setText("Dataset Stats");
+		Composite c = new Composite(expandBar, SWT.NONE);
+		c.setLayout(new GridLayout(1, false));
+
+		stats = new StyledText(c, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP);
+		stats.setBackgroundMode(SWT.INHERIT_FORCE);
+		stats.setText("No processing");
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd.heightHint = 60;
+		stats.setLayoutData(gd);
+		stats.setEditable(false);
+		stats.setWordWrap(true);
+
+		// transformationLabel.set
+		// transformationLabel.();
+
+		statsItem.setControl(c);
+		statsItem.setHeight(c.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+	}
+
+	private void createProcessingInfo(ExpandBar expandBar) {
+		this.processingItem = new ExpandItem(expandBar, SWT.WRAP);
+		processingItem.setText("Processing Info");
+		Composite c = new Composite(expandBar, SWT.NONE);
+		c.setLayout(new GridLayout(1, false));
+
+		processingInfo = new StyledText(c, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP);
+		processingInfo.setBackgroundMode(SWT.INHERIT_FORCE);
+		processingInfo.setText("No processing");
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd.heightHint = 60;
+		processingInfo.setLayoutData(gd);
+		processingInfo.setEditable(false);
+		processingInfo.setWordWrap(true);
+
+		// transformationLabel.set
+		// transformationLabel.();
+
+		processingItem.setControl(c);
+		processingItem.setHeight(c.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+	}
+
+	private void createTablePerspectiveInfos(ExpandBar expandBar) {
+		this.tablePerspectiveItem = new ExpandItem(expandBar, SWT.WRAP);
+		tablePerspectiveItem.setText("Perspective: <no selection>");
+		Composite c = new Composite(expandBar, SWT.NONE);
+		c.setLayout(new GridLayout(2, false));
+
+		recordPerspectiveLabel = new Label(c, SWT.NONE);
+		recordPerspectiveLabel.setText("");
+		recordPerspectiveLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+		recordPerspectiveCount = new Label(c, SWT.NONE);
+		recordPerspectiveCount.setText("");
+		recordPerspectiveCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+
+		// unmappedRecordElements = new Label(c, SWT.NONE);
+		// unmappedRecordElements.setText("");
+		// unmappedRecordElements.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 0));
+
+		dimensionPerspectiveLabel = new Label(c, SWT.NONE);
+		dimensionPerspectiveLabel.setText("");
+		dimensionPerspectiveLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+		dimensionPerspectiveCount = new Label(c, SWT.NONE);
+		dimensionPerspectiveCount.setText("");
+		dimensionPerspectiveCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+
+		// unmappedDimensionElements = new Label(c, SWT.NONE);
+		// unmappedDimensionElements.setText("");
+		// unmappedDimensionElements.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 0));
+
+		tablePerspectiveItem.setControl(c);
+		tablePerspectiveItem.setHeight(c.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		tablePerspectiveItem.setExpanded(false);
+	}
+
 	private void createProjectInfos(ExpandBar expandBar) {
 		ProjectMetaData metaData = GeneralManager.get().getMetaData();
 		if (metaData.keys().isEmpty())
@@ -141,7 +245,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 		expandItem.setControl(g);
 		expandItem.setHeight(g.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		expandItem.setExpanded(true);
+		expandItem.setExpanded(false);
 	}
 
 	private void createHistogramInfos(ExpandBar expandBar) {
@@ -196,9 +300,11 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 	}
 
 	private void updateDataSetInfo() {
+		short stringLength = 28;
+
 		String dsLabel = "Dataset: " + dataDomain.getLabel();
-		if (dsLabel.length() > 25)
-			dsLabel = dsLabel.substring(0, 25 - 3) + "...";
+		if (dsLabel.length() > stringLength)
+			dsLabel = dsLabel.substring(0, stringLength - 3) + "...";
 
 		// dataSetItem.setText("Data Set: " + dataDomain.getLabel().substring(0, 15));
 		dataSetItem.setText(dsLabel);
@@ -208,15 +314,111 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 			dataSetItem.setExpanded(true);
 
-			recordLabel.setText(tableBasedDD.getRecordDenomination(true, true) + ":");
-			recordCount.setText("" + tableBasedDD.getTable().depth());
+			int nrRecords = tableBasedDD.getTable().depth();
+			int nrDimensions = tableBasedDD.getTable().size();
+			String recordName = tableBasedDD.getRecordDenomination(true, true);
+			recordLabel.setText(recordName + ":");
+			recordCount.setText("" + nrRecords);
 
-			dimensionLabel.setText(tableBasedDD.getDimensionDenomination(true, true) + ":");
-			dimensionCount.setText("" + tableBasedDD.getTable().size());
+			String dimensionName = tableBasedDD.getDimensionDenomination(true, true);
+			dimensionLabel.setText(dimensionName + ":");
+			dimensionCount.setText("" + nrDimensions);
 
 			((Composite) dataSetItem.getControl()).layout();
+			recordPerspectiveLabel.setText(recordName + ":");
+			dimensionPerspectiveLabel.setText(dimensionName + ":");
 
-			if (!tableBasedDD.getTable().isDataHomogeneous()) {
+			if (((ATableBasedDataDomain) dataDomain).getTable() instanceof NumericalTable) {
+				NumericalProperties numProp = dataDomain.getDataSetDescription().getDataDescription()
+						.getNumericalProperties();
+				String processingMessage = "";
+
+				if (numProp.getzScoreNormalization() != null) {
+					if (numProp.getzScoreNormalization().equals(NumericalProperties.ZSCORE_COLUMNS)) {
+						processingMessage += "Z-standardised on "
+								+ ((ATableBasedDataDomain) dataDomain).getColumnIDCategory() + "\n" + "";
+					} else if (numProp.getzScoreNormalization().equals(NumericalProperties.ZSCORE_ROWS)) {
+						processingMessage += "Z-standardised on "
+								+ ((ATableBasedDataDomain) dataDomain).getRowIDCategory() + System.lineSeparator();
+					}
+
+				}
+				if (numProp.getDataTransformation() != null) {
+					processingMessage += "Scale: " + numProp.getDataTransformation() + System.lineSeparator();
+				}
+				if (numProp.getClipToStdDevFactor() != null) {
+					processingMessage += "Clipped to " + numProp.getClipToStdDevFactor() + " std devs"
+							+ System.lineSeparator();
+				} else if (numProp.getMax() != null || numProp.getMin() != null) {
+					processingMessage += "Clipped to max: " + numProp.getMax() + ", min:" + numProp.getMin()
+							+ System.lineSeparator();
+				}
+				NumericalTable table = (NumericalTable) ((ATableBasedDataDomain) dataDomain).getTable();
+				if (table.getDataCenter() != null) {
+					processingMessage += "Centered at " + table.getDataCenter() + System.lineSeparator();
+				}
+				processingInfo.setText(processingMessage);
+
+				String n = System.lineSeparator();
+
+				FloatStatistics dsStats = table.getDatasetStatistics();
+				String statsMessage = "";
+				statsMessage += "Mean: " + dsStats.getMean() + n;
+				statsMessage += "Std. Dev.: " + dsStats.getSd() + n;
+				statsMessage += "Max: " + dsStats.getMax() + n;
+				statsMessage += "Min: " + dsStats.getMin() + n;
+				statsMessage += "Skewness: " + dsStats.getSkewness() + n;
+				statsMessage += "Kurtosis: " + dsStats.getKurtosis() + n;
+
+				stats.setText(statsMessage);
+			} else {
+				statsItem.setExpanded(false);
+				stats.setText("");
+				processingItem.setExpanded(false);
+				processingInfo.setText("");
+			}
+
+			if (tablePerspective != null) {
+				String tpLabel = "Persp.: " + tablePerspective.getLabel();
+				if (tpLabel.length() > stringLength)
+					tpLabel = tpLabel.substring(0, stringLength - 3) + "...";
+				tablePerspectiveItem.setText(tpLabel);
+				tablePerspectiveItem.setExpanded(true);
+
+				recordPerspectiveCount.setText("" + tablePerspective.getNrRecords() + " ("
+						+ String.format("%.2f", tablePerspective.getNrRecords() * 100f / nrRecords) + "%)");
+				if (tablePerspective.getRecordPerspective().getUnmappedElements() > 0) {
+					recordPerspectiveCount.setToolTipText("Unmapped: "
+							+ tablePerspective.getRecordPerspective().getUnmappedElements() + " - The number of "
+							+ recordName
+							+ " that are in the original stratification but can't be mapped to this dataset");
+				} else {
+					recordPerspectiveCount.setToolTipText("");
+				}
+
+				dimensionPerspectiveCount.setText("" + tablePerspective.getNrDimensions() + " ("
+						+ String.format("%.2f", tablePerspective.getNrDimensions() * 100f / nrDimensions) + "%)");
+				if (tablePerspective.getDimensionPerspective().getUnmappedElements() > 1) {
+					dimensionPerspectiveCount.setToolTipText("Unmapped: "
+							+ tablePerspective.getDimensionPerspective().getUnmappedElements() + " - The number of "
+							+ dimensionName
+							+ " that are in the original stratification but can't be mapped to this dataset");
+				} else {
+					dimensionPerspectiveCount.setToolTipText("");
+				}
+
+				((Composite) tablePerspectiveItem.getControl()).layout();
+			} else {
+
+				tablePerspectiveItem.setText("Perspective: <no selection>");
+				tablePerspectiveItem.setExpanded(false);
+				recordPerspectiveCount.setText("<no selection>");
+				recordPerspectiveCount.setToolTipText("");
+				dimensionPerspectiveCount.setText("<no selection>");
+				dimensionPerspectiveCount.setToolTipText("");
+			}
+
+			if (!tableBasedDD.getTable().isDataHomogeneous() && tablePerspective == null) {
 				histogramItem.getControl().setEnabled(false);
 				histogramItem.setExpanded(false);
 				return;
@@ -228,6 +430,9 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 			if (histogramView == null) {
 				histogramView = new RcpGLColorMapperHistogramView();
 				histogramView.setDataDomain(tableBasedDD);
+				if (tablePerspective != null)
+					histogramView.setTablePerspective(tablePerspective);
+
 				SerializedHistogramView serializedHistogramView = new SerializedHistogramView();
 				serializedHistogramView.setDataDomainID(dataDomain.getDataDomainID());
 				serializedHistogramView
@@ -243,19 +448,22 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 				GeneralManager.get().getViewManager().registerGLCanvasToAnimator(histogramView.getGLCanvas());
 				((Composite) histogramItem.getControl()).layout();
 			}
-			// else {
 
 			// If the default table perspective does not exist yet, we
 			// create it and set it to private so that it does not show up
 			// in the DVI
-			if (!tableBasedDD.hasTablePerspective(tableBasedDD.getTable().getDefaultRecordPerspective()
-					.getPerspectiveID(), tableBasedDD.getTable().getDefaultDimensionPerspective().getPerspectiveID())) {
+			if (!tableBasedDD.hasTablePerspective(tableBasedDD.getTable().getDefaultRecordPerspective(false)
+					.getPerspectiveID(), tableBasedDD.getTable().getDefaultDimensionPerspective(false)
+					.getPerspectiveID())) {
 				tableBasedDD.getDefaultTablePerspective().setPrivate(true);
 			}
 			histogramView.setDataDomain(tableBasedDD);
 			((GLHistogram) histogramView.getGLView()).setDataDomain(tableBasedDD);
+			histogramView.setTablePerspective(tablePerspective);
+			((GLHistogram) histogramView.getGLView()).setTablePerspective(tablePerspective);
+
 			((GLHistogram) histogramView.getGLView()).setDisplayListDirty();
-			// }
+
 		} else {
 			dataSetItem.setExpanded(true);
 			histogramItem.setExpanded(false);
@@ -274,20 +482,20 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 		determineDataConfiguration(serializedView, false);
 	}
 
-	@Override
-	public void registerEventListeners() {
-		super.registerEventListeners();
-		listeners.register(this);
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-		super.unregisterEventListeners();
-		listeners.unregisterAll();
-	}
-
 	@ListenTo
-	private void onDataDomainUpdate(DataDomainUpdateEvent event) {
+	private void onDataDomainUpdate(DataSetSelectedEvent event) {
+
+		IDataDomain dd = event.getDataDomain();
+		TablePerspective tp = event.getTablePerspective();
+		// Do nothing if new datadomain is the same as the current one, or if dd
+		// is null
+		if (dd == null || (dd == this.dataDomain && tp == this.tablePerspective))
+			return;
+
+		this.dataDomain = dd;
+		this.tablePerspective = tp;
+
+		updateDataSetInfo();
 		setDataDomain(event.getDataDomain());
 	}
 

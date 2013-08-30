@@ -6,6 +6,7 @@
 package org.caleydo.core.data.virtualarray;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -21,7 +22,9 @@ import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.base.IUniqueObject;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -41,34 +44,28 @@ import org.eclipse.core.runtime.Status;
  */
 @XmlType
 @XmlRootElement
-public class VirtualArray implements Iterable<Integer>, Cloneable {
-
-	private static int VIRTUAL_ARRAY_ID_COUNTER = 0;
-
+public class VirtualArray implements Iterable<Integer>, Cloneable, IUniqueObject {
 	/** unique ID */
-	private int id = 0;
+	@XmlTransient
+	private final int id = IDCreator.createVMUniqueID(VirtualArray.class);
 
 	@XmlTransient
 	protected IDType idType;
 
 	@XmlElement
 	// @XmlList //would save xml space
-	ArrayList<Integer> virtualArrayList;
-	IDMap idMap;
+	// @XmlJavaTypeAdapter(VirtualArrayListAdapter.class)
+	ArrayList<Integer> virtualArrayList = new ArrayList<Integer>();
 
-	GroupList groupList = null;
+	private IDMap idMap = new IDMap(virtualArrayList);
+
+	private GroupList groupList = null;
 
 	public VirtualArray() {
 	}
 
 	public VirtualArray(IDType idType) {
 		setIdType(idType);
-	}
-
-	{
-		id = VIRTUAL_ARRAY_ID_COUNTER++;
-		this.virtualArrayList = new ArrayList<Integer>();
-		idMap = new IDMap(virtualArrayList);
 	}
 
 	/**
@@ -137,6 +134,11 @@ public class VirtualArray implements Iterable<Integer>, Cloneable {
 	public synchronized void append(Integer newElementID) {
 		idMap.setDirty();
 		virtualArrayList.add(newElementID);
+	}
+
+	public synchronized void addAll(Collection<Integer> newElements) {
+		idMap.setDirty();
+		virtualArrayList.addAll(newElements);
 	}
 
 	/**
@@ -488,6 +490,7 @@ public class VirtualArray implements Iterable<Integer>, Cloneable {
 	/**
 	 * @return the id, see {@link #id}
 	 */
+	@Override
 	public synchronized int getID() {
 		return id;
 	}

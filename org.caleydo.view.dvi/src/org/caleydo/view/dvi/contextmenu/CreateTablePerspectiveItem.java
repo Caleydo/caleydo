@@ -6,11 +6,11 @@
 package org.caleydo.view.dvi.contextmenu;
 
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.view.dvi.event.CreateTablePerspectiveEvent;
+import org.caleydo.view.dvi.event.CreateTablePerspectiveBeforeAddingEvent;
 
 public class CreateTablePerspectiveItem extends AContextMenuItem {
 
-	public CreateTablePerspectiveItem(CreateTablePerspectiveEvent event) {
+	public CreateTablePerspectiveItem(CreateTablePerspectiveBeforeAddingEvent event) {
 		setLabel("Create");
 		event.setSender(this);
 		registerEvent(event);

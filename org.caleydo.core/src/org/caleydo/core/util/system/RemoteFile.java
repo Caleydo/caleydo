@@ -51,12 +51,19 @@ public final class RemoteFile implements IRunnableWithProgress {
 	private boolean successful = true;
 	private Exception caught = null;
 
-	private RemoteFile(URL url) {
+	private RemoteFile(URL url, String localSuffix) {
 		this.url = url;
 		File f = RemoteFileCache.inCache(url);
 		if (f == null)
-			f = RemoteFileCache.reserve(url);
+			f = RemoteFileCache.reserve(url, localSuffix);
 		this.file = f;
+	}
+
+	/**
+	 * @return the url, see {@link #url}
+	 */
+	public URL getUrl() {
+		return url;
 	}
 
 	/**
@@ -66,7 +73,11 @@ public final class RemoteFile implements IRunnableWithProgress {
 	 * @return
 	 */
 	public static RemoteFile of(URL url) {
-		return new RemoteFile(url);
+		return new RemoteFile(url, "");
+	}
+
+	public static RemoteFile of(URL url, String localSuffix) {
+		return new RemoteFile(url, localSuffix);
 	}
 
 	/**
@@ -253,10 +264,10 @@ public final class RemoteFile implements IRunnableWithProgress {
 			return relative.toString();
 		}
 
-		static synchronized File reserve(URL url) {
+		static synchronized File reserve(URL url, String localSuffix) {
 			String path = url.getPath();
 			int i = path.lastIndexOf('.');
-			String suffix = "";
+			String suffix = localSuffix;
 			if (i > 0) {
 				suffix = path.substring(i);
 				path = path.substring(0, i);

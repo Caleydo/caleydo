@@ -8,13 +8,12 @@ package org.caleydo.datadomain.pathway.graph.item.vertex;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.id.object.ManagedObjectType;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.util.base.IUniqueObject;
 
 /**
  * Pathway vertex that belongs to the overall pathway graph.
- * 
+ *
  * @author Marc Streit
  */
 public class PathwayVertex implements IUniqueObject {
@@ -31,7 +30,7 @@ public class PathwayVertex implements IUniqueObject {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param name
 	 * @param type
 	 * @param externalLink
@@ -39,8 +38,7 @@ public class PathwayVertex implements IUniqueObject {
 	 */
 	public PathwayVertex(final String name, final String type, final String externalLink) {
 
-		id = GeneralManager.get().getIDCreator()
-				.createID(ManagedObjectType.PATHWAY_VERTEX);
+		id = IDCreator.createVMUniqueID(PathwayVertex.class);
 
 		// Check if type exists - otherwise assign "other"
 		try {

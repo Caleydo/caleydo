@@ -17,9 +17,9 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.PickingType;
+import org.caleydo.view.dvi.node.ADataNode;
 import org.caleydo.view.dvi.node.IDVINode;
 
 public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer {
@@ -30,81 +30,69 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 	private final static int TEXT_HEIGHT_PIXELS = 13;
 	private final static int SIDE_SPACING_PIXELS = 20;
 
-	private List<TablePerspectiveRenderer> dimensionGroupRenderers;
+	private List<TablePerspectiveRenderer> tablePerspectiveRenderers;
 
 	public TablePerspectiveListRenderer(IDVINode node, GLDataViewIntegrator view,
-			DragAndDropController dragAndDropController,
-			List<TablePerspective> tablePerspectives) {
+			DragAndDropController dragAndDropController, List<TablePerspective> tablePerspectives) {
 		super(node, view, dragAndDropController);
 
-		dimensionGroupRenderers = new ArrayList<TablePerspectiveRenderer>();
+		tablePerspectiveRenderers = new ArrayList<TablePerspectiveRenderer>();
 		setTablePerspectives(tablePerspectives);
 		registerPickingListeners();
 	}
 
 	@Override
 	public void createPickingListeners() {
-		view.addTypePickingListener(new TablePerspectivePickingListener(view,
-				dragAndDropController, this),
+		view.addTypePickingListener(new TablePerspectivePickingListener(view, dragAndDropController, this),
 				PickingType.DATA_CONTAINER.name() + node.getID());
 	}
 
 	@Override
 	public void setTablePerspectives(List<TablePerspective> tablePerspectives) {
-		dimensionGroupRenderers.clear();
+		tablePerspectiveRenderers.clear();
 		for (TablePerspective tablePerspective : tablePerspectives) {
-			if (tablePerspective.isPrivate())
+			if (tablePerspective.isPrivate() || !view.isTablePerspectiveShownByView(tablePerspective))
 				continue;
-			float[] color = tablePerspective.getDataDomain().getColor().getRGBA();
 
-			if (tablePerspective instanceof PathwayTablePerspective) {
-				color = ((PathwayTablePerspective) tablePerspective)
-						.getPathwayDataDomain().getColor().getRGBA();
-			}
-
-			TablePerspectiveRenderer dimensionGroupRenderer = new TablePerspectiveRenderer(
-					tablePerspective, view, node, color);
-			dimensionGroupRenderer.setTextHeightPixels(TEXT_HEIGHT_PIXELS);
-			dimensionGroupRenderer
-					.setTextRotation(isUpsideDown ? TablePerspectiveRenderer.TEXT_ROTATION_90
-							: TablePerspectiveRenderer.TEXT_ROTATION_270);
-			dimensionGroupRenderers.add(dimensionGroupRenderer);
+			TablePerspectiveRenderer tablePerspectiveRenderer = new TablePerspectiveRenderer(tablePerspective, view,
+					node);
+			tablePerspectiveRenderer.setTextHeightPixels(TEXT_HEIGHT_PIXELS);
+			tablePerspectiveRenderer.setTextRotation(isUpsideDown ? TablePerspectiveRenderer.TEXT_ROTATION_90
+					: TablePerspectiveRenderer.TEXT_ROTATION_270);
+			tablePerspectiveRenderer.setActive(true);
+			tablePerspectiveRenderers.add(tablePerspectiveRenderer);
 		}
 	}
 
 	@Override
 	public void renderContent(GL2 gl) {
 
+		if (tablePerspectiveRenderers == null || tablePerspectiveRenderers.isEmpty())
+			return;
+
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
-		float dimensionGroupWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(MIN_COMP_GROUP_WIDTH_PIXELS);
+		float dimensionGroupWidth = pixelGLConverter.getGLWidthForPixelWidth(MIN_COMP_GROUP_WIDTH_PIXELS);
 
 		float currentPosX = (x / 2.0f)
-				- pixelGLConverter
-						.getGLWidthForPixelWidth(getDimensionGroupsWidthPixels() / 2
-								- SIDE_SPACING_PIXELS);
-		float step = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS)
-				+ dimensionGroupWidth;
+				- pixelGLConverter.getGLWidthForPixelWidth(getDimensionGroupsWidthPixels() / 2 - SIDE_SPACING_PIXELS);
+		float step = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS) + dimensionGroupWidth;
 
-		bottomDimensionGroupPositions.clear();
-		topDimensionGroupPositions.clear();
+		bottomObjectPositions.clear();
+		topObjectPositions.clear();
 
-		for (TablePerspectiveRenderer tablePerspectiveRenderer : dimensionGroupRenderers) {
+		for (TablePerspectiveRenderer tablePerspectiveRenderer : tablePerspectiveRenderers) {
 
 			int pickingID = view.getPickingManager().getPickingID(view.getID(),
-					PickingType.DATA_CONTAINER.name() + node.getID(),
-					tablePerspectiveRenderer.getTablePerspective().getID());
+					PickingType.DATA_CONTAINER.name() + node.getID(), tablePerspectiveRenderer.hashCode());
 
 			gl.glPushName(pickingID);
-			 if (pickingIDsToBePushed != null)
-			 {
-			 for (Pair<String, Integer> pickingPair : pickingIDsToBePushed)
-			 {
-			 gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-			 pickingPair.getFirst(), pickingPair.getSecond()));
-			 }
-			 }
+			if (pickingIDsToBePushed != null) {
+				for (Pair<String, Integer> pickingPair : pickingIDsToBePushed) {
+					gl.glPushName(view.getPickingManager().getPickingID(view.getID(), pickingPair.getFirst(),
+							pickingPair.getSecond()));
+				}
+			}
 
 			tablePerspectiveRenderer.setLimits(dimensionGroupWidth, y);
 			gl.glPushMatrix();
@@ -121,15 +109,14 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 			}
 
 			Point2D bottomPosition1 = new Point2D.Float(currentPosX, 0);
-			Point2D bottomPosition2 = new Point2D.Float(
-					currentPosX + dimensionGroupWidth, 0);
+			Point2D bottomPosition2 = new Point2D.Float(currentPosX + dimensionGroupWidth, 0);
 			Point2D topPosition1 = new Point2D.Float(currentPosX, y);
 			Point2D topPosition2 = new Point2D.Float(currentPosX + dimensionGroupWidth, y);
-			bottomDimensionGroupPositions.put(tablePerspectiveRenderer
-					.getTablePerspective().getID(), new Pair<Point2D, Point2D>(
+			bottomObjectPositions.put(tablePerspectiveRenderer.getTablePerspective(), new Pair<Point2D, Point2D>(
 					bottomPosition1, bottomPosition2));
-			topDimensionGroupPositions.put(tablePerspectiveRenderer.getTablePerspective()
-					.getID(), new Pair<Point2D, Point2D>(topPosition1, topPosition2));
+			topObjectPositions.put(tablePerspectiveRenderer.getTablePerspective(),
+
+			new Pair<Point2D, Point2D>(topPosition1, topPosition2));
 
 			currentPosX += step;
 		}
@@ -143,14 +130,19 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 
 	@Override
 	public int getMinHeightPixels() {
-		return node.getTablePerspectives().size() > 0 ? MAX_TEXT_WIDTH_PIXELS : 0;
+		List<TablePerspective> tablePerspectives = node instanceof ADataNode ? ((ADataNode) node)
+				.getVisibleTablePerspectives() : node.getTablePerspectives();
+
+		return tablePerspectives.size() > 0 ? MAX_TEXT_WIDTH_PIXELS : 0;
 		// getMaxDimensionGroupLabelHeight();
 	}
 
 	private int getDimensionGroupsWidthPixels() {
-		return (node.getTablePerspectives().size() * MIN_COMP_GROUP_WIDTH_PIXELS)
-				+ ((node.getTablePerspectives().size() - 1) * SPACING_PIXELS) + 2
-				* SIDE_SPACING_PIXELS;
+		List<TablePerspective> tablePerspectives = node instanceof ADataNode ? ((ADataNode) node)
+				.getVisibleTablePerspectives() : node.getTablePerspectives();
+
+		return (tablePerspectives.size() * MIN_COMP_GROUP_WIDTH_PIXELS)
+				+ ((tablePerspectives.size() - 1) * SPACING_PIXELS) + 2 * SIDE_SPACING_PIXELS;
 	}
 
 	private int getMaxDimensionGroupLabelHeight() {
@@ -159,10 +151,11 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
 		float maxTextWidth = Float.MIN_VALUE;
+		List<TablePerspective> tablePerspectives = node instanceof ADataNode ? ((ADataNode) node)
+				.getVisibleTablePerspectives() : node.getTablePerspectives();
 
-		for (TablePerspective tablePerspective : node.getTablePerspectives()) {
-			float textWidth = textRenderer.getRequiredTextWidthWithMax(
-					tablePerspective.getLabel(),
+		for (TablePerspective tablePerspective : tablePerspectives) {
+			float textWidth = textRenderer.getRequiredTextWidthWithMax(tablePerspective.getLabel(),
 					pixelGLConverter.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS),
 					pixelGLConverter.getGLWidthForPixelWidth(MAX_TEXT_WIDTH_PIXELS));
 			if (textWidth > maxTextWidth)
@@ -177,7 +170,7 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 	public void setUpsideDown(boolean isUpsideDown) {
 		this.isUpsideDown = isUpsideDown;
 
-		for (TablePerspectiveRenderer renderer : dimensionGroupRenderers) {
+		for (TablePerspectiveRenderer renderer : tablePerspectiveRenderers) {
 			renderer.setTextRotation(isUpsideDown ? TablePerspectiveRenderer.TEXT_ROTATION_90
 					: TablePerspectiveRenderer.TEXT_ROTATION_270);
 		}
@@ -186,14 +179,13 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 
 	@Override
 	public void removePickingListeners() {
-		view.removeAllTypePickingListeners(PickingType.DATA_CONTAINER.name()
-				+ node.getID());
+		view.removeAllTypePickingListeners(PickingType.DATA_CONTAINER.name() + node.getID());
 
 	}
 
 	@Override
 	protected Collection<TablePerspectiveRenderer> getDimensionGroupRenderers() {
-		return dimensionGroupRenderers;
+		return tablePerspectiveRenderers;
 	}
 
 	@Override

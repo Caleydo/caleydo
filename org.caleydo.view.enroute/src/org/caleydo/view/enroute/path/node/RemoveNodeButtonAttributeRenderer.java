@@ -118,8 +118,9 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 					// List<ALinearizableNode> pathNodes = pathwayPathRenderer.getPathNodes();
 					// int index = pathNodes.indexOf(node);
 
-					if (pathwayPathRenderer.isFirstNode((ALinearizableNode) node)
-							|| pathwayPathRenderer.isLastNode((ALinearizableNode) node)) {
+					if (pathwayPathRenderer.getUpdateStrategy().isInnerNodeRemovalAllowed()
+							|| (pathwayPathRenderer.isFirstNode((ALinearizableNode) node) || pathwayPathRenderer
+									.isLastNode((ALinearizableNode) node))) {
 						super.mouseOver(pick);
 						showRemoveButton = true;
 						// pathwayPathRenderer.setHighlightDirty(true);

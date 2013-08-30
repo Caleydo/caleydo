@@ -6,12 +6,12 @@
 package org.caleydo.data.tcga.internal;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -19,6 +19,7 @@ import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.startup.LoadProjectStartupProcedure;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.util.system.BrowserUtils;
 import org.caleydo.core.util.system.RemoteFile;
 import org.caleydo.data.tcga.internal.model.RunOverview;
 import org.caleydo.data.tcga.internal.model.TumorProject;
@@ -40,12 +41,15 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.TextStyle;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
 
+import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
@@ -72,7 +76,11 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 	@Override
 	public Composite create(Composite parent, final WizardPage page) {
 		parent = new Composite(parent, SWT.NONE);
-		parent.setLayout(new FillLayout());
+		parent.setLayout(new GridLayout());
+		Link label = new Link(parent, SWT.NO_BACKGROUND);
+		label.addSelectionListener(BrowserUtils.LINK_LISTENER);
+		label.setText("Please be advised that downloading \"The Cancer Genome Atlas\" data constitutes agreement to the <a href=\"http://cancergenome.nih.gov/abouttcga/policies/policiesguidelines\">policies and guidelines on data usage and publications</a>");
+		label.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		try {
 			File file = RemoteFile.of(new URL(JSONFILE)).getOrLoad(true, new NullProgressMonitor());
 			if (file == null) {
@@ -86,6 +94,7 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 				RunOverview[] model = createModel(file);
 				v.setInput(model);
 				v.getTree().setItemCount(model.length);
+				v.getTree().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 				v.addSelectionChangedListener(new ISelectionChangedListener() {
 					@Override
 					public void selectionChanged(SelectionChangedEvent event) {
@@ -215,7 +224,7 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 	private RunOverview[] createModel(File file) {
 		Gson gson = new Gson();
 		RunOverview[] fromJson;
-		try (Reader r = new FileReader(file)) {
+		try (Reader r = Files.newReader(file, Charset.defaultCharset())) {
 			fromJson = gson.fromJson(r, RunOverview[].class);
 			Arrays.sort(fromJson, Collections.reverseOrder());
 			return fromJson;
@@ -231,8 +240,9 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 			return false;
 		// Try to download the file with interruption
 		RemoteFile file = RemoteFile.of(this.selectedChoice);
-		if (!file.inCache(false)) {
+		if (!file.inCache(true)) {
 			try {
+				file.delete();
 				new ProgressMonitorDialog(new Shell()).run(true, true, file);
 			} catch (InvocationTargetException | InterruptedException e) {
 				Status status = new Status(IStatus.ERROR, this.getClass().getSimpleName(), "Error during downloading: "

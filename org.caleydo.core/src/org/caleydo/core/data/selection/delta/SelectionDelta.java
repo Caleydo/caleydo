@@ -17,7 +17,7 @@ import org.caleydo.core.id.IDType;
 /**
  * HashMap based implementation of IDelta for selections. All elements are unique and no ordering is
  * preserved.
- * 
+ *
  * @author Alexander Lex
  */
 @XmlType(name = "SelectionDelta")
@@ -42,6 +42,10 @@ public class SelectionDelta
 		this.idType = idType;
 	}
 
+	public boolean isEmpty() {
+		return selectionItems.isEmpty();
+	}
+
 	@Override
 	public Collection<SelectionDeltaItem> getAllItems() {
 		return selectionItems.values();
@@ -49,7 +53,7 @@ public class SelectionDelta
 
 	/**
 	 * Add a new selection to the delta. Notice that a selection delta allows only unique ids.
-	 * 
+	 *
 	 * @param iSelectionID
 	 *            the selection id
 	 * @param selectionType
@@ -68,7 +72,7 @@ public class SelectionDelta
 	/**
 	 * Stores a selectionDeltaItem in the delta that triggers a removal of a particular element from a
 	 * selection type in the receiving selection manager
-	 * 
+	 *
 	 * @param selectionID
 	 *            the element to be removed
 	 * @param selectionType
@@ -108,7 +112,7 @@ public class SelectionDelta
 	/**
 	 * Add an ID for connections to the delta, based on a selection id that is already stored in a delta. This
 	 * id is meant to be persistent across conversion processes
-	 * 
+	 *
 	 * @param selectionID
 	 *            the original selection id
 	 * @param connectionID
@@ -125,7 +129,7 @@ public class SelectionDelta
 	/**
 	 * Does the same as {@link #addConnectionID(Integer, Integer)} but for a bunch of connection ids at a
 	 * time.
-	 * 
+	 *
 	 * @param selectionID
 	 * @param connectionIDs
 	 */

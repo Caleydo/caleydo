@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
+import gleem.linalg.Vec2f;
+
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -65,7 +67,7 @@ public abstract class APickingManager<T extends APickingEntry> {
 		return listener;
 	}
 
-	public Point getCurrentMousePos() {
+	public Vec2f getCurrentMousePos() {
 		return listener.getCurrentMousePos();
 	}
 
@@ -124,7 +126,7 @@ public abstract class APickingManager<T extends APickingEntry> {
 		for (Pair<IMouseEvent, PickingMode> event : events) {
 			PickingMode converted = convert(event.getFirst(), event.getSecond());
 			IMouseEvent mouseEvent = event.getFirst();
-			Point key = event.getFirst().getPoint();
+			Point key = event.getFirst().getRAWPoint();
 
 			List<PickHit> data = cache.get(key);
 
@@ -133,13 +135,13 @@ public abstract class APickingManager<T extends APickingEntry> {
 					data = doPickingImpl(key.x, key.y, gl, toRender);
 					cache.put(key, data);
 				}
-				fireListeners(data, PickingMode.MOUSE_OUT, key, mouseEvent);
+				fireListeners(data, PickingMode.MOUSE_OUT, mouseEvent);
 			} else if (converted != null) {
 				if (data == null) {
 					data = doPickingImpl(key.x, key.y, gl, toRender);
 					cache.put(key, data);
 				}
-				fireListeners(data, converted, key, mouseEvent);
+				fireListeners(data, converted, mouseEvent);
 			}
 		}
 		return;
@@ -154,9 +156,7 @@ public abstract class APickingManager<T extends APickingEntry> {
 			return PickingMode.CLICKED;
 		if (type == PickingMode.CLICKED && event.getButton() == RIGHT_MOUSE_BUTTON)
 			return PickingMode.RIGHT_CLICKED;
-		if (type == PickingMode.MOUSE_MOVED)
-			return PickingMode.MOUSE_MOVED;
-		if (type == PickingMode.MOUSE_RELEASED)
+		if (type == PickingMode.MOUSE_MOVED || type == PickingMode.MOUSE_RELEASED || type == PickingMode.MOUSE_WHEEL)
 			return type;
 		return null;
 	}
@@ -201,18 +201,19 @@ public abstract class APickingManager<T extends APickingEntry> {
 	 * @param entries
 	 *            the list of picking entries to check
 	 */
-	protected void doPicking(PickingMode mode, Point mousePos, IMouseEvent event, final GL2 gl, Runnable toRender) {
+	protected void doPicking(PickingMode mode, IMouseEvent event, final GL2 gl, Runnable toRender) {
 		if (mode == null) // nothing changed
 			return;
 
 		List<PickHit> hits = Collections.emptyList();
-		if (mousePos != null) {
-			hits = doPickingImpl(mousePos.x, mousePos.y, gl, toRender);
+		if (event != null) {
+			Point rawPoint = event.getRAWPoint();
+			hits = doPickingImpl(rawPoint.x, rawPoint.y, gl, toRender);
 		}
-		fireListeners(hits, mode, mousePos, event);
+		fireListeners(hits, mode, event);
 	}
 
-	private void fireListeners(List<PickHit> hits, PickingMode mode, Point mousePos, IMouseEvent event) {
+	private void fireListeners(List<PickHit> hits, PickingMode mode, IMouseEvent event) {
 		PickHit nearest = hits.isEmpty() ? null : hits.get(0);
 		float depth = nearest == null ? 0 : nearest.getZMin();
 
@@ -234,7 +235,7 @@ public abstract class APickingManager<T extends APickingEntry> {
 				wasMouseIn.set(entry.pickingId);
 			} else {
 				// send mouse out
-				entry.fire(PickingMode.MOUSE_OUT, mousePos, depth, isAnyDragging, event);
+				entry.fire(PickingMode.MOUSE_OUT, depth, isAnyDragging, event);
 			}
 		}
 		this.mouseIn.clear();
@@ -250,9 +251,9 @@ public abstract class APickingManager<T extends APickingEntry> {
 				continue;
 			if (!wasMouseIn.get(name)) {
 				// send mouse in
-				entry.fire(PickingMode.MOUSE_OVER, mousePos, depth, isAnyDragging, event);
+				entry.fire(PickingMode.MOUSE_OVER, depth, isAnyDragging, event);
 			}
-			entry.fire(mode, mousePos, depth, isAnyDragging, event);
+			entry.fire(mode, depth, isAnyDragging, event);
 			// query again for handling removal in between
 			entry = get(name);
 			if (entry != null) {
@@ -315,7 +316,7 @@ public abstract class APickingManager<T extends APickingEntry> {
 		final int pickingBuffer[] = new int[PICKING_SIZE];
 		pickingBufferNative.get(pickingBuffer);
 
-		List<PickHit> hits = new ArrayList<>(hitCount);
+		List<PickHit> hits = new ArrayList<>(Math.max(hitCount, 0));
 
 		int pos = 0;
 		for (int i = 0; i < hitCount; i++) {

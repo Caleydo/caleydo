@@ -5,8 +5,6 @@
  ******************************************************************************/
 package org.caleydo.datadomain.genetic;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -21,6 +19,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -40,18 +39,12 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	private static final String CLINICAL_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
 
 	/**
-	 * Counter used for determining the extension that together with the type builds the data domain ID.
-	 */
-	private static final AtomicInteger extensionID = new AtomicInteger();
-
-
-	/**
 	 * Constructor. Do not create a {@link GeneticDataDomain} yourself, use
 	 * {@link DataDomainManager#createDataDomain(String)} instead.
 	 */
 	public GeneticDataDomain() {
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER
-				+ extensionID.getAndIncrement());
+				+ IDCreator.createPersistentID(GeneticDataDomain.class));
 	}
 
 	@Override
@@ -159,7 +152,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		// System.out
 		// .println("TODO Convert and re-send selection from clinical to genetic");
 
-		if (delta.getIDType() == dimensionIDType) {
+		if (dimensionIDType.equals(delta.getIDType())) {
 			// for(ISeldelta)
 			SelectionUpdateEvent resendEvent = new SelectionUpdateEvent();
 			resendEvent.setEventSpace(this.dataDomainID);
@@ -242,7 +235,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	public void handleForeignSelectionCommand(String dataDomainType, IDCategory idCategory,
 			SelectionCommand selectionCommand) {
 
-		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE && idCategory == dimensionIDCategory) {
+		if (CLINICAL_DATADOMAIN_TYPE.equals(dataDomainType) && dimensionIDCategory.equals(idCategory)) {
 			SelectionCommandEvent newCommandEvent = new SelectionCommandEvent();
 			newCommandEvent.setSelectionCommand(selectionCommand);
 			newCommandEvent.setIDCategory(idCategory);

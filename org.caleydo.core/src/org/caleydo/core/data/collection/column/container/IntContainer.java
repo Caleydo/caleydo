@@ -178,4 +178,10 @@ public class IntContainer implements INumericalContainer<Integer> {
 	public boolean isUnknown(Integer value) {
 		return value == UNKNOWN_VALUE;
 	}
+
+	@Override
+	public void set(int index, Integer value) {
+		container[index] = value;
+
+	}
 }

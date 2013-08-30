@@ -5,7 +5,9 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
-import java.awt.Point;
+import gleem.linalg.Vec2f;
+
+import org.caleydo.core.view.opengl.canvas.Units;
 
 /**
  * All data associated with a single pick
@@ -20,9 +22,9 @@ public class Pick {
 	private final PickingMode ePickingMode;
 
 	/** The coordinates in the plane where the pick occurred */
-	private final Point pickedPoint;
+	private final Vec2f pickedPoint;
 	/** The coordinates in the plane where the drag action started */
-	private final Point dragStartPoint;
+	private final Vec2f dragStartPoint;
 
 	/** The z-value of the picked element */
 	private final float depth;
@@ -40,34 +42,28 @@ public class Pick {
 	private final boolean isAnyDragging;
 
 	/**
-	 * the mouse x delta between the last call, used by {@link PickingMode#MOUSE_MOVED} and {@link PickingMode#DRAGGED}
+	 * the mouse x,y delta between the last call, used by {@link PickingMode#MOUSE_MOVED} and
+	 * {@link PickingMode#DRAGGED}
 	 *
 	 * supported by {@link PickingManager2} and {@link SimplePickingManager}
 	 */
-	private final int dx;
-	/**
-	 * the mouse y delta between the last call, used by {@link PickingMode#MOUSE_MOVED} and {@link PickingMode#DRAGGED}
-	 *
-	 * supported by {@link PickingManager2} and {@link SimplePickingManager}
-	 */
-	private final int dy;
+	private final Vec2f dv;
 
-	public Pick(int objectID, PickingMode ePickingMode, Point pickedPoint, Point dragStartPoint, float depth) {
-		this(objectID, ePickingMode, pickedPoint, dragStartPoint, depth, 0, 0, false);
+	public Pick(int objectID, PickingMode ePickingMode, Vec2f pickedPoint, Vec2f dragStartPoint, float depth) {
+		this(objectID, ePickingMode, pickedPoint, dragStartPoint, depth, new Vec2f(0, 0), false);
 	}
 	/**
 	 * Constructor.
 	 */
-	public Pick(int objectID, PickingMode ePickingMode, Point pickedPoint, Point dragStartPoint, float depth, int dx,
-			int dy, boolean isAnyDragging) {
+	public Pick(int objectID, PickingMode ePickingMode, Vec2f pickedPoint, Vec2f dragStartPoint, float depth, Vec2f dv,
+			boolean isAnyDragging) {
 
 		this.objectID = objectID;
 		this.ePickingMode = ePickingMode;
 		this.pickedPoint = pickedPoint;
 		this.dragStartPoint = dragStartPoint;
 		this.depth = depth;
-		this.dx = dx;
-		this.dy = dy;
+		this.dv = dv;
 		this.isAnyDragging = isAnyDragging;
 	}
 
@@ -96,15 +92,15 @@ public class Pick {
 	/**
 	 * @return the dx, see {@link #dx}
 	 */
-	public int getDx() {
-		return dx;
+	public float getDx() {
+		return dv.x();
 	}
 
 	/**
 	 * @return the dy, see {@link #dy}
 	 */
-	public int getDy() {
-		return dy;
+	public float getDy() {
+		return dv.y();
 	}
 
 	/**
@@ -124,20 +120,27 @@ public class Pick {
 	}
 
 	/**
+	 * return the point in DIPs
+	 * 
+	 * @return
+	 */
+	public Vec2f getPickedPoint() {
+		return new Vec2f(this.pickedPoint);
+	}
+	/**
 	 * The 2D screen coordinates of the mouse position at the time the pick
 	 * occurred.
 	 */
-	public Point getPickedPoint() {
-		return pickedPoint;
+	public Vec2f getPickedPoint(Units unit) {
+		return unit.unapply(this.pickedPoint);
 	}
 
 	/**
 	 * The 2D screen coordinates of the mouse position where the user started
 	 * the drag action.
 	 */
-	public Point getDragStartPoint() {
-
-		return dragStartPoint;
+	public Vec2f getDragStartPoint(Units unit) {
+		return unit.unapply(this.dragStartPoint);
 	}
 
 	/**

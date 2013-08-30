@@ -1,0 +1,9 @@
+# @title customEditorTemplates
+# @description CustomEditorTemplates
+# @task_type LASTMOD
+#
+# Created by the Workspace Mechanic Preference Recorder
+#Thu Oct 18 13:42:19 CEST 2012
+file_export_version=3.0
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.text.custom_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates><template autoinsert\="true" context\="java-members" deleted\="false" description\="Adds logger for slf4j" enabled\="true" id\="tarlog-plugins.template.logger" name\="logger">${\:import(org.slf4j.Logger,org.slf4j.LoggerFactory)}\r\nprivate static final Logger log \= LoggerFactory.getLogger(${enclosing_type}.class);</template><template autoinsert\="true" context\="java" deleted\="false" description\="add template for an event listener method" enabled\="true" name\="listenTo">@${ann\:newType(org.caleydo.core.event.EventListenerManager.ListenTo)}&\#13;\r\nprivate void on${word_selection}(${word_selection} event) {&\#13;\r\n\t${cursor}&\#13;\r\n}</template><template autoinsert\="true" context\="java" deleted\="false" description\="similar to listenToMe but with sendToMe specified" enabled\="true" name\="sendToMe">@${ann\:newType(org.caleydo.core.event.EventListenerManager.ListenTo)}(sendToMe\=true)&\#13;\r\nprivate void on${word_selection}(${word_selection} event) {&\#13;\r\n\t${cursor}&\#13;\r\n}</template></templates>
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.javadoc=true

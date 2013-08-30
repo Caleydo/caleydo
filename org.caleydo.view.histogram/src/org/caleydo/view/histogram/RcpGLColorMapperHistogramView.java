@@ -12,9 +12,7 @@ import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.color.mapping.ChooseColorMappingDialog;
 import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
-import org.caleydo.core.util.color.mapping.UpdateColorMappingListener;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.MouseAdapter;
@@ -27,12 +25,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements IViewCommandHandler {
+public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 
 	private CLabel colorMappingPreview;
 
 	private ArrayList<CLabel> labels;
-	protected UpdateColorMappingListener updateViewListener;
+	private Button changeColorButton;
 
 	/**
 	 *
@@ -77,9 +75,9 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 			}
 		}
 
-		updateColorMappingPreview();
 
-		Button changeColorButton = new Button(histoComposite, SWT.PUSH);
+
+		changeColorButton = new Button(histoComposite, SWT.PUSH);
 		changeColorButton.setText("Colormap");
 		changeColorButton.setToolTipText("Choose a colormap for this dataset");
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -93,16 +91,8 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 				openColorMapDialog();
 			}
 		});
-	}
 
-	@Override
-	public void handleRedrawView() {
-		colorMappingPreview.getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				updateColorMappingPreview();
-			}
-		});
+		updateColorMappingPreview();
 	}
 
 	/**
@@ -121,8 +111,19 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 
 		if (colorMappingPreview == null)
 			return;
-		if (!dataDomain.getTable().isDataHomogeneous())
-			return;
+		if (!dataDomain.getTable().isDataHomogeneous() || !(dataDomain.getTable() instanceof NumericalTable)) {
+			colorMappingPreview.setVisible(false);
+			changeColorButton.setVisible(false);
+			for (CLabel label : labels) {
+				label.setVisible(false);
+			}
+		} else {
+			colorMappingPreview.setVisible(true);
+			changeColorButton.setVisible(true);
+			for (CLabel label : labels) {
+				label.setVisible(true);
+			}
+		}
 		List<ColorMarkerPoint> markerPoints = dataDomain.getTable().getColorMapper().getMarkerPoints();
 
 		Color[] alColor = new Color[markerPoints.size()];
@@ -152,31 +153,6 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 
 		colorMappingPreview.setBackground(alColor, colorMarkerPoints);
 		colorMappingPreview.update();
-	}
-
-	@Override
-	public void registerEventListeners() {
-
-		super.registerEventListeners();
-
-		// clearSelectionsListener = new SelectionCommandListener();
-		// clearSelectionsListener.setHandler(this);
-		// eventPublisher.addListener(SelectionCommandEvent.class, clearSelectionsListener);
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-
-		super.unregisterEventListeners();
-
-		if (updateViewListener != null) {
-			eventPublisher.removeListener(updateViewListener);
-			updateViewListener = null;
-		}
-		// if (clearSelectionsListener != null) {
-		// eventPublisher.removeListener(clearSelectionsListener);
-		// clearSelectionsListener = null;
-		// }
 	}
 
 	@Override

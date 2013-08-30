@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LineUp
+Bundle-SymbolicName: org.caleydo.vis.lineup;singleton:=true
+Bundle-Version: 
+Require-Bundle: org.caleydo.core;bundle-version=""
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Vendor: www.caleydo.org
+Bundle-ActivationPolicy: lazy
+Export-Package: org.caleydo.vis.lineup.config,
+ org.caleydo.vis.lineup.data,
+ org.caleydo.vis.lineup.layout,
+ org.caleydo.vis.lineup.model,
+ org.caleydo.vis.lineup.model.mapping,
+ org.caleydo.vis.lineup.model.mixin,
+ org.caleydo.vis.lineup.ui,
+ org.caleydo.vis.lineup.ui.detail

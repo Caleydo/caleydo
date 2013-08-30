@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex.column;
 
+import gleem.linalg.Vec2f;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -21,10 +23,11 @@ import org.caleydo.core.data.virtualarray.similarity.GroupSimilarity;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
 import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
-import org.caleydo.core.id.object.ManagedObjectType;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.id.IIDTypeMapper;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -88,12 +91,7 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 	}
 
 	{
-		ID = GeneralManager.get().getIDCreator().createID(ManagedObjectType.DIMENSION_GROUP_SPACER);
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
+		ID = IDCreator.createVMUniqueID(BrickColumnSpacingRenderer.class);
 	}
 
 	public void init() {
@@ -234,6 +232,13 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 
 		SelectionManager recordSelectionManager = stratomex.getRecordSelectionManager();
 
+		IIDTypeMapper<Integer, Integer> mapper = null;
+		if (recordVA.getIdType() != recordSelectionManager.getIDType()) {
+			IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+					recordVA.getIdType().getIDCategory());
+			mapper = mappingManager.getIDTypeMapper(recordSelectionManager.getIDType(), recordVA.getIdType());
+		}
+
 		float ratio = 0;
 
 		// Iterate over all selection types
@@ -255,15 +260,12 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 			}
 
 			int intersectionCount = 0;
-			IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
-					recordVA.getIdType().getIDCategory());
 
 			for (Integer selectedID : selectedByGroupSelections) {
 
-				if (recordVA.getIdType() != recordSelectionManager.getIDType()) {
+				if (mapper != null) {
 
-					Set<Integer> recordIDs = mappingManager.getIDAsSet(recordSelectionManager.getIDType(),
-							recordVA.getIdType(), selectedID);
+					Set<Integer> recordIDs = mapper.apply(selectedID);
 					if (recordIDs == null)
 						continue;
 					selectedID = recordIDs.iterator().next();
@@ -317,10 +319,10 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 		gl.glPushName(pickingID);
 		gl.glColor4f(1f, 1f, 1f, 0);
 		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex3f(0, 0, 0.f);
-		gl.glVertex3f(x, 0, 0.f);
-		gl.glVertex3f(x, y, 0.f);
-		gl.glVertex3f(0, y, 0.f);
+		gl.glVertex3f(0, 0, 0.01f);
+		gl.glVertex3f(x, 0, 0.01f);
+		gl.glVertex3f(x, y, 0.01f);
+		gl.glVertex3f(0, y, 0.01f);
 		gl.glEnd();
 		gl.glPopName();
 	}
@@ -526,132 +528,166 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 
 					float ratio = hashRatioToSelectionType.get(selectionType);
 					float trendRatio = 0;
-					float[] color = new float[] { 0, 0, 0, 1 };
-
 					if (selectionType == SelectionType.NORMAL && stratomex.isConnectionsShowOnlySelected()) {
 						continue;
 					}
 
-					color = selectionType.getColor().getRGBA();
+					Color color = selectionType.getColor().clone();
 
-					if (stratomex.isConnectionsHighlightDynamic() == false) {
-
-						if (selectionType == SelectionType.NORMAL) {
-							trendRatio = 0.15f;
-						} else {
-							trendRatio = 0.5f;
-						}
-					} else {
-
-						float maxRatio = Math.max(subGroupMatch.getLeftSimilarityRatio(),
-								subGroupMatch.getRightSimilarityRatio());
-						if (maxRatio < 0.3f)
-							trendRatio = (stratomex.getConnectionsFocusFactor() - maxRatio);
-						else
-							trendRatio = 1 - (stratomex.getConnectionsFocusFactor() + (1 - maxRatio));
-
-						if (stratomex.getSelectedConnectionBandID() == subGroupMatch.getConnectionBandID()) {
-							trendRatio = 0.8f;
-						} else {
-							// it would be too opaque if we use the factor
-							// determined by the slider
-							trendRatio /= 2f;
-						}
-					}
+					trendRatio = computeTrendRatio(subGroupMatch, selectionType);
 
 					// set the transparency of the band
-					color[3] = trendRatio;
+					color.a = trendRatio;
 
 					if (ratio == 0)
 						continue;
+					renderBand(gl, subGroupMatch, color, curveOffset, xStart, xEnd, ratio, trendRatio, false);
+				}
 
-					float leftYDiff = subGroupMatch.getLeftAnchorYTop() - subGroupMatch.getLeftAnchorYBottom();
-					float leftYDiffSelection = leftYDiff * ratio;
-
-					float rightYDiff = subGroupMatch.getRightAnchorYTop() - subGroupMatch.getRightAnchorYBottom();
-					float rightYDiffSelection = rightYDiff * ratio;
-
-					// gl.glPushMatrix();
-					// gl.glTranslatef(0, 0, 0.1f);
-
-					connectionRenderer.renderSingleBand(gl, new float[] { 0, subGroupMatch.getLeftAnchorYTop(), 0.0f },
-							new float[] { 0, subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection, 0.0f },
-							new float[] { x, subGroupMatch.getRightAnchorYTop(), 0.0f },
-							new float[] { x, subGroupMatch.getRightAnchorYTop() - rightYDiffSelection, 0.0f }, true,
-							curveOffset, 0, color);// 0.15f);
-
-					// Render straight band connection from brick to dimension
-					// group on the LEFT. This is for the smaller bricks when
-					// the bricks are not of equal size
-					if (xStart != 0) {
-						connectionRenderer.renderStraightBand(gl,
-								new float[] { xStart, subGroupMatch.getLeftAnchorYTop(), 0 }, new float[] { xStart,
-										subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection, 0 }, new float[] { 0,
-										subGroupMatch.getLeftAnchorYTop(), 0 },
-								new float[] { 0, subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection, 0 }, false, 0,
-								color, trendRatio);// 0.5f);
-					}
-
-					// Render straight band connection from brick to dimension
-					// group on the RIGHT. This is for the smaller bricks when
-					// the bricks are not of equal size
-					if (xEnd != 0) {
-
-						connectionRenderer.renderStraightBand(gl, new float[] { x, subGroupMatch.getRightAnchorYTop(),
-								0 }, new float[] { x, subGroupMatch.getRightAnchorYTop() - rightYDiffSelection, 0 },
-								new float[] { xEnd, subGroupMatch.getRightAnchorYTop(), 0 }, new float[] { xEnd,
-										subGroupMatch.getRightAnchorYTop() - rightYDiffSelection, 0 }, false, 0, color,
-								trendRatio);// 0.5f);
-					}
-
-					// FIXME Stratomex 2.0 testing
-
-					// glVisBricks.getTextRenderer().begin3DRendering();
-
-					// String similarity =
-					// Float.toString(subGroupMatch.getLeftSimilarityRatio());
-					// if (similarity.length() >= 4)
-					// similarity = similarity.substring(0, 4);
-					//
-					// glVisBricks.getTextRenderer().draw3D(gl, similarity,
-					// xStart,
-					// subGroupMatch.getLeftAnchorYTop(), 0.5f, 0.003f, 50);
-					//
-					// similarity =
-					// Float.toString(subGroupMatch.getRightSimilarityRatio());
-					// if (similarity.length() >= 4)
-					// similarity = similarity.substring(0, 4);
-					//
-					// glVisBricks.getTextRenderer().draw3D(gl, similarity, xEnd
-					// - .2f,
-					// subGroupMatch.getLeftAnchorYTop(), 0.5f, 0.003f, 50);
-
-					// HashMap<Group, HashMap<Group, Float>> groupToSubGroup =
-					// leftDimGroup.getTablePerspective()
-					// .getContainerStatistics().getJaccardIndex()
-					// .getScore(rightDimGroup.getTablePerspective(), true);
-					//
-					// HashMap<Group, Float> subGroupToScore = groupToSubGroup
-					// .get(subGroupMatch.getSubGroup());
-					//
-					// float jacc = subGroupToScore.get(groupMatch.getGroup());
-					//
-					// String jaccardIndex = Float.toString(jacc);
-					//
-					// if (jaccardIndex.length() >= 4)
-					// jaccardIndex = jaccardIndex.substring(0, 4);
-					//
-					// glVisBricks.getTextRenderer().draw3D(gl, jaccardIndex,
-					// xStart,
-					// subGroupMatch.getLeftAnchorYTop(), 0.5f, 0.003f, 50);
-					//
-					// glVisBricks.getTextRenderer().end3DRendering();
+				Color extraHighlight = stratomex.isHighlightingBand(brick, subBrick);
+				if (extraHighlight != null) {
+					float ratio = 1.0f;
+					if (ratio == 0)
+						continue;
+					renderBand(gl, subGroupMatch, extraHighlight, curveOffset, xStart, xEnd, ratio, 1.0f, true);
 				}
 
 				gl.glPopName();
 
 			}
 		}
+	}
+
+	private void renderBand(GL2 gl, SubGroupMatch subGroupMatch, Color c, float curveOffset, float xStart,
+			float xEnd, float ratio, float trendRatio, boolean justOutline) {
+		float leftYDiff = subGroupMatch.getLeftAnchorYTop() - subGroupMatch.getLeftAnchorYBottom();
+		float leftYDiffSelection = leftYDiff * ratio;
+
+		float rightYDiff = subGroupMatch.getRightAnchorYTop() - subGroupMatch.getRightAnchorYBottom();
+		float rightYDiffSelection = rightYDiff * ratio;
+
+		float[] color = c.getRGBA();
+
+		// gl.glPushMatrix();
+		// gl.glTranslatef(0, 0, 0.1f);
+		{
+			final Vec2f lt = new Vec2f(0, subGroupMatch.getLeftAnchorYTop());
+			final Vec2f lb = new Vec2f(0, subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection);
+			final Vec2f rt = new Vec2f(x, subGroupMatch.getRightAnchorYTop());
+			final Vec2f rb = new Vec2f(x, subGroupMatch.getRightAnchorYTop() - rightYDiffSelection);
+
+			if (!justOutline)
+				connectionRenderer.renderSingleBand(gl, new float[] { lt.x(), lt.y(), 0 }, new float[] { lb.x(),
+						lb.y(), 0 }, new float[] { rt.x(), rt.y(), 0 }, new float[] { rb.x(), rb.y(), 0 }, true,
+						curveOffset, 0, color, justOutline);// 0.15f);
+			else
+				connectionRenderer.renderSingleBandOutline(gl, lt, lb, rt, rb, curveOffset, c);
+		}
+
+		// Render straight band connection from brick to dimension
+		// group on the LEFT. This is for the smaller bricks when
+		// the bricks are not of equal size
+		if (xStart != 0) {
+			final Vec2f lt = new Vec2f(xStart, subGroupMatch.getLeftAnchorYTop());
+			final Vec2f lb = new Vec2f(xStart, subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection);
+			final Vec2f rt = new Vec2f(0, subGroupMatch.getLeftAnchorYTop());
+			final Vec2f rb = new Vec2f(0, subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection);
+			if (!justOutline)
+				connectionRenderer.renderStraightBand(gl, new float[] { lt.x(), lt.y(), 0 },
+						new float[] { lb.x(), lb.y(), 0 }, new float[] { rt.x(), rt.y(), 0 },
+						new float[] { rb.x(), rb.y(), 0 }, false, 0, color, trendRatio, justOutline);// 0.5f);
+			else
+				connectionRenderer.renderStraightBandOutline(gl, lt, lb, rt, rb, c);
+		}
+
+		// Render straight band connection from brick to dimension
+		// group on the RIGHT. This is for the smaller bricks when
+		// the bricks are not of equal size
+		if (xEnd != 0) {
+			final Vec2f lt = new Vec2f(x, subGroupMatch.getRightAnchorYTop());
+			final Vec2f lb = new Vec2f(x, subGroupMatch.getRightAnchorYTop() - rightYDiffSelection);
+			final Vec2f rt = new Vec2f(xEnd, subGroupMatch.getRightAnchorYTop());
+			final Vec2f rb = new Vec2f(xEnd, subGroupMatch.getRightAnchorYTop() - rightYDiffSelection);
+			if (!justOutline)
+				connectionRenderer.renderStraightBand(gl, new float[] { lt.x(), lt.y(), 0 },
+						new float[] { lb.x(), lb.y(), 0 }, new float[] { rt.x(), rt.y(), 0 },
+						new float[] { rb.x(), rb.y(), 0 }, false, 0, color, trendRatio, justOutline);// 0.5f);
+			else
+				connectionRenderer.renderStraightBandOutline(gl, lt, lb, rt, rb, c);
+		}
+
+
+		// FIXME Stratomex 2.0 testing
+
+		// glVisBricks.getTextRenderer().begin3DRendering();
+
+		// String similarity =
+		// Float.toString(subGroupMatch.getLeftSimilarityRatio());
+		// if (similarity.length() >= 4)
+		// similarity = similarity.substring(0, 4);
+		//
+		// glVisBricks.getTextRenderer().draw3D(gl, similarity,
+		// xStart,
+		// subGroupMatch.getLeftAnchorYTop(), 0.5f, 0.003f, 50);
+		//
+		// similarity =
+		// Float.toString(subGroupMatch.getRightSimilarityRatio());
+		// if (similarity.length() >= 4)
+		// similarity = similarity.substring(0, 4);
+		//
+		// glVisBricks.getTextRenderer().draw3D(gl, similarity, xEnd
+		// - .2f,
+		// subGroupMatch.getLeftAnchorYTop(), 0.5f, 0.003f, 50);
+
+		// HashMap<Group, HashMap<Group, Float>> groupToSubGroup =
+		// leftDimGroup.getTablePerspective()
+		// .getContainerStatistics().getJaccardIndex()
+		// .getScore(rightDimGroup.getTablePerspective(), true);
+		//
+		// HashMap<Group, Float> subGroupToScore = groupToSubGroup
+		// .get(subGroupMatch.getSubGroup());
+		//
+		// float jacc = subGroupToScore.get(groupMatch.getGroup());
+		//
+		// String jaccardIndex = Float.toString(jacc);
+		//
+		// if (jaccardIndex.length() >= 4)
+		// jaccardIndex = jaccardIndex.substring(0, 4);
+		//
+		// glVisBricks.getTextRenderer().draw3D(gl, jaccardIndex,
+		// xStart,
+		// subGroupMatch.getLeftAnchorYTop(), 0.5f, 0.003f, 50);
+		//
+		// glVisBricks.getTextRenderer().end3DRendering();
+	}
+
+	private float computeTrendRatio(SubGroupMatch subGroupMatch, SelectionType selectionType) {
+		float trendRatio;
+		if (stratomex.isConnectionsHighlightDynamic() == false) {
+
+			if (selectionType == SelectionType.NORMAL) {
+				trendRatio = 0.15f;
+			} else {
+				trendRatio = 0.5f;
+			}
+		} else {
+
+			float maxRatio = Math.max(subGroupMatch.getLeftSimilarityRatio(),
+					subGroupMatch.getRightSimilarityRatio());
+			if (maxRatio < 0.3f)
+				trendRatio = (stratomex.getConnectionsFocusFactor() - maxRatio);
+			else
+				trendRatio = 1 - (stratomex.getConnectionsFocusFactor() + (1 - maxRatio));
+
+			if (stratomex.getSelectedConnectionBandID() == subGroupMatch.getConnectionBandID()) {
+				trendRatio = 0.8f;
+			} else {
+				// it would be too opaque if we use the factor
+				// determined by the slider
+				trendRatio /= 2f;
+			}
+		}
+		return trendRatio;
 	}
 
 	public void setRenderSpacer(boolean renderSpacer) {

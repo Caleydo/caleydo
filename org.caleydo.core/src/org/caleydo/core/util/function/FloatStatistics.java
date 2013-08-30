@@ -6,6 +6,8 @@
 package org.caleydo.core.util.function;
 
 /**
+ * Statistics calculated over a set of floats.
+ *
  * @author Samuel Gratzl
  *
  */
@@ -22,9 +24,10 @@ public class FloatStatistics {
 	}
 
 	public final float getVar() {
-		return n > 1 ? var / (n-1) : 0;
+		return n > 1 ? var / (n - 1) : 0;
 	}
 
+	/** Returns the standard deviation */
 	public final float getSd() {
 		return (float) Math.sqrt(getVar());
 	}
@@ -118,7 +121,7 @@ public class FloatStatistics {
 		return this;
 	}
 
-	protected FloatStatistics add(float[] xs) {
+	protected FloatStatistics add(float... xs) {
 		for (int i = 0; i < xs.length; ++i)
 			add(xs[i]);
 		return this;
@@ -128,12 +131,16 @@ public class FloatStatistics {
 		return new FloatStatistics().add(it);
 	}
 
-	public static FloatStatistics of(float[] arr) {
+	public static FloatStatistics of(float... arr) {
 		return new FloatStatistics().add(arr);
 	}
 
 	public static FloatStatistics of(IFloatList list) {
 		return new FloatStatistics().add(list.iterator());
+	}
+
+	public static Builder builder() {
+		return new Builder();
 	}
 
 	@Override
@@ -150,6 +157,40 @@ public class FloatStatistics {
 		builder.append(", sum=").append(sum);
 		builder.append("]");
 		return builder.toString();
+	}
+
+	/**
+	 * builder pattern for {@link FloatStatistics}
+	 * 
+	 * @author Samuel Gratzl
+	 * 
+	 */
+	public static final class Builder {
+		private FloatStatistics stats;
+
+		private Builder() {
+			this.stats = new FloatStatistics();
+		}
+
+		public Builder add(float v) {
+			stats.add(v);
+			return this;
+		}
+
+		public Builder add(float... v) {
+			stats.add(v);
+			return this;
+		}
+
+		public Builder add(IFloatIterator it) {
+			stats.add(it);
+			return this;
+		}
+
+		public FloatStatistics build() {
+			return stats;
+		}
+
 	}
 
 }

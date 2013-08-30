@@ -109,8 +109,11 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 	private ColumnHideShowLayer columnHidder;
 	private RowHideShowLayer rowHidder;
 
+	private final Composite parentComposite;
+
 	public TableView(Composite parentComposite, CaleydoRCPViewPart view) {
-		super(parentComposite, VIEW_TYPE, VIEW_NAME);
+		super(VIEW_TYPE, VIEW_NAME);
+		this.parentComposite = parentComposite;
 		this.view = view;
 	}
 
@@ -413,14 +416,8 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 	}
 
 	@Override
-	public void initFromSerializableRepresentation(ASerializedView serializedView) {
-
-	}
-
-	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedTableView serializedForm = new SerializedTableView(this);
-		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
 

@@ -24,67 +24,119 @@ import com.google.common.collect.Iterators;
 /**
  * a simple container that implements a selector behavior, i.e. only one child will be rendered, e.g. for implementing
  * level of detail
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public abstract class GLElementSelector extends GLElement implements IGLElementParent, Iterable<GLElement> {
 	private final List<GLElement> children = new ArrayList<>(3);
+	private boolean lazy = true;
+
+	private int selected = -1;
 
 	public GLElementSelector() {
 
 	}
 
-	@Override
-	public void layout(int deltaTimeMs) {
-		super.layout(deltaTimeMs);
-		for (GLElement child : this)
-			child.layout(deltaTimeMs);
-	}
-
-	@Override
-	protected final void layoutImpl() {
-		super.layoutImpl();
-		Vec2f size = getSize();
-		for (GLElement elem : this) {
-			GLElementAccessor.asLayoutElement(elem).setBounds(0, 0, size.x(), size.y());
+	/**
+	 * @param lazyInit
+	 *            setter, see {@link lazyInit}
+	 */
+	public void setLazy(boolean lazyInit) {
+		if (this.lazy == lazyInit)
+			return;
+		this.lazy = lazyInit;
+		if (!this.lazy && context != null) {
+			// init the rest
+			for (GLElement child : this) {
+				if (!GLElementAccessor.isInitialized(child)) {
+					GLElementAccessor.setParent(child, this);
+					GLElementAccessor.init(child, context);
+				}
+			}
 		}
 	}
 
-	public final GLElement getSelected(float w, float h) {
-		int index = select(w, h);
-		if (index < 0)
-			return null;
+	@Override
+	public void layout(int deltaTimeMs) {
+		super.layout(deltaTimeMs);
+		if (lazy) {
+			GLElement selected = getSelected();
+			if (selected != null)
+				selected.layout(deltaTimeMs);
+		} else {
+			for (GLElement child : this)
+				child.layout(deltaTimeMs);
+		}
+	}
+
+	@Override
+	protected final void layoutImpl(int deltaTimeMs) {
+		super.layoutImpl(deltaTimeMs);
+		Vec2f size = getSize();
+		if (lazy) {
+			GLElement selected = getSelected();
+			if (selected != null)
+				GLElementAccessor.asLayoutElement(selected).setBounds(0, 0, size.x(), size.y());
+		} else {
+			for (GLElement child : this)
+				GLElementAccessor.asLayoutElement(child).setBounds(0, 0, size.x(), size.y());
+		}
+	}
+
+	public final GLElement getSelected() {
+		int index = select();
 		if (index >= children.size())
 			index = children.size() - 1;
-		return children.get(index);
+		if (this.selected != index && lazy && context != null && this.selected >= 0) {
+			// take down the old one
+			GLElementAccessor.takeDown(children.get(selected));
+		}
+		this.selected = index;
+		if (index < 0)
+			return null;
+		GLElement s = children.get(index);
+		if (!GLElementAccessor.isInitialized(s) && context != null) {
+			GLElementAccessor.setParent(s, this);
+			GLElementAccessor.init(s, context);
+		}
+		return s;
 	}
 
 	/**
 	 * returns the index of the selected gl element child to render
-	 * @param w
-	 * @param h
 	 * @return or null if no
 	 */
-	protected abstract int select(float w, float h);
+	protected abstract int select();
 
 	@Override
 	protected void takeDown() {
 		for (GLElement elem : this)
-			GLElementAccessor.takeDown(elem);
+			if (GLElementAccessor.isInitialized(elem))
+				GLElementAccessor.takeDown(elem);
 		super.takeDown();
 	}
 
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		for (GLElement child : this)
-			GLElementAccessor.init(child, context);
+		if (lazy) {
+			GLElement selected = getSelected();
+			if (selected != null) {
+				GLElementAccessor.setParent(selected, this);
+				GLElementAccessor.init(selected, context);
+			}
+		} else {
+			for (GLElement child : this) {
+				GLElementAccessor.setParent(child, this);
+				GLElementAccessor.init(child, context);
+			}
+		}
 	}
 
 	private void setup(GLElement child) {
 		GLElementAccessor.setParent(child, this);
-		if (context != null)
+		if (context != null && !lazy)
 			GLElementAccessor.init(child, context);
 	}
 
@@ -198,7 +250,7 @@ public abstract class GLElementSelector extends GLElement implements IGLElementP
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
-		GLElement selected = getSelected(w, h);
+		GLElement selected = getSelected();
 		if (selected != null)
 			selected.render(g);
 	}
@@ -206,7 +258,7 @@ public abstract class GLElementSelector extends GLElement implements IGLElementP
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		super.renderPickImpl(g, w, h);
-		GLElement selected = getSelected(w, h);
+		GLElement selected = getSelected();
 		if (selected != null)
 			selected.renderPick(g);
 	}

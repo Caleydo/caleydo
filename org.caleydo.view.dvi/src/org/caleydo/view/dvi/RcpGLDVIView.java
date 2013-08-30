@@ -5,13 +5,11 @@
  ******************************************************************************/
 package org.caleydo.view.dvi;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.dvi.toolbar.ToolBarWidgets;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLDVIView extends ARcpGLViewPart {
@@ -20,20 +18,14 @@ public class RcpGLDVIView extends ARcpGLViewPart {
 	 * Constructor.
 	 */
 	public RcpGLDVIView() {
-		super();
-
-		try {
-			viewContext = JAXBContext.newInstance(SerializedDVIView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		super(SerializedDVIView.class);
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLDataViewIntegrator(glCanvas, parentComposite, serializedView.getViewFrustum());
+		view = new GLDataViewIntegrator(glCanvas, serializedView.getViewFrustum());
 		initializeView();
 		minSizeComposite.setView((AGLView) view);
 		createPartControlGL();
@@ -46,12 +38,7 @@ public class RcpGLDVIView extends ARcpGLViewPart {
 	}
 
 	@Override
-	public String getViewGUIID() {
-		return GLDataViewIntegrator.VIEW_TYPE;
-	}
-
-	@Override
-	public void addToolBarContent() {
+	public void addToolBarContent(IToolBarManager toolBarManager) {
 
 		toolBarManager.add(new ToolBarWidgets("Graph Layout"));
 		toolBarManager

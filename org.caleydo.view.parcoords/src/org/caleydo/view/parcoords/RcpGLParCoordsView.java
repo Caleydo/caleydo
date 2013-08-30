@@ -5,13 +5,11 @@
  ******************************************************************************/
 package org.caleydo.view.parcoords;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.view.parcoords.toolbar.AngularBrushingAction;
 import org.caleydo.view.parcoords.toolbar.ResetAxisSpacingAction;
 import org.caleydo.view.parcoords.toolbar.SaveSelectionsAction;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLParCoordsView extends ARcpGLViewPart {
@@ -20,21 +18,13 @@ public class RcpGLParCoordsView extends ARcpGLViewPart {
 	 * Constructor.
 	 */
 	public RcpGLParCoordsView() {
-		super();
-
-		try {
-			viewContext = JAXBContext
-					.newInstance(SerializedParallelCoordinatesView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		super(SerializedParallelCoordinatesView.class);
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		view = new GLParallelCoordinates(glCanvas, parentComposite,
-				serializedView.getViewFrustum());
+		view = new GLParallelCoordinates(glCanvas, serializedView.getViewFrustum());
 		initializeView();
 		createPartControlGL();
 	}
@@ -47,12 +37,8 @@ public class RcpGLParCoordsView extends ARcpGLViewPart {
 	}
 
 	@Override
-	public String getViewGUIID() {
-		return GLParallelCoordinates.VIEW_TYPE;
-	}
-
-	@Override
-	public void addToolBarContent() {
+	public void addToolBarContent(IToolBarManager toolBarManager) {
+		super.addToolBarContent(toolBarManager);
 
 		toolBarManager.add(new AngularBrushingAction());
 		toolBarManager.add(new ResetAxisSpacingAction());

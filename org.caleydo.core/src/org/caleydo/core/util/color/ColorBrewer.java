@@ -24,9 +24,9 @@ import com.google.common.collect.TreeBasedTable;
 
 /**
  * This product includes color specifications and designs developed by Cynthia Brewer (http://org/).
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public enum ColorBrewer implements IColorPalette {
 	YlGn(EColorSchemeType.SEQUENTIAL),
@@ -573,9 +573,9 @@ public enum ColorBrewer implements IColorPalette {
 
 	/**
 	 * custom version of a color with special darker / brighter meaning
-	 * 
+	 *
 	 * @author Samuel Gratzl
-	 * 
+	 *
 	 */
 	@XmlType
 	public static class ColorBrewerColor extends Color {
@@ -613,7 +613,7 @@ public enum ColorBrewer implements IColorPalette {
 		@Override
 		public Color darker() {
 			List<Color> set = getSet();
-			if (index >= set.size())
+			if (index >= set.size() - 1)
 				return super.darker();
 			return set.get(index + 1);
 		}
