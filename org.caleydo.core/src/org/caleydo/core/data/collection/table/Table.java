@@ -62,6 +62,11 @@ import org.eclipse.core.runtime.Status;
  */
 public class Table {
 
+	/**
+	 * 
+	 */
+	private static final double NAN_THRESHOLD = 0.8;
+
 	public class Transformation {
 		/** Untransformed data */
 		public static final String LINEAR = "None";
@@ -665,7 +670,7 @@ public class Table {
 
 			AdvancedFloatStatistics stats = AdvancedFloatStatistics.of(allDimsPerRecordArray);
 			// throwing out all values with more than 80% NAN
-			if (stats.getNaNs() < stats.getN() * 0.8) {
+			if (stats.getNaNs() < stats.getN() * NAN_THRESHOLD) {
 				allDimVar.add(new Pair<Float, Integer>(stats.getMedianAbsoluteDeviation(), dimID));
 			}
 		}
