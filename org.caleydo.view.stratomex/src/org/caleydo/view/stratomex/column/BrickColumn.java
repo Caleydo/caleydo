@@ -714,6 +714,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 				layout.setPixelSizeY(brickSpacing);
 			}
 		}
+		stratomex.setLayoutDirty();
+		stratomex.updateConnectionLinesBetweenColumns();
 	}
 
 	@Override
