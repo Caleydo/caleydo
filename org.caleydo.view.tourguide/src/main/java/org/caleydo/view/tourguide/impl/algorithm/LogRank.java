@@ -84,10 +84,10 @@ public class LogRank implements IGroupAlgorithm {
 		int bsurvived = bsp.getSecond();
 		if (monitor.isCanceled())
 			return Float.NaN;
-		float r = Statistics.logRank(as, asurvived, bs, bsurvived);
-		if (Float.isInfinite(r))
+		double r = Statistics.logRank(as, asurvived, bs, bsurvived);
+		if (Double.isInfinite(r))
 			return Float.NaN;
-		return r;
+		return (float) r;
 	}
 
 	private Pair<List<Float>, Integer> getValues(Iterable<Integer> a, Integer col) {

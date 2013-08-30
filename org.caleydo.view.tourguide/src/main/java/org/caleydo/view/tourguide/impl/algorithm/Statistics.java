@@ -9,17 +9,19 @@ import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.ChiSquaredDistribution;
 import org.apache.commons.math.distribution.ChiSquaredDistributionImpl;
 import org.caleydo.core.util.logging.Logger;
 
+import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Sets;
+import com.google.common.primitives.Floats;
 import com.google.common.primitives.Ints;
 
 /**
@@ -37,7 +39,7 @@ public final class Statistics {
 
 	/**
 	 * computes the rand index, see <a href="http://en.wikipedia.org/wiki/Rand_index">Rand_Index</a> in Wikipedia
-	 * 
+	 *
 	 * @param x
 	 *            the collection of groups of the first stratification
 	 * @param y
@@ -102,7 +104,7 @@ public final class Statistics {
 
 	/**
 	 * computes the adjusted rand, see <a href="http://en.wikipedia.org/wiki/Rand_index">Rand_Index</a> in Wikipedia
-	 * 
+	 *
 	 * @param x
 	 *            the collection of groups of the first stratification
 	 * @param y
@@ -219,8 +221,7 @@ public final class Statistics {
 	/**
 	 * computes the log rank score between the two given survival curves
 	 *
-	 * based on <a href="http://en.wikipedia.org/wiki/Logrank_test">Logrank_test</a> and the book: Survival Analysis: A
-	 * Self-Learning Text
+	 * based on <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC403858/">Logrank_test</a>
 	 *
 	 * @param as
 	 *            the survival of specific samples of a
@@ -232,41 +233,122 @@ public final class Statistics {
 	 *            the number of survived samples in b after the experiment
 	 * @return
 	 */
-	public static float logRank(List<Float> as, int asurvived, List<Float> bs, int bsurvived) {
-		SortedSet<Float> distinct = new TreeSet<>(as);
-		distinct.addAll(bs);
-		int ai = 0, bi = 0;
+	public static double logRank(List<Float> as_l, int asurvived, List<Float> bs_l, int bsurvived) {
+		final float[] as = sorted(as_l);
+		final float[] bs = sorted(bs_l);
 
-		float nom = 0, denom = 0;
+		// distinct events
+		final SortedSet<Float> distinct = ImmutableSortedSet.<Float> naturalOrder().addAll(as_l).addAll(bs_l).build();
+		int a_i = 0, b_i = 0;
 
-		for (float j : distinct) {
-			// 1
-			float o1j = 0;
-			while (ai < as.size() && as.get(ai) == j) {
-				o1j++; // find act
-				ai++;
-			}
-			float n1j = as.size() + asurvived - ai; // rest
-			// 2
-			float o2j = 0;
-			while (bi < bs.size() && bs.get(bi) == j) {
-				o2j++; // find act
-				bi++;
-			}
-			float n2j = bs.size() + bsurvived - bi; // rest
+		double a_deaths_expected_acc = 0;
+		double a_deaths_variance_acc = 0;
+		int a_deaths_observed_acc = 0;
 
-			float e1j = n1j == 0 ? 0 : (o1j + o2j) * n1j / (n1j + n2j);
-			float vj = (n1j == 0 || n2j == 0) ? 0 : (n1j * n2j * (o1j + o2j) * (n1j + n2j - o1j - o2j))
-					/ ((n1j + n2j) * (n1j + n2j) * (n1j + n2j - 1));
+		double b_deaths_expected_acc = 0;
+		double b_deaths_variance_acc = 0;
+		int b_deaths_observed_acc = 0;
 
-			nom += o1j - e1j;
-			denom += vj;
+		for (float event : distinct) {
+
+			int a_alive = asurvived + as.length - a_i; // alive before the event
+			int a_deaths = deathsAt(as, a_i, event); // find deaths
+			a_i += a_deaths; // shift event consumption
+
+			int b_alive = bsurvived + bs.length - b_i;
+			int b_deaths = deathsAt(bs, b_i, event);
+			b_i += b_deaths; // shift
+
+			double deaths = a_deaths + b_deaths;
+			double alive = a_alive + b_alive;
+
+			double a_deaths_expected = expected(a_alive, deaths, alive);
+			a_deaths_expected_acc += a_deaths_expected;
+			a_deaths_observed_acc += a_deaths;
+
+			double b_deaths_expected = expected(b_alive, deaths, alive);
+			b_deaths_expected_acc += b_deaths_expected;
+			b_deaths_observed_acc += b_deaths;
+
+			double a_deaths_variance = var(a_alive, deaths, alive);
+			a_deaths_variance_acc += a_deaths_variance;
+
+			double b_deaths_variance = var(b_alive, deaths, alive);
+			b_deaths_variance_acc += b_deaths_variance;
 		}
-		float z = (nom * nom) / denom;
-		return z;
+
+		// double z_article = Math.pow(a_deaths_observed_acc - a_deaths_expected_acc, 2) / a_deaths_expected_acc +
+		// Math.pow(b_deaths_observed_acc - b_deaths_expected_acc, 2) / b_deaths_expected_acc;
+		// //http://www.ncbi.nlm.nih.gov/pmc/articles/PMC403858/
+		// double z_wiki = (b_deaths_observed_acc - b_deaths_expected_acc) / Math.sqrt(b_deaths_variance_acc);
+		// //wikipedia
+
+		double z_r = Math.pow(b_deaths_observed_acc - b_deaths_expected_acc, 2) / b_deaths_variance_acc; // r survival
+		// double z_r2 = Math.pow(a_deaths_observed_acc - a_deaths_expected_acc, 2) / a_deaths_variance_acc; // r
+		// survival
+		// // package
+		return z_r;
+	}
+
+	private static double expected(int a_alive, double deaths, double alive) {
+		return a_alive == 0 ? 0 : (deaths / alive) * a_alive;
+	}
+
+	private static double var(int a_alive, double deaths, double alive) {
+		return a_alive == 0 || alive == 1 ? 0 : (deaths * (a_alive / alive)
+				* (1 - a_alive / alive) * (alive - deaths))
+				/ (alive - 1);
+	}
+
+	private static int deathsAt(final float[] as, int start, float event) {
+		int deaths = 0;
+		for (int i = start; i < as.length && as[i] == event; ++i) { // event hits
+			deaths++; // find act
+		}
+		return deaths;
+	}
+
+	private static float[] sorted(List<Float> l) {
+		final float[] as = Floats.toArray(l);
+		Arrays.sort(as);
+		return as;
 	}
 
 	private static int binom2(int n) {
 		return (n - 1) * n / 2;
+	}
+
+	public static void main(String[] args) {
+		{
+			List<Float> a = Floats.asList(41, 54, 59, 65, 67, 73, 92, 137, 139, 164, 220, 224, 245, 311, 329, 330, 333,
+					336, 342, 362, 431, 454, 459, 477, 479, 480, 485, 510, 551, 563, 572, 573, 586, 637, 678, 683, 709,
+					722, 768, 769, 782, 822, 827, 877, 884, 927, 945, 951, 992, 1092, 1097, 1121, 1173, 1190, 1316,
+					1337, 1370, 1417, 1463, 1587, 1590, 1597, 1625, 1661, 1723, 1912, 1913, 1964, 1979, 2145, 2190,
+					2227, 2298, 2751, 2763);
+			int asurvived = 217;
+			List<Float> b = Floats.asList(50);
+			int bsurvived = 0;
+
+			double z = logRank(a, asurvived, b, bsurvived);
+			double p = chiSquaredProbability(z, 1);
+			System.out.println("test1: " + z + " " + p);
+		}
+
+		{
+//			 a =59  115  156  431  448  477  638  803  855 1040 1106  268  329);
+//			 as = 1 1 1 1 0 0 1 0 0 0 0 1 1;
+//			 b = 421  464  475  563  744  769  770 1129 1206 1227  353  365  377);
+//			 bs = 0 1 1 1 0 0 0 0 0 0 1 1 0;
+			List<Float> a2 = Floats.asList(59,115,156,431,638,268,329);
+			Collections.sort(a2);
+			int asurv = 6;
+			List<Float> b2 = Floats.asList(464, 475, 563, 353, 365);
+			int bsurv = 8;
+			Collections.sort(b2);
+			double z = logRank(a2, asurv, b2, bsurv);
+			double p = chiSquaredProbability(z, 1);
+			System.out.println("ovarian: " + z + " " + p);
+		}
+
 	}
 }
