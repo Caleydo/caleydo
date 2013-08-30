@@ -16,11 +16,9 @@
    <extension-point id="org.caleydo.core.util.Clusterer" name="Clusterer" schema="schema/org.caleydo.core.util.Clusterer.exsd"/>
    <extension-point id="org.caleydo.core.StartupAddon" name="StartupAddon" schema="schema/org.caleydo.core.StartupAddon.exsd"/>
    <extension-point id="org.caleydo.core.SampleProject" name="Sample Project Description" schema="schema/org.caleydo.core.SampleProject.exsd"/>
-<<<<<<< HEAD
-=======
+
    <extension-point id="org.caleydo.core.CacheInitializer" name="CacheInitializer" schema="schema/org.caleydo.core.CacheInitializer.exsd"/>
    <extension-point id="org.caleydo.ui.GLElementFactory" name="GLElementFactory" schema="schema/org.caleydo.ui.GLElementFactory.exsd"/>
->>>>>>> develop
 
    <extension
          id="application"
@@ -80,11 +78,7 @@
          </property>
          <property
                name="aboutText"
-<<<<<<< HEAD
-               value="Caleydo - Visualization for Molecular Biology&#x0A;http:// caleydo.org&#x0A;&#x0A;Copyright 2008 - 2013  by the Caleydo Team.&#x0A;Caleydo is open-source software licenced under the New BSD license.">
-=======
                value="Caleydo - Visualization for Molecular Biology&#x0A;http://caleydo.org&#x0A;&#x0A;Copyright 2008 - 2013  by the Caleydo Team.&#x0A;Caleydo is open-source software licenced under the New BSD license.">
->>>>>>> develop
          </property>
       </product>
    </extension>
@@ -108,11 +102,7 @@
             name="Exit">
       </command>
       <command
-<<<<<<< HEAD
-            defaultHandler="org.caleydo.core.gui.FullScreenHandler"
-=======
             defaultHandler="org.caleydo.core.gui.command.FullScreenHandler"
->>>>>>> develop
             id="org.caleydo.core.gui.fullscreen"
             name="Full Screen">
       </command>
@@ -127,16 +117,12 @@
             name="Import Data">
       </command>
       <command
-<<<<<<< HEAD
-            defaultHandler="org.caleydo.core.io.gui.SaveProjectHandler"
-=======
             defaultHandler="org.caleydo.core.gui.command.TakeSnapshotHandler"
             id="org.caleydo.core.io.gui.snapshot"
             name="Take Snapshot">
       </command>
       <command
             defaultHandler="org.caleydo.core.gui.command.SaveProjectHandler"
->>>>>>> develop
             id="org.caleydo.core.io.gui.save_project"
             name="Save Project">
       </command>
@@ -175,14 +161,11 @@
             id="org.caleydo.core.startup.open"
             name="Open Project">
       </command>
-<<<<<<< HEAD
-=======
       <command
             defaultHandler="org.caleydo.core.gui.command.ClearSelectionsHandler"
             id="org.caleydo.core.startup.clearselections"
             name="Clear Selections">
       </command>
->>>>>>> develop
 
    </extension>
    <extension
@@ -333,8 +316,6 @@
             </command>
          </menu>
       </menuContribution>
-<<<<<<< HEAD
-=======
       <menuContribution
             allPopups="false"
             locationURI="toolbar:org.caleydo.core.gui.toolbar1">
@@ -397,7 +378,6 @@
                tooltip="Trigger the clustering creation">
          </command>
       </menuContribution>
->>>>>>> develop
    </extension>
       <extension
          point="org.eclipse.ui.preferencePages">
@@ -466,20 +446,11 @@
          <sample
                description="The ideal choice if you want to try out multi-dataset analysis with StratomeX in Calyedo. &#x0A;&#x0A;This project loads eight linked datasets for Glioblastoma Multiforme (GBM), collected by &lt;a href=&quot;http://cancergenome.nih.gov&quot;&gt;TCGA&lt;/a&gt; and made available by the Broad Institute&apos;s &lt;a href=&quot;http://gdac.broadinstitute.org&quot;&gt;Genome Data Analysis Center (GDAC)&lt;/a&gt;.&#x0A;The datasets are mRNA expression data (chip-based and sequencing based separately), microRNA expression, methylation, mutation, copy-number, RPPA as well as clinical data. The project contains 300-550 samples for each dataset. The expression datasets contain about 1,500 pre-selected values, copy number status is availiabe for about 5,000 genes.&#x0A;&#x0A;Download Size: 17 MB "
                name="Try Caleydo with TCGA Glioblastoma Multiforme Dataset"
-<<<<<<< HEAD
-               url="http://data.icg.tugraz.at/caleydo/download/3.0/samples/tcga_gbm.cal">
-=======
                url="DATA_URL_PREFIX/samples/tcga_gbm.cal">
->>>>>>> develop
          </sample>
          <sample
             description="The ideal choice if you want to try out pathway-centric analysis with enRoute in Calyedo.&#x0A;&#x0A;This project loads four linked datasets from the &lt;a href=&quot;http://www.broadinstitute.org/ccle&quot;&gt;Cancer Cell Line Encyclopedia (CCLE)&lt;/a&gt; collected by the Broad Institute and the Novartis Institutes for Biomedical Research. &#x0A;The datasets are mRNA expression, mutation and copy-number data as well as IC 50 values for the cell lines and 24 known anti cancer drugs. The project contains between 500 and 1000 samples for each dataset. The genetic datasets contain between 1,600 (mutation data) and roughly 20,000 values (other datatasets).&#x0A; &#x0A;Download Size: 77 MB"
                name="Try Caleydo with CCLE Dataset"
-<<<<<<< HEAD
-               url="http://data.icg.tugraz.at/caleydo/download/3.0/samples/ccle.cal">
-         </sample>
-      </extension>
-=======
                url="DATA_URL_PREFIX/samples/ccle.cal">
          </sample>
       </extension>

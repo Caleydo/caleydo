@@ -17,11 +17,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 public interface ISpacingStrategy {
 	/**
 	 * apply the strategy and compute a {@link ISpacingLayout} given the arguments
-<<<<<<< HEAD
 	 *
-=======
-	 * 
->>>>>>> refs/heads/entourage
 	 * @param perspective
 	 *            the data to show
 	 * @param manager

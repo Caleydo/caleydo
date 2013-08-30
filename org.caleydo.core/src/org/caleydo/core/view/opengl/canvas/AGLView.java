@@ -1098,12 +1098,8 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	/**
 	 * Check whether the view is visible. If not, it should not be rendered. Note that events should be processed
-	 * anyway.
-<<<<<<< HEAD
+	 * anyway
 	 * @param drawable
-=======
-	 * @param drawable
->>>>>>> refs/heads/entourage
 	 *
 	 * @return true if it is visible
 	 */
