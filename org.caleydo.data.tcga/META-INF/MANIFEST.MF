@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: TCGA
 Bundle-SymbolicName: org.caleydo.data.tcga;singleton:=true
-Bundle-Version: 3.0.2.qualifier
+Bundle-Version: 3.0.2
 Bundle-Activator: org.caleydo.data.tcga.internal.Activator
 Require-Bundle: org.eclipse.core.runtime,
- org.caleydo.core;bundle-version="3.0.2.qualifier",
+ org.caleydo.core;bundle-version="3.0.2",
  com.google.gson;bundle-version="2.1.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
