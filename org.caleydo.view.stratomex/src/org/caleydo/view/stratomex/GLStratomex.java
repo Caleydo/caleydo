@@ -566,7 +566,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			handleHorizontalColumnMove(gl);
 			if (isLayoutDirty) {
 				isLayoutDirty = false;
-
 				layoutManager.updateLayout();
 				float minWidth = pixelGLConverter.getGLWidthForPixelWidth(BRICK_COLUMN_SPACING_MIN_PIXEL_WIDTH);
 				for (ElementLayout layout : centerRowLayout) {
@@ -580,6 +579,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 						break;
 					}
 				}
+				updateConnectionLinesBetweenColumns();
 			}
 
 			if (resizeNecessary) {
@@ -641,7 +641,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			}
 
 			if (isConnectionLinesDirty) {
-
 				performConnectionLinesUpdate();
 			}
 
@@ -972,8 +971,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			public void clicked(Pick pick) {
 				dragAndDropController.clearDraggables();
 				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
-				dragAndDropController.addDraggable((BrickColumn) ViewManager.get().getGLView(
-						pick.getObjectID()));
+				dragAndDropController.addDraggable((BrickColumn) ViewManager.get().getGLView(pick.getObjectID()));
 				dragAndDropController.setDraggingMode("DimensionGroupDrag");
 
 			}
@@ -1738,9 +1736,10 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		IUniqueObject i1 = at.getRecordGroup();
 		IUniqueObject i2 = bt.getRecordGroup();
 		Color c;
-		if ((c = bandHighlights.get(toHighlightBandKey(i1,i2))) != null)
+		if ((c = bandHighlights.get(toHighlightBandKey(i1, i2))) != null)
 			return c;
-		if (at instanceof PathwayTablePerspective && (c = bandHighlights.get(toHighlightBandKey( ((PathwayTablePerspective) at).getPathway(),i2))) != null)
+		if (at instanceof PathwayTablePerspective
+				&& (c = bandHighlights.get(toHighlightBandKey(((PathwayTablePerspective) at).getPathway(), i2))) != null)
 			return c;
 		if (bt instanceof PathwayTablePerspective
 				&& (c = bandHighlights.get(toHighlightBandKey(i1, ((PathwayTablePerspective) bt).getPathway()))) != null)
