@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Search
 Bundle-SymbolicName: org.caleydo.view.search;singleton:=true
-Bundle-Version: 
-Require-Bundle: org.caleydo.core;bundle-version=""
+Bundle-Version: 3.0.2.qualifier
+Require-Bundle: org.caleydo.core;bundle-version="3.0.2.qualifier"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.caleydo.view.search.api
 Bundle-Vendor: www.caleydo.org
