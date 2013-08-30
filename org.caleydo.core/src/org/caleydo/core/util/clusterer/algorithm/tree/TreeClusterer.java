@@ -16,6 +16,8 @@ import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.function.FloatStatistics;
 
+import com.google.common.base.Stopwatch;
+
 /**
  * Tree clusterer
  *
@@ -67,50 +69,36 @@ public class TreeClusterer extends AClusterer {
 	private int determineSimilarities() {
 		EDistanceMeasure distanceMeasure = config.getDistanceMeasure();
 
-		int icnt1 = 0, icnt2 = 0, isto = 0;
 		int iPercentage = 1;
 
 		rename("Determine Similarities for " + getPerspectiveLabel() + " clustering");
 
-		float[] dArInstance1 = new float[oppositeVA.size()];
-		float[] dArInstance2 = new float[oppositeVA.size()];
+		float[][] vectors = new float[va.size()][oppositeVA.size()];
 
-		for (Integer vaID : va) {
+		for (int vaID_i = 0; vaID_i < va.size(); ++vaID_i) {
+			Integer vaID = va.get(vaID_i);
 			if (isClusteringCanceled) {
 				progress(100, true);
 				return -2;
 			}
 
-			int tempPercentage = (int) ((float) icnt1 / va.size() * 100);
+			int tempPercentage = (int) ((float) vaID_i / va.size() * 100);
 			if (iPercentage == tempPercentage) {
 				progress(iPercentage, false);
 				iPercentage++;
 			}
 
-			isto = 0;
-			for (Integer opppositeID : oppositeVA) {
-				dArInstance1[isto] = table.getDataDomain().getNormalizedValue(va.getIdType(), vaID,
-						oppositeVA.getIdType(), opppositeID);
-				isto++;
+			float[] d1 = vectors[vaID_i];
+
+			fillVector(vectors[vaID_i], vaID);
+
+			for (int vaID_j = 0; vaID_j < vaID_i; ++vaID_j) {
+				// Integer vaID2 = va.get(vaID_j);
+				float[] d2 = vectors[vaID_j];
+				// as only the past already filled fillVector(dArInstance2, vaID2);
+
+				similarities[vaID_i][vaID_j] = distanceMeasure.apply(d1, d2);
 			}
-
-			icnt2 = 0;
-			for (Integer vaID2 : va) {
-				isto = 0;
-
-				if (icnt2 < icnt1) {
-					for (Integer oppositeID2 : oppositeVA) {
-						dArInstance2[isto] = table.getDataDomain().getNormalizedValue(va.getIdType(), vaID2,
-								oppositeVA.getIdType(), oppositeID2);
-						isto++;
-					}
-
-					similarities[va.indexOf(vaID)][va.indexOf(vaID2)] = distanceMeasure.apply(dArInstance1,
-							dArInstance2);
-				}
-				icnt2++;
-			}
-			icnt1++;
 			eventListeners.processEvents();
 		}
 
@@ -119,6 +107,15 @@ public class TreeClusterer extends AClusterer {
 		normalizeSimilarities();
 
 		return 0;
+	}
+
+	private void fillVector(float[] v, Integer vaID2) {
+		int isto = 0;
+		for (Integer oppositeID2 : oppositeVA) {
+			v[isto] = table.getDataDomain().getNormalizedValue(va.getIdType(), vaID2, oppositeVA.getIdType(),
+					oppositeID2);
+			isto++;
+		}
 	}
 
 	/**
@@ -589,8 +586,10 @@ public class TreeClusterer extends AClusterer {
 	protected PerspectiveInitializationData cluster() {
 		int iReturnValue = 0;
 
+		Stopwatch w = new Stopwatch().start();
 		iReturnValue = determineSimilarities();
-
+		System.out.println("determine similarties: " + w);
+		w.stop().reset();
 		if (iReturnValue < 0) {
 			progress(100);
 			return null;
@@ -600,15 +599,20 @@ public class TreeClusterer extends AClusterer {
 
 		PerspectiveInitializationData tempResult;
 
+		w.start();
 		switch (tConfig.getTreeClustererAlgo()) {
 		case COMPLETE_LINKAGE:
 			tempResult = pmlcluster();
+			System.out.println("pmlcluster: " + w);
 			break;
 		case AVERAGE_LINKAGE:
+
 			tempResult = palcluster();
+			System.out.println("palcluster: " + w);
 			break;
 		case SINGLE_LINKAGE:
 			tempResult = pslcluster();
+			System.out.println("pslcluster: " + w);
 			break;
 		default:
 			throw new IllegalStateException("Unkonwn cluster type: " + tConfig.getTreeClustererAlgo());
