@@ -292,7 +292,8 @@ public final class ProjectManager {
 	 *            name of the file to save the project in.
 	 */
 	public static IRunnableWithProgress save(String fileName) {
-		return save(fileName, false, DataDomainManager.get().getDataDomains(), ProjectMetaData.createDefault());
+		return save(fileName, false, DataDomainManager.get().getDataDomains(), GeneralManager.get().getMetaData()
+				.cloneForSaving());
 	}
 
 	/**

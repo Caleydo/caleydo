@@ -25,7 +25,7 @@ import org.caleydo.core.manager.GeneralManager;
  */
 @XmlRootElement(name = "metadata")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ProjectMetaData {
+public final class ProjectMetaData implements Cloneable {
 	private String name;
 	@XmlAttribute
 	private String version;
@@ -38,6 +38,13 @@ public class ProjectMetaData {
 		m.setName("");
 		m.setCreationDate(new Date());
 		m.setVersion(GeneralManager.VERSION.toString());
+		return m;
+	}
+
+	public ProjectMetaData cloneForSaving() {
+		ProjectMetaData m = createDefault();
+		m.setName(name);
+		m.custom.putAll(custom);
 		return m;
 	}
 
