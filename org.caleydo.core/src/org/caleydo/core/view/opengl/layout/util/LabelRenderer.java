@@ -16,13 +16,11 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 
 /**
- * Renders a text within the given bounds of the ElementLayout. The text is
- * truncated if necessary.
+ * Renders a text within the given bounds of the ElementLayout. The text is truncated if necessary.
  *
  * @author Partl
  */
-public class LabelRenderer
-	extends APickableLayoutRenderer {
+public class LabelRenderer extends APickableLayoutRenderer {
 
 	/**
 	 *
@@ -38,8 +36,8 @@ public class LabelRenderer
 	private String label = "Not set";
 
 	/**
-	 * The text of the label that was rendered in the last frame. This variable
-	 * is used to detect whether a new display list has to be built.
+	 * The text of the label that was rendered in the last frame. This variable is used to detect whether a new display
+	 * list has to be built.
 	 */
 	private String prevLabel = "";
 
@@ -49,18 +47,21 @@ public class LabelRenderer
 	private LabelAlignment alignment = LabelAlignment.LEFT;
 
 	/**
-	 * Flag determines if text should rendered a little bit higher than the
-	 * baseline of the layout.
+	 * Flag determines if text should rendered a little bit higher than the baseline of the layout.
 	 */
 	private boolean usePaddingBottom = false;
 
 	private final ITextRenderer textRenderer;
 
 	/**
-	 * @param view Rendering view.
-	 * @param text Text to render.
-	 * @param pickingType PickingType for the text.
-	 * @param id ID for picking.
+	 * @param view
+	 *            Rendering view.
+	 * @param text
+	 *            Text to render.
+	 * @param pickingType
+	 *            PickingType for the text.
+	 * @param id
+	 *            ID for picking.
 	 */
 	protected LabelRenderer(AGLView view, ILabelProvider labelProvider, String pickingType, int id) {
 		super(view, pickingType, id);
@@ -94,7 +95,8 @@ public class LabelRenderer
 	}
 
 	/**
-	 * @param paddingBottom setter, see {@link #usePaddingBottom}
+	 * @param paddingBottom
+	 *            setter, see {@link #usePaddingBottom}
 	 */
 	public LabelRenderer usePaddingBottom(boolean paddingBottom) {
 		this.usePaddingBottom = paddingBottom;
@@ -151,8 +153,6 @@ public class LabelRenderer
 			gl.glVertex3f(x, y, 0.05f);
 			gl.glVertex3f(0, y, 0.05f);
 			gl.glEnd();
-
-			popNames(gl);
 		}
 
 		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
@@ -175,6 +175,9 @@ public class LabelRenderer
 			break;
 		default:
 			textRenderer.renderTextInBounds(gl, label, 0, ySpacing + padding, 0.1f, x, y - 2 * ySpacing + padding);
+		}
+		if (isPickable) {
+			popNames(gl);
 		}
 	}
 

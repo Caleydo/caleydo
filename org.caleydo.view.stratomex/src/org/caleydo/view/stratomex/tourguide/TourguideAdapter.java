@@ -14,7 +14,6 @@ import java.util.Objects;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
-import javax.media.opengl.GL2ES1;
 import javax.media.opengl.GLContext;
 
 import org.caleydo.core.data.collection.EDataType;
@@ -148,7 +147,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 	public void renderAddButton(GL2 gl, float x, float y, float w, float h, int id) {
 		if (!hasTourGuide() || isWizardActive()) // not more than one at the same time
 			return;
-		renderButton(gl, x, y, w, h, 24, stratomex, ADD_PICKING_TYPE, id, "add.png");
+		renderButton(gl, x, y, w, h, 32, stratomex, ADD_PICKING_TYPE, id, "add_independent.png");
 	}
 
 	public boolean isWizardActive() {
@@ -158,7 +157,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 	public void renderStartButton(GL2 gl, float x, float y, float w, float h, int id) {
 		if (!hasTourGuide() || isWizardActive()) // not more than one at the same time
 			return;
-		renderButton(gl, x, y, w, h, 32, stratomex, ADD_PICKING_TYPE, id, "add.png");
+		renderButton(gl, x, y, w, h, 32, stratomex, ADD_PICKING_TYPE, id, "add_independent.png");
 	}
 
 	public void renderAddDependentButton(GL2 gl, float x, float y, float w, float h, int id) {
@@ -215,7 +214,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 		TextureManager t = view.getTextureManager();
 		Texture tex = t.get(ICON_PREFIX + texture);
 		tex.enable(gl);
-		gl.glTexEnvi(GL2ES1.GL_TEXTURE_ENV, GL2ES1.GL_TEXTURE_ENV_MODE, GL2ES1.GL_MODULATE);
+		// gl.glTexEnvi(GL2ES1.GL_TEXTURE_ENV, GL2ES1.GL_TEXTURE_ENV_MODE, GL2ES1.GL_MODULATE);
 		t.renderTexture(gl, tex, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner, col);
 		gl.glPopAttrib();
 		gl.glPopName();
@@ -802,7 +801,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	@Override
 	public void replaceTemplate(TablePerspective with, IBrickConfigurer config, boolean extra, Color highlight) {
-		List<Pair<Integer, BrickColumn>> added;
+		List<Pair<Integer, BrickColumn>> added = null;
 		final List<TablePerspective> withL = Collections.singletonList(with);
 
 		if (highlight != null)
@@ -842,6 +841,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 				}
 			} else {
 				BrickColumn wizardPreview = wizardPreviews.get(0);
+				if (wizardPreview.getTablePerspective().equals(with)) // replace with itself
+					return;
 				added = stratomex.addTablePerspectives(withL, config, wizardPreview, true);
 				stratomex.removeTablePerspective(wizardPreview.getTablePerspective());
 				if (added.size() > 0) {
@@ -863,7 +864,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 				wizardPreviews.add(added.get(0).getSecond());
 			}
 		}
-		if (added.size() > 0) {
+		if (added != null && !added.isEmpty()) {
 			wizardPreviews.get(0).getLayout()
 					.clearForegroundRenderers(ALayoutRenderer.class, GLContext.getCurrentGL().getGL2());
 			wizardPreviews.get(0).getLayout().addForeGroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));

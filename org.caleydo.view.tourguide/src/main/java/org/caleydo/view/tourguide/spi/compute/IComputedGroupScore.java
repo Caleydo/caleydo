@@ -8,6 +8,7 @@ package org.caleydo.view.tourguide.spi.compute;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
+import org.caleydo.view.tourguide.spi.score.IGroupBasedScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
@@ -17,7 +18,7 @@ import org.caleydo.view.tourguide.spi.score.IScore;
  * @author Samuel Gratzl
  *
  */
-public interface IComputedGroupScore extends IRegisteredScore {
+public interface IComputedGroupScore extends IRegisteredScore, IGroupBasedScore {
 	/**
 	 * already in the cache?
 	 *

@@ -45,6 +45,9 @@ public class Color implements Cloneable {
 	public static final Color DARK_GREEN = new Color(49, 163, 84);
 	public static final Color DARK_BLUE = new Color(43, 140, 190);
 
+	public static final Color LIGHT_RED = new Color(239, 179, 188);
+	public static final Color LIGHT_BLUE = new Color(180, 212, 231);
+
 	@XmlElement
 	public float r;
 	@XmlElement

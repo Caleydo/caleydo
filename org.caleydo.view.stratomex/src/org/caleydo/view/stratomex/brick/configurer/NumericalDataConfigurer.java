@@ -199,4 +199,9 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 	public int getDefaultWidth() {
 		return 120;
 	}
+
+	@Override
+	public boolean distributeBricksUniformly() {
+		return false;
+	}
 }

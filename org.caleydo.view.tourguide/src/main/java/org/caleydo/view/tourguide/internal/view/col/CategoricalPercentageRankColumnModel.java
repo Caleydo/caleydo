@@ -30,7 +30,7 @@ public class CategoricalPercentageRankColumnModel extends DoubleRankColumnModel 
 		super(data, GLRenderers.drawText("% " + label), color, bgColor, new PiecewiseMapping(0, max), DoubleInferrers
 				.fix(Double.NaN));
 		this.dataDomain = dataDomain;
-		setFilter(false, false, true, false);
+		setFilter(true, false, true, false);
 	}
 
 	/**

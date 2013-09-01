@@ -36,9 +36,9 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
-import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.gui.util.RenameNameDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -117,8 +117,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	private LayoutManager layoutManager;
 	private ElementLayout wrappingLayout;
 
-	private int baseDisplayListIndex;
-	private boolean isBaseDisplayListDirty = true;
+	// private int baseDisplayListIndex;
+	// private boolean isBaseDisplayListDirty = true;
 
 	@XmlTransient
 	protected final EventListenerManager listeners = EventListenerManagers.wrap(this);
@@ -310,7 +310,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	@Override
 	public void init(GL2 gl) {
-		baseDisplayListIndex = gl.glGenLists(1);
+		// baseDisplayListIndex = gl.glGenLists(1);
 
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 		layoutManager.setUseDisplayLists(true);
@@ -414,13 +414,14 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		processEvents();
 		handleBrickResize(gl);
 
-		if (isBaseDisplayListDirty)
-			buildBaseDisplayList(gl);
+		// if (isBaseDisplayListDirty)
+		// buildBaseDisplayList(gl);
 
 		GLStratomex stratomex = getBrickColumn().getStratomexView();
-		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(), EPickingType.BRICK.name(), getID()));
 		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
 				EPickingType.BRICK_PENETRATING.name(), getID()));
+		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(), EPickingType.BRICK.name(), getID()));
+
 		// gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BRICK.name(), getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
 		gl.glTranslatef(0, 0, 0.1f);
@@ -434,15 +435,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		gl.glVertex3f(wrappingLayout.getSizeScaledX(), wrappingLayout.getSizeScaledY(), zpos);
 		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), zpos);
 		gl.glEnd();
+		gl.glPopName();
 
-		gl.glPopName();
-		gl.glPopName();
 
 		// The full brick content will not be rendered with DetailLevel.LOW
 		if (brickColumn.getDetailLevel() != EDetailLevel.LOW || isHeaderBrick)
 			layoutManager.render(gl);
 
-		gl.glCallList(baseDisplayListIndex);
+		gl.glPopName();
+
+
+		// gl.glCallList(baseDisplayListIndex);
 
 		gl.glTranslatef(0, 0, -0.1f);
 	}
@@ -459,13 +462,13 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	}
 
-	private void buildBaseDisplayList(GL2 gl) {
-		gl.glNewList(baseDisplayListIndex, GL2.GL_COMPILE);
-		// templateRenderer.updateLayout();
-
-		gl.glEndList();
-		isBaseDisplayListDirty = false;
-	}
+	// private void buildBaseDisplayList(GL2 gl) {
+	// gl.glNewList(baseDisplayListIndex, GL2.GL_COMPILE);
+	// // templateRenderer.updateLayout();
+	//
+	// gl.glEndList();
+	// isBaseDisplayListDirty = false;
+	// }
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -919,6 +922,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					showWidgets(true);
 				else
 					showWidgets(false);
+
 			}
 
 			@Override

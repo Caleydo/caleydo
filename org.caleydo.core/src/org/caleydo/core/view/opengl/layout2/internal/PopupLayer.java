@@ -6,6 +6,7 @@
 package org.caleydo.core.view.opengl.layout2.internal;
 
 import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.isDefault;
+import gleem.linalg.Vec2f;
 
 import java.util.List;
 
@@ -34,31 +35,36 @@ public final class PopupLayer extends GLElementContainer implements IPopupLayer,
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		for (IGLLayoutElement child : children) {
-			float x = child.getSetX();
-			float y = child.getSetY();
+			final Vec2f targetPos = child.getLayoutDataAs(Vec2f.class, new Vec2f(Float.NaN, Float.NaN));
+			float x = targetPos.x();
+			float y = targetPos.y();
 			float wc = child.getSetWidth();
 			float hc = child.getSetHeight();
-			if (isDefault(child.getSetX()) && isDefault(child.getSetWidth())) {
+			if (isDefault(targetPos.x()) && isDefault(child.getSetWidth())) {
 				x = 0;
 				wc = w;
-			} else if (child.getSetX() < 0) {
+			} else if (targetPos.x() < 0) {
 				x = w - wc;
-			} else if (isDefault(child.getSetX())) {
+			} else if (isDefault(targetPos.x())) {
 				x = (w - wc) * 0.5f;
 			} else if (isDefault(child.getSetWidth())) {
 				wc = w - wc;
 			}
+			if (!isDefault(child.getSetX()))
+				x = child.getSetX(); // set via dragging
 
-			if (isDefault(child.getSetY()) && isDefault(child.getSetHeight())) {
+			if (isDefault(targetPos.y()) && isDefault(child.getSetHeight())) {
 				y = 0;
 				hc = h;
-			} else if (child.getSetY() < 0) {
+			} else if (targetPos.y() < 0) {
 				y = h - hc;
-			} else if (isDefault(child.getSetY())) {
+			} else if (isDefault(targetPos.y())) {
 				y = (h - hc) * 0.5f;
 			} else if (isDefault(child.getSetHeight())) {
 				hc = h - hc;
 			}
+			if (!isDefault(child.getSetY()))
+				y = child.getSetY(); // set via dragging
 
 			child.setBounds(x, y, wc, hc);
 		}

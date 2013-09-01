@@ -145,10 +145,10 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		createFilterGroup(root);
 
 		this.resultsScrolled = new ScrolledComposite(root, SWT.H_SCROLL | SWT.V_SCROLL);
-		resultsScrolled.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		resultsScrolled.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
 		resultsScrolled.setExpandVertical(true);
 		resultsScrolled.setExpandHorizontal(true);
-		resultsScrolled.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));
+		// resultsScrolled.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));
 
 		results = new Composite(resultsScrolled, SWT.NONE);
 		results.setLayout(new GridLayout(1, false));

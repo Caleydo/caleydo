@@ -23,7 +23,10 @@ public interface IGLLayout2 {
 	 * @param h
 	 * @param parent
 	 *            the parent element
+	 * @param deltaTimeMs
+	 *            the delta time between the last call and the current call
 	 * @return whether a relayout is needed
 	 */
-	boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent);
+	boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent,
+			int deltaTimeMs);
 }

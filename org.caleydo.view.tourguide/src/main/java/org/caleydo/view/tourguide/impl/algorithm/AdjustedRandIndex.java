@@ -50,7 +50,7 @@ public class AdjustedRandIndex implements IStratificationAlgorithm {
 
 	@Override
 	public float compute(List<Set<Integer>> a, List<Set<Integer>> b, IProgressMonitor monitor) {
-		return Statistics.randIndex(a, b);
+		return Statistics.adjustedRand(a, b);
 	}
 }
 

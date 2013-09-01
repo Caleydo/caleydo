@@ -6,8 +6,10 @@
 package org.caleydo.view.tourguide.internal.model;
 
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.view.tourguide.api.score.GroupSelectors;
 import org.caleydo.view.tourguide.internal.score.ExternalIDTypeScore;
 import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
+import org.caleydo.view.tourguide.spi.score.IGroupBasedScore;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
@@ -44,28 +46,24 @@ public class MaxGroupCombiner extends ADoubleFunction<IRow> {
 			// working on dimension ids just once
 			return score.apply(row, null);
 		}
-		if (score instanceof IDecoratedScore) {
-			Group g = MaxGroupCombiner.getMax(in, ((IDecoratedScore) score).getUnderlying());
-			if (g == null)
-				return Float.NaN;
-			return score.apply(row, g);
-		} else
-			return getMax(row);
+		Group group = selectImpl(row, score);
+		return score.apply(row, group);
 	}
 
-	private double getMax(AScoreRow row) {
-		double v = Double.NaN;
-		for(Group g : row.getGroups()) {
-			double vg = score.apply(row, g);
-			if (Double.isNaN(vg))
-				continue;
-			if (Double.isNaN(v) || vg > v)
-				v = vg;
-		}
-		return v;
+	
+
+	private static Group selectImpl(AScoreRow row, IScore score) {
+		IGroupBasedScore sg = null;
+		if (score instanceof IGroupBasedScore)
+			sg = (IGroupBasedScore) score;
+		if (score instanceof IDecoratedScore && ((IDecoratedScore) score).getUnderlying() instanceof IGroupBasedScore)
+			sg = (IGroupBasedScore) ((IDecoratedScore) score).getUnderlying();
+		if (sg != null)
+			return sg.select(row, row.getGroups());
+		return GroupSelectors.MAX.select(score, row, row.getGroups());
 	}
 
-	public static Group getMax(IRow in, IScore score) {
+	public static Group select(IRow in, IScore score) {
 		if (score == null)
 			return null;
 		AScoreRow row = (AScoreRow) in;
@@ -73,19 +71,7 @@ public class MaxGroupCombiner extends ADoubleFunction<IRow> {
 			return null;
 		}
 
-		// combine groups
-		double v = Double.NaN;
-		Group gm = null;
-		for (Group g : row.getGroups()) {
-			double vg = score.apply(row, g);
-			if (Double.isNaN(vg))
-				continue;
-			if (Double.isNaN(v) || vg > v) {
-				v = vg;
-				gm = g;
-			}
-		}
-		return gm;
+		return selectImpl(row, score);
 	}
 
 }

@@ -70,7 +70,7 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	}
 
 	@Override
-	protected void layoutContent(IGLLayoutElement layout, float w, float h) {
+	protected void layoutContent(IGLLayoutElement layout, float w, float h, int deltaTimeMs) {
 		Vec2f minSize = getMinSize(layout);
 		Vec2f size = getSize();
 		Vec2f contentSize = new Vec2f();

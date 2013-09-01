@@ -5,12 +5,13 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.spi.score;
 
+
 /**
  * special kind of {@link IScore} that wraps / transforms another one
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public interface IDecoratedScore extends IScore{
+public interface IDecoratedScore extends IScore {
 	IScore getUnderlying();
 }

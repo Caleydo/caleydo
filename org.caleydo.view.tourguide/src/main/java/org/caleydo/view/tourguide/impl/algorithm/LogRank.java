@@ -87,7 +87,7 @@ public class LogRank implements IGroupAlgorithm {
 		double r = Statistics.logRank(as, asurvived, bs, bsurvived);
 		if (Double.isInfinite(r))
 			return Double.NaN;
-		return r;
+		return (float) r;
 	}
 
 	private Pair<List<Double>, Integer> getValues(Iterable<Integer> a, Integer col) {

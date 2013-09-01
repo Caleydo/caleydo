@@ -33,6 +33,7 @@ public final class PiecewiseMapping extends ScriptedMappingFunction implements I
 
 	public PiecewiseMapping(PiecewiseMapping copy) {
 		super(copy);
+		this.isDefinedMapping = copy.isDefinedMapping;
 		this.mapping.putAll(copy.mapping);
 	}
 

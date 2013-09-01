@@ -55,8 +55,10 @@ public abstract class AGLElementDecorator extends GLElement implements IGLElemen
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		if (content != null)
+		if (content != null) {
+			content.setParent(this);
 			content.init(context);
+		}
 	}
 
 	@Override
@@ -79,15 +81,15 @@ public abstract class AGLElementDecorator extends GLElement implements IGLElemen
 	}
 
 	@Override
-	protected void layoutImpl() {
+	protected void layoutImpl(int deltaTimeMs) {
 		if (content != null) {
 			Vec2f size = getSize();
-			layoutContent(content.layoutElement, size.x(), size.y());
+			layoutContent(content.layoutElement, size.x(), size.y(),deltaTimeMs);
 		}
-		super.layoutImpl();
+		super.layoutImpl(deltaTimeMs);
 	}
 
-	protected abstract void layoutContent(IGLLayoutElement content, float w, float h);
+	protected abstract void layoutContent(IGLLayoutElement content, float w, float h, int deltaTimeMs);
 
 	@Override
 	public boolean moved(GLElement child) {

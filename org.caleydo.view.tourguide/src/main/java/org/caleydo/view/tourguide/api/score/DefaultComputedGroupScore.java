@@ -5,28 +5,40 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import org.caleydo.core.util.color.Color;
+import java.util.Collection;
 
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.spi.compute.IComputeScoreFilter;
 import org.caleydo.view.tourguide.spi.compute.IComputedGroupScore;
+import org.caleydo.view.tourguide.spi.score.IGroupSelector;
 
 public class DefaultComputedGroupScore extends AComputedGroupScore implements IComputedGroupScore {
 	private final IComputeScoreFilter filter;
 	private final IGroupAlgorithm algorithm;
+	private final IGroupSelector selector;
 
-	public DefaultComputedGroupScore(String label, IGroupAlgorithm algorithm, IComputeScoreFilter filter, Color color,
+	public DefaultComputedGroupScore(String label, IGroupAlgorithm algorithm, IComputeScoreFilter filter,
+			IGroupSelector selector, Color color,
 			Color bgColor) {
 		super(label, color, bgColor);
 		this.filter = filter == null ? ComputeScoreFilters.SELF : filter;
 		this.algorithm = algorithm;
+		this.selector = selector;
 	}
 
 	@Override
 	public void onRegistered() {
 
+	}
+
+	@Override
+	public Group select(IComputeElement elem, Collection<Group> groups) {
+		return selector.select(this, elem, groups);
 	}
 
 	@Override

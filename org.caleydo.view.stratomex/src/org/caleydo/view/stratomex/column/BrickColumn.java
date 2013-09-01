@@ -379,12 +379,15 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	}
 
 	private void addSortedBricks(List<GLBrick> sortedBricks) {
+		// clusterBrickColumn.setDynamicSizeUnitsY(sortedBricks.size() + 1);
 		for (GLBrick brick : sortedBricks) {
 			// System.out.println("Average Value: "
 			// +
 			// brick.getTablePerspective().getContainerStatistics().getAverageValue());
 			ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
+			brickSpacingLayout.setDebug(false);
 			brickSpacingLayout.setPixelSizeY(BETWEEN_BRICKS_SPACING);
+			// brickSpacingLayout.setDynamicSizeUnitsY(1);
 			brickSpacingLayout.setRatioSizeX(0f);
 			BrickSpacingRenderer brickSpacingRenderer = new BrickSpacingRenderer(this, currentBrickSpacerID++, brick);
 			brickSpacingLayout.setRenderer(brickSpacingRenderer);
@@ -409,7 +412,9 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		// }
 
 		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
-		brickSpacingLayout.setRatioSizeY(1);
+		// brickSpacingLayout.setRatioSizeY(1);
+		brickSpacingLayout.setDebug(false);
+		brickSpacingLayout.setDynamicSizeUnitsY(1);
 		brickSpacingLayout.setRatioSizeX(0f);
 		BrickSpacingRenderer brickSpacingRenderer = new BrickSpacingRenderer(this, currentBrickSpacerID++, null);
 		brickSpacingLayout.setRenderer(brickSpacingRenderer);
@@ -445,6 +450,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		clusterBricks.clear();
 
 		addSortedBricks(sortedBricks);
+		if (brickConfigurer.distributeBricksUniformly())
+			distributeBricksUniformly();
 		stratomex.updateConnectionLinesBetweenColumns();
 		stratomex.setLayoutDirty();
 
@@ -673,14 +680,42 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			stratomex.setLayoutDirty();
 			stratomex.updateConnectionLinesBetweenColumns();
 		}
-
+		boolean initializedBricks = !uninitializedBricks.isEmpty();
 		while (!uninitializedBricks.isEmpty()) {
 			uninitializedBricks.poll().initRemote(gl, this, glMouseListener);
+		}
+		if (initializedBricks) {
+			if (brickConfigurer.distributeBricksUniformly())
+				distributeBricksUniformly();
 			stratomex.setLayoutDirty();
 			stratomex.updateConnectionLinesBetweenColumns();
 		}
 		handleVerticalMoveDragging(gl);
 		checkForHits(gl);
+	}
+
+	protected void distributeBricksUniformly() {
+		float totalUsedHeightByBricks = 0;
+		for (GLBrick brick : clusterBricks) {
+			totalUsedHeightByBricks += pixelGLConverter.getGLHeightForPixelHeight(brick.getWrappingLayout()
+					.getPixelSizeY());
+		}
+		float heightForSpacings = clusterBrickColumn.getSizeScaledY() - totalUsedHeightByBricks;
+		int brickSpacing = Math.max(
+				pixelGLConverter.getPixelHeightForGLHeight(heightForSpacings / (clusterBricks.size() + 1)),
+				BETWEEN_BRICKS_SPACING);
+
+		if (heightForSpacings <= 0)
+			return;
+
+		for (int i = 0; i < clusterBrickColumn.size(); i++) {
+			ElementLayout layout = clusterBrickColumn.get(i);
+			if (layout.toString().equals("brickSpacingLayout")) {
+				layout.setPixelSizeY(brickSpacing);
+			}
+		}
+		stratomex.setLayoutDirty();
+		stratomex.updateConnectionLinesBetweenColumns();
 	}
 
 	@Override
@@ -770,6 +805,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		for (GLBrick clusterBrick : clusterBricks) {
 			clusterBrick.updateLayout();
 		}
+		if (brickConfigurer.distributeBricksUniformly())
+			distributeBricksUniformly();
 	}
 
 	/**
@@ -1142,7 +1179,6 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	public Column getGroupColumn() {
 		return mainColumn;
 	}
-
 
 	/**
 	 * @param isVerticalMoveDraggingActive

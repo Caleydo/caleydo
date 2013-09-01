@@ -638,9 +638,10 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 */
 	protected final void checkForHits(final GL2 gl) {
 		contextMenuCreator.clear();
-		Set<String> hitTypes = pickingManager.getHitTypes(uniqueID);
-		if (hitTypes == null)
+		Set<String> hTs = pickingManager.getHitTypes(uniqueID);
+		if (hTs == null)
 			return;
+		Set<String> hitTypes = new HashSet<String>(hTs);
 
 		for (String pickingType : hitTypes) {
 
@@ -1099,7 +1100,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * Check whether the view is visible. If not, it should not be rendered. Note that events should be processed
 	 * anyway.
 <<<<<<< HEAD
-	 * @param drawable 
+	 * @param drawable
 =======
 	 * @param drawable
 >>>>>>> refs/heads/entourage

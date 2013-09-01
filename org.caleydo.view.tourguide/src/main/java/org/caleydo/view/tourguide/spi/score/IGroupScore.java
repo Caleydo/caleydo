@@ -9,10 +9,10 @@ import org.caleydo.core.data.virtualarray.group.Group;
 
 /**
  * a kind of a score that is based on a stratification and a group
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public interface IGroupScore extends IStratificationScore {
+public interface IGroupScore extends IStratificationScore, IGroupBasedScore {
 	Group getGroup();
 }

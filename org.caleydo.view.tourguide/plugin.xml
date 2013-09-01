@@ -72,4 +72,19 @@
             class="org.caleydo.view.tourguide.internal.stratomex.AddWizardElementFactory">
       </factory>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.caleydo.view.tourguide.api.prefs.MyPreferences">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.caleydo.core.gui.preferences.views"
+            class="org.caleydo.view.tourguide.internal.prefs.MyPreferencePage"
+            id="org.caleydo.view.tourguide"
+            name="Tour Guide">
+      </page>
+   </extension>
 </plugin>

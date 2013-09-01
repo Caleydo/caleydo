@@ -5,25 +5,32 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import org.caleydo.core.util.color.Color;
+import java.util.Collection;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.spi.compute.IComputeScoreFilter;
 import org.caleydo.view.tourguide.spi.compute.IComputedReferenceGroupScore;
+import org.caleydo.view.tourguide.spi.score.IGroupSelector;
+
+import com.google.common.base.Objects;
 
 public class DefaultComputedReferenceGroupScore extends AReferenceGroupScore implements IComputedReferenceGroupScore {
 	private final IComputeScoreFilter filter;
 	private final IGroupAlgorithm algorithm;
+	private final IGroupSelector selector;
 
 	public DefaultComputedReferenceGroupScore(String label, Perspective stratification, Group group,
-			IGroupAlgorithm algorithm, IComputeScoreFilter filter, Color color, Color bgColor) {
+			IGroupAlgorithm algorithm, IComputeScoreFilter filter, IGroupSelector selector, Color color, Color bgColor) {
 		super(label, stratification, group, color, bgColor);
 		this.filter = filter == null ? ComputeScoreFilters.SELF : filter;
 		this.algorithm = algorithm;
+		this.selector = Objects.firstNonNull(selector, GroupSelectors.MAX);
 	}
 
 
@@ -40,6 +47,11 @@ public class DefaultComputedReferenceGroupScore extends AReferenceGroupScore imp
 	@Override
 	public IGroupAlgorithm getAlgorithm() {
 		return algorithm;
+	}
+
+	@Override
+	public Group select(IComputeElement elem, Collection<Group> groups) {
+		return selector.select(this, elem, groups);
 	}
 
 	@Override

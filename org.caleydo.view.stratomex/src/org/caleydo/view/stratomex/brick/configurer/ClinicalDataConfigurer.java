@@ -226,4 +226,9 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 		return 100;
 	}
 
+	@Override
+	public boolean distributeBricksUniformly() {
+		return true;
+	}
+
 }

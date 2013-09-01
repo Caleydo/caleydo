@@ -5,19 +5,37 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex.tourguide.internal;
 
-import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
+
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class TemplateHighlightRenderer extends ColorRenderer {
+public class TemplateHighlightRenderer extends ALayoutRenderer {
 	public TemplateHighlightRenderer() {
-		super(new float[] { 0.95f, .95f, .95f, 1.f });
-		setBorderColor(Color.DARK_GRAY.getRGBA());
-		setBorderWidth(2);
-		setDrawBorder(true);
+	}
+
+	@Override
+	protected void renderContent(GL2 gl) {
+		final float offset = layoutManager.getPixelGLConverter().getGLWidthForPixelWidth(0.75f);
+		gl.glColor4f(0.95f, 0.95f, 0.95f, 1);
+		gl.glBegin(GL2GL3.GL_QUADS);
+		gl.glVertex3f(0, 0, 0);
+		gl.glVertex3f(x, 0, 0);
+		gl.glVertex3f(x, y, 0);
+		gl.glVertex3f(0, y, 0);
+		gl.glEnd();
+		gl.glColor4f(0.2f, 0.2f, 0.2f, 1);
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(offset, offset, 0.02f);
+		gl.glVertex3f(x - offset, offset, 0.02f);
+		gl.glVertex3f(x - offset, y - offset, 0.02f);
+		gl.glVertex3f(offset, y - offset, 0.02f);
+		gl.glEnd();
 	}
 
 	@Override

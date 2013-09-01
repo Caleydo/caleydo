@@ -19,12 +19,14 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedStratificationScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.score.ui.ACreateGroupScoreDialog;
-import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
+import org.caleydo.view.tourguide.api.state.ABrowseState;
 import org.caleydo.view.tourguide.api.state.EWizardMode;
 import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectGroupState;
@@ -37,7 +39,7 @@ import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm.GSEAAlgorithmPValue;
 import org.caleydo.view.tourguide.impl.algorithm.GSEAAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.GeneSetMappedAlgorithm;
-import org.caleydo.view.tourguide.impl.algorithm.PGSEAAlgorithm;
+import org.caleydo.view.tourguide.impl.algorithm.PAGEAlgorithm;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
@@ -66,27 +68,30 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		return new GeneSetScore(label, new GSEAAlgorithm(reference, group, 1.0f, false), new PiecewiseMapping(-1, 1));
 	}
 
-	private IRegisteredScore createPGSEA(String label, Perspective reference, Group group) {
+	private IRegisteredScore createPAGE(String label, Perspective reference, Group group) {
 		if (label == null)
 			label = reference.getLabel() + " " + group.getLabel();
-		return new GeneSetScore(label, new PGSEAAlgorithm(reference, group), new PiecewiseMapping(Float.NaN, Float.NaN));
+		return new GeneSetScore(label, new PAGEAlgorithm(reference, group), dynamicAbsolute());
 	}
 
 	@Override
 	public void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, EWizardMode mode,
 			TablePerspective source) {
 		IState start = stateMachine.get(IStateMachine.ADD_PATHWAY);
-		BrowsePathwayState browse = (BrowsePathwayState) stateMachine.get(IStateMachine.BROWSE_PATHWAY);
 
 		if (mode == EWizardMode.GLOBAL) {
 			String disabled = !hasGoodOnes(existing) ? "At least one valid numerical GENE stratification must already be visible"
 					: null;
-			IState target = stateMachine.addState("GSEA", new CreateGSEAState(browse, true));
-			IState target2 = stateMachine.addState("PGSEA", new CreateGSEAState(browse, false));
+			UpdateAndBrowsePathways browseG = new UpdateAndBrowsePathways(true);
+			stateMachine.addState("browseAndUpdateGSEA", browseG);
+			UpdateAndBrowsePathways browseP = new UpdateAndBrowsePathways(false);
+			stateMachine.addState("browseAndUpdatePAGE", browseP);
+			IState target = stateMachine.addState("GSEA", new CreateGSEAState(browseG, true));
+			IState target2 = stateMachine.addState("PAGE", new CreateGSEAState(browseP, false));
 			stateMachine.addTransition(start, new SimpleTransition(target,
 					"Find with GSEA based on displayed stratification", disabled));
 			stateMachine.addTransition(start, new SimpleTransition(target2,
-					"Find with PGSEA based on displayed stratification", disabled));
+					"Find with PAGE based on displayed stratification", disabled));
 		}
 
 		// auto mode
@@ -136,16 +141,27 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		}
 
 		{
-			PGSEAAlgorithm algorithm = new PGSEAAlgorithm(strat.getRecordPerspective(), group);
-			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, new PiecewiseMapping(
-					Float.NaN, Float.NaN));
-			PiecewiseMapping m = new PiecewiseMapping(0, 1);
-			m.put(0, 1);
-			m.put(1, 0);
+			PAGEAlgorithm algorithm = new PAGEAlgorithm(strat.getRecordPerspective(), group);
+			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, dynamicAbsolute());
+			PiecewiseMapping m = inverse();
 			IScore pValue = new GeneSetPValueScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), m, gsea);
 			col.add(new ScoreEntry("Parametric Gene Set Enrichment Analysis of group", gsea, pValue));
 		}
 		return col;
+	}
+
+	private static PiecewiseMapping inverse() {
+		PiecewiseMapping m = new PiecewiseMapping(0, 1);
+		m.put(0, 1);
+		m.put(1, 0);
+		return m;
+	}
+
+	private static PiecewiseMapping dynamicAbsolute() {
+		PiecewiseMapping m = new PiecewiseMapping(Float.NaN, Float.NaN);
+		// absolute with max borders
+		m.fromJavaScript("return linear(0,Math.max(abs(value_min),abs(value_max)),abs(value),0,1)");
+		return m;
 	}
 
 	/**
@@ -170,10 +186,10 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	}
 
 	private class CreateGSEAState extends SimpleState implements ISelectGroupState {
-		private final BrowsePathwayState target;
+		private final UpdateAndBrowsePathways target;
 		private final boolean createGSEA;
 
-		public CreateGSEAState(BrowsePathwayState target, boolean createGSEA) {
+		public CreateGSEAState(UpdateAndBrowsePathways target, boolean createGSEA) {
 			super("Select query group by clicking on a framed block of one of the displayed columns");
 			this.target = target;
 			this.createGSEA = createGSEA;
@@ -198,6 +214,53 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 			// switch to a preview pathway
 			target.setUnderlying(strat.getRecordPerspective());
 			reactions.switchTo(target);
+		}
+	}
+
+	private class UpdateAndBrowsePathways extends ABrowseState implements ISelectGroupState {
+		protected Perspective underlying;
+		protected PathwayGraph pathway;
+		private final boolean createGSEA;
+
+		public UpdateAndBrowsePathways(boolean createGSEA) {
+			super(EDataDomainQueryMode.PATHWAYS, "Select a pathway in the LineUp to preview.\n"
+					+ "Then confirm or cancel your selection" + "Change query by clicking on other block at any time");
+			this.createGSEA = createGSEA;
+		}
+
+		@Override
+		public boolean apply(Pair<TablePerspective, Group> pair) {
+			return true;
+		}
+
+		@Override
+		public boolean isSelectAllSupported() {
+			return true;
+		}
+
+		/**
+		 * @param underlying
+		 *            setter, see {@link underlying}
+		 */
+		public final void setUnderlying(Perspective underlying) {
+			this.underlying = underlying;
+		}
+
+		@Override
+		public void onUpdate(UpdatePathwayPreviewEvent event, IReactions adapter) {
+			pathway = event.getPathway();
+			adapter.replacePathwayTemplate(underlying, event.getPathway(), false, true);
+		}
+
+		@Override
+		public void select(TablePerspective strat, Group group, IReactions reactions) {
+			IScore[] score = createScore(strat, group, createGSEA);
+			reactions.addScoreToTourGuide(EDataDomainQueryMode.PATHWAYS, score);
+
+			// switch to a preview pathway
+			underlying = strat.getRecordPerspective();
+			if (pathway != null)
+				reactions.replacePathwayTemplate(underlying, pathway, false, true);
 		}
 	}
 
@@ -262,7 +325,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		@Override
 		protected IRegisteredScore createScore(String label, Perspective strat, Group g) {
 			if (parametricUI.getSelection()) {
-				return createPGSEA(label, strat, g);
+				return createPAGE(label, strat, g);
 			} else
 				return createGSEA(label, strat, g);
 		}
@@ -363,19 +426,17 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 			AGSEAAlgorithm algorithm;
 			Perspective perspective = strat.getRecordPerspective();
 			Perspective genes = strat.getDimensionPerspective();
-			String prefix = createGSEA ? "GSEA" : "PGSEA";
+			String prefix = createGSEA ? "GSEA" : "PAGE";
 			String label = String.format(prefix + " of %s", perspective.getLabel());
 			IScore s;
 			if (createGSEA) {
 				algorithm = new GSEAAlgorithm(perspective, group, 1.0f, false);
 				s = new GeneSetScore(label, algorithm, new PiecewiseMapping(-1, 1));
 			} else {
-				algorithm = new PGSEAAlgorithm(perspective, group);
-				IScore gsea = new GeneSetScore(prefix, algorithm, new PiecewiseMapping(Float.NaN, Float.NaN));
-				PiecewiseMapping m = new PiecewiseMapping(0, 1);
-				m.put(0, 1);
-				m.put(1, 0);
-				IScore pValue = new GeneSetPValueScore(prefix + "P-Value", algorithm.asPValue(), m, gsea);
+				algorithm = new PAGEAlgorithm(perspective, group);
+				IScore gsea = new GeneSetScore(prefix, algorithm, dynamicAbsolute());
+				PiecewiseMapping m = inverse();
+				IScore pValue = new GeneSetPValueScore(prefix + " P-Value", algorithm.asPValue(), m, gsea);
 				MultiScore s2 = new MultiScore(label, color, bgColor, RankTableConfigBase.NESTED_MODE);
 				s2.add(pValue);
 				s2.add(gsea);
