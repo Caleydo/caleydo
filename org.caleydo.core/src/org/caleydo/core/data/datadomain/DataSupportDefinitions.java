@@ -106,7 +106,7 @@ public final class DataSupportDefinitions {
 	 * @return
 	 */
 	protected static EDataClass getSingleColumnDataClass(TablePerspective in) {
-		if (in.getDimensionPerspective().getVirtualArray().size() > 1)
+		if (in.getDimensionPerspective().getVirtualArray().size() != 1)
 			return null; // multi column
 		int dimensionId = in.getDimensionPerspective().getVirtualArray().get(0);
 		int recordId = in.getRecordPerspective().getVirtualArray().get(0);
