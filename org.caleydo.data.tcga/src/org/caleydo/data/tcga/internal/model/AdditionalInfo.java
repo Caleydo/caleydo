@@ -29,12 +29,27 @@ public class AdditionalInfo {
 		return gene;
 	}
 
+	/**
+	 * @return the sample, see {@link #sample}
+	 */
+	public AdditionalPerspectiveInfo getSample() {
+		return sample;
+	}
+
 	public int getGeneCount() {
 		return gene != null ? gene.getCount() : 0;
 	}
 
 	public int getSampleCount() {
 		return sample != null ? sample.getCount() : 0;
+	}
+
+	public int getGeneStratifications() {
+		return gene != null ? gene.getGroupings().size() : 0;
+	}
+
+	public int getSampleStratifications() {
+		return sample != null ? sample.getGroupings().size() : 0;
 	}
 
 	@Override
