@@ -290,6 +290,20 @@ public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel imple
 	}
 
 	/**
+	 * @return the filterMissingEntries, see {@link #filterMissingEntries}
+	 */
+	public boolean isFilterMissingEntries() {
+		return filterMissingEntries;
+	}
+
+	/**
+	 * @return the filterNotMappedEntries, see {@link #filterNotMappedEntries}
+	 */
+	public boolean isFilterNotMappedEntries() {
+		return filterNotMappedEntries;
+	}
+
+	/**
 	 * @param c
 	 * @param filterGlobally
 	 * @param filterNotMappedEntries

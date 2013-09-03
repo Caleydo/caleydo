@@ -185,4 +185,9 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 
 	}
 
+	@Override
+	public void updateSpecificColumns(RankTableModel table) {
+
+	}
+
 }

@@ -93,4 +93,9 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 	public void removeSpecificColumns(RankTableModel table) {
 
 	}
+
+	@Override
+	public void updateSpecificColumns(RankTableModel table) {
+
+	}
 }
