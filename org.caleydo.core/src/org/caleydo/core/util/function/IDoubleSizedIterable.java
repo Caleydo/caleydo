@@ -10,6 +10,10 @@ package org.caleydo.core.util.function;
  *
  */
 public interface IDoubleSizedIterable extends Iterable<Double> {
+	int size();
+
 	@Override
 	IDoubleSizedIterator iterator();
+
+	IDoubleSizedIterable map(IDoubleFunction f);
 }

@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.data;
 
-import org.caleydo.core.util.function.IDoubleIterator;
+import org.caleydo.core.util.function.IDoubleSizedIterator;
 
 /**
  * interface describing a method that combines a list of floats to a single value, e.g. its mean
@@ -19,5 +19,5 @@ public interface IDoubleInferrer {
 	 *
 	 * @return
 	 */
-	double infer(IDoubleIterator it, int size);
+	double infer(IDoubleSizedIterator it);
 }

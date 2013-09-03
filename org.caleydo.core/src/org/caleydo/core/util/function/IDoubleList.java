@@ -28,6 +28,7 @@ public interface IDoubleList extends List<Double>, IDoubleSizedIterable {
 	 * @param f
 	 * @return
 	 */
+	@Override
 	IDoubleListView map(IDoubleFunction f);
 
 	/**

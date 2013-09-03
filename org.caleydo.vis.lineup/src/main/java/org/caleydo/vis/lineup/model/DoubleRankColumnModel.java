@@ -20,9 +20,8 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.util.function.ADoubleList;
 import org.caleydo.core.util.function.DoubleStatistics;
-import org.caleydo.core.util.function.IDoubleList;
+import org.caleydo.core.util.function.IDoubleSizedIterable;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
@@ -48,8 +47,6 @@ import org.caleydo.vis.lineup.ui.mapping.MappingFunctionUIs;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-
-import com.google.common.primitives.Doubles;
 
 /**
  * @author Samuel Gratzl
@@ -171,30 +168,19 @@ public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel imple
 		super.takeDown();
 	}
 
-	private IDoubleList asRawData() {
-		final List<IRow> data2 = getTable().getFilteredData();
-		return new ADoubleList() {
+	private IDoubleSizedIterable asRawData() {
+		return getTable().getFilteredMappedData(new org.caleydo.vis.lineup.data.ADoubleFunction<IRow>() {
 			@Override
-			public double getPrimitive(int index) {
-				return getRaw(data2.get(index));
+			public double applyPrimitive(IRow row) {
+				return getRaw(row);
 			}
-
-			@Override
-			public int size() {
-				return data2.size();
-			}
-
-			@Override
-			public double[] toPrimitiveArray() {
-				return Doubles.toArray(this);
-			}
-		};
+		});
 	}
 
 	private double computeMissingValue() {
 		if (Double.isNaN(missingValue)) {
-			IDoubleList list = asRawData();
-			missingValue = missingValueInferer.infer(list.iterator(), list.size());
+			IDoubleSizedIterable list = asRawData();
+			missingValue = missingValueInferer.infer(list.iterator());
 		}
 		return missingValue;
 	}

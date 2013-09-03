@@ -12,7 +12,7 @@ import java.util.Comparator;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.DoubleFunctions;
-import org.caleydo.core.util.function.IDoubleList;
+import org.caleydo.core.util.function.IDoubleSizedIterable;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.lineup.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.ICompressColumnMixin;
@@ -340,7 +340,7 @@ public final class StackedRankColumnModel extends AMultiRankColumnModel implemen
 	}
 
 	@Override
-	protected GLElement createEditFilterPopup(IDoubleList data, GLElement summary) {
+	protected GLElement createEditFilterPopup(IDoubleSizedIterable data, GLElement summary) {
 		return new ScoreFilter2(this, data, summary);
 	}
 	/**
