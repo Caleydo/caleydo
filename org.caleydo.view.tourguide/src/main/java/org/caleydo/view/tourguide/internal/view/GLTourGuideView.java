@@ -22,6 +22,7 @@ import java.util.Set;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
@@ -30,7 +31,10 @@ import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.canvas.GLThreadListenerWrapper;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AGLElementView;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -123,6 +127,7 @@ public class GLTourGuideView extends AGLElementView {
 	private static final int DATADOMAIN_QUERY = 0;
 	private static final int TABLE = 1;
 
+	@DeepScan
 	private final StratomexAdapter stratomex = new StratomexAdapter();
 	private final RankTableModel table;
 
@@ -172,8 +177,10 @@ public class GLTourGuideView extends AGLElementView {
 			onJobStarted();
 		}
 	};
-	private final RankTableKeyListener tableKeyListener;
-	private RankTableUIMouseKeyListener tableUIListener = null; // lazy
+	@DeepScan
+	private final IGLKeyListener tableKeyListener;
+	private IGLKeyListener tableKeyListener2; // lazy and manually scanned
+	private IGLMouseListener tableMouseListener; // lazy
 
 	/**
 	 * history of added score to select what was the last added score, see #1493, use a weak list to avoid creating
@@ -219,7 +226,8 @@ public class GLTourGuideView extends AGLElementView {
 			queries.add(q);
 		}
 
-		this.tableKeyListener = new RankTableKeyListener(table);
+		// wrap for having the right thread
+		this.tableKeyListener = GLThreadListenerWrapper.wrap(new RankTableKeyListener(table));
 	}
 
 	/**
@@ -523,11 +531,12 @@ public class GLTourGuideView extends AGLElementView {
 	@Override
 	public void init(GLAutoDrawable drawable) {
 		super.init(drawable);
-		eventListeners.register(stratomex);
 		this.canvas.addKeyListener(tableKeyListener);
-		this.tableUIListener = new RankTableUIMouseKeyListener(getTableBodyUI());
-		this.canvas.addKeyListener(this.tableUIListener);
-		this.canvas.addMouseListener(this.tableUIListener);
+		RankTableUIMouseKeyListener tableUIListener = new RankTableUIMouseKeyListener(getTableBodyUI());
+		this.tableKeyListener2 = GLThreadListenerWrapper.wrap((IGLKeyListener) tableUIListener);
+		this.tableMouseListener = GLThreadListenerWrapper.wrap((IGLMouseListener) tableUIListener);
+		this.canvas.addKeyListener(eventListeners.register(this.tableKeyListener2));
+		this.canvas.addMouseListener(eventListeners.register(this.tableMouseListener));
 
 		this.noStratomexVisible = stratomex.hasOne();
 		updateStratomexState();
@@ -554,8 +563,8 @@ public class GLTourGuideView extends AGLElementView {
 	public void dispose(GLAutoDrawable drawable) {
 		this.stratomex.cleanUp();
 		canvas.removeKeyListener(tableKeyListener);
-		canvas.removeKeyListener(tableUIListener);
-		canvas.removeMouseListener(tableUIListener);
+		canvas.removeKeyListener(tableKeyListener2);
+		canvas.removeMouseListener(tableMouseListener);
 		super.dispose(drawable);
 	}
 
