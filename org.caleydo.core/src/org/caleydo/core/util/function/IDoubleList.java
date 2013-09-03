@@ -13,7 +13,7 @@ import java.util.List;
  * @author Samuel Gratzl
  *
  */
-public interface IDoubleList extends List<Double> {
+public interface IDoubleList extends List<Double>, IDoubleSizedIterable {
 	/**
 	 * returns the primitive version of {@link #get(int)}
 	 *
@@ -48,7 +48,7 @@ public interface IDoubleList extends List<Double> {
 	double reduce(double start, IDoubleReduction r);
 
 	@Override
-	IDoubleIterator iterator();
+	IDoubleSizedIterator iterator();
 
 	/**
 	 * @return a fresh copy of the data as primitive array

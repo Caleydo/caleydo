@@ -126,7 +126,7 @@ public class ScoreFilter extends PickableGLElement implements IPickingListener {
 		g.color(model.getBgColor()).fillRect(0, 0, w, h);
 		int bins = binsForWidth(w, data.size());
 		if (cache == null || cache.size() != bins)
-			cache = DataUtils.getHist(bins, data);
+			cache = DataUtils.getHist(bins, data.iterator());
 		RenderUtils.renderHist(g, cache, w, h, -1, model.getColor(), model.getColor().darker(), findRenderInfo()
 				.getBarOutlineColor());
 

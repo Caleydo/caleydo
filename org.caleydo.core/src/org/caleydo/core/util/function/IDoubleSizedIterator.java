@@ -9,31 +9,6 @@ package org.caleydo.core.util.function;
  * @author Samuel Gratzl
  *
  */
-public class Utils {
-	public static final IDoubleSizedIterator EMPTY = new IDoubleSizedIterator() {
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public int size() {
-			return 0;
-		}
-
-		@Override
-		public Double next() {
-			return null;
-		}
-
-		@Override
-		public boolean hasNext() {
-			return false;
-		}
-
-		@Override
-		public double nextPrimitive() {
-			return 0;
-		}
-	};
+public interface IDoubleSizedIterator extends IDoubleIterator {
+	int size();
 }

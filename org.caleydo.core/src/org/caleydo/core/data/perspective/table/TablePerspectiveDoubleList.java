@@ -11,8 +11,8 @@ import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.virtualarray.VAIterator;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.function.ADoubleList;
-import org.caleydo.core.util.function.IDoubleIterator;
 import org.caleydo.core.util.function.IDoubleList;
+import org.caleydo.core.util.function.IDoubleSizedIterator;
 import org.caleydo.core.util.function.Utils;
 
 /**
@@ -52,7 +52,7 @@ public class TablePerspectiveDoubleList extends ADoubleList {
 	}
 
 	@Override
-	public IDoubleIterator iterator() {
+	public IDoubleSizedIterator iterator() {
 		if (isEmpty())
 			return Utils.EMPTY;
 		if (this.dim.size() == 1) // single col
@@ -62,7 +62,7 @@ public class TablePerspectiveDoubleList extends ADoubleList {
 		return new Itr();
 	}
 
-	private class SingleItr implements IDoubleIterator {
+	private class SingleItr implements IDoubleSizedIterator {
 		private final VAIterator va;
 		private final Integer id;
 		private final boolean singleIsDim;
@@ -79,6 +79,11 @@ public class TablePerspectiveDoubleList extends ADoubleList {
 			this.va = va.iterator();
 			this.id = id;
 			this.singleIsDim = singleIsDim;
+		}
+
+		@Override
+		public int size() {
+			return size;
 		}
 
 		@Override
@@ -106,10 +111,15 @@ public class TablePerspectiveDoubleList extends ADoubleList {
 
 	}
 
-	private class Itr implements IDoubleIterator {
+	private class Itr implements IDoubleSizedIterator {
 		private final Iterator<Integer> recItr = rec.iterator();
 		private Integer recID;
 		private Iterator<Integer> dimItr = dim.iterator();
+
+		@Override
+		public int size() {
+			return size;
+		}
 
 		@Override
 		public void remove() {

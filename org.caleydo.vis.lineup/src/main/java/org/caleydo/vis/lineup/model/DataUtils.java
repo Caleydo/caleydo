@@ -7,7 +7,7 @@ package org.caleydo.vis.lineup.model;
 
 import java.util.Iterator;
 
-import org.caleydo.core.util.function.IDoubleList;
+import org.caleydo.core.util.function.IDoubleIterator;
 import org.caleydo.vis.lineup.data.IDoubleFunction;
 
 /**
@@ -15,11 +15,10 @@ import org.caleydo.vis.lineup.data.IDoubleFunction;
  *
  */
 public class DataUtils {
-	public static SimpleHistogram getHist(int bins, IDoubleList l) {
+	public static SimpleHistogram getHist(int bins, IDoubleIterator it) {
 		SimpleHistogram hist = new SimpleHistogram(bins);
-		int s = l.size();
-		for (int i = 0; i < s; ++i) {
-			double value = l.getPrimitive(i);
+		while (it.hasNext()) {
+			double value = it.nextPrimitive();
 			hist.add(value);
 		}
 		return hist;
