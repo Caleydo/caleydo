@@ -16,6 +16,18 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
  * @author Alexander Lex
  */
 public class SimilarityMap {
+	private final HashMap<String, VASimilarity> similarityMap = new HashMap<String, VASimilarity>(20);
+
+	private String tableID;
+	private VirtualArray recordVA;
+
+	/**
+	 * Constructor with the key pair tableID and recordVA
+	 */
+	SimilarityMap(String tableID, VirtualArray recordVA) {
+		this.tableID = tableID;
+		this.recordVA = recordVA;
+	}
 
 	/**
 	 * Get the VASimilarity between this SimilarityMap's VA and the VA associated with the perspectiveID.
@@ -29,21 +41,10 @@ public class SimilarityMap {
 		return similarityMap.get(foreignPerspectiveID);
 	}
 
-	// -------------------- END OF PUBLIC INTERFACE ----------------------------------
-
-	HashMap<String, VASimilarity> similarityMap = new HashMap<String, VASimilarity>(
-			20);
-
-	private String tableID;
-	private VirtualArray recordVA;
-
-	/**
-	 * Constructor with the key pair tableID and recordVA
-	 */
-	SimilarityMap(String tableID, VirtualArray recordVA) {
-		this.tableID = tableID;
-		this.recordVA = recordVA;
+	public VASimilarity removeVASimilarity(String foreignPerspectiveID) {
+		return similarityMap.remove(foreignPerspectiveID);
 	}
+
 
 	/**
 	 * Sets a va that the key va of this object is to be compared to and calculates the similarity.

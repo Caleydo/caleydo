@@ -804,7 +804,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			// Pair<Float, Float> gate = hashGates.get(iGateID);
 			// TODO for all indices
 
-			ArrayList<Integer> axesIndices = tablePerspective.getDimensionPerspective().getVirtualArray()
+			List<Integer> axesIndices = tablePerspective.getDimensionPerspective().getVirtualArray()
 					.indicesOf(axisID);
 			for (int axisIndex : axesIndices) {
 				float currentPosition = axisSpacings.get(axisIndex);

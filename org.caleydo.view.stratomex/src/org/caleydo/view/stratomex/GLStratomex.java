@@ -1374,6 +1374,15 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			if (it.next().getTablePerspective() == tablePerspective)
 				it.remove();
 		}
+		cleanUp(tablePerspective);
+
+		initLayouts();
+		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
+	}
+
+	private void cleanUp(TablePerspective tablePerspective) {
 		// cleanup band connections
 		for (Iterator<BrickConnection> it = hashConnectionBandIDToRecordVA.values().iterator(); it.hasNext();) {
 			BrickConnection next = it.next();
@@ -1391,12 +1400,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			if (next.getValue().isEmpty())
 				it.remove();
 		}
+		// remove unused stuff
+		relationAnalyzer.removeAll(tablePerspective.getRecordPerspective());
 		eventPublisher.triggerEvent(new RelationsUpdatedEvent().from(this));
-
-		initLayouts();
-		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 	@ListenTo
@@ -1427,6 +1433,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		while (tablePerspectiveIterator.hasNext()) {
 			TablePerspective tempPerspective = tablePerspectiveIterator.next();
 			if (tempPerspective.equals(oldTablePerspective)) {
+				cleanUp(tempPerspective);
 				tablePerspectiveIterator.remove();
 			}
 		}

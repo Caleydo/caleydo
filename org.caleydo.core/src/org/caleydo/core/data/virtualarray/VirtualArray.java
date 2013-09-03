@@ -243,24 +243,6 @@ public class VirtualArray implements Iterable<Integer>, Cloneable, IUniqueObject
 	}
 
 	/**
-	 * <p>
-	 * Remove all occurrences of an element from the list. Shifts any subsequent elements to the left (subtracts one
-	 * from their indices).
-	 * </p>
-	 * <p>
-	 * The implementation if based on a hash-table, performance is in constant time.
-	 * </p>
-	 *
-	 * @param element
-	 *            the element to be removed
-	 */
-	public synchronized void removeByElement(Integer element) {
-		ArrayList<Integer> indices = indicesOf(element);
-		removeInBulk(indices);
-		idMap.setDirty();
-	}
-
-	/**
 	 * Returns the size of the virtual array
 	 *
 	 * @return the size
@@ -311,7 +293,7 @@ public class VirtualArray implements Iterable<Integer>, Cloneable, IUniqueObject
 	 *            element to search for
 	 * @return a list of all the indices of all occurrences of the element or an empty list if no such elements exist
 	 */
-	public synchronized ArrayList<Integer> indicesOf(Integer id) {
+	public synchronized List<Integer> indicesOf(Integer id) {
 		return idMap.indicesOf(id);
 	}
 
@@ -397,7 +379,7 @@ public class VirtualArray implements Iterable<Integer>, Cloneable, IUniqueObject
 	/** DOCUMENT ME! */
 	public synchronized List<Group> getGroupOf(Integer id) {
 		ArrayList<Group> resultGroups = new ArrayList<Group>(1);
-		ArrayList<Integer> indices = indicesOf(id);
+		List<Integer> indices = indicesOf(id);
 
 		if (indices.size() > 1)
 			System.out.println("wu");
