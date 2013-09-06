@@ -69,6 +69,8 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 		menuService.populateContributionManager(toolBarManager2, "toolbar:org.caleydo.core.gui.toolbar2");
 
 		toolBarManager.update(true);
+		toolBarManager2.update(true);
+
 	}
 
 	@Override

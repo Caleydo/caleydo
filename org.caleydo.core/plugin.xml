@@ -165,6 +165,17 @@
             id="org.caleydo.core.startup.clearselections"
             name="Clear Selections">
       </command>
+      <command
+            defaultHandler="org.caleydo.core.gui.command.ZoomHandler"
+            id="org.caleydo.core.startup.zoom"
+            name="Change Zoom Factor">
+         <commandParameter
+               id="action"
+               name="Zooming action"
+               optional="true"
+               values="ZoomHandlerParameters">
+         </commandParameter>
+      </command>
 
    </extension>
    <extension
@@ -480,5 +491,32 @@
                id="org.caleydo.scheme"
                name="Caleydo Key Bindings">
          </scheme>
+         <key
+               commandId="org.caleydo.core.startup.zoom"
+               schemeId="org.caleydo.scheme"
+               sequence="M1+M2++">
+            <parameter
+                  id="action"
+                  value="zoomIn">
+            </parameter>
+         </key>
+         <key
+               commandId="org.caleydo.core.startup.zoom"
+               schemeId="org.caleydo.scheme"
+               sequence="M1+M2+-">
+            <parameter
+                  id="action"
+                  value="zoomOut">
+            </parameter>
+         </key>
+         <key
+               commandId="org.caleydo.core.startup.zoom"
+               schemeId="org.caleydo.scheme"
+               sequence="M1+M2+0">
+            <parameter
+                  id="action"
+                  value="reset">
+            </parameter>
+         </key>
       </extension>
 </plugin>
