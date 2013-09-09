@@ -37,6 +37,11 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	 */
 	private boolean enabled = true;
 
+	/**
+	 * a custom min size provider otherwise the content will be used
+	 */
+	private IHasMinSize minSizeProvider = null;
+
 	public ScrollingDecorator(GLElement content, IScrollBar horizontal, IScrollBar vertical, float scrollBarWidth) {
 		super(content);
 		this.scrollBarWidth = scrollBarWidth;
@@ -72,6 +77,15 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 		if (vertical != null)
 			context.unregisterPickingListener(vertical.pickingId);
 		super.takeDown();
+	}
+
+	/**
+	 * @param minSizeProvider
+	 *            setter, see {@link minSizeProvider}
+	 */
+	public void setMinSizeProvider(IHasMinSize minSizeProvider) {
+		this.minSizeProvider = minSizeProvider;
+		relayout();
 	}
 
 	/**
@@ -149,6 +163,8 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	 * @return
 	 */
 	private Vec2f getMinSize(IGLLayoutElement layout) {
+		if (minSizeProvider != null)
+			return minSizeProvider.getMinSize();
 		IHasMinSize minSize = layout.getLayoutDataAs(IHasMinSize.class, null);
 		if (minSize != null)
 			return minSize.getMinSize();

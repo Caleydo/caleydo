@@ -245,6 +245,11 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	}
 
 	@Override
+	public final Vec2f getSize() {
+		return root.getSize();
+	}
+
+	@Override
 	public final DisplayListPool getDisplayListPool() {
 		return local.getPool();
 	}

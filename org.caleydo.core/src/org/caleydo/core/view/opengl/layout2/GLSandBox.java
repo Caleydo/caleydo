@@ -155,6 +155,11 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	}
 
 	@Override
+	public Vec2f getSize() {
+		return this.root.getSize();
+	}
+
+	@Override
 	public int registerPickingListener(IPickingListener l) {
 		return registerPickingListener(l, 0);
 	}
