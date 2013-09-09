@@ -358,6 +358,28 @@
             allPopups="false"
             locationURI="toolbar:org.caleydo.core.gui.toolbar2">
          <command
+               commandId="org.caleydo.core.startup.zoom"
+               icon="resources/icons/general/magnifier_zoom_in.png"
+               label="Zoom &amp;In"
+               style="push"
+               tooltip="Increase scaling factor">
+            <parameter
+                  name="action"
+                  value="zoomIn">
+            </parameter>
+         </command>
+         <command
+               commandId="org.caleydo.core.startup.zoom"
+               icon="resources/icons/general/magnifier_zoom_out.png"
+               label="Zoom &amp;Out"
+               style="push"
+               tooltip="Decrease scaling factor">
+            <parameter
+                  name="action"
+                  value="zoomOut">
+            </parameter>
+         </command>
+         <command
                commandId="org.caleydo.core.io.gui.snapshot"
                icon="resources/icons/general/snapshot.png"
                label="&amp;Take Snapshot"
@@ -494,7 +516,7 @@
          <key
                commandId="org.caleydo.core.startup.zoom"
                schemeId="org.caleydo.scheme"
-               sequence="M1+M2++">
+               sequence="M1+M3++">
             <parameter
                   id="action"
                   value="zoomIn">
@@ -503,7 +525,7 @@
          <key
                commandId="org.caleydo.core.startup.zoom"
                schemeId="org.caleydo.scheme"
-               sequence="M1+M2+-">
+               sequence="M1+M3+-">
             <parameter
                   id="action"
                   value="zoomOut">
@@ -512,7 +534,7 @@
          <key
                commandId="org.caleydo.core.startup.zoom"
                schemeId="org.caleydo.scheme"
-               sequence="M1+M2+0">
+               sequence="M1+M3+0">
             <parameter
                   id="action"
                   value="reset">

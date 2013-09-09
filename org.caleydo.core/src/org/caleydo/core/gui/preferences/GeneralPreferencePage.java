@@ -36,8 +36,8 @@ public class GeneralPreferencePage extends FieldEditorPreferencePage implements 
 	@Override
 	public void createFieldEditors() {
 		final Composite parent = getFieldEditorParent();
-		ScaleFieldEditor s = new ScaleFieldEditor2(MyPreferences.VIEW_ZOOM_FACTOR, "View scaling factor:", parent, 20,
-				180, 10, 20, ScaleFieldEditor2.PERCENT_FORMATTER);
+		ScaleFieldEditor s = new ScaleFieldEditor2(MyPreferences.VIEW_ZOOM_FACTOR, "View scaling factor:", parent, 10,
+				300, 10, 20, ScaleFieldEditor2.PERCENT_FORMATTER);
 		addField(s);
 		addField(new SpinnerFieldEditor(MyPreferences.FPS, "Target frames per seconds (FPS)", parent, 5, 60, 5, 10));
 	}
