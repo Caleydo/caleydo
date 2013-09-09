@@ -17,11 +17,14 @@ public class TCGASettings extends Settings {
 	@Option(name = "-g", aliases = { "--sampledGenes" }, usage = "whether to use the sampled genes or not default: \"true\"")
 	private String sampleGenes = "true";
 
+	@Option(name = "--fullGenes", usage = "inverse of --sampledGenes")
+	private boolean fullGenes = false;
+
 	public String getTcgaServerURL() {
 		return tcgaServerURL;
 	}
 
 	public boolean isSampleGenes() {
-		return Boolean.parseBoolean(sampleGenes);
+		return !fullGenes || Boolean.parseBoolean(sampleGenes);
 	}
 }
