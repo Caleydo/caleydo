@@ -6,7 +6,9 @@
 package org.caleydo.data.importer.tcga;
 
 import java.io.File;
+import java.net.Authenticator;
 import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.text.ParseException;
@@ -123,6 +125,12 @@ public class Settings {
 	@Option(name = "--downloadOnly", usage = "if enabled only the files will be downloaded")
 	private boolean downloadOnly = false;
 
+	@Option(name = "--username", usage = "the username to use for authentication")
+	private String username = null;
+
+	@Option(name = "--password", usage = "the password to use for authentication")
+	private String password = null;
+
 	private Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().setDateFormat("yyyy_MM_dd")
 			.create();
 
@@ -137,6 +145,17 @@ public class Settings {
 
 		if (numThreads <= 0)
 			numThreads = Runtime.getRuntime().availableProcessors();
+
+		if (username != null && password != null) {
+			// set Authenticator for following urls
+			Authenticator.setDefault(new Authenticator() {
+				@Override
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(username, password.toCharArray());
+				}
+			});
+		}
+
 		return true;
 	}
 
