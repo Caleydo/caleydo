@@ -17,11 +17,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 public interface ISpacingStrategy {
 	/**
 	 * apply the strategy and compute a {@link ISpacingLayout} given the arguments
-<<<<<<< HEAD
 	 *
-=======
-	 * 
->>>>>>> refs/heads/entourage
 	 * @param perspective
 	 *            the data to show
 	 * @param manager
@@ -29,10 +25,19 @@ public interface ISpacingStrategy {
 	 * @param hideHidden
 	 *            should hidden selected items really be hidden
 	 * @param size
-	 *            avaiable dip size
+	 *            available dip size
 	 * @return
 	 */
 	ISpacingLayout apply(Perspective perspective, SelectionManager manager, boolean hideHidden, float size);
+
+	/**
+	 * returns the minimum size of this dimension according to the given information
+	 *
+	 * @param count
+	 * @param isShowingLabels
+	 * @return
+	 */
+	float minSize(int count, boolean isShowingLabels);
 
 	public interface ISpacingLayout {
 		/**

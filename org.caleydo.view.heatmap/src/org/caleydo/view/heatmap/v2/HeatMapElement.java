@@ -5,8 +5,6 @@
  ******************************************************************************/
 package org.caleydo.view.heatmap.v2;
 
-import gleem.linalg.Vec2f;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -49,13 +47,7 @@ public class HeatMapElement extends AHeatMapElement {
 		super.takeDown();
 	}
 
-	@Override
-	protected Vec2f getMinSizeImpl() {
-		TablePerspective tablePerspective = selections.getTablePerspective();
-		float w = tablePerspective.getNrDimensions() * (dimensionLabels.show() ? 16 : 1);
-		float h = tablePerspective.getNrRecords() * (recordLabels.show() ? 16 : 1);
-		return new Vec2f(w, h);
-	}
+
 
 	@Override
 	public void onVAUpdate(TablePerspective tablePerspective) {

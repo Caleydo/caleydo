@@ -134,6 +134,13 @@ public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 		return v;
 	}
 
+	protected Vec2f getMinSizeImpl() {
+		TablePerspective tablePerspective = selections.getTablePerspective();
+		float w = dimensionSpacingStrategy.minSize(tablePerspective.getNrDimensions(), dimensionLabels.show());
+		float h = recordSpacingStrategy.minSize(tablePerspective.getNrRecords(), recordLabels.show());
+		return new Vec2f(w, h);
+	}
+
 	/**
 	 *
 	 * @return whether in both dimension it is a unfirm rendering
@@ -159,11 +166,6 @@ public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 	public int getTextWidth() {
 		return textWidth;
 	}
-
-	/**
-	 * @return
-	 */
-	protected abstract Vec2f getMinSizeImpl();
 
 	/**
 	 * @param showDimensionLabels

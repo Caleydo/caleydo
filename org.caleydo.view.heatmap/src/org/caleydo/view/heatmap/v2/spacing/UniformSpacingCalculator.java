@@ -59,4 +59,9 @@ public class UniformSpacingCalculator implements ISpacingStrategy {
 
 		return new UniformSpacingImpl(fieldHeight);
 	}
+
+	@Override
+	public float minSize(int count, boolean isShowingLabels) {
+		return count * (isShowingLabels ? 16 : 1);
+	}
 }
