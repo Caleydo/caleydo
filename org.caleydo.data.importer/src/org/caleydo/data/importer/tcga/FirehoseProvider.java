@@ -132,6 +132,8 @@ public final class FirehoseProvider {
 			if (r == null)
 				r = extractDataRunFile(".uncv1.mRNAseq_RPKM_log2.txt",
 						"mRNAseq_Preprocess", LEVEL);
+			if (r == null)
+				r = extractDataRunFile(".mRNAseq_RPKM_log2.txt", "mRNAseq_Preprocess", LEVEL);
 			if (r != null)
 				return Pair.make(r, true);
 		}
