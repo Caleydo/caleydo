@@ -101,6 +101,11 @@ public class TumorType implements ILabelProvider {
 		return name.contains("-");
 	}
 
+	public String getBaseName() {
+		if (!isSpecialType())
+			return name;
+		return name.substring(0, name.indexOf('-'));
+	}
 	@Override
 	public String getProviderName() {
 		return "TumorType";

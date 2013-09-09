@@ -260,7 +260,9 @@ public final class FirehoseProvider {
 			return null;
 		}
 
+		String alternativeName = fileToExtract;
 		if (hasTumor) {
+			alternativeName = "/" + tumor.getBaseName() + fileToExtract;
 			fileToExtract = "/" + tumor + fileToExtract;
 		}
 
@@ -275,7 +277,7 @@ public final class FirehoseProvider {
 
 			// search the correct entry
 			ArchiveEntry act = tarIn.getNextEntry();
-			while (act != null && !act.getName().endsWith(fileToExtract)) {
+			while (act != null && !act.getName().endsWith(fileToExtract) && !act.getName().endsWith(alternativeName)) {
 				act = tarIn.getNextEntry();
 			}
 			if (act == null) // no entry found
