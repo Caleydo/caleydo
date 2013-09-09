@@ -24,18 +24,14 @@ public final class SampleType implements ILabelProvider {
 		name = name.toLowerCase();
 		for (SampleType type : types) {
 			String t = type.getShortLetterCode();
-			if (t.equals(name) || name.startsWith(t))
+			if (t.equals(name))
 				return type;
 		}
 		return null;
 	}
 
-	public static SampleType byCode(int code) {
-		for (SampleType type : types) {
-			if (code == type.getCode())
-				return type;
-		}
-		return null;
+	public static SampleType createDummy(String name) {
+		return new SampleType(-1, name, name);
 	}
 
 	private static Collection<SampleType> readAll(String fileName) {
@@ -51,11 +47,9 @@ public final class SampleType implements ILabelProvider {
 
 	private final String shortLetterCode;
 	private final String label;
-	private final int code;
 
 	SampleType(int code, String label, String shortLetterCode) {
 		super();
-		this.code = code;
 		this.label = label;
 		this.shortLetterCode = shortLetterCode;
 	}
@@ -75,13 +69,6 @@ public final class SampleType implements ILabelProvider {
 	 */
 	public String getShortLetterCode() {
 		return shortLetterCode;
-	}
-
-	/**
-	 * @return the code, see {@link #code}
-	 */
-	public int getCode() {
-		return code;
 	}
 
 	@Override
