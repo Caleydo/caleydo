@@ -63,7 +63,7 @@ import org.eclipse.core.runtime.Status;
 public class Table {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final double NAN_THRESHOLD = 0.8;
 
@@ -665,7 +665,7 @@ public class Table {
 			for (int i = 0; i < recordIDs.size(); i++) {
 				// allDimsPerRecordArray[i] = dataDomain.getNormalizedValue(dataDomain.getDimensionIDType(), dimID,
 				// dataDomain.getRecordIDType(), recordIDs.get(i));
-				allDimsPerRecordArray[i] = getRaw(dimID, recordIDs.get(i));
+				allDimsPerRecordArray[i] = (Float) getRaw(dimID, recordIDs.get(i));
 			}
 
 			AdvancedDoubleStatistics stats = AdvancedDoubleStatistics.of(allDimsPerRecordArray);
