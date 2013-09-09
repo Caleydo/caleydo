@@ -418,7 +418,7 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 	private RunOverview[] createModel(File file) {
 		Gson gson = new Gson();
 		RunOverview[] fromJson;
-		try (Reader r = Files.newReader(file, Charset.defaultCharset())) {
+		try (Reader r = Files.newReader(file, Charset.forName("UTF-8"))) {
 			fromJson = gson.fromJson(r, RunOverview[].class);
 			Arrays.sort(fromJson, Collections.reverseOrder());
 			return fromJson;

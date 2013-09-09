@@ -334,7 +334,7 @@ public final class FirehoseProvider {
 		System.out.println("parsing maf file " + maf.getAbsolutePath());
 		final String TAB = "\t";
 
-		try (BufferedReader reader = Files.newBufferedReader(maf.toPath(), Charset.defaultCharset())) {
+		try (BufferedReader reader = Files.newBufferedReader(maf.toPath(), Charset.forName("UTF-8"))) {
 			List<String> header = Arrays.asList(reader.readLine().split(TAB));
 			int geneIndex = header.indexOf("Hugo_Symbol");
 			int sampleIndex = header.indexOf("Tumor_Sample_Barcode");

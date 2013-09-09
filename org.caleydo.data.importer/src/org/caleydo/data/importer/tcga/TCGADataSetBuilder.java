@@ -420,7 +420,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		//
 		// List<String> data;
 		// try {
-		// data = Files.readAllLines(in.toPath(), Charset.defaultCharset());
+		// data = Files.readAllLines(in.toPath(), Charset.forName("UTF-8"));
 		// } catch (IOException e2) {
 		// e2.printStackTrace();
 		// return;
@@ -435,7 +435,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		// }
 		// data = null;
 		//
-		// try (BufferedWriter writer = Files.newBufferedWriter(out.toPath(), Charset.defaultCharset())) {
+		// try (BufferedWriter writer = Files.newBufferedWriter(out.toPath(), Charset.forName("UTF-8"))) {
 		// for (int c = 0; c < maxCol; ++c) {
 		// for (int i = 0; i < parts.length; ++i) {
 		// if (i > 0)
