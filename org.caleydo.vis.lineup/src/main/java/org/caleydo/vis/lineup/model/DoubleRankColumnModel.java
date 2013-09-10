@@ -13,7 +13,6 @@ import java.text.NumberFormat;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
@@ -87,7 +86,7 @@ public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 	public DoubleRankColumnModel(IDoubleFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
 			PiecewiseMapping mapping, IDoubleInferrer missingValue) {
-		this(data, header, color, bgColor, mapping, missingValue, NumberFormat.getInstance(Locale.ENGLISH));
+		this(data, header, color, bgColor, mapping, missingValue, null);
 	}
 
 	public DoubleRankColumnModel(IDoubleFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
