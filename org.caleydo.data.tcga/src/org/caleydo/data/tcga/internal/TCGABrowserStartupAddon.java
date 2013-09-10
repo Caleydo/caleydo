@@ -57,12 +57,14 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
 
@@ -86,14 +88,42 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 	private URL selectedChoice = null;
 	private final Gson gson = new GsonBuilder().create();
 
+	private TreeViewer tree;
 	private ExpandItem genomicInfos;
 	private TableViewer genomicViewer;
 	private ExpandItem nonGenomicInfos;
 	private TableViewer nonGenomicViewer;
 
+	private volatile boolean loaded = false;
+	private File file;
+
+	private Control progress;
 
 	@Override
 	public boolean init() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				File f;
+				try {
+					f = RemoteFile.of(new URL(JSONFILE)).getOrLoad(true, new NullProgressMonitor());
+				} catch (MalformedURLException e) {
+					log.error("malformed url: " + JSONFILE, e);
+					f = null;
+				}
+				final File ff = f;
+				Display.getDefault().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						loaded = true;
+						file = ff;
+						if (genomicViewer != null) { // already shown
+							updateData();
+						}
+					}
+				});
+			}
+		}).start();
 		return false;
 	}
 
@@ -106,46 +136,66 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 		label.setText("Please be advised that downloading \"The Cancer Genome Atlas\" data constitutes agreement to the <a href=\"http://cancergenome.nih.gov/abouttcga/policies/policiesguidelines\">policies and guidelines on data usage and publications</a>");
 		label.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
-		try {
-			File file = RemoteFile.of(new URL(JSONFILE)).getOrLoad(true, new NullProgressMonitor());
-			if (file == null) {
-				Label l = new Label(parent, SWT.WRAP);
-				l.setText("Can't download:\n" + JSONFILE);
-			} else {
-				SashForm form = new SashForm(parent, SWT.VERTICAL);
-				form.setLayout(new FillLayout());
-				form.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		if (!loaded) {
+			Composite p = new Composite(parent, SWT.NONE);
+			p.setLayout(new FillLayout(SWT.VERTICAL));
+			p.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+			this.progress = p;
+			ProgressBar progressBar = new ProgressBar(p, SWT.INDETERMINATE);
+			progressBar.setState(SWT.NORMAL);
+			new Label(p, SWT.NONE | SWT.CENTER).setText("Downloading package descriptions...");
+		}
+		if (loaded && file == null) {
+			Label l = new Label(parent, SWT.WRAP);
+			l.setText("Can't download:\n" + JSONFILE);
+			l.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
+		} else {
+			SashForm form = new SashForm(parent, SWT.VERTICAL);
+			form.setLayout(new FillLayout());
+			form.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-				TreeViewer tree = createSelectionTree(form, page, file);
+			tree = createSelectionTree(form, page);
+			updateData();
 
-				Group g = new Group(form, SWT.BORDER_SOLID);
-				g.setText("Additional project information:");
-				g.setLayout(new FillLayout());
-				ExpandBar expandBar = new ExpandBar(g, SWT.V_SCROLL);
+			Group g = new Group(form, SWT.BORDER_SOLID);
+			g.setText("Additional project information:");
+			g.setLayout(new FillLayout());
+			ExpandBar expandBar = new ExpandBar(g, SWT.V_SCROLL);
 
-				this.genomicInfos = new ExpandItem(expandBar, SWT.NONE);
-				genomicInfos.setText("Molecular Data Types");
+			this.genomicInfos = new ExpandItem(expandBar, SWT.NONE);
+			genomicInfos.setText("Molecular Data Types");
 
-				this.genomicViewer = createGenomicTableViewer(expandBar);
-				genomicInfos.setControl(this.genomicViewer.getTable().getParent());
-				genomicInfos.setExpanded(false);
+			this.genomicViewer = createGenomicTableViewer(expandBar);
+			genomicInfos.setControl(this.genomicViewer.getTable().getParent());
+			genomicInfos.setExpanded(false);
 
 
-				this.nonGenomicInfos = new ExpandItem(expandBar, SWT.NONE);
-				nonGenomicInfos.setText("Other Data Types");
+			this.nonGenomicInfos = new ExpandItem(expandBar, SWT.NONE);
+			nonGenomicInfos.setText("Other Data Types");
 
-				this.nonGenomicViewer = createNonGenomicTableViewer(expandBar);
-				nonGenomicInfos.setControl(this.nonGenomicViewer.getTable().getParent());
-				nonGenomicInfos.setExpanded(false);
-				form.setWeights(new int[] { 40, 60 });
-				form.setMaximizedControl(tree.getControl());
-			}
-		} catch (MalformedURLException e) {
-			log.error("can't parse: " + JSONFILE, e);
+			this.nonGenomicViewer = createNonGenomicTableViewer(expandBar);
+			nonGenomicInfos.setControl(this.nonGenomicViewer.getTable().getParent());
+			nonGenomicInfos.setExpanded(false);
+			form.setWeights(new int[] { 40, 60 });
+			form.setMaximizedControl(tree.getControl());
 		}
 		return parent;
 	}
 
+	void updateData() {
+		if (file == null || tree == null)
+			return;
+		RunOverview[] model = createModel(file);
+		tree.setInput(model);
+		tree.getTree().setItemCount(model.length);
+
+		if (progress != null) {
+			Composite p = progress.getParent();
+			progress.dispose();
+			progress = null;
+			p.layout(true);
+		}
+	}
 
 	private TableViewer createTableViewer(Composite parent) {
 		final TableViewer t = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
@@ -156,14 +206,11 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 		return t;
 	}
 
-	private TreeViewer createSelectionTree(final SashForm form, final WizardPage page, File file) {
+	private TreeViewer createSelectionTree(final SashForm form, final WizardPage page) {
 		final TreeViewer v = new TreeViewer(form, SWT.VIRTUAL | SWT.BORDER);
 		v.setLabelProvider(new LabelProvider());
 		v.setContentProvider(new MyContentProvider(v));
 		v.setUseHashlookup(true);
-		RunOverview[] model = createModel(file);
-		v.setInput(model);
-		v.getTree().setItemCount(model.length);
 		v.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
