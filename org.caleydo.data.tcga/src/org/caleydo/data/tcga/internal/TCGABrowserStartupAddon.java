@@ -51,6 +51,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.TextStyle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -99,24 +100,27 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 	@Override
 	public Composite create(Composite parent, final WizardPage page) {
 		parent = new Composite(parent, SWT.NONE);
-		parent.setLayout(new GridLayout());
+		parent.setLayout(new GridLayout(1, false));
 		Link label = new Link(parent, SWT.NO_BACKGROUND);
 		label.addSelectionListener(BrowserUtils.LINK_LISTENER);
 		label.setText("Please be advised that downloading \"The Cancer Genome Atlas\" data constitutes agreement to the <a href=\"http://cancergenome.nih.gov/abouttcga/policies/policiesguidelines\">policies and guidelines on data usage and publications</a>");
 		label.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
 		try {
 			File file = RemoteFile.of(new URL(JSONFILE)).getOrLoad(true, new NullProgressMonitor());
 			if (file == null) {
 				Label l = new Label(parent, SWT.WRAP);
 				l.setText("Can't download:\n" + JSONFILE);
 			} else {
-				TreeViewer v = createSelectionTree(parent, page, file);
-				v.getTree().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+				SashForm form = new SashForm(parent, SWT.VERTICAL);
+				form.setLayout(new FillLayout());
+				form.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-				Group g = new Group(parent, SWT.BORDER_SOLID);
+				TreeViewer tree = createSelectionTree(form, page, file);
+
+				Group g = new Group(form, SWT.BORDER_SOLID);
 				g.setText("Additional project information:");
 				g.setLayout(new FillLayout());
-				g.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 				ExpandBar expandBar = new ExpandBar(g, SWT.V_SCROLL);
 
 				this.genomicInfos = new ExpandItem(expandBar, SWT.NONE);
@@ -133,6 +137,8 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 				this.nonGenomicViewer = createNonGenomicTableViewer(expandBar);
 				nonGenomicInfos.setControl(this.nonGenomicViewer.getTable().getParent());
 				nonGenomicInfos.setExpanded(false);
+				form.setWeights(new int[] { 70, 30 });
+				form.setMaximizedControl(tree.getControl());
 			}
 		} catch (MalformedURLException e) {
 			log.error("can't parse: " + JSONFILE, e);
@@ -150,8 +156,8 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 		return t;
 	}
 
-	private TreeViewer createSelectionTree(Composite parent, final WizardPage page, File file) {
-		final TreeViewer v = new TreeViewer(parent, SWT.VIRTUAL | SWT.BORDER);
+	private TreeViewer createSelectionTree(final SashForm form, final WizardPage page, File file) {
+		final TreeViewer v = new TreeViewer(form, SWT.VIRTUAL | SWT.BORDER);
 		v.setLabelProvider(new LabelProvider());
 		v.setContentProvider(new MyContentProvider(v));
 		v.setUseHashlookup(true);
@@ -171,12 +177,14 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 					page.setPageComplete(false);
 				}
 
-				if (f instanceof TumorProject)
+				if (f instanceof TumorProject) {
 					updateDetailInfo((TumorProject) f);
-				else if (f instanceof RunOverview) {
+					form.setMaximizedControl(null);
+				} else if (f instanceof RunOverview) {
 					updateDetailInfo((RunOverview) f);
 				} else {
 					clearDetailInfo();
+					form.setMaximizedControl(v.getControl());
 				}
 			}
 		});
