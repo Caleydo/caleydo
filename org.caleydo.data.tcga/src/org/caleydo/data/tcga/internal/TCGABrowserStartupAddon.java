@@ -137,7 +137,7 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 				this.nonGenomicViewer = createNonGenomicTableViewer(expandBar);
 				nonGenomicInfos.setControl(this.nonGenomicViewer.getTable().getParent());
 				nonGenomicInfos.setExpanded(false);
-				form.setWeights(new int[] { 70, 30 });
+				form.setWeights(new int[] { 40, 60 });
 				form.setMaximizedControl(tree.getControl());
 			}
 		} catch (MalformedURLException e) {
@@ -182,6 +182,8 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 					form.setMaximizedControl(null);
 				} else if (f instanceof RunOverview) {
 					updateDetailInfo((RunOverview) f);
+					clearDetailInfo();
+					form.setMaximizedControl(v.getControl());
 				} else {
 					clearDetailInfo();
 					form.setMaximizedControl(v.getControl());
