@@ -32,7 +32,7 @@ public class Formatter {
 
 		double a = Math.abs(number);
 		DecimalFormat decimalFormat;
-		if (a > 10000 || (a < 0.001 && a > 0))
+		if (a > 10000 || (a < 0.02 && a > 0))
 			decimalFormat = E_NOTATION;
 		else if (a > 100)
 			decimalFormat = NO_COMMA;
