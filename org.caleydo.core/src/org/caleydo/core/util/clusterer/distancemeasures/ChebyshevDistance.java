@@ -5,9 +5,14 @@
  ******************************************************************************/
 package org.caleydo.core.util.clusterer.distancemeasures;
 
+import static java.lang.Double.isNaN;
+
+import org.caleydo.core.util.function.IDoubleSizedIterable;
+import org.caleydo.core.util.function.IDoubleSizedIterator;
+
 /**
  * Chebyshev distance measure, implements {@link IDistanceMeasure}.
- * 
+ *
  * @author Bernhard Schlegl
  */
 public class ChebyshevDistance
@@ -35,5 +40,21 @@ public class ChebyshevDistance
 		}
 
 		return distance;
+	}
+
+	@Override
+	public double apply(final IDoubleSizedIterable a, final IDoubleSizedIterable b) {
+		final IDoubleSizedIterator a_it = a.iterator();
+		final IDoubleSizedIterator b_it = a.iterator();
+
+		double acc = 0;
+
+		while (a_it.hasNext() && b_it.hasNext()) {
+			double a_d = a_it.nextPrimitive();
+			double b_d = b_it.nextPrimitive();
+			if (!isNaN(a_d) && !isNaN(b_d))
+				acc = Math.max(acc, Math.abs(a_d - b_d));
+		}
+		return acc;
 	}
 }

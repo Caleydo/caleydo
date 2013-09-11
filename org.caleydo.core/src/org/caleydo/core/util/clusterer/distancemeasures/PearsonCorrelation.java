@@ -5,6 +5,11 @@
  ******************************************************************************/
 package org.caleydo.core.util.clusterer.distancemeasures;
 
+import static java.lang.Double.isNaN;
+
+import org.caleydo.core.util.function.IDoubleSizedIterable;
+import org.caleydo.core.util.function.IDoubleSizedIterator;
+
 
 
 /**
@@ -67,5 +72,53 @@ public class PearsonCorrelation
 		if (!any)
 			return 0;
 		return sum / n;
+	}
+
+	@Override
+	public double apply(final IDoubleSizedIterable a, final IDoubleSizedIterable b) {
+		final double a_mean = mean(a.iterator());
+		final double b_mean = mean(b.iterator());
+
+		final IDoubleSizedIterator a_it = a.iterator();
+		final IDoubleSizedIterator b_it = a.iterator();
+
+		int n = 0;
+		double sum_sq_x = 0;
+		double sum_sq_y = 0;
+		double sum_coproduct = 0;
+
+		while (a_it.hasNext() && b_it.hasNext()) {
+			double a_d = a_it.nextPrimitive() - a_mean;
+			double b_d = b_it.nextPrimitive() - b_mean;
+			if (!isNaN(a_d) && !isNaN(b_d)) {
+				sum_sq_x += a_d * a_d;
+				sum_sq_y += b_d * b_d;
+				sum_coproduct += a_d * b_d;
+				n++;
+			}
+		}
+
+		if (n == 0)
+			return 0;
+
+		final double pop_sd_x = Math.sqrt(sum_sq_x / n);
+		final double pop_sd_y = Math.sqrt(sum_sq_y / n);
+		final double cov_x_y = sum_coproduct / n;
+		final double correlation = cov_x_y / (pop_sd_x * pop_sd_y);
+
+		return 1 - correlation; // convert to similarity measure
+	}
+
+	private static double mean(IDoubleSizedIterator it) {
+		int n = 0;
+		double acc = 0;
+		while (it.hasNext()) {
+			double d = it.nextPrimitive();
+			if (!isNaN(d)) {
+				n++;
+				acc += d;
+			}
+		}
+		return n == 0 ? 0 : acc / n;
 	}
 }
