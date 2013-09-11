@@ -29,6 +29,7 @@ import org.caleydo.core.io.FileUtil;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.MetaDataElement;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterConfiguration;
@@ -139,16 +140,22 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 	}
 
 	private DataSetDescription setUpClusteredMatrixData(EDataSetType type, IDSpecification rowIDSpecification,
-			IDSpecification columnIDSpecification, Pair<File, Boolean> pair) {
+			IDSpecification columnIDSpecification, Pair<TCGAFileInfo, Boolean> pair) {
 		if (pair == null || pair.getFirst() == null)
 			return null;
-		final File matrixFile = pair.getFirst();
+		TCGAFileInfo fileInfo = pair.getFirst();
+		final File matrixFile = fileInfo.getFile();
 		final boolean loadFullGenes = pair.getSecond();
 
+		MetaDataElement metaData = new MetaDataElement();
 		DataSetDescription dataSet = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		dataSet.setDataSetName(dataSetName);
 		dataSet.setColor(dataSetType.getColor());
 		dataSet.setDataSourcePath(matrixFile.getPath());
+		dataSet.setMetaData(metaData);
+
+		addDataSourceMetaData(metaData, fileInfo);
+		metaData.addAttribute("Full Genes", new Boolean(loadFullGenes).toString());
 
 		if (!loadFullGenes) {
 			// the gct files have 3 header lines and are centered<
@@ -171,29 +178,49 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 		dataSet.setColumnIDSpecification(columnIDSpecification);
 
-		File cnmfGroupingFile = fileFinder.findCNMFGroupingFile(type);
+		MetaDataElement columnGroupings = new MetaDataElement("Loaded " + columnIDSpecification.getIdCategory()
+				+ " Groupings");
+
+		TCGAFileInfo cnmfGroupingFile = fileFinder.findCNMFGroupingFile(type);
 		if (cnmfGroupingFile != null) {
-			GroupingParseSpecification grouping = new GroupingParseSpecification(cnmfGroupingFile.getPath());
+			GroupingParseSpecification grouping = new GroupingParseSpecification(cnmfGroupingFile.getFile().getPath());
 			grouping.setContainsColumnIDs(false);
 			grouping.setRowIDSpecification(columnIDSpecification);
 			grouping.setGroupingName("CNMF Clustering");
 			dataSet.addColumnGroupingSpecification(grouping);
+
+			MetaDataElement cnmfClustering = new MetaDataElement("CNMF Clustering");
+			addDataSourceMetaData(cnmfClustering, cnmfGroupingFile);
+			columnGroupings.addElement(cnmfClustering);
 		} else {
 			System.out.println("Warning: Can't find CNMF grouping file");
 		}
 
-		File hierarchicalGroupingFile = fileFinder.findHiearchicalGrouping(type);
+		TCGAFileInfo hierarchicalGroupingFile = fileFinder.findHiearchicalGrouping(type);
 		if (hierarchicalGroupingFile != null) {
-			GroupingParseSpecification grouping = new GroupingParseSpecification(hierarchicalGroupingFile.getPath());
+			GroupingParseSpecification grouping = new GroupingParseSpecification(hierarchicalGroupingFile.getFile()
+					.getPath());
 			grouping.setContainsColumnIDs(false);
 			grouping.setRowIDSpecification(columnIDSpecification);
 			grouping.setGroupingName("Hierarchical Clustering");
 			dataSet.addColumnGroupingSpecification(grouping);
+
+			MetaDataElement hierarchicalClustering = new MetaDataElement("Hierarchical Clustering");
+			addDataSourceMetaData(hierarchicalClustering, hierarchicalGroupingFile);
+			columnGroupings.addElement(hierarchicalClustering);
 		} else {
 			System.out.println("Warning: Can't find hierarchical grouping file");
 		}
+
+		if (!columnGroupings.getElements().isEmpty()) {
+			metaData.addElement(columnGroupings);
+		}
+
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
 		dataSet.setDataProcessingDescription(dataProcessingDescription);
+
+		MetaDataElement rowGroupings = new MetaDataElement("Computed " + rowIDSpecification.getIdCategory()
+				+ " Groupings");
 
 		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
@@ -202,37 +229,68 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			break;
 		case AFFINITY:
 			AffinityClusterConfiguration affinityAlgo = new AffinityClusterConfiguration();
-			affinityAlgo.setClusterFactor(9);
+			Integer clusterFactor = 9;
+			affinityAlgo.setClusterFactor(clusterFactor);
 			affinityAlgo.setCacheVectors(true);
 			clusterConfiguration.setClusterAlgorithmConfiguration(affinityAlgo);
 			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+
+			MetaDataElement affinityCluster = new MetaDataElement("Affinity Clustering");
+			affinityCluster.addAttribute("Cluster Factor", clusterFactor.toString());
+			rowGroupings.addElement(affinityCluster);
 			break;
 		case KMEANS:
 			KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
-			kMeansAlgo.setNumberOfClusters(5);
+			Integer numClusters = 5;
+			kMeansAlgo.setNumberOfClusters(numClusters);
 			kMeansAlgo.setCacheVectors(true);
 			clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
 			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+
+			MetaDataElement kmeansCluster = new MetaDataElement("KMeans Clustering");
+			kmeansCluster.addAttribute("Number of Clusters", numClusters.toString());
+			rowGroupings.addElement(kmeansCluster);
 			break;
 		case TREE:
 			TreeClusterConfiguration treeAlgo = new TreeClusterConfiguration();
-			treeAlgo.setTreeClustererAlgo(ETreeClustererAlgo.AVERAGE_LINKAGE);
+			ETreeClustererAlgo algo = ETreeClustererAlgo.AVERAGE_LINKAGE;
+			treeAlgo.setTreeClustererAlgo(algo);
 			clusterConfiguration.setClusterAlgorithmConfiguration(treeAlgo);
 			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+
+			MetaDataElement treeCluster = new MetaDataElement("KMeans Clustering");
+			treeCluster.addAttribute("Algorithm", algo.getName());
+			rowGroupings.addElement(treeCluster);
 			break;
 		default:
 			log.log(Level.ALL, "Did not recognize option " + settings.getCluster());
 			break;
 		}
 
+		if (!rowGroupings.getElements().isEmpty()) {
+			metaData.addElement(rowGroupings);
+		}
+
 		if (loadFullGenes) {
+
 			NumericalProperties numProp = dataSet.getDataDescription().getNumericalProperties();
 			// run z-score normalization on the rows
 			numProp.setzScoreNormalization(NumericalProperties.ZSCORE_ROWS);
 			// clip to 4 std-devs
-			numProp.setClipToStdDevFactor(4f);
+			Float stdDevFactor = 4f;
+			numProp.setClipToStdDevFactor(stdDevFactor);
 			// here we turn on sampling to 1500
-			dataProcessingDescription.setNrRowsInSample(1500);
+			Integer numRowsInSample = 1500;
+			dataProcessingDescription.setNrRowsInSample(numRowsInSample);
+
+			MetaDataElement processing = new MetaDataElement("Data Pre-Processing");
+			processing
+					.addElement(new MetaDataElement("Z-Score Normalization per " + rowIDSpecification.getIdCategory()));
+			processing.addElement(new MetaDataElement("Clip to " + stdDevFactor.toString() + " Standard Deviation"));
+			processing.addElement(new MetaDataElement("Sampling for " + rowIDSpecification.getIdCategory() + " to "
+					+ numRowsInSample.toString()
+					+ " using most variable Elements according to Median Absolute Deviation"));
+			metaData.addElement(processing);
 		}
 
 		return dataSet;
@@ -240,19 +298,22 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 	private DataSetDescription setUpMutationData(IDSpecification geneIDSpecification,
 			IDSpecification sampleIDSpecification) {
-		Pair<File, Integer> p = fileFinder.findMutationFile();
+		Pair<TCGAFileInfo, Integer> p = fileFinder.findMutationFile();
 		int startColumn = p.getSecond();
-		File mutationFile = p.getFirst();
+		TCGAFileInfo mutationFile = p.getFirst();
 
 		if (mutationFile == null) {
 			return null;
 		}
-
+		MetaDataElement metaData = new MetaDataElement();
 		DataSetDescription dataSet = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
 		dataSet.setDataSetName(dataSetName);
 		dataSet.setColor(dataSetType.getColor());
 
-		dataSet.setDataSourcePath(mutationFile.getPath());
+		addDataSourceMetaData(metaData, mutationFile);
+		dataSet.setMetaData(metaData);
+
+		dataSet.setDataSourcePath(mutationFile.getFile().getPath());
 		dataSet.setNumberOfHeaderLines(1);
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(startColumn);
@@ -292,15 +353,19 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 	private DataSetDescription setUpCopyNumberData(IDSpecification rwoIDSpecification,
 			IDSpecification sampleIDSpecification) {
-		File copyNumberFile = fileFinder.findCopyNumberFile();
+		TCGAFileInfo copyNumberFile = fileFinder.findCopyNumberFile();
 		if (copyNumberFile == null)
 			return null;
 
+		MetaDataElement metaData = new MetaDataElement();
 		DataSetDescription dataSet = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
 		dataSet.setDataSetName(dataSetName);
 		dataSet.setColor(dataSetType.getColor());
-		dataSet.setDataSourcePath(copyNumberFile.getPath());
+		dataSet.setDataSourcePath(copyNumberFile.getFile().getPath());
 		dataSet.setNumberOfHeaderLines(1);
+		dataSet.setMetaData(metaData);
+		
+		addDataSourceMetaData(metaData, copyNumberFile);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
@@ -339,9 +404,10 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 	private DataSetDescription setUpClinicalData(IDSpecification rowIdSpecification,
 			IDSpecification columnIdSpecification) {
-		File clinicalFile = fileFinder.findClinicalDataFile();
-		if (clinicalFile == null)
+		TCGAFileInfo clinicalFileInfo = fileFinder.findClinicalDataFile();
+		if (clinicalFileInfo == null)
 			return null;
+		File clinicalFile = clinicalFileInfo.getFile();
 
 		File out = new File(clinicalFile.getParentFile(), "T" + clinicalFile.getName());
 
@@ -395,6 +461,11 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			return null;
 
 		return dataSet;
+	}
+
+	private void addDataSourceMetaData(MetaDataElement metaData, TCGAFileInfo fileInfo) {
+		metaData.addAttribute("Archive", fileInfo.getArchiveURL());
+		metaData.addAttribute("Source File", fileInfo.getSourceFileName());
 	}
 
 	private String readFirstLine(File file) {

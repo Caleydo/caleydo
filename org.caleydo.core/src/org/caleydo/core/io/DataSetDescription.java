@@ -79,6 +79,8 @@ public class DataSetDescription extends MatrixDefinition {
 	/** A human readable name of the dataset. Optional. */
 	private String dataSetName;
 
+	private MetaDataElement metaData;
+
 	/**
 	 * <p>
 	 * Set {@link ParsingRule}s for the source file. Multiple ParsingRules are legal, where columns may be omitted, but
@@ -470,5 +472,20 @@ public class DataSetDescription extends MatrixDefinition {
 			return data + dataDescription.toString();
 
 		return data + "(hybrid/inhomogeneous)";
+	}
+
+	/**
+	 * @param metaData
+	 *            setter, see {@link metaData}
+	 */
+	public void setMetaData(MetaDataElement metaData) {
+		this.metaData = metaData;
+	}
+
+	/**
+	 * @return the metaData, see {@link #metaData}
+	 */
+	public MetaDataElement getMetaData() {
+		return metaData;
 	}
 }
