@@ -15,6 +15,7 @@ import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.datadomain.pathway.IPathwayHandler;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -134,7 +135,7 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IPathwayHandler 
 		toolBarManager.add(pathwaySearchBox);
 
 		toolBarManager.add(new OpenOnlineHelpAction(
-				"http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/pathways", false));
+GeneralManager.HELP_URL + "/views/enroute.md#Pathway_View", false));
 
 	}
 
