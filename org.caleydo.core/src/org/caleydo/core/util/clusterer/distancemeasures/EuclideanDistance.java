@@ -29,7 +29,7 @@ public class EuclideanDistance
 		for (int i = 0; i < length; i++) {
 			float d = vector1[i] - vector2[i];
 			if (!Float.isNaN(d))
-				sum += Math.pow(d, 2); // multiplication is faster than pow(x,2)
+				sum += d * d; // multiplication is faster than pow(x,2)
 		}
 
 		return (float) Math.sqrt(sum);
