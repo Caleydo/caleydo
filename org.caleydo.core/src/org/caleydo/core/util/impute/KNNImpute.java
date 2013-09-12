@@ -14,38 +14,55 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.TreeSet;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
+import java.util.concurrent.RecursiveAction;
 
 import org.apache.commons.lang.StringUtils;
 import org.caleydo.core.io.KNNImputeDescription;
 import org.caleydo.core.util.collection.Pair;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.io.CharStreams;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class KNNImpute {
+public class KNNImpute extends RecursiveAction {
+	private static final long serialVersionUID = 1605596542323204167L;
 	private final KNNImputeDescription desc;
 	private final Random r;
 
 	private final int samples;
 	private final ImmutableList<Gene> genes;
-	private final Sample[] samples_;
+	private final LoadingCache<Integer, Sample> samples_ = CacheBuilder.newBuilder().build(
+			new CacheLoader<Integer, Sample>() {
+				@Override
+				public Sample load(Integer key) {
+					return computeSample(key.intValue());
+				}
+			});
 
 	public KNNImpute(KNNImputeDescription desc, ImmutableList<Gene> genes) {
 		this.desc = desc;
 		this.genes = genes;
 		this.samples = this.genes.get(0).size();
 		this.r = new Random(desc.getRng_seed());
-		samples_ = new Sample[samples];
 	}
 
-	public void run() {
+	@Override
+	protected void compute() {
 //		data
 //		An expression matrix with genes in the rows, samples in the columns
 //		k
@@ -93,6 +110,7 @@ public class KNNImpute {
 		//list of possible
 		List<Gene> neighborhood;
 		int withMissing = 0;
+		Collection<ForkJoinTask<Void>> tasks = new ArrayList<>();
 		if (!validRowMax) {
 			neighborhood = genes;// all genes
 		} else {
@@ -101,7 +119,7 @@ public class KNNImpute {
 				if (gene.getNaNs() == 0) {// nothing to impute
 					neighborhood.add(gene);
 				} else if (validRowMax && gene.getNaNs() > max) { // too many nans use the sample mean
-					imputeSampleMean(gene);
+					tasks.add(new ImputeSampleMean(gene));
 					//not a good neighbor
 				} else {
 					// neighbor but something needs to be done
@@ -110,9 +128,10 @@ public class KNNImpute {
 				}
 			}
 		}
-		if (withMissing == 0)
-			return;
-		imputeKNNMean(neighborhood);
+
+		if (withMissing > 0)
+			tasks.add(new ImputeKNNMean(neighborhood));
+		invokeAll(tasks);
 	}
 
 	/**
@@ -120,16 +139,27 @@ public class KNNImpute {
 	 *
 	 * @param neighborhood
 	 */
-	private void imputeKNNMean(List<Gene> neighborhood) {
-		if (neighborhood.size() <= desc.getMaxp()) {
-			for (Gene gene : neighborhood) {
-				if (gene.getNaNs() > 0)
-					imputeKNNMeanImpl(neighborhood, gene);
+	private class ImputeKNNMean extends RecursiveAction {
+		private static final long serialVersionUID = 1L;
+		private final List<Gene> neighborhood;
+
+		public ImputeKNNMean(List<Gene> neighborhood) {
+			this.neighborhood = neighborhood;
+		}
+
+		@Override
+		protected void compute() {
+			if (neighborhood.size() <= desc.getMaxp()) {
+				Collection<ImputeKNNMeanImpl> tasks = new ArrayList<>();
+				for (Gene gene : neighborhood) {
+					if (gene.getNaNs() > 0)
+						tasks.add(new ImputeKNNMeanImpl(neighborhood, gene));
+				}
+				invokeAll(tasks);
+			} else {
+				Pair<List<Gene>, List<Gene>> r = twoMeanClusterSplit(neighborhood);
+				invokeAll(new ImputeKNNMean(r.getFirst()), new ImputeKNNMean(r.getSecond()));
 			}
-		} else {
-			Pair<List<Gene>, List<Gene>> r = twoMeanClusterSplit(neighborhood);
-			imputeKNNMean(r.getFirst());
-			imputeKNNMean(r.getSecond());
 		}
 	}
 
@@ -224,30 +254,39 @@ public class KNNImpute {
 		Arrays.fill(values, Float.NaN); // reset
 	}
 
-	/**
-	 * @param neighborhood
-	 * @param gene
-	 */
-	private void imputeKNNMeanImpl(List<Gene> neighborhood, Gene gene) {
-		TreeSet<NeighorGene> neighbors = new TreeSet<>();
-		final int k = desc.getK();
-		for (Gene other : neighborhood) {
-			if (other == gene)
-				continue;
-			double distance = distance(gene, other);
-			if (isInfinite(distance))
-				continue;
-			neighbors.add(new NeighorGene(other, distance));
-			if (neighbors.size() > k)
-				neighbors.pollLast();
+	private class ImputeKNNMeanImpl extends RecursiveAction {
+		private static final long serialVersionUID = 1L;
+		private final List<Gene> neighborhood;
+		private final Gene gene;
+
+		public ImputeKNNMeanImpl(List<Gene> neighborhood, Gene gene) {
+			this.neighborhood = neighborhood;
+			this.gene = gene;
 		}
-		for (int sample = 0; sample < samples; ++sample) {
-			if (gene.isNaN(sample)) {
-				double value = mean(neighbors, sample);
-				if (Double.isNaN(value)) // This can fail if ALL the neighbors are missing in a particular element. In
-											// this case we use the overall column mean for that block of genes.
-					value = getSample(sample).getMean();
-				gene.setNextNaN(value);
+
+		@Override
+		protected void compute() {
+			TreeSet<NeighorGene> neighbors = new TreeSet<>();
+			final int k = desc.getK();
+			for (Gene other : neighborhood) {
+				if (other == gene)
+					continue;
+				double distance = distance(gene, other);
+				if (isInfinite(distance))
+					continue;
+				neighbors.add(new NeighorGene(other, distance));
+				if (neighbors.size() > k)
+					neighbors.pollLast();
+			}
+			for (int sample = 0; sample < samples; ++sample) {
+				if (gene.isNaN(sample)) {
+					double value = mean(neighbors, sample);
+					if (Double.isNaN(value)) // This can fail if ALL the neighbors are missing in a particular element.
+												// In
+												// this case we use the overall column mean for that block of genes.
+						value = getSample(sample).getMean();
+					gene.setNextNaN(value);
+				}
 			}
 		}
 	}
@@ -296,21 +335,30 @@ public class KNNImpute {
 		return n == 0 ? Double.NaN : sum / n;
 	}
 
-	private void imputeSampleMean(final Gene gene) {
-		for (int sample = 0; sample < samples; ++sample) {
-			if (gene.isNaN(sample))
-				gene.setNextNaN(getSample(sample).getMean());
+	private class ImputeSampleMean extends RecursiveAction {
+		private static final long serialVersionUID = 1L;
+		private final Gene gene;
+
+		public ImputeSampleMean(Gene gene) {
+			this.gene = gene;
+		}
+
+		@Override
+		protected void compute() {
+			for (int sample = 0; sample < samples; ++sample) {
+				if (gene.isNaN(sample))
+					gene.setNextNaN(getSample(sample).getMean());
+			}
 		}
 	}
+
 
 	/**
 	 * @param sample
 	 * @return
 	 */
 	private Sample getSample(int sample) {
-		if (samples_[sample] == null)
-			samples_[sample] = computeSample(sample);
-		return samples_[sample];
+		return samples_.getUnchecked(sample);
 	}
 
 	/**
@@ -344,6 +392,18 @@ public class KNNImpute {
 
 		public boolean isAnySet() {
 			return nanSetCounter > 0;
+		}
+
+		public Map<Integer, Float> toImputeMap() {
+			if (!isAnySet())
+				return Collections.emptyMap();
+			ImmutableSortedMap.Builder<Integer, Float> b = ImmutableSortedMap.naturalOrder();
+			assert nanSetCounter == nanReplacements.length;
+			int j = 0;
+			for (int i = 0; i < data.length; ++i)
+				if (Float.isNaN(data[i]))
+					b.put(i, nanReplacements[j++]);
+			return b.build();
 		}
 		/**
 		 * @return
@@ -387,7 +447,7 @@ public class KNNImpute {
 		}
 	}
 
-	private class NeighorGene implements Comparable<NeighorGene> {
+	private static final class NeighorGene implements Comparable<NeighorGene> {
 		private final Gene gene;
 		protected final double distance;
 
@@ -421,7 +481,7 @@ public class KNNImpute {
 
 	}
 
-	private class Sample {
+	private static final class Sample {
 		private final double mean;
 		private final int nans;
 
@@ -472,7 +532,8 @@ public class KNNImpute {
 			b.add(new Gene(j++, nans, d));
 		}
 		KNNImpute r = new KNNImpute(new KNNImputeDescription(), b.build());
-		r.run();
+		ForkJoinPool p = new ForkJoinPool();
+		p.invoke(r);
 		try (PrintWriter w = new PrintWriter("khan.imputed.csv")) {
 			w.println(StringUtils.repeat("sample", ";", r.samples));
 			for (Gene g : r.genes) {
