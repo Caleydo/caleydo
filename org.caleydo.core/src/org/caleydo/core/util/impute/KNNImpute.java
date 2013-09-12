@@ -15,14 +15,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.TreeSet;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.RecursiveTask;
 
 import org.apache.commons.lang.StringUtils;
 import org.caleydo.core.io.KNNImputeDescription;
@@ -32,14 +31,16 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSortedMap;
+import com.google.common.collect.ImmutableTable;
+import com.google.common.collect.ImmutableTable.Builder;
+import com.google.common.collect.Table;
 import com.google.common.io.CharStreams;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class KNNImpute extends RecursiveAction {
+public class KNNImpute extends RecursiveTask<Table<Integer, Integer, Float>> {
 	private static final long serialVersionUID = 1605596542323204167L;
 	private final KNNImputeDescription desc;
 	private final Random r;
@@ -61,8 +62,9 @@ public class KNNImpute extends RecursiveAction {
 		this.r = new Random(desc.getRng_seed());
 	}
 
+
 	@Override
-	protected void compute() {
+	protected Table<Integer, Integer, Float> compute() {
 //		data
 //		An expression matrix with genes in the rows, samples in the columns
 //		k
@@ -132,6 +134,14 @@ public class KNNImpute extends RecursiveAction {
 		if (withMissing > 0)
 			tasks.add(new ImputeKNNMean(neighborhood));
 		invokeAll(tasks);
+
+		ImmutableTable.Builder<Integer, Integer, Float> b = ImmutableTable.builder();
+		for (Gene gene : genes) {
+			if (gene.isAnySet()) {
+				gene.fillImpute(b);
+			}
+		}
+		return b.build();
 	}
 
 	/**
@@ -377,7 +387,7 @@ public class KNNImpute extends RecursiveAction {
 		return false;
 	}
 
-	private static final class Gene {
+	public static final class Gene {
 		protected final int gene;
 		// as we are working from left to right, we just store the replacements for each NaN
 		private final float[] nanReplacements;
@@ -390,21 +400,23 @@ public class KNNImpute extends RecursiveAction {
 			this.data = data;
 		}
 
-		public boolean isAnySet() {
-			return nanSetCounter > 0;
-		}
-
-		public Map<Integer, Float> toImputeMap() {
+		/**
+		 * @param b
+		 */
+		public void fillImpute(Builder<Integer, Integer, Float> b) {
 			if (!isAnySet())
-				return Collections.emptyMap();
-			ImmutableSortedMap.Builder<Integer, Float> b = ImmutableSortedMap.naturalOrder();
+				return;
 			assert nanSetCounter == nanReplacements.length;
 			int j = 0;
 			for (int i = 0; i < data.length; ++i)
 				if (Float.isNaN(data[i]))
-					b.put(i, nanReplacements[j++]);
-			return b.build();
+					b.put(gene, i, nanReplacements[j++]);
 		}
+
+		public boolean isAnySet() {
+			return nanSetCounter > 0;
+		}
+
 		/**
 		 * @return
 		 */

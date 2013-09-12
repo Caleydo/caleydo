@@ -15,11 +15,27 @@ import javax.xml.bind.annotation.XmlType;
 public class KNNImputeDescription extends ImputeDescription {
 	private int k = 10;
 	private float rowmax = 0.5f;
-	private float colmax = Float.NaN; // use by default NaN to avoid scannign all columns 0.8f;
+	private float colmax = Float.NaN; // use by default NaN to avoid scanning all columns 0.8f;
 	private int maxp = 1500;
 	private int rng_seed = 362436069;
 	private int maxit = 5;
 	private double eps = 0.001;
+	private EDimension dimension = EDimension.RECORD;
+
+	/**
+	 * @return the dimension, see {@link #dimension}
+	 */
+	public EDimension getDimension() {
+		return dimension;
+	}
+
+	/**
+	 * @param dimension
+	 *            setter, see {@link dimension}
+	 */
+	public void setDimension(EDimension dimension) {
+		this.dimension = dimension;
+	}
 
 	/**
 	 * @return the maxit, see {@link #maxit}
@@ -90,5 +106,6 @@ public class KNNImputeDescription extends ImputeDescription {
 	public void setRng_seed(int rng_seed) {
 		this.rng_seed = rng_seed;
 	}
+
 
 }

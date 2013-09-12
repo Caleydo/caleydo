@@ -83,8 +83,28 @@ public class NumericalProperties {
 	/**
 	 *
 	 */
+	private KNNImputeDescription imputeDescription = null;
+
+	/**
+	 *
+	 */
 	public NumericalProperties() {
 
+	}
+
+	/**
+	 * @param imputeDescription
+	 *            setter, see {@link imputeDescription}
+	 */
+	public void setImputeDescription(KNNImputeDescription imputeDescription) {
+		this.imputeDescription = imputeDescription;
+	}
+
+	/**
+	 * @return the imputeDescription, see {@link #imputeDescription}
+	 */
+	public KNNImputeDescription getImputeDescription() {
+		return imputeDescription;
 	}
 
 	/**

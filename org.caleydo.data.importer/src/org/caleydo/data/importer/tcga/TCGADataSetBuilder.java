@@ -29,6 +29,7 @@ import org.caleydo.core.io.FileUtil;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.KNNImputeDescription;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterConfiguration;
@@ -233,6 +234,8 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			numProp.setClipToStdDevFactor(4f);
 			// here we turn on sampling to 1500
 			dataProcessingDescription.setNrRowsInSample(1500);
+
+			numProp.setImputeDescription(new KNNImputeDescription());
 		}
 
 		return dataSet;

@@ -5,20 +5,29 @@
  ******************************************************************************/
 package org.caleydo.core.data.collection.table;
 
+import java.util.Map;
+import java.util.concurrent.ForkJoinPool;
+
 import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.collection.column.AColumn;
 import org.caleydo.core.data.collection.column.NumericalColumn;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.KNNImputeDescription;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
 import org.caleydo.core.util.function.DoubleStatistics;
+import org.caleydo.core.util.impute.KNNImpute;
+import org.caleydo.core.util.impute.KNNImpute.Gene;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.math.MathHelper;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+
+import com.google.common.base.Stopwatch;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Extension of {@link Table} to add functionality specific to homogeneous numerical tables, such as a joint
@@ -267,6 +276,8 @@ public class NumericalTable extends Table {
 	 */
 	@Override
 	protected void normalize() {
+		if (numericalProperties != null && numericalProperties.getImputeDescription() != null)
+			performImputation(numericalProperties.getImputeDescription());
 
 		datasetStatistics = computeTableStats();
 
@@ -343,6 +354,75 @@ public class NumericalTable extends Table {
 		point.setLeftSpread(distance);
 		mapper.update();
 		// mapper.update();
+	}
+
+	/**
+	 *
+	 */
+	private void performImputation(KNNImputeDescription desc) {
+
+		Stopwatch w = new Stopwatch().start();
+		ImmutableList.Builder<Gene> b = ImmutableList.builder();
+		final int rows = getNrRows();
+		final int cols = columns.size();
+
+		// create data
+		if (desc.getDimension().isRecord()) {
+			for (int i = 0; i < rows; ++i) {
+				float[] data = new float[cols];
+				int nans = 0;
+				int j = 0;
+				for (AColumn<?, ?> column : columns) {
+					@SuppressWarnings("unchecked")
+					NumericalColumn<?, Float> nColumn = (NumericalColumn<?, Float>) column;
+					Float raw = nColumn.getRaw(i);
+					if (raw == null || raw.isNaN())
+						nans++;
+					data[j++] = raw == null ? Float.NaN : raw.floatValue();
+				}
+				b.add(new Gene(i, nans, data));
+			}
+		} else {
+			int i = 0;
+			for (AColumn<?, ?> column : columns) {
+				float[] data = new float[rows];
+				int nans = 0;
+				@SuppressWarnings("unchecked")
+				NumericalColumn<?, Float> nColumn = (NumericalColumn<?, Float>) column;
+
+				for (int j = 0; j < rows; j++) {
+					Float raw = nColumn.getRaw(i);
+					if (raw == null || raw.isNaN())
+						nans++;
+					data[j++] = raw == null ? Float.NaN : raw.floatValue();
+				}
+				b.add(new Gene(i++, nans, data));
+			}
+		}
+
+		System.out.println("NumericalTable.performImputation() data creation:\t" + w);
+		w.reset().start();
+		KNNImpute task = new KNNImpute(desc, b.build());
+		ForkJoinPool pool = new ForkJoinPool();
+		com.google.common.collect.Table<Integer, Integer, Float> impute = pool.invoke(task);
+		pool.shutdown();
+		System.out.println("NumericalTable.performImputation() computation:\t" + w);
+		w.reset().start();
+
+		// update data
+		final boolean isColumnFirstDimension = desc.getDimension().isDimension();
+		// in either case iterate over the columns first and update a columns at once
+		for (Map.Entry<Integer, Map<Integer, Float>> entry : (isColumnFirstDimension ? impute.rowMap() : impute
+				.columnMap()).entrySet()) {
+			AColumn<?, ?> aColumn = columns.get(entry.getKey().intValue());
+			@SuppressWarnings("unchecked")
+			NumericalColumn<?, Float> nColumn = (NumericalColumn<?, Float>) aColumn;
+			// apply updates
+			for (Map.Entry<Integer, Float> entry2 : entry.getValue().entrySet()) {
+				nColumn.setRaw(entry2.getKey(), entry2.getValue());
+			}
+		}
+		System.out.println("NumericalTable.performImputation() update:\t" + w);
 	}
 
 	/**
