@@ -5,15 +5,14 @@
  ******************************************************************************/
 package org.caleydo.core.util.clusterer.algorithm.tree;
 
+import java.util.Arrays;
+
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.event.data.ClusterProgressEvent;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
-import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.function.DoubleStatistics;
 
 import com.google.common.base.Stopwatch;
@@ -32,12 +31,16 @@ public class TreeClusterer extends AClusterer {
 	 * @author Bernhard Schlegl
 	 */
 	private static class ClosestPair {
-		private float correlation;
-		private int x;
-		private int y;
-		private boolean update;
+		float correlation;
+		int x;
+		int y;
+		boolean update;
 
 		public ClosestPair() {
+			reset();
+		}
+
+		public void reset() {
 			this.correlation = 0;
 			this.x = 0;
 			this.y = 0;
@@ -46,7 +49,7 @@ public class TreeClusterer extends AClusterer {
 	}
 
 	private final ClusterTree tree;
-	private final int iNrSamples;
+	private final int samples;
 	private float[][] similarities;
 	/**
 	 * Each node in the tree needs an unique number. Because of this we need a node counter
@@ -57,8 +60,8 @@ public class TreeClusterer extends AClusterer {
 		super(config, progressMultiplier, progressOffset);
 
 		this.tree = new ClusterTree();
-		this.iNrSamples = va.size();
-		this.similarities = new float[this.iNrSamples][this.iNrSamples];
+		this.samples = va.size();
+		this.similarities = new float[this.samples][this.samples];
 	}
 
 	/**
@@ -67,25 +70,28 @@ public class TreeClusterer extends AClusterer {
 	 * @return in case of error a negative value will be returned.
 	 */
 	private int determineSimilarities() {
-		EDistanceMeasure distanceMeasure = config.getDistanceMeasure();
-
-		int iPercentage = 1;
-
 		rename("Determine Similarities for " + getPerspectiveLabel() + " clustering");
 
 		float[][] vectors = new float[va.size()][oppositeVA.size()];
 
+		final int triggerEvery = va.size() / 100;
+		int nextTrigger = triggerEvery;
+
+		float max = Float.MIN_VALUE;
+
 		for (int vaID_i = 0; vaID_i < va.size(); ++vaID_i) {
 			Integer vaID = va.get(vaID_i);
-			if (isClusteringCanceled) {
-				progress(100, true);
-				return -2;
-			}
 
-			int tempPercentage = (int) ((float) vaID_i / va.size() * 100);
-			if (iPercentage == tempPercentage) {
-				progress(iPercentage, false);
-				iPercentage++;
+
+			if (nextTrigger-- == 0) {
+				progress(vaID_i / triggerEvery, false);
+				nextTrigger = triggerEvery;
+
+				eventListeners.processEvents();
+				if (isClusteringCanceled) {
+					progress(100, true);
+					return -2;
+				}
 			}
 
 			float[] d1 = vectors[vaID_i];
@@ -97,14 +103,20 @@ public class TreeClusterer extends AClusterer {
 				float[] d2 = vectors[vaID_j];
 				// as only the past already filled fillVector(dArInstance2, vaID2);
 
-				similarities[vaID_i][vaID_j] = distanceMeasure.apply(d1, d2);
+				float distance = distance(d1, d2);
+				if (distance > max)
+					max = distance;
+				similarities[vaID_i][vaID_j] = distance;
 			}
-			eventListeners.processEvents();
 		}
-
+		eventListeners.processEvents();
+		if (isClusteringCanceled) {
+			progress(100, true);
+			return -2;
+		}
 		progressScaled(25);
 
-		normalizeSimilarities();
+		normalizeSimilarities(max);
 
 		return 0;
 	}
@@ -112,40 +124,19 @@ public class TreeClusterer extends AClusterer {
 	private void fillVector(float[] v, Integer vaID2) {
 		int isto = 0;
 		for (Integer oppositeID2 : oppositeVA) {
-			v[isto] = table.getDataDomain().getNormalizedValue(va.getIdType(), vaID2, oppositeVA.getIdType(),
-					oppositeID2);
+			v[isto] = get(vaID2, oppositeID2);
 			isto++;
 		}
 	}
-
-	/**
-	 * Helper function providing unique node numbers for all nodes in the tree.
-	 *
-	 * @return number of current node
-	 */
-	private int getNextNodeId() {
-		return iNodeCounter++;
-	}
-
 	/**
 	 * Function normalizes similarities between 0 and 1
 	 */
-	private void normalizeSimilarities() {
-
-		float max = Float.MIN_VALUE;
-
+	private void normalizeSimilarities(float max) {
 		for (int i = 0; i < similarities.length; i++) {
-			for (int j = 0; j < similarities.length; j++) {
-				max = Math.max(max, similarities[i][j]);
+			for (int j = 0; j < i; j++) {
+				similarities[i][j] /= max;
 			}
 		}
-
-		for (int i = 0; i < similarities.length; i++) {
-			for (int j = 0; j < similarities.length; j++) {
-				similarities[i][j] = similarities[i][j] / max;
-			}
-		}
-
 	}
 
 	/**
@@ -157,15 +148,16 @@ public class TreeClusterer extends AClusterer {
 	 *            the similarity matrix
 	 * @return the closest pair
 	 */
-	private static ClosestPair find_closest_pair(int n, float[][] distmatrix) {
-
-		ClosestPair pair = new ClosestPair();
+	private static ClosestPair find_closest_pair(ClosestPair pair, int n, float[][] distmatrix) {
+		if (pair == null)
+			pair = new ClosestPair();
+		else
+			pair.reset();
 		float temp;
 		float distance = distmatrix[1][0];
 
 		for (int x = 1; x < n; x++) {
 			for (int y = 0; y < x; y++) {
-
 				temp = distmatrix[x][y];
 				if (temp < distance) {
 					distance = temp;
@@ -185,30 +177,19 @@ public class TreeClusterer extends AClusterer {
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
-	private PerspectiveInitializationData pslcluster() {
+	private Node[] pslcluster() {
 
-		int nnodes = iNrSamples - 1;
-		int[] vector = new int[nnodes];
-		float[] temp = new float[nnodes];
-		int[] index = new int[iNrSamples];
-		Node[] result = null;
+		final int nnodes = samples - 1;
+		final int[] vector = new int[nnodes];
+		final float[] temp = new float[nnodes];
+		final int[] index = new int[samples];
+		Node[] result = new Node[samples];
 
-		float[][] distmatrix;
-
-		try {
-			result = new Node[iNrSamples];
-			distmatrix = new float[iNrSamples][iNrSamples];
-		} catch (OutOfMemoryError e) {
-			return null;
-		}
-
-		distmatrix = similarities.clone();
-
-		for (int i = 0; i < iNrSamples; i++) {
+		for (int i = 0; i < samples; i++) {
 			result[i] = new Node();
 			result[i].setCorrelation(Float.MAX_VALUE);
 			for (int j = 0; j < i; j++)
-				temp[j] = distmatrix[i][j];
+				temp[j] = similarities[i][j];
 			for (int j = 0; j < i; j++) {
 				int k = vector[j];
 				if (result[j].getCorrelation() >= temp[j]) {
@@ -228,7 +209,7 @@ public class TreeClusterer extends AClusterer {
 		for (int i = 0; i < nnodes; i++)
 			result[i].setLeft(i);
 
-		for (int i = 0; i < iNrSamples; i++)
+		for (int i = 0; i < samples; i++)
 			index[i] = i;
 
 		for (int i = 0; i < nnodes; i++) {
@@ -239,67 +220,54 @@ public class TreeClusterer extends AClusterer {
 			index[k] = -i - 1;
 		}
 
-		Node[] result2 = new Node[nnodes];
-		for (int i = 0; i < nnodes; i++)
-			result2[i] = result[i];
+		// remove last
+		Node[] result2 = Arrays.copyOf(result, nnodes);
 
 		// set cluster result in Set
 
-		return convert(result2);
+		return result2;
 	}
 
 	/**
 	 * The palcluster routine performs clustering using pairwise average linking on the given distance matrix.
 	 *
+	 * warning: manipulates {@link #similarities}
+	 *
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
-	private PerspectiveInitializationData palcluster() {
+	private Node[] palcluster() {
 
-		int[] clusterid = new int[iNrSamples];
-		int[] number = new int[iNrSamples];
-		Node[] result = new Node[iNrSamples - 1];
+		int[] clusterid = new int[samples];
+		int[] number = new int[samples];
+		Node[] result = new Node[samples - 1];
 
-		for (int j = 0; j < iNrSamples; j++) {
+		for (int j = 0; j < samples; j++) {
 			number[j] = 1;
 			clusterid[j] = j;
 		}
 
-		int j;
 
-		ClosestPair pair = null;
-
-		float[][] distmatrix;
-
-		try {
-			distmatrix = new float[iNrSamples][iNrSamples];
-		} catch (OutOfMemoryError e) {
-			return null;
-		}
-
-		distmatrix = similarities.clone();
-
-		int iPercentage = 1;
+		final ClosestPair pair = new ClosestPair();
 
 		rename("Tree clustering of " + getPerspectiveLabel() + " in progress");
+		final int triggerEvery = samples / 100;
+		int nextTrigger = triggerEvery;
 
-		for (int n = iNrSamples; n > 1; n--) {
+		for (int n = samples; n > 1; n--) {
 			if (isClusteringCanceled) {
 				progress(100);
 				return null;
 			}
-
-			int sum;
-			int is = 1;
-			int js = 0;
-
-			int tempPercentage = (int) ((float) (iNrSamples - n) / iNrSamples * 100);
-			if (iPercentage == tempPercentage) {
-				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(iPercentage, false));
-				iPercentage++;
+			if (nextTrigger-- == 0) {
+				progress((samples - n) / triggerEvery, false);
+				nextTrigger = triggerEvery;
 			}
 
-			pair = find_closest_pair(n, distmatrix);
+			find_closest_pair(pair, n, similarities);
+
+			int is = 1;
+			int js = 0;
 
 			if (pair.update) {
 				is = pair.x;
@@ -314,41 +282,127 @@ public class TreeClusterer extends AClusterer {
 			node.setRight(clusterid[js]);
 
 			// Save result
-			result[iNrSamples - n] = node;
+			result[samples - n] = node;
 
 			// Fix the distances
-			sum = number[is] + number[js];
-			for (j = 0; j < js; j++) {
-				distmatrix[js][j] = distmatrix[is][j] * number[is] + distmatrix[js][j] * number[js];
-				distmatrix[js][j] /= sum;
+			final int n_is = number[is];
+			final int n_js = number[js];
+			int sum = n_is + n_js;
+
+			for (int j = 0; j < js; j++) {
+				similarities[js][j] = similarities[is][j] * n_is + similarities[js][j] * n_js;
+				similarities[js][j] /= sum;
 			}
-			for (j = js + 1; j < is; j++) {
-				distmatrix[j][js] = distmatrix[is][j] * number[is] + distmatrix[j][js] * number[js];
-				distmatrix[j][js] /= sum;
+			for (int j = js + 1; j < is; j++) {
+				similarities[j][js] = similarities[is][j] * n_is + similarities[j][js] * n_js;
+				similarities[j][js] /= sum;
 			}
-			for (j = is + 1; j < n; j++) {
-				distmatrix[j][js] = distmatrix[j][is] * number[is] + distmatrix[j][js] * number[js];
-				distmatrix[j][js] /= sum;
+			for (int j = is + 1; j < n; j++) {
+				similarities[j][js] = similarities[j][is] * n_is + similarities[j][js] * n_js;
+				similarities[j][js] /= sum;
 			}
 
-			for (j = 0; j < is; j++)
-				distmatrix[is][j] = distmatrix[n - 1][j];
-			for (j = is + 1; j < n - 1; j++)
-				distmatrix[j][is] = distmatrix[n - 1][j];
+			for (int j = 0; j < is; j++)
+				similarities[is][j] = similarities[n - 1][j];
+			for (int j = is + 1; j < n - 1; j++)
+				similarities[j][is] = similarities[n - 1][j];
 
 			// Update number of elements in the clusters
 			number[js] = sum;
 			number[is] = number[n - 1];
 
 			// Update clusterids
-			clusterid[js] = n - iNrSamples - 1;
+			clusterid[js] = n - samples - 1;
 			clusterid[is] = clusterid[n - 1];
 			eventListeners.processEvents();
 		}
 
 		// set cluster result in Set
 
-		return convert(result);
+		return result;
+	}
+
+	/**
+	 * The pmlcluster routine performs clustering using pairwise maximum- (complete-) linking on the given distance
+	 * matrix.
+	 *
+	 * warning: manipulates {@link #similarities}
+	 *
+	 * @param eClustererType
+	 * @return virtual array with ordered indexes
+	 */
+	private Node[] pmlcluster() {
+
+		int[] clusterid = new int[samples];
+		Node[] result = new Node[samples - 1];
+
+		// Setup a list specifying to which cluster a gene belongs
+		for (int j = 0; j < samples; j++)
+			clusterid[j] = j;
+		final ClosestPair pair = new ClosestPair();
+
+		rename("Tree clustering of " + getPerspectiveLabel() + " in progress");
+		final int triggerEvery = samples / 100;
+		int nextTrigger = triggerEvery;
+
+		for (int n = samples; n > 1; n--) {
+			if (isClusteringCanceled) {
+				progress(100);
+				return null;
+			}
+			if (nextTrigger-- == 0) {
+				progress((samples - n) / triggerEvery, false);
+				nextTrigger = triggerEvery;
+			}
+
+			find_closest_pair(pair, n, similarities);
+
+			int is = 1;
+			int js = 0;
+			if (pair.update) {
+				is = pair.x;
+				js = pair.y;
+			}
+
+			// Fix the distances
+			for (int j = 0; j < js; j++)
+				similarities[js][j] = Math.max(similarities[is][j], similarities[js][j]);
+			for (int j = js + 1; j < is; j++)
+				similarities[j][js] = Math.max(similarities[is][j], similarities[j][js]);
+			for (int j = is + 1; j < n; j++)
+				similarities[j][js] = Math.max(similarities[j][is], similarities[j][js]);
+
+			for (int j = 0; j < is; j++)
+				similarities[is][j] = similarities[n - 1][j];
+			for (int j = is + 1; j < n - 1; j++)
+				similarities[j][is] = similarities[n - 1][j];
+
+			// Update clusterids
+			Node node = new Node();
+
+			node.setCorrelation(pair.correlation);
+			node.setLeft(clusterid[is]);
+			node.setRight(clusterid[js]);
+
+			result[samples - n] = node;
+
+			clusterid[js] = n - samples - 1;
+			clusterid[is] = clusterid[n - 1];
+			eventListeners.processEvents();
+		}
+
+		// set cluster result in Set
+
+		return result;
+	}
+
+	/**
+	 * Helper function providing unique node numbers for all nodes in the tree.
+	 *
+	 * @return number of current node
+	 */
+	private int getNextNodeId() {
+		return iNodeCounter++;
 	}
 
 	protected PerspectiveInitializationData convert(Node[] result) {
@@ -414,94 +468,6 @@ public class TreeClusterer extends AClusterer {
 		node.setStandardDeviation(deviation);
 
 		return values;
-	}
-
-	/**
-	 * The pmlcluster routine performs clustering using pairwise maximum- (complete-) linking on the given distance
-	 * matrix.
-	 *
-	 * @param eClustererType
-	 * @return virtual array with ordered indexes
-	 */
-	private PerspectiveInitializationData pmlcluster() {
-
-		int[] clusterid = new int[iNrSamples];
-		Node[] result = new Node[iNrSamples - 1];
-
-		// Setup a list specifying to which cluster a gene belongs
-		for (int j = 0; j < iNrSamples; j++)
-			clusterid[j] = j;
-
-		int j;
-
-		ClosestPair pair = null;
-
-		float[][] distmatrix;
-
-		try {
-			distmatrix = new float[iNrSamples][iNrSamples];
-		} catch (OutOfMemoryError e) {
-			return null;
-		}
-
-		distmatrix = similarities.clone();
-
-		int iPercentage = 1;
-
-		rename("Tree clustering of " + getPerspectiveLabel() + " in progress");
-
-		for (int n = iNrSamples; n > 1; n--) {
-			if (isClusteringCanceled) {
-				progress(100);
-				return null;
-			}
-
-			int tempPercentage = (int) ((float) (iNrSamples - n) / iNrSamples * 100);
-			if (iPercentage == tempPercentage) {
-				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(iPercentage, false));
-				iPercentage++;
-			}
-
-			int is = 1;
-			int js = 0;
-
-			pair = find_closest_pair(n, distmatrix);
-
-			if (pair.update) {
-				is = pair.x;
-				js = pair.y;
-			}
-
-			// Fix the distances
-			for (j = 0; j < js; j++)
-				distmatrix[js][j] = Math.max(distmatrix[is][j], distmatrix[js][j]);
-			for (j = js + 1; j < is; j++)
-				distmatrix[j][js] = Math.max(distmatrix[is][j], distmatrix[j][js]);
-			for (j = is + 1; j < n; j++)
-				distmatrix[j][js] = Math.max(distmatrix[j][is], distmatrix[j][js]);
-
-			for (j = 0; j < is; j++)
-				distmatrix[is][j] = distmatrix[n - 1][j];
-			for (j = is + 1; j < n - 1; j++)
-				distmatrix[j][is] = distmatrix[n - 1][j];
-
-			// Update clusterids
-			Node node = new Node();
-
-			node.setCorrelation(pair.correlation);
-			node.setLeft(clusterid[is]);
-			node.setRight(clusterid[js]);
-
-			result[iNrSamples - n] = node;
-
-			clusterid[js] = n - iNrSamples - 1;
-			clusterid[is] = clusterid[n - 1];
-			eventListeners.processEvents();
-		}
-
-		// set cluster result in Set
-
-		return convert(result);
 	}
 
 	/**
@@ -584,40 +550,43 @@ public class TreeClusterer extends AClusterer {
 
 	@Override
 	protected PerspectiveInitializationData cluster() {
-		int iReturnValue = 0;
+		int r = 0;
 
 		Stopwatch w = new Stopwatch().start();
-		iReturnValue = determineSimilarities();
+		r = determineSimilarities();
 		System.out.println("determine similarties: " + w);
 		w.stop().reset();
-		if (iReturnValue < 0) {
+		if (r < 0) {
 			progress(100);
 			return null;
 		}
 
 		TreeClusterConfiguration tConfig = (TreeClusterConfiguration) config.getClusterAlgorithmConfiguration();
 
-		PerspectiveInitializationData tempResult;
+		Node[] result;
 
 		w.start();
 		switch (tConfig.getTreeClustererAlgo()) {
 		case COMPLETE_LINKAGE:
-			tempResult = pmlcluster();
+			result = pmlcluster();
 			System.out.println("pmlcluster: " + w);
 			break;
 		case AVERAGE_LINKAGE:
 
-			tempResult = palcluster();
+			result = palcluster();
 			System.out.println("palcluster: " + w);
 			break;
 		case SINGLE_LINKAGE:
-			tempResult = pslcluster();
+			result = pslcluster();
 			System.out.println("pslcluster: " + w);
 			break;
 		default:
 			throw new IllegalStateException("Unkonwn cluster type: " + tConfig.getTreeClustererAlgo());
 		}
 
-		return tempResult;
+		w.reset().start();
+		PerspectiveInitializationData p = convert(result);
+		System.out.println("convert: " + w);
+		return p;
 	}
 }

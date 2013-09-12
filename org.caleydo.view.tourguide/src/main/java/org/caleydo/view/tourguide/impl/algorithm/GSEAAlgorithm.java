@@ -32,13 +32,13 @@ import com.google.common.collect.Maps;
 public class GSEAAlgorithm extends AGSEAAlgorithm {
 	private static final int NPERM = 1000;
 
-	private final float p; // An exponent p to control the weight of the step.
+	private final int p; // An exponent p to control the weight of the step.
 	private Map<Integer, Float> correlation;
 	private List<Map<Integer, Float>> permutations;
 	private final boolean withPValue;
 
 
-	public GSEAAlgorithm(Perspective perspective, Group group, float p, boolean withPValue) {
+	public GSEAAlgorithm(Perspective perspective, Group group, int p, boolean withPValue) {
 		super(perspective, group);
 		this.p = p;
 		this.withPValue = withPValue;
@@ -407,7 +407,7 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 		int intersection = 0;
 		for(Integer g: geneS)
 			if (correlation.containsKey(g)) {
-				N_R += Math.abs(Math.pow(correlation.get(g), p));
+				N_R += Math.abs(powP(correlation.get(g)));
 				intersection++;
 			}
 
@@ -425,7 +425,7 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 
 		for (Integer r : correlation.keySet()) {
 			if (geneS.contains(r))
-				p_hit += Math.abs(Math.pow(correlation.get(r), p)) * norm_tag;
+				p_hit += Math.abs(powP(correlation.get(r))) * norm_tag;
 			else
 				p_miss += norm_no_tag;
 			double esi = p_hit - p_miss;
@@ -439,6 +439,26 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 			return es_max;
 		else
 			return es_min;
+	}
+
+	/**
+	 * @param float1
+	 * @param p2
+	 * @return
+	 */
+	private double powP(float v) {
+		switch (p) {
+		case 0:
+			return 1;
+		case 1:
+			return v;
+		case 2:
+			return v * v;
+		case 3:
+			return v * v * v;
+		default:
+			return Math.pow(v, p);
+		}
 	}
 
 	@Override
