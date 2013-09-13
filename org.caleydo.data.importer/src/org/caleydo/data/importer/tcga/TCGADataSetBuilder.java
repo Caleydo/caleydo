@@ -262,7 +262,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			clusterConfiguration.setClusterAlgorithmConfiguration(treeAlgo);
 			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 
-			MetaDataElement treeCluster = new MetaDataElement("KMeans Clustering");
+			MetaDataElement treeCluster = new MetaDataElement("Hierarchical Tree Clustering");
 			treeCluster.addAttribute("Algorithm", algo.getName());
 			rowGroupings.addElement(treeCluster);
 			break;
