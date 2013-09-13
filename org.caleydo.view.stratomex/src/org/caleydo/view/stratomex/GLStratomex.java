@@ -1401,8 +1401,17 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 				it.remove();
 		}
 		// remove unused stuff
-		relationAnalyzer.removeAll(tablePerspective.getRecordPerspective());
-		eventPublisher.triggerEvent(new RelationsUpdatedEvent().from(this));
+		boolean columnWithPerspectiveRemaining = false;
+		for (BrickColumn column : brickColumnManager.getBrickColumns()) {
+			if (column.getTablePerspective().getRecordPerspective() == tablePerspective.getRecordPerspective()) {
+				columnWithPerspectiveRemaining = true;
+				break;
+			}
+		}
+		if (!columnWithPerspectiveRemaining) {
+			relationAnalyzer.removeAll(tablePerspective.getRecordPerspective());
+			eventPublisher.triggerEvent(new RelationsUpdatedEvent().from(this));
+		}
 	}
 
 	@ListenTo
