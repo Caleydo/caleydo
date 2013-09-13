@@ -1712,7 +1712,15 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	public void selectElementsByConnectionBandID(int connectionBandID) {
 		BrickConnection connectionBand = hashConnectionBandIDToRecordVA.get(connectionBandID);
 		VirtualArray recordVA = connectionBand.getSharedRecordVirtualArray();
-		selectElements(recordVA, recordVA.getIdType(), connectionBand.getLeftBrick().getDataDomain().getDataDomainID(),
+
+		GLBrick leftBrick = connectionBand.getLeftBrick();
+		EventBasedSelectionManager tablePerspectiveSelectionManager = leftBrick.getTablePerspectiveSelectionManager();
+		tablePerspectiveSelectionManager.clearSelection(tablePerspectiveSelectionManager.getSelectionType());
+		tablePerspectiveSelectionManager.triggerSelectionUpdateEvent();
+		// Required because the selection manager of this brick does not report the clear selection to this brick itself
+		leftBrick.setSelected(false);
+
+		selectElements(recordVA, recordVA.getIdType(), leftBrick.getDataDomain().getDataDomainID(),
 				recordSelectionManager.getSelectionType());
 	}
 

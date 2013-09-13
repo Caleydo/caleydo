@@ -787,11 +787,13 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				if (tablePerspectiveSelectionManager.checkStatus(tablePerspectiveSelectionManager.getSelectionType(),
 						tablePerspective.getID())) {
 					tablePerspectiveSelectionManager.removeFromType(currentSelectionType, tablePerspective.getID());
-					brickLayoutConfiguration.setSelected(false);
+					// brickLayoutConfiguration.setSelected(false);
+					setSelected(false);
 					select = false;
 				} else {
 					tablePerspectiveSelectionManager.addToType(currentSelectionType, tablePerspective.getID());
-					brickLayoutConfiguration.setSelected(true);
+					// brickLayoutConfiguration.setSelected(true);
+					setSelected(true);
 				}
 
 				tablePerspectiveSelectionManager.triggerSelectionUpdateEvent();
@@ -1031,7 +1033,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	 *
 	 * @return
 	 */
-	public SelectionManager getTablePerspectiveSelectionManager() {
+	public EventBasedSelectionManager getTablePerspectiveSelectionManager() {
 		return tablePerspectiveSelectionManager;
 	}
 
@@ -1061,8 +1063,12 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	/**
 	 * @return true, if the brick us currently selected, false otherwise
 	 */
-	public boolean isActive() {
+	public boolean isSelected() {
 		return tablePerspectiveSelectionManager.checkStatus(SelectionType.SELECTION, tablePerspective.getID());
+	}
+
+	public void setSelected(boolean selected) {
+		brickLayoutConfiguration.setSelected(selected);
 	}
 
 	/**
@@ -1472,13 +1478,15 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					.contains(tablePerspective.getID())) {
 				// brickLayout.setShowHandles(true);
 				// System.out.println("SELECTED " + getLabel());
-				brickLayoutConfiguration.setSelected(true);
+				// brickLayoutConfiguration.setSelected(true);
+				setSelected(true);
 
 				stratomex.updateConnectionLinesBetweenColumns();
 			} else {
 				// if (this.isHeaderBrick() && brickLayoutConfiguration.gets
 				// System.out.println("DESELECTED " + getLabel());
-				brickLayoutConfiguration.setSelected(false);
+				setSelected(false);
+				// brickLayoutConfiguration.setSelected(false);
 				// brickLayout.setShowHandles(false);
 			}
 			// }
@@ -1490,5 +1498,12 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	@ListenTo
 	public void updateColorMapping(UpdateColorMappingEvent event) {
 		layoutManager.setRenderingDirty();
+	}
+
+	/**
+	 * @return the recordGroupSelectionManager, see {@link #recordGroupSelectionManager}
+	 */
+	public EventBasedSelectionManager getRecordGroupSelectionManager() {
+		return recordGroupSelectionManager;
 	}
 }
