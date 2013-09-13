@@ -65,7 +65,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	private IRegisteredScore createGSEA(String label, Perspective reference, Group group) {
 		if (label == null)
 			label = reference.getLabel() + " " + group.getLabel();
-		return new GeneSetScore(label, new GSEAAlgorithm(reference, group, 1.0f, false), new PiecewiseMapping(-1, 1));
+		return new GeneSetScore(label, new GSEAAlgorithm(reference, group, 1, false), new PiecewiseMapping(-1, 1));
 	}
 
 	private IRegisteredScore createPAGE(String label, Perspective reference, Group group) {
@@ -133,7 +133,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		Collection<ScoreEntry> col = new ArrayList<>();
 
 		{
-			GSEAAlgorithm algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1.0f, false);
+			GSEAAlgorithm algorithm = new GSEAAlgorithm(strat.getRecordPerspective(), group, 1, false);
 			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, new PiecewiseMapping(-1,
 					+1));
 			// IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true);
@@ -430,7 +430,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 			String label = String.format(prefix + " of %s", perspective.getLabel());
 			IScore s;
 			if (createGSEA) {
-				algorithm = new GSEAAlgorithm(perspective, group, 1.0f, false);
+				algorithm = new GSEAAlgorithm(perspective, group, 1, false);
 				s = new GeneSetScore(label, algorithm, new PiecewiseMapping(-1, 1));
 			} else {
 				algorithm = new PAGEAlgorithm(perspective, group);

@@ -165,6 +165,17 @@
             id="org.caleydo.core.startup.clearselections"
             name="Clear Selections">
       </command>
+      <command
+            defaultHandler="org.caleydo.core.gui.command.ZoomHandler"
+            id="org.caleydo.core.startup.zoom"
+            name="Change Zoom Factor">
+         <commandParameter
+               id="action"
+               name="Zooming action"
+               optional="true"
+               values="ZoomHandlerParameters">
+         </commandParameter>
+      </command>
 
    </extension>
    <extension
@@ -347,6 +358,28 @@
             allPopups="false"
             locationURI="toolbar:org.caleydo.core.gui.toolbar2">
          <command
+               commandId="org.caleydo.core.startup.zoom"
+               icon="resources/icons/general/magnifier_zoom_in.png"
+               label="Zoom &amp;In"
+               style="push"
+               tooltip="Increase scaling factor">
+            <parameter
+                  name="action"
+                  value="zoomIn">
+            </parameter>
+         </command>
+         <command
+               commandId="org.caleydo.core.startup.zoom"
+               icon="resources/icons/general/magnifier_zoom_out.png"
+               label="Zoom &amp;Out"
+               style="push"
+               tooltip="Decrease scaling factor">
+            <parameter
+                  name="action"
+                  value="zoomOut">
+            </parameter>
+         </command>
+         <command
                commandId="org.caleydo.core.io.gui.snapshot"
                icon="resources/icons/general/snapshot.png"
                label="&amp;Take Snapshot"
@@ -480,5 +513,32 @@
                id="org.caleydo.scheme"
                name="Caleydo Key Bindings">
          </scheme>
+         <key
+               commandId="org.caleydo.core.startup.zoom"
+               schemeId="org.caleydo.scheme"
+               sequence="M1+M3++">
+            <parameter
+                  id="action"
+                  value="zoomIn">
+            </parameter>
+         </key>
+         <key
+               commandId="org.caleydo.core.startup.zoom"
+               schemeId="org.caleydo.scheme"
+               sequence="M1+M3+-">
+            <parameter
+                  id="action"
+                  value="zoomOut">
+            </parameter>
+         </key>
+         <key
+               commandId="org.caleydo.core.startup.zoom"
+               schemeId="org.caleydo.scheme"
+               sequence="M1+M3+0">
+            <parameter
+                  id="action"
+                  value="reset">
+            </parameter>
+         </key>
       </extension>
 </plugin>

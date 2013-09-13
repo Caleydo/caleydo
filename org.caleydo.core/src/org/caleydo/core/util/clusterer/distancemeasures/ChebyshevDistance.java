@@ -5,9 +5,14 @@
  ******************************************************************************/
 package org.caleydo.core.util.clusterer.distancemeasures;
 
+import static java.lang.Double.isNaN;
+
+import org.caleydo.core.util.function.IDoubleSizedIterable;
+import org.caleydo.core.util.function.IDoubleSizedIterator;
+
 /**
  * Chebyshev distance measure, implements {@link IDistanceMeasure}.
- * 
+ *
  * @author Bernhard Schlegl
  */
 public class ChebyshevDistance
@@ -17,7 +22,6 @@ public class ChebyshevDistance
 	public float getMeasure(float[] vector1, float[] vector2) {
 
 		float distance = 0;
-		float temp_diff = 0;
 
 		if (vector1.length != vector2.length) {
 			System.out.println("length of vectors not equal!");
@@ -25,15 +29,26 @@ public class ChebyshevDistance
 		}
 
 		for (int i = 0; i < vector1.length; i++) {
-
-			if (Float.isNaN(vector1[i]) || Float.isNaN(vector2[i]))
-				temp_diff = 0;
-			else
-				temp_diff = Math.abs(vector1[i] - vector2[i]);
-
-			distance = Math.max(distance, temp_diff);
+			float d = Math.abs(vector1[i] - vector2[i]);
+			if (!Float.isNaN(d) && d > distance)
+				distance = d;
 		}
 
 		return distance;
+	}
+
+	@Override
+	public double apply(final IDoubleSizedIterable a, final IDoubleSizedIterable b) {
+		final IDoubleSizedIterator a_it = a.iterator();
+		final IDoubleSizedIterator b_it = a.iterator();
+
+		double acc = 0;
+
+		while (a_it.hasNext() && b_it.hasNext()) {
+			final double d = Math.abs(a_it.nextPrimitive() - b_it.nextPrimitive());
+			if (!isNaN(d) && d > acc)
+				acc = d;
+		}
+		return acc;
 	}
 }

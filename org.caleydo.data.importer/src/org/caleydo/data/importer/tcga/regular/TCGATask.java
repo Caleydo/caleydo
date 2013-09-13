@@ -17,7 +17,7 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.io.HTMLFormatter;
 import org.caleydo.core.io.MetaDataElement;
 import org.caleydo.core.serialize.ProjectMetaData;
@@ -215,9 +215,11 @@ public class TCGATask extends ATCGATask {
 
 		public ClinicalInfos(ATableBasedDataDomain dataDomain) {
 			count = dataDomain.getTable().depth();
-			VirtualArray dimensionVA = dataDomain.getTable().getDefaultDimensionPerspective(false).getVirtualArray();
-			for (int dimensionID : dimensionVA) {
-				parameters.add(dataDomain.getDimensionLabel(dimensionID));
+			for (String id : dataDomain.getTable().getDimensionPerspectiveIDs()) {
+				Perspective p = dataDomain.getTable().getDimensionPerspective(id);
+				if (p.isDefault())
+					continue;
+				parameters.add(p.getLabel());
 			}
 		}
 

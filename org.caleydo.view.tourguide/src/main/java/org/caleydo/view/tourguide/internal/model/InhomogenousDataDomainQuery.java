@@ -196,4 +196,9 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 	public void removeSpecificColumns(RankTableModel table) {
 
 	}
+
+	@Override
+	public void updateSpecificColumns(RankTableModel table) {
+
+	}
 }

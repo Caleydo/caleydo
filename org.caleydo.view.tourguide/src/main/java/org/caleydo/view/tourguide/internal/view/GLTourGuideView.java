@@ -144,8 +144,10 @@ public class GLTourGuideView extends AGLElementView {
 			case ADataDomainQuery.PROP_MASK:
 			case CategoricalDataDomainQuery.PROP_GROUP_SELECTION:
 				ADataDomainQuery s = (ADataDomainQuery) evt.getSource();
-				if (s.isActive())
+				if (s.isActive()) {
 					scheduleAllOf(s);
+					updateSpecificColumns(s);
+				}
 			}
 		}
 	};
@@ -229,6 +231,7 @@ public class GLTourGuideView extends AGLElementView {
 		// wrap for having the right thread
 		this.tableKeyListener = GLThreadListenerWrapper.wrap(new RankTableKeyListener(table));
 	}
+
 
 	/**
 	 * @return the mode, see {@link #mode}
@@ -335,6 +338,10 @@ public class GLTourGuideView extends AGLElementView {
 				removeAllSimpleFilter();
 			scheduleAllOf(q);
 		}
+	}
+
+	protected void updateSpecificColumns(ADataDomainQuery q) {
+		q.updateSpecificColumns(table);
 	}
 
 	private void removeAllSimpleFilter() {

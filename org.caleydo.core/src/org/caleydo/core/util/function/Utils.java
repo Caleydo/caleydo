@@ -10,10 +10,15 @@ package org.caleydo.core.util.function;
  *
  */
 public class Utils {
-	public static final IDoubleIterator EMPTY = new IDoubleIterator() {
+	public static final IDoubleSizedIterator EMPTY = new IDoubleSizedIterator() {
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public int size() {
+			return 0;
 		}
 
 		@Override

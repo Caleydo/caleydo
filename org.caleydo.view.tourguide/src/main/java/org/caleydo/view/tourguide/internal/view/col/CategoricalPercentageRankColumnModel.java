@@ -24,12 +24,14 @@ import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
  */
 public class CategoricalPercentageRankColumnModel extends DoubleRankColumnModel {
 	private final IDataDomain dataDomain;
+	private final CategoryProperty<?> category;
 
 	public CategoricalPercentageRankColumnModel(IDoubleFunction<IRow> data, String label, Color color, Color bgColor,
-			IDataDomain dataDomain, int max) {
+			IDataDomain dataDomain, int max, CategoryProperty<?> category) {
 		super(data, GLRenderers.drawText("% " + label), color, bgColor, new PiecewiseMapping(0, max), DoubleInferrers
 				.fix(Double.NaN));
 		this.dataDomain = dataDomain;
+		this.category = category;
 		setFilter(true, false, true, false);
 	}
 
@@ -38,6 +40,13 @@ public class CategoricalPercentageRankColumnModel extends DoubleRankColumnModel 
 	 */
 	public IDataDomain getDataDomain() {
 		return dataDomain;
+	}
+
+	/**
+	 * @return the category, see {@link #category}
+	 */
+	public CategoryProperty<?> getCategory() {
+		return category;
 	}
 
 	public static CategoricalPercentageRankColumnModel create(final Object category, final CategoricalTable<?> table,
@@ -64,13 +73,17 @@ public class CategoricalPercentageRankColumnModel extends DoubleRankColumnModel 
 			col = Color.NEUTRAL_GREY;
 		}
 		return new CategoricalPercentageRankColumnModel(data, catName, col, bgColor, table.getDataDomain(),
-				table.depth());
+				table.depth(), property);
+	}
 
+	public static boolean isConsideredForCalculation(CategoricalPercentageRankColumnModel model) {
+		return model.getColor() != Color.NEUTRAL_GREY && !model.getTitle().endsWith("*");
 	}
 
 	public CategoricalPercentageRankColumnModel(CategoricalPercentageRankColumnModel copy) {
 		super(copy);
 		this.dataDomain = copy.dataDomain;
+		this.category = copy.category;
 	}
 
 	@Override

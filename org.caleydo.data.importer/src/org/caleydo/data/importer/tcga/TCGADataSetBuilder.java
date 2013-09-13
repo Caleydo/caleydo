@@ -29,6 +29,7 @@ import org.caleydo.core.io.FileUtil;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.KNNImputeDescription;
 import org.caleydo.core.io.MetaDataElement;
 import org.caleydo.core.io.MetaDataElement.AttributeType;
 import org.caleydo.core.io.NumericalProperties;
@@ -294,6 +295,10 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 					+ numRowsInSample.toString()
 					+ " using most variable Elements according to Median Absolute Deviation"));
 			metaData.addElement(processing);
+			dataProcessingDescription.setNrRowsInSample(1500);
+
+			numProp.setImputeDescription(new KNNImputeDescription());
+			processing.addElement(new MetaDataElement("Data is imputed for NaN Values"));
 		}
 
 		return dataSet;
@@ -512,7 +517,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		//
 		// List<String> data;
 		// try {
-		// data = Files.readAllLines(in.toPath(), Charset.defaultCharset());
+		// data = Files.readAllLines(in.toPath(), Charset.forName("UTF-8"));
 		// } catch (IOException e2) {
 		// e2.printStackTrace();
 		// return;
@@ -527,7 +532,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		// }
 		// data = null;
 		//
-		// try (BufferedWriter writer = Files.newBufferedWriter(out.toPath(), Charset.defaultCharset())) {
+		// try (BufferedWriter writer = Files.newBufferedWriter(out.toPath(), Charset.forName("UTF-8"))) {
 		// for (int c = 0; c < maxCol; ++c) {
 		// for (int i = 0; i < parts.length; ++i) {
 		// if (i > 0)

@@ -91,7 +91,8 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 					List<CategoryProperty<?>> props = (List<CategoryProperty<?>>) getProperties(tablePerspective
 							.getDataDomain());
 					for (CategoryProperty<?> prop : props) {
-						s.add(createMutualExclusive(prop.getCategoryName() + " " + label,
+						final String mutExclusiveLabel = prop.getCategoryName() + " " + label;
+						s.add(createMutualExclusive(mutExclusiveLabel,
 								tablePerspective.getRecordPerspective(), g, prop));
 					}
 					s.add(createJaccard(label, tablePerspective.getRecordPerspective(), g));

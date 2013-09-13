@@ -6,6 +6,7 @@
 package org.caleydo.view.enroute;
 
 import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.enroute.toolbar.actions.FitToViewWidthAction;
@@ -47,7 +48,6 @@ public class RcpGLEnRoutePathwayView extends ARcpGLViewPart {
 
 		toolBarManager
 				.add(new FitToViewWidthAction(((SerializedEnRoutePathwayView) serializedView).isFitToViewWidth()));
-		toolBarManager.add(new OpenOnlineHelpAction(
-				"http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/enroute", false));
+		toolBarManager.add(new OpenOnlineHelpAction(GeneralManager.HELP_URL + "/views/enroute.md", false));
 	}
 }

@@ -70,9 +70,14 @@ public abstract class ADoubleList extends AbstractList<Double> implements IDoubl
 	}
 
 	@Override
-	public IDoubleIterator iterator() {
-		return new IDoubleIterator() {
+	public IDoubleSizedIterator iterator() {
+		return new IDoubleSizedIterator() {
 			int cursor = 0;
+
+			@Override
+			public int size() {
+				return ADoubleList.this.size();
+			}
 
 			@Override
 			public void remove() {

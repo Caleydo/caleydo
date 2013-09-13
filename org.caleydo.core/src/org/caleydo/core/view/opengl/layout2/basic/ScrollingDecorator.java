@@ -32,6 +32,16 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 
 	private final float scrollBarWidth;
 
+	/**
+	 * whether scrolling should be enabled
+	 */
+	private boolean enabled = true;
+
+	/**
+	 * a custom min size provider otherwise the content will be used
+	 */
+	private IHasMinSize minSizeProvider = null;
+
 	public ScrollingDecorator(GLElement content, IScrollBar horizontal, IScrollBar vertical, float scrollBarWidth) {
 		super(content);
 		this.scrollBarWidth = scrollBarWidth;
@@ -69,8 +79,39 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 		super.takeDown();
 	}
 
+	/**
+	 * @param minSizeProvider
+	 *            setter, see {@link minSizeProvider}
+	 */
+	public void setMinSizeProvider(IHasMinSize minSizeProvider) {
+		this.minSizeProvider = minSizeProvider;
+		relayout();
+	}
+
+	/**
+	 * @param enabled
+	 *            setter, see {@link enabled}
+	 */
+	public void setEnabled(boolean enabled) {
+		if (this.enabled == enabled)
+			return;
+		this.enabled = enabled;
+		relayout();
+	}
+
+	/**
+	 * @return the enabled, see {@link #enabled}
+	 */
+	public boolean isEnabled() {
+		return enabled;
+	}
+
 	@Override
 	protected void layoutContent(IGLLayoutElement layout, float w, float h, int deltaTimeMs) {
+		if (!enabled) {
+			layout.setBounds(0, 0, w, h);
+			return;
+		}
 		Vec2f minSize = getMinSize(layout);
 		Vec2f size = getSize();
 		Vec2f contentSize = new Vec2f();
@@ -122,6 +163,8 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	 * @return
 	 */
 	private Vec2f getMinSize(IGLLayoutElement layout) {
+		if (minSizeProvider != null)
+			return minSizeProvider.getMinSize();
 		IHasMinSize minSize = layout.getLayoutDataAs(IHasMinSize.class, null);
 		if (minSize != null)
 			return minSize.getMinSize();
@@ -160,6 +203,14 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	}
 
 	protected void doRender(GLGraphics g, float w, float h, boolean pick) {
+		if (!enabled) {
+			if (pick)
+				content.renderPick(g);
+			else
+				content.render(g);
+			return;
+		}
+
 		final boolean doHor = needHor();
 		final boolean doVer = needVer();
 		final GL2 gl = g.gl;
@@ -219,6 +270,9 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	public Rect getClipingArea() {
 		Vec2f loc = content.getLocation();
 		Vec2f size = getSize();
+
+		if (!enabled)
+			return new Rect(0, 0, size.x(), size.y());
 
 		Rect r = new Rect();
 		r.x(-loc.x());

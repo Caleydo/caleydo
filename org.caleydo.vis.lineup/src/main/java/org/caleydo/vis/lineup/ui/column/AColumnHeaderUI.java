@@ -162,7 +162,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		return config.isInteractive() ? 4 : 1;
 	}
 
-	private static boolean isSmallHeader(float h) {
+	protected static boolean isSmallHeader(float h) {
 		return h < (LABEL_HEIGHT + HIST_HEIGHT * 0.5f);
 	}
 

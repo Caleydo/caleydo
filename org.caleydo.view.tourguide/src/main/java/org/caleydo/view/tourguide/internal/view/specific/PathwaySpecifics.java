@@ -14,6 +14,7 @@ import java.util.Map;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -22,6 +23,7 @@ import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.model.PathwayDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.PathwayPerspectiveRow;
+import org.caleydo.view.tourguide.internal.view.col.PathwayLinkRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
 import org.caleydo.vis.lineup.model.CategoricalRankColumnModel;
 import org.caleydo.vis.lineup.model.GroupRankColumnModel;
@@ -89,7 +91,8 @@ public class PathwaySpecifics implements IDataDomainQueryModeSpecfics {
 			}
 		}).setWidth(75));
 
-
+		group.add(new PathwayLinkRankColumnModel(GLRenderers.drawText("Pathway ID", VAlign.CENTER), Color.GRAY,
+				new Color(.95f, .95f, .95f)));
 	}
 
 	@Override

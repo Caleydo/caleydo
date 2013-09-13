@@ -8,7 +8,7 @@ package org.caleydo.vis.lineup.data;
 import java.util.Arrays;
 
 import org.caleydo.core.util.function.DoubleStatistics;
-import org.caleydo.core.util.function.IDoubleIterator;
+import org.caleydo.core.util.function.IDoubleSizedIterator;
 
 /**
  * factory class for {@link IDoubleInferrer}
@@ -19,15 +19,15 @@ import org.caleydo.core.util.function.IDoubleIterator;
 public class DoubleInferrers {
 	public static IDoubleInferrer MEAN = new IDoubleInferrer() {
 		@Override
-		public double infer(IDoubleIterator it, int size) {
+		public double infer(IDoubleSizedIterator it) {
 			return DoubleStatistics.of(it).getMean();
 		}
 	};
 
 	public static IDoubleInferrer MEDIAN = new IDoubleInferrer() {
 		@Override
-		public double infer(IDoubleIterator it, int size) {
-			double[] tmp = new double[size];
+		public double infer(IDoubleSizedIterator it) {
+			double[] tmp = new double[it.size()];
 			int i = 0;
 			while (it.hasNext()) {
 				double v = it.nextPrimitive();
@@ -53,7 +53,7 @@ public class DoubleInferrers {
 	public static IDoubleInferrer fix(final double value) {
 		return new IDoubleInferrer() {
 			@Override
-			public double infer(IDoubleIterator it, int size) {
+			public double infer(IDoubleSizedIterator it) {
 				return value;
 			}
 		};

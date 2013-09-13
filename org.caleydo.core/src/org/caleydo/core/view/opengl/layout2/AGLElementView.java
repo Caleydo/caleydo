@@ -36,7 +36,6 @@ import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 
 import com.google.common.base.Predicate;
-import com.google.common.base.Stopwatch;
 
 /**
  * a {@link IGLView} based on {@link GLElement}s its NOT a {@link AGLView}
@@ -91,6 +90,11 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public final IGLCanvas getParentGLCanvas() {
 		return canvas;
+	}
+
+	@Override
+	public final Vec2f getSize() {
+		return new Vec2f(canvas.getDIPWidth(), canvas.getDIPHeight());
 	}
 
 	@Override

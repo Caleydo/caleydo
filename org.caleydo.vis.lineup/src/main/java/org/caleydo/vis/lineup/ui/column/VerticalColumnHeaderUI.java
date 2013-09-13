@@ -6,6 +6,7 @@
 package org.caleydo.vis.lineup.ui.column;
 
 import static org.caleydo.core.view.opengl.layout2.animation.Transitions.LINEAR;
+import static org.caleydo.vis.lineup.ui.RenderStyle.LABEL_HEIGHT;
 
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
@@ -32,7 +33,6 @@ import org.caleydo.vis.lineup.model.ACompositeRankColumnModel;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
 
 import com.google.common.collect.Lists;
-
 /**
  * @author Samuel Gratzl
  *
@@ -156,7 +156,7 @@ public class VerticalColumnHeaderUI extends AColumnHeaderUI {
 		boolean showChildren = childrenHovered && !this.isCollapsed();
 		if (isDownAlignment()) {
 			if (showChildren) {
-				float y = h;
+				float y = h + menuOffset(h);
 				for (IGLLayoutElement child : childs) {
 					child.setBounds(0, y, w, h);
 					y += h;
@@ -176,6 +176,20 @@ public class VerticalColumnHeaderUI extends AColumnHeaderUI {
 				for (IGLLayoutElement child : childs)
 					child.setBounds(w, 0, 0, h);
 			}
+		}
+	}
+
+	/**
+	 * @return
+	 */
+	private float menuOffset(float h) {
+		switch(config.getButtonBarPosition()) {
+		case UNDER_LABEL:
+			return isSmallHeader(h) ? LABEL_HEIGHT : 0;
+		case BELOW_HIST: // below hist
+			return LABEL_HEIGHT;
+		default:
+			return 0;
 		}
 	}
 

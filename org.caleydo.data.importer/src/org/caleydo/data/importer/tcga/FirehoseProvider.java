@@ -132,6 +132,8 @@ public final class FirehoseProvider {
 			if (r == null)
 				r = extractDataRunFile(".uncv1.mRNAseq_RPKM_log2.txt",
 						"mRNAseq_Preprocess", LEVEL);
+			if (r == null)
+				r = extractDataRunFile(".mRNAseq_RPKM_log2.txt", "mRNAseq_Preprocess", LEVEL);
 			if (r != null)
 				return Pair.make(r, true);
 		}
@@ -261,7 +263,9 @@ public final class FirehoseProvider {
 			return null;
 		}
 
+		String alternativeName = fileToExtract;
 		if (hasTumor) {
+			alternativeName = "/" + tumor.getBaseName() + fileToExtract;
 			fileToExtract = "/" + tumor + fileToExtract;
 		}
 
@@ -276,7 +280,7 @@ public final class FirehoseProvider {
 
 			// search the correct entry
 			ArchiveEntry act = tarIn.getNextEntry();
-			while (act != null && !act.getName().endsWith(fileToExtract)) {
+			while (act != null && !act.getName().endsWith(fileToExtract) && !act.getName().endsWith(alternativeName)) {
 				act = tarIn.getNextEntry();
 			}
 			if (act == null) // no entry found
@@ -333,7 +337,7 @@ public final class FirehoseProvider {
 		System.out.println("parsing maf file " + maf.getAbsolutePath());
 		final String TAB = "\t";
 
-		try (BufferedReader reader = Files.newBufferedReader(maf.toPath(), Charset.defaultCharset())) {
+		try (BufferedReader reader = Files.newBufferedReader(maf.toPath(), Charset.forName("UTF-8"))) {
 			List<String> header = Arrays.asList(reader.readLine().split(TAB));
 			int geneIndex = header.indexOf("Hugo_Symbol");
 			int sampleIndex = header.indexOf("Tumor_Sample_Barcode");

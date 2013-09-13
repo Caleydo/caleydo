@@ -6,6 +6,7 @@
 package org.caleydo.view.stratomex;
 
 import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.view.stratomex.toolbar.ConnectionsModeGUI;
 import org.eclipse.jface.action.IToolBarManager;
@@ -57,7 +58,7 @@ public class RcpGLStratomexView extends ARcpGLViewPart {
 
 		toolBarManager.add(new ConnectionsModeGUI());
 		toolBarManager.add(new OpenOnlineHelpAction(
-				"http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/stratomex", true));
+GeneralManager.HELP_URL + "/views/stratomex.md", true));
 
 		toolBarManager.update(true);
 	}

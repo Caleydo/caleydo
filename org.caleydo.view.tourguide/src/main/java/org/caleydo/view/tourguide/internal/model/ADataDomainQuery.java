@@ -219,6 +219,7 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	 */
 	public abstract void removeSpecificColumns(RankTableModel table);
 
+	public abstract void updateSpecificColumns(RankTableModel table);
 	/**
 	 *
 	 * @return null if nothing changed, or else if the data were updated

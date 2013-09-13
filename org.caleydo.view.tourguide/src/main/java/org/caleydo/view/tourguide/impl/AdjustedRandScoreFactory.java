@@ -66,8 +66,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 			@Override
 			public PiecewiseMapping createMapping() {
 				PiecewiseMapping m = new PiecewiseMapping(-1, 1);
-				m.put(-1, 1);
-				m.put(0, 0);
+				m.put(-1, 0);
 				m.put(1, 1);
 				return m;
 			}

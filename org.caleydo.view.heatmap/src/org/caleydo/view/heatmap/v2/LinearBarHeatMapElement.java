@@ -48,10 +48,11 @@ public class LinearBarHeatMapElement extends AHeatMapElement {
 
 	@Override
 	protected Vec2f getMinSizeImpl() {
-		TablePerspective tablePerspective = selections.getTablePerspective();
-		float w = tablePerspective.getNrDimensions() * (dimensionLabels.show() ? 16 : 1);
-		float h = tablePerspective.getNrRecords() * (recordLabels.show() ? 16 : 10);
-		return new Vec2f(w, h);
+		Vec2f r = super.getMinSizeImpl();
+
+		if (!recordLabels.show())
+			r.setY(r.y() * 10); // have a visible size also
+		return r;
 	}
 
 	@Override

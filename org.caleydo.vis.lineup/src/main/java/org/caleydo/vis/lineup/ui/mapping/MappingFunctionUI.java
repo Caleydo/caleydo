@@ -12,8 +12,8 @@ import java.awt.Dimension;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -23,8 +23,13 @@ import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.ArrayDoubleList;
 import org.caleydo.core.util.function.DoubleFunctions;
+import org.caleydo.core.util.function.DoubleSizedIterables;
 import org.caleydo.core.util.function.DoubleStatistics;
+import org.caleydo.core.util.function.IDoubleFunction;
+import org.caleydo.core.util.function.IDoubleIterator;
 import org.caleydo.core.util.function.IDoubleList;
+import org.caleydo.core.util.function.IDoubleSizedIterable;
+import org.caleydo.core.util.function.IDoubleSizedIterator;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -75,7 +80,8 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 	public static final float TEXT_HEIGHT = 50;
 
 	protected final IMappingFunction model;
-	protected final IDoubleList raw;
+	protected final IDoubleSizedIterable raw;
+	private final IDoubleSizedIterable sampled;
 
 	protected final Color color;
 	protected final Color backgroundColor;
@@ -90,12 +96,13 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 
 	private final IRankTableUIConfig config;
 
-	public MappingFunctionUI(IMappingFunction model, IDoubleList data, Color color, Color bgColor,
+	public MappingFunctionUI(IMappingFunction model, IDoubleSizedIterable data, Color color, Color bgColor,
 			ICallback<? super IMappingFunction> callback, IRankTableUIConfig config) {
 		this.callback = callback;
 		this.config = config;
 		this.model = model;
 		this.raw = data;
+		this.sampled = raw.size() < 1000 ? raw : sample(raw, 1000);
 		this.color = color;
 		this.backgroundColor = bgColor;
 
@@ -128,6 +135,82 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		this.add(buttons);
 
 		setLayout(this);
+	}
+
+	/**
+	 * sample the iterable with the given count
+	 *
+	 * @return
+	 */
+	private static IDoubleSizedIterable sample(final IDoubleSizedIterable data, final int count) {
+		final int size = data.size();
+		assert count < size;
+		int[] s = new int[size];
+		for (int i = 0; i < size; ++i)
+			s[i] = i;
+
+		Random rnd = new Random();
+		// shuffle
+		for (int i = size - 1; i >= 1; i--) {
+			int j = rnd.nextInt(i);
+			int t = s[i];
+			s[i] = s[j];
+			s[j] = t;
+		}
+		final int[] indices = Arrays.copyOf(s, count);
+		Arrays.sort(indices); // sort by index
+
+		return new IDoubleSizedIterable() {
+			@Override
+			public int size() {
+				return count;
+			}
+
+			@Override
+			public IDoubleSizedIterable map(IDoubleFunction f) {
+				return DoubleSizedIterables.map(this, f);
+			}
+
+			@Override
+			public IDoubleSizedIterator iterator() {
+				return new IDoubleSizedIterator() {
+					IDoubleSizedIterator it = data.iterator();
+					int act = 0;
+					int i = 0;
+
+					@Override
+					public void remove() {
+						throw new UnsupportedOperationException();
+					}
+
+					@Override
+					public Double next() {
+						return nextPrimitive();
+					}
+
+					@Override
+					public boolean hasNext() {
+						return it.hasNext() && i < indices.length;
+					}
+
+					@Override
+					public double nextPrimitive() {
+						for (; act < indices[i] && it.hasNext(); ++act) { // skip uninteresting indices
+							it.next();
+						}
+						double v = it.next();
+						act++;
+						i++;
+						return v;
+					}
+
+					@Override
+					public int size() {
+						return count;
+					}
+				};
+			}
+		};
 	}
 
 	/**
@@ -260,7 +343,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 	}
 
 	protected SimpleHistogram computeHist(float w) {
-		return DataUtils.getHist(binsForWidth(w, raw.size()), raw.map(model));
+		return DataUtils.getHist(binsForWidth(w, raw.size()), raw.map(model).iterator());
 	}
 
 	protected void renderMapping(GLGraphics g, float w, float h, boolean cross, boolean isNormalLeftTop) {
@@ -268,27 +351,12 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		GL2 gl = g.gl;
 		final float z = g.z();
 		gl.glBegin(GL.GL_LINES);
-		if (raw.size() < 1000) {
-			for (int i = 0; i < raw.size(); ++i) {
-				renderLine(w, h, gl, z, i, cross, isNormalLeftTop);
-			}
-		} else {
-			// sample 1000 elements
-			List<Integer> r = new ArrayList<>(1000);
-			for (int i = 0; i < 1000; ++i)
-				r.add(i);
-			Collections.shuffle(r);
-			for (int i = 0; i < 1000; ++i) {
-				int index = r.get(i);
-				renderLine(w, h, gl, z, index, cross, isNormalLeftTop);
-			}
-		}
-
+		for (IDoubleIterator it = sampled.iterator(); it.hasNext();)
+			renderLine(w, h, gl, z, it.nextPrimitive(), cross, isNormalLeftTop);
 		gl.glEnd();
 	}
 
-	private void renderLine(float w, float h, GL2 gl, final float z, int index, boolean cross, boolean isNormalLeftTop) {
-		double v = raw.getPrimitive(index);
+	private void renderLine(float w, float h, GL2 gl, final float z, double v, boolean cross, boolean isNormalLeftTop) {
 		if (cross) {
 			float x = (float) normalizeRaw(v) * w;
 			float y = (float) (1 - model.apply(v)) * h;
@@ -308,8 +376,9 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 	}
 
 	class RawHistogramElement extends HistogramElement {
-		private IDoubleList data;
-		private RawHistogramElement(IDoubleList raw) {
+		private IDoubleSizedIterable data;
+
+		private RawHistogramElement(IDoubleSizedIterable raw) {
 			super("Raw", color, backgroundColor);
 			this.data = raw;
 		}
@@ -327,9 +396,9 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 			if (m[0] < model.getActMax()) {
 				maxM = normalizeRaw(m[0]);
 			}
-
 			SimpleHistogram hist = DataUtils
-					.getHist(binsForWidth((vertical ? h : w) - LABEL_HEIGHT, data.size()), data);
+.getHist(binsForWidth((vertical ? h : w) - LABEL_HEIGHT, data.size()),
+					data.iterator());
 			render(g, vertical, model.getActMin(), model.getActMax(), w, h, minM, maxM, hist,
 					getLayoutDataAs(Boolean.class, Boolean.FALSE));
 		}

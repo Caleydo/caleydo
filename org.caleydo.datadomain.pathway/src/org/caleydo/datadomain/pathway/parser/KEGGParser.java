@@ -62,7 +62,7 @@ public class KEGGParser implements IRunnableWithProgress {
 
 		List<String> lines;
 		try {
-			lines = Files.readLines(listFile, Charset.defaultCharset());
+			lines = Files.readLines(listFile, Charset.forName("UTF-8"));
 		} catch (IOException e) {
 			log.error("can't read list data of " + listFile, e);
 			return;
@@ -108,7 +108,7 @@ public class KEGGParser implements IRunnableWithProgress {
 
 		List<String> lines;
 		try {
-			lines = Files.readLines(listFile, Charset.defaultCharset());
+			lines = Files.readLines(listFile, Charset.forName("UTF-8"));
 		} catch (IOException e) {
 			log.error("can't read list data of " + listFile, e);
 			return;
@@ -136,7 +136,7 @@ public class KEGGParser implements IRunnableWithProgress {
 				continue;
 			}
 
-			try (Reader r = Files.newReader(kgmlFile, Charset.defaultCharset())){
+			try (Reader r = Files.newReader(kgmlFile, Charset.forName("UTF-8"))) {
 				XMLReader reader = XMLReaderFactory.createXMLReader();
 
 				// Entity resolver avoids the XML Reader

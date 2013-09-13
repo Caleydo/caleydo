@@ -64,7 +64,7 @@ public class AdvancedDoubleStatistics extends DoubleStatistics {
 		return ofImpl(list.toPrimitiveArray());
 	}
 
-	public static AdvancedDoubleStatistics of(double[] arr) {
+	public static AdvancedDoubleStatistics of(double... arr) {
 		return ofImpl(Arrays.copyOf(arr, arr.length));
 	}
 

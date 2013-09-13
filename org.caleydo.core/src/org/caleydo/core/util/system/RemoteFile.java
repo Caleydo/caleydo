@@ -234,7 +234,7 @@ public final class RemoteFile implements IRunnableWithProgress {
 		static {
 			if (cacheContentsFile.exists()) {
 				try {
-					for (String line : Files.readAllLines(cacheContentsFile.toPath(), Charset.defaultCharset())) {
+					for (String line : Files.readAllLines(cacheContentsFile.toPath(), Charset.forName("UTF-8"))) {
 						if (line.isEmpty())
 							continue;
 						String[] url_path = line.split("\t");

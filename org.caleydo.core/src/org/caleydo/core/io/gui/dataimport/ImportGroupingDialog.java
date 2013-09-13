@@ -20,6 +20,7 @@ import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.PreviewTable.IPreviewCallback;
 import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
 import org.caleydo.core.io.gui.dataimport.widget.RowConfigWidget;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.base.IProvider;
 import org.caleydo.core.util.base.IntegerCallback;
@@ -316,7 +317,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 
 	@Override
 	protected void helpPressed() {
-		BrowserUtils.openURL("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/loading-data");
+		BrowserUtils.openURL(GeneralManager.HELP_URL + "/data.md");
 	}
 
 	@Override

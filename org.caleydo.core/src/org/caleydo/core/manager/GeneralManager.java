@@ -67,6 +67,8 @@ public class GeneralManager {
 	public static final String DATA_URL_PREFIX = "http://data.icg.tugraz.at/caleydo/download/" + VERSION.getMajor()
 			+ "." + VERSION.getMinor() + "/";
 
+	public static final String HELP_URL = "http://help.caleydo.org";
+
 	/**
 	 * General manager as a singleton
 	 */

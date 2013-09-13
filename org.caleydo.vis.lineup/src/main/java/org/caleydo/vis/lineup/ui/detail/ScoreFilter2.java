@@ -7,7 +7,7 @@ package org.caleydo.vis.lineup.ui.detail;
 
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.function.IDoubleList;
+import org.caleydo.core.util.function.IDoubleSizedIterable;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -29,7 +29,7 @@ public class ScoreFilter2 extends GLElementContainer implements ISelectionCallba
 	/**
 	 *
 	 */
-	public ScoreFilter2(StackedRankColumnModel model, IDoubleList data, GLElement summary) {
+	public ScoreFilter2(StackedRankColumnModel model, IDoubleSizedIterable data, GLElement summary) {
 		this.model = model;
 		setLayout(new GLFlowLayout(false, 3, new GLPadding(10, 2, 10, 2)));
 		GLElementContainer help = new GLElementContainer(new GLFlowLayout(false, 5, new GLPadding(5, 2)));

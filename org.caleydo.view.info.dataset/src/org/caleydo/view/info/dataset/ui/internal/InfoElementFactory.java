@@ -21,7 +21,7 @@ import org.caleydo.view.info.dataset.ui.InfoElement;
 public class InfoElementFactory implements IGLElementFactory {
 	@Override
 	public String getId() {
-		return "histogram";
+		return "info";
 	}
 
 	@Override

@@ -17,8 +17,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.util.function.ADoubleList;
-import org.caleydo.core.util.function.IDoubleList;
+import org.caleydo.core.util.function.IDoubleSizedIterable;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -38,7 +37,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 
 import com.google.common.collect.Iterables;
-import com.google.common.primitives.Doubles;
 
 /**
  * a {@link ACompositeRankColumnModel} which is rankable
@@ -208,28 +206,12 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		context.getPopupLayer().show(m, new Rect(location.x(), location.y() + size.y(), 200, m.getSize().y()));
 	}
 
-	protected GLElement createEditFilterPopup(IDoubleList data, GLElement summary) {
+	protected GLElement createEditFilterPopup(IDoubleSizedIterable data, GLElement summary) {
 		return new ScoreFilter(this, data, summary);
 	}
 
-	private IDoubleList asRawData() {
-		final List<IRow> data2 = getTable().getFilteredData();
-		return new ADoubleList() {
-			@Override
-			public double getPrimitive(int index) {
-				return applyPrimitive(data2.get(index));
-			}
-
-			@Override
-			public int size() {
-				return data2.size();
-			}
-
-			@Override
-			public double[] toPrimitiveArray() {
-				return Doubles.toArray(this);
-			}
-		};
+	private IDoubleSizedIterable asRawData() {
+		return getTable().getFilteredMappedData(this);
 	}
 
 	private void updateMask(BitSet todo, List<IRow> rows, BitSet mask) {

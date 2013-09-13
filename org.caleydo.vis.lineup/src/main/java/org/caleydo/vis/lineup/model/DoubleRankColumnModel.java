@@ -13,16 +13,14 @@ import java.text.NumberFormat;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.util.function.ADoubleList;
 import org.caleydo.core.util.function.DoubleStatistics;
-import org.caleydo.core.util.function.IDoubleList;
+import org.caleydo.core.util.function.IDoubleSizedIterable;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
@@ -48,8 +46,6 @@ import org.caleydo.vis.lineup.ui.mapping.MappingFunctionUIs;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-
-import com.google.common.primitives.Doubles;
 
 /**
  * @author Samuel Gratzl
@@ -90,7 +86,7 @@ public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 	public DoubleRankColumnModel(IDoubleFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
 			PiecewiseMapping mapping, IDoubleInferrer missingValue) {
-		this(data, header, color, bgColor, mapping, missingValue, NumberFormat.getInstance(Locale.ENGLISH));
+		this(data, header, color, bgColor, mapping, missingValue, null);
 	}
 
 	public DoubleRankColumnModel(IDoubleFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
@@ -171,30 +167,19 @@ public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel imple
 		super.takeDown();
 	}
 
-	private IDoubleList asRawData() {
-		final List<IRow> data2 = getTable().getFilteredData();
-		return new ADoubleList() {
+	private IDoubleSizedIterable asRawData() {
+		return getTable().getFilteredMappedData(new org.caleydo.vis.lineup.data.ADoubleFunction<IRow>() {
 			@Override
-			public double getPrimitive(int index) {
-				return getRaw(data2.get(index));
+			public double applyPrimitive(IRow row) {
+				return getRaw(row);
 			}
-
-			@Override
-			public int size() {
-				return data2.size();
-			}
-
-			@Override
-			public double[] toPrimitiveArray() {
-				return Doubles.toArray(this);
-			}
-		};
+		});
 	}
 
 	private double computeMissingValue() {
 		if (Double.isNaN(missingValue)) {
-			IDoubleList list = asRawData();
-			missingValue = missingValueInferer.infer(list.iterator(), list.size());
+			IDoubleSizedIterable list = asRawData();
+			missingValue = missingValueInferer.infer(list.iterator());
 		}
 		return missingValue;
 	}
@@ -301,6 +286,20 @@ public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel imple
 	@Override
 	public boolean isFiltered() {
 		return filterNotMappedEntries || filterMissingEntries;
+	}
+
+	/**
+	 * @return the filterMissingEntries, see {@link #filterMissingEntries}
+	 */
+	public boolean isFilterMissingEntries() {
+		return filterMissingEntries;
+	}
+
+	/**
+	 * @return the filterNotMappedEntries, see {@link #filterNotMappedEntries}
+	 */
+	public boolean isFilterNotMappedEntries() {
+		return filterNotMappedEntries;
 	}
 
 	/**

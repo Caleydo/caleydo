@@ -40,7 +40,7 @@ public class RunOverview implements Comparable<RunOverview> {
 		File file = RemoteFile.of(new URL(prefix + json)).getOrLoad(true, new NullProgressMonitor());
 		if (file == null)
 			return false;
-		try (Reader r = Files.newBufferedReader(file.toPath(), Charset.defaultCharset())) {
+		try (Reader r = Files.newBufferedReader(file.toPath(), Charset.forName("UTF-8"))) {
 			JsonElement parse = new JsonParser().parse(r);
 			this.data = gson.fromJson(parse, Run.class);
 		}

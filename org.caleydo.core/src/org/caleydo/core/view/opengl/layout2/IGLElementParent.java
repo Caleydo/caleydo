@@ -59,4 +59,6 @@ public interface IGLElementParent extends IHasGLLayoutData {
 	 * @return
 	 */
 	Vec2f toRelative(Vec2f absolute);
+
+	Vec2f getSize();
 }
