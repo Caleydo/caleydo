@@ -583,7 +583,8 @@ public class TreeClusterer extends AClusterer {
 		default:
 			throw new IllegalStateException("Unkonwn cluster type: " + tConfig.getTreeClustererAlgo());
 		}
-
+		if (result == null)
+			return null;
 		w.reset().start();
 		PerspectiveInitializationData p = convert(result);
 		System.out.println("convert: " + w);
