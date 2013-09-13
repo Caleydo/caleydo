@@ -279,7 +279,6 @@ public class NumericalTable extends Table {
 		if (numericalProperties != null && numericalProperties.getImputeDescription() != null)
 			performImputation(numericalProperties.getImputeDescription());
 
-		datasetStatistics = computeTableStats();
 
 		if (numericalProperties != null
 				&& NumericalProperties.ZSCORE_ROWS.equals(numericalProperties.getzScoreNormalization())) {
@@ -311,6 +310,8 @@ public class NumericalTable extends Table {
 				}
 			}
 			datasetStatistics = postStats.build();
+		} else {
+			datasetStatistics = computeTableStats();
 		}
 
 		if (numericalProperties != null && numericalProperties.getClipToStdDevFactor() != null) {
