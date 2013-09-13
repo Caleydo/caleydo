@@ -19,6 +19,8 @@ public class JavaScriptFunctions {
 	}
 
 	public static double linear(double start, double end, double in, double startTo, double endTo) {
+		boolean special = start > 0;
+		start = 0;
 		if (Double.isNaN(in))
 			return in;
 		if (in < start)
@@ -29,7 +31,8 @@ public class JavaScriptFunctions {
 		double v = (in - start) / (end - start); // to ratio
 		// to mapped value
 		double r = startTo + v * (endTo - startTo);
-
+		if (special)
+			System.out.println(in + " " + r);
 		// finally clamp
 		return clamp01(r);
 	}
@@ -53,7 +56,7 @@ public class JavaScriptFunctions {
 		return clamp01((in - min) / (max - min));
 	}
 
-	public static float abs(float in) {
+	public static double abs(double in) {
 		return Math.abs(in);
 	}
 

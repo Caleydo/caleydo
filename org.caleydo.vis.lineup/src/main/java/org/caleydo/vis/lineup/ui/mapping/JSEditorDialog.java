@@ -118,14 +118,15 @@ public class JSEditorDialog extends TitleAreaDialog {
 
 	private void testPressed() {
 		try {
-			float f = Float.parseFloat(testUI.getText());
+			double f = Double.parseDouble(testUI.getText());
 			if (!verifyCode())
 				return;
 			w.getBuffer().setLength(0); // reset
 			Bindings b = engine.createBindings();
 			b.put("v", f);
 			model.addBindings(b);
-			String output = Objects.toString(script.eval(b));
+			final Object r = script.eval(b);
+			String output = Objects.toString(r);
 			testOutputUI.setText(output);
 			String extra = w.toString();
 			if (extra.length() > 0)
@@ -146,7 +147,7 @@ public class JSEditorDialog extends TitleAreaDialog {
 			this.script = c.compile(fullCode);
 			// dummy test
 			Bindings b = engine.createBindings();
-			b.put("v", 0.5f);
+			b.put("v", 0.5);
 			model.addBindings(b);
 			Object r = script.eval(b);
 			if (!(r instanceof Number)) {

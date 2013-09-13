@@ -143,18 +143,10 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		{
 			PAGEAlgorithm algorithm = new PAGEAlgorithm(strat.getRecordPerspective(), group);
 			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, dynamicAbsolute());
-			PiecewiseMapping m = inverse();
-			IScore pValue = new GeneSetPValueScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), m, gsea);
+			IScore pValue = new GeneSetPValueScore("-log(p-value)", algorithm.asPValue(), gsea);
 			col.add(new ScoreEntry("Parametric Gene Set Enrichment Analysis of group", gsea, pValue));
 		}
 		return col;
-	}
-
-	private static PiecewiseMapping inverse() {
-		PiecewiseMapping m = new PiecewiseMapping(0, 1);
-		m.put(0, 1);
-		m.put(1, 0);
-		return m;
 	}
 
 	private static PiecewiseMapping dynamicAbsolute() {
@@ -351,13 +343,11 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	}
 
 	public static class GeneSetPValueScore extends DefaultComputedStratificationScore implements IDecoratedScore {
-		private final PiecewiseMapping mapping;
 		private final IScore underlying;
 
-		public GeneSetPValueScore(String label, IStratificationAlgorithm algorithm, PiecewiseMapping mapping,
+		public GeneSetPValueScore(String label, IStratificationAlgorithm algorithm,
 				IScore underlying) {
 			super(label, algorithm, ComputeScoreFilters.ALL, color.darker(), bgColor);
-			this.mapping = mapping;
 			this.underlying = underlying;
 		}
 
@@ -376,7 +366,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 		@Override
 		public PiecewiseMapping createMapping() {
-			return mapping.clone();
+			return Utils.createPValueMapping();
 		}
 	}
 
@@ -435,8 +425,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 			} else {
 				algorithm = new PAGEAlgorithm(perspective, group);
 				IScore gsea = new GeneSetScore(prefix, algorithm, dynamicAbsolute());
-				PiecewiseMapping m = inverse();
-				IScore pValue = new GeneSetPValueScore(prefix + " P-Value", algorithm.asPValue(), m, gsea);
+				IScore pValue = new GeneSetPValueScore("-log(p-value)", algorithm.asPValue(), gsea);
 				MultiScore s2 = new MultiScore(label, color, bgColor, RankTableConfigBase.NESTED_MODE);
 				s2.add(pValue);
 				s2.add(gsea);

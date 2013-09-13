@@ -116,7 +116,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 		String label = String.format("Sig. change of %s", numerical.getLabel());
 		ATableBasedDataDomain clinical = numerical.getDataDomain();
 		LogRankMetric metric = new LogRankMetric("LogRank", dimId, clinical);
-		LogRankPValue pvalue = new LogRankPValue("P-Value", metric);
+		LogRankPValue pvalue = new LogRankPValue("-log(p-value)", metric);
 
 		MultiScore multiScore = new MultiScore(label, wrap(clinical.getColor()),
  darker(clinical.getColor()),
@@ -278,10 +278,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 
 		@Override
 		public PiecewiseMapping createMapping() {
-			PiecewiseMapping m = new PiecewiseMapping(0, 1);
-			m.put(0, 1);
-			m.put(1, 0);
-			return m;
+			return Utils.createPValueMapping();
 		}
 
 		@Override
