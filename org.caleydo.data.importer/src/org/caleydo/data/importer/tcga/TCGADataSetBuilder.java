@@ -30,6 +30,7 @@ import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.MetaDataElement;
+import org.caleydo.core.io.MetaDataElement.AttributeType;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterConfiguration;
@@ -154,8 +155,10 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		dataSet.setDataSourcePath(matrixFile.getPath());
 		dataSet.setMetaData(metaData);
 
-		addDataSourceMetaData(metaData, fileInfo);
-		metaData.addAttribute("Full Genes", new Boolean(loadFullGenes).toString());
+		MetaDataElement dataset = new MetaDataElement("Dataset");
+		metaData.addElement(dataset);
+		addDataSourceMetaData(dataset, fileInfo);
+		dataset.addAttribute("Full Genes", new Boolean(loadFullGenes).toString());
 
 		if (!loadFullGenes) {
 			// the gct files have 3 header lines and are centered<
@@ -310,8 +313,17 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		dataSet.setDataSetName(dataSetName);
 		dataSet.setColor(dataSetType.getColor());
 
-		addDataSourceMetaData(metaData, mutationFile);
+		MetaDataElement dataset = new MetaDataElement("Dataset");
+		metaData.addElement(dataset);
+		addDataSourceMetaData(dataset, mutationFile);
 		dataSet.setMetaData(metaData);
+
+		if (mutationFile.getSourceFileName().toLowerCase().endsWith(".maf")) {
+			MetaDataElement processing = new MetaDataElement("Data Pre-Processing");
+			processing.addElement(new MetaDataElement(
+					"Converted MAF file to binary map with Tumor_Sample_Barcode x Hugo_Symbol"));
+			metaData.addElement(processing);
+		}
 
 		dataSet.setDataSourcePath(mutationFile.getFile().getPath());
 		dataSet.setNumberOfHeaderLines(1);
@@ -364,8 +376,10 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		dataSet.setDataSourcePath(copyNumberFile.getFile().getPath());
 		dataSet.setNumberOfHeaderLines(1);
 		dataSet.setMetaData(metaData);
-		
-		addDataSourceMetaData(metaData, copyNumberFile);
+
+		MetaDataElement dataset = new MetaDataElement("Dataset");
+		metaData.addElement(dataset);
+		addDataSourceMetaData(dataset, copyNumberFile);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
@@ -413,11 +427,18 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 		transposeCSV(clinicalFile.getPath(), out.getPath());
 
+		MetaDataElement metaData = new MetaDataElement();
+
 		DataSetDescription dataSet = new DataSetDescription();
 		dataSet.setDataSetName(dataSetName);
 		dataSet.setColor(dataSetType.getColor());
 		dataSet.setDataSourcePath(out.getPath());
 		dataSet.setNumberOfHeaderLines(1);
+
+		MetaDataElement dataset = new MetaDataElement("Dataset");
+		metaData.addElement(dataset);
+		addDataSourceMetaData(dataset, clinicalFileInfo);
+		dataSet.setMetaData(metaData);
 
 		dataSet.setRowIDSpecification(rowIdSpecification);
 		dataSet.setColumnIDSpecification(columnIdSpecification);
@@ -464,7 +485,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 	}
 
 	private void addDataSourceMetaData(MetaDataElement metaData, TCGAFileInfo fileInfo) {
-		metaData.addAttribute("Archive", fileInfo.getArchiveURL());
+		metaData.addAttribute("Archive", fileInfo.getArchiveURL(), AttributeType.URL);
 		metaData.addAttribute("Source File", fileInfo.getSourceFileName());
 	}
 
