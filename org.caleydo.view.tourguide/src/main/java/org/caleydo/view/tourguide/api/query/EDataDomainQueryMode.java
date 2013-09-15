@@ -20,6 +20,7 @@ import org.caleydo.view.tourguide.internal.model.InhomogenousDataDomainQuery;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * the mode in which the data domain query is see {@link DataDomainQuery}
@@ -58,11 +59,13 @@ public enum EDataDomainQueryMode implements Predicate<IDataDomain> {
 			if (!(dataDomain instanceof ATableBasedDataDomain))
 				return false;
 			if (!((ATableBasedDataDomain) dataDomain).getTable().isDataHomogeneous())
-				return InhomogenousDataDomainQuery.hasOne(dataDomain, EDataClass.CATEGORICAL);
+				return InhomogenousDataDomainQuery.hasOne(dataDomain, Sets.immutableEnumSet(EDataClass.CATEGORICAL));
 			return true;
 		case OTHER:
 			return (dataDomain instanceof ATableBasedDataDomain && !((ATableBasedDataDomain) dataDomain).getTable()
-					.isDataHomogeneous()) && InhomogenousDataDomainQuery.hasOne(dataDomain, EDataClass.NATURAL_NUMBER);
+					.isDataHomogeneous())
+					&& InhomogenousDataDomainQuery.hasOne(dataDomain,
+							Sets.immutableEnumSet(EDataClass.NATURAL_NUMBER, EDataClass.REAL_NUMBER));
 		}
 		throw new IllegalArgumentException("unknown me");
 	}

@@ -15,7 +15,9 @@ import org.caleydo.core.data.perspective.table.CategoricalTablePerspectiveCreato
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.ILabeled;
+
+import com.google.common.collect.Collections2;
 
 /**
  * helper class for encapsulating magic meta data information about a data domain
@@ -49,14 +51,12 @@ public final class DataDomainOracle {
 	}
 
 	public static boolean isClinical(IDataDomain dataDomain) {
-		return dataDomain.getLabel().toLowerCase().equals("clinical");
+		return DataSupportDefinitions.inhomogenousTables.apply(dataDomain);
 	}
 
-	public static ATableBasedDataDomain getClinicalDataDomain() {
-		for(ATableBasedDataDomain dd : DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class))
-			if (isClinical(dd))
-				return dd;
-		return null;
+	public static Collection<ATableBasedDataDomain> getClinicalDataDomain() {
+		return Collections2.filter(DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class),
+				DataSupportDefinitions.inhomogenousTables);
 	}
 
 	/**
@@ -65,33 +65,51 @@ public final class DataDomainOracle {
 	 * @return pair with id,label
 	 */
 	public static Collection<ClinicalVariable> getClinicalVariables() {
-		ATableBasedDataDomain clinical = getClinicalDataDomain();
-		if (clinical == null)
+		Collection<ATableBasedDataDomain> clinicals = getClinicalDataDomain();
+		if (clinicals == null || clinicals.isEmpty())
 			return Collections.emptyList();
-		List<Integer> va = clinical.getTable().getColumnIDList();
-		IDType dimId = clinical.getDimensionIDType();
-		Integer row = clinical.getTable().getRowIDList().get(0);
-		IDMappingManager manager = clinical.getDimensionIDMappingManager();
-		IIDTypeMapper<Integer, String> mapper = manager.getIDTypeMapper(dimId, dimId.getIDCategory()
-				.getHumanReadableIDType());
-
 		Collection<ClinicalVariable> result = new ArrayList<>();
-		for(Integer id : va) {
-			EDataClass dataClass = clinical.getTable().getDataClass(id, row);
-			result.add(new ClinicalVariable(mapper.apply(id).iterator().next(), id, dataClass));
+		for (ATableBasedDataDomain clinical : clinicals) {
+			List<Integer> va = clinical.getTable().getColumnIDList();
+			IDType dimId = clinical.getDimensionIDType();
+			Integer row = clinical.getTable().getRowIDList().get(0);
+			IDMappingManager manager = clinical.getDimensionIDMappingManager();
+			IIDTypeMapper<Integer, String> mapper = manager.getIDTypeMapper(dimId, dimId.getIDCategory()
+					.getHumanReadableIDType());
+
+			for (Integer id : va) {
+				EDataClass dataClass = clinical.getTable().getDataClass(id, row);
+				result.add(new ClinicalVariable(clinical, mapper.apply(id).iterator().next(), id, dataClass));
+			}
 		}
 		return result;
 	}
 
-	public static class ClinicalVariable implements ILabelProvider {
+	public static class ClinicalVariable implements ILabeled {
+		private final ATableBasedDataDomain dataDomain;
 		private final String label;
 		private final int dimId;
 		private final EDataClass dataClass;
 
-		public ClinicalVariable(String label, int dimId, EDataClass dataClass) {
+		public ClinicalVariable(ATableBasedDataDomain dataDomain, String label, int dimId, EDataClass dataClass) {
+			this.dataDomain = dataDomain;
 			this.label = label;
 			this.dimId = dimId;
 			this.dataClass = dataClass;
+		}
+
+		/**
+		 * @return the dataDomain, see {@link #dataDomain}
+		 */
+		public ATableBasedDataDomain getDataDomain() {
+			return dataDomain;
+		}
+
+		/**
+		 * @return the dimId, see {@link #dimId}
+		 */
+		public int getDimId() {
+			return dimId;
 		}
 
 		/**
@@ -100,18 +118,6 @@ public final class DataDomainOracle {
 		@Override
 		public String getLabel() {
 			return label;
-		}
-
-		@Override
-		public String getProviderName() {
-			return null;
-		}
-
-		/**
-		 * @return the dimId, see {@link #dimId}
-		 */
-		public int getDimId() {
-			return dimId;
 		}
 
 		/**

@@ -5,12 +5,15 @@
  ******************************************************************************/
 package org.caleydo.core.data.datadomain;
 
+import java.util.Set;
+
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.Sets;
 
 /**
  * factory class for {@link IDataSupportDefinition}s
@@ -40,6 +43,8 @@ public final class DataSupportDefinitions {
 		}
 	};
 
+	public static final IDataSupportDefinition inhomogenousTables = not(homogenousTables);
+
 	public static final IDataSupportDefinition numericalTables = new ADataSupportDefinition() {
 		@Override
 		public boolean apply(IDataDomain dataDomain) {
@@ -67,12 +72,22 @@ public final class DataSupportDefinitions {
 		}
 	};
 
-	public static final Predicate<TablePerspective> numericalColumns = new Predicate<TablePerspective>() {
-		@Override
-		public boolean apply(TablePerspective in) {
-			return in != null && (numericalTables.apply(in) || getSingleColumnDataClass(in) == EDataClass.REAL_NUMBER);
-		}
-	};
+	public static final Predicate<TablePerspective> dataClass(final EDataClass clazz,
+			final EDataClass... clazzes) {
+		final Set<EDataClass> type = Sets.immutableEnumSet(clazz, clazzes);
+		return new Predicate<TablePerspective>() {
+			@Override
+			public boolean apply(TablePerspective in) {
+				if (in == null)
+					return false;
+				if (numericalTables.apply(in)) {
+					return type
+							.contains(in.getDataDomain().getDataSetDescription().getDataDescription().getDataClass());
+				}
+				return type.contains(getSingleColumnDataClass(in));
+			}
+		};
+	}
 
 	public static final Predicate<TablePerspective> categoricalColumns = new Predicate<TablePerspective>() {
 		@Override

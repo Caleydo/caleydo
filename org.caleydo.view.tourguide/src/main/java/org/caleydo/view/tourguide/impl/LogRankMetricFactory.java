@@ -392,9 +392,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 			if (label == null || label.trim().isEmpty())
 				label = var.getLabel();
 
-			ATableBasedDataDomain dataDomain = DataDomainOracle.getClinicalDataDomain();
-
-			LogRankMetric metric = new LogRankMetric(label, var.getDimId(), dataDomain);
+			LogRankMetric metric = new LogRankMetric(label, var.getDimId(), var.getDataDomain());
 			LogRankPValue pvalue = new LogRankPValue(label + " (P-V)", metric);
 
 			EventPublisher.trigger(new AddScoreColumnEvent(metric, pvalue).to(receiver));

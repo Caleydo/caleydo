@@ -20,6 +20,8 @@ import org.caleydo.view.tourguide.internal.view.col.DataDomainRankColumnModel;
 import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.StringRankColumnModel;
 
+import com.google.common.collect.Sets;
+
 /**
  * @author Samuel Gratzl
  *
@@ -51,7 +53,8 @@ public class NumericalSpecifics implements IDataDomainQueryModeSpecfics {
 	}
 
 	private static ADataDomainQuery createFor(IDataDomain dd) {
-		return new InhomogenousDataDomainQuery((ATableBasedDataDomain) dd, EDataClass.NATURAL_NUMBER);
+		return new InhomogenousDataDomainQuery((ATableBasedDataDomain) dd, Sets.immutableEnumSet(
+				EDataClass.NATURAL_NUMBER, EDataClass.REAL_NUMBER));
 	}
 
 	/**

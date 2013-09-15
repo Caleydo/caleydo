@@ -31,6 +31,7 @@ import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.StringRankColumnModel;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Sets;
 
 /**
  * @author Samuel Gratzl
@@ -82,7 +83,8 @@ public class StratificationSpecifics implements IDataDomainQueryModeSpecfics {
 
 	private static ADataDomainQuery createFor(IDataDomain dd) {
 		if (!DataSupportDefinitions.homogenousTables.apply(dd))
-			return new InhomogenousDataDomainQuery((ATableBasedDataDomain) dd, EDataClass.CATEGORICAL);
+			return new InhomogenousDataDomainQuery((ATableBasedDataDomain) dd,
+					Sets.immutableEnumSet(EDataClass.CATEGORICAL));
 		if (DataSupportDefinitions.categoricalTables.apply(dd))
 			return new CategoricalDataDomainQuery((ATableBasedDataDomain) dd);
 		return new StratificationDataDomainQuery((ATableBasedDataDomain) dd);
@@ -90,7 +92,7 @@ public class StratificationSpecifics implements IDataDomainQueryModeSpecfics {
 
 	/**
 	 * datadomains can be categorized in multiple categories
-	 * 
+	 *
 	 * @return
 	 */
 	@Override
