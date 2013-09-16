@@ -27,23 +27,18 @@ public class InteractiveSplashHandler extends BasicSplashHandler {
 	public void init(Shell splash) {
 		super.init(splash);
 
-		setProgressRect(new Rectangle(20, 200, splash.getSize().x-40, 25));
-		setMessageRect(new Rectangle(20, 230,splash.getSize().x-40, 25));
+		setProgressRect(new Rectangle(55, 351, 537, 20));
+		setMessageRect(new Rectangle(55, 328, 537, 20));
 		setForeground(new RGB(255, 255, 255));
 
-		Label idLabel = new Label(getContent(), SWT.LEFT);
-		FontData fd = new FontData("Arial", 9, SWT.NORMAL);
-
-		final Font newFont = new Font(splash.getDisplay(), fd);
-		idLabel.setFont(newFont);
-
-		getContent().setFont(newFont);
-
+		Label idLabel = new Label(getContent(), SWT.RIGHT);
+		idLabel.setFont(new Font(splash.getDisplay(), new FontData("Arial", 10, SWT.NORMAL)));
 
 		idLabel.setForeground(getForeground());
-		idLabel.setBounds(new Rectangle(20, 180, 200, 18));
-		idLabel.setText("Version " + GeneralManager.VERSION);
+		idLabel.setBounds(new Rectangle(55, 378, 537, 20));
+		idLabel.setText("Caleydo Version " + GeneralManager.VERSION);
 
+		getContent().setFont(new Font(splash.getDisplay(), new FontData("Arial", 12, SWT.NORMAL)));
 
 		// publish the progress monitor
 		IProgressMonitor monitor = this.getBundleProgressMonitor();
