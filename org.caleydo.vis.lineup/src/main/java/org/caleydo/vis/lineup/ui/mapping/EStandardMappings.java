@@ -13,7 +13,7 @@ import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
  *
  */
 public enum EStandardMappings{
-	LINEAR, INVERT, ABS, Z_SCORE, LINEAR_LOG;
+	LINEAR, INVERT, ABS, Z_SCORE, LOG;
 
 	public void apply(IMappingFunction mapping) {
 		switch (this) {
@@ -51,8 +51,8 @@ public enum EStandardMappings{
 		case Z_SCORE:
 			mapping.fromJavaScript("((value - data.mean) / data.sd) + 0.5");
 			return;
-		case LINEAR_LOG:
-			mapping.fromJavaScript("linear(0, log(value_max), log(value), 0, 1)");
+		case LOG:
+			mapping.fromJavaScript("linear(log(Math.max(10E-10,value_min)), log(Math.max(10E-10,value_max)), log(Math.max(10E-10,value)), 0, 1)");
 			return;
 		}
 		throw new IllegalStateException();
@@ -69,7 +69,7 @@ public enum EStandardMappings{
 			return "Abs";
 		case Z_SCORE:
 			return "Z-Score";
-		case LINEAR_LOG:
+		case LOG:
 			return "Log";
 		}
 		throw new IllegalStateException();
