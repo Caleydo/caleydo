@@ -75,7 +75,7 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
-	public boolean hasFilter() {
+	protected boolean hasFilterImpl() {
 		return false;
 	}
 

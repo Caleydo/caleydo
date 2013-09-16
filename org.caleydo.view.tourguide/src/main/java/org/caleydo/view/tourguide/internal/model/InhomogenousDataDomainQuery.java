@@ -19,6 +19,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.view.tourguide.api.prefs.MyPreferences;
 import org.caleydo.vis.lineup.model.RankTableModel;
 
 import com.google.common.collect.ImmutableSet;
@@ -46,6 +47,7 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 			builder.addAll(dataClass.getSupportedDataTypes());
 		this.possible = builder.build();
 		this.selectedDataTypes = new HashSet<>(possible);
+		setMinSize(MyPreferences.getMinClusterSize());
 	}
 
 	@Override
@@ -187,13 +189,8 @@ public class InhomogenousDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
-	public boolean hasFilter() {
+	protected boolean hasFilterImpl() {
 		return this.selectedDataTypes.size() < possible.size();
-	}
-
-	@Override
-	public boolean isFilteringPossible() {
-		return true;
 	}
 
 	@Override

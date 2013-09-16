@@ -49,7 +49,7 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 			@Override
 			public void pick(Pick pick) {
 				if (pick.getPickingMode() == PickingMode.CLICKED)
-					onFilterEdit(true, null);
+					onFilterEdit(true, null, 0);
 			}
 		});
 	}
@@ -129,11 +129,11 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 		}
 	}
 
-	protected abstract void onFilterEdit(boolean isStartEditing, Object payload);
+	protected abstract void onFilterEdit(boolean isStartEditing, Object payload, int minSize);
 
 	@ListenTo(sendToMe = true)
 	private void onEditDataDomainFilter(final EditDataDomainFilterEvent e) {
-		onFilterEdit(e.isStartEditing(), e.getPayload());
+		onFilterEdit(e.isStartEditing(), e.getPayload(), e.getMinSize());
 	}
 
 

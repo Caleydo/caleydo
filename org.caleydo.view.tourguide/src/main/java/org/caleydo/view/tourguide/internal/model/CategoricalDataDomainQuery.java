@@ -39,6 +39,7 @@ import org.caleydo.core.util.base.Labels;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.view.tourguide.api.prefs.MyPreferences;
 import org.caleydo.view.tourguide.internal.view.col.CategoricalPercentageRankColumnModel;
 import org.caleydo.vis.lineup.model.ACompositeRankColumnModel;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
@@ -76,6 +77,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 			this.categoryIDType = dataDomain.getDimensionIDType();
 			this.categories = dataDomain.getTable().getDefaultDimensionPerspective(false).getVirtualArray();
 		}
+		setMinSize(MyPreferences.getMinClusterSize());
 	}
 
 	@Override
@@ -155,13 +157,8 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
-	public boolean hasFilter() {
+	protected boolean hasFilterImpl() {
 		return selected.size() < getCategories().size();
-	}
-
-	@Override
-	public boolean isFilteringPossible() {
-		return true;
 	}
 
 	/**

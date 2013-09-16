@@ -45,19 +45,29 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	 */
 	private boolean active = false;
 
+	/**
+	 * minimum group size to be considered for computation
+	 */
+	private int minSize = 0;
+
 	public ADataDomainQuery(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 
-	public abstract boolean hasFilter();
+	public final boolean hasFilter() {
+		return minSize > 0 || hasFilterImpl();
+	}
+
+	protected abstract boolean hasFilterImpl();
 
 	/**
 	 * whether filtering is possible
 	 *
 	 * @return
 	 */
-	public abstract boolean isFilteringPossible();
-
+	public boolean isFilteringPossible() {
+		return true;
+	}
 	/**
 	 *
 	 * @return a list of all filtered {@link AScoreRow} of this query
@@ -73,6 +83,21 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 
 	public final boolean isInitialized() {
 		return data != null;
+	}
+
+	/**
+	 * @param minSize
+	 *            setter, see {@link minSize}
+	 */
+	public void setMinSize(int minSize) {
+		this.minSize = minSize;
+	}
+
+	/**
+	 * @return the minSize, see {@link #minSize}
+	 */
+	public int getMinSize() {
+		return minSize;
 	}
 
 	public final void setActive(boolean active) {
