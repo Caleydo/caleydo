@@ -16,21 +16,21 @@ import org.caleydo.view.tourguide.spi.compute.IComputedStratificationScore;
 /**
  * a compute element is a basic unit for computing {@link IComputedGroupScore} or {@link IComputedStratificationScore}
  * on it
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public interface IComputeElement extends Iterable<Integer> {
 	/**
 	 * unique id that identifiers this compute elements, which is used for caching
-	 * 
+	 *
 	 * @return
 	 */
 	String getPersistentID();
 
 	/**
 	 * id type of the ids obtained by {@link #of(Group)} or {@link Iterable#iterator()}
-	 * 
+	 *
 	 * @return
 	 */
 	IDType getIdType();
@@ -41,14 +41,14 @@ public interface IComputeElement extends Iterable<Integer> {
 
 	/**
 	 * number of groups
-	 * 
+	 *
 	 * @return
 	 */
 	int getGroupSize();
 
 	/**
 	 * returns the id of a group or all ids if null is given
-	 * 
+	 *
 	 * @param group
 	 *            may be null for all
 	 * @return
@@ -64,7 +64,7 @@ public interface IComputeElement extends Iterable<Integer> {
 
 	/**
 	 * number of ids
-	 * 
+	 *
 	 * @return
 	 */
 	int size();

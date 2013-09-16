@@ -70,12 +70,11 @@ public final class StratificationPerspectiveRow extends AVirtualArrayScoreRow im
 
 	@Override
 	protected boolean isFiltered() {
-		return false;
+		return query.hasFilter();
 	}
-
 	@Override
 	protected boolean filter(Group g) {
-		return true;
+		return query.apply(g);
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.view.tourguide.internal.view.ui.ADataDomainElement;
@@ -28,6 +29,7 @@ import com.google.common.base.Predicate;
 public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	public static final String PROP_ACTIVE = "active";
 	public static final String PROP_MASK = "mask";
+	public static final String PROP_MIN_CLUSTER_SIZE_FILTER = "minSize";
 	protected final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
 
 	protected final IDataDomain dataDomain;
@@ -90,7 +92,7 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	 *            setter, see {@link minSize}
 	 */
 	public void setMinSize(int minSize) {
-		this.minSize = minSize;
+		propertySupport.firePropertyChange(PROP_MIN_CLUSTER_SIZE_FILTER, this.minSize, this.minSize = minSize);
 	}
 
 	/**
@@ -265,5 +267,13 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 
 	public boolean addCustomDomainActions(ContextMenuCreator creator, ADataDomainElement ui) {
 		return false;
+	}
+
+	/**
+	 * @param group
+	 * @return
+	 */
+	public boolean apply(Group group) {
+		return group.getSize() >= minSize;
 	}
 }

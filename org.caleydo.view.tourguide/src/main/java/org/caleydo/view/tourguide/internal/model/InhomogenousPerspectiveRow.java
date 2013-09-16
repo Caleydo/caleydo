@@ -18,9 +18,11 @@ import org.caleydo.core.id.IDType;
  */
 public final class InhomogenousPerspectiveRow extends AVirtualArrayScoreRow implements ITablePerspectiveScoreRow {
 	private final TablePerspective clinical;
+	private final InhomogenousDataDomainQuery query;
 
-	public InhomogenousPerspectiveRow(TablePerspective clinical) {
+	public InhomogenousPerspectiveRow(TablePerspective clinical, InhomogenousDataDomainQuery query) {
 		this.clinical = clinical;
+		this.query = query;
 	}
 
 	@Override
@@ -67,12 +69,11 @@ public final class InhomogenousPerspectiveRow extends AVirtualArrayScoreRow impl
 
 	@Override
 	protected boolean isFiltered() {
-		return false;
+		return query.hasFilter();
 	}
-
 	@Override
 	protected boolean filter(Group g) {
-		return true;
+		return query.apply(g);
 	}
 
 	@Override

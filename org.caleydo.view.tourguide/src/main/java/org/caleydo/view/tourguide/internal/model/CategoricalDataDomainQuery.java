@@ -107,7 +107,10 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		return !selected.isEmpty();
 	}
 
+	@Override
 	public boolean apply(Group group) {
+		if (!super.apply(group))
+			return false;
 		for (CategoryProperty<?> s : selected) {
 			if (Objects.equals(s.getCategoryName(), group.getLabel()))
 				return true;

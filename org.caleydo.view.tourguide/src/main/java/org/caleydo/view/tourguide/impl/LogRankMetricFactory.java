@@ -26,7 +26,6 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
-import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
 import org.caleydo.view.tourguide.api.score.GroupSelectors;
@@ -228,7 +227,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 					// me versus the rest
 					return underlying.compute(a, ag, Sets.difference(b, a), bg, monitor);
 				}
-			}, ComputeScoreFilters.TOO_SMALL, GroupSelectors.MAX_ABS, wrap(clinical.getColor()), darker(clinical
+			}, null, GroupSelectors.MAX_ABS, wrap(clinical.getColor()), darker(clinical
 					.getColor()));
 			this.clinicalVariable = clinicalVariable;
 		}

@@ -142,6 +142,7 @@ public class GLTourGuideView extends AGLElementView {
 				onActiveChanged((ADataDomainQuery) evt.getSource(), (boolean) evt.getNewValue());
 				break;
 			case ADataDomainQuery.PROP_MASK:
+			case ADataDomainQuery.PROP_MIN_CLUSTER_SIZE_FILTER:
 			case CategoricalDataDomainQuery.PROP_GROUP_SELECTION:
 				ADataDomainQuery s = (ADataDomainQuery) evt.getSource();
 				if (s.isActive()) {
@@ -225,6 +226,7 @@ public class GLTourGuideView extends AGLElementView {
 			q.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
 			q.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
 			q.addPropertyChangeListener(CategoricalDataDomainQuery.PROP_GROUP_SELECTION, listener);
+			q.addPropertyChangeListener(ADataDomainQuery.PROP_MIN_CLUSTER_SIZE_FILTER, listener);
 			queries.add(q);
 		}
 
@@ -277,6 +279,7 @@ public class GLTourGuideView extends AGLElementView {
 			query.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
 			query.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
 			query.addPropertyChangeListener(CategoricalDataDomainQuery.PROP_GROUP_SELECTION, listener);
+			query.addPropertyChangeListener(ADataDomainQuery.PROP_MIN_CLUSTER_SIZE_FILTER, listener);
 			getDataDomainQueryUI().add(query);
 		}
 	}
@@ -290,6 +293,7 @@ public class GLTourGuideView extends AGLElementView {
 				query.removePropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
 				query.removePropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
 				query.removePropertyChangeListener(CategoricalDataDomainQuery.PROP_GROUP_SELECTION, listener);
+				query.removePropertyChangeListener(ADataDomainQuery.PROP_MIN_CLUSTER_SIZE_FILTER, listener);
 				queries.remove(query);
 				getDataDomainQueryUI().remove(query);
 				if (query.isActive())

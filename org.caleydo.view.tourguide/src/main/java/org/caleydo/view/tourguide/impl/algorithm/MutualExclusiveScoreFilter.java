@@ -44,7 +44,7 @@ public class MutualExclusiveScoreFilter implements IComputeScoreFilter {
 		boolean r = Objects.equals(property.getCategoryName(), itemGroup.getLabel());
 		if (!r)
 			return false;
-		return ComputeScoreFilters.TOO_SMALL.doCompute(item, itemGroup, reference, bg);
+		return ComputeScoreFilters.SELF.doCompute(item, itemGroup, reference, bg);
 	}
 
 	public static List<?> getProperties(ATableBasedDataDomain dataDomain) {
