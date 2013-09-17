@@ -57,7 +57,7 @@ public class AFilterDialog extends Dialog {
 		l.setText("Minimum cluster size");
 		l.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		minSizeUI = new Spinner(c, SWT.BORDER);
-		minSizeUI.setSelection(model.getMinSize());
+		minSizeUI.setValues(model.getMinSize(), 0, 10000, 0, 1, 10);
 		minSizeUI.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		// Create the decoration for the text UI component
 		final ControlDecoration deco = new ControlDecoration(minSizeUI, SWT.TOP | SWT.LEFT);

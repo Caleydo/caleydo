@@ -7,6 +7,7 @@ package org.caleydo.view.tourguide.internal.view.col;
 
 import java.util.Collection;
 
+import org.apache.commons.lang.StringUtils;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -59,10 +60,17 @@ public class GroupDistributionRankColumnModel extends ARankColumnModel {
 		if (sum == 0)
 			return default_;
 		StringBuilder b = new StringBuilder();
-		b.append("Total:\t").append(sum);
-		for (GroupInfo info : infos)
-			b.append('\n').append(info.getLabel()).append('\t').append(info.getSize())
-					.append(String.format("(%.2f%%)", info.getSize() / (float) sum));
+		int maxSize = "Total".length();
+		for(GroupInfo info : infos)
+			maxSize = Math.max(info.getLabel().length(),maxSize);
+		// maxSize = (int) (maxSize * 1.2);
+		b.append("Total").append(StringUtils.repeat(" ", maxSize - "Total".length())).append('\t').append(sum);
+		final float factor = 100.f / sum;
+		for (GroupInfo info : infos) {
+			b.append('\n').append(info.getLabel()).append(StringUtils.repeat(" ", maxSize - info.getLabel().length()));
+			b.append('\t').append(info.getSize());
+			b.append(String.format("(%.2f%%)", info.getSize() * factor));
+		}
 		return b.toString();
 	}
 

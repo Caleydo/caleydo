@@ -46,13 +46,15 @@ public class InhomogenousDataDomainElement extends ADataDomainElement {
 		} else {
 			@SuppressWarnings("unchecked")
 			Set<EDataType> p = (Set<EDataType>) payload;
-			this.setSelection(p);
+			this.setSelection(p, minSize);
 		}
 	}
 
-	private void setSelection(Set<EDataType> selected) {
+	private void setSelection(Set<EDataType> selected, int minSize) {
 		getModel().setMatches(selected);
+		getModel().setMinSize(minSize);
 		setHasFilter(model.hasFilter());
+
 	}
 
 	private class ColumnDataFilterDialog extends AFilterDialog {
@@ -102,7 +104,8 @@ public class InhomogenousDataDomainElement extends ADataDomainElement {
 			for (Object score : categoriesUI.getCheckedElements()) {
 				r.add(score);
 			}
-			EventPublisher.trigger(new EditDataDomainFilterEvent(r, 0).to(InhomogenousDataDomainElement.this));
+			EventPublisher.trigger(new EditDataDomainFilterEvent(r, minSizeUI.getSelection())
+					.to(InhomogenousDataDomainElement.this));
 			super.okPressed();
 		}
 	}
