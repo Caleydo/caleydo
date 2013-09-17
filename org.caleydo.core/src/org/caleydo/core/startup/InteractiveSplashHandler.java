@@ -11,6 +11,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Label;
@@ -31,14 +33,17 @@ public class InteractiveSplashHandler extends BasicSplashHandler {
 		setMessageRect(new Rectangle(55, 328, 537, 20));
 		setForeground(new RGB(255, 255, 255));
 
-		Label idLabel = new Label(getContent(), SWT.RIGHT);
-		idLabel.setFont(new Font(splash.getDisplay(), new FontData("Arial", 10, SWT.NORMAL)));
 
-		idLabel.setForeground(getForeground());
-		idLabel.setBounds(new Rectangle(55, 378, 537, 20));
-		idLabel.setText("Caleydo Version " + GeneralManager.VERSION);
+		Label version = new Label(getContent(), SWT.RIGHT);
+		version.setForeground(getForeground());
+		version.setBounds(new Rectangle(55, 378, 537, 20));
+		version.setText("Caleydo Version " + GeneralManager.VERSION);
 
-		getContent().setFont(new Font(splash.getDisplay(), new FontData("Arial", 12, SWT.NORMAL)));
+		final int baseHeight = getPXHeight(splash, new FontData("Arial", 12, SWT.NORMAL));
+		final float px2pt = 12.f / baseHeight;
+
+		version.setFont(new Font(splash.getDisplay(), new FontData("Arial", (int) (12 * px2pt), SWT.NORMAL)));
+		getContent().setFont(new Font(splash.getDisplay(), new FontData("Arial", (int) (15 * px2pt), SWT.NORMAL)));
 
 		// publish the progress monitor
 		IProgressMonitor monitor = this.getBundleProgressMonitor();
@@ -47,6 +52,17 @@ public class InteractiveSplashHandler extends BasicSplashHandler {
 		GeneralManager.get().setSplashProgressMonitor(monitor);
 
 		Application.get().runStartup();
+	}
+
+	private int getPXHeight(Shell splash, FontData fd) {
+		Font f = new Font(splash.getDisplay(), fd);
+		GC gc = new GC(splash);
+		gc.setFont(f);
+		FontMetrics m = gc.getFontMetrics();
+		final int px = m.getHeight();
+		gc.dispose();
+		f.dispose();
+		return px;
 	}
 
 }
