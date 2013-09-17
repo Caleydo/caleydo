@@ -60,6 +60,7 @@ import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
 import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
+import org.caleydo.view.stratomex.column.BlockAdapter;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
 import org.caleydo.view.stratomex.column.FrameHighlightRenderer;
@@ -115,6 +116,8 @@ public class TourguideAdapter implements IStratomexAdapter {
 	// what either an element or a brick
 	private EWizardMode wizardMode;
 	private ElementLayout wizardElement;
+	// wrapper element of the wizard element for layouting
+	private WizardElementLayout wizardElementWrapper;
 	private List<BrickColumn> wizardPreviews = new ArrayList<>();
 
 	/**
@@ -518,7 +521,12 @@ public class TourguideAdapter implements IStratomexAdapter {
 		ElementLayout l = ElementLayouts.wrap(wizard, 120);
 		l.addBackgroundRenderer(new TemplateHighlightRenderer());
 		l.addBackgroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));
+
 		return l;
+	}
+
+	private WizardElementLayout layout(ElementLayout body) {
+		return new WizardElementLayout(body);
 	}
 
 	private void createWizard(TablePerspective source, boolean independentOne) {
@@ -581,7 +589,7 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 		previewIndex = index;
 		wizardElement = createTemplateElement(source, event.getMode() == EWizardMode.INDEPENDENT);
-
+		wizardElementWrapper = layout(wizardElement);
 		stratomex.relayout();
 	}
 
@@ -719,8 +727,9 @@ public class TourguideAdapter implements IStratomexAdapter {
 
 	private void cleanupWizardElement() {
 		wizardElement.setRenderer(null);
-		wizardElement.destroy(GLContext.getCurrent().getGL().getGL2());
+		wizardElementWrapper.destroy(GLContext.getCurrent().getGL().getGL2());
 		wizardElement = null;
+		wizardElementWrapper = null;
 	}
 
 	@ListenTo(sendToMe = true)
@@ -778,15 +787,15 @@ public class TourguideAdapter implements IStratomexAdapter {
 	/**
 	 * @param columns
 	 */
-	public void addTemplateColumns(List<Object> columns) {
+	public void addTemplateColumns(List<BlockAdapter> columns) {
 		if (wizardElement == null)
 			return;
 		if (previewIndex < 0)
-			columns.add(0, wizardElement);
+			columns.add(0, new BlockAdapter(wizardElementWrapper));
 		else {
 			int index = previewIndex - stratomex.getBrickColumnManager().getCenterColumnStartIndex();
 			index = Math.min(index + 1, columns.size());
-			columns.add(index, wizardElement);
+			columns.add(index, new BlockAdapter(wizardElementWrapper));
 		}
 	}
 
@@ -928,11 +937,13 @@ public class TourguideAdapter implements IStratomexAdapter {
 				stratomex.removeTablePerspective(preview.getTablePerspective());
 			wizardPreviews.clear();
 			wizardElement = new_;
+			wizardElementWrapper = layout(wizardElement);
 			new_.addBackgroundRenderer(new TemplateHighlightRenderer());
 			new_.addForeGroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));
 		} else {
 			ElementLayout new_ = ElementLayouts.wrap(renderer, 120);
 			wizardElement = new_;
+			wizardElementWrapper = layout(wizardElement);
 			new_.addBackgroundRenderer(new TemplateHighlightRenderer());
 			new_.addForeGroundRenderer(new WizardActionsLayoutRenderer(stratomex, this));
 			stratomex.relayout();
