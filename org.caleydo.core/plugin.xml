@@ -541,4 +541,12 @@
             </parameter>
          </key>
       </extension>
+      <extension
+            point="org.eclipse.ui.installationPages">
+         <page
+               class="org.caleydo.core.internal.gui.LicenseInstallationPage"
+               id="org.caleydo.core.installationpage.license"
+               name="Licensed Materials">
+         </page>
+      </extension>
 </plugin>

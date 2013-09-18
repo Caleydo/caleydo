@@ -16,7 +16,9 @@ convert caleydo_512.png -resize 16x16 -color 256 caleydo_16_8bit.png
 
 convert caleydo_512.png -resize 48x48 caleydo_48.xpm
 
+#doesn't work
 convert caleydo_256.png caleydo_48.png caleydo_48_8bit.png caleydo_32.png caleydo_32_8bit.png caleydo_16.png caleydo_16_8bit.png caleydo.ico
 
-convert caleydo_512.png caleydo_256.png caleydo_128.png caleydo_64.png caleydo_48.png caleydo_32.png caleydo_16.png caleydo.icns
+#doesn't work
+convert caleydo_512.png caleydo_256.png caleydo_128.png caleydo_32.png caleydo_16.png caleydo.icns
 
