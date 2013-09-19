@@ -276,15 +276,16 @@ public class DataLoader {
 		List<ClusterConfiguration> rowClusterConfigurations = dataProcessingDescription.getRowClusterConfigurations();
 		if (rowClusterConfigurations != null) {
 			for (ClusterConfiguration clusterConfiguration : rowClusterConfigurations) {
+				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
+						.getDefaultDimensionPerspective(true));
+				clusterConfiguration
+						.setSourceRecordPerspective(dataDomain.getTable().getDefaultRecordPerspective(true));
+
 				if (dataSetDescription.isTransposeMatrix()) {
 					setUpDimensionClustering(clusterConfiguration, dataDomain);
 				} else {
 					setUpRecordClustering(clusterConfiguration, dataDomain);
 				}
-				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
-						.getDefaultDimensionPerspective(true));
-				clusterConfiguration
-						.setSourceRecordPerspective(dataDomain.getTable().getDefaultRecordPerspective(true));
 
 				dataDomain.startClustering(clusterConfiguration);
 			}
@@ -295,15 +296,16 @@ public class DataLoader {
 				.getColumnClusterConfigurations();
 		if (columnClusterConfigurations != null) {
 			for (ClusterConfiguration clusterConfiguration : columnClusterConfigurations) {
+				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
+						.getDefaultDimensionPerspective(true));
+				clusterConfiguration
+						.setSourceRecordPerspective(dataDomain.getTable().getDefaultRecordPerspective(true));
+
 				if (!dataSetDescription.isTransposeMatrix()) {
 					setUpDimensionClustering(clusterConfiguration, dataDomain);
 				} else {
 					setUpRecordClustering(clusterConfiguration, dataDomain);
 				}
-				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
-						.getDefaultDimensionPerspective(true));
-				clusterConfiguration
-						.setSourceRecordPerspective(dataDomain.getTable().getDefaultRecordPerspective(true));
 
 				dataDomain.startClustering(clusterConfiguration);
 			}
@@ -412,19 +414,26 @@ public class DataLoader {
 	private static void setUpRecordClustering(ClusterConfiguration clusterConfiguration,
 			ATableBasedDataDomain dataDomain) {
 		clusterConfiguration.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
-		// Perspective targetRecordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
-		// dataDomain.getTable().registerRecordPerspective(targetRecordPerspective);
-		// targetRecordPerspective.setLabel(clusterConfiguration.toString(), false);
-		// clusterConfiguration.setOptionalTargetRecordPerspective(targetRecordPerspective);
+
+		Perspective source = clusterConfiguration.getSourcePerspective();
+		if (source.isDefault()) { // we don't want to override the default perspective, so store it in another one
+			Perspective targetRecordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
+			dataDomain.getTable().registerRecordPerspective(targetRecordPerspective);
+			targetRecordPerspective.setLabel(clusterConfiguration.toString(), false);
+			clusterConfiguration.setOptionalTargetRecordPerspective(targetRecordPerspective);
+		}
 	}
 
 	private static void setUpDimensionClustering(ClusterConfiguration clusterConfiguration,
 			ATableBasedDataDomain dataDomain) {
 		clusterConfiguration.setClusterTarget(EClustererTarget.DIMENSION_CLUSTERING);
-		// Perspective targetDimensionPerspective = new Perspective(dataDomain, dataDomain.getDimensionIDType());
-		// dataDomain.getTable().registerDimensionPerspective(targetDimensionPerspective);
-		// targetDimensionPerspective.setLabel(clusterConfiguration.toString(), false);
-		// clusterConfiguration.setOptionalTargetDimensionPerspective(targetDimensionPerspective);
+		Perspective source = clusterConfiguration.getSourcePerspective();
+		if (source.isDefault()) { // we don't want to override the default perspective, so store it in another one
+			Perspective targetDimensionPerspective = new Perspective(dataDomain, dataDomain.getDimensionIDType());
+			dataDomain.getTable().registerDimensionPerspective(targetDimensionPerspective);
+			targetDimensionPerspective.setLabel(clusterConfiguration.toString(), false);
+			clusterConfiguration.setOptionalTargetDimensionPerspective(targetDimensionPerspective);
+		}
 	}
 
 }
