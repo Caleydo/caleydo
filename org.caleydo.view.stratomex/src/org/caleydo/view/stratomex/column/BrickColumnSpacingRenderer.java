@@ -81,7 +81,6 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 
 	private boolean hovered = false;
 
-
 	public BrickColumnSpacingRenderer(RelationAnalyzer relationAnalyzer, ConnectionBandRenderer connectionRenderer,
 			BlockAdapter leftDimGroup, BlockAdapter rightDimGroup, GLStratomex glVisBricksView) {
 
@@ -477,10 +476,10 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 	private static void drawQuad(GL2 gl, float x, float y, float w, float h) {
 		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glColor4f(1, 1, 1, 0);
-		gl.glVertex3f(x, y, 1.f);
-		gl.glVertex3f(x + w, y, 1.f);
-		gl.glVertex3f(x + w, y + h, 1.f);
-		gl.glVertex3f(x, y + h, 1.f);
+		gl.glVertex3f(x, y, 0.1f);
+		gl.glVertex3f(x + w, y, 0.1f);
+		gl.glVertex3f(x + w, y + h, 0.1f);
+		gl.glVertex3f(x, y + h, 0.1f);
 		gl.glEnd();
 	}
 
@@ -555,8 +554,8 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 		}
 	}
 
-	private void renderBand(GL2 gl, SubGroupMatch subGroupMatch, Color c, float curveOffset, float xStart,
-			float xEnd, float ratio, float trendRatio, boolean justOutline) {
+	private void renderBand(GL2 gl, SubGroupMatch subGroupMatch, Color c, float curveOffset, float xStart, float xEnd,
+			float ratio, float trendRatio, boolean justOutline) {
 		float leftYDiff = subGroupMatch.getLeftAnchorYTop() - subGroupMatch.getLeftAnchorYBottom();
 		float leftYDiffSelection = leftYDiff * ratio;
 
@@ -613,7 +612,6 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 				connectionRenderer.renderStraightBandOutline(gl, lt, lb, rt, rb, c);
 		}
 
-
 		// FIXME Stratomex 2.0 testing
 
 		// glVisBricks.getTextRenderer().begin3DRendering();
@@ -669,8 +667,7 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 			}
 		} else {
 
-			float maxRatio = Math.max(subGroupMatch.getLeftSimilarityRatio(),
-					subGroupMatch.getRightSimilarityRatio());
+			float maxRatio = Math.max(subGroupMatch.getLeftSimilarityRatio(), subGroupMatch.getRightSimilarityRatio());
 			if (maxRatio < 0.3f)
 				trendRatio = (stratomex.getConnectionsFocusFactor() - maxRatio);
 			else

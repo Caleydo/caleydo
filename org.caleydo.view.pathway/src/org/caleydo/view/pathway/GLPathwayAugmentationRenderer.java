@@ -580,7 +580,7 @@ public class GLPathwayAugmentationRenderer {
 							* (float) average.getStandardDeviation() * 2.0f;
 
 					// rendering the std-dev box
-					if (!stdDev.isNaN()) {
+					if (!stdDev.isNaN() && this.glPathwayView.isShowStdDevBars()) {
 						renderStdDevBar(gl, width, height, stdDev);
 					}
 
