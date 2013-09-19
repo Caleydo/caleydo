@@ -363,9 +363,9 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 				gl.glColor3fv(SPREAD_LINE_COLOR, 0);
 				gl.glPushName(iRightSpreadPickingID);
 				gl.glBegin(GL.GL_LINES);
-				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() + fRightSpread) * fRenderWidth, 0, 0.01f);
+				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() + fRightSpread) * fRenderWidth, 0, 0.1f);
 				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() + fRightSpread) * fRenderWidth,
-						viewFrustum.getHeight(), 0.01f);
+						viewFrustum.getHeight(), 0.1f);
 				gl.glEnd();
 				gl.glPopName();
 				if (fRightSpread > HistogramRenderStyle.SPREAD_CAPTION_THRESHOLD)
