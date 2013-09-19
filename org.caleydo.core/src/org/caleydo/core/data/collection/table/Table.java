@@ -631,15 +631,7 @@ public class Table {
 		Perspective recordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
 		recordPerspective.setDefault(!sampled);
 
-		String label = "";
-		if (sampled) {
-			sampledRecordPerspective = recordPerspective;
-			label = "Ungrouped Sampled";
-		} else {
-			defaultRecordPerspective = recordPerspective;
-			label = "Ungrouped";
-		}
-
+		String label = sampled ? "Ungrouped Sampled" : "Ungrouped";
 		recordPerspective.setLabel(label, true);
 
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
@@ -715,19 +707,12 @@ public class Table {
 		triggerUpdateEvent();
 	}
 
-	Perspective createDefaultDimensionPerspective(boolean sampled, List<Integer> dimensionIDs) {
+	private Perspective createDefaultDimensionPerspective(boolean sampled, List<Integer> dimensionIDs) {
 
 		Perspective dimensionPerspective = new Perspective(dataDomain, dataDomain.getDimensionIDType());
 		dimensionPerspective.setDefault(!sampled);
 
-		String label = "";
-		if (sampled) {
-			sampledDimensionPerspective = dimensionPerspective;
-			label = "Ungrouped Sampled";
-		} else {
-			sampledDimensionPerspective = dimensionPerspective;
-			label = "Ungrouped";
-		}
+		String label = sampled ? "Ungrouped Sampled" : "Ungrouped";
 
 		dimensionPerspective.setLabel(label, true);
 
