@@ -26,6 +26,7 @@ import org.caleydo.core.util.function.IDoubleSizedIterable;
 import org.caleydo.core.util.function.IDoubleSizedIterator;
 import org.caleydo.vis.lineup.config.IRankTableConfig;
 import org.caleydo.vis.lineup.data.IDoubleFunction;
+import org.caleydo.vis.lineup.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankColumnModel;
@@ -396,9 +397,10 @@ public final class RankTableModel implements IRankColumnParent, Cloneable {
 	public void explode(ACompositeRankColumnModel model) {
 		int index = this.columns.indexOf(model);
 		List<ARankColumnModel> children = model.getChildren();
+		float w = model instanceof ICompressColumnMixin ? 100 : model.getWidth();
 		for (ARankColumnModel child : children) {
 			child.init(this);
-			child.setWidth(100); // reset width
+			child.setWidth(w); // reset width
 		}
 		this.columns.set(index, children.get(0));
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index, model, children.get(0));

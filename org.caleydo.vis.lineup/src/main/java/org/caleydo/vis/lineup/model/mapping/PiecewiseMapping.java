@@ -202,7 +202,8 @@ public final class PiecewiseMapping extends ScriptedMappingFunction implements I
 				return Double.NaN;
 			Double end = after.firstKey();
 			Double endTo = after.get(end);
-			return JavaScriptFunctions.linear(start, end, in, startTo, endTo);
+			double v = JavaScriptFunctions.linear(start, end, in, startTo, endTo);
+			return v;
 		}
 	}
 
