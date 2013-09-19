@@ -134,6 +134,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private PathwayManager pathwayManager;
 	private PathwayItemManager pathwayItemManager;
 
+	private boolean showStdDevBars = true;
+
 	/**
 	 * Determines whether vertex highlighting via selection (click/mouse over) is enabled.
 	 */
@@ -755,7 +757,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, slog_print)) {
 			gl.glDeleteShader(vs);
-			log.error("can't compile vertex shader: "+slog.toString());
+			log.error("can't compile vertex shader: " + slog.toString());
 			return;
 		} else {
 			log.debug("compiling vertex shader warnings: " + ShaderUtil.getShaderInfoLog(gl, vs));
@@ -769,7 +771,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, slog_print)) {
 			gl.glDeleteShader(vs);
 			gl.glDeleteShader(fs);
-			log.error("can't compile fragment shader: "+slog.toString());
+			log.error("can't compile fragment shader: " + slog.toString());
 			return;
 		} else {
 			log.debug("compiling fragment shader warnings: " + ShaderUtil.getShaderInfoLog(gl, fs));
@@ -785,7 +787,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			gl.glDeleteShader(fs);
 			gl.glDeleteProgram(shaderProgramTextOverlay);
 			shaderProgramTextOverlay = -1;
-			log.error("can't link program: "+slog.toString());
+			log.error("can't link program: " + slog.toString());
 			return;
 		} else {
 			log.debug("linking program warnings: " + ShaderUtil.getProgramInfoLog(gl, shaderProgramTextOverlay));
@@ -1522,7 +1524,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	}
 
 	private void addVertexToFreePath(PathwayVertexRep vertexRep) {
-		if(vertexRep.getType() == EPathwayVertexType.map)
+		if (vertexRep.getType() == EPathwayVertexType.map)
 			return;
 		if (pathSegments.size() > 0) {
 			PathwayPath lastSegment = pathSegments.get(pathSegments.size() - 1);
@@ -1890,6 +1892,21 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	 */
 	public void setDynamicDetail(boolean isDynamicDetail) {
 		this.isDynamicDetail = isDynamicDetail;
+	}
+
+	/**
+	 * @return the showStdDevBars, see {@link #showStdDevBars}
+	 */
+	public boolean isShowStdDevBars() {
+		return showStdDevBars;
+	}
+
+	/**
+	 * @param showStdDevBars
+	 *            setter, see {@link showStdDevBars}
+	 */
+	public void setShowStdDevBars(boolean showStdDevBars) {
+		this.showStdDevBars = showStdDevBars;
 	}
 
 }
