@@ -37,12 +37,14 @@ import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.histogram.RcpGLColorMapperHistogramView;
 import org.caleydo.view.histogram.SerializedHistogramView;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -226,6 +228,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 		gridData.grabExcessVerticalSpace = true;
 		gridData.minimumHeight = 150;
 		metaDataTree.getTree().setLayoutData(gridData);
+		ColumnViewerToolTipSupport.enableFor(metaDataTree, ToolTip.NO_RECREATE);
 		metaDataTree.getTree().addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -716,7 +719,8 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 					text.append(attribute.getKey() + ": ");
 					String url = attribute.getValue().getFirst();
 					if (url.length() > 17) {
-						url = url.substring(0, 17) + "...";
+						int index = url.lastIndexOf("/") + 1;
+						url = url.substring(index, url.length());
 					}
 					text.append(url, StyledString.COUNTER_STYLER);
 				} else {
@@ -726,6 +730,18 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 			cell.setText(text.toString());
 			cell.setStyleRanges(text.getStyleRanges());
 			super.update(cell);
+		}
+
+		@Override
+		public String getToolTipText(Object element) {
+			if (!(element instanceof MetaDataElement)) {
+				@SuppressWarnings("unchecked")
+				Entry<String, Pair<String, AttributeType>> attribute = (Entry<String, Pair<String, AttributeType>>) element;
+				if (attribute.getValue().getSecond() == AttributeType.URL) {
+					return attribute.getValue().getFirst();
+				}
+			}
+			return super.getToolTipText(element);
 		}
 
 	}
