@@ -166,7 +166,7 @@ public class LinkRenderer extends PickableGLElement {
 		//
 		if (drawLink) {
 			renderStubs(g.gl, false);
-			// connectStubs(g.gl);
+			connectStubs(g.gl);
 		} else { // {
 			renderStubs(g.gl, true);
 		}
