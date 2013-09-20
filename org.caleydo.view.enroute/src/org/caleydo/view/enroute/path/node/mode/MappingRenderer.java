@@ -107,7 +107,7 @@ public class MappingRenderer extends ColorRenderer {
 			average = tablePerspective.getContainerStatistics().getAverage(idType, ids.get(0));
 			if (average == null)
 				continue;
-			if (average.getStandardDeviation() > 0.1) {
+			if (average.getStandardDeviation() > 0.2f) {
 				if (highestAverage == null
 						|| average.getStandardDeviation() > highestAverage.getSecond().getStandardDeviation()) {
 					highestAverage = new Pair<>(tablePerspective, average);
