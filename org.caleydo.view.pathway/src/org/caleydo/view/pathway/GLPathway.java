@@ -212,7 +212,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private boolean isPathStartSelected = false;
 	private int selectedPathID;
 
-	private boolean useBubbleSets = false;
+	private boolean useBubbleSets = true;
 	private PathwayBubbleSet bubbleSet = null;// new PathwayBubbleSet();
 	private PathwayBubbleSet alternativeBubbleSet = null; // new PathwayBubbleSet();
 	private PathwayBubbleSet contextPathBubbleSet = null;// new PathwayBubbleSet();
@@ -877,7 +877,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			textureOffset -= 2f * PathwayRenderStyle.Z_OFFSET;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
 
-			if (useBubbleSets) {
+			if (true) {
 				if (bubbleSet == null) {
 					bubbleSet = new PathwayBubbleSet();
 					bubbleSet.getBubbleSetGLRenderer().init(gl);
