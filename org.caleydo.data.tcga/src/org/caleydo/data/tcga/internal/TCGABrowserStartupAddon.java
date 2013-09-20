@@ -195,6 +195,9 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 			progress = null;
 			p.layout(true);
 		}
+		// try to force an update
+		tree.refresh(true);
+		tree.getTree().getParent().layout(true, true);
 	}
 
 	private TableViewer createTableViewer(Composite parent) {
