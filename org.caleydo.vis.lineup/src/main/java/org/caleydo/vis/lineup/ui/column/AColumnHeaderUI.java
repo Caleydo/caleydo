@@ -666,11 +666,13 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		case DRAGGED:
 			if (this.armDropColum) {
 				Pair<GLElement, ARankColumnModel> pair = m.getFirstDraggable(ARankColumnModel.class);
-				int mode = tableConfig.getCombineMode(model, pick);
-				String hint = tableConfig.getCombineStringHint(model, pair.getSecond(), mode);
-				if (!Objects.equals(hint, armDropHint)) {
-					this.armDropHint = hint;
-					repaint();
+				if (pair != null) {
+					int mode = tableConfig.getCombineMode(model, pick);
+					String hint = tableConfig.getCombineStringHint(model, pair.getSecond(), mode);
+					if (!Objects.equals(hint, armDropHint)) {
+						this.armDropHint = hint;
+						repaint();
+					}
 				}
 			}
 			break;
