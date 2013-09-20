@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Selection Info
 Bundle-SymbolicName: org.caleydo.view.info.selection;singleton:=true
-Bundle-Version: 3.0.5.qualifier
-Require-Bundle: org.caleydo.core;bundle-version="3.0.5.qualifier",
- org.caleydo.datadomain.genetic;bundle-version="3.0.5.qualifier"
+Bundle-Version: 3.0.4.qualifier
+Require-Bundle: org.caleydo.core;bundle-version="3.0.4.qualifier",
+ org.caleydo.datadomain.genetic;bundle-version="3.0.4.qualifier"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
