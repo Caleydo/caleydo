@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: StratomeX View
 Bundle-SymbolicName: org.caleydo.view.stratomex;singleton:=true
-Bundle-Version: 3.0.4
-Require-Bundle: org.caleydo.core;bundle-version="3.0.4",
- org.caleydo.datadomain.genetic;bundle-version="3.0.4",
+Bundle-Version: 3.0.5.qualifier
+Require-Bundle: org.caleydo.core;bundle-version="3.0.5.qualifier",
+ org.caleydo.datadomain.genetic;bundle-version="3.0.5.qualifier",
  org.caleydo.datadomain.pathway
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.caleydo.view.stratomex,
