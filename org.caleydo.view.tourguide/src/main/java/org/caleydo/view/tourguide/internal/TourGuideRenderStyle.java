@@ -42,6 +42,7 @@ public class TourGuideRenderStyle extends GeneralRenderStyle {
 	public static final URL ICON_ADD = icon("add.png");
 	public static final URL ICON_ADD_COLOR = icon("add_color.png");
 	public static final URL ICON_BASKET = icon("basket.png");
+	public static final URL ICON_EXTERNAL = icon("external.png");
 
 
 	public static Color stratomexHitGroup() {

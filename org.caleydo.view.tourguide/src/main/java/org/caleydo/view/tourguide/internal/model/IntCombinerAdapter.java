@@ -31,7 +31,7 @@ public class IntCombinerAdapter implements Function<IRow, Integer> {
 
 	@Override
 	public Integer apply(IRow in) {
-		Float r = combiner.apply(in);
+		Double r = combiner.apply(in);
 		if (r == null || r.isNaN())
 			return null;
 		return r.intValue();

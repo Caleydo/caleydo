@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.view.tourguide.internal.view.ui.ADataDomainElement;
@@ -28,6 +29,7 @@ import com.google.common.base.Predicate;
 public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	public static final String PROP_ACTIVE = "active";
 	public static final String PROP_MASK = "mask";
+	public static final String PROP_MIN_CLUSTER_SIZE_FILTER = "minSize";
 	protected final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
 
 	protected final IDataDomain dataDomain;
@@ -45,19 +47,29 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	 */
 	private boolean active = false;
 
+	/**
+	 * minimum group size to be considered for computation
+	 */
+	private int minSize = 0;
+
 	public ADataDomainQuery(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 
-	public abstract boolean hasFilter();
+	public final boolean hasFilter() {
+		return minSize > 0 || hasFilterImpl();
+	}
+
+	protected abstract boolean hasFilterImpl();
 
 	/**
 	 * whether filtering is possible
 	 *
 	 * @return
 	 */
-	public abstract boolean isFilteringPossible();
-
+	public boolean isFilteringPossible() {
+		return true;
+	}
 	/**
 	 *
 	 * @return a list of all filtered {@link AScoreRow} of this query
@@ -73,6 +85,21 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 
 	public final boolean isInitialized() {
 		return data != null;
+	}
+
+	/**
+	 * @param minSize
+	 *            setter, see {@link minSize}
+	 */
+	public void setMinSize(int minSize) {
+		propertySupport.firePropertyChange(PROP_MIN_CLUSTER_SIZE_FILTER, this.minSize, this.minSize = minSize);
+	}
+
+	/**
+	 * @return the minSize, see {@link #minSize}
+	 */
+	public int getMinSize() {
+		return minSize;
 	}
 
 	public final void setActive(boolean active) {
@@ -219,6 +246,7 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	 */
 	public abstract void removeSpecificColumns(RankTableModel table);
 
+	public abstract void updateSpecificColumns(RankTableModel table);
 	/**
 	 *
 	 * @return null if nothing changed, or else if the data were updated
@@ -239,5 +267,13 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 
 	public boolean addCustomDomainActions(ContextMenuCreator creator, ADataDomainElement ui) {
 		return false;
+	}
+
+	/**
+	 * @param group
+	 * @return
+	 */
+	public boolean apply(Group group) {
+		return group.getSize() >= minSize;
 	}
 }

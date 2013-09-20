@@ -12,7 +12,6 @@ import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
 import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -20,7 +19,6 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -36,7 +34,7 @@ public class CategoricalDataDomainElement extends ADataDomainElement {
 	}
 
 	@Override
-	protected void onFilterEdit(boolean isStartEditing, Object payload) {
+	protected void onFilterEdit(boolean isStartEditing, Object payload, int minSize) {
 		if (isStartEditing) {
 			 Display.getDefault().asyncExec(new Runnable() {
 				 @Override
@@ -47,21 +45,23 @@ public class CategoricalDataDomainElement extends ADataDomainElement {
 		} else {
 			@SuppressWarnings("unchecked")
 			Set<CategoryProperty<?>> p = (Set<CategoryProperty<?>>) payload;
-			this.setSelection(p);
+
+			this.setSelection(p, minSize);
 		}
 	}
 
-	private void setSelection(Set<CategoryProperty<?>> selected) {
+	private void setSelection(Set<CategoryProperty<?>> selected, int minSize) {
 		getModel().setSelection(selected);
+		getModel().setMinSize(minSize);
 		setHasFilter(model.hasFilter());
 	}
 
-	private class CategoricalFilterDialog extends Dialog {
+	private class CategoricalFilterDialog extends AFilterDialog {
 		// the visual selection widget group
 		private CheckboxTableViewer categoriesUI;
 
 		public CategoricalFilterDialog(Shell shell) {
-			super(shell);
+			super(shell, model);
 		}
 
 		@Override
@@ -72,9 +72,7 @@ public class CategoricalDataDomainElement extends ADataDomainElement {
 		}
 
 		@Override
-		protected Control createDialogArea(Composite parent) {
-			parent = (Composite) super.createDialogArea(parent);
-
+		protected void createSpecificContent(Composite parent) {
 			this.categoriesUI = CheckboxTableViewer.newCheckList(parent, SWT.BORDER | SWT.FULL_SELECTION);
 			categoriesUI.getTable().setLayoutData(
 					new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
@@ -97,8 +95,6 @@ public class CategoricalDataDomainElement extends ADataDomainElement {
 			for (Object s : getModel().getSelected()) {
 				categoriesUI.setChecked(s, true);
 			}
-			applyDialogFont(parent);
-			return parent;
 		}
 
 		@Override
@@ -107,7 +103,8 @@ public class CategoricalDataDomainElement extends ADataDomainElement {
 			for (Object score : categoriesUI.getCheckedElements()) {
 				r.add(score);
 			}
-			EventPublisher.trigger(new EditDataDomainFilterEvent(r).to(CategoricalDataDomainElement.this));
+			EventPublisher.trigger(new EditDataDomainFilterEvent(r, minSizeUI.getSelection())
+					.to(CategoricalDataDomainElement.this));
 			super.okPressed();
 		}
 	}

@@ -580,7 +580,7 @@ public class GLPathwayAugmentationRenderer {
 							* (float) average.getStandardDeviation() * 2.0f;
 
 					// rendering the std-dev box
-					if (!stdDev.isNaN()) {
+					if (!stdDev.isNaN() && this.glPathwayView.isShowStdDevBars()) {
 						renderStdDevBar(gl, width, height, stdDev);
 					}
 
@@ -638,7 +638,7 @@ public class GLPathwayAugmentationRenderer {
 					float scaleConstant = 20;
 					if (mappingPerspective.getDataDomain().getTable() instanceof NumericalTable) {
 						NumericalTable table = (NumericalTable) mappingPerspective.getDataDomain().getTable();
-						dsMean = table.getDatasetStatistics().getMean();
+						dsMean = (float) table.getDatasetStatistics().getMean();
 						dsMean = (float) table.getNormalizedForRaw(table.getDefaultDataTransformation(), dsMean);
 					}
 

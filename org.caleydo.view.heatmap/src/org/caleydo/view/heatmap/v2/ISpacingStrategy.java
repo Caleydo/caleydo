@@ -25,10 +25,19 @@ public interface ISpacingStrategy {
 	 * @param hideHidden
 	 *            should hidden selected items really be hidden
 	 * @param size
-	 *            avaiable dip size
+	 *            available dip size
 	 * @return
 	 */
 	ISpacingLayout apply(Perspective perspective, SelectionManager manager, boolean hideHidden, float size);
+
+	/**
+	 * returns the minimum size of this dimension according to the given information
+	 *
+	 * @param count
+	 * @param isShowingLabels
+	 * @return
+	 */
+	float minSize(int count, boolean isShowingLabels);
 
 	public interface ISpacingLayout {
 		/**

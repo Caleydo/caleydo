@@ -11,10 +11,10 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.tourguide.internal.model.CategoricalPerspectiveRow;
-import org.caleydo.vis.lineup.data.AFloatFunction;
-import org.caleydo.vis.lineup.data.FloatInferrers;
-import org.caleydo.vis.lineup.data.IFloatFunction;
-import org.caleydo.vis.lineup.model.FloatRankColumnModel;
+import org.caleydo.vis.lineup.data.ADoubleFunction;
+import org.caleydo.vis.lineup.data.DoubleInferrers;
+import org.caleydo.vis.lineup.data.IDoubleFunction;
+import org.caleydo.vis.lineup.model.DoubleRankColumnModel;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 
@@ -22,14 +22,16 @@ import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
  * @author Samuel Gratzl
  *
  */
-public class CategoricalPercentageRankColumnModel extends FloatRankColumnModel {
+public class CategoricalPercentageRankColumnModel extends DoubleRankColumnModel {
 	private final IDataDomain dataDomain;
+	private final CategoryProperty<?> category;
 
-	public CategoricalPercentageRankColumnModel(IFloatFunction<IRow> data, String label, Color color, Color bgColor,
-			IDataDomain dataDomain, int max) {
-		super(data, GLRenderers.drawText("% " + label), color, bgColor, new PiecewiseMapping(0, max), FloatInferrers
-				.fix(Float.NaN));
+	public CategoricalPercentageRankColumnModel(IDoubleFunction<IRow> data, String label, Color color, Color bgColor,
+			IDataDomain dataDomain, int max, CategoryProperty<?> category) {
+		super(data, GLRenderers.drawText("% " + label), color, bgColor, new PiecewiseMapping(0, max), DoubleInferrers
+				.fix(Double.NaN));
 		this.dataDomain = dataDomain;
+		this.category = category;
 		setFilter(true, false, true, false);
 	}
 
@@ -40,18 +42,25 @@ public class CategoricalPercentageRankColumnModel extends FloatRankColumnModel {
 		return dataDomain;
 	}
 
+	/**
+	 * @return the category, see {@link #category}
+	 */
+	public CategoryProperty<?> getCategory() {
+		return category;
+	}
+
 	public static CategoricalPercentageRankColumnModel create(final Object category, final CategoricalTable<?> table,
 			boolean isConsideredForCalculation) {
 		final CategoryProperty<?> property = table.getCategoryDescriptions().getCategoryProperty(category);
 		String catName = property.getCategoryName();
-		IFloatFunction<IRow> data = new AFloatFunction<IRow>() {
+		IDoubleFunction<IRow> data = new ADoubleFunction<IRow>() {
 			@Override
-			public float applyPrimitive(IRow in) {
+			public double applyPrimitive(IRow in) {
 				if (!(in instanceof CategoricalPerspectiveRow))
-					return Float.NaN;
+					return Double.NaN;
 				CategoricalPerspectiveRow r = (CategoricalPerspectiveRow) in;
 				if (r.getDataDomain() != table.getDataDomain())
-					return Float.NaN;
+					return Double.NaN;
 				int have = table.getNumberOfMatches(category, r.getCategoryIDType(), r.getDimensionID());
 				return have;
 			}
@@ -64,13 +73,17 @@ public class CategoricalPercentageRankColumnModel extends FloatRankColumnModel {
 			col = Color.NEUTRAL_GREY;
 		}
 		return new CategoricalPercentageRankColumnModel(data, catName, col, bgColor, table.getDataDomain(),
-				table.depth());
+				table.depth(), property);
+	}
 
+	public static boolean isConsideredForCalculation(CategoricalPercentageRankColumnModel model) {
+		return model.getColor() != Color.NEUTRAL_GREY && !model.getTitle().endsWith("*");
 	}
 
 	public CategoricalPercentageRankColumnModel(CategoricalPercentageRankColumnModel copy) {
 		super(copy);
 		this.dataDomain = copy.dataDomain;
+		this.category = copy.category;
 	}
 
 	@Override

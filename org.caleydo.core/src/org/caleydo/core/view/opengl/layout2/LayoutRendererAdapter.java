@@ -145,6 +145,11 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	}
 
 	@Override
+	public final Vec2f getSize() {
+		return this.root.getSize();
+	}
+
+	@Override
 	public void relayout() {
 		dirty = true;
 	}

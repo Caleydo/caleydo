@@ -32,11 +32,11 @@ public abstract class AMappingFunctionMode<T extends IMappingFunction> extends G
 	public abstract void doLayout(IGLLayoutElement rawHist, IGLLayoutElement normHist, IGLLayoutElement specific,
 			float x, float y, float w, float h);
 
-	protected final float normalizeRaw(float v) {
+	protected final double normalizeRaw(double v) {
 		return (v - model.getActMin()) / (model.getActMax() - model.getActMin());
 	}
 
-	protected final float inverseNormalize(float n) {
+	protected final double inverseNormalize(double n) {
 		return n * (model.getActMax() - model.getActMin()) + model.getActMin();
 	}
 

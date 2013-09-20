@@ -27,8 +27,8 @@ class HistogramElement extends GLElement {
 		this.text = label;
 	}
 
-	protected void render(GLGraphics g, boolean vertical, float min, float max, float w, float h, float minM,
-			float maxM, SimpleHistogram hist, boolean textBelowHist) {
+	protected void render(GLGraphics g, boolean vertical, double min, double max, float w, float h, double minM,
+			double maxM, SimpleHistogram hist, boolean textBelowHist) {
 
 		float histy = textBelowHist ? 0 : LABEL_HEIGHT;
 
@@ -48,11 +48,11 @@ class HistogramElement extends GLElement {
 			g.drawText(Formatter.formatNumber(max), 0, texty + 3, w, 13, VAlign.RIGHT);
 			RenderUtils.renderHist(g, hist, w, h - LABEL_HEIGHT, -1, color, Color.BLACK, findRenderInfo());
 
-			if (!Float.isNaN(minM)) {
-				g.color(0, 0, 0, 0.25f).fillRect(0, 0, minM * w, h - LABEL_HEIGHT);
+			if (!Double.isNaN(minM)) {
+				g.color(0, 0, 0, 0.25f).fillRect(0, 0, (float) minM * w, h - LABEL_HEIGHT);
 			}
-			if (!Float.isNaN(maxM)) {
-				g.color(0, 0, 0, 0.25f).fillRect(maxM * w, 0, (1 - maxM) * w, h - LABEL_HEIGHT);
+			if (!Double.isNaN(maxM)) {
+				g.color(0, 0, 0, 0.25f).fillRect((float) maxM * w, 0, (float) (1 - maxM) * w, h - LABEL_HEIGHT);
 			}
 			g.restore();
 		} else {
@@ -65,11 +65,11 @@ class HistogramElement extends GLElement {
 			g.move(0, histy);
 			RenderUtils.renderHist(g, hist, w, h - LABEL_HEIGHT, -1, color, Color.BLACK, findRenderInfo());
 
-			if (!Float.isNaN(minM)) {
-				g.color(0, 0, 0, 0.25f).fillRect(0, 0, minM * w, h - LABEL_HEIGHT);
+			if (!Double.isNaN(minM)) {
+				g.color(0, 0, 0, 0.25f).fillRect(0, 0, (float) minM * w, h - LABEL_HEIGHT);
 			}
-			if (!Float.isNaN(maxM)) {
-				g.color(0, 0, 0, 0.25f).fillRect(maxM * w, 0, (1 - maxM) * w, h - LABEL_HEIGHT);
+			if (!Double.isNaN(maxM)) {
+				g.color(0, 0, 0, 0.25f).fillRect((float) maxM * w, 0, (float) (1 - maxM) * w, h - LABEL_HEIGHT);
 			}
 			g.move(0, -histy);
 		}

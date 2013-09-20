@@ -61,14 +61,14 @@ public class MappingParallelUI<T extends IMappingFunction> extends AMappingFunct
 		norm.asElement().setLayoutData(!isHorizontal);
 	}
 
-	protected void drawHint(GLGraphics g, float w, float h, float from, float to) {
+	protected void drawHint(GLGraphics g, float w, float h, double from, double to) {
 		g.textColor(Color.GRAY);
 		if (isHorizontal) {
-			g.drawText(Formatter.formatNumber(to), to * w + 5, -GAP - 2, 40, 12);
-			g.drawText(Formatter.formatNumber(from), normalizeRaw(from) * w + 5, h - 12 + GAP, 40, 12);
+			g.drawText(Formatter.formatNumber(to), (float) to * w + 5, -GAP - 2, 40, 12);
+			g.drawText(Formatter.formatNumber(from), (float) normalizeRaw(from) * w + 5, h - 12 + GAP, 40, 12);
 		} else {
-			g.drawText(Formatter.formatNumber(to), w - 1 + GAP, (1 - to) * h + 1, 40, 12);
-			g.drawText(Formatter.formatNumber(from), 1 - GAP, (1 - normalizeRaw(from)) * h + 1, 40, 12);
+			g.drawText(Formatter.formatNumber(to), w - 1 + GAP, (1 - (float) to) * h + 1, 40, 12);
+			g.drawText(Formatter.formatNumber(from), 1 - GAP, (1 - (float) normalizeRaw(from)) * h + 1, 40, 12);
 		}
 		g.textColor(Color.BLACK);
 	}

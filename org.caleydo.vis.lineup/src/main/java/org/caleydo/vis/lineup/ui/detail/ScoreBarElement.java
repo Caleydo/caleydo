@@ -17,7 +17,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.lineup.model.IRow;
-import org.caleydo.vis.lineup.model.mixin.IFloatRankableColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankColumnModel;
 import org.caleydo.vis.lineup.ui.IColumnRenderInfo;
@@ -32,9 +32,9 @@ import com.jogamp.opengl.util.texture.Texture;
  *
  */
 public class ScoreBarElement extends ValueElement {
-	protected final IFloatRankableColumnMixin model;
+	protected final IDoubleRankableColumnMixin model;
 
-	public ScoreBarElement(IFloatRankableColumnMixin model) {
+	public ScoreBarElement(IDoubleRankableColumnMixin model) {
 		this.model = model;
 		setVisibility(EVisibility.VISIBLE);
 	}
@@ -42,7 +42,7 @@ public class ScoreBarElement extends ValueElement {
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		final IRow r = getLayoutDataAs(IRow.class, null); // current row
-		float v = model.applyPrimitive(r);
+		double v = model.applyPrimitive(r);
 		boolean inferred = model.isValueInferred(r);
 		renderValue(g, w, h, r, v, inferred, false, model.getColor(), null);
 	}
@@ -50,24 +50,25 @@ public class ScoreBarElement extends ValueElement {
 	@Override
 	public String getTooltip() {
 		final IRow r = getLayoutDataAs(IRow.class, null); // current row
-		float v = model.applyPrimitive(r);
-		if (Float.isNaN(v) || v < 0)
+		double v = model.applyPrimitive(r);
+		if (Double.isNaN(v) || v < 0)
 			return null;
 		boolean inferred = model.isValueInferred(r);
 		return getText(r, model, v, inferred);
 	}
 
-	protected void renderValue(GLGraphics g, float w, float h, final IRow r, float v, boolean inferred, boolean align,
+	protected void renderValue(GLGraphics g, float w, float h, final IRow r, double v, boolean inferred, boolean align,
 			Color color, Color collapseColor) {
-		if (Float.isNaN(v) || v <= 0)
+		if (Double.isNaN(v) || v <= 0)
 			return;
+		float v_f = (float) v;
 		if (getRenderInfo().isCollapsed()) {
 			// if collapsed use a brightness encoding
 			if (collapseColor == null)
-				g.color(1 - v, 1 - v, 1 - v, 1);
+				g.color(1 - v_f, 1 - v_f, 1 - v_f, 1);
 			else {
 				float[] rgb = collapseColor.getRGB();
-				g.color(rgb[0], rgb[1], rgb[2], v);
+				g.color(rgb[0], rgb[1], rgb[2], v_f);
 			}
 			g.fillRect(0, 1, w - 2, h - 2);
 			if (inferred) {
@@ -80,17 +81,17 @@ public class ScoreBarElement extends ValueElement {
 			// score bar
 			g.color(color);
 			if (useHatching(model)) {
-				renderHatchedValue(g, 0, 1, w * v, h - 2);
+				renderHatchedValue(g, 0, 1, w * v_f, h - 2);
 			} else
-				g.fillRect(0, 1, w * v, h - 2);
+				g.fillRect(0, 1, w * v_f, h - 2);
 			if (inferred) {
 				g.gl.glLineStipple(1, (short) 0xAAAA);
 				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
-				g.color(0, 0, 0, .5f).drawRect(0, 1, w * v, h - 2);
+				g.color(0, 0, 0, .5f).drawRect(0, 1, w * v_f, h - 2);
 				g.gl.glDisable(GL2.GL_LINE_STIPPLE);
 			} else if (getRenderInfo().getBarOutlineColor() != null) {
 				// outline
-				g.color(getRenderInfo().getBarOutlineColor()).drawRect(0, 1, w * v, h - 2);
+				g.color(getRenderInfo().getBarOutlineColor()).drawRect(0, 1, w * v_f, h - 2);
 			}
 
 			if (model.getTable().getSelectedRow() == r) { // is selected, render the value
@@ -127,11 +128,11 @@ public class ScoreBarElement extends ValueElement {
 		tex.disable(gl);
 	}
 
-	private boolean useHatching(IFloatRankableColumnMixin model) {
+	private boolean useHatching(IDoubleRankableColumnMixin model) {
 		return (model instanceof IMappedColumnMixin) && ((IMappedColumnMixin) model).isComplexMapping();
 	}
 
-	protected void renderText(GLGraphics g, float w, float h, final IRow r, float v, boolean inferred) {
+	protected void renderText(GLGraphics g, float w, float h, final IRow r, double v, boolean inferred) {
 		String text = getText(r, model, v, inferred);
 		float hi = getTextHeight(h);
 		renderLabel(g, (h - hi) * 0.5f, w, hi, text, v);
@@ -146,13 +147,13 @@ public class ScoreBarElement extends ValueElement {
 			g.fillRect(0, 0, w, h);
 		} else {
 			final IRow r = getLayoutDataAs(IRow.class, null); // current row
-			float v = model.applyPrimitive(r);
-			if (!Float.isNaN(v) && v > 0)
-				g.fillRect(0, 0, w * v, h);
+			double v = model.applyPrimitive(r);
+			if (!Double.isNaN(v) && v > 0)
+				g.fillRect(0, 0, w * (float) v, h);
 		}
 	}
 
-	protected static String getText(final IRow r, IRankColumnModel model, float v, boolean inferred) {
+	protected static String getText(final IRow r, IRankColumnModel model, double v, boolean inferred) {
 		String text;
 		if (model instanceof IMappedColumnMixin) {
 			text = ((IMappedColumnMixin) model).getRawValue(r);
@@ -171,14 +172,14 @@ public class ScoreBarElement extends ValueElement {
 		return hi;
 	}
 
-	protected void renderLabel(GLGraphics g, float y, float w, float h, String text, float v) {
+	protected void renderLabel(GLGraphics g, float y, float w, float h, String text, double v) {
 		if (h < 5)
 			return;
 		float tw = g.text.getTextWidth(text, h);
 		boolean hasFreeSpace = getRenderInfo().hasFreeSpace();
 
 		VAlign alignment = getRenderInfo().getAlignment();
-		float space = (hasFreeSpace && alignment == VAlign.LEFT) ? w : (v * w) - 2;
+		float space = (hasFreeSpace && alignment == VAlign.LEFT) ? w : ((float) v * w) - 2;
 		if (tw < space)
 			g.drawText(text, 2, y, space, h, VAlign.LEFT);
 	}

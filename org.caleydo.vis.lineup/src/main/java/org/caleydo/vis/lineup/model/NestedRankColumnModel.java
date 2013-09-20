@@ -12,8 +12,8 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.lineup.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.ICompressColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
-import org.caleydo.vis.lineup.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IManualComparatorMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
@@ -162,24 +162,24 @@ public class NestedRankColumnModel extends AMultiRankColumnModel implements ISna
 	}
 
 	@Override
-	public float applyPrimitive(IRow row) {
+	public double applyPrimitive(IRow row) {
 		final int size = children.size();
-		MultiFloat f = getSplittedValue(row);
+		MultiDouble f = getSplittedValue(row);
 
 		// strategy up to now return the primary value
 		if (size == 0)
-			return Float.NaN;
+			return Double.NaN;
 		return f.values[0];
 	}
 
 	@Override
 	public int compare(IRow o1, IRow o2) {
 		final int size = children.size();
-		MultiFloat f1 = getSplittedValue(o1);
-		MultiFloat f2 = getSplittedValue(o2);
+		MultiDouble f1 = getSplittedValue(o1);
+		MultiDouble f2 = getSplittedValue(o2);
 		for (int i = 0; i < size; ++i) {
-			float a = f1.values[i];
-			float b = f2.values[i];
+			double a = f1.values[i];
+			double b = f2.values[i];
 			int c = -ColumnRanker.nanCompare(a, b, false);
 			if (c != 0)
 				return c;
@@ -189,21 +189,21 @@ public class NestedRankColumnModel extends AMultiRankColumnModel implements ISna
 
 	@Override
 	public boolean isValueInferred(IRow row) {
-		for (IFloatRankableColumnMixin child : Iterables.filter(this, IFloatRankableColumnMixin.class))
+		for (IDoubleRankableColumnMixin child : Iterables.filter(this, IDoubleRankableColumnMixin.class))
 			if (child.isValueInferred(row))
 				return true;
 		return false;
 	}
 
 	@Override
-	public MultiFloat getSplittedValue(IRow row) {
+	public MultiDouble getSplittedValue(IRow row) {
 		if (cacheMulti.containsKey(row.getIndex()))
-			return (MultiFloat) cacheMulti.get(row.getIndex());
-		float[] s = new float[this.size()];
+			return (MultiDouble) cacheMulti.get(row.getIndex());
+		double[] s = new double[this.size()];
 		for (int i = 0; i < s.length; ++i) {
-			s[i] = ((IFloatRankableColumnMixin) get(i)).applyPrimitive(row);
+			s[i] = ((IDoubleRankableColumnMixin) get(i)).applyPrimitive(row);
 		}
-		MultiFloat f = new MultiFloat(0, s);
+		MultiDouble f = new MultiDouble(0, s);
 		cacheMulti.put(row.getIndex(), f);
 		return f;
 	}

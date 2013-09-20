@@ -52,11 +52,11 @@ public class LogRank implements IGroupAlgorithm {
 		return clinical.getRecordIDType();
 	}
 
-	public static float getPValue(float logRankScore) {
-		if (Float.isNaN(logRankScore) || Float.isInfinite(logRankScore))
+	public static double getPValue(double logRankScore) {
+		if (Double.isNaN(logRankScore) || Double.isInfinite(logRankScore))
 			return Float.NaN;
 		double r = Statistics.chiSquaredProbability(logRankScore, 1); // see #983
-		return (float) r;
+		return r;
 	}
 
 	@Override
@@ -65,41 +65,41 @@ public class LogRank implements IGroupAlgorithm {
 	}
 
 	@Override
-	public float compute(Set<Integer> a, Group ag, Set<Integer> b, Group bg, IProgressMonitor monitor) {
+	public double compute(Set<Integer> a, Group ag, Set<Integer> b, Group bg, IProgressMonitor monitor) {
 		return compute(a, b, monitor);
 	}
 
-	public float compute(Iterable<Integer> a, Iterable<Integer> b, IProgressMonitor monitor) {
+	public double compute(Iterable<Integer> a, Iterable<Integer> b, IProgressMonitor monitor) {
 		// http://en.wikipedia.org/wiki/Logrank_test and
 		// Survival Analysis: A Self-Learning Text
 		// 1. resolve data
-		Pair<List<Float>, Integer> asp = getValues(a, this.clinicalVariable);
-		List<Float> as = asp.getFirst();
+		Pair<List<Double>, Integer> asp = getValues(a, this.clinicalVariable);
+		List<Double> as = asp.getFirst();
 		int asurvived = asp.getSecond(); // still there after end
 		if (monitor.isCanceled())
 			return Float.NaN;
 
-		Pair<List<Float>, Integer> bsp = getValues(b, this.clinicalVariable);
-		List<Float> bs = bsp.getFirst();
+		Pair<List<Double>, Integer> bsp = getValues(b, this.clinicalVariable);
+		List<Double> bs = bsp.getFirst();
 		int bsurvived = bsp.getSecond();
 		if (monitor.isCanceled())
 			return Float.NaN;
 		double r = Statistics.logRank(as, asurvived, bs, bsurvived);
 		if (Double.isInfinite(r))
-			return Float.NaN;
+			return Double.NaN;
 		return (float) r;
 	}
 
-	private Pair<List<Float>, Integer> getValues(Iterable<Integer> a, Integer col) {
+	private Pair<List<Double>, Integer> getValues(Iterable<Integer> a, Integer col) {
 		int survived = 0;
-		List<Float> r = new ArrayList<>();
+		List<Double> r = new ArrayList<>();
 		for (Integer row : a) {
 			Number v = clinical.getTable().getRaw(col, row);
-			if (v == null || Float.isNaN(v.floatValue()) || CategoricalContainer.UNKNOWN_CATEGORY_INT.equals(v)) {
+			if (v == null || Double.isNaN(v.doubleValue()) || CategoricalContainer.UNKNOWN_CATEGORY_INT.equals(v)) {
 				survived++;
 				continue;
 			}
-			r.add(v.floatValue());
+			r.add(v.doubleValue());
 		}
 		Collections.sort(r);
 		return Pair.make(r, survived);

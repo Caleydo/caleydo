@@ -15,7 +15,7 @@ public class SimpleMapping extends AMappingFunction implements Cloneable {
 		super(copy);
 	}
 
-	public SimpleMapping(float fromMin, float fromMax) {
+	public SimpleMapping(double fromMin, double fromMax) {
 		super(fromMin, fromMax);
 	}
 
@@ -35,22 +35,22 @@ public class SimpleMapping extends AMappingFunction implements Cloneable {
 	}
 
 	@Override
-	public float[] getMappedMin() {
-		return new float[] { 0, 0 };
+	public double[] getMappedMin() {
+		return new double[] { 0, 0 };
 	}
 
 	@Override
-	public float[] getMappedMax() {
-		return new float[] { 1, 1 };
+	public double[] getMappedMax() {
+		return new double[] { 1, 1 };
 	}
 
 	@Override
-	public float getMaxTo() {
+	public double getMaxTo() {
 		return 1;
 	}
 
 	@Override
-	public float getMinTo() {
+	public double getMinTo() {
 		return 0;
 	}
 
@@ -60,7 +60,7 @@ public class SimpleMapping extends AMappingFunction implements Cloneable {
 	}
 
 	@Override
-	public float apply(float in) {
+	public double apply(double in) {
 		return JavaScriptFunctions.clamp01(in);
 	}
 

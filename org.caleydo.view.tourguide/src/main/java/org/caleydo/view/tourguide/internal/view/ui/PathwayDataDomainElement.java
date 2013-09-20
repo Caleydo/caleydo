@@ -19,7 +19,7 @@ public class PathwayDataDomainElement extends ADataDomainElement {
 	}
 
 	@Override
-	protected void onFilterEdit(boolean isStartEditing, Object payload) {
+	protected void onFilterEdit(boolean isStartEditing, Object payload, int minSize) {
 
 	}
 

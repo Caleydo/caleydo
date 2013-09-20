@@ -22,10 +22,10 @@ public class GroupSelectors {
 		@Override
 		public Group select(IScore score, IComputeElement elem, Collection<Group> groups) {
 			Group m = null;
-			float max = Float.NEGATIVE_INFINITY;
+			double max = Double.NEGATIVE_INFINITY;
 			for(Group g : groups) {
-				float f = score.apply(elem, g);
-				if (!Float.isNaN(f) && f > max) {
+				double f = score.apply(elem, g);
+				if (!Double.isNaN(f) && f > max) {
 					max = f;
 					m = g;
 				}
@@ -38,10 +38,10 @@ public class GroupSelectors {
 		@Override
 		public Group select(IScore score, IComputeElement elem, Collection<Group> groups) {
 			Group m = null;
-			float max = Float.NEGATIVE_INFINITY;
+			double max = Double.NEGATIVE_INFINITY;
 			for (Group g : groups) {
-				float f = Math.abs(score.apply(elem, g));
-				if (!Float.isNaN(f) && f > max) {
+				double f = Math.abs(score.apply(elem, g));
+				if (!Double.isNaN(f) && f > max) {
 					max = f;
 					m = g;
 				}

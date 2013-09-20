@@ -5,20 +5,20 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.model.mapping;
 
-import org.caleydo.core.util.function.AFloatFunction;
-import org.caleydo.core.util.function.FloatStatistics;
+import org.caleydo.core.util.function.ADoubleFunction;
+import org.caleydo.core.util.function.DoubleStatistics;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public abstract class AMappingFunction extends AFloatFunction implements IMappingFunction {
-	private final float fromMin;
-	private final float fromMax;
+public abstract class AMappingFunction extends ADoubleFunction implements IMappingFunction {
+	private final double fromMin;
+	private final double fromMax;
 
-	protected FloatStatistics actStats;
+	protected DoubleStatistics actStats;
 
-	public AMappingFunction(float fromMin, float fromMax) {
+	public AMappingFunction(double fromMin, double fromMax) {
 		this.fromMin = fromMin;
 		this.fromMax = fromMax;
 	}
@@ -33,11 +33,11 @@ public abstract class AMappingFunction extends AFloatFunction implements IMappin
 	public abstract IMappingFunction clone();
 
 	@Override
-	public void setActStatistics(FloatStatistics stats) {
+	public void setActStatistics(DoubleStatistics stats) {
 		this.actStats = stats;
 	}
 
-	protected final boolean isDefaultMin(float k) {
+	protected final boolean isDefaultMin(double k) {
 		boolean id = !isMinDefined();
 		boolean ad = !isMaxDefined();
 		if (id && ad && (Math.abs(k - getActMin()) < Math.abs(k - getActMax())))
@@ -49,8 +49,8 @@ public abstract class AMappingFunction extends AFloatFunction implements IMappin
 	 * @return
 	 */
 	@Override
-	public float getActMin() {
-		if (!Float.isNaN(fromMin))
+	public double getActMin() {
+		if (!Double.isNaN(fromMin))
 			return fromMin;
 		return actStats == null ? 0 : actStats.getMin();
 	}
@@ -59,8 +59,8 @@ public abstract class AMappingFunction extends AFloatFunction implements IMappin
 	 * @return
 	 */
 	@Override
-	public float getActMax() {
-		if (!Float.isNaN(fromMax))
+	public double getActMax() {
+		if (!Double.isNaN(fromMax))
 			return fromMax;
 		return actStats == null ? 1 : actStats.getMax();
 	}
@@ -68,29 +68,29 @@ public abstract class AMappingFunction extends AFloatFunction implements IMappin
 	/**
 	 * @return the fromMin, see {@link #fromMin}
 	 */
-	public final float getFromMin() {
+	public final double getFromMin() {
 		return fromMin;
 	}
 
 	/**
 	 * @return the fromMax, see {@link #fromMax}
 	 */
-	public final float getFromMax() {
+	public final double getFromMax() {
 		return fromMax;
 	}
 
 	@Override
 	public final boolean hasDefinedMappingBounds() {
-		return !Float.isNaN(fromMin) && !Float.isNaN(fromMax);
+		return !Double.isNaN(fromMin) && !Double.isNaN(fromMax);
 	}
 
 	@Override
 	public final boolean isMinDefined() {
-		return !Float.isNaN(fromMin);
+		return !Double.isNaN(fromMin);
 	}
 
 	@Override
 	public final boolean isMaxDefined() {
-		return !Float.isNaN(fromMax);
+		return !Double.isNaN(fromMax);
 	}
 }

@@ -290,7 +290,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	}
 
 	public boolean isActive() {
-		return headerBrick != null && headerBrick.isActive();
+		return headerBrick != null && headerBrick.isSelected();
 	}
 
 	/**
@@ -373,8 +373,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 		addSortedBricks(sortedBricks);
 
-		stratomex.getRelationAnalyzer().updateRelations(tablePerspective.getRecordPerspective().getPerspectiveID(),
-				tablePerspective.getRecordPerspective().getVirtualArray());
+		stratomex.getRelationAnalyzer().updateRelations(tablePerspective.getRecordPerspective());
 
 	}
 

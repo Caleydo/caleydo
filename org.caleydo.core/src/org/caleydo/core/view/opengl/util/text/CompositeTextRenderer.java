@@ -11,8 +11,9 @@ import java.util.TreeMap;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.function.ExpressionFunctions;
-import org.caleydo.core.util.function.IFloatFunction;
+
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
 
 /**
  * composite pattern, that has a pool of underlying renderer with different text sizes and automatically selects the
@@ -29,13 +30,13 @@ public class CompositeTextRenderer implements ITextRenderer {
 	/**
 	 * maps the given height in the reference height space, i.e. pixels
 	 */
-	private final IFloatFunction mapper;
+	private final Function<Float, Float> mapper;
 
 	public CompositeTextRenderer(ETextStyle style, int size, int... sizes) {
-		this(ExpressionFunctions.IDENTITY, style, size, sizes);
+		this(Functions.<Float> identity(), style, size, sizes);
 	}
 
-	public CompositeTextRenderer(IFloatFunction mapper, ETextStyle style, int size, int... sizes) {
+	public CompositeTextRenderer(Function<Float, Float> mapper, ETextStyle style, int size, int... sizes) {
 		this.mapper = mapper;
 		add(style, size);
 		for (int s : sizes)
@@ -81,7 +82,7 @@ public class CompositeTextRenderer implements ITextRenderer {
 	 * @return
 	 */
 	private CaleydoTextRenderer selectBest(float h) {
-		Float hv = Float.valueOf(mapper.apply(h));
+		Float hv = mapper.apply(h);
 		Float select = this.pool.ceilingKey(hv);
 		if (select == null)
 			select = this.pool.lastKey();

@@ -67,6 +67,11 @@ public class FishEyeSpacingCalculator implements ISpacingStrategy {
 		return new DeterminedSpacingImpl(positions, lastSize);
 	}
 
+	@Override
+	public float minSize(int count, boolean isShowingLabels) {
+		return count * (isShowingLabels ? 16 : 1) * 0.5f; // scale down as we have fish eye
+	}
+
 	/**
 	 * real fish eye
 	 *

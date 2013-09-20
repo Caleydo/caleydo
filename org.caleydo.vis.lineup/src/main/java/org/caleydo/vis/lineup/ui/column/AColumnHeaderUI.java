@@ -48,7 +48,7 @@ import org.caleydo.vis.lineup.config.IRankTableUIConfig.EButtonBarPositionMode;
 import org.caleydo.vis.lineup.internal.event.OrderByMeEvent;
 import org.caleydo.vis.lineup.internal.ui.ButtonBar;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
-import org.caleydo.vis.lineup.model.FloatRankColumnModel;
+import org.caleydo.vis.lineup.model.DoubleRankColumnModel;
 import org.caleydo.vis.lineup.model.IRankColumnParent;
 import org.caleydo.vis.lineup.model.RankRankColumnModel;
 import org.caleydo.vis.lineup.model.RankTableModel;
@@ -162,7 +162,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		return config.isInteractive() ? 4 : 1;
 	}
 
-	private static boolean isSmallHeader(float h) {
+	protected static boolean isSmallHeader(float h) {
 		return h < (LABEL_HEIGHT + HIST_HEIGHT * 0.5f);
 	}
 
@@ -322,7 +322,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			return;
 		boolean small = isSmallHeader(h);
 
-		if (config.isFastFiltering() && model instanceof IFilterColumnMixin && !(model instanceof FloatRankColumnModel)
+		if (config.isFastFiltering() && model instanceof IFilterColumnMixin && !(model instanceof DoubleRankColumnModel)
 				&& ((IFilterColumnMixin) model).isFiltered()) {
 			// draw a filter icon
 			g.fillImage(RenderStyle.ICON_FILTER, w - 13, 1, 12, 12);
@@ -360,7 +360,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		buttons.setzDelta(.5f);
 
 		// FIXME hack
-		if (model instanceof IFilterColumnMixin && !(model instanceof FloatRankColumnModel)) {
+		if (model instanceof IFilterColumnMixin && !(model instanceof DoubleRankColumnModel)) {
 			final IFilterColumnMixin m = (IFilterColumnMixin) model;
 			final GLButton b = new GLButton();
 			b.setSelected(m.isFiltered());

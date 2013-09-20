@@ -5,7 +5,7 @@
  *******************************************************************************/
 package org.caleydo.core.util.function;
 
-import static org.caleydo.core.util.function.FloatFunctions.CLAMP01;
+import static org.caleydo.core.util.function.DoubleFunctions.CLAMP01;
 /**
  * @author Samuel Gratzl
  *
@@ -22,10 +22,10 @@ public final class InterpolatingFunctions {
 	 * @param c
 	 *            the value to return
 	 */
-	public static IFloatFunction constant(final float c) {
-		return new AFloatFunction() {
+	public static IDoubleFunction constant(final double c) {
+		return new ADoubleFunction() {
 			@Override
-			public float apply(float in) {
+			public double apply(double in) {
 				return c;
 			}
 
@@ -43,7 +43,7 @@ public final class InterpolatingFunctions {
 	 * @param v1
 	 * @return
 	 */
-	public static final IFloatFunction linear(final float v0, final float v1) {
+	public static final IDoubleFunction linear(final double v0, final double v1) {
 		return new LinearInterpolationFunction(v1, v0);
 	}
 
@@ -51,17 +51,17 @@ public final class InterpolatingFunctions {
 	 * @author Samuel Gratzl
 	 *
 	 */
-	private static final class LinearInterpolationFunction extends AFloatFunction {
-		private final float v0;
-		private final float v1;
+	private static final class LinearInterpolationFunction extends ADoubleFunction {
+		private final double v0;
+		private final double v1;
 
-		private LinearInterpolationFunction(float v1, float v0) {
+		private LinearInterpolationFunction(double v1, double v0) {
 			this.v1 = v1;
 			this.v0 = v0;
 		}
 
 		@Override
-		public float apply(float t) {
+		public double apply(double t) {
 			t = CLAMP01.apply(t);
 			return v0 * (1 - t) + v1 * t;
 		}
@@ -69,14 +69,14 @@ public final class InterpolatingFunctions {
 		/**
 		 * @return the v0, see {@link #v0}
 		 */
-		public float getV0() {
+		public double getV0() {
 			return v0;
 		}
 
 		/**
 		 * @return the v1, see {@link #v1}
 		 */
-		public float getV1() {
+		public double getV1() {
 			return v1;
 		}
 

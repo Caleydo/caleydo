@@ -8,7 +8,7 @@ package org.caleydo.vis.lineup.model.mixin;
 import org.caleydo.vis.lineup.model.IRow;
 
 
-public interface ISetableColumnMixin extends IFloatRankableColumnMixin {
+public interface ISetableColumnMixin extends IDoubleRankableColumnMixin {
 	boolean isOverriden(IRow row);
 
 	String getOriginalValue(IRow row);

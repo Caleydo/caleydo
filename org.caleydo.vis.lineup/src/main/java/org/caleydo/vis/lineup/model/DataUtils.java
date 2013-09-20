@@ -7,25 +7,24 @@ package org.caleydo.vis.lineup.model;
 
 import java.util.Iterator;
 
-import org.caleydo.core.util.function.IFloatList;
-import org.caleydo.vis.lineup.data.IFloatFunction;
+import org.caleydo.core.util.function.IDoubleIterator;
+import org.caleydo.vis.lineup.data.IDoubleFunction;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public class DataUtils {
-	public static SimpleHistogram getHist(int bins, IFloatList l) {
+	public static SimpleHistogram getHist(int bins, IDoubleIterator it) {
 		SimpleHistogram hist = new SimpleHistogram(bins);
-		int s = l.size();
-		for (int i = 0; i < s; ++i) {
-			float value = l.getPrimitive(i);
+		while (it.hasNext()) {
+			double value = it.nextPrimitive();
 			hist.add(value);
 		}
 		return hist;
 	}
 
-	public static <T> SimpleHistogram getHist(int bins, Iterator<T> it, IFloatFunction<T> map) {
+	public static <T> SimpleHistogram getHist(int bins, Iterator<T> it, IDoubleFunction<T> map) {
 		SimpleHistogram hist = new SimpleHistogram(bins);
 		while (it.hasNext()) {
 			hist.add(map.applyPrimitive(it.next()));

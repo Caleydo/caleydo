@@ -18,7 +18,6 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceGroupScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
@@ -50,7 +49,7 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 
 	private IRegisteredScore createJaccard(String label, Perspective reference, Group group) {
 		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(),
-				ComputeScoreFilters.TOO_SMALL, null, color,
+ null, null, color,
 				bgColor);
 	}
 
@@ -91,7 +90,8 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 					List<CategoryProperty<?>> props = (List<CategoryProperty<?>>) getProperties(tablePerspective
 							.getDataDomain());
 					for (CategoryProperty<?> prop : props) {
-						s.add(createMutualExclusive(prop.getCategoryName() + " " + label,
+						final String mutExclusiveLabel = prop.getCategoryName() + " " + label;
+						s.add(createMutualExclusive(mutExclusiveLabel,
 								tablePerspective.getRecordPerspective(), g, prop));
 					}
 					s.add(createJaccard(label, tablePerspective.getRecordPerspective(), g));

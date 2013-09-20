@@ -46,6 +46,7 @@ public class PathwayCreatorForStratomex implements IRemoteViewCreator {
 		pathwayView.setMinHeightPixels(120);
 		pathwayView.setMinWidthPixels(120);
 		pathwayView.setDynamicDetail(true);
+		pathwayView.setShowStdDevBars(false);
 		// pathwayView.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		pathwayView.initialize();
 		PathwayMappingEvent event = new PathwayMappingEvent(tablePerspective);

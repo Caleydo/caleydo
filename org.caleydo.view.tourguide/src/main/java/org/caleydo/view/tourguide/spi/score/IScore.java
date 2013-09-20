@@ -53,5 +53,5 @@ public interface IScore extends ILabeled {
 	 *            optional depending whether this kind of score is based on groups or not
 	 * @return the score or {@link Float#NaN} otherwise
 	 */
-	float apply(IComputeElement elem, Group g);
+	double apply(IComputeElement elem, Group g);
 }

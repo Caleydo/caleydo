@@ -22,7 +22,7 @@ public class ExternalLabelScoreParser extends
 	}
 
 	@Override
-	protected ExternalLabelScore createScore(String label, boolean isRank, Map<String, Float> scores) {
+	protected ExternalLabelScore createScore(String label, boolean isRank, Map<String, Double> scores) {
 		return new ExternalLabelScore(label, spec, scores);
 	}
 

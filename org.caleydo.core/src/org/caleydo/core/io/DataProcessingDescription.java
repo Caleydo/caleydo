@@ -8,7 +8,7 @@ package org.caleydo.core.io;
 import java.util.ArrayList;
 
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
-import org.caleydo.core.util.function.AdvancedFloatStatistics;
+import org.caleydo.core.util.function.AdvancedDoubleStatistics;
 
 /**
  * <p>
@@ -40,7 +40,7 @@ public class DataProcessingDescription {
 	/**
 	 * Setting this variable triggers sampling of columns to the number of elements specified. If null no sampling is
 	 * done. Sampling uses the most variable elements, using Median Absolute Deviation (see
-	 * {@link AdvancedFloatStatistics})
+	 * {@link AdvancedDoubleStatistics})
 	 */
 	private Integer nrColumnsInSample = null;
 

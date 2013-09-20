@@ -5,21 +5,21 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.model.mapping;
 
-import org.caleydo.core.util.function.FloatStatistics;
-import org.caleydo.core.util.function.IFloatFunction;
+import org.caleydo.core.util.function.DoubleStatistics;
+import org.caleydo.core.util.function.IDoubleFunction;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IMappingFunction extends IFloatFunction {
+public interface IMappingFunction extends IDoubleFunction {
 	String toJavaScript();
 
 	void fromJavaScript(String code);
 
-	float[] getMappedMin();
+	double[] getMappedMin();
 
-	float[] getMappedMax();
+	double[] getMappedMax();
 
 	boolean hasDefinedMappingBounds();
 
@@ -29,9 +29,9 @@ public interface IMappingFunction extends IFloatFunction {
 
 	boolean isMappingDefault();
 
-	float getActMin();
+	double getActMin();
 
-	float getActMax();
+	double getActMax();
 
 	/**
 	 * @return
@@ -41,11 +41,11 @@ public interface IMappingFunction extends IFloatFunction {
 	void reset();
 
 
-	float getMaxTo();
+	double getMaxTo();
 
-	float getMinTo();
+	double getMinTo();
 
-	void setActStatistics(FloatStatistics stats);
+	void setActStatistics(DoubleStatistics stats);
 
 	boolean isComplexMapping();
 }

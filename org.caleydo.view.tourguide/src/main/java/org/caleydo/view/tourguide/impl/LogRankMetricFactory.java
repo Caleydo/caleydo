@@ -26,7 +26,6 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
-import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
 import org.caleydo.view.tourguide.api.score.GroupSelectors;
@@ -116,7 +115,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 		String label = String.format("Sig. change of %s", numerical.getLabel());
 		ATableBasedDataDomain clinical = numerical.getDataDomain();
 		LogRankMetric metric = new LogRankMetric("LogRank", dimId, clinical);
-		LogRankPValue pvalue = new LogRankPValue("P-Value", metric);
+		LogRankPValue pvalue = new LogRankPValue("-log(p-value)", metric);
 
 		MultiScore multiScore = new MultiScore(label, wrap(clinical.getColor()),
  darker(clinical.getColor()),
@@ -224,11 +223,11 @@ public class LogRankMetricFactory implements IScoreFactory {
 				}
 
 				@Override
-				public float compute(Set<Integer> a, Group ag, Set<Integer> b, Group bg, IProgressMonitor monitor) {
+				public double compute(Set<Integer> a, Group ag, Set<Integer> b, Group bg, IProgressMonitor monitor) {
 					// me versus the rest
 					return underlying.compute(a, ag, Sets.difference(b, a), bg, monitor);
 				}
-			}, ComputeScoreFilters.TOO_SMALL, GroupSelectors.MAX_ABS, wrap(clinical.getColor()), darker(clinical
+			}, null, GroupSelectors.MAX_ABS, wrap(clinical.getColor()), darker(clinical
 					.getColor()));
 			this.clinicalVariable = clinicalVariable;
 		}
@@ -278,10 +277,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 
 		@Override
 		public PiecewiseMapping createMapping() {
-			PiecewiseMapping m = new PiecewiseMapping(0, 1);
-			m.put(0, 1);
-			m.put(1, 0);
-			return m;
+			return Utils.createPValueMapping();
 		}
 
 		@Override
@@ -295,7 +291,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 		}
 
 		@Override
-		public final float apply(IComputeElement elem, Group g) {
+		public final double apply(IComputeElement elem, Group g) {
 			return LogRank.getPValue(logRankScore.apply(elem, g));
 		}
 
@@ -395,9 +391,7 @@ public class LogRankMetricFactory implements IScoreFactory {
 			if (label == null || label.trim().isEmpty())
 				label = var.getLabel();
 
-			ATableBasedDataDomain dataDomain = DataDomainOracle.getClinicalDataDomain();
-
-			LogRankMetric metric = new LogRankMetric(label, var.getDimId(), dataDomain);
+			LogRankMetric metric = new LogRankMetric(label, var.getDimId(), var.getDataDomain());
 			LogRankPValue pvalue = new LogRankPValue(label + " (P-V)", metric);
 
 			EventPublisher.trigger(new AddScoreColumnEvent(metric, pvalue).to(receiver));

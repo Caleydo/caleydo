@@ -87,6 +87,6 @@ public class TCGARunTask extends RecursiveAction {
 		report.add("dataSetColors", dataSetColors);
 
 		String r = gson.toJson(report);
-		Files.write(r, new File(runSpecificOutputPath, reportJSONOutputPath), Charset.defaultCharset());
+		Files.write(r, new File(runSpecificOutputPath, reportJSONOutputPath), Charset.forName("UTF-8"));
 	}
 }

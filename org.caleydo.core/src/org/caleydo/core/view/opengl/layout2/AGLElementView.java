@@ -93,6 +93,11 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	}
 
 	@Override
+	public final Vec2f getSize() {
+		return new Vec2f(canvas.getDIPWidth(), canvas.getDIPHeight());
+	}
+
+	@Override
 	public final void setVisible(boolean visible) {
 		if (this.visible == visible)
 			return;
@@ -184,12 +189,32 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		}
 		final int deltaTimeMs = local.getDeltaTimeMs();
 
-		final GLGraphics g = prepareFrame(drawable, deltaTimeMs);
+//		Stopwatch w = new Stopwatch().start();
+//		StringBuilder b = new StringBuilder();
+//
+//		Stopwatch wi = new Stopwatch().start();
 
+		final GLGraphics g = prepareFrame(drawable, deltaTimeMs);
 		updateMouseLayer();
+
+//		b.append(" prepare/picking/layout/render: ").append(wi).append("\t");
+//
+//		wi.reset().start();
+
 		pickingPass(g);
+
+//		b.append(wi).append('\t');
+//		wi.reset().start();
+
 		layoutPass(deltaTimeMs);
+
+//		b.append(wi).append('\t');
+//		wi.reset().start();
+
 		renderPass(g);
+
+//		b.append(wi).append('\t').append(w);
+//		 System.out.println(b);
 	}
 
 	private GLGraphics prepareFrame(GLAutoDrawable drawable, final int deltaTimeMs) {

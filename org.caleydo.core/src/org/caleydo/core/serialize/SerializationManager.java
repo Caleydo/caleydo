@@ -12,6 +12,7 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.caleydo.core.io.MetaDataElement.AttributeType;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.color.AlexColorPalette;
 import org.caleydo.core.util.color.Color;
@@ -50,6 +51,7 @@ public class SerializationManager {
 		serializableTypes.add(AlexColorPalette.AlexColorPaletteColor.class);
 		serializableTypes.add(ColorBrewer.ColorBrewerColor.class);
 		serializableTypes.add(StyledColor.class);
+		serializableTypes.add(AttributeType.class);
 
 		for (ISerializationAddon addon : addons)
 			serializableTypes.addAll(addon.getJAXBContextClasses());

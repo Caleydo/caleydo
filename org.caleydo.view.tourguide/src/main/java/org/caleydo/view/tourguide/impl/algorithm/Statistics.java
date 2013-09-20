@@ -21,7 +21,7 @@ import org.caleydo.core.util.logging.Logger;
 
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Sets;
-import com.google.common.primitives.Floats;
+import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 
 /**
@@ -158,7 +158,7 @@ public final class Statistics {
 	 *            the ids of the second set
 	 * @return its jaccard index
 	 */
-	public static float jaccardIndex(Collection<Integer> a, Collection<Integer> b) {
+	public static double jaccardIndex(Collection<Integer> a, Collection<Integer> b) {
 		int intersection = 0;
 		for (Integer ai : a) {
 			if (b.contains(ai))
@@ -166,7 +166,7 @@ public final class Statistics {
 		}
 		int union = b.size() + a.size() - intersection;
 		// intersect(a,b) / union(a,b)
-		float score = union == 0 ? 0.f : (float) intersection / union;
+		double score = union == 0 ? 0. : (double) intersection / union;
 		return score;
 	}
 
@@ -233,12 +233,12 @@ public final class Statistics {
 	 *            the number of survived samples in b after the experiment
 	 * @return
 	 */
-	public static double logRank(List<Float> as_l, int asurvived, List<Float> bs_l, int bsurvived) {
-		final float[] as = sorted(as_l);
-		final float[] bs = sorted(bs_l);
+	public static double logRank(List<Double> as_l, int asurvived, List<Double> bs_l, int bsurvived) {
+		final double[] as = sorted(as_l);
+		final double[] bs = sorted(bs_l);
 
 		// distinct events
-		final SortedSet<Float> distinct = ImmutableSortedSet.<Float> naturalOrder().addAll(as_l).addAll(bs_l).build();
+		final SortedSet<Double> distinct = ImmutableSortedSet.<Double> naturalOrder().addAll(as_l).addAll(bs_l).build();
 		int a_i = 0, b_i = 0;
 
 		double a_deaths_expected_acc = 0;
@@ -249,7 +249,7 @@ public final class Statistics {
 		double b_deaths_variance_acc = 0;
 		int b_deaths_observed_acc = 0;
 
-		for (float event : distinct) {
+		for (double event : distinct) {
 
 			int a_alive = asurvived + as.length - a_i; // alive before the event
 			int a_deaths = deathsAt(as, a_i, event); // find deaths
@@ -300,7 +300,7 @@ public final class Statistics {
 				/ (alive - 1);
 	}
 
-	private static int deathsAt(final float[] as, int start, float event) {
+	private static int deathsAt(final double[] as, int start, double event) {
 		int deaths = 0;
 		for (int i = start; i < as.length && as[i] == event; ++i) { // event hits
 			deaths++; // find act
@@ -308,8 +308,8 @@ public final class Statistics {
 		return deaths;
 	}
 
-	private static float[] sorted(List<Float> l) {
-		final float[] as = Floats.toArray(l);
+	private static double[] sorted(List<Double> l) {
+		final double[] as = Doubles.toArray(l);
 		Arrays.sort(as);
 		return as;
 	}
@@ -320,13 +320,14 @@ public final class Statistics {
 
 	public static void main(String[] args) {
 		{
-			List<Float> a = Floats.asList(41, 54, 59, 65, 67, 73, 92, 137, 139, 164, 220, 224, 245, 311, 329, 330, 333,
+			List<Double> a = Doubles.asList(41, 54, 59, 65, 67, 73, 92, 137, 139, 164, 220, 224, 245, 311, 329, 330,
+					333,
 					336, 342, 362, 431, 454, 459, 477, 479, 480, 485, 510, 551, 563, 572, 573, 586, 637, 678, 683, 709,
 					722, 768, 769, 782, 822, 827, 877, 884, 927, 945, 951, 992, 1092, 1097, 1121, 1173, 1190, 1316,
 					1337, 1370, 1417, 1463, 1587, 1590, 1597, 1625, 1661, 1723, 1912, 1913, 1964, 1979, 2145, 2190,
 					2227, 2298, 2751, 2763);
 			int asurvived = 217;
-			List<Float> b = Floats.asList(50);
+			List<Double> b = Doubles.asList(50);
 			int bsurvived = 0;
 
 			double z = logRank(a, asurvived, b, bsurvived);
@@ -339,10 +340,10 @@ public final class Statistics {
 //			 as = 1 1 1 1 0 0 1 0 0 0 0 1 1;
 //			 b = 421  464  475  563  744  769  770 1129 1206 1227  353  365  377);
 //			 bs = 0 1 1 1 0 0 0 0 0 0 1 1 0;
-			List<Float> a2 = Floats.asList(59,115,156,431,638,268,329);
+			List<Double> a2 = Doubles.asList(59, 115, 156, 431, 638, 268, 329);
 			Collections.sort(a2);
 			int asurv = 6;
-			List<Float> b2 = Floats.asList(464, 475, 563, 353, 365);
+			List<Double> b2 = Doubles.asList(464, 475, 563, 353, 365);
 			int bsurv = 8;
 			Collections.sort(b2);
 			double z = logRank(a2, asurv, b2, bsurv);

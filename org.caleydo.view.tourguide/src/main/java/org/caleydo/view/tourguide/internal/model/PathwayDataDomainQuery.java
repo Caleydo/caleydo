@@ -75,7 +75,7 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
-	public boolean hasFilter() {
+	protected boolean hasFilterImpl() {
 		return false;
 	}
 
@@ -91,6 +91,11 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 
 	@Override
 	public void removeSpecificColumns(RankTableModel table) {
+
+	}
+
+	@Override
+	public void updateSpecificColumns(RankTableModel table) {
 
 	}
 }

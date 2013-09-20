@@ -84,7 +84,7 @@ public final class GLElementFactories {
 	 * @author Samuel Gratzl
 	 *
 	 */
-	public static class GLElementSupplier implements Supplier<GLElement> {
+	public static class GLElementSupplier implements Supplier<GLElement>, ILabeled {
 		private final ElementExtension extension;
 		private final GLElementFactoryContext context;
 
@@ -106,6 +106,7 @@ public final class GLElementFactories {
 			return extension.getIcon();
 		}
 
+		@Override
 		public String getLabel() {
 			return extension.getLabel();
 		}

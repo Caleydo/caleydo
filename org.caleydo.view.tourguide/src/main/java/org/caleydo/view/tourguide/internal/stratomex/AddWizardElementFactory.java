@@ -115,11 +115,27 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 
 		ScoreFactories.fillStateMachine(state, existing, mode, source);
 
-		addStartTransition(state, IStateMachine.ADD_STRATIFICATIONS);
-		addStartTransition(state, IStateMachine.ADD_PATHWAY);
-		addStartTransition(state, IStateMachine.ADD_OTHER);
+		boolean hideEmpty = mode != EWizardMode.GLOBAL;
+		addStartTransition(state, IStateMachine.ADD_STRATIFICATIONS, hideEmpty);
+		addStartTransition(state, IStateMachine.ADD_PATHWAY, hideEmpty);
+		addStartTransition(state, IStateMachine.ADD_OTHER, hideEmpty);
+
+		skipSingleOnes(state);
 
 		return state;
+	}
+
+	/**
+	 * @param state
+	 */
+	private static void skipSingleOnes(StateMachineImpl state) {
+		final List<ITransition> start = state.getTransitions(state.getCurrent());
+
+		if (start.size() == 1) {
+			ITransition t = start.get(0);
+			assert t instanceof SimpleTransition;
+			state.move(((SimpleTransition) t).getTarget());
+		}
 	}
 
 	private static void addDefaultStates(StateMachineImpl state) {
@@ -156,11 +172,13 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 		b.append(')');
 		return b.toString();
 	}
+
 	/**
 	 * @param state
+	 * @param hideEmpty
 	 * @param addStratifications
 	 */
-	private static void addStartTransition(StateMachineImpl state, String stateID) {
+	private static void addStartTransition(StateMachineImpl state, String stateID, boolean hideEmpty) {
 		IState target = state.get(stateID);
 		List<ITransition> transitions = state.getTransitions(target);
 		if (transitions.isEmpty())
@@ -173,7 +191,8 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 			}
 			reason = t.getDisabledReason();
 		}
-		state.addTransition(state.getCurrent(), new SimpleTransition(target, target.getLabel(), reason));
+		if (reason == null || !hideEmpty)
+			state.addTransition(state.getCurrent(), new SimpleTransition(target, target.getLabel(), reason));
 	}
 	@Override
 	public AAddWizardElement createForStratification(IStratomexAdapter adapter, AGLView view) {

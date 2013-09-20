@@ -39,15 +39,16 @@ import org.caleydo.view.stratomex.column.BrickColumn;
 public class RelationIndicatorRenderer extends ALayoutRenderer {
 
 	// private ASetBasedDataDomain dataDomain;
-	private RelationAnalyzer relationAnalyzer;
-	String perspectiveID;
-	int groupID;
-	GLStratomex stratomex;
+	private final RelationAnalyzer relationAnalyzer;
+	private final String perspectiveID;
+	private final int groupID;
+	private final GLStratomex stratomex;
+	private final boolean isLeft;
+	private final GLBrick brick;
+
+	float[] similarities;
 	String neighborPerspectiveID = null;
 	List<GLBrick> neighborBrickOrder;
-	boolean isLeft;
-	float[] similarities;
-	GLBrick brick;
 
 	public RelationIndicatorRenderer(GLBrick brick, GLStratomex stratomex, boolean isLeft) {
 		this.brick = brick;

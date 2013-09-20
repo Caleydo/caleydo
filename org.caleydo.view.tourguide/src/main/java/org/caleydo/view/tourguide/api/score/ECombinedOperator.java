@@ -14,11 +14,11 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public enum ECombinedOperator implements Function<float[], Float>, ILabeled {
+public enum ECombinedOperator implements Function<double[], Double>, ILabeled {
 	MAX, MIN, MEAN, MEDIAN, GEOMETRIC_MEAN;
 
 	@Override
-	public Float apply(float[] data) {
+	public Double apply(double[] data) {
 		return combine(data);
 	}
 
@@ -55,7 +55,7 @@ public enum ECombinedOperator implements Function<float[], Float>, ILabeled {
 		throw new IllegalStateException("unknown operator: " + this);
 	}
 
-	public float combine(float[] data) {
+	public double combine(double[] data) {
 		switch (this) {
 		case MAX:
 			return JavaScriptFunctions.max(data);

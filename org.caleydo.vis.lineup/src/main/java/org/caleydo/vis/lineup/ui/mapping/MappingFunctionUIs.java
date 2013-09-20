@@ -9,7 +9,7 @@ import java.util.Map;
 
 import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.function.IFloatList;
+import org.caleydo.core.util.function.IDoubleSizedIterable;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.lineup.config.IRankTableUIConfig;
 import org.caleydo.vis.lineup.model.CategoricalRankRankColumnModel.CategoryInfo;
@@ -23,7 +23,7 @@ import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
  *
  */
 public class MappingFunctionUIs {
-	public static GLElement create(IMappingFunction model, IFloatList data, Color color, Color bgColor,
+	public static GLElement create(IMappingFunction model, IDoubleSizedIterable data, Color color, Color bgColor,
 			ICallback<? super IMappingFunction> callback, IRankTableUIConfig config) {
 		MappingFunctionUI m = new MappingFunctionUI(model, data, color, bgColor, callback, config);
 		if (model instanceof PiecewiseMapping) {

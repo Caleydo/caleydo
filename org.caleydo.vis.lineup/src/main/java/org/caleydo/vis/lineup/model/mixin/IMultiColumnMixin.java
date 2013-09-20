@@ -5,10 +5,9 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.model.mixin;
 
-import org.caleydo.core.util.color.Color;
-
 import java.util.Arrays;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.IRow;
 
@@ -18,7 +17,7 @@ import org.caleydo.vis.lineup.model.IRow;
  * @author Samuel Gratzl
  *
  */
-public interface IMultiColumnMixin extends IFloatRankableColumnMixin, Iterable<ARankColumnModel>, IAnnotatedColumnMixin {
+public interface IMultiColumnMixin extends IDoubleRankableColumnMixin, Iterable<ARankColumnModel>, IAnnotatedColumnMixin {
 	/**
 	 * the individual values of the children and their representation index
 	 *
@@ -27,18 +26,18 @@ public interface IMultiColumnMixin extends IFloatRankableColumnMixin, Iterable<A
 	 * @param row
 	 * @return
 	 */
-	MultiFloat getSplittedValue(IRow row);
+	MultiDouble getSplittedValue(IRow row);
 
-	public static final class MultiFloat {
-		public final float[] values;
+	public static final class MultiDouble {
+		public final double[] values;
 		public final int repr;
 
-		public MultiFloat(int repr, float... values) {
+		public MultiDouble(int repr, double... values) {
 			this.values = values;
 			this.repr = repr;
 		}
 
-		public float get() {
+		public double get() {
 			return repr >= 0 ? values[repr] : Float.NaN;
 		}
 

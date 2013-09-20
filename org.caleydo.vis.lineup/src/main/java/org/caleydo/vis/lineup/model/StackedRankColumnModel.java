@@ -11,13 +11,13 @@ import java.beans.PropertyChangeListener;
 import java.util.Comparator;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.function.FloatFunctions;
-import org.caleydo.core.util.function.IFloatList;
+import org.caleydo.core.util.function.DoubleFunctions;
+import org.caleydo.core.util.function.IDoubleSizedIterable;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.lineup.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.ICompressColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
-import org.caleydo.vis.lineup.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.ISnapshotableColumnMixin;
@@ -76,7 +76,7 @@ public final class StackedRankColumnModel extends AMultiRankColumnModel implemen
 	/**
 	 * if more than x percent of the the score is created by inferred values, filter it out
 	 */
-	private float filterInferredPercentage = 0.99f;
+	private double filterInferredPercentage = 0.99f;
 	private IntObjectHashMap cacheMulti = new IntObjectHashMap();
 
 	public StackedRankColumnModel() {
@@ -195,15 +195,15 @@ public final class StackedRankColumnModel extends AMultiRankColumnModel implemen
 	}
 
 	@Override
-	public float applyPrimitive(IRow row) {
+	public double applyPrimitive(IRow row) {
 		float s = 0;
 		final int size = children.size();
-		MultiFloat f = getSplittedValue(row);
+		MultiDouble f = getSplittedValue(row);
 		float[] ws = this.getWeights();
 		for (int i = 0; i < size; ++i) {
-			float fi = f.values[i];
-			if (Float.isNaN(fi))
-				return Float.NaN;
+			double fi = f.values[i];
+			if (Double.isNaN(fi))
+				return Double.NaN;
 			s += fi * ws[i];
 		}
 		return s;
@@ -211,26 +211,26 @@ public final class StackedRankColumnModel extends AMultiRankColumnModel implemen
 
 	@Override
 	public int compare(IRow o1, IRow o2) {
-		return Float.compare(applyPrimitive(o1), applyPrimitive(o2));
+		return Double.compare(applyPrimitive(o1), applyPrimitive(o2));
 	}
 
 	@Override
 	public boolean isValueInferred(IRow row) {
-		for (IFloatRankableColumnMixin child : Iterables.filter(this, IFloatRankableColumnMixin.class))
+		for (IDoubleRankableColumnMixin child : Iterables.filter(this, IDoubleRankableColumnMixin.class))
 			if (child.isValueInferred(row))
 				return true;
 		return false;
 	}
 
 	@Override
-	public MultiFloat getSplittedValue(IRow row) {
+	public MultiDouble getSplittedValue(IRow row) {
 		if (cacheMulti.containsKey(row.getIndex()))
-			return (MultiFloat) cacheMulti.get(row.getIndex());
-		float[] s = new float[this.size()];
+			return (MultiDouble) cacheMulti.get(row.getIndex());
+		double[] s = new double[this.size()];
 		for (int i = 0; i < s.length; ++i) {
-			s[i] = ((IFloatRankableColumnMixin) get(i)).applyPrimitive(row);
+			s[i] = ((IDoubleRankableColumnMixin) get(i)).applyPrimitive(row);
 		}
-		MultiFloat f = new MultiFloat(-1, s);
+		MultiDouble f = new MultiDouble(-1, s);
 		cacheMulti.put(row.getIndex(), f);
 		return f;
 	}
@@ -340,13 +340,13 @@ public final class StackedRankColumnModel extends AMultiRankColumnModel implemen
 	}
 
 	@Override
-	protected GLElement createEditFilterPopup(IFloatList data, GLElement summary) {
+	protected GLElement createEditFilterPopup(IDoubleSizedIterable data, GLElement summary) {
 		return new ScoreFilter2(this, data, summary);
 	}
 	/**
 	 * @return the filterInferredPercentage, see {@link #filterInferredPercentage}
 	 */
-	public float getFilterInferredPercentage() {
+	public double getFilterInferredPercentage() {
 		return filterInferredPercentage;
 	}
 
@@ -354,8 +354,8 @@ public final class StackedRankColumnModel extends AMultiRankColumnModel implemen
 	 * @param filterInferredPercentage
 	 *            setter, see {@link filterInferredPercentage}
 	 */
-	public void setFilterInferredPercentage(float filterInferredPercentage) {
-		filterInferredPercentage = FloatFunctions.CLAMP01.apply(filterInferredPercentage);
+	public void setFilterInferredPercentage(double filterInferredPercentage) {
+		filterInferredPercentage = DoubleFunctions.CLAMP01.apply(filterInferredPercentage);
 		if (this.filterInferredPercentage == filterInferredPercentage)
 			return;
 		invalidAllFilter();

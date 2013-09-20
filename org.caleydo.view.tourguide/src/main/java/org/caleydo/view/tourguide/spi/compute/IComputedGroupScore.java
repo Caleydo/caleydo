@@ -33,7 +33,7 @@ public interface IComputedGroupScore extends IRegisteredScore, IGroupBasedScore 
 	 * @param a
 	 * @param value
 	 */
-	void put(Group ag, float value);
+	void put(Group ag, double value);
 
 	/**
 	 * returns the algorithm to compute this score

@@ -14,14 +14,14 @@ import org.caleydo.view.tourguide.internal.model.MaxGroupCombiner;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
-import org.caleydo.vis.lineup.data.FloatInferrers;
-import org.caleydo.vis.lineup.model.FloatRankColumnModel;
+import org.caleydo.vis.lineup.data.DoubleInferrers;
+import org.caleydo.vis.lineup.model.DoubleRankColumnModel;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRenderer, IScoreMixin {
+public class ScoreRankColumnModel extends DoubleRankColumnModel implements IGLRenderer, IScoreMixin {
 	private final IScore score;
 	private EHeaderMode headerMode;
 
@@ -31,7 +31,7 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 
 	public ScoreRankColumnModel(IScore score) {
 		super(new MaxGroupCombiner(score), null, score.getColor(), score.getBGColor(), score.createMapping(),
-				FloatInferrers.fix(Float.NaN));
+				DoubleInferrers.fix(Float.NaN));
 		this.score = score;
 		this.headerMode = EHeaderMode.LABEL;
 		if (score instanceof IGroupScore) {// have a group and a common stratification

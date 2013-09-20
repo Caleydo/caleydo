@@ -21,7 +21,12 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
 
+import org.caleydo.core.util.function.DoubleSizedIterables;
+import org.caleydo.core.util.function.IDoubleSizedIterable;
+import org.caleydo.core.util.function.IDoubleSizedIterator;
 import org.caleydo.vis.lineup.config.IRankTableConfig;
+import org.caleydo.vis.lineup.data.IDoubleFunction;
+import org.caleydo.vis.lineup.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankColumnModel;
@@ -392,9 +397,10 @@ public final class RankTableModel implements IRankColumnParent, Cloneable {
 	public void explode(ACompositeRankColumnModel model) {
 		int index = this.columns.indexOf(model);
 		List<ARankColumnModel> children = model.getChildren();
+		float w = model instanceof ICompressColumnMixin ? 100 : model.getWidth();
 		for (ARankColumnModel child : children) {
 			child.init(this);
-			child.setWidth(100); // reset width
+			child.setWidth(w); // reset width
 		}
 		this.columns.set(index, children.get(0));
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index, model, children.get(0));
@@ -481,26 +487,112 @@ public final class RankTableModel implements IRankColumnParent, Cloneable {
 		};
 	}
 
-	public List<IRow> getFilteredData() {
-		return getMaskedData();
-		/*BitSet b = defaultFilter.getFilter();
-		final int[] lookup = new int[b.cardinality()];
-		int j = 0;
-		for (int i = b.nextSetBit(0); i >= 0; i = b.nextSetBit(i + 1)) {
-			lookup[j++] = i;
-		}
-		return new AbstractList<IRow>() {
+	/**
+	 * return a view on the filtered data mapped to doubles
+	 *
+	 * @param f
+	 * @return
+	 */
+	public IDoubleSizedIterable getFilteredMappedData(final IDoubleFunction<IRow> f) {
+		if (dataMask == null || dataMask.cardinality() == data.size())
+			return map(getData(), f);
+
+		return new IDoubleSizedIterable() {
 			@Override
-			public IRow get(int index) {
-				return lookup == null ? data.get(index) : data.get(lookup[index]);
+			public int size() {
+				return dataMask.cardinality();
 			}
 
 			@Override
-			public int size() {
-				return lookup == null ? data.size() : lookup.length;
+			public IDoubleSizedIterable map(org.caleydo.core.util.function.IDoubleFunction f) {
+				return DoubleSizedIterables.map(this, f);
+			}
+
+			@Override
+			public IDoubleSizedIterator iterator() {
+				return new IDoubleSizedIterator() {
+					int i = dataMask.nextSetBit(0);
+
+					@Override
+					public void remove() {
+						throw new UnsupportedOperationException();
+					}
+
+					@Override
+					public Double next() {
+						return nextPrimitive();
+					}
+
+					@Override
+					public boolean hasNext() {
+						return i >= 0;
+					}
+
+					@Override
+					public double nextPrimitive() {
+						int act = i;
+						i = dataMask.nextSetBit(i + 1);
+						return f.applyPrimitive(data.get(act));
+					}
+
+					@Override
+					public int size() {
+						return dataMask.cardinality();
+					}
+				};
 			}
 		};
-*/
+	}
+
+	/**
+	 * @param data2
+	 * @param f
+	 * @return
+	 */
+	private static IDoubleSizedIterable map(final List<IRow> data2, final IDoubleFunction<IRow> f) {
+		return new IDoubleSizedIterable() {
+
+			@Override
+			public int size() {
+				return data2.size();
+			}
+
+			@Override
+			public IDoubleSizedIterable map(org.caleydo.core.util.function.IDoubleFunction f) {
+				return DoubleSizedIterables.map(this, f);
+			}
+			@Override
+			public IDoubleSizedIterator iterator() {
+				return new IDoubleSizedIterator() {
+					private final Iterator<IRow> it = data2.iterator();
+
+					@Override
+					public void remove() {
+						throw new UnsupportedOperationException();
+					}
+
+					@Override
+					public Double next() {
+						return nextPrimitive();
+					}
+
+					@Override
+					public boolean hasNext() {
+						return it.hasNext();
+					}
+
+					@Override
+					public double nextPrimitive() {
+						return f.applyPrimitive(it.next());
+					}
+
+					@Override
+					public int size() {
+						return data2.size();
+					}
+				};
+			}
+		};
 	}
 
 	protected void refilter(IRankColumnModel source) {

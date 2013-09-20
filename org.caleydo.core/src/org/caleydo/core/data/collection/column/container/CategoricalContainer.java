@@ -103,8 +103,9 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 		if (identifier == null) {
 			if (categoricalClassDescription != null) {
 				// we have encountered a category which is not available in the class description
-				Logger.log(new Status(IStatus.WARNING, this.toString(), "No category for " + category
-						+ " in description " + categoricalClassDescription));
+				if (!"NA".equals(category))
+					Logger.log(new Status(IStatus.WARNING, this.toString(), "No category for " + category
+							+ " in description " + categoricalClassDescription));
 				identifier = hashCategoryToIdentifier.get(unknownCategoryType);
 				category = unknownCategoryType;
 

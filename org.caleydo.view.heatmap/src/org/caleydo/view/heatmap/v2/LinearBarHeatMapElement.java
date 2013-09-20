@@ -11,13 +11,13 @@ import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.table.TablePerspectiveFloatList;
+import org.caleydo.core.data.perspective.table.TablePerspectiveDoubleList;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.function.DoubleFunctions;
+import org.caleydo.core.util.function.DoubleStatistics;
 import org.caleydo.core.util.function.ExpressionFunctions;
-import org.caleydo.core.util.function.FloatFunctions;
-import org.caleydo.core.util.function.FloatStatistics;
-import org.caleydo.core.util.function.IFloatFunction;
+import org.caleydo.core.util.function.IDoubleFunction;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 
@@ -34,7 +34,7 @@ public class LinearBarHeatMapElement extends AHeatMapElement {
 	private final boolean scaleLocally;
 
 	private float normalizedCenter;
-	private IFloatFunction normalize;
+	private IDoubleFunction normalize;
 
 	public LinearBarHeatMapElement(TablePerspective tablePerspective) {
 		this(tablePerspective, BasicBlockColorer.INSTANCE, EDetailLevel.HIGH, false);
@@ -48,10 +48,11 @@ public class LinearBarHeatMapElement extends AHeatMapElement {
 
 	@Override
 	protected Vec2f getMinSizeImpl() {
-		TablePerspective tablePerspective = selections.getTablePerspective();
-		float w = tablePerspective.getNrDimensions() * (dimensionLabels.show() ? 16 : 1);
-		float h = tablePerspective.getNrRecords() * (recordLabels.show() ? 16 : 10);
-		return new Vec2f(w, h);
+		Vec2f r = super.getMinSizeImpl();
+
+		if (!recordLabels.show())
+			r.setY(r.y() * 10); // have a visible size also
+		return r;
 	}
 
 	@Override
@@ -93,7 +94,7 @@ public class LinearBarHeatMapElement extends AHeatMapElement {
 					continue;
 				Color color = blockColorer.apply(recordID, dimensionID, dataDomain, deSelected);
 				g.color(color);
-				float v = normalize.apply(value);
+				float v = (float) normalize.apply(value);
 				v = (v - normalizedCenter) * fieldHeight;
 				g.fillRect(x, y + center, fieldWidth, -v);
 			}
@@ -108,12 +109,12 @@ public class LinearBarHeatMapElement extends AHeatMapElement {
 		this.normalizedCenter = (float) ((NumericalTable) table).getNormalizedForRaw(Table.Transformation.LINEAR, 0);
 
 		if (scaleLocally) {
-			FloatStatistics stats = FloatStatistics.of(new TablePerspectiveFloatList(tablePerspective));
-			normalize = FloatFunctions.normalize(stats.getMin(), stats.getMax());
+			DoubleStatistics stats = DoubleStatistics.of(new TablePerspectiveDoubleList(tablePerspective));
+			normalize = DoubleFunctions.normalize(stats.getMin(), stats.getMax());
 		} else {
 			normalize = ExpressionFunctions.IDENTITY;
 		}
-		this.normalizedCenter = normalize.apply(this.normalizedCenter);
+		this.normalizedCenter = (float) normalize.apply(this.normalizedCenter);
 	}
 
 }

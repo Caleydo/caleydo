@@ -13,7 +13,7 @@ import org.caleydo.view.tourguide.spi.score.IGroupBasedScore;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
-import org.caleydo.vis.lineup.data.AFloatFunction;
+import org.caleydo.vis.lineup.data.ADoubleFunction;
 import org.caleydo.vis.lineup.model.IRow;
 
 
@@ -25,7 +25,7 @@ import org.caleydo.vis.lineup.model.IRow;
  * @author Samuel Gratzl
  *
  */
-public class MaxGroupCombiner extends AFloatFunction<IRow> {
+public class MaxGroupCombiner extends ADoubleFunction<IRow> {
 
 	private final IScore score;
 
@@ -37,7 +37,7 @@ public class MaxGroupCombiner extends AFloatFunction<IRow> {
 	}
 
 	@Override
-	public float applyPrimitive(IRow in) {
+	public double applyPrimitive(IRow in) {
 		AScoreRow row = (AScoreRow) in;
 		if (score instanceof IStratificationScore && !(score instanceof IGroupScore)) {
 			return score.apply(row, null); // as group independent
@@ -49,6 +49,8 @@ public class MaxGroupCombiner extends AFloatFunction<IRow> {
 		Group group = selectImpl(row, score);
 		return score.apply(row, group);
 	}
+
+	
 
 	private static Group selectImpl(AScoreRow row, IScore score) {
 		IGroupBasedScore sg = null;

@@ -42,7 +42,7 @@ public abstract class ATCGATask extends RecursiveTask<JsonElement> {
 			String template = IOUtils.readAll(ATCGATask.class.getResourceAsStream("/resources/caleydo.jnlp"));
 			template = template.replaceAll("CALEYDO_PROJECT_URL", projectRemoteOutputURL);
 			template = template.replaceAll("JNLP_NAME", jnlpFile.getName());
-			Files.write(template, jnlpFile, Charset.defaultCharset());
+			Files.write(template, jnlpFile, Charset.forName("UTF-8"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

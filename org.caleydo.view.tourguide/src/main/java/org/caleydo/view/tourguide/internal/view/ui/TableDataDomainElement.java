@@ -9,12 +9,16 @@ import java.util.Collection;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
+import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
 import org.caleydo.view.tourguide.internal.event.SelectDimensionSelectionEvent;
 import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 public class TableDataDomainElement extends ADataDomainElement {
 
@@ -49,7 +53,37 @@ public class TableDataDomainElement extends ADataDomainElement {
 	}
 
 	@Override
-	protected void onFilterEdit(boolean isStartEditing, Object payload) {
+	protected void onFilterEdit(boolean isStartEditing, Object payload, int minSize) {
+		if (isStartEditing) {
+			Display.getDefault().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					new ColumnDataFilterDialog(new Shell()).open();
+				}
+			});
+		} else {
+			getModel().setMinSize(minSize);
+			setHasFilter(getModel().hasFilter());
+		}
+	}
 
+	private class ColumnDataFilterDialog extends AFilterDialog {
+		public ColumnDataFilterDialog(Shell shell) {
+			super(shell, model);
+		}
+
+		@Override
+		public void create() {
+			super.create();
+			getShell().setText("Edit Filter of " + model.getDataDomain().getLabel());
+			this.setBlockOnOpen(false);
+		}
+
+		@Override
+		protected void okPressed() {
+			EventPublisher.trigger(new EditDataDomainFilterEvent("DUMMY", minSizeUI.getSelection())
+					.to(TableDataDomainElement.this));
+			super.okPressed();
+		}
 	}
 }

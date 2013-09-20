@@ -16,7 +16,7 @@ import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.SimpleHistogram;
 import org.caleydo.vis.lineup.model.mixin.ICollapseableColumnMixin;
-import org.caleydo.vis.lineup.model.mixin.IFloatRankableColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.ui.IColumnRenderInfo;
 import org.caleydo.vis.lineup.ui.RenderUtils;
 
@@ -41,9 +41,9 @@ public class ScoreSummary extends GLElement {
 		}
 	};
 	private IRow selectedRow = null;
-	protected final IFloatRankableColumnMixin model;
+	protected final IDoubleRankableColumnMixin model;
 
-	public ScoreSummary(IFloatRankableColumnMixin model, boolean interactive) {
+	public ScoreSummary(IDoubleRankableColumnMixin model, boolean interactive) {
 		this.model = model;
 	}
 

@@ -188,23 +188,25 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		final Table table = tablePerspective.getDataDomain().getTable();
 		final Integer dimensionID = dimensionVA.get(0);
 		for (Integer recordID : recordVA) {
-			int rawValue = table.getRaw(dimensionID, recordID);
+			Number raw = table.getRaw(dimensionID, recordID);
 
 			// check for invalid data
-			if (rawValue == Integer.MIN_VALUE)
+			if (raw == null || (raw instanceof Integer && raw.intValue() == Integer.MIN_VALUE)
+					|| (raw instanceof Float && ((Float) raw).isNaN()))
 				continue;
 
-			if (rawValue > 0)
+			int v = raw.intValue();
+			if (v > 0)
 				containsPositiveValues = true;
-			if (rawValue < 0)
+			if (v < 0)
 				containsNegativeValues = true;
 
 			if (containsPositiveValues && containsNegativeValues) {
 				throw new IllegalStateException(
 						"Data contains positive and negative values. KM plot cannot handle this data.");
 			}
-			if (Math.abs(rawValue) > Math.abs(maxAxisTime))
-				maxAxisTime = rawValue;
+			if (Math.abs(v) > Math.abs(maxAxisTime))
+				maxAxisTime = v;
 		}
 
 		return maxAxisTime;

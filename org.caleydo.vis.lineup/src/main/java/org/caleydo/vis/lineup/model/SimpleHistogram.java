@@ -51,10 +51,10 @@ public class SimpleHistogram implements Iterable<Integer> {
 	 * @param value
 	 * @return
 	 */
-	public int getBinOf(float value) {
-		if (Float.isNaN(value))
+	public int getBinOf(double value) {
+		if (Double.isNaN(value))
 			return -1;
-		return Math.round(value * (bins.length - 1));
+		return (int) Math.round(value * (bins.length - 1));
 	}
 
 	/**
@@ -62,12 +62,12 @@ public class SimpleHistogram implements Iterable<Integer> {
 	 *
 	 * @param value
 	 */
-	public void add(float value) {
-		if (Float.isNaN(value)) {
+	public void add(double value) {
+		if (Double.isNaN(value)) {
 			nans++;
 			return;
 		}
-		int bin = Math.round(value * (bins.length - 1));
+		int bin = (int) Math.round(value * (bins.length - 1));
 		if (bin < 0)
 			bin = 0;
 		if (bin >= bins.length)

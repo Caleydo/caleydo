@@ -8,7 +8,7 @@ package org.caleydo.vis.lineup.ui.detail;
 import static org.caleydo.vis.lineup.ui.RenderStyle.binsForWidth;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.function.IFloatList;
+import org.caleydo.core.util.function.IDoubleSizedIterable;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -29,7 +29,7 @@ import org.caleydo.vis.lineup.ui.RenderUtils;
  */
 public class ScoreFilter extends PickableGLElement implements IPickingListener {
 	protected final AMultiRankColumnModel model;
-	private final IFloatList data;
+	private final IDoubleSizedIterable data;
 
 	private int minPickingId, maxPickingId;
 	private boolean minHovered = false;
@@ -41,7 +41,7 @@ public class ScoreFilter extends PickableGLElement implements IPickingListener {
 	private SimpleHistogram cache = null;
 	private final GLElement summary;
 
-	public ScoreFilter(AMultiRankColumnModel model, IFloatList data, GLElement summary) {
+	public ScoreFilter(AMultiRankColumnModel model, IDoubleSizedIterable data, GLElement summary) {
 		this.model = model;
 		this.data = data;
 		this.summary = summary;
@@ -126,7 +126,7 @@ public class ScoreFilter extends PickableGLElement implements IPickingListener {
 		g.color(model.getBgColor()).fillRect(0, 0, w, h);
 		int bins = binsForWidth(w, data.size());
 		if (cache == null || cache.size() != bins)
-			cache = DataUtils.getHist(bins, data);
+			cache = DataUtils.getHist(bins, data.iterator());
 		RenderUtils.renderHist(g, cache, w, h, -1, model.getColor(), model.getColor().darker(), findRenderInfo()
 				.getBarOutlineColor());
 

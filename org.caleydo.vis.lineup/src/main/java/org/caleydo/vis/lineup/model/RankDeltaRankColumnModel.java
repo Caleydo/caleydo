@@ -16,18 +16,17 @@ import java.util.List;
 
 import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.function.AFloatList;
-import org.caleydo.core.util.function.FloatStatistics;
-import org.caleydo.core.util.function.IFloatList;
+import org.caleydo.core.util.function.DoubleStatistics;
+import org.caleydo.core.util.function.IDoubleSizedIterable;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.vis.lineup.config.IRankTableUIConfig;
 import org.caleydo.vis.lineup.model.mapping.IMappingFunction;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IExplodeableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
-import org.caleydo.vis.lineup.model.mixin.IFloatRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankColumnModel;
@@ -38,7 +37,6 @@ import org.caleydo.vis.lineup.ui.detail.ValueElement;
 import org.caleydo.vis.lineup.ui.mapping.MappingFunctionUIs;
 
 import com.google.common.collect.Iterables;
-import com.google.common.primitives.Floats;
 import com.jogamp.common.util.IntIntHashMap;
 
 /**
@@ -48,7 +46,7 @@ import com.jogamp.common.util.IntIntHashMap;
  *
  */
 public final class RankDeltaRankColumnModel extends ACompositeRankColumnModel implements Cloneable, IMappedColumnMixin,
-		IExplodeableColumnMixin, IHideableColumnMixin, IFloatRankableColumnMixin {
+		IExplodeableColumnMixin, IHideableColumnMixin, IDoubleRankableColumnMixin {
 
 	private final IMappingFunction mapping;
 
@@ -162,24 +160,13 @@ public final class RankDeltaRankColumnModel extends ACompositeRankColumnModel im
 		// can't sort by child
 	}
 
-	private IFloatList asRawData() {
-		final List<IRow> data2 = getTable().getFilteredData();
-		return new AFloatList() {
+	private IDoubleSizedIterable asRawData() {
+		return getTable().getFilteredMappedData(new org.caleydo.vis.lineup.data.ADoubleFunction<IRow>() {
 			@Override
-			public float getPrimitive(int index) {
-				return getRaw(data2.get(index));
+			public double applyPrimitive(IRow row) {
+				return getRaw(row);
 			}
-
-			@Override
-			public int size() {
-				return data2.size();
-			}
-
-			@Override
-			public float[] toPrimitiveArray() {
-				return Floats.toArray(this);
-			}
-		};
+		});
 	}
 
 	@Override
@@ -189,20 +176,20 @@ public final class RankDeltaRankColumnModel extends ACompositeRankColumnModel im
 
 	private void checkMapping() {
 		if (dirtyDataStats) {
-			FloatStatistics stats = FloatStatistics.of(asRawData().iterator());
+			DoubleStatistics stats = DoubleStatistics.of(asRawData().iterator());
 			mapping.setActStatistics(stats);
 			dirtyDataStats = false;
 		}
 	}
 
 	@Override
-	public float applyPrimitive(IRow row) {
-		float value = getRaw(row);
+	public double applyPrimitive(IRow row) {
+		double value = getRaw(row);
 		checkMapping();
 		return mapping.apply(value);
 	}
 
-	protected float getRaw(IRow row) {
+	protected double getRaw(IRow row) {
 		return getDelta(row);
 	}
 
@@ -327,13 +314,13 @@ public final class RankDeltaRankColumnModel extends ACompositeRankColumnModel im
 
 
 	@Override
-	public Float apply(IRow input) {
+	public Double apply(IRow input) {
 		return applyPrimitive(input);
 	}
 
 	@Override
 	public boolean isValueInferred(IRow row) {
-		for (IFloatRankableColumnMixin r : Iterables.filter(this, IFloatRankableColumnMixin.class))
+		for (IDoubleRankableColumnMixin r : Iterables.filter(this, IDoubleRankableColumnMixin.class))
 			if (r.isValueInferred(row))
 				return true;
 		return false;

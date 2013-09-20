@@ -12,8 +12,8 @@ import java.awt.Dimension;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -21,10 +21,15 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.function.ArrayFloatList;
-import org.caleydo.core.util.function.FloatFunctions;
-import org.caleydo.core.util.function.FloatStatistics;
-import org.caleydo.core.util.function.IFloatList;
+import org.caleydo.core.util.function.ArrayDoubleList;
+import org.caleydo.core.util.function.DoubleFunctions;
+import org.caleydo.core.util.function.DoubleSizedIterables;
+import org.caleydo.core.util.function.DoubleStatistics;
+import org.caleydo.core.util.function.IDoubleFunction;
+import org.caleydo.core.util.function.IDoubleIterator;
+import org.caleydo.core.util.function.IDoubleList;
+import org.caleydo.core.util.function.IDoubleSizedIterable;
+import org.caleydo.core.util.function.IDoubleSizedIterator;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -75,7 +80,8 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 	public static final float TEXT_HEIGHT = 50;
 
 	protected final IMappingFunction model;
-	protected final IFloatList raw;
+	protected final IDoubleSizedIterable raw;
+	private final IDoubleSizedIterable sampled;
 
 	protected final Color color;
 	protected final Color backgroundColor;
@@ -90,16 +96,17 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 
 	private final IRankTableUIConfig config;
 
-	public MappingFunctionUI(IMappingFunction model, IFloatList data, Color color, Color bgColor,
+	public MappingFunctionUI(IMappingFunction model, IDoubleSizedIterable data, Color color, Color bgColor,
 			ICallback<? super IMappingFunction> callback, IRankTableUIConfig config) {
 		this.callback = callback;
 		this.config = config;
 		this.model = model;
 		this.raw = data;
+		this.sampled = raw.size() < 1000 ? raw : sample(raw, 1000);
 		this.color = color;
 		this.backgroundColor = bgColor;
 
-		this.add(new RawHistogramElement(raw.map(FloatFunctions.normalize(model.getActMin(), model.getActMax()))));
+		this.add(new RawHistogramElement(raw.map(DoubleFunctions.normalize(model.getActMin(), model.getActMax()))));
 		this.add(new NormalizedHistogramElement());
 		this.add(new CodeElement());
 		ButtonBar buttons = new ButtonBar();
@@ -128,6 +135,82 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		this.add(buttons);
 
 		setLayout(this);
+	}
+
+	/**
+	 * sample the iterable with the given count
+	 *
+	 * @return
+	 */
+	private static IDoubleSizedIterable sample(final IDoubleSizedIterable data, final int count) {
+		final int size = data.size();
+		assert count < size;
+		int[] s = new int[size];
+		for (int i = 0; i < size; ++i)
+			s[i] = i;
+
+		Random rnd = new Random();
+		// shuffle
+		for (int i = size - 1; i >= 1; i--) {
+			int j = rnd.nextInt(i);
+			int t = s[i];
+			s[i] = s[j];
+			s[j] = t;
+		}
+		final int[] indices = Arrays.copyOf(s, count);
+		Arrays.sort(indices); // sort by index
+
+		return new IDoubleSizedIterable() {
+			@Override
+			public int size() {
+				return count;
+			}
+
+			@Override
+			public IDoubleSizedIterable map(IDoubleFunction f) {
+				return DoubleSizedIterables.map(this, f);
+			}
+
+			@Override
+			public IDoubleSizedIterator iterator() {
+				return new IDoubleSizedIterator() {
+					IDoubleSizedIterator it = data.iterator();
+					int act = 0;
+					int i = 0;
+
+					@Override
+					public void remove() {
+						throw new UnsupportedOperationException();
+					}
+
+					@Override
+					public Double next() {
+						return nextPrimitive();
+					}
+
+					@Override
+					public boolean hasNext() {
+						return it.hasNext() && i < indices.length;
+					}
+
+					@Override
+					public double nextPrimitive() {
+						for (; act < indices[i] && it.hasNext(); ++act) { // skip uninteresting indices
+							it.next();
+						}
+						double v = it.next();
+						act++;
+						i++;
+						return v;
+					}
+
+					@Override
+					public int size() {
+						return count;
+					}
+				};
+			}
+		};
 	}
 
 	/**
@@ -251,16 +334,16 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		get(SPECIFIC).repaint();
 	}
 
-	protected float normalizeRaw(float v) {
+	protected double normalizeRaw(double v) {
 		return (v - model.getActMin()) / (model.getActMax() - model.getActMin());
 	}
 
-	protected float inverseNormalize(float n) {
+	protected double inverseNormalize(double n) {
 		return n * (model.getActMax() - model.getActMin()) + model.getActMin();
 	}
 
 	protected SimpleHistogram computeHist(float w) {
-		return DataUtils.getHist(binsForWidth(w, raw.size()), raw.map(model));
+		return DataUtils.getHist(binsForWidth(w, raw.size()), raw.map(model).iterator());
 	}
 
 	protected void renderMapping(GLGraphics g, float w, float h, boolean cross, boolean isNormalLeftTop) {
@@ -268,48 +351,34 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		GL2 gl = g.gl;
 		final float z = g.z();
 		gl.glBegin(GL.GL_LINES);
-		if (raw.size() < 1000) {
-			for (int i = 0; i < raw.size(); ++i) {
-				renderLine(w, h, gl, z, i, cross, isNormalLeftTop);
-			}
-		} else {
-			// sample 1000 elements
-			List<Integer> r = new ArrayList<>(1000);
-			for (int i = 0; i < 1000; ++i)
-				r.add(i);
-			Collections.shuffle(r);
-			for (int i = 0; i < 1000; ++i) {
-				int index = r.get(i);
-				renderLine(w, h, gl, z, index, cross, isNormalLeftTop);
-			}
-		}
-
+		for (IDoubleIterator it = sampled.iterator(); it.hasNext();)
+			renderLine(w, h, gl, z, it.nextPrimitive(), cross, isNormalLeftTop);
 		gl.glEnd();
 	}
 
-	private void renderLine(float w, float h, GL2 gl, final float z, int index, boolean cross, boolean isNormalLeftTop) {
-		float v = raw.getPrimitive(index);
+	private void renderLine(float w, float h, GL2 gl, final float z, double v, boolean cross, boolean isNormalLeftTop) {
 		if (cross) {
-			float x = normalizeRaw(v) * w;
-			float y = (1 - model.apply(v)) * h;
+			float x = (float) normalizeRaw(v) * w;
+			float y = (float) (1 - model.apply(v)) * h;
 			gl.glVertex3f(x, h, z);
 			gl.glVertex3f(isNormalLeftTop ? 0 : w, y, z);
 		} else if (isNormalLeftTop) { // horizontal parallel
-			float x = normalizeRaw(v) * w;
-			float y = model.apply(v) * w;
+			float x = (float) normalizeRaw(v) * w;
+			float y = (float) model.apply(v) * w;
 			gl.glVertex3f(x, h, z);
 			gl.glVertex3f(y, 0, z);
 		} else { // vertical parallel
-			float x = (1 - normalizeRaw(v)) * h;
-			float y = (1 - model.apply(v)) * h;
+			float x = (float) (1 - normalizeRaw(v)) * h;
+			float y = (float) (1 - model.apply(v)) * h;
 			gl.glVertex3f(0, x, z);
 			gl.glVertex3f(w, y, z);
 		}
 	}
 
 	class RawHistogramElement extends HistogramElement {
-		private IFloatList data;
-		private RawHistogramElement(IFloatList raw) {
+		private IDoubleSizedIterable data;
+
+		private RawHistogramElement(IDoubleSizedIterable raw) {
 			super("Raw", color, backgroundColor);
 			this.data = raw;
 		}
@@ -317,19 +386,19 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			super.renderImpl(g, w, h);
 			boolean vertical = w < h;
-			float[] m = model.getMappedMin();
-			float minM = Float.NaN;
+			double[] m = model.getMappedMin();
+			double minM = Double.NaN;
 			if (m[0] > model.getActMin()) {
 				minM = normalizeRaw(m[0]);
 			}
-			float maxM = Float.NaN;
+			double maxM = Double.NaN;
 			m = model.getMappedMax();
 			if (m[0] < model.getActMax()) {
 				maxM = normalizeRaw(m[0]);
 			}
-
 			SimpleHistogram hist = DataUtils
-					.getHist(binsForWidth((vertical ? h : w) - LABEL_HEIGHT, data.size()), data);
+.getHist(binsForWidth((vertical ? h : w) - LABEL_HEIGHT, data.size()),
+					data.iterator());
 			render(g, vertical, model.getActMin(), model.getActMax(), w, h, minM, maxM, hist,
 					getLayoutDataAs(Boolean.class, Boolean.FALSE));
 		}
@@ -343,12 +412,12 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			super.renderImpl(g, w, h);
 			boolean vertical = w < h;
-			float minM = model.getMinTo();
+			double minM = model.getMinTo();
 			if (minM <= 0)
-				minM = Float.NaN;
-			float maxM = model.getMaxTo();
+				minM = Double.NaN;
+			double maxM = model.getMaxTo();
 			if (maxM >= 1)
-				maxM = Float.NaN;
+				maxM = Double.NaN;
 			render(g, vertical, 0, 1, w, h, minM, maxM, computeHist((vertical ? h : w) - LABEL_HEIGHT),
 					getLayoutDataAs(Boolean.class, Boolean.FALSE));
 		}
@@ -379,7 +448,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 
 	public static void main(String[] args) {
 		PiecewiseMapping model;
-		float[] arr;
+		double[] arr;
 		{
 			model = new PiecewiseMapping(0, 100);
 			// linear
@@ -419,9 +488,9 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 					"31.1 19.6 20.4 32.9 49.4 85.8 43.4 27.2 22.6 31.5 39.4 13.6 52.4 36.1 69.3 43.4 " + //
 					"54.8 41.3 50.3 40.6 51.9 39.7 37.5 37.4 42.7 61.6 39.5 43.2 49.9 41.9 49 45 61.9 45.4";
 			String[] vs = values.split(" ");
-			arr = new float[vs.length];
+			arr = new double[vs.length];
 			for (int i = 0; i < arr.length; ++i)
-				arr[i] = Float.parseFloat(vs[i]);
+				arr[i] = Double.parseDouble(vs[i]);
 		}
 		// {
 		// model = new PiecewiseMapping(-1, 1);
@@ -449,8 +518,8 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 
 
 
-		IFloatList data = new ArrayFloatList(arr);
-		FloatStatistics s = FloatStatistics.of(data.iterator());
+		IDoubleList data = new ArrayDoubleList(arr);
+		DoubleStatistics s = DoubleStatistics.of(data.iterator());
 		model.setActStatistics(s);
 		final MappingFunctionUI root = new MappingFunctionUI(model, data, new Color("#9ECAE1"), new Color("#DEEBF7"),
 				null, RankTableUIConfigs.DEFAULT);

@@ -5,6 +5,9 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
+import static org.caleydo.view.tourguide.internal.view.col.CategoricalPercentageRankColumnModel.create;
+import static org.caleydo.view.tourguide.internal.view.col.CategoricalPercentageRankColumnModel.isConsideredForCalculation;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -36,6 +39,7 @@ import org.caleydo.core.util.base.Labels;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.view.tourguide.api.prefs.MyPreferences;
 import org.caleydo.view.tourguide.internal.view.col.CategoricalPercentageRankColumnModel;
 import org.caleydo.vis.lineup.model.ACompositeRankColumnModel;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
@@ -73,6 +77,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 			this.categoryIDType = dataDomain.getDimensionIDType();
 			this.categories = dataDomain.getTable().getDefaultDimensionPerspective(false).getVirtualArray();
 		}
+		setMinSize(MyPreferences.getMinClusterSize());
 	}
 
 	@Override
@@ -102,7 +107,10 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		return !selected.isEmpty();
 	}
 
+	@Override
 	public boolean apply(Group group) {
+		if (!super.apply(group))
+			return false;
 		for (CategoryProperty<?> s : selected) {
 			if (Objects.equals(s.getCategoryName(), group.getLabel()))
 				return true;
@@ -142,7 +150,6 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 			updateFilter();
 		else
 			propertySupport.firePropertyChange(PROP_GROUP_SELECTION, bak, this.selected);
-
 	}
 
 	/**
@@ -153,13 +160,8 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
-	public boolean hasFilter() {
+	protected boolean hasFilterImpl() {
 		return selected.size() < getCategories().size();
-	}
-
-	@Override
-	public boolean isFilteringPossible() {
-		return true;
 	}
 
 	/**
@@ -339,7 +341,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		GroupRankColumnModel group = new GroupRankColumnModel(d.getLabel() + " Metrics", color, color.brighter());
 		table.add(group);
 		for (CategoryProperty<?> p : ctable.getCategoryDescriptions().getCategoryProperties()) {
-			group.add(CategoricalPercentageRankColumnModel.create(p.getCategory(), ctable, selected.contains(p)));
+			group.add(create(p.getCategory(), ctable, selected.contains(p)));
 		}
 		group = new GroupRankColumnModel(d.getLabel() + " Groupings", color, color.brighter());
 		for (String id : d.getDimensionPerspectiveIDs()) {
@@ -353,11 +355,39 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		}
 	}
 
-	/**
-	 * @param va
-	 * @return
-	 */
-	private ARankColumnModel createCategoricalFromGroupList(String label, final VirtualArray va) {
+	@Override
+	public void removeSpecificColumns(RankTableModel table) {
+		List<ARankColumnModel> toDestroy = new ArrayList<>();
+		flat(table.getColumns().iterator(), toDestroy);
+		for (ARankColumnModel r : toDestroy) {
+			r.hide();
+			r.destroy();
+		}
+	}
+
+	@Override
+	public void updateSpecificColumns(RankTableModel table) {
+		final CategoricalTable<?> ctable = (CategoricalTable<?>) getDataDomain().getTable();
+		for (CategoricalPercentageRankColumnModel c : Iterables.filter(table.getFlatColumns(),
+				CategoricalPercentageRankColumnModel.class)) {
+			if (c.getDataDomain() != dataDomain)
+				continue;
+			final CategoryProperty<?> category = c.getCategory();
+			boolean active = selected.contains(category);
+			boolean wasActive = isConsideredForCalculation(c);
+
+			if (active != wasActive) {
+				final CategoricalPercentageRankColumnModel new_ = create(category.getCategory(), ctable, active);
+				new_.setWidth(c.getWidth());
+				new_.setCollapsed(c.isCollapsed());
+				new_.setFilter(c.isFilterNotMappedEntries(), c.isFilterMissingEntries(), c.isGlobalFilter(),
+						c.isRankIndependentFilter());
+				c.getParent().replace(c, new_);
+			}
+		}
+	}
+
+	private static ARankColumnModel createCategoricalFromGroupList(String label, final VirtualArray va) {
 		Collection<String> items = new ArrayList<>();
 		for (Group g : va.getGroupList()) {
 			items.add(g.getLabel());
@@ -381,17 +411,6 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		return MultiCategoricalRankColumnModel.createSimple(GLRenderers.drawText(label, VAlign.CENTER), toGroup, items,
 				"");
 	}
-
-	@Override
-	public void removeSpecificColumns(RankTableModel table) {
-		List<ARankColumnModel> toDestroy = new ArrayList<>();
-		flat(table.getColumns().iterator(), toDestroy);
-		for (ARankColumnModel r : toDestroy) {
-			r.hide();
-			r.destroy();
-		}
-	}
-
 	private void flat(Iterator<ARankColumnModel> cols, List<ARankColumnModel> toDestroy) {
 		while (cols.hasNext()) {
 			ARankColumnModel col = cols.next();

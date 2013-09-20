@@ -6,6 +6,8 @@
 package org.caleydo.data.tcga.internal.model;
 
 import java.net.URL;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -19,6 +21,9 @@ public class TumorProject implements Comparable<TumorProject> {
 	private URL project;
 	@SerializedName("Firehose Report")
 	private URL report;
+
+	private Map<String, AdditionalInfo> genomic = new LinkedHashMap<>();
+	private Map<String, ClinicalInfo> nonGenomic = new LinkedHashMap<>();
 
 	private transient Run parent;
 
@@ -75,6 +80,20 @@ public class TumorProject implements Comparable<TumorProject> {
 	@Override
 	public int compareTo(TumorProject o) {
 		return tumorAbbreviation.compareToIgnoreCase(o.tumorAbbreviation);
+	}
+
+	/**
+	 * @return the genomic, see {@link #genomic}
+	 */
+	public Map<String, AdditionalInfo> getGenomic() {
+		return genomic;
+	}
+
+	/**
+	 * @return the nonGenomic, see {@link #nonGenomic}
+	 */
+	public Map<String, ClinicalInfo> getNonGenomic() {
+		return nonGenomic;
 	}
 
 	@Override

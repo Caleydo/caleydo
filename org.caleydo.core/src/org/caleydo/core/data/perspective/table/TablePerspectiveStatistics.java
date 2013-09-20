@@ -423,14 +423,15 @@ public class TablePerspectiveStatistics {
 
 				if (value != null && !value.isNaN()) {
 					sumOfValues += value;
-					sqrSum += Math.pow(value, 2);
+					sqrSum += value * value; // Math.pow(value, 2);
 					nrValidValues++;
 				}
 			}
 		}
 		averageDimension.arithmeticMean = sumOfValues / nrValidValues;
 		averageDimension.standardDeviation = Math.sqrt(sqrSum / nrValidValues
-				- (Math.pow(averageDimension.arithmeticMean, 2)));
+				- ((averageDimension.arithmeticMean * averageDimension.arithmeticMean)));// Math.pow(averageDimension.arithmeticMean,
+																							// 2)));
 
 		return averageDimension;
 	}

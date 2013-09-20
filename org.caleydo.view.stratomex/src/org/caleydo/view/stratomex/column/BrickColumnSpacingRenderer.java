@@ -13,6 +13,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -30,7 +31,6 @@ import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
-import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
@@ -55,18 +55,21 @@ import org.eclipse.core.runtime.Status;
  */
 public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDropArea {
 
-	public static float[] DRAG_AND_DROP_MARKER_COLOR = { 0.5f, 0.5f, 0.5f };
+	public static final float[] DRAG_AND_DROP_MARKER_COLOR = { 0.5f, 0.5f, 0.5f };
 
-	private int ID;
+	private final int ID = IDCreator.createVMUniqueID(BrickColumnSpacingRenderer.class);
 
 	private boolean renderDragAndDropMarker = false;
 
 	private boolean isVertical = true;
 
 	/** The DimensionGroup left of the spacer */
-	private BrickColumn leftDimGroup;
+	private final BrickColumn leftDimGroup;
 	/** The DimensionGroup right of the spacer */
-	private BrickColumn rightDimGroup;
+	private final BrickColumn rightDimGroup;
+
+	private final BlockAdapter leftBlock;
+	private final BlockAdapter rightBlock;
 
 	private RelationAnalyzer relationAnalyzer;
 
@@ -79,19 +82,17 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 	private boolean hovered = false;
 
 	public BrickColumnSpacingRenderer(RelationAnalyzer relationAnalyzer, ConnectionBandRenderer connectionRenderer,
-			BrickColumn leftDimGroup, BrickColumn rightDimGroup, GLStratomex glVisBricksView) {
+			BlockAdapter leftDimGroup, BlockAdapter rightDimGroup, GLStratomex glVisBricksView) {
 
 		this.relationAnalyzer = relationAnalyzer;
-		this.leftDimGroup = leftDimGroup;
-		this.rightDimGroup = rightDimGroup;
+		this.leftDimGroup = leftDimGroup == null ? null : leftDimGroup.asBrickColumn();
+		this.rightDimGroup = rightDimGroup == null ? null : rightDimGroup.asBrickColumn();
+		this.leftBlock = leftDimGroup;
+		this.rightBlock = rightDimGroup;
 		this.connectionRenderer = connectionRenderer;
 		this.stratomex = glVisBricksView;
 
 		stratomex.getBrickColumnManager().getBrickColumnSpacers().put(ID, this);
-	}
-
-	{
-		ID = IDCreator.createVMUniqueID(BrickColumnSpacingRenderer.class);
 	}
 
 	public void init() {
@@ -371,8 +372,11 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 		final int pickingID = stratomex.getPickingManager().getPickingID(stratomex.getID(),
 				EPickingType.DIMENSION_GROUP_SPACER_HEADER.name(), ID);
 
+		IHasHeader left = leftBlock == null ? null : leftBlock.asHeader();
+		IHasHeader right = rightBlock == null ? null : rightBlock.asHeader();
+
 		// handle situation where no group is contained in center arch
-		if (leftDimGroup == null && rightDimGroup == null && stratomex != null) {
+		if (left == null && right == null && stratomex != null) {
 
 			leftCenterBrickBottom = stratomex.getArchBottomY();
 			leftCenterBrickTop = stratomex.getArchTopY();
@@ -381,19 +385,15 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 			rightCenterBrickTop = stratomex.getArchTopY();
 		}
 
-		if (leftDimGroup != null) {
-			if (leftDimGroup.isDetailBrickShown() && !leftDimGroup.isExpandLeft()) {
+		if (left != null) {
+			if (left.abort()) {
 				return;
 			}
 
-			GLBrick leftCenterBrick = leftDimGroup.getHeaderBrick();
-
-			ElementLayout layout = leftCenterBrick.getLayout();
-			leftCenterBrickBottom = layout.getTranslateY();
-			leftCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledY();
-
-			if (!leftDimGroup.isDetailBrickShown())
-				xStart = leftDimGroup.getLayout().getTranslateX() - leftCenterBrick.getLayout().getTranslateX();
+			leftCenterBrickBottom = left.getHeaderBrickBottom();
+			leftCenterBrickTop = left.getHeaderBrickTop();
+			if (!left.isDetailBrickShown())
+				xStart = left.getOffset();
 
 			// Render straight band connection from center brick to dimension
 			// group on
@@ -412,26 +412,22 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 			}
 
 		} else {
-			if (rightDimGroup != null) {
+			if (right != null) {
 				leftCenterBrickBottom = stratomex.getArchBottomY();
 				leftCenterBrickTop = stratomex.getArchTopY();
 
 			}
 		}
 
-		if (rightDimGroup != null) {
-			if (rightDimGroup.isDetailBrickShown() && rightDimGroup.isExpandLeft())
+		if (right != null) {
+			if (right.abort())
 				return;
-			GLBrick rightCenterBrick = rightDimGroup.getHeaderBrick();
-
-			ElementLayout layout = rightCenterBrick.getLayout();
-			rightCenterBrickBottom = layout.getTranslateY();
-			rightCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledY();
-
-			if (!rightDimGroup.isDetailBrickShown())
-				xEnd = x + rightCenterBrick.getLayout().getTranslateX() - rightDimGroup.getLayout().getTranslateX();
+			rightCenterBrickBottom = right.getHeaderBrickBottom();
+			rightCenterBrickTop = right.getHeaderBrickTop();
+			if (!right.isDetailBrickShown())
+				xEnd = x - right.getOffset();
 			else
-				xEnd = rightCenterBrick.getLayout().getTranslateX();
+				xEnd = right.getHeaderOffset();
 
 			// Render straight band connection from header brick to dimension
 			// group on
@@ -452,7 +448,7 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 			}
 
 		} else {
-			if (leftDimGroup != null) {
+			if (left != null) {
 				rightCenterBrickBottom = stratomex.getArchBottomY();
 				rightCenterBrickTop = stratomex.getArchTopY();
 
@@ -478,12 +474,12 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 	}
 
 	private static void drawQuad(GL2 gl, float x, float y, float w, float h) {
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glColor4f(1, 1, 1, 0);
-		gl.glVertex3f(x, y, 1.f);
-		gl.glVertex3f(x + w, y, 1.f);
-		gl.glVertex3f(x + w, y + h, 1.f);
-		gl.glVertex3f(x, y + h, 1.f);
+		gl.glVertex3f(x, y, 0.1f);
+		gl.glVertex3f(x + w, y, 0.1f);
+		gl.glVertex3f(x + w, y + h, 0.1f);
+		gl.glVertex3f(x, y + h, 0.1f);
 		gl.glEnd();
 	}
 
@@ -558,8 +554,8 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 		}
 	}
 
-	private void renderBand(GL2 gl, SubGroupMatch subGroupMatch, Color c, float curveOffset, float xStart,
-			float xEnd, float ratio, float trendRatio, boolean justOutline) {
+	private void renderBand(GL2 gl, SubGroupMatch subGroupMatch, Color c, float curveOffset, float xStart, float xEnd,
+			float ratio, float trendRatio, boolean justOutline) {
 		float leftYDiff = subGroupMatch.getLeftAnchorYTop() - subGroupMatch.getLeftAnchorYBottom();
 		float leftYDiffSelection = leftYDiff * ratio;
 
@@ -616,7 +612,6 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 				connectionRenderer.renderStraightBandOutline(gl, lt, lb, rt, rb, c);
 		}
 
-
 		// FIXME Stratomex 2.0 testing
 
 		// glVisBricks.getTextRenderer().begin3DRendering();
@@ -672,8 +667,7 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 			}
 		} else {
 
-			float maxRatio = Math.max(subGroupMatch.getLeftSimilarityRatio(),
-					subGroupMatch.getRightSimilarityRatio());
+			float maxRatio = Math.max(subGroupMatch.getLeftSimilarityRatio(), subGroupMatch.getRightSimilarityRatio());
 			if (maxRatio < 0.3f)
 				trendRatio = (stratomex.getConnectionsFocusFactor() - maxRatio);
 			else
@@ -740,14 +734,6 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 
 	public BrickColumn getRightDimGroup() {
 		return rightDimGroup;
-	}
-
-	public void setLeftDimGroup(BrickColumn leftDimGroup) {
-		this.leftDimGroup = leftDimGroup;
-	}
-
-	public void setRightDimGroup(BrickColumn rightDimGroup) {
-		this.rightDimGroup = rightDimGroup;
 	}
 
 	@Override

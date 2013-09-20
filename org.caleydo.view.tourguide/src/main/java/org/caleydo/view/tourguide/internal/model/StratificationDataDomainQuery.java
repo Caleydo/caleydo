@@ -18,6 +18,7 @@ import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.view.tourguide.api.prefs.MyPreferences;
 import org.caleydo.vis.lineup.model.RankTableModel;
 
 /**
@@ -34,6 +35,7 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 
 	public StratificationDataDomainQuery(ATableBasedDataDomain dataDomain) {
 		super(dataDomain);
+		setMinSize(MyPreferences.getMinClusterSize());
 	}
 
 	@Override
@@ -155,12 +157,7 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 
 
 	@Override
-	public boolean hasFilter() {
-		return false;
-	}
-
-	@Override
-	public boolean isFilteringPossible() {
+	protected boolean hasFilterImpl() {
 		return false;
 	}
 
@@ -182,6 +179,11 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 
 	@Override
 	public void removeSpecificColumns(RankTableModel table) {
+
+	}
+
+	@Override
+	public void updateSpecificColumns(RankTableModel table) {
 
 	}
 

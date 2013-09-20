@@ -55,8 +55,8 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		for (IGLLayoutElement point : children) {
 			Point p = (Point) point.asElement();
-			float x_v = w * (normalizeRaw(p.from));
-			float y_v = h * (1 - p.to);
+			float x_v = w * ((float) normalizeRaw(p.from));
+			float y_v = h * (float) (1 - p.to);
 			point.setBounds(x_v, y_v, 3, 3);
 		}
 	}
@@ -73,12 +73,12 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 		this.clear();
 		if (model.isDefinedMapping()) {
 			if (model.isMappingDefault()) {
-				if (Float.isNaN(model.getFromMin()))
+				if (Double.isNaN(model.getFromMin()))
 					this.add(new Point(model.getActMin(), 0, true));
-				if (Float.isNaN(model.getFromMax()))
+				if (Double.isNaN(model.getFromMax()))
 					this.add(new Point(model.getActMax(), 1, true));
 			}
-			for (Map.Entry<Float, Float> entry : model) {
+			for (Map.Entry<Double, Double> entry : model) {
 				this.add(new Point(entry.getKey(), entry.getValue(), false));
 			}
 		}
@@ -156,7 +156,7 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 
 	private void drawHintLines(GLGraphics g, Vec2f loc, float w, float h) {
 		Vec2f size = getSize();
-		float from = inverseNormalize(loc.x() / size.x());
+		double from = inverseNormalize(loc.x() / size.x());
 		float to = (size.y() - loc.y()) / size.y();
 		g.textColor(Color.GRAY);
 		if (isNormalLeft) {
@@ -225,7 +225,7 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 		fireCallback();
 	}
 
-	protected void onAddPoint(float from, float to) {
+	protected void onAddPoint(double from, double to) {
 		Vec2f size = getSize();
 
 		from = from / size.x();
@@ -275,16 +275,16 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 		if (dx == 0 && dy == 0) // no change
 			return;
 		Vec2f size = getSize();
-		float from = normalizeRaw(point.from) + dx / (size.x());
-		float to = point.to - dy / (size.y());
+		double from = normalizeRaw(point.from) + dx / (size.x());
+		double to = point.to - dy / (size.y());
 		updateMapping(point, from, to);
 		repaintMapping();
 		this.relayout();
 	}
 
-	private void updateMapping(Point current, float from, float to) {
-		float oldFrom = current.from;
-		float oldTo = current.to;
+	private void updateMapping(Point current, double from, double to) {
+		double oldFrom = current.from;
+		double oldTo = current.to;
 
 		from = (from < 0 ? 0 : (from > 1 ? 1 : from));
 		to = (to < 0 ? 0 : (to > 1 ? 1 : to));
@@ -298,16 +298,16 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 	private class Point extends PickableGLElement {
 		private boolean hovered;
 		private boolean pseudo;
-		private float from;
-		private float to;
+		private double from;
+		private double to;
 
-		public Point(float from, float to, boolean pseudo) {
+		public Point(double from, double to, boolean pseudo) {
 			this.from = from;
 			this.to = to;
 			this.pseudo = pseudo;
 		}
 
-		public void set(float from, float to) {
+		public void set(double from, double to) {
 			this.from = from;
 			this.to = to;
 		}

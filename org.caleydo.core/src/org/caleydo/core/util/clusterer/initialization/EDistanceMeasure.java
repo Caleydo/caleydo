@@ -49,6 +49,13 @@ public enum EDistanceMeasure {
 	}
 
 	/**
+	 * @return the impl, see {@link #impl}
+	 */
+	public IDistanceMeasure getImpl() {
+		return impl;
+	}
+
+	/**
 	 * @return the name, see {@link #name}
 	 */
 	public String getName() {

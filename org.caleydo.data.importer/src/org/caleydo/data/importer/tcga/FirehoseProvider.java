@@ -103,53 +103,56 @@ public final class FirehoseProvider {
 				+ tumor + System.getProperty("file.separator"));
 	}
 
-	private Pair<File, Boolean> findStandardSampledClusteredFile(EDataSetType type) {
+	private Pair<TCGAFileInfo, Boolean> findStandardSampledClusteredFile(EDataSetType type) {
 		return Pair.make(
 				extractAnalysisRunFile("outputprefix.expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL),
 				false);
 	}
 
-	public Pair<File, Boolean> findRPPAMatrixFile(boolean loadFullGenes) {
+	public Pair<TCGAFileInfo, Boolean> findRPPAMatrixFile(boolean loadFullGenes) {
 		return findStandardSampledClusteredFile(EDataSetType.RPPA);
 	}
 
-	public Pair<File, Boolean> findMethylationMatrixFile(boolean loadFullGenes) {
+	public Pair<TCGAFileInfo, Boolean> findMethylationMatrixFile(boolean loadFullGenes) {
 		return findStandardSampledClusteredFile(EDataSetType.methylation);
 	}
 
-	public Pair<File, Boolean> findmRNAMatrixFile(boolean loadFullGenes) {
+	public Pair<TCGAFileInfo, Boolean> findmRNAMatrixFile(boolean loadFullGenes) {
 		if (loadFullGenes) {
-			File r = extractAnalysisRunFile(getFileName(".medianexp.txt"), "mRNA_Preprocess_Median", LEVEL);
+			TCGAFileInfo r = extractAnalysisRunFile(getFileName(".medianexp.txt"), "mRNA_Preprocess_Median", LEVEL);
 			if (r != null)
 				return Pair.make(r, true);
 		}
 		return findStandardSampledClusteredFile(EDataSetType.mRNA);
 	}
 
-	public Pair<File, Boolean> findmRNAseqMatrixFile(boolean loadFullGenes) {
+	public Pair<TCGAFileInfo, Boolean> findmRNAseqMatrixFile(boolean loadFullGenes) {
 		if (loadFullGenes) {
-			File r = extractDataRunFile(".uncv2.mRNAseq_RSEM_normalized_log2.txt", "mRNAseq_Preprocess", LEVEL);
+			TCGAFileInfo r = extractDataRunFile(".uncv2.mRNAseq_RSEM_normalized_log2.txt", "mRNAseq_Preprocess", LEVEL);
 			if (r == null)
 				r = extractDataRunFile(".uncv1.mRNAseq_RPKM_log2.txt",
 						"mRNAseq_Preprocess", LEVEL);
+			if (r == null)
+				r = extractDataRunFile(".mRNAseq_RPKM_log2.txt", "mRNAseq_Preprocess", LEVEL);
 			if (r != null)
 				return Pair.make(r, true);
 		}
 		return findStandardSampledClusteredFile(EDataSetType.mRNAseq);
 	}
 
-	public Pair<File, Boolean> findmicroRNAMatrixFile(boolean loadFullGenes) {
+	public Pair<TCGAFileInfo, Boolean> findmicroRNAMatrixFile(boolean loadFullGenes) {
 		if (loadFullGenes) {
-			File r = extractDataRunFile(".miR_expression.txt", "miR_Preprocess", LEVEL);
+			TCGAFileInfo r = extractDataRunFile(".miR_expression.txt", "miR_Preprocess", LEVEL);
 			if (r != null)
 				return Pair.make(r, true);
 		}
 		return findStandardSampledClusteredFile(EDataSetType.microRNA);
 	}
 
-	public Pair<File, Boolean> findmicroRNAseqMatrixFile(boolean loadFullGenes) {
+	public Pair<TCGAFileInfo, Boolean> findmicroRNAseqMatrixFile(boolean loadFullGenes) {
 		if (loadFullGenes) {
-			File r = extractAnalysisRunFile(getFileName(".uncv2.miRseq_RSEM_normalized_log2.txt"), "miRseq_Preprocess",
+			TCGAFileInfo r = extractAnalysisRunFile(getFileName(".uncv2.miRseq_RSEM_normalized_log2.txt"),
+					"miRseq_Preprocess",
 					LEVEL);
 			if (r == null)
 				r = extractAnalysisRunFile(getFileName(".miRseq_RPKM_log2.txt"), "miRseq_Preprocess",
@@ -160,26 +163,26 @@ public final class FirehoseProvider {
 		return findStandardSampledClusteredFile(EDataSetType.microRNAseq);
 	}
 
-	public File findHiearchicalGrouping(EDataSetType type) {
+	public TCGAFileInfo findHiearchicalGrouping(EDataSetType type) {
 		return extractAnalysisRunFile(getFileName(".allclusters.txt"), type.getTCGAAbbr()
 				+ "_Clustering_Consensus", LEVEL);
 	}
 
-	public File findCNMFGroupingFile(EDataSetType type) {
+	public TCGAFileInfo findCNMFGroupingFile(EDataSetType type) {
 		return extractAnalysisRunFile("cnmf.membership.txt", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL);
 	}
 
-	public File findCopyNumberFile() {
+	public TCGAFileInfo findCopyNumberFile() {
 		return extractAnalysisRunFile("all_thresholded.by_genes.txt", "CopyNumber_Gistic2", LEVEL);
 	}
 
-	public File findClinicalDataFile() {
+	public TCGAFileInfo findClinicalDataFile() {
 		return extractDataRunFile(".clin.merged.txt", "Merge_Clinical", 1);
 	}
 
-	public Pair<File, Integer> findMutationFile() {
+	public Pair<TCGAFileInfo, Integer> findMutationFile() {
 		int startColumn = 8;
-		File mutationFile = null;
+		TCGAFileInfo mutationFile = null;
 		if (relevantDate.get(Calendar.YEAR) < 2013) { // test only for the <= 2012
 			mutationFile = extractAnalysisRunFile(getFileName(".per_gene.mutation_counts.txt"),
 					"Mutation_Significance", LEVEL);
@@ -190,7 +193,7 @@ public final class FirehoseProvider {
 		}
 		if (mutationFile == null) {
 			// TODO always the -TP version
-			File maf = null;
+			TCGAFileInfo maf = null;
 			if ( !this.settings.isAwgRun() ) {
 				maf = extractAnalysisRunFile(tumor + "-TP.final_analysis_set.maf",
 						"MutSigNozzleReport2.0", LEVEL);
@@ -200,8 +203,8 @@ public final class FirehoseProvider {
 						"MutSigNozzleReport2.0", LEVEL);
 			}
 			if (maf != null) {
-				mutationFile = parseMAF(maf);
-				startColumn = 1;
+				return Pair.make(
+						new TCGAFileInfo(parseMAF(maf.getFile()), maf.getArchiveURL(), maf.getSourceFileName()), 1);
 			}
 		}
 		return Pair.make(mutationFile, startColumn);
@@ -214,15 +217,16 @@ public final class FirehoseProvider {
 		return settings.getReportUrl(analysisRun, tumor);
 	}
 
-	private File extractAnalysisRunFile(String fileName, String pipelineName, int level) {
+	private TCGAFileInfo extractAnalysisRunFile(String fileName, String pipelineName, int level) {
 		return extractFile(fileName, pipelineName, level, true, false);
 	}
 
-	private File extractDataRunFile(String fileName, String pipelineName, int level) {
+	private TCGAFileInfo extractDataRunFile(String fileName, String pipelineName, int level) {
 		return extractFile(fileName, pipelineName, level, false, true);
 	}
 
-	private File extractFile(String fileName, String pipelineName, int level, boolean isAnalysisRun, boolean hasTumor) {
+	private TCGAFileInfo extractFile(String fileName, String pipelineName, int level, boolean isAnalysisRun,
+			boolean hasTumor) {
 		Date id = isAnalysisRun ? analysisRun : dataRun;
 
 		String label = "unknown";
@@ -244,13 +248,14 @@ public final class FirehoseProvider {
 		}
 	}
 
-	private File extractFileFromTarGzArchive(URL inUrl, String fileToExtract, File outputDirectory, boolean hasTumor) {
+	private TCGAFileInfo extractFileFromTarGzArchive(URL inUrl, String fileToExtract, File outputDirectory,
+			boolean hasTumor) {
 		log.info("downloading: " + inUrl);
 		File targetFile = new File(outputDirectory, fileToExtract);
 
 		// use cached
 		if (targetFile.exists() && !settings.isCleanCache())
-			return targetFile;
+			return new TCGAFileInfo(targetFile, inUrl.toString(), fileToExtract);
 
 		File notFound = new File(outputDirectory, fileToExtract + "-notfound");
 		if (notFound.exists() && !settings.isCleanCache()) {
@@ -258,7 +263,9 @@ public final class FirehoseProvider {
 			return null;
 		}
 
+		String alternativeName = fileToExtract;
 		if (hasTumor) {
+			alternativeName = "/" + tumor.getBaseName() + fileToExtract;
 			fileToExtract = "/" + tumor + fileToExtract;
 		}
 
@@ -273,7 +280,7 @@ public final class FirehoseProvider {
 
 			// search the correct entry
 			ArchiveEntry act = tarIn.getNextEntry();
-			while (act != null && !act.getName().endsWith(fileToExtract)) {
+			while (act != null && !act.getName().endsWith(fileToExtract) && !act.getName().endsWith(alternativeName)) {
 				act = tarIn.getNextEntry();
 			}
 			if (act == null) // no entry found
@@ -291,7 +298,7 @@ public final class FirehoseProvider {
 			out.close();
 			Files.move(new File(tmpFile).toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			System.out.println("I: Extracted " + fileToExtract + " from " + inUrl + ".");
-			return targetFile;
+			return new TCGAFileInfo(targetFile, inUrl.toString(), fileToExtract);
 		} catch (FileNotFoundException e) {
 			log.warning("Unable to extract " + fileToExtract + " from " + inUrl + ". " + "file not found");
 			// file was not found, create a marker to remember this for quicker checks
@@ -330,7 +337,7 @@ public final class FirehoseProvider {
 		System.out.println("parsing maf file " + maf.getAbsolutePath());
 		final String TAB = "\t";
 
-		try (BufferedReader reader = Files.newBufferedReader(maf.toPath(), Charset.defaultCharset())) {
+		try (BufferedReader reader = Files.newBufferedReader(maf.toPath(), Charset.forName("UTF-8"))) {
 			List<String> header = Arrays.asList(reader.readLine().split(TAB));
 			int geneIndex = header.indexOf("Hugo_Symbol");
 			int sampleIndex = header.indexOf("Tumor_Sample_Barcode");

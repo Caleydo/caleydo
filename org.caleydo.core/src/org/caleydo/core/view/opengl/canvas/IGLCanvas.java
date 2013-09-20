@@ -12,11 +12,12 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.util.base.ILabeled;
-import org.caleydo.core.util.function.IFloatFunction;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.eclipse.swt.widgets.Composite;
+
+import com.google.common.base.Function;
 
 /**
  * @author Samuel Gratzl
@@ -89,7 +90,7 @@ public interface IGLCanvas {
 	/**
 	 * @return a function that implements {@link #toRawPixel(float)}
 	 */
-	IFloatFunction toRawPixelFunction();
+	Function<Float, Float> toRawPixelFunction();
 
 	GLAutoDrawable asGLAutoDrawAble();
 

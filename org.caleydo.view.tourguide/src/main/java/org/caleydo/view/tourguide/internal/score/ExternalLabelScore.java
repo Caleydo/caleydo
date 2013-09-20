@@ -29,7 +29,7 @@ import com.google.common.base.Objects;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class ExternalLabelScore extends AExternalScore implements ISerializeableScore {
-	private Map<String, Float> scores = new HashMap<>();
+	private Map<String, Double> scores = new HashMap<>();
 	private String dataDomainID;
 
 	public ExternalLabelScore() {
@@ -37,21 +37,21 @@ public final class ExternalLabelScore extends AExternalScore implements ISeriali
 	}
 
 	public ExternalLabelScore(String label, ExternalLabelParseSpecification spec,
-			Map<String, Float> scores) {
+ Map<String, Double> scores) {
 		super(label, spec);
 		this.dataDomainID = spec.getDataDomainID();
 		this.scores.putAll(scores);
 	}
 
 	@Override
-	public final float apply(IComputeElement elem, Group g) {
+	public final double apply(IComputeElement elem, Group g) {
 		if (!elem.getDataDomain().getDataDomainID().equals(dataDomainID))
-			return Float.NaN;
+			return Double.NaN;
 		String label = elem.getLabel();
-		Float v = this.scores.get(label);
+		Double v = this.scores.get(label);
 		if (v == null)
-			return Float.NaN;
-		return v.floatValue();
+			return Double.NaN;
+		return v.doubleValue();
 	}
 
 	@Override

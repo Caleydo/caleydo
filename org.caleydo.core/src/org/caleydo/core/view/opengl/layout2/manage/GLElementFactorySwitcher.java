@@ -115,6 +115,12 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 			GLElementAccessor.repaintPickDown(s);
 	}
 
+	public void setActive(GLElementSupplier s) {
+		int active = this.children.indexOf(s);
+		if (active >= 0)
+			setActive(active);
+	}
+
 	/**
 	 * @param active
 	 *            setter, see {@link active}

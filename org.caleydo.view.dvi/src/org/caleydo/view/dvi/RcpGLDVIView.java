@@ -6,6 +6,7 @@
 package org.caleydo.view.dvi;
 
 import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.dvi.toolbar.ToolBarWidgets;
@@ -43,7 +44,7 @@ public class RcpGLDVIView extends ARcpGLViewPart {
 		toolBarManager.add(new ToolBarWidgets("Graph Layout"));
 		toolBarManager
 				.add(new OpenOnlineHelpAction(
-						"http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/setting-up-visualizations-data-view-integrator",
+GeneralManager.HELP_URL + "/basics.md#Data-View_Integrator",
 						true));
 	}
 }

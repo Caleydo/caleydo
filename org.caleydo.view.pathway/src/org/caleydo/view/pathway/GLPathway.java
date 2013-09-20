@@ -8,8 +8,10 @@ package org.caleydo.view.pathway;
 import gleem.linalg.Vec3f;
 
 import java.awt.geom.Rectangle2D;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -121,6 +123,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	public static final String VIEW_TYPE = "org.caleydo.view.pathway";
 	public static final String VIEW_NAME = "Pathway";
 
+	private static final Logger log = Logger.create(GLPathway.class);
+
 	public static final String DEFAULT_PATHWAY_PATH_EVENT_SPACE = "pathwayPath";
 
 	private PathwayDataDomain pathwayDataDomain;
@@ -129,6 +133,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 	private PathwayManager pathwayManager;
 	private PathwayItemManager pathwayItemManager;
+
+	private boolean showStdDevBars = true;
 
 	/**
 	 * Determines whether vertex highlighting via selection (click/mouse over) is enabled.
@@ -206,7 +212,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private boolean isPathStartSelected = false;
 	private int selectedPathID;
 
-	private boolean useBubbleSets = false;
+	private boolean useBubbleSets = true;
 	private PathwayBubbleSet bubbleSet = null;// new PathwayBubbleSet();
 	private PathwayBubbleSet alternativeBubbleSet = null; // new PathwayBubbleSet();
 	private PathwayBubbleSet contextPathBubbleSet = null;// new PathwayBubbleSet();
@@ -737,7 +743,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		initShader = true;
 		shaderProgramTextOverlay = -1;
 		if (!ShaderUtil.isShaderCompilerAvailable(gl)) {
-			System.err.println("no shader available");
+			log.error("no shader available no intelligent texture manipulation");
 			return;
 		}
 		int vs = gl.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
@@ -745,11 +751,16 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				"vsTextOverlay.glsl")));
 		gl.glShaderSource(vs, 1, new String[] { vsrc }, (int[]) null, 0);
 		gl.glCompileShader(vs);
-		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, System.err)) {
+
+		ByteArrayOutputStream slog = new ByteArrayOutputStream();
+		PrintStream slog_print = new PrintStream(slog);
+
+		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, slog_print)) {
 			gl.glDeleteShader(vs);
+			log.error("can't compile vertex shader: " + slog.toString());
 			return;
 		} else {
-			System.out.println(ShaderUtil.getShaderInfoLog(gl, vs));
+			log.debug("compiling vertex shader warnings: " + ShaderUtil.getShaderInfoLog(gl, vs));
 		}
 
 		String fsrc = CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream(
@@ -757,12 +768,13 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		int fs = gl.glCreateShader(GL2ES2.GL_FRAGMENT_SHADER);
 		gl.glShaderSource(fs, 1, new String[] { fsrc }, (int[]) null, 0);
 		gl.glCompileShader(fs);
-		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, System.err)) {
+		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, slog_print)) {
 			gl.glDeleteShader(vs);
 			gl.glDeleteShader(fs);
+			log.error("can't compile fragment shader: " + slog.toString());
 			return;
 		} else {
-			System.out.println(ShaderUtil.getShaderInfoLog(gl, fs));
+			log.debug("compiling fragment shader warnings: " + ShaderUtil.getShaderInfoLog(gl, fs));
 		}
 
 		shaderProgramTextOverlay = gl.glCreateProgram();
@@ -770,12 +782,15 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		gl.glAttachShader(shaderProgramTextOverlay, fs);
 		gl.glLinkProgram(shaderProgramTextOverlay);
 		gl.glValidateProgram(shaderProgramTextOverlay);
-		if (!ShaderUtil.isProgramLinkStatusValid(gl, shaderProgramTextOverlay, System.err)) {
+		if (!ShaderUtil.isProgramLinkStatusValid(gl, shaderProgramTextOverlay, slog_print)) {
 			gl.glDeleteShader(vs);
 			gl.glDeleteShader(fs);
 			gl.glDeleteProgram(shaderProgramTextOverlay);
 			shaderProgramTextOverlay = -1;
+			log.error("can't link program: " + slog.toString());
 			return;
+		} else {
+			log.debug("linking program warnings: " + ShaderUtil.getProgramInfoLog(gl, shaderProgramTextOverlay));
 		}
 
 		// gl.glUseProgram(shaderprogramTextOutline);
@@ -804,8 +819,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		if (enablePathwayTexture && pathway.getType() != EPathwayDatabaseType.KEGG) {
 			float fPathwayTransparency = 1.0f;
 
-			if (pathwayTextureManager == null)
-				System.err.println();
+			assert pathwayTextureManager != null;
 			pathwayTextureManager.get().renderPathway(gl, this, pathway, fPathwayTransparency, false);
 		}
 
@@ -863,7 +877,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			textureOffset -= 2f * PathwayRenderStyle.Z_OFFSET;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
 
-			if (useBubbleSets) {
+			if (true) {
 				if (bubbleSet == null) {
 					bubbleSet = new PathwayBubbleSet();
 					bubbleSet.getBubbleSetGLRenderer().init(gl);
@@ -1202,7 +1216,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		serializedForm.setPathSelectionMode(isPathSelectionMode);
 		serializedForm.setMappingMode(sampleMappingMode);
 
-		System.out.println("Serializing Pathway: review me!");
+		log.warn("Serializing Pathway: review me!");
 
 		return serializedForm;
 	}
@@ -1510,7 +1524,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	}
 
 	private void addVertexToFreePath(PathwayVertexRep vertexRep) {
-		if(vertexRep.getType() == EPathwayVertexType.map)
+		if (vertexRep.getType() == EPathwayVertexType.map)
 			return;
 		if (pathSegments.size() > 0) {
 			PathwayPath lastSegment = pathSegments.get(pathSegments.size() - 1);
@@ -1878,6 +1892,21 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	 */
 	public void setDynamicDetail(boolean isDynamicDetail) {
 		this.isDynamicDetail = isDynamicDetail;
+	}
+
+	/**
+	 * @return the showStdDevBars, see {@link #showStdDevBars}
+	 */
+	public boolean isShowStdDevBars() {
+		return showStdDevBars;
+	}
+
+	/**
+	 * @param showStdDevBars
+	 *            setter, see {@link showStdDevBars}
+	 */
+	public void setShowStdDevBars(boolean showStdDevBars) {
+		this.showStdDevBars = showStdDevBars;
 	}
 
 }

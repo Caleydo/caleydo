@@ -32,28 +32,28 @@ import com.google.common.base.Objects;
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class ExternalGroupLabelScore extends AExternalScore implements ISerializeableScore, IGroupBasedScore {
 	private String perspectiveKey;
-	private Map<String, Float> scores = new HashMap<>();
+	private Map<String, Double> scores = new HashMap<>();
 
 	public ExternalGroupLabelScore() {
 		super();
 	}
 
-	public ExternalGroupLabelScore(String label, GroupLabelParseSpecification spec, Map<String, Float> scores) {
+	public ExternalGroupLabelScore(String label, GroupLabelParseSpecification spec, Map<String, Double> scores) {
 		super(label, spec);
 		this.perspectiveKey = spec.getPerspectiveKey();
 		this.scores.putAll(scores);
 	}
 
 	@Override
-	public final float apply(IComputeElement elem, Group g) {
+	public final double apply(IComputeElement elem, Group g) {
 		if (g == null)
-			return Float.NaN;
+			return Double.NaN;
 		if (!perspectiveKey.equals(elem.getPersistentID()))
-			return Float.NaN;
-		Float v = this.scores.get(g.getLabel());
+			return Double.NaN;
+		Double v = this.scores.get(g.getLabel());
 		if (v == null)
-			return Float.NaN;
-		return v.floatValue();
+			return Double.NaN;
+		return v.doubleValue();
 	}
 
 	@Override

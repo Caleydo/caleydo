@@ -10,9 +10,6 @@ import gleem.linalg.Vec2f;
 import org.apache.commons.lang.SystemUtils;
 import org.caleydo.core.gui.util.DisplayUtils;
 import org.caleydo.core.util.execution.SafeCallable;
-import org.caleydo.core.util.function.AFloatFunction;
-import org.caleydo.core.util.function.ExpressionFunctions;
-import org.caleydo.core.util.function.IFloatFunction;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -21,7 +18,7 @@ import org.eclipse.swt.widgets.Display;
  * @author Samuel Gratzl
  *
  */
-public enum Units implements IFloatFunction {
+public enum Units {
 	PX, PT, EM, DIP;
 
 	private static final float base = 96;
@@ -78,15 +75,9 @@ public enum Units implements IFloatFunction {
 		return Math.round(value_dip / px2dip * scale);
 	}
 
-	@Override
-	public Float apply(Float value) {
-		return apply(value.floatValue());
-	}
-
 	/**
 	 * converts the given value to dip
 	 */
-	@Override
 	public float apply(float value) {
 		switch (this) {
 		case EM:
@@ -133,17 +124,6 @@ public enum Units implements IFloatFunction {
 			return value_dip;
 		}
 		throw new IllegalStateException();
-	}
-
-	public IFloatFunction inverse() {
-		if (this == DIP)
-			return ExpressionFunctions.IDENTITY;
-		return new AFloatFunction() {
-			@Override
-			public float apply(float in) {
-				return unapply(in);
-			}
-		};
 	}
 
 	@Override

@@ -28,7 +28,7 @@ import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.mapping.ColorMapper;
-import org.caleydo.core.util.function.AdvancedFloatStatistics;
+import org.caleydo.core.util.function.AdvancedDoubleStatistics;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -61,6 +61,11 @@ import org.eclipse.core.runtime.Status;
  * @author Alexander Lex
  */
 public class Table {
+
+	/**
+	 *
+	 */
+	private static final double NAN_THRESHOLD = 0.8;
 
 	public class Transformation {
 		/** Untransformed data */
@@ -626,15 +631,7 @@ public class Table {
 		Perspective recordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
 		recordPerspective.setDefault(!sampled);
 
-		String label = "";
-		if (sampled) {
-			sampledRecordPerspective = recordPerspective;
-			label = "Ungrouped Sampled";
-		} else {
-			defaultRecordPerspective = recordPerspective;
-			label = "Ungrouped";
-		}
-
+		String label = sampled ? "Ungrouped Sampled" : "Ungrouped";
 		recordPerspective.setLabel(label, true);
 
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
@@ -652,30 +649,30 @@ public class Table {
 		if (dimensionIDs.size() <= sampleSize)
 			return dimensionIDs;
 
-		List<Pair<Float, Integer>> allDimVar = new ArrayList<Pair<Float, Integer>>();
+		List<Pair<Double, Integer>> allDimVar = new ArrayList<Pair<Double, Integer>>();
 
 		for (Integer dimID : dimensionIDs) {
-			float[] allDimsPerRecordArray = new float[recordIDs.size()];
+			double[] allDimsPerRecordArray = new double[recordIDs.size()];
 
 			for (int i = 0; i < recordIDs.size(); i++) {
 				// allDimsPerRecordArray[i] = dataDomain.getNormalizedValue(dataDomain.getDimensionIDType(), dimID,
 				// dataDomain.getRecordIDType(), recordIDs.get(i));
-				allDimsPerRecordArray[i] = getRaw(dimID, recordIDs.get(i));
+				allDimsPerRecordArray[i] = (Float) getRaw(dimID, recordIDs.get(i));
 			}
 
-			AdvancedFloatStatistics stats = AdvancedFloatStatistics.of(allDimsPerRecordArray);
+			AdvancedDoubleStatistics stats = AdvancedDoubleStatistics.of(allDimsPerRecordArray);
 			// throwing out all values with more than 80% NAN
-			if (stats.getNaNs() < stats.getN() * 0.8) {
-				allDimVar.add(new Pair<Float, Integer>(stats.getMedianAbsoluteDeviation(), dimID));
+			if (stats.getNaNs() < stats.getN() * NAN_THRESHOLD) {
+				allDimVar.add(new Pair<Double, Integer>(stats.getMedianAbsoluteDeviation(), dimID));
 			}
 		}
 
-		Collections.sort(allDimVar, Collections.reverseOrder(Pair.<Float> compareFirst()));
+		Collections.sort(allDimVar, Collections.reverseOrder(Pair.<Double> compareFirst()));
 
 		allDimVar = allDimVar.subList(0, sampleSize);
 
 		List<Integer> sampledDimensionIDs = new ArrayList<>();
-		for (Pair<Float, Integer> recordVar : allDimVar) {
+		for (Pair<Double, Integer> recordVar : allDimVar) {
 			sampledDimensionIDs.add(recordVar.getSecond());
 		}
 		return sampledDimensionIDs;
@@ -710,19 +707,12 @@ public class Table {
 		triggerUpdateEvent();
 	}
 
-	Perspective createDefaultDimensionPerspective(boolean sampled, List<Integer> dimensionIDs) {
+	private Perspective createDefaultDimensionPerspective(boolean sampled, List<Integer> dimensionIDs) {
 
 		Perspective dimensionPerspective = new Perspective(dataDomain, dataDomain.getDimensionIDType());
 		dimensionPerspective.setDefault(!sampled);
 
-		String label = "";
-		if (sampled) {
-			sampledDimensionPerspective = dimensionPerspective;
-			label = "Ungrouped Sampled";
-		} else {
-			sampledDimensionPerspective = dimensionPerspective;
-			label = "Ungrouped";
-		}
+		String label = sampled ? "Ungrouped Sampled" : "Ungrouped";
 
 		dimensionPerspective.setLabel(label, true);
 

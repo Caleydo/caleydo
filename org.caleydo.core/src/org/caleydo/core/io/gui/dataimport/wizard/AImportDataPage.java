@@ -9,6 +9,7 @@
 package org.caleydo.core.io.gui.dataimport.wizard;
 
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.system.BrowserUtils;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.PageChangedEvent;
@@ -132,7 +133,7 @@ public abstract class AImportDataPage extends WizardPage implements IPageChanged
 	@Override
 	public void performHelp() {
 		// super.performHelp();
-		BrowserUtils.openURL("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/loading-data");
+		BrowserUtils.openURL(GeneralManager.HELP_URL + "/data.md");
 
 	}
 
