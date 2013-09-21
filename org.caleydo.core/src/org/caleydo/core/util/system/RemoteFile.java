@@ -39,6 +39,7 @@ import com.google.common.collect.HashBiMap;
  */
 public final class RemoteFile implements IRunnableWithProgress {
 	private static final Logger log = Logger.create(RemoteFile.class);
+	private static final String PATTERN = "Downloading: %s (%d MB)";
 
 	private static final int BUFFER_SIZE = 4096;
 	private static final int WORK_TRIGGER_FREQUENCY = 64;
@@ -130,18 +131,25 @@ public final class RemoteFile implements IRunnableWithProgress {
 	}
 
 	public File getOrLoad(boolean checkModificationDate, IProgressMonitor monitor) {
+		return getOrLoad(checkModificationDate, monitor, PATTERN);
+	}
+
+	public File getOrLoad(boolean checkModificationDate, IProgressMonitor monitor, String pattern) {
 		if (!inCache(checkModificationDate)) {
 			delete();
-			run(monitor);
+			run(monitor, pattern);
 			if (!file.exists())
 				return null;
 			return file;
 		}
 		return file;
 	}
-
 	@Override
 	public void run(IProgressMonitor monitor) {
+		run(monitor, PATTERN);
+	}
+
+	public void run(IProgressMonitor monitor, String pattern) {
 		if (inCache(false)) {
 			monitor.done();
 			return;
@@ -159,7 +167,7 @@ public final class RemoteFile implements IRunnableWithProgress {
 			lastModified = connection.getLastModified();
 			if (length < 0)
 				length = IProgressMonitor.UNKNOWN;
-			monitor.beginTask(String.format("Downloading: %s (%d MB)", url, length / 1024 / 1024), length);
+			monitor.beginTask(String.format(pattern, url, length / 1024 / 1024), length);
 
 
 			try (InputStream in = new BufferedInputStream(connection.getInputStream())) {

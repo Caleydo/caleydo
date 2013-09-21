@@ -111,13 +111,19 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 					log.error("malformed url: " + JSONFILE, e);
 					f = null;
 				}
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				final File ff = f;
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
 						loaded = true;
 						file = ff;
-						if (genomicViewer != null) { // already shown
+						if (genomicViewer != null && !genomicViewer.getTable().isDisposed()) { // already shown
 							updateData();
 						}
 					}
