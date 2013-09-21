@@ -8,17 +8,20 @@ package org.caleydo.data.importer.tcga.model;
 import java.util.ArrayList;
 
 import org.caleydo.core.io.ProjectDescription;
+import org.caleydo.view.tourguide.api.external.ScoreParseSpecification;
 
 /**
  * similar to {@link ProjectDescription} but for {@link TCGADataSet}s
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class TCGADataSets extends ArrayList<TCGADataSet> {
 	private static final long serialVersionUID = -5914726220369369026L;
 
 	private String label;
+
+	private ScoreParseSpecification mutsigParser;
 
 	/**
 	 * @param label
@@ -26,6 +29,22 @@ public class TCGADataSets extends ArrayList<TCGADataSet> {
 	public TCGADataSets(String label) {
 		super();
 		this.label = label;
+	}
+
+	/**
+	 * @param mutsigParser
+	 *            setter, see {@link mutsigParser}
+	 */
+	public void setMutsigParser(ScoreParseSpecification mutsigParser) {
+		this.mutsigParser = mutsigParser;
+	}
+
+
+	/**
+	 * @return the mutsigParser, see {@link #mutsigParser}
+	 */
+	public ScoreParseSpecification getMutsigParser() {
+		return mutsigParser;
 	}
 
 	/**

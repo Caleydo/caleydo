@@ -3,16 +3,15 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.view.tourguide.internal.external;
+package org.caleydo.view.tourguide.api.external;
 
 import java.util.Map;
 
-import org.caleydo.view.tourguide.internal.score.ExternalLabelScore;
+import org.caleydo.view.tourguide.internal.score.ExternalGroupLabelScore;
 
-public class ExternalLabelScoreParser extends
-		AExternalScoreParser<ExternalLabelParseSpecification, String> {
+public class ExternalGroupLabelScoreParser extends AExternalScoreParser<GroupLabelParseSpecification, String> {
 
-	public ExternalLabelScoreParser(ExternalLabelParseSpecification spec) {
+	public ExternalGroupLabelScoreParser(GroupLabelParseSpecification spec) {
 		super(spec);
 	}
 
@@ -22,8 +21,8 @@ public class ExternalLabelScoreParser extends
 	}
 
 	@Override
-	protected ExternalLabelScore createScore(String label, boolean isRank, Map<String, Double> scores) {
-		return new ExternalLabelScore(label, spec, scores);
+	protected ExternalGroupLabelScore createScore(String label, boolean isRank, Map<String, Double> scores) {
+		return new ExternalGroupLabelScore(label, spec, scores);
 	}
 
 }

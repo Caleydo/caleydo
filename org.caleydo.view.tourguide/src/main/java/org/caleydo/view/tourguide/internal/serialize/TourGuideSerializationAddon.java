@@ -18,10 +18,10 @@ import org.caleydo.core.serialize.ISerializationAddon;
 import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
-import org.caleydo.view.tourguide.internal.score.ExternalLabelScore;
+import org.caleydo.view.tourguide.api.score.Scores;
 import org.caleydo.view.tourguide.internal.score.ExternalGroupLabelScore;
 import org.caleydo.view.tourguide.internal.score.ExternalIDTypeScore;
-import org.caleydo.view.tourguide.internal.score.Scores;
+import org.caleydo.view.tourguide.internal.score.ExternalLabelScore;
 
 import com.google.common.collect.Iterables;
 
@@ -51,6 +51,7 @@ public class TourGuideSerializationAddon implements ISerializationAddon {
 			return;
 		try {
 			PersistentScores scores = (PersistentScores) unmarshaller.unmarshal(f);
+			scores.map(unmarshaller);
 			data.setAddonData(ADDON_KEY, scores);
 		} catch (JAXBException e) {
 			log.error("can't deserialize", e);

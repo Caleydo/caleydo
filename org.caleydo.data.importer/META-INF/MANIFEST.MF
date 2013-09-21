@@ -15,5 +15,7 @@ Require-Bundle: org.caleydo.core;bundle-version="3.0.4.qualifier",
  org.caleydo.datadomain.genetic;bundle-version="3.0.4.qualifier",
  org.caleydo.datadomain.pathway;bundle-version="3.0.4.qualifier",
  com.google.gson;bundle-version="2.1.0",
- org.apache.commons.compress;bundle-version="1.4.1"
+ org.apache.commons.compress;bundle-version="1.4.1",
+ org.caleydo.view.tourguide;bundle-version="3.0.4",
+ com.google.guava
 Bundle-Activator: org.caleydo.data.importer.Activator

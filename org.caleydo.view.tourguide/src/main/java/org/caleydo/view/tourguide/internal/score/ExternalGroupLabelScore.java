@@ -14,9 +14,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.view.tourguide.api.external.GroupLabelParseSpecification;
 import org.caleydo.view.tourguide.api.score.GroupSelectors;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
-import org.caleydo.view.tourguide.internal.external.GroupLabelParseSpecification;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.score.IGroupBasedScore;
 

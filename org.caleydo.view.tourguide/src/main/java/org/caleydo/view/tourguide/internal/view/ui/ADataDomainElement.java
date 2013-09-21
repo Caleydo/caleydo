@@ -22,8 +22,8 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.view.tourguide.api.external.ExternalScoringDataDomainActionFactory;
 import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
-import org.caleydo.view.tourguide.internal.external.ExternalScoringDataDomainActionFactory;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 
 public abstract class ADataDomainElement extends GLButton implements GLButton.ISelectionCallback {

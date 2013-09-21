@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.view.tourguide.internal.score;
+package org.caleydo.view.tourguide.api.score;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,8 +11,6 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.caleydo.view.tourguide.api.score.ISerializeableScore;
-import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 

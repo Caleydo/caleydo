@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.view.tourguide.internal.external;
+package org.caleydo.view.tourguide.api.external;
 
 import static org.caleydo.core.util.collection.Pair.make;
 

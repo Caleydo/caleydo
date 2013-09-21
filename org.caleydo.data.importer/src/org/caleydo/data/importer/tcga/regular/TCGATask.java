@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.HTMLFormatter;
 import org.caleydo.core.io.MetaDataElement;
 import org.caleydo.core.serialize.ProjectMetaData;
@@ -26,6 +27,10 @@ import org.caleydo.data.importer.tcga.Settings;
 import org.caleydo.data.importer.tcga.model.TCGADataSet;
 import org.caleydo.data.importer.tcga.model.TCGADataSets;
 import org.caleydo.data.importer.tcga.model.TumorType;
+import org.caleydo.view.tourguide.api.external.ExternalIDTypeScoreParser;
+import org.caleydo.view.tourguide.api.external.ScoreParseSpecification;
+import org.caleydo.view.tourguide.api.score.ISerializeableScore;
+import org.caleydo.view.tourguide.api.score.Scores;
 
 import com.google.common.io.Files;
 import com.google.gson.Gson;
@@ -84,6 +89,9 @@ public class TCGATask extends ATCGATask {
 			new TCGAPostprocessingTask(set).invoke();
 		}
 
+		if (project.getMutsigParser() != null)
+			loadExternalScores(project.getMutsigParser(), dataDomains);
+
 		final String projectOutputPath = runSpecificOutputPath + run + "_" + tumorType + ".cal";
 
 		ProjectMetaData metaData = ProjectMetaData.createDefault();
@@ -116,6 +124,30 @@ public class TCGATask extends ATCGATask {
 		cleanUp(dataDomains);
 
 		return report;
+	}
+
+
+	private void loadExternalScores(ScoreParseSpecification spec, Collection<ATableBasedDataDomain> dataDomains) {
+		// spec.set
+		// find mutation or copy number for the target type
+		IDType targetIDType = null;
+		for (ATableBasedDataDomain dataDomain : dataDomains) {
+			if (dataDomain.getLabel().contains("Mutation")) {
+				targetIDType = dataDomain.getDimensionIDType();
+				break;
+			}
+		}
+		if (targetIDType == null) {
+			System.err.println("skipping loading mutsig values as there is no mutation data domain");
+			return;
+		}
+
+		ExternalIDTypeScoreParser parser = new ExternalIDTypeScoreParser(spec, targetIDType);
+		Collection<ISerializeableScore> scores = parser.call();
+		final Scores s = Scores.get();
+		for (ISerializeableScore score : scores) {
+			s.addPersistentScoreIfAbsent(score);
+		}
 	}
 
 	protected void saveProjectSpecificReport(Collection<ATableBasedDataDomain> dataDomains, TumorType tumorType,
