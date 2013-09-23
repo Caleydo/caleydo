@@ -177,11 +177,12 @@ public class GLSpinner<T> extends PickableGLElement {
 	 * @param value
 	 *            setter, see {@link value}
 	 */
-	public void setValue(T value) {
+	public GLSpinner<T> setValue(T value) {
 		if (Objects.equals(this.value, value))
-			return;
+			return this;
 		this.value = value;
 		repaint();
+		return this;
 	}
 
 	@Override
