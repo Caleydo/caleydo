@@ -13,6 +13,7 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.view.heatmap.v2.internal.HeatMapTextureRenderer;
 
 /**
@@ -47,6 +48,14 @@ public class HeatMapElement extends AHeatMapElement {
 		super.takeDown();
 	}
 
+	@Override
+	protected void init(IGLElementContext context) {
+		super.init(context);
+		if (textureRenderer != null) {
+			textureRenderer.create(context, this.getTablePerspective());
+		}
+	}
+
 
 
 	@Override
@@ -66,8 +75,7 @@ public class HeatMapElement extends AHeatMapElement {
 	 */
 	@Override
 	protected void render(GLGraphics g, float w, float h) {
-		if (textureRenderer != null && isUniform()) {
-			textureRenderer.render(g, w, h);
+		if (isUniform() && textureRenderer != null && textureRenderer.render(g, w, h)) {
 			return;
 		}
 
