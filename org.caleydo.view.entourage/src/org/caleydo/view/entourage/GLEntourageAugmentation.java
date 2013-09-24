@@ -32,7 +32,6 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 
 import setvis.BubbleSetGLRenderer;
-import setvis.bubbleset.BubbleSet;
 
 /**
  * Renders all Elements on top of {@link GLEntourage} such as visual links.
@@ -42,22 +41,10 @@ import setvis.bubbleset.BubbleSet;
  */
 public class GLEntourageAugmentation extends GLElementContainer {
 
-	// private List<LinkRenderer> portalRenderers = new ArrayList<>();
-	// private ArrayList<Rectangle2D> portals = new ArrayList<>();
 	private ArrayList<Rectangle2D> bubbleSetItems = new ArrayList<>();
 	private ArrayList<Line2D> bubbleSetEdges = new ArrayList<>();
 	private Color bubbleSetColor = new Color(0.0f, 1.0f, 0.0f);
-	private Color portalColor = new Color(1.0f, 0.0f, 0.0f);
-
-	private GLEntourage view;
-
-	// private Rectangle2D portalStartNode;
-	// private boolean isShowPortals = false;
-
-	// private List<IGLRenderer> renderers = new ArrayList<>();
 	private BubbleSetGLRenderer bubbleSetRenderer = new BubbleSetGLRenderer();
-
-	// public BubbleSetGLRenderer getBubbleSetGLRenderer(){return this.bubbleSetRenderer;}
 
 	/**
 	 *
@@ -78,29 +65,7 @@ public class GLEntourageAugmentation extends GLElementContainer {
 		pxlHeight = newPxlHeight;
 	}
 
-	public boolean isDirty = false;
-
-	// public static class PortalHighlightRenderer implements IGLRenderer {
-	// protected final Rectangle2D location;
-	//
-	// public PortalHighlightRenderer(Rectangle2D location) {
-	// this.location = location;
-	// }
-	//
-	// @Override
-	// public void render(GLGraphics g, float w, float h, GLElement parent) {
-	//
-	// g.incZ(1f);
-	// g.color(new Color(51, 160, 44)).lineWidth(2);
-	// g.drawRect((float) location.getX() - 3, (float) location.getY() - 3, (float) location.getWidth() + 6,
-	// (float) location.getHeight() + 10);
-	// g.lineWidth(1);
-	// g.incZ(-1f);
-	// }
-	// }
-
-
-
+	private boolean isDirty = false;
 	protected List<Rectangle2D> path;
 	private boolean disabled = false;
 
@@ -115,99 +80,72 @@ public class GLEntourageAugmentation extends GLElementContainer {
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
-		if (disabled) {
-			return;
-		}
-		if (this.isDirty) {
-			this.isDirty = false;
-			// prepare bubbleSet texture
-			this.bubbleSetRenderer.clearBubbleSet();
-			this.bubbleSetRenderer.setSize(pxlWidth, pxlHeight);
-			bubbleSetItems.clear();
-			bubbleSetEdges.clear();
-
-			if (path != null) {
-				int i = 0;
-				Rectangle2D prevRect = new Rectangle2D.Double(0f, 0f, 0f, 0f);
-				for (Rectangle2D rect : path) {
-					g.incZ(0.5f);
-					// g.color(0, 0, 1, 0.5f);
-					// g.fillRect((float) rect.getX(), (float) rect.getY(), (float) rect.getWidth(), (float)
-					// rect.getHeight());
-
-					bubbleSetItems.add(new Rectangle2D.Double(rect.getCenterX(), rect.getCenterY(), rect.getWidth(),
-							rect.getHeight()));
-					if (i > 0) {
-						bubbleSetEdges.add(new Line2D.Double(rect.getCenterX(), rect.getCenterY(), prevRect
-								.getCenterX(), prevRect.getCenterY()));
-					}
-					prevRect.setRect(rect.getCenterX(), rect.getCenterY(), rect.getWidth(), rect.getHeight());
-					i++;
-					g.incZ(-0.5f);
-
-				}
-			}
-
-			// render bubbleSet
-			g.gl.glTranslatef(0.f, 0.f, 1.0f);
-			this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges, bubbleSetColor);
-			((BubbleSet) this.bubbleSetRenderer.setOutline).useVirtualEdges(false);
-			// routingIterations, marchingIterations,pixelGroup
-			((BubbleSet) this.bubbleSetRenderer.setOutline).setParameter(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 5);
-			// ((BubbleSet)this.bubbleSetRenderer.setOutline).setParameter(1, 1,1,1.0,1.0,.5,1.5, 1.0, 1);
-			// setOutline = new BubbleSet(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
-			// BubbleSet(routingIterations, marchingIterations,pixelGroup,
-			// edgeR0,edgeR1, nodeR0, nodeR1,
-			// morphBuffer,skip)
-			// if (this.portals != null && isShowPortals) {
-			// for (Rectangle2D rect : this.portals) {
-			// ArrayList<Rectangle2D> items = new ArrayList<>();
-			// items.add(new Rectangle2D.Double(rect.getCenterX(), rect.getCenterY(), rect.getWidth(), rect
-			// .getHeight()));
-			// this.bubbleSetRenderer.addGroup(items, null, portalColor);
-			// }
-			// }
-			//this.bubbleSetRenderer.update(g.gl, null, 0);
-			g.gl.glTranslatef(0.f, 0.f, -1.0f);
-		}
-		g.gl.glTranslatef(0.f, 0.f, 1.0f);
+		// if (disabled) {
+		// return;
+		// }
+		// if (this.isDirty) {
+		// this.isDirty = false;
+		// // prepare bubbleSet texture
+		// this.bubbleSetRenderer.clearBubbleSet();
+		// this.bubbleSetRenderer.setSize(pxlWidth, pxlHeight);
+		// bubbleSetItems.clear();
+		// bubbleSetEdges.clear();
+		//
+		// if (path != null) {
+		// int i = 0;
+		// Rectangle2D prevRect = new Rectangle2D.Double(0f, 0f, 0f, 0f);
+		// for (Rectangle2D rect : path) {
+		// g.incZ(0.5f);
+		// // g.color(0, 0, 1, 0.5f);
+		// // g.fillRect((float) rect.getX(), (float) rect.getY(), (float) rect.getWidth(), (float)
+		// // rect.getHeight());
+		//
+		// bubbleSetItems.add(new Rectangle2D.Double(rect.getCenterX(), rect.getCenterY(), rect.getWidth(),
+		// rect.getHeight()));
+		// if (i > 0) {
+		// bubbleSetEdges.add(new Line2D.Double(rect.getCenterX(), rect.getCenterY(), prevRect
+		// .getCenterX(), prevRect.getCenterY()));
+		// }
+		// prevRect.setRect(rect.getCenterX(), rect.getCenterY(), rect.getWidth(), rect.getHeight());
+		// i++;
+		// g.incZ(-0.5f);
+		//
+		// }
+		// }
+		//
+		// // render bubbleSet
+		// g.gl.glTranslatef(0.f, 0.f, 1.0f);
+		// this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges, bubbleSetColor);
+		// ((BubbleSet) this.bubbleSetRenderer.setOutline).useVirtualEdges(false);
+		// // routingIterations, marchingIterations,pixelGroup
+		// ((BubbleSet) this.bubbleSetRenderer.setOutline).setParameter(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 5);
+		// // ((BubbleSet)this.bubbleSetRenderer.setOutline).setParameter(1, 1,1,1.0,1.0,.5,1.5, 1.0, 1);
+		// // setOutline = new BubbleSet(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
+		// // BubbleSet(routingIterations, marchingIterations,pixelGroup,
+		// // edgeR0,edgeR1, nodeR0, nodeR1,
+		// // morphBuffer,skip)
+		// // if (this.portals != null && isShowPortals) {
+		// // for (Rectangle2D rect : this.portals) {
+		// // ArrayList<Rectangle2D> items = new ArrayList<>();
+		// // items.add(new Rectangle2D.Double(rect.getCenterX(), rect.getCenterY(), rect.getWidth(), rect
+		// // .getHeight()));
+		// // this.bubbleSetRenderer.addGroup(items, null, portalColor);
+		// // }
+		// // }
+		// //this.bubbleSetRenderer.update(g.gl, null, 0);
+		// g.gl.glTranslatef(0.f, 0.f, -1.0f);
+		// }
+		// g.gl.glTranslatef(0.f, 0.f, 1.0f);
 
 		//this.bubbleSetRenderer.renderPxl(g.gl, pxlWidth, pxlHeight);
 		//this.renderPortalLinks(g);
 		// for (IGLRenderer renderer : renderers) {
 		// renderer.render(g, w, h, this);
 		// }
-		g.gl.glTranslatef(0.f, 0.f, -1.0f);
+		// g.gl.glTranslatef(0.f, 0.f, -1.0f);
 
 	}
 
-	// public void showPortals(boolean boolVal) {
-	// isShowPortals = boolVal;
-	// isDirty = true;
-	// }
-
-	public void renderPortalLinks(GLGraphics g) {
-		// if (this.portals == null || !isShowPortals)
-		// return;
-		// for (Rectangle2D rect : this.portals) {
-		// g.color(1, 0, 0, 1)
-		// .lineWidth(2)
-		// .drawLine((float) this.portalStartNode.getCenterX(), (float) this.portalStartNode.getCenterY(),
-		// (float) rect.getCenterX(), (float) rect.getCenterY());
-		// }
-	}
-
-	// public void addConnectionRenderer(ConnectionRenderer renderer) {
-	// if (renderer != null) {
-	// renderers.add(renderer);
-	// repaint();
-	// }
-	// }
-	//
-	// public void clearRenderers() {
-	// renderers.clear();
-	// repaint();
-	// }
 
 	/**
 	 * @param path
@@ -217,23 +155,4 @@ public class GLEntourageAugmentation extends GLElementContainer {
 		this.path = path;
 	}
 
-	// public void updatePortalRects(Rectangle2D node, ArrayList<Rectangle2D> portalList) {
-	// this.portals = portalList;
-	// this.portalStartNode = node;
-	// }
-
-	// public void addPortalLinkRenderer(LinkRenderer renderer) {
-	// // System.out.println("addPortalHighlightRenderer");
-	// // portalRenderers.add(renderer);
-	// add(renderer);
-	// // repaint();
-	// }
-
-	// public void clearPortalConnectionRenderers() {
-	// if (!portalRenderers.isEmpty()) {
-	// removeAll(portalRenderers);
-	// portalRenderers.clear();
-	// repaint();
-	// }
-	// }
 }
