@@ -145,7 +145,9 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 	}
 
 	protected final void invalidAllFilter() {
-		maskInvalid.set(0, getTable().getDataSize());
+		RankTableModel t = getTable();
+		if (t != null)
+			maskInvalid.set(0, t.getDataSize());
 	}
 
 	public final void filter(List<IRow> data, BitSet mask, BitSet mask_filteredOutInfluenceRanking) {

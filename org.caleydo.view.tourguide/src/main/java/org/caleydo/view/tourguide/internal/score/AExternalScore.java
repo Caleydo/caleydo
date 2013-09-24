@@ -5,20 +5,24 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.score;
 
-import org.caleydo.core.util.color.Color;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.view.tourguide.api.external.AExternalScoreParseSpecification;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
-import org.caleydo.view.tourguide.internal.external.AExternalScoreParseSpecification;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 
 /**
  * @author Samuel Gratzl
  *
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AExternalScore extends DefaultLabelProvider implements ISerializeableScore {
-	private float mappingMin;
-	private float mappingMax;
+	private double mappingMin;
+	private double mappingMax;
 	private Color bgColor;
 	private Color color;
 
@@ -62,7 +66,7 @@ public abstract class AExternalScore extends DefaultLabelProvider implements ISe
 
 	@Override
 	public PiecewiseMapping createMapping() {
-		boolean tnan = Float.isNaN(mappingMax);
+		boolean tnan = Double.isNaN(mappingMax);
 		PiecewiseMapping m;
 		if (tnan) {
 			m = new PiecewiseMapping(mappingMin, mappingMax);

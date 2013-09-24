@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.base.IntegerCallback;
-import org.caleydo.view.tourguide.internal.external.ExternalLabelParseSpecification;
+import org.caleydo.view.tourguide.api.external.ExternalLabelParseSpecification;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;

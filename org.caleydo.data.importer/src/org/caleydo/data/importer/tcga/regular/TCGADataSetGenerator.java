@@ -7,6 +7,7 @@ package org.caleydo.data.importer.tcga.regular;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
@@ -17,7 +18,6 @@ import org.caleydo.data.importer.tcga.TCGADataSetBuilder;
 import org.caleydo.data.importer.tcga.model.TCGADataSet;
 import org.caleydo.data.importer.tcga.model.TCGADataSets;
 import org.caleydo.data.importer.tcga.model.TumorType;
-
 
 /**
  * Generator class that writes the loading information of a series of TCGA data sets to an XML file.
@@ -43,15 +43,28 @@ public class TCGADataSetGenerator extends RecursiveTask<TCGADataSets> {
 	@Override
 	protected TCGADataSets compute() {
 		Collection<ForkJoinTask<TCGADataSet>> tasks = new ArrayList<>();
+		List<ForkJoinTask<? extends Object>> t = new ArrayList<>();
 
 		for (EDataSetType type : EDataSetType.values()) {
-			tasks.add(TCGADataSetBuilder.create(type, fileProvider, settings.isSampleGenes(),
-					settings));
+			final ForkJoinTask<TCGADataSet> ti = TCGADataSetBuilder.create(type, fileProvider,
+					settings.isSampleGenes(), settings);
+			tasks.add(ti);
+			t.add(ti);
 		}
 
-		invokeAll(tasks); // fork and wait
+		MutSigTask mutSigTask = new MutSigTask(fileProvider);
+		t.add(mutSigTask);
+
+		invokeAll(t); // fork and wait
 
 		TCGADataSets result = new TCGADataSets(tumorAbbreviation.getLabel());
+		try {
+			result.setMutsigParser(mutSigTask.get());
+		} catch (InterruptedException e) {
+			System.err.println(e.getMessage());
+		} catch (ExecutionException e) {
+			System.err.println(e.getMessage());
+		}
 		for (ForkJoinTask<TCGADataSet> task : tasks) {
 			try {
 				TCGADataSet ds = task.get();

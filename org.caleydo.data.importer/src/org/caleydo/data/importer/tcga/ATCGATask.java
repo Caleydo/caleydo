@@ -26,8 +26,11 @@ import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.data.importer.tcga.model.TCGADataSet;
 import org.caleydo.data.importer.tcga.model.TCGADataSets;
 import org.caleydo.data.importer.tcga.utils.IOUtils;
+import org.caleydo.view.tourguide.api.score.ISerializeableScore;
+import org.caleydo.view.tourguide.api.score.Scores;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.gson.JsonElement;
 
@@ -139,5 +142,9 @@ public abstract class ATCGATask extends RecursiveTask<JsonElement> {
 		log.info("cleanup " + dataDomains.size() + " data domains");
 		for (IDataDomain dataDomain : dataDomains)
 			DataDomainManager.get().unregister(dataDomain);
+		// remove external scores
+		final Scores scores = Scores.get();
+		for (ISerializeableScore s : Lists.newArrayList(scores.getPersistentScores()))
+			scores.removePersistentScore(s);
 	}
 }

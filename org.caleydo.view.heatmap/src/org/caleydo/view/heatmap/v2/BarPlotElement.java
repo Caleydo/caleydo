@@ -27,20 +27,20 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
  * @author Samuel Gratzl
  *
  */
-public class LinearBarHeatMapElement extends AHeatMapElement {
+public class BarPlotElement extends AHeatMapElement {
 	/**
-	 * whether the plot should be scaled to the local extrema or the global extrema (default)
+	 * whether the plot should be scaled to the local extreme or the global extreme (default)
 	 */
 	private final boolean scaleLocally;
 
 	private float normalizedCenter;
 	private IDoubleFunction normalize;
 
-	public LinearBarHeatMapElement(TablePerspective tablePerspective) {
+	public BarPlotElement(TablePerspective tablePerspective) {
 		this(tablePerspective, BasicBlockColorer.INSTANCE, EDetailLevel.HIGH, false);
 	}
 
-	public LinearBarHeatMapElement(TablePerspective tablePerspective, IBlockColorer blockColorer,
+	public BarPlotElement(TablePerspective tablePerspective, IBlockColorer blockColorer,
 			EDetailLevel detailLevel, boolean scaleLocally) {
 		super(tablePerspective, blockColorer, detailLevel);
 		this.scaleLocally = scaleLocally;
@@ -110,7 +110,8 @@ public class LinearBarHeatMapElement extends AHeatMapElement {
 
 		if (scaleLocally) {
 			DoubleStatistics stats = DoubleStatistics.of(new TablePerspectiveDoubleList(tablePerspective));
-			normalize = DoubleFunctions.normalize(stats.getMin(), stats.getMax());
+			double max = Math.max(-stats.getMin(), stats.getMax());
+			normalize = DoubleFunctions.normalize(-max, max);
 		} else {
 			normalize = ExpressionFunctions.IDENTITY;
 		}

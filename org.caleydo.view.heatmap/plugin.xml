@@ -52,9 +52,9 @@
                order="5">
          </factory>
          <factory
-               factory="org.caleydo.view.heatmap.v2.internal.LinearBarHeatMapElementFactory"
+               factory="org.caleydo.view.heatmap.v2.internal.BarPlotElementFactory"
                icon="resources/icons/linearplot.png"
-               name="Linear HeatMap">
+               name="Bar Plot">
          </factory>
       </extension>
 </plugin>

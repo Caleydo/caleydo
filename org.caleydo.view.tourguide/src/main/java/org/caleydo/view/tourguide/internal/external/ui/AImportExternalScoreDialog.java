@@ -21,9 +21,9 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.system.BrowserUtils;
+import org.caleydo.view.tourguide.api.external.AExternalScoreParseSpecification;
 import org.caleydo.view.tourguide.api.score.ECombinedOperator;
 import org.caleydo.view.tourguide.api.util.EnumUtils;
-import org.caleydo.view.tourguide.internal.external.AExternalScoreParseSpecification;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -271,8 +271,8 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 		this.mappingMax.setText(convert(spec.getMappingMin()));
 	}
 
-	private String convert(float v) {
-		if (Float.isNaN(v))
+	private String convert(double v) {
+		if (Double.isNaN(v))
 			return "";
 		return String.format("%.2f", v);
 	}
@@ -310,11 +310,11 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 		spec.setMappingMax(convert(this.mappingMax));
 	}
 
-	private float convert(Text elem) {
+	private double convert(Text elem) {
 		String s = elem.getText().trim();
 		if (s.length() == 0)
-			return Float.NaN;
-		return Float.parseFloat(s);
+			return Double.NaN;
+		return Double.parseDouble(s);
 	}
 
 	@Override

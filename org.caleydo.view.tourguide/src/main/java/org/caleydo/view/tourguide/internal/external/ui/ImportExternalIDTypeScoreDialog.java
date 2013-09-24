@@ -17,7 +17,7 @@ import org.caleydo.core.io.gui.dataimport.widget.RowConfigWidget;
 import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.base.IProvider;
 import org.caleydo.core.util.base.IntegerCallback;
-import org.caleydo.view.tourguide.internal.external.ScoreParseSpecification;
+import org.caleydo.view.tourguide.api.external.ScoreParseSpecification;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
