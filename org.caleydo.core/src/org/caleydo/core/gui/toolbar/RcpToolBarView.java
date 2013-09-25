@@ -5,7 +5,6 @@
  ******************************************************************************/
 package org.caleydo.core.gui.toolbar;
 
-import org.apache.commons.lang.SystemUtils;
 import org.caleydo.core.internal.MyPreferences;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.ToolBarManager;
@@ -36,7 +35,7 @@ import org.eclipse.ui.part.ViewPart;
  * @author Marc Streit
  */
 public class RcpToolBarView extends ViewPart implements ISizeProvider {
-	private static final int MAX_ITEMS_PER_LINE = 4;
+	private static final int MAX_ITEMS_PER_LINE = 5;
 
 	public static final String ID = "org.caleydo.core.gui.toolbar.RcpToolBarView";
 
@@ -71,15 +70,15 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 		IMenuService menuService = (IMenuService) PlatformUI.getWorkbench().getService(IMenuService.class);
 		menuService.populateContributionManager(toolBarManager, "toolbar:org.caleydo.core.gui.toolbar");
 
-		if (SystemUtils.IS_OS_LINUX && toolBarManager.getSize() > MAX_ITEMS_PER_LINE) { //
+		if (toolBarManager.getSize() > MAX_ITEMS_PER_LINE) { // SystemUtils.IS_OS_LINUX &&
 			// Needed to simulate toolbar wrapping which is not implemented for
 			// linux See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
 			final IContributionItem[] items = toolBarManager.getItems();
-			for (int i = 0; i < items.length; i += MAX_ITEMS_PER_LINE) {
-				int rest = Math.min(i + 4, items.length);
+			for (int i = 0; i < items.length;) {
 				ToolBarManager m = new ToolBarManager();
-				for (int j = i; j < rest; ++j)
-					m.add(items[j]);
+				for (; i < items.length && m.getSize() < MAX_ITEMS_PER_LINE; ++i)
+					if (items[i].isVisible())
+						m.add(items[i]);
 				m.createControl(group);
 			}
 		} else {
