@@ -52,6 +52,7 @@ public enum EStandardMappings{
 		}
 		throw new IllegalStateException();
 	}
+
 	public void apply(IMappingFunction mapping) {
 		switch (this) {
 		case LINEAR:

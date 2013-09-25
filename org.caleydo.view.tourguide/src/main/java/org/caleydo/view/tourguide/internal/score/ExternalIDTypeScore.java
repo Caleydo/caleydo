@@ -94,7 +94,7 @@ public final class ExternalIDTypeScore extends AExternalScore {
 	@Override
 	public PiecewiseMapping createMapping() {
 		if (isRank)
-			return new PiecewiseMapping(0, Float.NaN);
+			return new PiecewiseMapping(0, Double.NaN);
 		return super.createMapping();
 	}
 
@@ -102,7 +102,7 @@ public final class ExternalIDTypeScore extends AExternalScore {
 	public double apply(IComputeElement elem, Group g) {
 		if (!isCompatible(elem.getIdType()) && !isCompatible(elem.getDimensionIdType())) {
 			// can't map
-			return Float.NaN;
+			return Double.NaN;
 		}
 		Collection<Double> scores = new ArrayList<>();
 
