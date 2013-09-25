@@ -132,10 +132,10 @@ public enum EStandardMappings{
 	 * @return
 	 */
 	public static Double apply(String code, double value, ScriptedMappingFunction f) {
-		if (!f.getFilter().filterRaw(value))
-			return Double.NaN;
 		for (EStandardMappings m : EStandardMappings.values()) {
 			if (m.code.equals(code)) {
+				if (!f.getFilter().filterRaw(value))
+					return Double.NaN;
 				double r = m.apply(value, f);
 				if (!f.getFilter().filterNormalized(r))
 					return Double.NaN;

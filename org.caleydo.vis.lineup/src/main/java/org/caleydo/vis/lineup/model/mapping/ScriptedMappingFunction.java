@@ -186,6 +186,7 @@ public class ScriptedMappingFunction extends AMappingFunction {
 	@Override
 	public double apply(double in) {
 		{// optimization
+			filter.use(getActMin(), getActMax());
 			Double r = EStandardMappings.apply(code, in, this);
 			if (r != null)
 				return JavaScriptFunctions.clamp01(r.doubleValue());
