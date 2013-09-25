@@ -27,7 +27,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
-import org.caleydo.vis.lineup.model.mapping.extra.Filter;
+import org.caleydo.vis.lineup.model.mapping.ScriptedMappingFunction.Filter;
 import org.caleydo.vis.lineup.ui.RenderStyle;
 
 import com.google.common.collect.Iterables;
@@ -45,12 +45,13 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 	private Vec2f linePoint;
 
 	private int pickingId = -1;
-	private Filter filter;
+	private final Filter filter;
 
 	public PiecewiseMappingCrossUI(PiecewiseMapping model, boolean isNormalLeft) {
 		super(model, isNormalLeft);
 		setPicker(GLRenderers.DUMMY);
 		setLayout(this);
+		this.filter = model.getFilter();
 	}
 
 	@Override
@@ -83,13 +84,7 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 			for (Map.Entry<Double, Double> entry : model) {
 				this.add(new Point(entry.getKey(), entry.getValue(), EMode.REGULAR));
 			}
-			this.filter = null;
 		} else {
-			this.filter = model.getExtraBinding("filter", Filter.class);
-			if (this.filter == null) {
-				this.filter = new Filter();
-				model.addExtraBinding("filter", this.filter);
-			}
 			this.add(new Point(Double.isNaN(filter.getRaw_min()) ? model.getActMin() : filter.getRaw_min(), filter
 					.getNormalized_min(), EMode.FILTER_MIN));
 			this.add(new Point(Double.isNaN(filter.getRaw_max()) ? model.getActMax() : filter.getRaw_max(), filter

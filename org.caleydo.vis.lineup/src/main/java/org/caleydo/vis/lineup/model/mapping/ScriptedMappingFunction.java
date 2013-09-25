@@ -18,7 +18,6 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.vis.lineup.model.mapping.extra.Filter;
 
 /**
  * @author Samuel Gratzl
@@ -37,7 +36,8 @@ public class ScriptedMappingFunction extends AMappingFunction {
 	private final ScriptEngine engine;
 	private CompiledScript script;
 
-	private Map<String, Object> extraBindings = new HashMap<>(4);
+	private final Filter filter = new Filter();
+	private final Map<String, Object> extraBindings = new HashMap<>(1);
 
 	static {
 		// create code around the script
@@ -84,6 +84,7 @@ public class ScriptedMappingFunction extends AMappingFunction {
 	public void reset() {
 		this.code = DEFAULT_CODE;
 		this.script = null;
+		this.filter.reset();
 	}
 
 	@Override
@@ -126,8 +127,6 @@ public class ScriptedMappingFunction extends AMappingFunction {
 		if (this.code.equals(code))
 			return;
 		this.code = code;
-		if (this.code.contains("filter.") && !extraBindings.containsKey("filter"))
-			extraBindings.put("filter", new Filter());
 		this.script = null;
 	}
 
@@ -160,6 +159,13 @@ public class ScriptedMappingFunction extends AMappingFunction {
 	@Override
 	public boolean isMappingDefault() {
 		return true;
+	}
+
+	/**
+	 * @return the filter, see {@link #filter}
+	 */
+	public Filter getFilter() {
+		return filter;
 	}
 
 	public void addExtraBinding(String key, Object value) {
@@ -206,13 +212,81 @@ public class ScriptedMappingFunction extends AMappingFunction {
 		if (actStats != null) {
 			bindings.put("data", actStats);
 		}
+		filter.use(getActMin(), getActMax());
+		bindings.put("fitler", filter);
+
 		for (Map.Entry<String, Object> extra : extraBindings.entrySet()) {
-			Object v = extra.getValue();
-			if (v instanceof Filter && actStats != null) {
-				((Filter) v).use(getActMin(), getActMax());
-			}
-			bindings.put(extra.getKey(), v);
+			bindings.put(extra.getKey(), extra.getValue());
 		}
+	}
+
+	public static final class Filter {
+		private double raw_min = Double.NaN;
+		private double raw_max = Double.NaN;
+		private double normalized_min = 0;
+		private double normalized_max = 1;
+
+		/**
+		 *
+		 */
+		public void reset() {
+			raw_min = Double.NaN;
+			raw_max = Double.NaN;
+			normalized_min = 0;
+			normalized_max = 1;
+		}
+
+		public boolean filterRaw(double raw) {
+			return raw >= raw_min || raw <= raw_max;
+		}
+
+		public boolean filterNormalized(double n) {
+			return n >= normalized_min || n <= normalized_max;
+		}
+
+		public double getRaw_min() {
+			return raw_min;
+		}
+
+		public void setRaw_min(double raw_min) {
+			this.raw_min = raw_min;
+		}
+
+		public double getRaw_max() {
+			return raw_max;
+		}
+
+		public void setRaw_max(double raw_max) {
+			this.raw_max = raw_max;
+		}
+
+		public double getNormalized_min() {
+			return normalized_min;
+		}
+
+		public void setNormalized_min(double normalized_min) {
+			this.normalized_min = normalized_min;
+		}
+
+		public double getNormalized_max() {
+			return normalized_max;
+		}
+
+		public void setNormalized_max(double normalized_max) {
+			this.normalized_max = normalized_max;
+		}
+
+		/**
+		 * @param actMin
+		 * @param actMax
+		 */
+		public void use(double actMin, double actMax) {
+			if (Double.isNaN(raw_min))
+				raw_min = actMin;
+			if (Double.isNaN(raw_max))
+				raw_max = actMax;
+		}
+
 	}
 
 	public static void main(String[] args) {

@@ -64,9 +64,9 @@ public enum EStandardMappings{
 	 * @return
 	 */
 	private String wrapFilter(String code) {
-		return "if (value < filter.raw_min || value > filter.raw_max) return NaN\n" + //
+		return "if (!filter.filterRaw(value)) return NaN\n" + //
 				"var n = " + code + "\n" + //
-				"if (n < filter.normalized_min || n > filter.normalized_max) return NaN\n" + //
+				"if (!filter.filterNormalized(n)) return NaN\n" + //
 				"return n";
 	}
 
