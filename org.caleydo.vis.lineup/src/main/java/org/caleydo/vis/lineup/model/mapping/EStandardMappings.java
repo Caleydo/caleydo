@@ -22,7 +22,7 @@ public enum EStandardMappings{
 				p.put(mapping.getActMin(), 0);
 				p.put(mapping.getActMax(), 1);
 			} else {
-				mapping.fromJavaScript("linear(value_min, value_max, value, 0, 1)");
+				mapping.fromJavaScript(wrapFilter("linear(value_min, value_max, value, 0, 1)"));
 			}
 			return;
 		case INVERT:
@@ -32,7 +32,7 @@ public enum EStandardMappings{
 				p.put(mapping.getActMin(), 1);
 				p.put(mapping.getActMax(), 0);
 			} else {
-				mapping.fromJavaScript("linear(0, 1, value, 1, 0)");
+				mapping.fromJavaScript(wrapFilter("linear(0, 1, value, 1, 0)"));
 			}
 			return;
 		case ABS:
@@ -43,20 +43,31 @@ public enum EStandardMappings{
 				p.put((mapping.getActMax() + mapping.getActMin()) * 0.5f, 0);
 				p.put(mapping.getActMax(), 1);
 			} else {
-				mapping.fromJavaScript("linear(0, abs(value_min, value_max), abs(value), 0, 1)");
+				mapping.fromJavaScript(wrapFilter("linear(0, abs(value_min, value_max), abs(value), 0, 1)"));
 			}
 			return;
 		case Z_SCORE:
-			mapping.fromJavaScript("((value - data.mean) / data.sd) + 0.5");
+			mapping.fromJavaScript(wrapFilter("((value - data.mean) / data.sd) + 0.5"));
 			return;
 		case LOG:
-			mapping.fromJavaScript("linear(log(Math.max(10E-10,value_min)), log(Math.max(10E-10,value_max)), log(Math.max(10E-10,value)), 0, 1)");
+			mapping.fromJavaScript(wrapFilter("linear(log(Math.max(10E-10,value_min)), log(Math.max(10E-10,value_max)), log(Math.max(10E-10,value)), 0, 1)"));
 			return;
 		case P_Q_VALUE:
-			mapping.fromJavaScript("if (value < 0.0 || value > 1.0) return NaN\nreturn linear(0.0, -log(Math.max(10e-10,value_min)), -log(Math.max(10e-10,value)), 0.0, 1.0)");
+			mapping.fromJavaScript(wrapFilter("linear(0.0, -log(Math.max(10e-10,value_min)), -log(Math.max(10e-10,value)), 0.0, 1.0)"));
 			return;
 		}
 		throw new IllegalStateException();
+	}
+
+	/**
+	 * @param string
+	 * @return
+	 */
+	private String wrapFilter(String code) {
+		return "if (value < filter.raw_min || value > filter.raw_max) return NaN\n" + //
+				"var n = " + code + "\n" + //
+				"if (n < filter.normalized_min || n > filter.normalized_max) return NaN\n" + //
+				"return n";
 	}
 
 	@Override
@@ -73,7 +84,7 @@ public enum EStandardMappings{
 		case LOG:
 			return "Log";
 		case P_Q_VALUE:
-			return "P-value/Q-value";
+			return "P/Q-value";
 		}
 		throw new IllegalStateException();
 	}

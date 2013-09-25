@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.lineup.model.mapping.extra.Filter;
 import org.caleydo.vis.lineup.ui.RenderStyle;
 
 import com.google.common.collect.Iterables;
@@ -44,6 +45,7 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 	private Vec2f linePoint;
 
 	private int pickingId = -1;
+	private Filter filter;
 
 	public PiecewiseMappingCrossUI(PiecewiseMapping model, boolean isNormalLeft) {
 		super(model, isNormalLeft);
@@ -74,13 +76,24 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 		if (model.isDefinedMapping()) {
 			if (model.isMappingDefault()) {
 				if (Double.isNaN(model.getFromMin()))
-					this.add(new Point(model.getActMin(), 0, true));
+					this.add(new Point(model.getActMin(), 0, EMode.PSEUDO));
 				if (Double.isNaN(model.getFromMax()))
-					this.add(new Point(model.getActMax(), 1, true));
+					this.add(new Point(model.getActMax(), 1, EMode.PSEUDO));
 			}
 			for (Map.Entry<Double, Double> entry : model) {
-				this.add(new Point(entry.getKey(), entry.getValue(), false));
+				this.add(new Point(entry.getKey(), entry.getValue(), EMode.REGULAR));
 			}
+			this.filter = null;
+		} else {
+			this.filter = model.getExtraBinding("filter", Filter.class);
+			if (this.filter == null) {
+				this.filter = new Filter();
+				model.addExtraBinding("filter", this.filter);
+			}
+			this.add(new Point(Double.isNaN(filter.getRaw_min()) ? model.getActMin() : filter.getRaw_min(), filter
+					.getNormalized_min(), EMode.FILTER_MIN));
+			this.add(new Point(Double.isNaN(filter.getRaw_max()) ? model.getActMax() : filter.getRaw_max(), filter
+					.getNormalized_max(), EMode.FILTER_MAX));
 		}
 	}
 
@@ -135,20 +148,18 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		if (model.isDefinedMapping()) {
-			this.renderLine(g);
-			g.color(Color.LIGHT_GRAY);
-			for (GLElement point : this) {
-				Vec2f loc = point.getLocation();
-				if (((Point) point).hovered) {
-					drawHintLines(g, loc, w, h);
-				}
+		this.renderLine(g);
+		g.color(Color.LIGHT_GRAY);
+		for (GLElement point : this) {
+			Vec2f loc = point.getLocation();
+			if (((Point) point).hovered) {
+				drawHintLines(g, loc, w, h);
 			}
-			if (this.lineHovered) {
-				drawHintLines(g, this.linePoint, w, h);
-				g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), this.linePoint.x() - 5, this.linePoint.y() - 5, 10,
-						10, Color.LIGHT_GRAY);
-			}
+		}
+		if (this.lineHovered) {
+			drawHintLines(g, this.linePoint, w, h);
+			g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), this.linePoint.x() - 5, this.linePoint.y() - 5, 10, 10,
+					Color.LIGHT_GRAY);
 		}
 
 		super.renderImpl(g, w, h);
@@ -174,16 +185,14 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (model.isDefinedMapping()) {
-			g.pushName(pickingId);
-			this.renderLine(g);
-			g.popName();
-		}
+		g.pushName(pickingId);
+		this.renderLine(g);
+		g.popName();
 		super.renderPickImpl(g, w, h);
 	}
 
 	void onRemovePoint(Point point) {
-		if (point.pseudo) // can't remove pseudo points
+		if (point.mode != EMode.REGULAR) // can't remove pseudo points
 			return;
 		if (model.hasDefinedMappingBounds() && model.size() == 2) // can't remove defined bounds
 			return;
@@ -193,7 +202,7 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 		int s = model.size();
 		switch (s) {
 		case 0: // add the second
-			point.pseudo = true;
+			point.mode = EMode.PSEUDO;
 			Point other = (Point) (get(0) == point ? get(0 + 1) : get(0));
 			if (other.from == model.getActMin()) {
 				point.from = model.getActMax();
@@ -206,7 +215,7 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 			relayout();
 			break;
 		case 1:
-			point.pseudo = true;
+			point.mode = EMode.PSEUDO;
 			if (!model.isMinDefined()) {
 				point.from = model.getActMin();
 				point.to = 0;
@@ -247,16 +256,16 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 				t = p2;
 			t.from = from;
 			t.to = to;
-			t.pseudo = false;
+			t.mode = EMode.REGULAR;
 			t.repaint();
 			relayout();
 			break;
 		case 2:
 			for (Point p : Iterables.filter(this, Point.class)) {
-				if (p.pseudo) {
+				if (p.mode == EMode.PSEUDO) {
 					p.from = from;
 					p.to = to;
-					p.pseudo = false;
+					p.mode = EMode.REGULAR;
 					p.repaint();
 					break;
 				}
@@ -264,7 +273,7 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 			relayout();
 			break;
 		default:
-			this.add(new Point(from, to, false));
+			this.add(new Point(from, to, EMode.REGULAR));
 			break;
 		}
 		repaintMapping();
@@ -290,21 +299,31 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 		to = (to < 0 ? 0 : (to > 1 ? 1 : to));
 
 		from = inverseNormalize(from);
-		model.update(oldFrom, oldTo, from, to);
-
+		if (model.isDefinedMapping())
+			model.update(oldFrom, oldTo, from, to);
+		else if (filter != null) {
+			assert current.mode.isFilter();
+			if (current.mode == EMode.FILTER_MIN) {
+				filter.setRaw_min(from);
+				filter.setNormalized_min(to);
+			} else if (current.mode == EMode.FILTER_MAX) {
+				filter.setRaw_max(from);
+				filter.setNormalized_max(to);
+			}
+		}
 		current.set(from, to);
 	}
 
 	private class Point extends PickableGLElement {
 		private boolean hovered;
-		private boolean pseudo;
+		private EMode mode;
 		private double from;
 		private double to;
 
-		public Point(double from, double to, boolean pseudo) {
+		public Point(double from, double to, EMode mode) {
 			this.from = from;
 			this.to = to;
-			this.pseudo = pseudo;
+			this.mode = mode;
 		}
 
 		public void set(double from, double to) {
@@ -319,8 +338,8 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
-			Color color = this.hovered ? Color.RED : Color.BLACK;
-			if (!pseudo)
+			Color color = this.hovered ? Color.RED : (mode.isFilter() ? Color.BLUE : Color.BLACK);
+			if (mode != EMode.PSEUDO)
 				g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), -5, -5, 10, 10, color);
 			else {
 				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
@@ -352,8 +371,8 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 		protected void onDragged(Pick pick) {
 			if (!pick.isDoDragging())
 				return;
-			if (pick.getDx() != 0 || pick.getDy() != 0)
-				this.pseudo = false;
+			if (this.mode == EMode.PSEUDO && (pick.getDx() != 0 || pick.getDy() != 0))
+				this.mode = EMode.REGULAR;
 			drag(this, pick.getDx(), pick.getDy());
 			this.repaintAll();
 		}
