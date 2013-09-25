@@ -213,7 +213,7 @@ public class ScriptedMappingFunction extends AMappingFunction {
 			bindings.put("data", actStats);
 		}
 		filter.use(getActMin(), getActMax());
-		bindings.put("fitler", filter);
+		bindings.put("filter", filter);
 
 		for (Map.Entry<String, Object> extra : extraBindings.entrySet()) {
 			bindings.put(extra.getKey(), extra.getValue());
@@ -237,11 +237,11 @@ public class ScriptedMappingFunction extends AMappingFunction {
 		}
 
 		public boolean filterRaw(double raw) {
-			return raw >= raw_min || raw <= raw_max;
+			return raw >= raw_min && raw <= raw_max;
 		}
 
 		public boolean filterNormalized(double n) {
-			return n >= normalized_min || n <= normalized_max;
+			return n >= normalized_min && n <= normalized_max;
 		}
 
 		public double getRaw_min() {
