@@ -3,17 +3,15 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.vis.lineup.ui.mapping;
+package org.caleydo.vis.lineup.model.mapping;
 
-import org.caleydo.vis.lineup.model.mapping.IMappingFunction;
-import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public enum EStandardMappings{
-	LINEAR, INVERT, ABS, Z_SCORE, LOG;
+	LINEAR, INVERT, ABS, Z_SCORE, LOG, P_Q_VALUE;
 
 	public void apply(IMappingFunction mapping) {
 		switch (this) {
@@ -54,6 +52,9 @@ public enum EStandardMappings{
 		case LOG:
 			mapping.fromJavaScript("linear(log(Math.max(10E-10,value_min)), log(Math.max(10E-10,value_max)), log(Math.max(10E-10,value)), 0, 1)");
 			return;
+		case P_Q_VALUE:
+			mapping.fromJavaScript("if (value < 0.0 || value > 1.0) return NaN\nreturn linear(0.0, -log(Math.max(10e-10,value_min)), -log(Math.max(10e-10,value)), 0.0, 1.0)");
+			return;
 		}
 		throw new IllegalStateException();
 	}
@@ -71,6 +72,8 @@ public enum EStandardMappings{
 			return "Z-Score";
 		case LOG:
 			return "Log";
+		case P_Q_VALUE:
+			return "P-value/Q-value";
 		}
 		throw new IllegalStateException();
 	}
