@@ -21,13 +21,13 @@ import org.caleydo.core.util.function.Utils;
  * @author Samuel Gratzl
  *
  */
-public class TablePerspectiveDoubleList extends ADoubleList {
-	private final Table table;
+abstract class ATablePerspectiveDoubleList extends ADoubleList {
+	protected final Table table;
 	private final VirtualArray dim;
 	private final VirtualArray rec;
 	private final int size;
 
-	public TablePerspectiveDoubleList(TablePerspective tablePerspective) {
+	public ATablePerspectiveDoubleList(TablePerspective tablePerspective) {
 		this.table = tablePerspective.getDataDomain().getTable();
 		this.dim = tablePerspective.getDimensionPerspective().getVirtualArray();
 		this.rec = tablePerspective.getRecordPerspective().getVirtualArray();
@@ -35,24 +35,26 @@ public class TablePerspectiveDoubleList extends ADoubleList {
 	}
 
 	@Override
-	public double getPrimitive(int index) {
+	public final double getPrimitive(int index) {
 		// split in row / col
 		int nrCols = dim.size();
 		int recordIndex = index / nrCols;
 		int dimIndex = index % nrCols;
 		Integer recordID = rec.get(recordIndex);
 		Integer dimensionID = dim.get(dimIndex);
-		float v = table.getNormalizedValue(dimensionID, recordID);
+		double v = getValue(dimensionID, recordID);
 		return v;
 	}
 
+	protected abstract double getValue(Integer dimensionID, Integer recordID);
+
 	@Override
-	public int size() {
+	public final int size() {
 		return size;
 	}
 
 	@Override
-	public IDoubleSizedIterator iterator() {
+	public final IDoubleSizedIterator iterator() {
 		if (isEmpty())
 			return Utils.EMPTY;
 		if (this.dim.size() == 1) // single col
@@ -104,9 +106,9 @@ public class TablePerspectiveDoubleList extends ADoubleList {
 		@Override
 		public double nextPrimitive() {
 			if (singleIsDim)
-				return table.getNormalizedValue(id, va.next());
+				return getValue(id, va.next());
 			else
-				return table.getNormalizedValue(va.next(), id);
+				return getValue(va.next(), id);
 		}
 
 	}
@@ -141,7 +143,7 @@ public class TablePerspectiveDoubleList extends ADoubleList {
 		public double nextPrimitive() {
 			if (recID == null && recItr.hasNext()) // init
 				recID = recItr.next();
-			float v = table.getNormalizedValue(dimItr.next(), recID);
+			double v = getValue(dimItr.next(), recID);
 			if (!dimItr.hasNext()) {
 				// shift
 				if (!recItr.hasNext()) { // no more rows
