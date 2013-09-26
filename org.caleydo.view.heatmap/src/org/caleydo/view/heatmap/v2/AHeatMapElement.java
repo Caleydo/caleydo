@@ -146,8 +146,8 @@ public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 	 * @return whether in both dimension it is a unfirm rendering
 	 */
 	protected final boolean isUniform() {
-		return recordSpacingStrategy == SpacingStrategies.UNIFORM
-				&& dimensionSpacingStrategy == SpacingStrategies.UNIFORM;
+		return recordSpacing.isUniform() && dimensionSpacing.isUniform();
+
 	}
 	/**
 	 * @param textWidth

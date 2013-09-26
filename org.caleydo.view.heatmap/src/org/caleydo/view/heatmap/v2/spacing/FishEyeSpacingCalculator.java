@@ -210,5 +210,10 @@ public class FishEyeSpacingCalculator implements ISpacingStrategy {
 				return positions.length - 1;
 			return -1;
 		}
+
+		@Override
+		public boolean isUniform() {
+			return false;
+		}
 	}
 }
