@@ -125,7 +125,7 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 		try {
 			url = new URL(String.format(URL_PATTERN, GeneticMetaData.getOrganism().name().toLowerCase()));
 			RemoteFile zip = RemoteFile.of(url);
-			File localZip = zip.getOrLoad(true, monitor, "Caching Mapping Data (maybe take a while): Downloading "
+			File localZip = zip.getOrLoad(true, monitor, "Caching Mapping Data (this may take a while): Downloading "
 					+ GeneticMetaData.getOrganism().getLabel() + " (%2$d MB)");
 			if (localZip == null || !localZip.exists()) {
 				log.error("can't download: " + url);

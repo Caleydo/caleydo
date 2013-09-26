@@ -591,7 +591,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 			}
 
 			File localZip = zip.getOrLoad(true, monitor,
-					"Caching Pathways (maybe take a while): Downloading " + type.getName() + " pathways (%2$d MB)");
+					"Caching Pathways (this may take a while): Downloading " + type.getName() + " pathways (%2$d MB)");
 			if (localZip == null || !localZip.exists()) {
 				log.error("can't download: " + url);
 				return null;
