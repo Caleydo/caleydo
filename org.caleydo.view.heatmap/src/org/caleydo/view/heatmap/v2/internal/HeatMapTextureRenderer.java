@@ -222,7 +222,9 @@ public class HeatMapTextureRenderer {
 		return texData;
 	}
 
-	public void render(GLGraphics g, float w, float h) {
+	public boolean render(GLGraphics g, float w, float h) {
+		if (dimension == null) // ERROR never initialized
+			return false;
 		float wScale = w / dimension.width;
 		float hScale = h / dimension.height;
 
@@ -234,6 +236,7 @@ public class HeatMapTextureRenderer {
 		for(Tile tile : tiles)
 			tile.render(g);
 		g.restore();
+		return true;
 	}
 
 	private static class Tile {
@@ -247,8 +250,10 @@ public class HeatMapTextureRenderer {
 		public void render(GLGraphics g) {
 
 			texture.bind(g.gl);
-			g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP_TO_EDGE);
-			g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP_TO_EDGE);
+			if (g.gl.isExtensionAvailable("GL_SGIS_texture_edge_clamp")) {
+				g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP_TO_EDGE);
+				g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP_TO_EDGE);
+			}
 			g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
 			g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
 

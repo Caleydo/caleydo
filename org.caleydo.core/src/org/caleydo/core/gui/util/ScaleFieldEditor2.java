@@ -6,6 +6,8 @@ import org.eclipse.jface.preference.ScaleFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -111,6 +113,17 @@ public class ScaleFieldEditor2 extends ScaleFieldEditor {
 					if (e.detail == SWT.TRAVERSE_RETURN) {
 						e.doit = false;
 					}
+				}
+			});
+			text.addFocusListener(new FocusListener() {
+				@Override
+				public void focusLost(FocusEvent e) {
+					valueChanged2();
+				}
+
+				@Override
+				public void focusGained(FocusEvent e) {
+
 				}
 			});
 			text.addSelectionListener(new SelectionAdapter() {

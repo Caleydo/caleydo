@@ -61,8 +61,9 @@ public class IntegerFilterDialog extends AFilterDialog {
 		layout.marginWidth = 0;
 		layout.verticalSpacing = 0;
 		p.setLayout(layout);
+		p.setLayoutData(twoColumns(new GridData(SWT.FILL, SWT.CENTER, true, true)));
 
-		GridData d = new GridData(SWT.LEFT, SWT.CENTER, true, true);
+		GridData d = new GridData(SWT.FILL, SWT.CENTER, true, true);
 		d.widthHint = getCharWith(composite, 4);
 		minUI = new Text(p, SWT.BORDER);
 		minUI.setLayoutData(d);

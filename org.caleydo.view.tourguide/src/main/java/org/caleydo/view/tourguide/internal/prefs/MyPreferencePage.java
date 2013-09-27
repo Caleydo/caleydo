@@ -25,7 +25,7 @@ public class MyPreferencePage extends FieldEditorPreferencePage implements IWork
 	public void createFieldEditors() {
 		final Composite parent = getFieldEditorParent();
 
-		addField(new IntegerFieldEditor(MyPreferences.MIN_CLUSTER_SIZE, "Default minimal cluster size", parent));
+		addField(new IntegerFieldEditor(MyPreferences.MIN_CLUSTER_SIZE, "Default minimal set size", parent));
 	}
 
 	@Override

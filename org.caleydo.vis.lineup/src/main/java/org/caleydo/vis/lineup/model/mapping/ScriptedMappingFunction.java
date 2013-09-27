@@ -7,6 +7,8 @@ package org.caleydo.vis.lineup.model.mapping;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.script.Bindings;
 import javax.script.Compilable;
@@ -15,11 +17,14 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import org.caleydo.core.util.logging.Logger;
+
 /**
  * @author Samuel Gratzl
  *
  */
 public class ScriptedMappingFunction extends AMappingFunction {
+	private static final Logger log = Logger.create(ScriptedMappingFunction.class);
 	/**
 	 *
 	 */
@@ -30,6 +35,9 @@ public class ScriptedMappingFunction extends AMappingFunction {
 	private String code = "";
 	private final ScriptEngine engine;
 	private CompiledScript script;
+
+	private final Filter filter = new Filter();
+	private final Map<String, Object> extraBindings = new HashMap<>(1);
 
 	static {
 		// create code around the script
@@ -76,6 +84,7 @@ public class ScriptedMappingFunction extends AMappingFunction {
 	public void reset() {
 		this.code = DEFAULT_CODE;
 		this.script = null;
+		this.filter.reset();
 	}
 
 	@Override
@@ -90,7 +99,7 @@ public class ScriptedMappingFunction extends AMappingFunction {
 			Compilable c = (Compilable) engine;
 			script = c.compile(fullCode(code));
 		} catch (ScriptException e) {
-			e.printStackTrace();
+			log.error("can't compile: " + fullCode(code), e);
 		}
 		return script;
 	}
@@ -152,8 +161,36 @@ public class ScriptedMappingFunction extends AMappingFunction {
 		return true;
 	}
 
+	/**
+	 * @return the filter, see {@link #filter}
+	 */
+	public Filter getFilter() {
+		return filter;
+	}
+
+	public void addExtraBinding(String key, Object value) {
+		this.extraBindings.put(key, value);
+	}
+
+	public void removeExtraBinding(String key) {
+		this.extraBindings.remove(key);
+	}
+
+	public <T> T getExtraBinding(String key, Class<T> type) {
+		Object r = extraBindings.get(key);
+		if (type.isInstance(r))
+			return type.cast(r);
+		return null;
+	}
+
 	@Override
 	public double apply(double in) {
+		{// optimization
+			filter.use(getActMin(), getActMax());
+			Double r = EStandardMappings.apply(code, in, this);
+			if (r != null)
+				return JavaScriptFunctions.clamp01(r.doubleValue());
+		}
 		try {
 			Bindings bindings = engine.createBindings();
 			bindings.put("v", in);
@@ -167,16 +204,9 @@ public class ScriptedMappingFunction extends AMappingFunction {
 		} catch (MappedValueException e) {
 			return e.getValue();
 		} catch (ScriptException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.warn("can't execute: " + fullCode(code), e);
 		}
 		return Double.NaN;
-	}
-
-	public static void main(String[] args) {
-		ScriptedMappingFunction m = new ScriptedMappingFunction(0, 1);
-		m.fromJavaScript("return 1-Math.abs(value)");
-		System.out.println(m.apply(0.2f));
 	}
 
 	/**
@@ -188,6 +218,87 @@ public class ScriptedMappingFunction extends AMappingFunction {
 		if (actStats != null) {
 			bindings.put("data", actStats);
 		}
+		filter.use(getActMin(), getActMax());
+		bindings.put("filter", filter);
+
+		for (Map.Entry<String, Object> extra : extraBindings.entrySet()) {
+			bindings.put(extra.getKey(), extra.getValue());
+		}
+	}
+
+	public static final class Filter {
+		private double raw_min = Double.NaN;
+		private double raw_max = Double.NaN;
+		private double normalized_min = 0;
+		private double normalized_max = 1;
+
+		/**
+		 *
+		 */
+		public void reset() {
+			raw_min = Double.NaN;
+			raw_max = Double.NaN;
+			normalized_min = 0;
+			normalized_max = 1;
+		}
+
+		public boolean filterRaw(double raw) {
+			return raw >= raw_min && raw <= raw_max;
+		}
+
+		public boolean filterNormalized(double n) {
+			return n >= normalized_min && n <= normalized_max;
+		}
+
+		public double getRaw_min() {
+			return raw_min;
+		}
+
+		public void setRaw_min(double raw_min) {
+			this.raw_min = raw_min;
+		}
+
+		public double getRaw_max() {
+			return raw_max;
+		}
+
+		public void setRaw_max(double raw_max) {
+			this.raw_max = raw_max;
+		}
+
+		public double getNormalized_min() {
+			return normalized_min;
+		}
+
+		public void setNormalized_min(double normalized_min) {
+			this.normalized_min = normalized_min;
+		}
+
+		public double getNormalized_max() {
+			return normalized_max;
+		}
+
+		public void setNormalized_max(double normalized_max) {
+			this.normalized_max = normalized_max;
+		}
+
+		/**
+		 * @param actMin
+		 * @param actMax
+		 */
+		public void use(double actMin, double actMax) {
+			if (Double.isNaN(raw_min))
+				raw_min = actMin;
+			if (Double.isNaN(raw_max))
+				raw_max = actMax;
+		}
+
+	}
+
+	public static void main(String[] args) {
+		ScriptedMappingFunction m = new ScriptedMappingFunction(0, 1);
+		m.fromJavaScript("return 1-Math.abs(value)");
+		System.out.println(m.apply(0.2f));
 	}
 
 }

@@ -311,8 +311,10 @@ public class KNNImpute extends RecursiveTask<Table<Integer, Integer, Float>> {
 			acc += dx * dx;
 			n++;
 		}
-		if (n > 0)
-			return acc / n; // FIXME according to the fortran code, this is not the eucledian distance
+		if (n > 0) {
+			return acc / n;// FIXME according to the fortran code, this is not the eucledian distance
+			// return Math.sqrt(acc);
+		}
 		return Double.POSITIVE_INFINITY;
 	}
 
@@ -543,7 +545,9 @@ public class KNNImpute extends RecursiveTask<Table<Integer, Integer, Float>> {
 			}
 			b.add(new Gene(j++, nans, d));
 		}
-		KNNImpute r = new KNNImpute(new KNNImputeDescription(), b.build());
+		final KNNImputeDescription desc2 = new KNNImputeDescription();
+		desc2.setMaxp(100000);
+		KNNImpute r = new KNNImpute(desc2, b.build());
 		ForkJoinPool p = new ForkJoinPool();
 		p.invoke(r);
 		try (PrintWriter w = new PrintWriter("khan.imputed.csv")) {
@@ -551,7 +555,7 @@ public class KNNImpute extends RecursiveTask<Table<Integer, Integer, Float>> {
 			for (Gene g : r.genes) {
 				float[] d = g.data;
 				int nan = 0;
-				w.print(d[0]);
+				w.print(Float.isNaN(d[0]) ? g.nanReplacements[nan++] : d[0]);
 				for (int i = 1; i < d.length; ++i)
 					w.append(';').append(String.valueOf(Float.isNaN(d[i]) ? g.nanReplacements[nan++] : d[i]));
 				w.println();

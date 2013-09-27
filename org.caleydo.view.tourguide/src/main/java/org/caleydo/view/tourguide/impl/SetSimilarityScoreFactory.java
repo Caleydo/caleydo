@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Samuel Gratzl
  *
  */
-public class ClusterSimilarityScoreFactory implements IScoreFactory {
+public class SetSimilarityScoreFactory implements IScoreFactory {
 	private final static Color color = new Color("#ffb380");
 	private final static Color bgColor = new Color("#ffe6d5");
 
@@ -69,7 +69,8 @@ public class ClusterSimilarityScoreFactory implements IScoreFactory {
 		IState start = stateMachine.get(IStateMachine.ADD_STRATIFICATIONS);
 		IState browse = stateMachine.addState("JaccardIndexBrowse", new UpdateAndBrowseJaccardIndex());
 		IState target = stateMachine.addState("JaccardIndex", new CreateJaccardScoreState(browse));
-		stateMachine.addTransition(start, new SimpleTransition(target, "Based on overlap with displayed cluster",
+		stateMachine
+				.addTransition(start, new SimpleTransition(target, "Based on overlap with displayed set",
 				disabled));
 	}
 

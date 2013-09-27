@@ -13,6 +13,7 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.view.tourguide.api.external.AExternalScoreParseSpecification;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
+import org.caleydo.vis.lineup.model.mapping.EStandardMappings;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 
 /**
@@ -23,6 +24,8 @@ import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 public abstract class AExternalScore extends DefaultLabelProvider implements ISerializeableScore {
 	private double mappingMin;
 	private double mappingMax;
+	private EStandardMappings mapping;
+
 	private Color bgColor;
 	private Color color;
 
@@ -37,6 +40,7 @@ public abstract class AExternalScore extends DefaultLabelProvider implements ISe
 		this.bgColor = spec.getColor().brighter().brighter();
 		this.mappingMin = spec.getMappingMin();
 		this.mappingMax = spec.getMappingMax();
+		this.mapping = spec.getMapping();
 	}
 
 	@Override
@@ -77,6 +81,8 @@ public abstract class AExternalScore extends DefaultLabelProvider implements ISe
 		} else {
 			m = new PiecewiseMapping(mappingMin, mappingMax);
 		}
+		if (mapping != null && mapping != EStandardMappings.LINEAR)
+			mapping.apply(m);
 		return m;
 	}
 

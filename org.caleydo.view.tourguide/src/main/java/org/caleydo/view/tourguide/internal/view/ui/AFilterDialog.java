@@ -54,7 +54,7 @@ public class AFilterDialog extends Dialog {
 		c.setLayout(layout);
 
 		Label l = new Label(c, SWT.CENTER);
-		l.setText("Minimum cluster size");
+		l.setText("Minimum set size");
 		l.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		minSizeUI = new Spinner(c, SWT.BORDER);
 		minSizeUI.setValues(model.getMinSize(), 0, 10000, 0, 1, 10);
@@ -66,7 +66,7 @@ public class AFilterDialog extends Dialog {
 		Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION)
 				.getImage();
 		// Set description and image
-		deco.setDescriptionText("Specifies the minimum size that a cluster must have to be used during query computation\nA default value can be set within the Caleydo preferences");
+		deco.setDescriptionText("Specifies the minimum size that a set must have to be used during query computation\nA default value can be set within the Caleydo preferences");
 		deco.setImage(image);
 		deco.setShowOnlyOnFocus(false);
 

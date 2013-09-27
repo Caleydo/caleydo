@@ -146,8 +146,8 @@ public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 	 * @return whether in both dimension it is a unfirm rendering
 	 */
 	protected final boolean isUniform() {
-		return recordSpacingStrategy == SpacingStrategies.UNIFORM
-				&& dimensionSpacingStrategy == SpacingStrategies.UNIFORM;
+		return recordSpacing.isUniform() && dimensionSpacing.isUniform();
+
 	}
 	/**
 	 * @param textWidth
@@ -258,6 +258,14 @@ public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 		return new CellSpace(pos, dimensionSpacing.getSize(index));
 	}
 
+	public final int getDimensionIndex(float position) {
+		if (dimensionSpacing == null)
+			return -1;
+		if (recordLabels == EShowLabels.LEFT)
+			position -= textWidth;
+		return dimensionSpacing.getIndex(position);
+	}
+
 	public final CellSpace getRecordCellSpace(int index) {
 		if (recordSpacing == null)
 			return null;
@@ -265,6 +273,14 @@ public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 		if (dimensionLabels == EShowLabels.LEFT)
 			pos += textWidth;
 		return new CellSpace(pos, recordSpacing.getSize(index));
+	}
+
+	public final int getRecordIndex(float position) {
+		if (recordSpacing == null)
+			return -1;
+		if (dimensionLabels == EShowLabels.LEFT)
+			position -= textWidth;
+		return recordSpacing.getIndex(position);
 	}
 
 	@Override

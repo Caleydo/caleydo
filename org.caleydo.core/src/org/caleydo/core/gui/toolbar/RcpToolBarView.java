@@ -6,6 +6,7 @@
 package org.caleydo.core.gui.toolbar;
 
 import org.caleydo.core.internal.MyPreferences;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -21,7 +22,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Spinner;
-import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.ISizeProvider;
 import org.eclipse.ui.PlatformUI;
@@ -35,6 +35,8 @@ import org.eclipse.ui.part.ViewPart;
  * @author Marc Streit
  */
 public class RcpToolBarView extends ViewPart implements ISizeProvider {
+	private static final int MAX_ITEMS_PER_LINE = 5;
+
 	public static final String ID = "org.caleydo.core.gui.toolbar.RcpToolBarView";
 
 	public static final int TOOLBAR_WIDTH = 213;
@@ -63,21 +65,25 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 
 		// group.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
 
-		// Needed to simulate toolbar wrapping which is not implemented for
-		// linux
-		// See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
 
-		final ToolBar toolBar = new ToolBar(group, SWT.WRAP);
-		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
-		final ToolBar toolBarLine2 = new ToolBar(group, SWT.WRAP);
-		ToolBarManager toolBarManager2 = new ToolBarManager(toolBarLine2);
-
+		ToolBarManager toolBarManager = new ToolBarManager(SWT.WRAP);
 		IMenuService menuService = (IMenuService) PlatformUI.getWorkbench().getService(IMenuService.class);
-		menuService.populateContributionManager(toolBarManager, "toolbar:org.caleydo.core.gui.toolbar1");
-		menuService.populateContributionManager(toolBarManager2, "toolbar:org.caleydo.core.gui.toolbar2");
+		menuService.populateContributionManager(toolBarManager, "toolbar:org.caleydo.core.gui.toolbar");
 
-		toolBarManager.update(true);
-		toolBarManager2.update(true);
+		if (toolBarManager.getSize() > MAX_ITEMS_PER_LINE) { // SystemUtils.IS_OS_LINUX &&
+			// Needed to simulate toolbar wrapping which is not implemented for
+			// linux See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
+			final IContributionItem[] items = toolBarManager.getItems();
+			for (int i = 0; i < items.length;) {
+				ToolBarManager m = new ToolBarManager();
+				for (; i < items.length && m.getSize() < MAX_ITEMS_PER_LINE; ++i)
+					if (items[i].isVisible())
+						m.add(items[i]);
+				m.createControl(group);
+			}
+		} else {
+			toolBarManager.createControl(group);
+		}
 	}
 
 	/**

@@ -11,6 +11,7 @@ import java.util.List;
 import org.caleydo.core.io.MatrixDefinition;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.view.tourguide.api.score.ECombinedOperator;
+import org.caleydo.vis.lineup.model.mapping.EStandardMappings;
 
 public abstract class AExternalScoreParseSpecification extends MatrixDefinition implements Cloneable {
 	private List<Integer> columns;
@@ -26,6 +27,8 @@ public abstract class AExternalScoreParseSpecification extends MatrixDefinition 
 	private double mappingMin;
 
 	private double mappingMax;
+
+	private EStandardMappings mapping = EStandardMappings.LINEAR;
 
 	public AExternalScoreParseSpecification() {
 	}
@@ -130,6 +133,21 @@ public abstract class AExternalScoreParseSpecification extends MatrixDefinition 
 	 */
 	public void setMappingMin(double mappingMin) {
 		this.mappingMin = mappingMin;
+	}
+
+	/**
+	 * @return the mapping, see {@link #mapping}
+	 */
+	public EStandardMappings getMapping() {
+		return mapping;
+	}
+
+	/**
+	 * @param mapping
+	 *            setter, see {@link mapping}
+	 */
+	public void setMapping(EStandardMappings mapping) {
+		this.mapping = mapping;
 	}
 
 	/**

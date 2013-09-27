@@ -22,6 +22,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.lineup.model.mapping.ScriptedMappingFunction.Filter;
 import org.caleydo.vis.lineup.ui.RenderStyle;
 
 import com.google.common.collect.Iterables;
@@ -35,11 +36,13 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 		IGLLayout {
 
 	private int pickingId = -1;
+	private final Filter filter;
 
 	public PiecewiseMappingParallelUI(PiecewiseMapping model, boolean isHorizontal) {
 		super(model, isHorizontal);
 		setPicker(GLRenderers.DUMMY);
 		setLayout(this);
+		this.filter = model.getFilter();
 	}
 
 	@Override
@@ -55,13 +58,18 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 		if (model.isDefinedMapping()) {
 			if (model.isMappingDefault()) {
 				if (Double.isNaN(model.getFromMin()))
-					this.add(new PointLinePoint(model.getActMin(), 0, true));
+					this.add(new PointLinePoint(model.getActMin(), 0, EMode.PSEUDO));
 				if (Double.isNaN(model.getFromMax()))
-					this.add(new PointLinePoint(model.getActMax(), 1, true));
+					this.add(new PointLinePoint(model.getActMax(), 1, EMode.PSEUDO));
 			}
 			for (Map.Entry<Double, Double> entry : model) {
-				this.add(new PointLinePoint(entry.getKey(), entry.getValue(), false));
+				this.add(new PointLinePoint(entry.getKey(), entry.getValue(), EMode.REGULAR));
 			}
+		} else {
+			this.add(new PointLinePoint(Double.isNaN(filter.getRaw_min()) ? model.getActMin() : filter.getRaw_min(),
+					filter.getNormalized_min(), EMode.FILTER_MIN));
+			this.add(new PointLinePoint(Double.isNaN(filter.getRaw_max()) ? model.getActMax() : filter.getRaw_max(),
+					filter.getNormalized_max(), EMode.FILTER_MAX));
 		}
 	}
 
@@ -138,13 +146,24 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 		to = (to < 0 ? 0 : (to > 1 ? 1 : to));
 
 		from = inverseNormalize(from);
-		model.update(oldFrom, oldTo, from, to);
+		if (model.isDefinedMapping())
+			model.update(oldFrom, oldTo, from, to);
+		else if (filter != null) {
+			assert current.mode.isFilter();
+			if (current.mode == EMode.FILTER_MIN) {
+				filter.setRaw_min(from);
+				filter.setNormalized_min(to);
+			} else if (current.mode == EMode.FILTER_MAX) {
+				filter.setRaw_max(from);
+				filter.setNormalized_max(to);
+			}
+		}
 
 		current.set(from, to);
 	}
 
 	void onRemovePoint(PointLinePoint point) {
-		if (point.pseudo) // can't remove pseudo points
+		if (point.mode != EMode.REGULAR) // can't remove pseudo points
 			return;
 		if (model.hasDefinedMappingBounds() && model.size() == 2) // can't remove defined bounds
 			return;
@@ -154,7 +173,7 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 		int s = model.size();
 		switch (s) {
 		case 0: // add the second
-			point.pseudo = true;
+			point.mode = EMode.PSEUDO;
 			PointLinePoint other = (PointLinePoint) (get(0) == point ? get(0 + 1) : get(0));
 			if (other.from == model.getActMin()) {
 				point.from = model.getActMax();
@@ -167,7 +186,7 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 			relayout();
 			break;
 		case 1:
-			point.pseudo = true;
+			point.mode = EMode.PSEUDO;
 			if (!model.isMinDefined()) {
 				point.from = model.getActMin();
 				point.to = 0;
@@ -217,16 +236,16 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 				t = p2;
 			t.from = from;
 			t.to = to;
-			t.pseudo = false;
+			t.mode = EMode.REGULAR;
 			t.repaint();
 			relayout();
 			break;
 		case 2:
 			for (PointLinePoint p : Iterables.filter(this, PointLinePoint.class)) {
-				if (p.pseudo) {
+				if (p.mode == EMode.PSEUDO) {
 					p.from = from;
 					p.to = to;
-					p.pseudo = false;
+					p.mode = EMode.REGULAR;
 					p.repaint();
 					break;
 				}
@@ -234,7 +253,7 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 			relayout();
 			break;
 		default:
-			this.add(new PointLinePoint(from, to, false));
+			this.add(new PointLinePoint(from, to, EMode.REGULAR));
 			break;
 		}
 		repaintMapping();
@@ -243,14 +262,14 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 
 	class PointLinePoint extends PickableGLElement {
 		private boolean hovered;
-		private boolean pseudo;
+		private EMode mode;
 		private double from;
 		private double to;
 
-		public PointLinePoint(double from, double to, boolean pseudo) {
+		public PointLinePoint(double from, double to, EMode mode) {
 			this.from = from;
 			this.to = to;
-			this.pseudo = pseudo;
+			this.mode = mode;
 		}
 
 		public void set(double from, double to) {
@@ -260,11 +279,14 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
-			Color color = this.hovered ? Color.RED : Color.BLACK;
+			Color color = this.hovered ? Color.RED : (mode.isFilter() ? Color.BLUE : Color.BLACK);
 			g.color(color);
 			double f = normalizeRaw(from);
 			double t = to;
-			if (!pseudo) {
+			switch (mode) {
+			case REGULAR:
+			case FILTER_MIN:
+			case FILTER_MAX:
 				if (isHorizontal) {
 					float x2 = (float) f * w;
 					float x1 = (float) t * w;
@@ -278,7 +300,8 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 					g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), -5, -5 + y1, 10, 10, color);
 					g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), w - 5, -5 + y2, 10, 10, color);
 				}
-			} else {
+				break;
+			case PSEUDO:
 				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
 				g.gl.glLineStipple(2, (short) 0xAAAA);
 				g.lineWidth(2);
@@ -297,6 +320,7 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 				}
 				g.gl.glDisable(GL2.GL_LINE_STIPPLE);
 				g.lineWidth(1);
+				break;
 			}
 		}
 
@@ -337,7 +361,8 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 			float dv = isHorizontal ? pick.getDx() : pick.getDy();
 			if (dv == 0)
 				return;
-			this.pseudo = false;
+			if (this.mode == EMode.PSEUDO)
+				this.mode = EMode.REGULAR;
 			drag(this, toDragMode(pick.getPickedPoint()), dv);
 			this.repaintAll();
 		}

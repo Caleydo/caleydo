@@ -51,7 +51,7 @@ public class KEGGParser implements IRunnableWithProgress {
 		final String organismKey = toKEGGOrganism(GeneticMetaData.getOrganism());
 
 		SubMonitor m = SubMonitor.convert(monitor);
-		m.setTaskName("Caching Pathways (maybe take a while)");
+		m.setTaskName("Caching Pathways (this may take a while)");
 		RemoteFile listRFile = RemoteFile.of(toURL("http://rest.kegg.jp/list/pathway/" + organismKey), ".txt");
 		File listFile = listRFile.getOrLoad(false, monitor);
 
@@ -69,8 +69,8 @@ public class KEGGParser implements IRunnableWithProgress {
 			return;
 		}
 
-		final String format = "Caching Pathways (maybe take a while): Downloading KEGG pathway %s (%d of %d)";
-		m.beginTask("Caching Pathways (maybe take a while)", lines.size() * 20);
+		final String format = "Caching Pathways (this may take a while): Downloading KEGG pathway %s (%d of %d)";
+		m.beginTask("Caching Pathways (this may take a while)", lines.size() * 20);
 		int i = 0;
 		for (String line : lines) {
 			String pathwayName = line.substring(5, 13);

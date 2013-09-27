@@ -10,8 +10,8 @@ import gleem.linalg.Vec2f;
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.table.TableDoubleLists;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.table.TablePerspectiveDoubleList;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.DoubleFunctions;
@@ -109,7 +109,7 @@ public class BarPlotElement extends AHeatMapElement {
 		this.normalizedCenter = (float) ((NumericalTable) table).getNormalizedForRaw(Table.Transformation.LINEAR, 0);
 
 		if (scaleLocally) {
-			DoubleStatistics stats = DoubleStatistics.of(new TablePerspectiveDoubleList(tablePerspective));
+			DoubleStatistics stats = DoubleStatistics.of(TableDoubleLists.asNormalizedList(tablePerspective));
 			double max = Math.max(-stats.getMin(), stats.getMax());
 			normalize = DoubleFunctions.normalize(-max, max);
 		} else {

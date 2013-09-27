@@ -328,7 +328,7 @@
       </menuContribution>
       <menuContribution
             allPopups="false"
-            locationURI="toolbar:org.caleydo.core.gui.toolbar1">
+            locationURI="toolbar:org.caleydo.core.gui.toolbar">
          <command
                commandId="org.caleydo.core.startup.open"
                icon="resources/icons/general/open.png"
@@ -338,6 +338,7 @@
          <command
                commandId="org.caleydo.core.io.gui.import_data"
                icon="resources/icons/general/import_data.png"
+               id="import"
                label="&amp;Import Data"
                style="push">
          </command>
@@ -350,16 +351,14 @@
          <command
                commandId="org.caleydo.core.io.gui.save_project"
                icon="resources/icons/general/save.png"
+               id="save"
                label="&amp;Save Project"
                style="push">
          </command>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:org.caleydo.core.gui.toolbar2">
          <command
                commandId="org.caleydo.core.startup.zoom"
                icon="resources/icons/general/magnifier_zoom_in.png"
+               id="zoomin"
                label="Zoom &amp;In"
                style="push"
                tooltip="Increase scaling factor">

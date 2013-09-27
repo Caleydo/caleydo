@@ -63,5 +63,10 @@ public interface ISpacingStrategy {
 		 * @return
 		 */
 		int getIndex(float position);
+
+		/**
+		 * @return whether the layout is uniform and thus a texture wrapper could be used
+		 */
+		boolean isUniform();
 	}
 }

@@ -19,3 +19,4 @@ Require-Bundle: org.caleydo.core;bundle-version="3.0.4.qualifier",
  org.caleydo.view.tourguide;bundle-version="3.0.4",
  com.google.guava
 Bundle-Activator: org.caleydo.data.importer.Activator
+Import-Package: org.caleydo.vis.lineup.model.mapping

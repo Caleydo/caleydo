@@ -13,6 +13,7 @@ import org.caleydo.data.importer.tcga.TCGAFileInfo;
 import org.caleydo.datadomain.genetic.TCGADefinitions;
 import org.caleydo.view.tourguide.api.external.ScoreParseSpecification;
 import org.caleydo.view.tourguide.api.score.ECombinedOperator;
+import org.caleydo.vis.lineup.model.mapping.EStandardMappings;
 
 /**
  * @author Samuel Gratzl
@@ -49,6 +50,7 @@ public class MutSigTask extends RecursiveTask<ScoreParseSpecification> {
 		spec.setColor(Color.GRAY);
 		spec.setMappingMin(0);
 		spec.setMappingMax(1);
+		spec.setMapping(EStandardMappings.P_Q_VALUE);
 
 		return spec;
 	}
