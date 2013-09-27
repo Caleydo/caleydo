@@ -7,9 +7,15 @@ package org.caleydo.datadomain.pathway.graph.item.vertex;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDCreator;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.IUniqueObject;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 
 /**
  * Pathway vertex that belongs to the overall pathway graph.
@@ -69,6 +75,23 @@ public class PathwayVertex implements IUniqueObject {
 	public String getExternalLink() {
 
 		return externalLink;
+	}
+
+	/**
+	 * @return The human readable name of this vertex. Differs from {@link #getName()} if this vertex represents a gene.
+	 */
+	public String getHumanReadableName() {
+		if (type == EPathwayVertexType.gene) {
+			IDCategory geneIDCategory = IDCategory.getIDCategory(EGeneIDTypes.GENE.name());
+			IDMappingManager geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(geneIDCategory);
+			IDType pathwayVertexIDType = IDType.getIDType(EGeneIDTypes.PATHWAY_VERTEX.name());
+			IDType humanReadableIDType = geneIDCategory.getHumanReadableIDType();
+			Set<String> ids = geneIDMappingManager.getID(pathwayVertexIDType, humanReadableIDType, getID());
+			if (ids == null || ids.isEmpty())
+				return "";
+			return ids.iterator().next();
+		}
+		return name;
 	}
 
 	@Override
