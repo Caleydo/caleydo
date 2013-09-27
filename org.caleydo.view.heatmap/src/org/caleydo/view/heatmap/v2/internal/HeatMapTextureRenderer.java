@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLContext;
 import javax.media.opengl.GLProfile;
 
@@ -25,6 +26,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.view.heatmap.v2.IBlockColorer;
 
+import com.jogamp.opengl.GLExtensions;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
@@ -250,10 +252,11 @@ public class HeatMapTextureRenderer {
 		public void render(GLGraphics g) {
 
 			texture.bind(g.gl);
-			if (g.gl.isExtensionAvailable("GL_SGIS_texture_edge_clamp")) {
-				g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP_TO_EDGE);
-				g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP_TO_EDGE);
-			}
+			final int clamp = (g.gl.isExtensionAvailable(GLExtensions.VERSION_1_2) || !g.gl.isGL2()) ? GL.GL_CLAMP_TO_EDGE
+					: GL2.GL_CLAMP;
+			g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, clamp);
+			g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, clamp);
+
 			g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
 			g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
 
