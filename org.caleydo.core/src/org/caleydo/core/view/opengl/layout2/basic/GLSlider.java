@@ -14,9 +14,12 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
+import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * a simple basic widget for a slider
@@ -350,6 +353,16 @@ public class GLSlider extends PickableGLElement {
 		repaint();
 	}
 
+	@Override
+	protected void onDoubleClicked(Pick pick) {
+		context.getSWTLayer().run(new ISWTLayerRunnable() {
+			@Override
+			public void run(Display display, Composite canvas) {
+				new InputBox(canvas).open();
+			}
+		});
+	}
+
 	/**
 	 * callback interface for selection changes
 	 *
@@ -366,6 +379,37 @@ public class GLSlider extends PickableGLElement {
 
 		}
 	};
+
+	private class InputBox extends AInputBoxDialog {
+		public InputBox(Composite canvas) {
+			super(null, "Set Value", GLSlider.this, canvas);
+		}
+
+		@Override
+		protected void set(String value) {
+			setValue(Float.parseFloat(value));
+		}
+
+		@Override
+		protected String verify(String value) {
+			try {
+				float v = Float.parseFloat(value);
+				if (v < min)
+					return "Too small, needs to be in the range: [" + min + "," + max + "]";
+				if (v > max)
+					return "Too large, needs to be in the range: [" + min + "," + max + "]";
+			} catch (NumberFormatException e) {
+				return "The value: '" + value + "' can't be parsed to Float: " + e.getMessage();
+			}
+			return null;
+		}
+
+		@Override
+		protected String getInitialValue() {
+			return String.valueOf(getValue());
+		}
+
+	}
 
 	public static void main(String[] args) {
 		GLElementContainer c = new GLElementContainer(GLLayouts.flowHorizontal(2));
