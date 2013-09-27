@@ -130,6 +130,7 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 		// }
 		// }
 		vertexReps.add(pathwayVertexRep);
+		mode.apply(this);
 	}
 
 	/**

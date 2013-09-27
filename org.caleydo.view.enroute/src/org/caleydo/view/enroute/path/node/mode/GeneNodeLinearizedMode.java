@@ -8,6 +8,8 @@
  */
 package org.caleydo.view.enroute.path.node.mode;
 
+import java.util.List;
+
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -19,10 +21,12 @@ import org.caleydo.core.view.opengl.layout.util.Renderers;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.GeneNode;
+import org.caleydo.view.enroute.path.node.MultiMappingAttributeRenderer;
 import org.caleydo.view.enroute.path.node.RemoveNodeButtonAttributeRenderer;
 
 /**
@@ -55,6 +59,19 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 			attributeRenderer.addNodeId(node.hashCode());
 			addAttributeRenderer(attributeRenderer);
 			attributeRenderer.registerPickingListeners();
+		}
+		List<PathwayVertexRep> vertexReps = node.getVertexReps();
+		if (vertexReps != null && !vertexReps.isEmpty()) {
+			boolean isMultiMappingNode = false;
+			for (PathwayVertexRep vertexRep : vertexReps) {
+				if (vertexRep.getPathwayVertices().size() > 1) {
+					isMultiMappingNode = true;
+					break;
+				}
+			}
+			if (isMultiMappingNode) {
+				addAttributeRenderer(new MultiMappingAttributeRenderer(view, node, pathwayPathRenderer));
+			}
 		}
 
 		Column baseColumn = new Column("baseColumn");
