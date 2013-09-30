@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Wikipathways
 Bundle-SymbolicName: org.caleydo.data.pathway.wikipathways;singleton:=true
-Bundle-Version: 3.0.4
+Bundle-Version: 3.0.5.qualifier
 Bundle-Activator: org.caleydo.data.pathway.wikipathways.Activator
-Require-Bundle: org.caleydo.core;bundle-version="3.0.4",
- org.caleydo.datadomain.pathway;bundle-version="3.0.4",
- org.caleydo.datadomain.generic;bundle-version="3.0.4",
- org.caleydo.datadomain.genetic;bundle-version="3.0.4",
+Require-Bundle: org.caleydo.core;bundle-version="3.0.5.qualifier",
+ org.caleydo.datadomain.pathway;bundle-version="3.0.5.qualifier",
+ org.caleydo.datadomain.generic;bundle-version="3.0.5.qualifier",
+ org.caleydo.datadomain.genetic;bundle-version="3.0.5.qualifier",
  org.caleydo.thirdparty.pathvisio;bundle-version="31.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
