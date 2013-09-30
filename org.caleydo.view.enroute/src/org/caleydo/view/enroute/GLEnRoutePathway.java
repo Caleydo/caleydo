@@ -315,9 +315,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	private void renderBackground(GL2 gl) {
 		gl.glPushMatrix();
-		gl.glTranslatef(0, 0, -0.2f);
+		gl.glTranslatef(0, 0, -0.001f);
 		gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BACKGROUND.name(), 0));
-		gl.glColor4f(1, 0, 0, 0);
+		gl.glColor4f(0, 0, 0, 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(0, viewFrustum.getHeight(), 0);
