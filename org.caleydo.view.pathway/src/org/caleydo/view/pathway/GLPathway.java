@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -62,6 +63,7 @@ import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -558,6 +560,30 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				triggerNodeEvents(pick.getPickingMode(), vertexRep);
 
 				// handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
+			}
+		}, EPickingType.PATHWAY_ELEMENT_SELECTION.name());
+
+		addTypePickingTooltipListener(new IPickingLabelProvider() {
+
+			@Override
+			public String getLabel(Pick pick) {
+				PathwayVertexRep vertexRep = pathwayItemManager.getPathwayVertexRep(pick.getObjectID());
+				if (vertexRep.getType() == EPathwayVertexType.gene) {
+					StringBuilder builder = new StringBuilder();
+					List<PathwayVertex> vertices = vertexRep.getPathwayVertices();
+					List<String> names = new ArrayList<>(vertices.size());
+					for (PathwayVertex v : vertices) {
+						names.add(v.getHumanReadableName());
+					}
+					Collections.sort(names);
+					for (int i = 0; i < names.size(); i++) {
+						builder.append(names.get(i));
+						if (i < names.size() - 1)
+							builder.append(", ");
+					}
+					return builder.toString();
+				}
+				return vertexRep.getShortName();
 			}
 		}, EPickingType.PATHWAY_ELEMENT_SELECTION.name());
 

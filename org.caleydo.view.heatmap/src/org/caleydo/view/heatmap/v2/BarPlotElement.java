@@ -10,8 +10,8 @@ import gleem.linalg.Vec2f;
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.table.TableDoubleLists;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.table.TablePerspectiveDoubleList;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.DoubleFunctions;
@@ -27,20 +27,20 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
  * @author Samuel Gratzl
  *
  */
-public class LinearBarHeatMapElement extends AHeatMapElement {
+public class BarPlotElement extends AHeatMapElement {
 	/**
-	 * whether the plot should be scaled to the local extrema or the global extrema (default)
+	 * whether the plot should be scaled to the local extreme or the global extreme (default)
 	 */
 	private final boolean scaleLocally;
 
 	private float normalizedCenter;
 	private IDoubleFunction normalize;
 
-	public LinearBarHeatMapElement(TablePerspective tablePerspective) {
+	public BarPlotElement(TablePerspective tablePerspective) {
 		this(tablePerspective, BasicBlockColorer.INSTANCE, EDetailLevel.HIGH, false);
 	}
 
-	public LinearBarHeatMapElement(TablePerspective tablePerspective, IBlockColorer blockColorer,
+	public BarPlotElement(TablePerspective tablePerspective, IBlockColorer blockColorer,
 			EDetailLevel detailLevel, boolean scaleLocally) {
 		super(tablePerspective, blockColorer, detailLevel);
 		this.scaleLocally = scaleLocally;
@@ -109,8 +109,9 @@ public class LinearBarHeatMapElement extends AHeatMapElement {
 		this.normalizedCenter = (float) ((NumericalTable) table).getNormalizedForRaw(Table.Transformation.LINEAR, 0);
 
 		if (scaleLocally) {
-			DoubleStatistics stats = DoubleStatistics.of(new TablePerspectiveDoubleList(tablePerspective));
-			normalize = DoubleFunctions.normalize(stats.getMin(), stats.getMax());
+			DoubleStatistics stats = DoubleStatistics.of(TableDoubleLists.asNormalizedList(tablePerspective));
+			double max = Math.max(-stats.getMin(), stats.getMax());
+			normalize = DoubleFunctions.normalize(-max, max);
 		} else {
 			normalize = ExpressionFunctions.IDENTITY;
 		}

@@ -5,6 +5,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.impl;
 
+import org.caleydo.vis.lineup.model.mapping.EStandardMappings;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 
 /**
@@ -18,8 +19,7 @@ public class Utils {
 	 */
 	public static PiecewiseMapping createPValueMapping() {
 		PiecewiseMapping m = new PiecewiseMapping(Float.NaN, 1);
-		m.fromJavaScript("if (value < 0.0 || value > 1.0) return NaN\n"
-				+ "return linear(0.0, -log(Math.max(10e-10,value_min)), -log(Math.max(10e-10,value)), 0.0, 1.0)");
+		EStandardMappings.P_Q_VALUE.apply(m);
 		return m;
 	}
 

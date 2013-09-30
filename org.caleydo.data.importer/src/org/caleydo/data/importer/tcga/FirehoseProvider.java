@@ -180,6 +180,10 @@ public final class FirehoseProvider {
 		return extractDataRunFile(".clin.merged.txt", "Merge_Clinical", 1);
 	}
 
+	public TCGAFileInfo findMutSigReport() {
+		return extractAnalysisRunFile(getFileName(".sig_genes.txt"), "MutSigNozzleReportCV", LEVEL);
+	}
+
 	public Pair<TCGAFileInfo, Integer> findMutationFile() {
 		int startColumn = 8;
 		TCGAFileInfo mutationFile = null;

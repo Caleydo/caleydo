@@ -11,11 +11,11 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
 import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
+import org.caleydo.view.heatmap.v2.BarPlotElement;
 import org.caleydo.view.heatmap.v2.BasicBlockColorer;
 import org.caleydo.view.heatmap.v2.EShowLabels;
 import org.caleydo.view.heatmap.v2.IBlockColorer;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy;
-import org.caleydo.view.heatmap.v2.LinearBarHeatMapElement;
 import org.caleydo.view.heatmap.v2.SpacingStrategies;
 
 /**
@@ -24,10 +24,10 @@ import org.caleydo.view.heatmap.v2.SpacingStrategies;
  * @author Samuel Gratzl
  *
  */
-public class LinearBarHeatMapElementFactory implements IGLElementFactory {
+public class BarPlotElementFactory implements IGLElementFactory {
 	@Override
 	public String getId() {
-		return "heatmap.linearBar";
+		return "heatmap.bar";
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class LinearBarHeatMapElementFactory implements IGLElementFactory {
 		IBlockColorer blockColorer = context.get(IBlockColorer.class, BasicBlockColorer.INSTANCE);
 		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
 
-		LinearBarHeatMapElement elem = new LinearBarHeatMapElement(data, blockColorer, detailLevel,
+		BarPlotElement elem = new BarPlotElement(data, blockColorer, detailLevel,
 				context.is("scaleLocally"));
 
 		EShowLabels default_ = context.get(EShowLabels.class, EShowLabels.NONE);

@@ -45,6 +45,11 @@ public class UniformSpacingCalculator implements ISpacingStrategy {
 				return -1;
 			return (int) Math.round(Math.floor(pos));
 		}
+
+		@Override
+		public boolean isUniform() {
+			return true;
+		}
 	}
 
 	@Override

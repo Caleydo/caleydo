@@ -397,7 +397,8 @@ public final class RankTableModel implements IRankColumnParent, Cloneable {
 	public void explode(ACompositeRankColumnModel model) {
 		int index = this.columns.indexOf(model);
 		List<ARankColumnModel> children = model.getChildren();
-		float w = model instanceof ICompressColumnMixin ? 100 : model.getWidth();
+		float w = (model instanceof ICompressColumnMixin || model instanceof GroupRankColumnModel) ? 100 : model
+				.getWidth();
 		for (ARankColumnModel child : children) {
 			child.init(this);
 			child.setWidth(w); // reset width

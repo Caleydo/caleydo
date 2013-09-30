@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.view.tourguide.internal.external;
+package org.caleydo.view.tourguide.api.external;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -14,6 +14,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
+import org.caleydo.view.tourguide.api.score.Scores;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.external.ui.ImportExternalGroupLabelScoreDialog;
 import org.caleydo.view.tourguide.internal.external.ui.ImportExternalIDTypeScoreDialog;
@@ -21,7 +22,6 @@ import org.caleydo.view.tourguide.internal.external.ui.ImportExternalLabelScoreD
 import org.caleydo.view.tourguide.internal.score.ExternalGroupLabelScore;
 import org.caleydo.view.tourguide.internal.score.ExternalIDTypeScore;
 import org.caleydo.view.tourguide.internal.score.ExternalLabelScore;
-import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.swt.widgets.Shell;
 

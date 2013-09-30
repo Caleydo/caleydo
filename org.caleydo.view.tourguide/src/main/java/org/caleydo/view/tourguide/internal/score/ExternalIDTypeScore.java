@@ -24,8 +24,8 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.view.tourguide.api.external.ScoreParseSpecification;
 import org.caleydo.view.tourguide.api.score.ECombinedOperator;
-import org.caleydo.view.tourguide.internal.external.ScoreParseSpecification;
 import org.caleydo.view.tourguide.internal.serialize.IDTypeAdapter;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
@@ -94,7 +94,7 @@ public final class ExternalIDTypeScore extends AExternalScore {
 	@Override
 	public PiecewiseMapping createMapping() {
 		if (isRank)
-			return new PiecewiseMapping(0, Float.NaN);
+			return new PiecewiseMapping(0, Double.NaN);
 		return super.createMapping();
 	}
 
@@ -102,7 +102,7 @@ public final class ExternalIDTypeScore extends AExternalScore {
 	public double apply(IComputeElement elem, Group g) {
 		if (!isCompatible(elem.getIdType()) && !isCompatible(elem.getDimensionIdType())) {
 			// can't map
-			return Float.NaN;
+			return Double.NaN;
 		}
 		Collection<Double> scores = new ArrayList<>();
 

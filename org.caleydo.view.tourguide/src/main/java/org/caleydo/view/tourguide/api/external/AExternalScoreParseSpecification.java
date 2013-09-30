@@ -3,14 +3,15 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.view.tourguide.internal.external;
+package org.caleydo.view.tourguide.api.external;
 
-import org.caleydo.core.util.color.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.io.MatrixDefinition;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.view.tourguide.api.score.ECombinedOperator;
+import org.caleydo.vis.lineup.model.mapping.EStandardMappings;
 
 public abstract class AExternalScoreParseSpecification extends MatrixDefinition implements Cloneable {
 	private List<Integer> columns;
@@ -23,9 +24,11 @@ public abstract class AExternalScoreParseSpecification extends MatrixDefinition 
 
 	private Color color;
 
-	private float mappingMin;
+	private double mappingMin;
 
-	private float mappingMax;
+	private double mappingMax;
+
+	private EStandardMappings mapping = EStandardMappings.LINEAR;
 
 	public AExternalScoreParseSpecification() {
 	}
@@ -120,7 +123,7 @@ public abstract class AExternalScoreParseSpecification extends MatrixDefinition 
 	/**
 	 * @return the mappingMin, see {@link #mappingMin}
 	 */
-	public float getMappingMin() {
+	public double getMappingMin() {
 		return mappingMin;
 	}
 
@@ -128,14 +131,29 @@ public abstract class AExternalScoreParseSpecification extends MatrixDefinition 
 	 * @param mappingMin
 	 *            setter, see {@link mappingMin}
 	 */
-	public void setMappingMin(float mappingMin) {
+	public void setMappingMin(double mappingMin) {
 		this.mappingMin = mappingMin;
+	}
+
+	/**
+	 * @return the mapping, see {@link #mapping}
+	 */
+	public EStandardMappings getMapping() {
+		return mapping;
+	}
+
+	/**
+	 * @param mapping
+	 *            setter, see {@link mapping}
+	 */
+	public void setMapping(EStandardMappings mapping) {
+		this.mapping = mapping;
 	}
 
 	/**
 	 * @return the mappingMax, see {@link #mappingMax}
 	 */
-	public float getMappingMax() {
+	public double getMappingMax() {
 		return mappingMax;
 	}
 
@@ -143,7 +161,7 @@ public abstract class AExternalScoreParseSpecification extends MatrixDefinition 
 	 * @param mappingMax
 	 *            setter, see {@link mappingMax}
 	 */
-	public void setMappingMax(float mappingMax) {
+	public void setMappingMax(double mappingMax) {
 		this.mappingMax = mappingMax;
 	}
 

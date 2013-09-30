@@ -131,7 +131,9 @@ public class SimpleColumnHeaderUI extends ACompositeHeaderUI implements IThickHe
 			return;
 		}
 
-		summary.setBounds(getLeftPadding() + 2, 2, w - 4 - getLeftPadding(), (isSmallHeader() ? 0 : HIST_HEIGHT)
+		// simplesummaryHeaderUI doesn't have a hist (never)
+		summary.setBounds(getLeftPadding() + 2, 2, w - 4 - getLeftPadding(), (isSmallHeader()
+				|| (summary.asElement() instanceof SimpleSummaryHeaderUI) ? 0 : HIST_HEIGHT)
 				+ LABEL_HEIGHT);
 		super.layoutColumns(children, w, h);
 	}

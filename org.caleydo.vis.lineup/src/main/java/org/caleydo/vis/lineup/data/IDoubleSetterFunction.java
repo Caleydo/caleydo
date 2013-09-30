@@ -14,6 +14,6 @@ import com.google.common.base.Function;
  *
  */
 public interface IDoubleSetterFunction<F> extends IDoubleFunction<F> {
-	void set(F in, float value);
+	void set(F in, double value);
 }
 

@@ -51,6 +51,7 @@ public class KEGGParser implements IRunnableWithProgress {
 		final String organismKey = toKEGGOrganism(GeneticMetaData.getOrganism());
 
 		SubMonitor m = SubMonitor.convert(monitor);
+		m.setTaskName("Caching Pathways (this may take a while)");
 		RemoteFile listRFile = RemoteFile.of(toURL("http://rest.kegg.jp/list/pathway/" + organismKey), ".txt");
 		File listFile = listRFile.getOrLoad(false, monitor);
 
@@ -68,12 +69,14 @@ public class KEGGParser implements IRunnableWithProgress {
 			return;
 		}
 
-		m.beginTask("Loading Pathways", lines.size() * 20);
+		final String format = "Caching Pathways (this may take a while): Downloading KEGG pathway %s (%d of %d)";
+		m.beginTask("Caching Pathways (this may take a while)", lines.size() * 20);
+		int i = 0;
 		for (String line : lines) {
 			String pathwayName = line.substring(5, 13);
 
 			SubMonitor subsub = m.newChild(20, SubMonitor.SUPPRESS_SUBTASK);
-			subsub.beginTask("First-time Downloading KEGG pathway " + pathwayName, 20);
+			subsub.beginTask(String.format(format, pathwayName, i++, lines.size()), 20);
 
 			RemoteFile imageRFile = RemoteFile.of(toURL("http://rest.kegg.jp/get/" + pathwayName + "/image"), ".png");
 			RemoteFile kgmlRFile = RemoteFile.of(toURL("http://rest.kegg.jp/get/" + pathwayName + "/kgml"), ".kgml");

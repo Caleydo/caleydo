@@ -426,7 +426,7 @@ public class GLElement implements IHasGLLayoutData {
 	 * @return
 	 */
 	public final GLElement setSize(float w, float h) {
-		if (Float.compare(this.bounds_set.width(), w) == 0 && Float.compare(this.bounds_set.height(), h) == 0)
+		if (equals(this.bounds_layout.width(), w) && equals(this.bounds_layout.height(), h) && equals(this.bounds_set.width(), w) && equals(this.bounds_set.height(), h))
 			return this;
 		this.bounds_set.width(w);
 		this.bounds_layout.width(w);
@@ -434,6 +434,10 @@ public class GLElement implements IHasGLLayoutData {
 		this.bounds_layout.height(h);
 		relayoutParent();
 		return this;
+	}
+	
+	private static boolean equals(float a, float b) {
+		return Float.compare(a,b) == 0;
 	}
 
 	/**
@@ -444,7 +448,7 @@ public class GLElement implements IHasGLLayoutData {
 	 * @return
 	 */
 	public final GLElement setLocation(float x, float y) {
-		if (Float.compare(this.bounds_set.x(), x) == 0 && Float.compare(this.bounds_set.y(), y) == 0)
+		if (equals(this.bounds_layout.x(), x) && equals(this.bounds_layout.y(), y) && equals(this.bounds_set.x(), x) && equals(this.bounds_set.y(), y))
 			return this;
 		this.bounds_set.x(x);
 		this.bounds_layout.x(x);
@@ -665,7 +669,7 @@ public class GLElement implements IHasGLLayoutData {
 	}
 
 	private void setLayoutSize(float w, float h) {
-		if (Float.compare(this.bounds_layout.width(), w) == 0 && Float.compare(this.bounds_layout.height(), h) == 0)
+		if (equals(this.bounds_layout.width(), w) && equals(this.bounds_layout.height(), h))
 			return;
 		this.bounds_layout.width(w);
 		this.bounds_layout.height(h);

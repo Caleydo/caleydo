@@ -9,16 +9,22 @@ import gleem.linalg.Vec2f;
 
 import java.util.Objects;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
+import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+
+import com.google.common.primitives.Ints;
 
 /**
  * a simple basic widget for a spinner, e.g integer spinner
@@ -113,6 +119,17 @@ public class GLSpinner<T> extends PickableGLElement {
 		repaint();
 	}
 
+	@Override
+	protected void onDoubleClicked(Pick pick) {
+		if (!model.canSpecify())
+			return;
+		context.getSWTLayer().run(new ISWTLayerRunnable() {
+			@Override
+			public void run(Display display, Composite canvas) {
+				new InputBox(canvas).open();
+			}
+		});
+	}
 	/**
 	 * allow value changes via mouse wheel
 	 *
@@ -177,11 +194,12 @@ public class GLSpinner<T> extends PickableGLElement {
 	 * @param value
 	 *            setter, see {@link value}
 	 */
-	public void setValue(T value) {
+	public GLSpinner<T> setValue(T value) {
 		if (Objects.equals(this.value, value))
-			return;
+			return this;
 		this.value = value;
 		repaint();
+		return this;
 	}
 
 	@Override
@@ -257,6 +275,28 @@ public class GLSpinner<T> extends PickableGLElement {
 
 	};
 
+	private class InputBox extends AInputBoxDialog {
+		public InputBox(Composite canvas) {
+			super(null, "Set Value", GLSpinner.this, canvas);
+		}
+
+		@Override
+		protected void set(String value) {
+			setValue(model.parse(value));
+		}
+
+		@Override
+		protected String verify(String value) {
+			return model.verify(value);
+		}
+
+		@Override
+		protected String getInitialValue() {
+			return model.format(getValue());
+		}
+
+	}
+
 	/**
 	 * model for a {@link GLSpinner} describing the way how to increment and decrement a value
 	 *
@@ -296,6 +336,19 @@ public class GLSpinner<T> extends PickableGLElement {
 		 * @return
 		 */
 		boolean canDec(T value);
+
+		/**
+		 * whether specifying a exact value by dialog is supported
+		 *
+		 * @return
+		 */
+		boolean canSpecify();
+
+		T parse(String text);
+
+		String verify(String text);
+
+		String format(T value);
 	}
 
 	/**
@@ -345,6 +398,34 @@ public class GLSpinner<T> extends PickableGLElement {
 		@Override
 		public boolean canDec(Integer value) {
 			return value != null && value.intValue() > min;
+		}
+
+		@Override
+		public boolean canSpecify() {
+			return true;
+		}
+
+		@Override
+		public Integer parse(String text) {
+			return Integer.parseInt(text);
+		}
+
+		@Override
+		public String verify(String text) {
+			Integer v_o = Ints.tryParse(text);
+			if (v_o == null)
+				return "Invalid value: " + text + " can't be parsed to an Integer";
+			int v = v_o.intValue();
+			if (v < min)
+				return "Too small, needs to be in the range: [" + min + "," + max + "]";
+			if (v > max)
+				return "Too large, needs to be in the range: [" + min + "," + max + "]";
+			return null;
+		}
+
+		@Override
+		public String format(Integer value) {
+			return ObjectUtils.toString(value);
 		}
 	}
 

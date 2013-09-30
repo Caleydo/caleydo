@@ -713,32 +713,7 @@ public class GLPathwayAugmentationRenderer {
 					}
 				}
 			} else { // there is no mapping
-
-				// render a black glyph in the corder of the
-				// rectangle in order to indicate that we either do
-				// not have mapping or data
-
-				// make unmapped nodes white
-				gl.glColor4f(1, 1, 1, 1);
-				renderQuad(gl, width, height);
-				// gl.glCallList(enzymeNodeDisplayListId);
-
-				nodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR.getRGBA();
-				gl.glColor4f(nodeColor[0], nodeColor[1], nodeColor[2], 0.7f);
-				// gl.glCallList(compoundNodeDisplayListId);
-				float boxWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.COMPOUND_NODE_PIXEL_WIDTH);
-				float boxHeight = pixelGLConverter
-						.getGLHeightForPixelHeight(PathwayRenderStyle.COMPOUND_NODE_PIXEL_HEIGHT);
-
-				gl.glDisable(GL.GL_DEPTH_TEST);
-				gl.glBegin(GL2GL3.GL_QUADS);
-				gl.glNormal3f(0.0f, 0.0f, 1.0f);
-				gl.glVertex3f(0, boxHeight, PathwayRenderStyle.Z_OFFSET);
-				gl.glVertex3f(boxWidth, boxHeight, PathwayRenderStyle.Z_OFFSET);
-				gl.glVertex3f(boxWidth, 0, PathwayRenderStyle.Z_OFFSET);
-				gl.glVertex3f(0, 0, PathwayRenderStyle.Z_OFFSET);
-				gl.glEnd();
-				gl.glEnable(GL.GL_DEPTH_TEST);
+				renderNonMappingGlyph(gl, width, height);
 				//
 				// Handle selection highlighting of element
 				if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
@@ -758,6 +733,7 @@ public class GLPathwayAugmentationRenderer {
 
 		} else {
 			// Handle selection highlighting of element
+			nodeColor = null;
 			if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
 				nodeColor = SelectionType.SELECTION.getColor().getRGBA();
 				maskFramedEnzymeNode(gl, width, height);
@@ -766,13 +742,13 @@ public class GLPathwayAugmentationRenderer {
 				maskFramedEnzymeNode(gl, width, height);
 			} else if (vertexSelectionManager.checkStatus(SelectionType.NORMAL, vertexRep.getID())) {
 				nodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR.getRGBA();
-			} else {
-				nodeColor = new float[] { 0, 0, 0, 0 };
 			}
 
-			gl.glColor4fv(nodeColor, 0);
-			renderFrame(gl, width + onePxlWidth, height + thirdOfstdDevBarHeight);
-			gl.glCallList(framedEnzymeNodeDisplayListId);
+			if (nodeColor != null) {
+				gl.glColor4fv(nodeColor, 0);
+				renderFrame(gl, width + onePxlWidth, height + thirdOfstdDevBarHeight);
+				gl.glCallList(framedEnzymeNodeDisplayListId);
+			}
 
 			if (!vertexSelectionManager.checkStatus(SelectionType.DESELECTED, vertexRep.getID())) {
 
@@ -786,46 +762,96 @@ public class GLPathwayAugmentationRenderer {
 
 		if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
 
-			// rendering the exclamation mark
-			float threshold = 0.2f;
-			Pair<TablePerspective, Average> highestAverage = null;
-			Average average;
-			for (TablePerspective tablePerspective : glPathwayView.getTablePerspectives()) {
-				// if (tablePerspective.getDataDomain().getLabel().contains("RNA"))
-				// continue;
-				average = getExpressionAverage(tablePerspective, vertexRep);
-				if (average == null)
-					continue;
-				if (average.getStandardDeviation() > threshold) {
-					if (highestAverage == null
-							|| average.getStandardDeviation() > highestAverage.getSecond().getStandardDeviation()) {
-						highestAverage = new Pair<>(tablePerspective, average);
-					}
+			renderExclamationMark(gl, vertexRep, width, height);
+			renderMultiMappingGlyph(gl, width, height, vertexRep);
+		}
+
+	}
+
+	private void renderMultiMappingGlyph(final GL2 gl, final float nodeWidth, final float nodeHeight,
+			PathwayVertexRep vertexRep) {
+		if (vertexRep.getPathwayVertices().size() > 1) {
+
+			float width = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.COMPOUND_NODE_PIXEL_WIDTH);
+
+			float[] nodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR.getRGBA();
+			gl.glColor4fv(nodeColor, 0);
+
+			gl.glBegin(GL.GL_TRIANGLES);
+			gl.glVertex3f(0, nodeHeight, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(width, nodeHeight, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(0, nodeHeight - width, PathwayRenderStyle.Z_OFFSET);
+			gl.glEnd();
+		}
+	}
+
+	private void renderNonMappingGlyph(final GL2 gl, final float nodeWidth, final float nodeHeight) {
+		// render a black glyph in the corder of the
+		// rectangle in order to indicate that we either do
+		// not have mapping or data
+
+		// make unmapped nodes white
+		gl.glColor4f(1, 1, 1, 1);
+		renderQuad(gl, nodeWidth, nodeHeight);
+		// gl.glCallList(enzymeNodeDisplayListId);
+
+		float[] nodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR.getRGBA();
+		gl.glColor4f(nodeColor[0], nodeColor[1], nodeColor[2], 0.7f);
+		// gl.glCallList(compoundNodeDisplayListId);
+		float boxWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.COMPOUND_NODE_PIXEL_WIDTH);
+		float boxHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.COMPOUND_NODE_PIXEL_HEIGHT);
+
+		gl.glDisable(GL.GL_DEPTH_TEST);
+		gl.glBegin(GL2GL3.GL_QUADS);
+		gl.glNormal3f(0.0f, 0.0f, 1.0f);
+		gl.glVertex3f(nodeWidth - boxWidth, boxHeight, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(nodeWidth, boxHeight, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(nodeWidth, 0, PathwayRenderStyle.Z_OFFSET);
+		gl.glVertex3f(nodeWidth - boxWidth, 0, PathwayRenderStyle.Z_OFFSET);
+		gl.glEnd();
+		gl.glEnable(GL.GL_DEPTH_TEST);
+	}
+
+	private void renderExclamationMark(final GL2 gl, PathwayVertexRep vertexRep, final float nodeWidth,
+			final float nodeHeight) {
+		// rendering the exclamation mark
+		float threshold = 0.2f;
+		Pair<TablePerspective, Average> highestAverage = null;
+		Average average;
+		for (TablePerspective tablePerspective : glPathwayView.getTablePerspectives()) {
+			// if (tablePerspective.getDataDomain().getLabel().contains("RNA"))
+			// continue;
+			average = getExpressionAverage(tablePerspective, vertexRep);
+			if (average == null)
+				continue;
+			if (average.getStandardDeviation() > threshold) {
+				if (highestAverage == null
+						|| average.getStandardDeviation() > highestAverage.getSecond().getStandardDeviation()) {
+					highestAverage = new Pair<>(tablePerspective, average);
 				}
-			}
-
-			if (highestAverage != null) {
-
-				gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().darker().getRGB(), 0);
-				// gl.glColor3f(1, 0, 0);
-				gl.glBegin(GL2.GL_POLYGON);
-				gl.glVertex3f(width, height, PathwayRenderStyle.Z_OFFSET);
-				gl.glVertex3f(width - 5 * onePxlWidth, height, PathwayRenderStyle.Z_OFFSET);
-				gl.glVertex3f(width - 4 * onePxlWidth, height - 10 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
-				gl.glVertex3f(width - 1 * onePxlWidth, height - 10 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
-				gl.glEnd();
-
-				// gl.glColor3fv(tablePerspective.getDataDomain().getColor().getRGB(), 0);
-				gl.glBegin(GL2.GL_POLYGON);
-				gl.glVertex3f(width, 5 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
-				gl.glVertex3f(width - 5 * onePxlWidth, 5 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
-				gl.glVertex3f(width - 5 * onePxlWidth, 0, PathwayRenderStyle.Z_OFFSET);
-				gl.glVertex3f(width, 0, PathwayRenderStyle.Z_OFFSET);
-				gl.glEnd();
-
 			}
 		}
 
+		if (highestAverage != null) {
+
+			gl.glColor3fv(highestAverage.getFirst().getDataDomain().getColor().darker().getRGB(), 0);
+			// gl.glColor3f(1, 0, 0);
+			gl.glBegin(GL2.GL_POLYGON);
+			gl.glVertex3f(nodeWidth, nodeHeight, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(nodeWidth - 5 * onePxlWidth, nodeHeight, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(nodeWidth - 4 * onePxlWidth, nodeHeight - 10 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(nodeWidth - 1 * onePxlWidth, nodeHeight - 10 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
+			gl.glEnd();
+
+			// gl.glColor3fv(tablePerspective.getDataDomain().getColor().getRGB(), 0);
+			gl.glBegin(GL2.GL_POLYGON);
+			gl.glVertex3f(nodeWidth, 5 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(nodeWidth - 5 * onePxlWidth, 5 * onePxlWidth, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(nodeWidth - 5 * onePxlWidth, 0, PathwayRenderStyle.Z_OFFSET);
+			gl.glVertex3f(nodeWidth, 0, PathwayRenderStyle.Z_OFFSET);
+			gl.glEnd();
+
+		}
 	}
 
 	private void renderStdDevBar(final GL2 gl, float nodeWidth, float nodeHeight, float stdDev) {

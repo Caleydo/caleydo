@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Filter Pipeline View
 Bundle-SymbolicName: org.caleydo.view.filterpipeline;singleton:=true
-Bundle-Version: 3.0.3
-Require-Bundle: org.caleydo.datadomain.genetic;bundle-version="3.0.3",
- org.caleydo.view.histogram;bundle-version="3.0.3",
- org.caleydo.core;bundle-version="3.0.3"
+Bundle-Version: 3.0.4
+Require-Bundle: org.caleydo.datadomain.genetic;bundle-version="3.0.4",
+ org.caleydo.view.histogram;bundle-version="3.0.4",
+ org.caleydo.core;bundle-version="3.0.4"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.caleydo.view.filterpipeline,
  org.caleydo.view.filterpipeline.toolbar

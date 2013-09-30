@@ -28,6 +28,11 @@ public class ColoredVec2f extends Vec2f {
 		this.color = color;
 	}
 
+	public ColoredVec2f(float x, float y, Color color) {
+		super(x, y);
+		this.color = color;
+	}
+
 	/**
 	 * @param color
 	 *            setter, see {@link color}

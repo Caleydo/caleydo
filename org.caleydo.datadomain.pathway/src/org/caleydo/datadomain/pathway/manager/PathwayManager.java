@@ -590,7 +590,8 @@ public class PathwayManager extends AManager<PathwayGraph> {
 				FileOperations.deleteDirectory(unpacked);
 			}
 
-			File localZip = zip.getOrLoad(true, monitor);
+			File localZip = zip.getOrLoad(true, monitor,
+					"Caching Pathways (this may take a while): Downloading " + type.getName() + " pathways (%2$d MB)");
 			if (localZip == null || !localZip.exists()) {
 				log.error("can't download: " + url);
 				return null;

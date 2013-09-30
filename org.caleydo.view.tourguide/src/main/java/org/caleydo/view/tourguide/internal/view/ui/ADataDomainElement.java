@@ -18,12 +18,13 @@ import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.basic.EButtonIcon;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.view.tourguide.api.external.ExternalScoringDataDomainActionFactory;
 import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
-import org.caleydo.view.tourguide.internal.external.ExternalScoringDataDomainActionFactory;
 import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
 
 public abstract class ADataDomainElement extends GLButton implements GLButton.ISelectionCallback {
@@ -142,7 +143,7 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 		super.renderImpl(g, w, h);
 		if (isSelected())
 			g.color(model.getDataDomain().getColor()).fillRect(2, 2, 14, 14);
-		g.fillImage(getStandardIcon("checkbox", false), 0, 0, 18, 18);
+		g.fillImage(EButtonIcon.CHECKBOX.get(false), 0, 0, 18, 18);
 
 		float tw = Math.min(g.text.getTextWidth(getLabel(), 14), w - 18 - 18);
 		g.drawText(getLabel(), 18, 1, w - 18 - 18, 14);

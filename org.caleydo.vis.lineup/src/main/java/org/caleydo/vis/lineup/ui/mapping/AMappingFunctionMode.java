@@ -52,5 +52,16 @@ public abstract class AMappingFunctionMode<T extends IMappingFunction> extends G
 		repaintAll();
 		((MappingFunctionUI) getParent()).repaintMapping();
 	}
+
+	public enum EMode {
+		REGULAR, PSEUDO, FILTER_MIN, FILTER_MAX;
+
+		/**
+		 * @return
+		 */
+		public boolean isFilter() {
+			return this == FILTER_MIN || this == FILTER_MAX;
+		}
+	}
 }
 

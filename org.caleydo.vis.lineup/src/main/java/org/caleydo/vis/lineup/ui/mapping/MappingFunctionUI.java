@@ -52,6 +52,7 @@ import org.caleydo.vis.lineup.internal.event.CodeUpdateEvent;
 import org.caleydo.vis.lineup.internal.ui.ButtonBar;
 import org.caleydo.vis.lineup.model.DataUtils;
 import org.caleydo.vis.lineup.model.SimpleHistogram;
+import org.caleydo.vis.lineup.model.mapping.EStandardMappings;
 import org.caleydo.vis.lineup.model.mapping.IMappingFunction;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.lineup.model.mapping.ScriptedMappingFunction;
