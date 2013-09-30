@@ -25,14 +25,14 @@ import org.caleydo.core.view.opengl.layout.util.Zoomer;
  * @author Samuel Gratzl
  *
  */
-public class GLElementAdapter extends GLElement {
+public class GLElementAdapter extends GLElementContainer {
 	/**
 	 * faked elements
 	 */
 	private final LayoutManager layout;
 	private final ViewFrustum viewFrustum;
 	private final PixelGLConverter pixelGLConverter;
-	private final AGLView view;
+	protected final AGLView view;
 
 	/**
 	 * the underlying element
