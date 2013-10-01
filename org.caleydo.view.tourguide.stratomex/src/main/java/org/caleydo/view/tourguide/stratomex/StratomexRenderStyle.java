@@ -12,16 +12,8 @@ import java.net.URL;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.StyledColor;
-import org.caleydo.vis.lineup.ui.RenderStyle;
 
 public class StratomexRenderStyle {
-
-
-	public static final Color COLOR_STRATOMEX_ROW = RenderStyle.COLOR_SELECTED_ROW;
-
-	public static final StyledColor COLOR_PREVIEW_BORDER_ROW = new StyledColor(SelectionType.SELECTION.getColor())
-			.setDashing(2, 0xAAAA);
-
 	private static final Color STRATOMEX_HIT_GROUP = new StyledColor(SelectionType.SELECTION.getColor())
 			.setLineWidth(5)
 			.setDashing(2, 0xAAAA);

@@ -25,7 +25,6 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.RcpGLStratomexView;
 import org.caleydo.view.stratomex.addin.IStratomeXAddIn;
@@ -41,14 +40,12 @@ import org.caleydo.view.tourguide.api.vis.ITourGuideView;
 import org.caleydo.view.tourguide.spi.adapter.IViewAdapter;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.view.tourguide.stratomex.StratomexRenderStyle;
 import org.caleydo.view.tourguide.stratomex.event.HighlightBrickEvent;
 import org.caleydo.view.tourguide.stratomex.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.stratomex.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.stratomex.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.stratomex.event.WizardEndedEvent;
 import org.caleydo.view.tourguide.stratomex.s.TourGuideAddin;
-import org.caleydo.vis.lineup.ui.RenderStyle;
 import org.eclipse.ui.IWorkbenchPart;
 
 /**
@@ -101,33 +98,6 @@ public class StratomexAdapter implements IViewAdapter {
 				return (TourGuideAddin) addin;
 		}
 		return null;
-	}
-
-	@Override
-	public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, AScoreRow row,
-			boolean selected) {
-		if (selected) {
-			g.color(StratomexRenderStyle.colorSelectedRow());
-			g.incZ();
-			g.fillRect(x, y, w, h);
-			if (isPreviewing(row)) {
-				StratomexRenderStyle.COLOR_PREVIEW_BORDER_ROW.set(g.gl);
-				g.drawLine(x, y, x + w, y);
-				g.drawLine(x, y + h, x + w, y + h);
-				StratomexRenderStyle.COLOR_PREVIEW_BORDER_ROW.clear(g.gl);
-			} else {
-				g.color(RenderStyle.COLOR_SELECTED_BORDER);
-				g.drawLine(x, y, x + w, y);
-				g.drawLine(x, y + h, x + w, y + h);
-			}
-			g.decZ();
-		} else if (isVisible(row)) {
-			g.color(StratomexRenderStyle.COLOR_STRATOMEX_ROW);
-			g.fillRect(x, y, w, h);
-		} else if (!even) {
-			g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
-			g.fillRect(x, y, w, h);
-		}
 	}
 
 	@ListenTo

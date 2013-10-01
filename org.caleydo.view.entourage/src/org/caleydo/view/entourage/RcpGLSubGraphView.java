@@ -61,6 +61,11 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 	}
 
 	@Override
+	public GLEntourage getView() {
+		return (GLEntourage) super.getView();
+	}
+
+	@Override
 	public void addToolBarContent(IToolBarManager toolBarManager) {
 
 		GLEntourage subgraph = (GLEntourage) view;

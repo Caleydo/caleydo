@@ -42,13 +42,15 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 		if (m == null)
 			return;
 		// find visible StratomeX
-		for (MPart part : service.getParts()) {
+		outer: for (MPart part : service.getParts()) {
 			if (service.isPartVisible(part)) {
 				IViewPart view = getSite().getPage().findView(part.getElementId());
 				for (IViewAdapterFactory factory : ViewAdapters.get()) {
 					IViewAdapter adapter = factory.createFor(view, mode, m);
-					if (adapter != null)
+					if (adapter != null) {
 						m.switchTo(adapter);
+						break outer;
+					}
 				}
 			}
 		}
@@ -115,7 +117,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 			GLTourGuideView m = getView();
 			if (m == null)
 				return;
-			if (m.getAdapter().isRepresenting(part))
+			if (m.getAdapter() != null && m.getAdapter().isRepresenting(part))
 				m.switchTo(null);
 		}
 
@@ -140,10 +142,12 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 					m.detachFromView();
 				}
 			} else if (part instanceof IViewPart) {
-				for (IViewAdapterFactory factory : ViewAdapters.get()) {
+				outer: for (IViewAdapterFactory factory : ViewAdapters.get()) {
 					IViewAdapter adapter = factory.createFor((IViewPart) part, mode, m);
-					if (adapter != null)
+					if (adapter != null) {
 						m.switchTo(adapter);
+						break outer;
+					}
 				}
 			}
 		}

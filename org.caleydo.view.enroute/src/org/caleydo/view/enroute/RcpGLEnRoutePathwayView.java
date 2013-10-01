@@ -38,6 +38,11 @@ public class RcpGLEnRoutePathwayView extends ARcpGLViewPart {
 	}
 
 	@Override
+	public GLEnRoutePathway getView() {
+		return (GLEnRoutePathway) super.getView();
+	}
+
+	@Override
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedEnRoutePathwayView();
 		determineDataConfiguration(serializedView);

@@ -547,7 +547,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		this.canvas.addKeyListener(eventListeners.register(this.tableKeyListener2));
 		this.canvas.addMouseListener(eventListeners.register(this.tableMouseListener));
 
-		this.noAttachedView = this.adapter == null;
+		this.noAttachedView = this.adapter != null; // artifically set to the wrong value to ensure an update
 		updateAdapterState();
 
 		// select first data domain element by default
@@ -868,16 +868,24 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		@Override
 		public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
 				IRow selected) {
-			if (adapter != null)
-				adapter.renderRowBackground(g, x, y, w, h, even, (AScoreRow) row, row == selected);
-			else if (row == selected) {
+			if (row == selected) {
 				g.color(TourGuideRenderStyle.colorSelectedRow());
 				g.incZ();
 				g.fillRect(x, y, w, h);
-				g.color(RenderStyle.COLOR_SELECTED_BORDER);
-				g.drawLine(x, y, x + w, y);
-				g.drawLine(x, y + h, x + w, y + h);
+				if (adapter != null && adapter.isPreviewing((AScoreRow) row)) {
+					TourGuideRenderStyle.COLOR_PREVIEW_BORDER_ROW.set(g.gl);
+					g.drawLine(x, y, x + w, y);
+					g.drawLine(x, y + h, x + w, y + h);
+					TourGuideRenderStyle.COLOR_PREVIEW_BORDER_ROW.clear(g.gl);
+				} else {
+					g.color(RenderStyle.COLOR_SELECTED_BORDER);
+					g.drawLine(x, y, x + w, y);
+					g.drawLine(x, y + h, x + w, y + h);
+				}
 				g.decZ();
+			} else if (adapter != null && adapter.isVisible((AScoreRow) row)) {
+				g.color(TourGuideRenderStyle.COLOR_STRATOMEX_ROW);
+				g.fillRect(x, y, w, h);
 			} else if (!even) {
 				g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
 				g.fillRect(x, y, w, h);

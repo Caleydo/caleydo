@@ -7,7 +7,6 @@ package org.caleydo.view.tourguide.spi.adapter;
 
 import java.util.Collection;
 
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -79,17 +78,4 @@ public interface IViewAdapter {
 	 * @return
 	 */
 	boolean isRepresenting(IWorkbenchPart part);
-
-	/**
-	 * @param g
-	 * @param x
-	 * @param y
-	 * @param w
-	 * @param h
-	 * @param even
-	 * @param row
-	 * @param b
-	 */
-	void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, AScoreRow row,
-			boolean selected);
 }
