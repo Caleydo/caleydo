@@ -74,12 +74,6 @@ import org.caleydo.view.stratomex.column.BlockAdapter;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
 import org.caleydo.view.stratomex.column.FrameHighlightRenderer;
-import org.caleydo.view.tourguide.stratomex.AddWizardElement;
-import org.caleydo.view.tourguide.stratomex.AddWizardElementFactory;
-import org.caleydo.view.tourguide.stratomex.ESelectionMode;
-import org.caleydo.view.tourguide.stratomex.EWizardMode;
-import org.caleydo.view.tourguide.stratomex.TemplateHighlightRenderer;
-import org.caleydo.view.tourguide.stratomex.WizardActionsLayoutRenderer;
 import org.caleydo.view.tourguide.stratomex.event.AddNewColumnEvent;
 import org.caleydo.view.tourguide.stratomex.event.HighlightBrickEvent;
 import org.caleydo.view.tourguide.stratomex.event.UpdateNumericalPreviewEvent;
@@ -947,7 +941,7 @@ public class TourGuideAddin implements IStratomeXAddIn {
 		}
 	}
 
-	public void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical, boolean extra,
+	public void replaceOtherTemplate(Perspective underlying, TablePerspective numerical, boolean extra,
 			Color highlight) {
 		TablePerspective t = asPerspective(underlying, numerical);
 		TablePerspective underlyingTP = findTablePerspective(underlying);

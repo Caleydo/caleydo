@@ -46,7 +46,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 			if (service.isPartVisible(part)) {
 				IViewPart view = getSite().getPage().findView(part.getElementId());
 				for (IViewAdapterFactory factory : ViewAdapters.get()) {
-					IViewAdapter adapter = factory.createFor(view, mode);
+					IViewAdapter adapter = factory.createFor(view, mode, m);
 					if (adapter != null)
 						m.switchTo(adapter);
 				}
@@ -141,7 +141,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 				}
 			} else if (part instanceof IViewPart) {
 				for (IViewAdapterFactory factory : ViewAdapters.get()) {
-					IViewAdapter adapter = factory.createFor((IViewPart) part, mode);
+					IViewAdapter adapter = factory.createFor((IViewPart) part, mode, m);
 					if (adapter != null)
 						m.switchTo(adapter);
 				}

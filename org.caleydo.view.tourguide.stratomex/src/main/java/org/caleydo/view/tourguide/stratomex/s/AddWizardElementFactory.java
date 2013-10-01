@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.view.tourguide.stratomex;
+package org.caleydo.view.tourguide.stratomex.s;
 
 import static org.caleydo.view.tourguide.api.state.IStateMachine.ADD_OTHER;
 import static org.caleydo.view.tourguide.api.state.IStateMachine.ADD_PATHWAY;
@@ -29,7 +29,6 @@ import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.ITransition;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.api.util.PathwayOracle;
-import org.caleydo.view.tourguide.stratomex.s.TourGuideAddin;
 import org.caleydo.view.tourguide.stratomex.state.AlonePathwayState;
 import org.caleydo.view.tourguide.stratomex.state.BrowseNumericalAndStratificationState;
 import org.caleydo.view.tourguide.stratomex.state.BrowsePathwayAndStratificationState;

@@ -3,12 +3,12 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.view.tourguide.stratomex;
+package org.caleydo.view.tourguide.stratomex.s;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public enum EWizardMode {
-	GLOBAL, DEPENDENT, INDEPENDENT
+public enum ESelectionMode {
+	STRATIFICATION, GROUP
 }

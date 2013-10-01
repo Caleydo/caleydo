@@ -3,23 +3,29 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.view.tourguide.spi.adapter;
+package org.caleydo.view.tourguide.api.vis;
 
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.vis.ITourGuideView;
-import org.eclipse.ui.IViewPart;
+import org.caleydo.view.tourguide.spi.score.IScore;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IViewAdapterFactory {
+public interface ITourGuideView {
 
 	/**
-	 * @param view
-	 * @param mode
-	 * @return
+	 *
 	 */
-	IViewAdapter createFor(IViewPart view, EDataDomainQueryMode mode, ITourGuideView vis);
+	void removeLeadingScoreColumns();
+
+	/**
+	 * @param scores
+	 */
+	void addColumns(IScore... scores);
+
+	/**
+	 * @param object
+	 */
+	void clearSelection();
 
 }

@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.view.tourguide.stratomex;
+package org.caleydo.view.tourguide.stratomex.s;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLContextLocal;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.core.view.opengl.util.text.TextUtils;
@@ -44,25 +45,22 @@ import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.ITransition;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
-import org.caleydo.view.tourguide.internal.OpenViewHandler;
-import org.caleydo.view.tourguide.internal.RcpGLTourGuideView;
-import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
-import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
-import org.caleydo.view.tourguide.internal.event.RemoveLeadingScoreColumnsEvent;
-import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
+import org.caleydo.view.tourguide.api.vis.ITourGuideView;
+import org.caleydo.view.tourguide.api.vis.TourGuideUtils;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.view.tourguide.stratomex.StratomexRenderStyle;
 import org.caleydo.view.tourguide.stratomex.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.stratomex.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.stratomex.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.stratomex.event.WizardEndedEvent;
-import org.caleydo.view.tourguide.stratomex.s.TourGuideAddin;
 import org.caleydo.view.tourguide.stratomex.state.SelectStateState;
+
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElement extends ALayoutRenderer implements IReactions {
+public class AddWizardElement extends ALayoutRenderer implements IReactions, IPickingLabelProvider {
 	public static final String PICKING_TYPE = "templateWizard";
 
 	@DeepScan
@@ -100,7 +98,6 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions {
 	/**
 	 * @param pick
 	 */
-	@Override
 	public void onPick(Pick pick) {
 		switch (pick.getPickingMode()) {
 		case CLICKED:
@@ -263,28 +260,25 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions {
 	}
 
 
-	@Override
 	public void onUpdate(UpdateStratificationPreviewEvent event) {
 		if (stateMachine.getCurrent() instanceof ABrowseState) {
-			((ABrowseState) stateMachine.getCurrent()).onUpdate(event, this);
+			((ABrowseState) stateMachine.getCurrent()).onUpdateStratification(event.getTablePerspective(), this);
 		}
 	}
 
-	@Override
 	public void onUpdate(UpdatePathwayPreviewEvent event) {
 		if (stateMachine.getCurrent() instanceof ABrowseState) {
-			((ABrowseState) stateMachine.getCurrent()).onUpdate(event, this);
+			((ABrowseState) stateMachine.getCurrent()).onUpdatePathway(event.getPathway(), this);
 		}
 	}
 
-	@Override
 	public void onUpdate(UpdateNumericalPreviewEvent event) {
 		if (stateMachine.getCurrent() instanceof ABrowseState) {
-			((ABrowseState) stateMachine.getCurrent()).onUpdate(event, this);
+			((ABrowseState) stateMachine.getCurrent()).onUpdateOther(event.getTablePerspective(), this);
 		}
 	}
 
-	@Override
+
 	public boolean onSelected(TablePerspective tablePerspective) {
 		if (stateMachine.getCurrent() instanceof ISelectStratificationState) {
 			ISelectStratificationState s = ((ISelectStratificationState) stateMachine.getCurrent());
@@ -296,7 +290,7 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions {
 		return false;
 	}
 
-	@Override
+
 	public boolean onSelected(TablePerspective tablePerspective, Group group) {
 		if (stateMachine.getCurrent() instanceof ISelectGroupState) {
 			ISelectGroupState s = ((ISelectGroupState) stateMachine.getCurrent());
@@ -321,12 +315,10 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions {
 		checkSelect();
 	}
 
-	@Override
 	public boolean canGoBack() {
 		return stateMachine.getPrevious() != null && canGoBack;
 	}
 
-	@Override
 	public void goBack() {
 		if (!canGoBack())
 			return;
@@ -341,21 +333,14 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions {
 
 	@Override
 	public void addScoreToTourGuide(EDataDomainQueryMode mode, IScore... scores) {
-		RcpGLTourGuideView tourGuide = OpenViewHandler.showTourGuide(mode);
-		GLTourGuideView receiver = tourGuide.getView();
-		// direct as not yet registered
-		AddScoreColumnEvent event = new AddScoreColumnEvent(scores);
-		event.to(receiver).from(this);
-		receiver.onRemoveLeadingScoreColumns(new RemoveLeadingScoreColumnsEvent());
-		receiver.onAddColumn(event);
+		ITourGuideView tourGuide = TourGuideUtils.showTourGuide(mode);
+		tourGuide.removeLeadingScoreColumns();
+		tourGuide.addColumns(scores);
 	}
 
 
-	@Override
 	public void done(boolean confirmed) {
-		EventPublisher.trigger(new RemoveLeadingScoreColumnsEvent());
 		EventPublisher.trigger(new WizardEndedEvent());
-		super.done(confirmed);
 	}
 
 	@Override
@@ -368,12 +353,17 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions {
 	public void replaceTemplate(TablePerspective with, boolean highlight) {
 		IBrickConfigurer configurer = null;
 		if (DataDomainOracle.isCategoricalDataDomain(with.getDataDomain()))
-			configurer = new CategoricalDataConfigurer(tp);
-		else if (!DataSupportDefinitions.homogenousTables.apply(tp.getDataDomain()))
-			configurer = new CategoricalDataConfigurer(tp);
+			configurer = new CategoricalDataConfigurer(with);
+		else if (!DataSupportDefinitions.homogenousTables.apply(with.getDataDomain()))
+			configurer = new CategoricalDataConfigurer(with);
 
+		replaceTemplate(with, configurer, highlight);
+	}
+
+
+	private void replaceTemplate(TablePerspective with, IBrickConfigurer configurer, boolean highlight) {
 		canGoBack = false;
-		adapter.replaceTemplate(with, configurer, false, highlight ? TourGuideRenderStyle.stratomexHitGroup() : null);
+		adapter.replaceTemplate(with, configurer, false, highlight ? StratomexRenderStyle.stratomexHitGroup() : null);
 	}
 
 	@Override
@@ -387,13 +377,13 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions {
 		}
 		canGoBack = false;
 		adapter.replaceOtherTemplate(underlying, numerical, extra,
-				highlight ? TourGuideRenderStyle.stratomexHitGroup() : null);
+				highlight ? StratomexRenderStyle.stratomexHitGroup() : null);
 	}
 
 	@Override
 	public void replacePathwayTemplate(Perspective underlying, PathwayGraph pathway, boolean extra, boolean highlight) {
 		canGoBack = false;
-		adapter.replacePathwayTemplate(underlying, pathway, extra, highlight ? TourGuideRenderStyle.stratomexHitGroup()
+		adapter.replacePathwayTemplate(underlying, pathway, extra, highlight ? StratomexRenderStyle.stratomexHitGroup()
 				: null);
 	}
 

@@ -46,6 +46,7 @@ import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
 import org.caleydo.core.view.opengl.layout2.basic.WaitingElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.view.tourguide.api.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.api.external.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
@@ -55,12 +56,12 @@ import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.score.ScoreFactories;
 import org.caleydo.view.tourguide.api.score.Scores;
+import org.caleydo.view.tourguide.api.vis.ITourGuideView;
 import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.compute.ComputeAllOfJob;
 import org.caleydo.view.tourguide.internal.compute.ComputeExtrasJob;
 import org.caleydo.view.tourguide.internal.compute.ComputeForScoreJob;
-import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
 import org.caleydo.view.tourguide.internal.event.ExtraInitialScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
@@ -118,7 +119,7 @@ import com.google.common.collect.Lists;
  * @author Samuel Gratzl
  *
  */
-public class GLTourGuideView extends AGLElementView {
+public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
 	public static final String VIEW_NAME = "LineUp";
 
@@ -380,7 +381,7 @@ public class GLTourGuideView extends AGLElementView {
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
 		} else {
-			addColumns(toCompute);
+			addColumnsImpl(toCompute);
 		}
 	}
 
@@ -431,7 +432,7 @@ public class GLTourGuideView extends AGLElementView {
 	private void onScoreQueryReady(ScoreQueryReadyEvent event) {
 		getPopupLayer().hide(waiting);
 		if (event.getScores() != null) {
-			addColumns(event.getScores());
+			addColumnsImpl(event.getScores());
 		} else {
 			invalidVisibleScores();
 			updateMask();
@@ -474,7 +475,7 @@ public class GLTourGuideView extends AGLElementView {
 		updateMask();
 	}
 
-	private void addColumns(Collection<IScore> scores) {
+	private void addColumnsImpl(Collection<IScore> scores) {
 		for (IScore s : scores) {
 			int lastLabel = findLastLabelColumn();
 			if (s instanceof MultiScore) {
@@ -685,14 +686,13 @@ public class GLTourGuideView extends AGLElementView {
 		}
 	}
 
-	@ListenTo(sendToMe = true)
-	public void onAddColumn(AddScoreColumnEvent event) {
-		if (event.getScores().isEmpty())
+	@Override
+	public void addColumns(IScore... scores) {
+		if (scores.length <= 0)
 			return;
-
 		Collection<IScore> toCompute = new ArrayList<>();
 
-		for (IScore s : event.getScores()) {
+		for (IScore s : scores) {
 			if (!s.supports(this.mode))
 				continue;
 			if (s instanceof IRegisteredScore)
@@ -714,8 +714,15 @@ public class GLTourGuideView extends AGLElementView {
 		scheduleAllOf(toCompute);
 	}
 
-	@ListenTo
-	public void onRemoveLeadingScoreColumns(RemoveLeadingScoreColumnsEvent event) {
+	@ListenTo(sendToMe = true)
+	private void onAddColumn(AddScoreColumnEvent event) {
+		if (event.getScores().isEmpty())
+			return;
+		addColumns(event.getScores().toArray(new IScore[0]));
+	}
+
+	@Override
+	public void removeLeadingScoreColumns() {
 		List<ARankColumnModel> columns = this.table.getColumns();
 		boolean hasOne = false;
 		Collection<ARankColumnModel> toremove = new ArrayList<>();
@@ -741,6 +748,10 @@ public class GLTourGuideView extends AGLElementView {
 		}
 	}
 
+	@ListenTo
+	private void onRemoveLeadingScoreColumns(RemoveLeadingScoreColumnsEvent event) {
+		removeLeadingScoreColumns();
+	}
 
 	/**
 	 * @param col
@@ -812,6 +823,12 @@ public class GLTourGuideView extends AGLElementView {
 	 */
 	public IViewAdapter getAdapter() {
 		return adapter;
+	}
+
+	@Override
+	public void clearSelection() {
+		table.setSelectedRow(null);
+		getTableBodyUI().repaint();
 	}
 
 	private class RankTableUIConfig extends RankTableUIConfigBase {

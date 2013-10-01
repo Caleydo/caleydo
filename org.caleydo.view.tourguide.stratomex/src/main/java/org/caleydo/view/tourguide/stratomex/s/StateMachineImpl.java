@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.view.tourguide.stratomex;
+package org.caleydo.view.tourguide.stratomex.s;
 
 import java.util.Collections;
 import java.util.Deque;

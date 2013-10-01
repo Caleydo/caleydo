@@ -6,7 +6,7 @@
 package org.caleydo.view.tourguide.stratomex.event;
 
 import org.caleydo.core.event.ADirectedEvent;
-import org.caleydo.view.tourguide.stratomex.EWizardMode;
+import org.caleydo.view.tourguide.stratomex.s.EWizardMode;
 
 /**
  * @author Samuel Gratzl

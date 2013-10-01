@@ -37,6 +37,7 @@ import org.caleydo.view.tourguide.api.model.InhomogenousPerspectiveRow;
 import org.caleydo.view.tourguide.api.model.MaxGroupCombiner;
 import org.caleydo.view.tourguide.api.model.PathwayPerspectiveRow;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.vis.ITourGuideView;
 import org.caleydo.view.tourguide.spi.adapter.IViewAdapter;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -68,7 +69,10 @@ public class StratomexAdapter implements IViewAdapter {
 	private TablePerspective currentPreview = null;
 	private Group currentPreviewGroup = null;
 
-	public StratomexAdapter() {
+	private final ITourGuideView tourGuide;
+
+	public StratomexAdapter(ITourGuideView vis) {
+		this.tourGuide = vis;
 	}
 
 	public void sendDelayedEvents() {
@@ -127,8 +131,8 @@ public class StratomexAdapter implements IViewAdapter {
 
 	@ListenTo
 	private void onWizardEnded(WizardEndedEvent event) {
-		table.setSelectedRow(null);
-		getTableBodyUI().repaint();
+		tourGuide.removeLeadingScoreColumns();
+		tourGuide.clearSelection();
 	}
 
 	private void cleanupPreview() {

@@ -3,23 +3,24 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.view.tourguide.spi.adapter;
+package org.caleydo.view.tourguide.api.vis;
 
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.vis.ITourGuideView;
-import org.eclipse.ui.IViewPart;
+import org.caleydo.view.tourguide.internal.OpenViewHandler;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IViewAdapterFactory {
-
+public class TourGuideUtils {
 	/**
-	 * @param view
+	 * triggers to open tour guide
+	 *
 	 * @param mode
 	 * @return
 	 */
-	IViewAdapter createFor(IViewPart view, EDataDomainQueryMode mode, ITourGuideView vis);
+	public static ITourGuideView showTourGuide(final EDataDomainQueryMode mode) {
+		return OpenViewHandler.showTourGuide(mode).getView();
+	}
 
 }

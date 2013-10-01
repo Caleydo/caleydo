@@ -3,14 +3,13 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.view.tourguide.stratomex;
+package org.caleydo.view.tourguide.stratomex.s;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
-import org.caleydo.view.tourguide.stratomex.s.TourGuideAddin;
 
 /**
  * @author Samuel Gratzl

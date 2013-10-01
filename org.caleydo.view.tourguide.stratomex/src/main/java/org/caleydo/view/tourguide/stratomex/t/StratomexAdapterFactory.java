@@ -6,6 +6,7 @@
 package org.caleydo.view.tourguide.stratomex.t;
 
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.vis.ITourGuideView;
 import org.caleydo.view.tourguide.spi.adapter.IViewAdapter;
 import org.caleydo.view.tourguide.spi.adapter.IViewAdapterFactory;
 import org.eclipse.ui.IViewPart;
@@ -17,8 +18,8 @@ import org.eclipse.ui.IViewPart;
 public class StratomexAdapterFactory implements IViewAdapterFactory {
 
 	@Override
-	public IViewAdapter createFor(IViewPart view, EDataDomainQueryMode mode) {
-		return new StratomexAdapter();
+	public IViewAdapter createFor(IViewPart view, EDataDomainQueryMode mode, ITourGuideView vis) {
+		return new StratomexAdapter(vis);
 	}
 
 }
