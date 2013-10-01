@@ -4,7 +4,6 @@ Bundle-Name: TourGuide
 Bundle-SymbolicName: org.caleydo.view.tourguide;singleton:=true
 Bundle-Version: 3.0.5.qualifier
 Require-Bundle: org.caleydo.core;bundle-version="3.0.5.qualifier",
- org.caleydo.view.stratomex;bundle-version="3.0.5.qualifier",
  org.caleydo.datadomain.pathway;bundle-version="3.0.5.qualifier",
  org.apache.commons.math;bundle-version="2.1.0",
  org.caleydo.vis.lineup;bundle-version="3.0.5.qualifier",

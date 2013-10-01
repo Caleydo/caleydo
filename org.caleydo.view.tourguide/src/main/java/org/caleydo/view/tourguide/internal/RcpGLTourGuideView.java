@@ -6,9 +6,8 @@
 package org.caleydo.view.tourguide.internal;
 
 import org.caleydo.core.view.ARcpGLViewPart;
-import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.RcpGLStratomexView;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.internal.adapter.TourGuideViewAdapters;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
@@ -38,17 +37,17 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 
 		EPartService service = (EPartService) getSite().getService(EPartService.class);
 
+		final GLTourGuideView m = getView();
+		if (m == null)
+			return;
 		// find visible StratomeX
 		for (MPart part : service.getParts()) {
 			if (service.isPartVisible(part)) {
-				GLTourGuideView m = getView();
-				GLStratomex stratomex = null;
 				IViewPart view = getSite().getPage().findView(part.getElementId());
-				if (view instanceof RcpGLStratomexView) {
-					RcpGLStratomexView strat = (RcpGLStratomexView) view;
-					stratomex = strat.getView();
-					if (m != null && stratomex != null)
-						m.switchToStratomex(stratomex);
+				for (ITourGuideViewAdapterFactory factory : TourGuideViewAdapters.get()) {
+					ITourGudieViewAdapter adapter = factory.createFor(view);
+					if (adapter != null)
+						m.switchTo(adapter);
 				}
 			}
 		}

@@ -8,6 +8,6 @@
 		<version>3.0.5-SNAPSHOT</version>
 		<relativePath>../org.caleydo.parent</relativePath>
 	</parent>
-	<artifactId>org.caleydo.view.tourguide</artifactId>
+	<artifactId>org.caleydo.view.tourguide.entourage</artifactId>
 	<packaging>eclipse-plugin</packaging>
 </project>

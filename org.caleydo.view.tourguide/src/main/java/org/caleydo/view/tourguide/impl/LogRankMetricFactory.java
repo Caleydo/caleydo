@@ -23,9 +23,6 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
-import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
-import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
 import org.caleydo.view.tourguide.api.score.GroupSelectors;
@@ -134,8 +131,8 @@ public class LogRankMetricFactory implements IScoreFactory {
 		}
 
 		@Override
-		public void onUpdate(UpdateNumericalPreviewEvent event, IReactions adapter) {
-			TablePerspective numerical = event.getTablePerspective();
+		public void onUpdateOther(TablePerspective tablePerspective, IReactions adapter) {
+			TablePerspective numerical = tablePerspective;
 			adapter.replaceTemplate(new PreviewRenderer(adapter.createPreview(numerical), adapter.getGLView(),
 					"Browse for a stratification"));
 
@@ -154,8 +151,8 @@ public class LogRankMetricFactory implements IScoreFactory {
 		}
 
 		@Override
-		public void onUpdate(UpdateStratificationPreviewEvent event, IReactions adapter) {
-			TablePerspective tp = event.getTablePerspective();
+		public void onUpdateStratification(TablePerspective tablePerspective, IReactions adapter) {
+			TablePerspective tp = tablePerspective;
 			if (DataDomainOracle.isCategoricalDataDomain(tp.getDataDomain()))
 				adapter.replaceTemplate(tp, new CategoricalDataConfigurer(tp), true);
 			else

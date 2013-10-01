@@ -20,7 +20,6 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedStratificationScore;
@@ -239,9 +238,9 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		}
 
 		@Override
-		public void onUpdate(UpdatePathwayPreviewEvent event, IReactions adapter) {
-			pathway = event.getPathway();
-			adapter.replacePathwayTemplate(underlying, event.getPathway(), false, true);
+		public void onUpdatePathway(PathwayGraph pathway, IReactions adapter) {
+			this.pathway = pathway;
+			adapter.replacePathwayTemplate(underlying, pathway, false, true);
 		}
 
 		@Override
