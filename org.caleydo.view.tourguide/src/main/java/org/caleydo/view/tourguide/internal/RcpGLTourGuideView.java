@@ -7,8 +7,9 @@ package org.caleydo.view.tourguide.internal;
 
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.internal.adapter.TourGuideViewAdapters;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
+import org.caleydo.view.tourguide.spi.adapter.IViewAdapter;
+import org.caleydo.view.tourguide.spi.adapter.IViewAdapterFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Composite;
@@ -44,8 +45,8 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 		for (MPart part : service.getParts()) {
 			if (service.isPartVisible(part)) {
 				IViewPart view = getSite().getPage().findView(part.getElementId());
-				for (ITourGuideViewAdapterFactory factory : TourGuideViewAdapters.get()) {
-					ITourGudieViewAdapter adapter = factory.createFor(view);
+				for (IViewAdapterFactory factory : ViewAdapters.get()) {
+					IViewAdapter adapter = factory.createFor(view, mode, m);
 					if (adapter != null)
 						m.switchTo(adapter);
 				}
@@ -112,10 +113,10 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 			IWorkbenchPart part = partRef.getPart(false);
 
 			GLTourGuideView m = getView();
-
-			if (part instanceof RcpGLStratomexView && m != null) {
-				m.switchToStratomex(null);
-			}
+			if (m == null)
+				return;
+			if (m.getAdapter().isRepresenting(part))
+				m.switchTo(null);
 		}
 
 		@Override
@@ -124,7 +125,6 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 
 		@Override
 		public void partActivated(IWorkbenchPartReference partRef) {
-			GLStratomex stratomex = null;
 			if (partRef == null)
 				return;
 			IWorkbenchPart part = partRef.getPart(false);
@@ -135,17 +135,16 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 				return;
 			if (part instanceof RcpGLTourGuideView && m != null) {
 				if (part == RcpGLTourGuideView.this) { // I was activated
-					m.attachToStratomex();
+					m.attachToView();
 				} else { // another tour guide than me was activated
-					m.detachFromStratomex();
+					m.detachFromView();
 				}
-			} else {
-				if (part instanceof RcpGLStratomexView) {
-					RcpGLStratomexView strat = (RcpGLStratomexView) part;
-					stratomex = strat.getView();
+			} else if (part instanceof IViewPart) {
+				for (IViewAdapterFactory factory : ViewAdapters.get()) {
+					IViewAdapter adapter = factory.createFor((IViewPart) part, mode, m);
+					if (adapter != null)
+						m.switchTo(adapter);
 				}
-				if (m != null)
-					m.switchToStratomex(stratomex);
 			}
 		}
 	};

@@ -46,7 +46,6 @@ import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
 import org.caleydo.core.view.opengl.layout2.basic.WaitingElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.api.external.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
@@ -71,7 +70,6 @@ import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.CustomSubList;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
-import org.caleydo.view.tourguide.internal.stratomex.event.WizardEndedEvent;
 import org.caleydo.view.tourguide.internal.view.col.IScoreMixin;
 import org.caleydo.view.tourguide.internal.view.col.ScoreIntegerRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.ScoreRankColumnModel;
@@ -82,10 +80,10 @@ import org.caleydo.view.tourguide.internal.view.ui.ADataDomainElement;
 import org.caleydo.view.tourguide.internal.view.ui.DataDomainQueryUI;
 import org.caleydo.view.tourguide.internal.view.ui.pool.ScorePoolUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
+import org.caleydo.view.tourguide.spi.adapter.IViewAdapter;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
-import org.caleydo.view.tourguide.stratomex.StratomexAdapter;
 import org.caleydo.vis.lineup.config.RankTableConfigBase;
 import org.caleydo.vis.lineup.config.RankTableUIConfigBase;
 import org.caleydo.vis.lineup.layout.RowHeightLayouts;
@@ -127,8 +125,6 @@ public class GLTourGuideView extends AGLElementView {
 	private static final int DATADOMAIN_QUERY = 0;
 	private static final int TABLE = 1;
 
-	@DeepScan
-	private final StratomexAdapter stratomex = new StratomexAdapter();
 	private final RankTableModel table;
 
 	private final BitSet mask = new BitSet();
@@ -160,12 +156,14 @@ public class GLTourGuideView extends AGLElementView {
 	private final IDataDomainQueryModeSpecfics modeSpecifics;
 
 	private final WaitingElement waiting = new WaitingElement();
-	private boolean noStratomexVisible = false;
-	private final GLElement noStratomex = new GLElement(new IGLRenderer() {
+
+	private IViewAdapter adapter;
+	private boolean noAttachedView = false;
+	private final GLElement noAttachedViewLabel = new GLElement(new IGLRenderer() {
 		@Override
 		public void render(GLGraphics g, float w, float h, GLElement parent) {
 			g.color(1, 1, 1, 0.5f).fillRect(0, 0, w, h);
-			g.drawText("No active StratomeX", 10, h * 0.5f - 12, w - 20, 24, VAlign.CENTER);
+			g.drawText("No compatible view visible", 10, h * 0.5f - 12, w - 20, 24, VAlign.CENTER);
 		}
 	});
 
@@ -233,7 +231,6 @@ public class GLTourGuideView extends AGLElementView {
 		// wrap for having the right thread
 		this.tableKeyListener = GLThreadListenerWrapper.wrap(new RankTableKeyListener(table));
 	}
-
 
 	/**
 	 * @return the mode, see {@link #mode}
@@ -549,8 +546,8 @@ public class GLTourGuideView extends AGLElementView {
 		this.canvas.addKeyListener(eventListeners.register(this.tableKeyListener2));
 		this.canvas.addMouseListener(eventListeners.register(this.tableMouseListener));
 
-		this.noStratomexVisible = stratomex.hasOne();
-		updateStratomexState();
+		this.noAttachedView = this.adapter == null;
+		updateAdapterState();
 
 		// select first data domain element by default
 		if (!queries.isEmpty()) {
@@ -558,21 +555,22 @@ public class GLTourGuideView extends AGLElementView {
 		}
 	}
 
-	private void updateStratomexState() {
-		boolean act = stratomex.hasOne();
-		boolean prev = !this.noStratomexVisible;
+	private void updateAdapterState() {
+		boolean act = this.adapter != null;
+		boolean prev = !this.noAttachedView;
 		if (act == prev)
 			return;
 		if (prev)
-			getPopupLayer().show(noStratomex, null, 0);
+			getPopupLayer().show(noAttachedViewLabel, null, 0);
 		else
-			getPopupLayer().hide(noStratomex);
-		this.noStratomexVisible = !this.noStratomexVisible;
+			getPopupLayer().hide(noAttachedViewLabel);
+		this.noAttachedView = !this.noAttachedView;
 	}
 
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
-		this.stratomex.cleanUp();
+		if (this.adapter != null)
+			this.adapter.cleanUp();
 		canvas.removeKeyListener(tableKeyListener);
 		canvas.removeKeyListener(tableKeyListener2);
 		canvas.removeMouseListener(tableMouseListener);
@@ -586,7 +584,8 @@ public class GLTourGuideView extends AGLElementView {
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
-		stratomex.sendDelayedEvents();
+		if (adapter != null)
+			adapter.preDisplay();
 		super.display(drawable);
 	}
 
@@ -596,12 +595,14 @@ public class GLTourGuideView extends AGLElementView {
 	}
 
 	protected void onSelectRow(AScoreRow old, AScoreRow new_) {
-		if (stratomex.isWizardVisible())
+		if (adapter.canShowPreviews())
 			updatePreview(old, new_);
 	}
 
 	private void updatePreview(AScoreRow old, AScoreRow new_) {
-		stratomex.updatePreview(old, new_, getVisibleScores(new_, true), mode, getSortedByScore());
+		if (adapter == null)
+			return;
+		adapter.update(old, new_, getVisibleScores(new_, true), mode, getSortedByScore());
 	}
 
 	private IScore getSortedByScore() {
@@ -774,27 +775,43 @@ public class GLTourGuideView extends AGLElementView {
 						this));
 	}
 
-	public void attachToStratomex() {
-		this.stratomex.attach();
+	public void attachToView() {
+		if (this.adapter != null)
+			this.adapter.attach();
 	}
 
-	public void detachFromStratomex() {
-		this.stratomex.detach();
+	public void detachFromView() {
+		if (this.adapter != null)
+			this.adapter.detach();
 	}
 
-	public void switchToStratomex(GLStratomex stratomex) {
-		if (this.stratomex.setStratomex(stratomex))
-			repaint();
+	/**
+	 * @param adapter
+	 */
+	public void switchTo(IViewAdapter adapter) {
+		if (Objects.equals(adapter, this.adapter))
+			return;
+		if (this.adapter != null) {
+			this.adapter.cleanUp();
+			eventListeners.unregister(this.adapter);
+		}
+		this.adapter = adapter;
+		if (this.adapter != null) {
+			eventListeners.unregister(this.adapter);
+			this.adapter.setup();
+		}
+		repaint();
 		IPopupLayer popupLayer = getPopupLayer();
 		if (popupLayer == null)
 			return;
-		updateStratomexState();
+		updateAdapterState();
 	}
 
-	@ListenTo
-	private void onWizardEnded(WizardEndedEvent event) {
-		table.setSelectedRow(null);
-		getTableBodyUI().repaint();
+	/**
+	 * @return the adapter, see {@link #adapter}
+	 */
+	public IViewAdapter getAdapter() {
+		return adapter;
 	}
 
 	private class RankTableUIConfig extends RankTableUIConfigBase {
@@ -838,7 +855,7 @@ public class GLTourGuideView extends AGLElementView {
 				g.color(TourGuideRenderStyle.colorSelectedRow());
 				g.incZ();
 				g.fillRect(x, y, w, h);
-				if (stratomex.isPreviewed((AScoreRow) row)) {
+				if (adapter != null && adapter.isPreviewing((AScoreRow) row)) {
 					TourGuideRenderStyle.COLOR_PREVIEW_BORDER_ROW.set(g.gl);
 					g.drawLine(x, y, x + w, y);
 					g.drawLine(x, y + h, x + w, y + h);
@@ -849,7 +866,7 @@ public class GLTourGuideView extends AGLElementView {
 					g.drawLine(x, y + h, x + w, y + h);
 				}
 				g.decZ();
-			} else if (stratomex.isVisible((AScoreRow) row)) {
+			} else if (adapter != null && adapter.isVisible((AScoreRow) row)) {
 				g.color(TourGuideRenderStyle.COLOR_STRATOMEX_ROW);
 				g.fillRect(x, y, w, h);
 			} else if (!even) {
@@ -867,8 +884,9 @@ public class GLTourGuideView extends AGLElementView {
 		public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected) {
 			if (!isSelected && pickingMode == PickingMode.CLICKED) {
 				table.setSelectedRow(row);
-			} else if ((isSelected && pickingMode == PickingMode.CLICKED && stratomex.isWizardVisible())
-					|| (pickingMode == PickingMode.DOUBLE_CLICKED && !stratomex.isWizardVisible())) {
+			} else if ((isSelected && pickingMode == PickingMode.CLICKED && adapter != null && adapter
+					.canShowPreviews())
+					|| (pickingMode == PickingMode.DOUBLE_CLICKED && (adapter == null || !adapter.canShowPreviews()))) {
 				updatePreview(null, (AScoreRow) row);
 			}
 		}

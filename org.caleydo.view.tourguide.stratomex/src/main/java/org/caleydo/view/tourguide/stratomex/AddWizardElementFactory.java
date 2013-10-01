@@ -15,9 +15,6 @@ import static org.caleydo.view.tourguide.api.state.IStateMachine.BROWSE_STRATIFI
 import java.util.Collection;
 import java.util.List;
 
-import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.state.BrowseOtherState;
 import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
@@ -36,8 +33,6 @@ import org.caleydo.view.tourguide.stratomex.state.SelectStateState;
 import org.caleydo.view.tourguide.stratomex.wizard.AAddWizardElement;
 import org.caleydo.view.tourguide.stratomex.wizard.IAddWizardElementFactory;
 import org.caleydo.view.tourguide.stratomex.wizard.IStratomexAdapter;
-
-import com.google.common.collect.Lists;
 
 /**
  * @author Samuel Gratzl
@@ -65,6 +60,8 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 		return new AddWizardElement(view, adapter, createStateMachine(adapter.getVisibleTablePerspectives(),
 				EWizardMode.INDEPENDENT, tablePerspective));
 	}
+
+
 
 	private static StateMachineImpl createStateMachine(List<TablePerspective> existing, EWizardMode mode,
 			TablePerspective source) {

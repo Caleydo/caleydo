@@ -9,21 +9,13 @@ import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.stratomex
 import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.stratomexHitGroup;
 
 import java.lang.ref.WeakReference;
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
-import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.id.IDType;
-import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.event.HighlightBandEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
@@ -40,8 +32,6 @@ import org.caleydo.view.tourguide.internal.model.PathwayPerspectiveRow;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.stratomex.event.WizardEndedEvent;
-
-import com.google.common.base.Objects;
 
 /**
  * facade / adapter to {@link GLStratomex} to hide the communication details
@@ -72,6 +62,12 @@ public class StratomexAdapter {
 
 	public void cleanUp() {
 		cleanupPreview();
+	}
+
+	@ListenTo
+	private void onWizardEnded(WizardEndedEvent event) {
+		table.setSelectedRow(null);
+		getTableBodyUI().repaint();
 	}
 
 	private void cleanupPreview() {
