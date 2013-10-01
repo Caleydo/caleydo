@@ -65,7 +65,7 @@
          </property>
          <property
                name="aboutImage"
-               value="resources/wizard/wizard.png">
+               value="resources/icons/about.png">
          </property>
          <property
                name="windowImages"
