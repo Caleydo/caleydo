@@ -10,7 +10,6 @@ package org.caleydo.view.tourguide.stratomex.state;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
-import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.api.state.BrowseOtherState;
 import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
@@ -35,12 +34,12 @@ public class BrowseNumericalAndStratificationState extends BrowseOtherState impl
 	}
 
 	@Override
-	public void onUpdate(UpdateNumericalPreviewEvent event, IReactions adapter) {
-		numerical = event.getTablePerspective();
+	public void onUpdateOther(TablePerspective tablePerspective, IReactions adapter) {
+		numerical = tablePerspective;
 		if (underlying == null) {
 			updatePreview(adapter);
 		}
-		super.onUpdate(event, adapter);
+		super.onUpdateOther(tablePerspective, adapter);
 	}
 
 	/**

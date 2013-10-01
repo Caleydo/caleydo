@@ -17,11 +17,11 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
-import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
-import org.caleydo.view.tourguide.internal.model.InhomogenousDataDomainQuery;
-import org.caleydo.view.tourguide.internal.model.PathwayDataDomainQuery;
-import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
+import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
+import org.caleydo.view.tourguide.api.model.CategoricalDataDomainQuery;
+import org.caleydo.view.tourguide.api.model.InhomogenousDataDomainQuery;
+import org.caleydo.view.tourguide.api.model.PathwayDataDomainQuery;
+import org.caleydo.view.tourguide.api.model.StratificationDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.specific.IDataDomainQueryModeSpecfics;
 
 import com.google.common.collect.Iterables;

@@ -7,7 +7,6 @@ package org.caleydo.view.tourguide.stratomex.state;
 
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.state.ABrowseState;
 import org.caleydo.view.tourguide.api.state.IReactions;
@@ -26,8 +25,7 @@ public class AlonePathwayState extends ABrowseState {
 	}
 
 	@Override
-	public void onUpdate(UpdatePathwayPreviewEvent event, IReactions adapter) {
-		PathwayGraph pathway = event.getPathway();
+	public void onUpdatePathway(PathwayGraph pathway, IReactions adapter) {
 		ALayoutRenderer preview = adapter.createPreview(pathway);
 		adapter.replaceTemplate(new PreviewRenderer(preview, adapter.getGLView(),
 				"A Pathway can't stand by its own, you first have to add a stratification"));

@@ -47,9 +47,13 @@ import org.caleydo.core.view.opengl.layout2.basic.WaitingElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.tourguide.api.external.ImportExternalScoreCommand;
+import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
+import org.caleydo.view.tourguide.api.model.AScoreRow;
+import org.caleydo.view.tourguide.api.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
+import org.caleydo.view.tourguide.api.score.ScoreFactories;
 import org.caleydo.view.tourguide.api.score.Scores;
 import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
@@ -65,11 +69,7 @@ import org.caleydo.view.tourguide.internal.event.JobDiedEvent;
 import org.caleydo.view.tourguide.internal.event.JobStateProgressEvent;
 import org.caleydo.view.tourguide.internal.event.RemoveLeadingScoreColumnsEvent;
 import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
-import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
-import org.caleydo.view.tourguide.internal.model.AScoreRow;
-import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.internal.model.CustomSubList;
-import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.view.col.IScoreMixin;
 import org.caleydo.view.tourguide.internal.view.col.ScoreIntegerRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.ScoreRankColumnModel;
@@ -851,24 +851,16 @@ public class GLTourGuideView extends AGLElementView {
 		@Override
 		public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
 				IRow selected) {
-			if (row == selected) {
+			if (adapter != null)
+				adapter.renderRowBackground(g, x, y, w, h, even, (AScoreRow) row, row == selected);
+			else if (row == selected) {
 				g.color(TourGuideRenderStyle.colorSelectedRow());
 				g.incZ();
 				g.fillRect(x, y, w, h);
-				if (adapter != null && adapter.isPreviewing((AScoreRow) row)) {
-					TourGuideRenderStyle.COLOR_PREVIEW_BORDER_ROW.set(g.gl);
-					g.drawLine(x, y, x + w, y);
-					g.drawLine(x, y + h, x + w, y + h);
-					TourGuideRenderStyle.COLOR_PREVIEW_BORDER_ROW.clear(g.gl);
-				} else {
-					g.color(RenderStyle.COLOR_SELECTED_BORDER);
-					g.drawLine(x, y, x + w, y);
-					g.drawLine(x, y + h, x + w, y + h);
-				}
+				g.color(RenderStyle.COLOR_SELECTED_BORDER);
+				g.drawLine(x, y, x + w, y);
+				g.drawLine(x, y + h, x + w, y + h);
 				g.decZ();
-			} else if (adapter != null && adapter.isVisible((AScoreRow) row)) {
-				g.color(TourGuideRenderStyle.COLOR_STRATOMEX_ROW);
-				g.fillRect(x, y, w, h);
 			} else if (!even) {
 				g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
 				g.fillRect(x, y, w, h);

@@ -10,11 +10,11 @@ import java.util.List;
 
 /**
  * sub list variant, not checking any concurrent modifications
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public class CustomSubList<T> extends AbstractList<T> {
+public final class CustomSubList<T> extends AbstractList<T> {
 	private final int offset;
 	private final List<T> backend;
 	private final int size;

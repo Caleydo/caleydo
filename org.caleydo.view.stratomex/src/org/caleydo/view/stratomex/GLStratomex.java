@@ -9,6 +9,7 @@ import gleem.linalg.Vec2f;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -531,18 +532,14 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			if (isDisplayListDirty) {
 				gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
-				boolean viaAddin = false;
+				List<String> emptyStrings = new ArrayList<>();
 				for (IStratomeXAddIn addin : addins)
-					if (!addin.isEmpty()) {
-						addin.renderEmpty(gl, 0, getArchTopY(), getViewFrustum().getWidth(), getArchBottomY()
-								- getArchTopY(), 0);
-						viaAddin = true;
-					}
-				if (!viaAddin) {
-					renderEmptyViewText(gl, new String[] { "Please use the the Data-View Integrator view to assign ",
+					emptyStrings.addAll(addin.addEmptyStrings());
+				if (emptyStrings.isEmpty())
+					emptyStrings.addAll(Arrays.asList("Please use the the Data-View Integrator view to assign ",
 							"one or multiple dataset(s) to StratomeX.",
-							"Refer to http://help.caleydo.org for more information." });
-				}
+							"Refer to http://help.caleydo.org for more information."));
+				renderEmptyViewText(gl, emptyStrings.toArray(new String[0]));
 				gl.glEndList();
 				isDisplayListDirty = false;
 			}

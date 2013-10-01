@@ -8,7 +8,6 @@ package org.caleydo.view.tourguide.stratomex.state;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
 import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
@@ -34,8 +33,8 @@ public class BrowsePathwayAndStratificationState extends BrowsePathwayState impl
 	}
 
 	@Override
-	public void onUpdate(UpdatePathwayPreviewEvent event, IReactions adapter) {
-		pathway = event.getPathway();
+	public void onUpdatePathway(PathwayGraph pathway, IReactions adapter) {
+		this.pathway = pathway;
 		if (underlying == null) {
 			ALayoutRenderer preview = adapter.createPreview(pathway);
 			adapter.replaceTemplate(new PreviewRenderer(preview, adapter.getGLView(),

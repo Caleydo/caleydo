@@ -5,20 +5,10 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex.listener;
 
-import java.util.HashMap;
-
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
-import org.caleydo.view.stratomex.brick.sorting.ExternallyProvidedSortingStrategy;
-import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
-import org.caleydo.view.stratomex.column.BrickColumn;
-
-import com.google.common.collect.Maps;
 
 /**
  * Listener for the event {@link AddGroupsToStratomexEvent}.
@@ -40,26 +30,5 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 		}
 	}
 
-	public static ClinicalDataConfigurer createKaplanConfigurer(GLStratomex handler, TablePerspective underlying,
-			TablePerspective kaplan) {
-		ClinicalDataConfigurer dataConfigurer = null;
-		BrickColumn brickColumn = handler.getBrickColumnManager().getBrickColumn(underlying);
-		if (brickColumn != null) {
-			// dependent sorting
-			dataConfigurer = new ClinicalDataConfigurer();
-			ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
-			sortingStrategy.setExternalBrick(brickColumn);
-			HashMap<Perspective, Perspective> m = Maps.newHashMap();
-			m.put(kaplan.getRecordPerspective(), underlying.getRecordPerspective());
-			sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(m);
-			dataConfigurer.setSortingStrategy(sortingStrategy);
-		}
-		return dataConfigurer;
-	}
 
-	public static ClinicalDataConfigurer createTemplateKaplanConfigurer(GLStratomex handler, TablePerspective kaplan) {
-		ClinicalDataConfigurer dataConfigurer = new ClinicalDataConfigurer();
-		dataConfigurer.setSortingStrategy(new NoSortingSortingStrategy());
-		return dataConfigurer;
-	}
 }

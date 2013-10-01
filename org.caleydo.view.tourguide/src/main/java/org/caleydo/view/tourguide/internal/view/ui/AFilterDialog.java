@@ -5,7 +5,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.ui;
 
-import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
+import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;

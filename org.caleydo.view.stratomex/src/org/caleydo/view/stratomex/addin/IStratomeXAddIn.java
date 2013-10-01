@@ -5,6 +5,7 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.addin;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -12,18 +13,12 @@ import javax.media.opengl.GL2;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.column.BlockAdapter;
 import org.caleydo.view.stratomex.column.BrickColumn;
-import org.caleydo.view.stratomex.column.IHasHeader;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public interface IStratomeXAddIn {
-
-	/**
-	 * @return
-	 */
-	IHasHeader asHasHeader();
 
 	/**
 	 * @param columns
@@ -56,14 +51,9 @@ public interface IStratomeXAddIn {
 	boolean isEmpty();
 
 	/**
-	 * @param gl
-	 * @param i
-	 * @param archTopY
-	 * @param width
-	 * @param f
-	 * @param j
+	 * @return
 	 */
-	void renderEmpty(GL2 gl, int i, float archTopY, float width, float f, int j);
+	Collection<? extends String> addEmptyStrings();
 
 	/**
 	 * @param gl

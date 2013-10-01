@@ -6,7 +6,6 @@
 package org.caleydo.view.tourguide.spi.adapter;
 
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
 import org.eclipse.ui.IViewPart;
 
 /**
@@ -20,6 +19,6 @@ public interface IViewAdapterFactory {
 	 * @param mode
 	 * @return
 	 */
-	IViewAdapter createFor(IViewPart view, EDataDomainQueryMode mode, GLTourGuideView tourguide);
+	IViewAdapter createFor(IViewPart view, EDataDomainQueryMode mode);
 
 }

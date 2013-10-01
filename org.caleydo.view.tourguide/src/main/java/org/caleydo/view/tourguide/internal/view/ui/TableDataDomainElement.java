@@ -14,9 +14,9 @@ import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
+import org.caleydo.view.tourguide.api.model.StratificationDataDomainQuery;
 import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
 import org.caleydo.view.tourguide.internal.event.SelectDimensionSelectionEvent;
-import org.caleydo.view.tourguide.internal.model.StratificationDataDomainQuery;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 

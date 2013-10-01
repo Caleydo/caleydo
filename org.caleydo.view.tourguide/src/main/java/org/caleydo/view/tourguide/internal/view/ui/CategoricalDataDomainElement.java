@@ -10,8 +10,8 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.view.tourguide.api.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
-import org.caleydo.view.tourguide.internal.model.CategoricalDataDomainQuery;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;

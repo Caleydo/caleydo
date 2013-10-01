@@ -30,7 +30,12 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.core.view.opengl.util.text.TextUtils;
+import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
+import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
+import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
+import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.state.ABrowseState;
 import org.caleydo.view.tourguide.api.state.IReactions;
@@ -39,7 +44,6 @@ import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.ITransition;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
-import org.caleydo.view.tourguide.internal.Activator;
 import org.caleydo.view.tourguide.internal.OpenViewHandler;
 import org.caleydo.view.tourguide.internal.RcpGLTourGuideView;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
@@ -47,14 +51,20 @@ import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.RemoveLeadingScoreColumnsEvent;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.view.tourguide.stratomex.event.UpdateNumericalPreviewEvent;
+import org.caleydo.view.tourguide.stratomex.event.UpdatePathwayPreviewEvent;
+import org.caleydo.view.tourguide.stratomex.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.stratomex.event.WizardEndedEvent;
+import org.caleydo.view.tourguide.stratomex.s.TourGuideAddin;
 import org.caleydo.view.tourguide.stratomex.state.SelectStateState;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElement extends AAddWizardElement implements IReactions {
+public class AddWizardElement extends ALayoutRenderer implements IReactions {
+	public static final String PICKING_TYPE = "templateWizard";
+
 	@DeepScan
 	private StateMachineImpl stateMachine;
 
@@ -66,10 +76,12 @@ public class AddWizardElement extends AAddWizardElement implements IReactions {
 
 	private boolean canGoBack = true;
 
-	public AddWizardElement(AGLView view, IStratomexAdapter adapter, StateMachineImpl stateMachine) {
-		super(adapter);
+	private final TourGuideAddin adapter;
+
+	public AddWizardElement(AGLView view, TourGuideAddin adapter, StateMachineImpl stateMachine) {
+		this.adapter = adapter;
 		contextLocal = new GLContextLocal(view.getTextRenderer(), view.getTextureManager(),
-				Activator.getResourceLocator());
+				ResourceLocators.classLoader(AddWizardElement.class.getClassLoader()));
 		this.view = view;
 		this.stateMachine = stateMachine;
 		this.stateMachine.getCurrent().onEnter();

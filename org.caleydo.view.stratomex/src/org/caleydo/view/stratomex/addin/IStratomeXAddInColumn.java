@@ -5,29 +5,16 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.addin;
 
-import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.view.stratomex.column.IHasHeader;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class IStratomeXAddInColumn {
+public interface IStratomeXAddInColumn {
+	ElementLayout asElementLayout();
 
-	/**
-	 * @return
-	 */
-	public Row asElementLayout() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 * @return
-	 */
-	public IHasHeader asHasHeader() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	IHasHeader asHasHeader();
 
 }

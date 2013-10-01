@@ -7,10 +7,12 @@ package org.caleydo.view.stratomex.brick.configurer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ViewManager;
@@ -32,9 +34,13 @@ import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.TitleOnlyHeaderBrickLayoutTemplate;
+import org.caleydo.view.stratomex.brick.sorting.ExternallyProvidedSortingStrategy;
 import org.caleydo.view.stratomex.brick.sorting.IBrickSortingStrategy;
 import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.stratomex.brick.ui.KaplanMeierSummaryRenderer;
+import org.caleydo.view.stratomex.column.BrickColumn;
+
+import com.google.common.collect.Maps;
 
 /**
  * Configurer for bricks that display numerical clinical data, such as disease free survival etc.
@@ -48,6 +54,23 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 	protected static final int SPACING_PIXELS = 32;
 
 	private IBrickSortingStrategy sortingStrategy = new NoSortingSortingStrategy();
+
+	public static ClinicalDataConfigurer create(GLStratomex handler, TablePerspective underlying,
+			TablePerspective kaplan) {
+		ClinicalDataConfigurer dataConfigurer = null;
+		BrickColumn brickColumn = handler.getBrickColumnManager().getBrickColumn(underlying);
+		if (brickColumn != null) {
+			// dependent sorting
+			dataConfigurer = new ClinicalDataConfigurer();
+			ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
+			sortingStrategy.setExternalBrick(brickColumn);
+			HashMap<Perspective, Perspective> m = Maps.newHashMap();
+			m.put(kaplan.getRecordPerspective(), underlying.getRecordPerspective());
+			sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(m);
+			dataConfigurer.setSortingStrategy(sortingStrategy);
+		}
+		return dataConfigurer;
+	}
 
 	@Override
 	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {

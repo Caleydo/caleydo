@@ -15,7 +15,11 @@ import static org.caleydo.view.tourguide.api.state.IStateMachine.BROWSE_STRATIFI
 import java.util.Collection;
 import java.util.List;
 
+import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.score.ScoreFactories;
 import org.caleydo.view.tourguide.api.state.BrowseOtherState;
 import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
 import org.caleydo.view.tourguide.api.state.BrowseStratificationState;
@@ -25,38 +29,36 @@ import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.ITransition;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.api.util.PathwayOracle;
-import org.caleydo.view.tourguide.internal.score.ScoreFactories;
+import org.caleydo.view.tourguide.stratomex.s.TourGuideAddin;
 import org.caleydo.view.tourguide.stratomex.state.AlonePathwayState;
 import org.caleydo.view.tourguide.stratomex.state.BrowseNumericalAndStratificationState;
 import org.caleydo.view.tourguide.stratomex.state.BrowsePathwayAndStratificationState;
 import org.caleydo.view.tourguide.stratomex.state.SelectStateState;
-import org.caleydo.view.tourguide.stratomex.wizard.AAddWizardElement;
-import org.caleydo.view.tourguide.stratomex.wizard.IAddWizardElementFactory;
-import org.caleydo.view.tourguide.stratomex.wizard.IStratomexAdapter;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddWizardElementFactory implements IAddWizardElementFactory {
+public class AddWizardElementFactory {
 	private static final String BROWSE_AND_SELECT_OTHER = "browseAndSelectNumerical";
 	private static final String BROWSE_AND_SELECT_PATHWAY = "browseAndSelectPathway";
 	private static final String ALONE_PATHWAY = "alonePathway";
 
-	@Override
-	public AAddWizardElement create(IStratomexAdapter adapter, AGLView view) {
+	public static AddWizardElement create(TourGuideAddin adapter, AGLView view) {
 		return new AddWizardElement(view, adapter, createStateMachine(adapter.getVisibleTablePerspectives(),
 				EWizardMode.GLOBAL, null));
 	}
 
-	@Override
-	public AAddWizardElement createDependent(IStratomexAdapter adapter, AGLView view, TablePerspective tablePerspective) {
+	public static AddWizardElement createDependent(TourGuideAddin adapter, AGLView view,
+			TablePerspective tablePerspective) {
 		return new AddWizardElement(view, adapter, createStateMachine(adapter.getVisibleTablePerspectives(),
 				EWizardMode.DEPENDENT, tablePerspective));
 	}
 
-	@Override
-	public AAddWizardElement createIndepenent(IStratomexAdapter adapter, AGLView view, TablePerspective tablePerspective) {
+	public static AddWizardElement createIndepenent(TourGuideAddin adapter, AGLView view,
+			TablePerspective tablePerspective) {
 		return new AddWizardElement(view, adapter, createStateMachine(adapter.getVisibleTablePerspectives(),
 				EWizardMode.INDEPENDENT, tablePerspective));
 	}
@@ -191,16 +193,16 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 		if (reason == null || !hideEmpty)
 			state.addTransition(state.getCurrent(), new SimpleTransition(target, target.getLabel(), reason));
 	}
-	@Override
-	public AAddWizardElement createForStratification(IStratomexAdapter adapter, AGLView view) {
+
+	public static AddWizardElement createForStratification(TourGuideAddin adapter, AGLView view) {
 		StateMachineImpl stateMachine = createStateMachine(adapter.getVisibleTablePerspectives(), EWizardMode.GLOBAL,
 				null);
 		stateMachine.move(stateMachine.get(BROWSE_STRATIFICATIONS));
 		return new AddWizardElement(view, adapter, stateMachine);
 	}
 
-	@Override
-	public AAddWizardElement createForOther(IStratomexAdapter adapter, AGLView view) {
+
+	public static AddWizardElement createForOther(TourGuideAddin adapter, AGLView view) {
 		StateMachineImpl stateMachine;
 		stateMachine = createStateMachine(adapter.getVisibleTablePerspectives(), EWizardMode.GLOBAL, null);
 		if (!adapter.getVisibleTablePerspectives().isEmpty()) {
@@ -211,8 +213,8 @@ public class AddWizardElementFactory implements IAddWizardElementFactory {
 		return new AddWizardElement(view, adapter, stateMachine);
 	}
 
-	@Override
-	public AAddWizardElement createForPathway(IStratomexAdapter adapter, AGLView view) {
+
+	public static AddWizardElement createForPathway(TourGuideAddin adapter, AGLView view) {
 		StateMachineImpl stateMachine;
 		stateMachine = createStateMachine(adapter.getVisibleTablePerspectives(), EWizardMode.GLOBAL, null);
 		if (!adapter.getVisibleTablePerspectives().isEmpty()) {

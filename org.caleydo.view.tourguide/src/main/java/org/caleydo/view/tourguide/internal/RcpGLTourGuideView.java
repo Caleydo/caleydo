@@ -46,7 +46,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 			if (service.isPartVisible(part)) {
 				IViewPart view = getSite().getPage().findView(part.getElementId());
 				for (IViewAdapterFactory factory : ViewAdapters.get()) {
-					IViewAdapter adapter = factory.createFor(view, mode, m);
+					IViewAdapter adapter = factory.createFor(view, mode);
 					if (adapter != null)
 						m.switchTo(adapter);
 				}
@@ -58,13 +58,13 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 	public void init(IViewSite site) throws PartInitException {
 		super.init(site);
 		this.mode = EDataDomainQueryMode.valueOfSafe(site.getSecondaryId());
-		site.getPage().addPartListener(stratomexListener);
+		site.getPage().addPartListener(partListener);
 	}
 
 
 	@Override
 	public void dispose() {
-		getSite().getPage().removePartListener(stratomexListener);
+		getSite().getPage().removePartListener(partListener);
 		super.dispose();
 	}
 
@@ -84,7 +84,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 	/**
 	 * listener that checks which stratomex is open and tell that the tour guide instance
 	 */
-	private final IPartListener2 stratomexListener = new IPartListener2() {
+	private final IPartListener2 partListener = new IPartListener2() {
 		@Override
 		public void partVisible(IWorkbenchPartReference partRef) {
 		}
@@ -131,7 +131,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 
 			GLTourGuideView m = getView();
 
-			if (ignorePartChange(part))
+			if (ignorePartChange(part) || m == null)
 				return;
 			if (part instanceof RcpGLTourGuideView && m != null) {
 				if (part == RcpGLTourGuideView.this) { // I was activated
@@ -141,7 +141,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 				}
 			} else if (part instanceof IViewPart) {
 				for (IViewAdapterFactory factory : ViewAdapters.get()) {
-					IViewAdapter adapter = factory.createFor((IViewPart) part, mode, m);
+					IViewAdapter adapter = factory.createFor((IViewPart) part, mode);
 					if (adapter != null)
 						m.switchTo(adapter);
 				}
