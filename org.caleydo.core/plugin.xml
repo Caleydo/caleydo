@@ -61,7 +61,7 @@
             name="Caleydo">
          <property
                name="appName"
-               value="Caleydo">
+               value="%appName">
          </property>
          <property
                name="aboutImage"
@@ -77,7 +77,7 @@
          </property>
          <property
                name="aboutText"
-               value="Caleydo - Visualization for Molecular Biology&#x0A;http://caleydo.org&#x0A;&#x0A;Copyright 2008 - 2013  by the Caleydo Team.&#x0A;Caleydo is open-source software licenced under the New BSD license.">
+               value="%aboutText">
          </property>
       </product>
    </extension>
@@ -173,7 +173,7 @@
                id="action"
                name="Zooming action"
                optional="true"
-               values="ZoomHandlerParameters">
+               values="org.caleydo.core.gui.command.ZoomHandlerParameters">
          </commandParameter>
       </command>
 
@@ -475,19 +475,19 @@
       <extension
             point="org.caleydo.core.SampleProject">
          <sample
-               description="The ideal choice if you want to try out multi-dataset analysis with StratomeX in Calyedo. &#x0A;&#x0A;This project loads eight linked datasets for Glioblastoma Multiforme (GBM), collected by &lt;a href=&quot;http://cancergenome.nih.gov&quot;&gt;TCGA&lt;/a&gt; and made available by the Broad Institute&apos;s &lt;a href=&quot;http://gdac.broadinstitute.org&quot;&gt;Genome Data Analysis Center (GDAC)&lt;/a&gt;.&#x0A;The datasets are mRNA expression data (chip-based and sequencing based separately), microRNA expression, methylation, mutation, copy-number, RPPA as well as clinical data. The project contains 300-550 samples for each dataset. The expression datasets contain about 1,500 pre-selected values, copy number status is availiabe for about 5,000 genes.&#x0A;&#x0A;Download Size: 18 MB "
-               name="Try Caleydo with TCGA Glioblastoma Multiforme Dataset"
-               url="DATA_URL_PREFIX/samples/tcga_gbm_sampled.cal">
+               description="%sample1.desc"
+               name="%sample1.name"
+               url="%sample1.url">
          </sample>
          <sample
-               description="The same dataset as the previous one, but this time including all data.&#x0A;&#x0A;Download Size: 79 MB "
-               name="Try Caleydo with TCGA Glioblastoma Multiforme Dataset (All Genes)"
-               url="DATA_URL_PREFIX/samples/tcga_gbm.cal">
+               description="%sample2.desc"
+               name="%sample2.name"
+               url="%sample2.url">
          </sample>
          <sample
-            description="The ideal choice if you want to try out pathway-centric analysis with enRoute in Calyedo.&#x0A;&#x0A;This project loads four linked datasets from the &lt;a href=&quot;http://www.broadinstitute.org/ccle&quot;&gt;Cancer Cell Line Encyclopedia (CCLE)&lt;/a&gt; collected by the Broad Institute and the Novartis Institutes for Biomedical Research. &#x0A;The datasets are mRNA expression, mutation and copy-number data as well as IC 50 values for the cell lines and 24 known anti cancer drugs. The project contains between 500 and 1000 samples for each dataset. The genetic datasets contain between 1,600 (mutation data) and roughly 20,000 values (other datatasets).&#x0A; &#x0A;Download Size: 77 MB"
-               name="Try Caleydo with CCLE Dataset"
-               url="DATA_URL_PREFIX/samples/ccle.cal">
+               description="%sample3.desc"
+               name="%sample3.name"
+               url="%sample3.url">
          </sample>
       </extension>
       <extension
