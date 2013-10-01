@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension
+         point="org.caleydo.view.tourguide.adapter">
+      <adapter
+            class="org.caleydo.view.tourguide.stratomex.t.StratomexAdapterFactory">
+      </adapter>
+   </extension>
+   <extension
+         point="org.caleydo.view.stratomex.addin">
+      <addin
+            class="org.caleydo.view.tourguide.stratomex.s.TourGuideAddin">
+      </addin>
+   </extension>
    
 </plugin>

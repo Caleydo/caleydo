@@ -16,7 +16,7 @@ import org.caleydo.view.stratomex.GLStratomex;
  *
  */
 public class StratomeXAddIns {
-	private static final String EXTENSION_POINT = "org.calydo.view.stratomex.addin";
+	private static final String EXTENSION_POINT = "org.caleydo.view.stratomex.addin";
 
 	/**
 	 * @param glStratomex

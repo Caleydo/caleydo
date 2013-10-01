@@ -71,8 +71,9 @@ public class StratomexAdapter implements IViewAdapter {
 
 	private final ITourGuideView tourGuide;
 
-	public StratomexAdapter(ITourGuideView vis) {
+	public StratomexAdapter(GLStratomex receiver, ITourGuideView vis) {
 		this.tourGuide = vis;
+		this.receiver = new WeakReference<GLStratomex>(receiver);
 	}
 
 	public void sendDelayedEvents() {
@@ -158,19 +159,6 @@ public class StratomexAdapter implements IViewAdapter {
 
 	}
 
-	/**
-	 * binds this adapter to a concrete stratomex instance
-	 *
-	 * @param receiver
-	 * @return
-	 */
-	public boolean setStratomex(GLStratomex receiver) {
-		if (this.receiver != null && this.receiver.get() == receiver)
-			return false;
-		this.cleanupPreview();
-		this.receiver = new WeakReference<GLStratomex>(receiver);
-		return true;
-	}
 
 	@Override
 	public void attach() {

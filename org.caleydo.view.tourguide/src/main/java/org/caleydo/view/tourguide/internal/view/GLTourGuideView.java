@@ -808,7 +808,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		}
 		this.adapter = adapter;
 		if (this.adapter != null) {
-			eventListeners.unregister(this.adapter);
+			eventListeners.register(this.adapter);
 			this.adapter.setup();
 		}
 		repaint();
