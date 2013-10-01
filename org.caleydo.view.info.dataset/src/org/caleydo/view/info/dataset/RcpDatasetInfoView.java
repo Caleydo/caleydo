@@ -69,6 +69,10 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 	public static final String VIEW_TYPE = "org.caleydo.view.info.dataset";
 
+	/** String used for formatting floats to 3 digits after the . using String.format() */
+	public static final String THREE_DIGIT_FORMAT = "%.3f";
+	public static final String TWO_DIGIT_FORMAT = "%.2f";
+
 	private IDataDomain dataDomain;
 	private TablePerspective tablePerspective;
 
@@ -414,15 +418,19 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 					processingMessage += "Scale: " + numProp.getDataTransformation() + System.lineSeparator();
 				}
 				if (numProp.getClipToStdDevFactor() != null) {
-					processingMessage += "Clipped to " + numProp.getClipToStdDevFactor() + " std devs"
+					processingMessage += "Clipped to "
+							+ String.format(TWO_DIGIT_FORMAT, numProp.getClipToStdDevFactor()) + " \u03C3"
 							+ System.lineSeparator();
 				} else if (numProp.getMax() != null || numProp.getMin() != null) {
-					processingMessage += "Clipped to max: " + numProp.getMax() + ", min:" + numProp.getMin()
+					processingMessage += "Clipped to max:  " + String.format(TWO_DIGIT_FORMAT, numProp.getMax())
+							+ ", min:"
+							+ String.format("%.2f", numProp.getMin())
 							+ System.lineSeparator();
 				}
 				NumericalTable table = (NumericalTable) ((ATableBasedDataDomain) dataDomain).getTable();
 				if (table.getDataCenter() != null) {
-					processingMessage += "Centered at " + table.getDataCenter() + System.lineSeparator();
+					processingMessage += "Centered at " + String.format(TWO_DIGIT_FORMAT, table.getDataCenter())
+							+ System.lineSeparator();
 				}
 				processingInfo.setText(processingMessage);
 
@@ -430,12 +438,12 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 				DoubleStatistics dsStats = table.getDatasetStatistics();
 				String statsMessage = "";
-				statsMessage += "Mean: " + dsStats.getMean() + n;
-				statsMessage += "Std. Dev.: " + dsStats.getSd() + n;
-				statsMessage += "Max: " + dsStats.getMax() + n;
-				statsMessage += "Min: " + dsStats.getMin() + n;
-				statsMessage += "Skewness: " + dsStats.getSkewness() + n;
-				statsMessage += "Kurtosis: " + dsStats.getKurtosis() + n;
+				statsMessage += "Mean:\t\t\t" + String.format(THREE_DIGIT_FORMAT, dsStats.getMean()) + n;
+				statsMessage += "Std. Dev.:\t" + String.format(THREE_DIGIT_FORMAT, dsStats.getSd()) + n;
+				statsMessage += "Max:\t\t\t" + String.format(THREE_DIGIT_FORMAT, dsStats.getMax()) + n;
+				statsMessage += "Min:\t\t\t" + String.format(THREE_DIGIT_FORMAT, dsStats.getMin()) + n;
+				statsMessage += "Skewness:\t" + String.format(THREE_DIGIT_FORMAT, dsStats.getSkewness()) + n;
+				statsMessage += "Kurtosis:\t\t" + String.format(THREE_DIGIT_FORMAT, dsStats.getKurtosis()) + n;
 
 				stats.setText(statsMessage);
 			} else {
