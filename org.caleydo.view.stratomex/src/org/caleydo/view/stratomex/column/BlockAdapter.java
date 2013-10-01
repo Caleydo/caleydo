@@ -6,28 +6,28 @@
 package org.caleydo.view.stratomex.column;
 
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.view.stratomex.tourguide.WizardElementLayout;
+import org.caleydo.view.stratomex.addin.IStratomeXAddInColumn;
 
 /**
  * adapter for handling wizard and brick blocks
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class BlockAdapter {
 	private final BrickColumn brick;
-	private final WizardElementLayout wizard;
+	private final IStratomeXAddInColumn addin;
 
-	public BlockAdapter(BrickColumn brick, WizardElementLayout wizard) {
+	public BlockAdapter(BrickColumn brick, IStratomeXAddInColumn addin) {
 		this.brick = brick;
-		this.wizard = wizard;
+		this.addin = addin;
 	}
 
 	public BlockAdapter(BrickColumn elem) {
 		this(elem, null);
 	}
 
-	public BlockAdapter(WizardElementLayout elem) {
+	public BlockAdapter(IStratomeXAddInColumn elem) {
 		this(null, elem);
 	}
 
@@ -36,18 +36,18 @@ public class BlockAdapter {
 	}
 
 	public ElementLayout asElementLayout() {
-		return brick != null ? brick.getLayout() : wizard;
+		return brick != null ? brick.getLayout() : addin.asElementLayout();
 	}
 
-	public WizardElementLayout asWizard() {
-		return wizard;
+	public IStratomeXAddInColumn asAddin() {
+		return addin;
 	}
 
 	public IHasHeader asHeader() {
 		if (brick != null)
 			return new BrickColumnHasHeader(brick);
-		if (wizard != null)
-			return new WizardHasHaeder(wizard);
+		if (addin != null)
+			return addin.asHasHeader();
 		return null;
 	}
 }

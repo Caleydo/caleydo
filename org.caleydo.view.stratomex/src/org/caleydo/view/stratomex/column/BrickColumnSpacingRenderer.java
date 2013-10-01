@@ -38,6 +38,7 @@ import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.stratomex.BrickConnection;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
+import org.caleydo.view.stratomex.addin.IStratomeXAddIn;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.ui.RectangleCoordinates;
 import org.eclipse.core.runtime.IStatus;
@@ -405,9 +406,11 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 				// render add button
 				gl.glPushName(pickingID);
 				drawQuad(gl, xStart, leftCenterBrickTop, x, leftCenterBrickBottom - leftCenterBrickTop);
-				if (hovered)
-					stratomex.getTourguide().renderAddButton(gl, xStart, leftCenterBrickTop, x,
-							leftCenterBrickBottom - leftCenterBrickTop, ID);
+				if (hovered) {
+					for (IStratomeXAddIn addin : stratomex.getAddins())
+						addin.renderOptionTrigger(gl, xStart, leftCenterBrickTop, x, leftCenterBrickBottom
+								- leftCenterBrickTop, ID);
+				}
 				gl.glPopName();
 			}
 
@@ -440,9 +443,11 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 				// render add button
 				gl.glPushName(pickingID);
 				drawQuad(gl, x, rightCenterBrickTop, xEnd - x, rightCenterBrickBottom - rightCenterBrickTop);
-				if (hovered)
-					stratomex.getTourguide().renderAddButton(gl, x, rightCenterBrickTop, xEnd - x,
-							rightCenterBrickBottom - rightCenterBrickTop, ID);
+				if (hovered) {
+					for (IStratomeXAddIn addin : stratomex.getAddins())
+						addin.renderOptionTrigger(gl, x, rightCenterBrickTop, xEnd - x, rightCenterBrickBottom
+								- rightCenterBrickTop, ID);
+				}
 				gl.glPopName();
 
 			}
@@ -466,10 +471,16 @@ public class BrickColumnSpacingRenderer extends ALayoutRenderer implements IDrop
 		gl.glPushName(pickingID);
 		drawQuad(gl, 0, (leftCenterBrickTop + rightCenterBrickTop) * 0.5f, x, (leftCenterBrickBottom
 				- leftCenterBrickTop + rightCenterBrickBottom - rightCenterBrickTop) * 0.5f);
-		if (hovered)
-			stratomex.getTourguide().renderAddButton(gl, 0, (leftCenterBrickTop + rightCenterBrickTop) * 0.5f, x,
-					(leftCenterBrickBottom - leftCenterBrickTop + rightCenterBrickBottom - rightCenterBrickTop) * 0.5f,
-					ID);
+		if (hovered) {
+			for (IStratomeXAddIn addin : stratomex.getAddins())
+				addin.renderOptionTrigger(
+						gl,
+						0,
+						(leftCenterBrickTop + rightCenterBrickTop) * 0.5f,
+						x,
+						(leftCenterBrickBottom - leftCenterBrickTop + rightCenterBrickBottom - rightCenterBrickTop) * 0.5f,
+						ID);
+		}
 		gl.glPopName();
 	}
 

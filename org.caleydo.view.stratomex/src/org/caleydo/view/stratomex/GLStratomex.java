@@ -9,6 +9,7 @@ import gleem.linalg.Vec2f;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -87,6 +88,8 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
+import org.caleydo.view.stratomex.addin.IStratomeXAddIn;
+import org.caleydo.view.stratomex.addin.StratomeXAddIns;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
@@ -99,14 +102,13 @@ import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
 import org.caleydo.view.stratomex.column.BrickColumnSpacingRenderer;
 import org.caleydo.view.stratomex.event.ConnectionsModeEvent;
+import org.caleydo.view.stratomex.event.HighlightBandEvent;
 import org.caleydo.view.stratomex.event.MergeBricksEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.stratomex.event.SplitBrickEvent;
 import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
 import org.caleydo.view.stratomex.listener.GLStratomexKeyListener;
 import org.caleydo.view.stratomex.listener.ReplaceTablePerspectiveListener;
-import org.caleydo.view.stratomex.tourguide.TourguideAdapter;
-import org.caleydo.view.stratomex.tourguide.event.HighlightBandEvent;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
@@ -235,7 +237,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	private AddTablePerspectiveParameters addTablePerspectiveParameters;
 
 	@DeepScan
-	private TourguideAdapter tourguide;
+	private final Collection<IStratomeXAddIn> addins = StratomeXAddIns.createFor(this);
 
 	private class AddTablePerspectiveParameters {
 		private final List<TablePerspective> newTablePerspectives;
@@ -274,17 +276,15 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		textureManager = new TextureManager(new ResourceLoader(Activator.getResourceLocator()));
 
-		tourguide = new TourguideAdapter(this);
-
 		registerPickingListeners();
 
 	}
 
 	/**
-	 * @return the tourguide, see {@link #tourguide}
+	 * @return the addins, see {@link #addins}
 	 */
-	public TourguideAdapter getTourguide() {
-		return tourguide;
+	public Iterable<IStratomeXAddIn> getAddins() {
+		return addins;
 	}
 
 	@Override
@@ -368,7 +368,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			column.setArchHeight(ARCH_PIXEL_HEIGHT);
 			columns.add(new BlockAdapter(column));
 		}
-		tourguide.addTemplateColumns(columns);
+		for (IStratomeXAddIn addin : addins)
+			addin.addColumns(columns);
 
 		mainRow.append(centerRowLayout);
 
@@ -415,10 +416,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		else
 			rightBrickColumnSpacing.setGrabX(true);
 		centerRowLayout.append(rightBrickColumnSpacing);
-	}
-
-	private static BrickColumn asBrickColumn(Object obj) {
-		return obj instanceof BrickColumn ? ((BrickColumn) obj) : null;
 	}
 
 	/**
@@ -515,7 +512,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		if (!lazyMode) {
 			checkForHits(gl);
 		}
-		tourguide.sendDelayedEvents();
+		for (IStratomeXAddIn addin : addins)
+			addin.postDisplay();
 	}
 
 	@Override
@@ -525,18 +523,22 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	@Override
 	public void display(GL2 gl) {
+		boolean hasAnyThing = false;
+		for (IStratomeXAddIn addin : addins)
+			hasAnyThing = hasAnyThing || !addin.isEmpty();
 
-		if ((tablePerspectives == null || tablePerspectives.isEmpty()) && tourguide.isEmpty()) {
+		if ((tablePerspectives == null || tablePerspectives.isEmpty()) && !hasAnyThing) {
 			if (isDisplayListDirty) {
 				gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
-				tourguide.renderStartButton(gl, 0, getArchTopY(), getViewFrustum().getWidth(), getArchBottomY()
-						- getArchTopY(), 0);
-				if (tourguide.hasTourGuide()) {
-					renderEmptyViewText(gl, new String[] { "To add a column showing a dataset",
-							" click the \"+\" button at the top", "or use the LineUp or Data-View Integrator view", "",
-							"Refer to http://help.caleydo.org for more information." });
-				} else {
+				boolean viaAddin = false;
+				for (IStratomeXAddIn addin : addins)
+					if (!addin.isEmpty()) {
+						addin.renderEmpty(gl, 0, getArchTopY(), getViewFrustum().getWidth(), getArchBottomY()
+								- getArchTopY(), 0);
+						viaAddin = true;
+					}
+				if (!viaAddin) {
 					renderEmptyViewText(gl, new String[] { "Please use the the Data-View Integrator view to assign ",
 							"one or multiple dataset(s) to StratomeX.",
 							"Refer to http://help.caleydo.org for more information." });
@@ -671,7 +673,10 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 * @return
 	 */
 	public boolean canShowDetailBrick() {
-		return !tourguide.isWizardActive();
+		for (IStratomeXAddIn addin : addins)
+			if (!addin.canShowDetailBrick())
+				return false;
+		return true;
 	}
 
 	/**
@@ -1088,7 +1093,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			}
 		}, EPickingType.BRICK_CONNECTION_BAND.name());
 
-		tourguide.registerPickingListeners();
+		for (IStratomeXAddIn addin : addins)
+			addin.registerPickingListeners();
 	}
 
 	public void hideAllBrickWidgets() {
@@ -1323,7 +1329,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		brickColumn.initialize();
 		uninitializedSubViews.add(brickColumn);
 
-		tourguide.addedBrickColumn(brickColumn);
+		for (IStratomeXAddIn addin : addins)
+			addin.addedBrickColumn(brickColumn);
 
 		return brickColumn;
 	}

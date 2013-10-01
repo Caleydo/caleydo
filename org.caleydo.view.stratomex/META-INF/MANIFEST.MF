@@ -8,14 +8,13 @@ Require-Bundle: org.caleydo.core;bundle-version="3.0.5.qualifier",
  org.caleydo.datadomain.pathway
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.caleydo.view.stratomex,
+ org.caleydo.view.stratomex.addin,
  org.caleydo.view.stratomex.brick,
  org.caleydo.view.stratomex.brick.configurer,
  org.caleydo.view.stratomex.brick.sorting,
  org.caleydo.view.stratomex.column,
  org.caleydo.view.stratomex.event,
- org.caleydo.view.stratomex.toolbar,
- org.caleydo.view.stratomex.tourguide,
- org.caleydo.view.stratomex.tourguide.event
+ org.caleydo.view.stratomex.toolbar
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.stratomex.Activator
