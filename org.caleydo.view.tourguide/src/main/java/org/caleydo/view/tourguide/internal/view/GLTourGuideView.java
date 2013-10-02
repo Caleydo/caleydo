@@ -123,8 +123,6 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
 	public static final String VIEW_NAME = "LineUp";
 
-	private static final int DATADOMAIN_QUERY = 0;
-	private static final int TABLE = 1;
 
 	private final RankTableModel table;
 
@@ -554,6 +552,11 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		if (!queries.isEmpty()) {
 			((ADataDomainElement) getDataDomainQueryUI().get(0)).setSelected(true);
 		}
+
+		if (this.adapter != null) {
+			eventListeners.register(adapter);
+			this.adapter.setup(getVis());
+		}
 	}
 
 	private void updateAdapterState() {
@@ -571,7 +574,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
 		if (this.adapter != null)
-			this.adapter.cleanUp();
+			this.adapter.cleanup(getVis());
 		canvas.removeKeyListener(tableKeyListener);
 		canvas.removeKeyListener(tableKeyListener2);
 		canvas.removeMouseListener(tableMouseListener);
@@ -620,7 +623,11 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	}
 
 	private DataDomainQueryUI getDataDomainQueryUI() {
-		return (DataDomainQueryUI) getVis().get(DATADOMAIN_QUERY);
+		for (GLElement elem : getVis()) {
+			if (elem instanceof DataDomainQueryUI)
+				return (DataDomainQueryUI) elem;
+		}
+		throw new IllegalStateException("no data domain query");
 	}
 
 	/**
@@ -631,7 +638,11 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		if (root == null)
 			return null;
 		TourGuideVis r = (TourGuideVis) root;
-		return ((TableUI) ((ScrollingDecorator) r.get(TABLE)).getContent()).getBody();
+		for (GLElement elem : r) {
+			if (elem instanceof ScrollingDecorator && ((ScrollingDecorator) elem).getContent() instanceof TableUI)
+				return ((TableUI) ((ScrollingDecorator) elem).getContent()).getBody();
+		}
+		throw new IllegalStateException("no table body");
 	}
 
 	/**
@@ -802,14 +813,15 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	public void switchTo(IViewAdapter adapter) {
 		if (Objects.equals(adapter, this.adapter))
 			return;
-		if (this.adapter != null) {
-			this.adapter.cleanUp();
+		final TourGuideVis root = getVis();
+		if (this.adapter != null && root != null) {
+			this.adapter.cleanup(root);
 			eventListeners.unregister(this.adapter);
 		}
 		this.adapter = adapter;
-		if (this.adapter != null) {
+		if (this.adapter != null && root != null) {
 			eventListeners.register(this.adapter);
-			this.adapter.setup();
+			this.adapter.setup(root);
 		}
 		repaint();
 		IPopupLayer popupLayer = getPopupLayer();
