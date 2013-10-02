@@ -61,7 +61,7 @@ public class ScrollBarCompatibility extends AScrollBar implements IDraggable {
 	@Override
 	public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 		float mouseDelta;
-		if (isHorizontal) {
+		if (dim.isHorizontal()) {
 			if (prevDraggingMouseX >= mouseCoordinateX - 0.01 && prevDraggingMouseX <= mouseCoordinateX + 0.01)
 				return;
 			mouseDelta = prevDraggingMouseX - mouseCoordinateX;

@@ -5,6 +5,10 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection;
 
+import gleem.linalg.Vec2f;
+
+import java.awt.Dimension;
+
 /**
  * @author Samuel Gratzl
  *
@@ -38,6 +42,14 @@ public enum EDimension {
 
 	public float select(float dim, float rec) {
 		return this == DIMENSION ? dim : rec;
+	}
+
+	public float select(Vec2f xy) {
+		return this == DIMENSION ? xy.x() : xy.y();
+	}
+
+	public int select(Dimension wh) {
+		return this == DIMENSION ? wh.width : wh.height;
 	}
 
 	public double select(double dim, double rec) {
