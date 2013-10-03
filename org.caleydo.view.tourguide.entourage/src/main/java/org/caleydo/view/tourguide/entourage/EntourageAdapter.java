@@ -5,13 +5,19 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.entourage;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
@@ -25,6 +31,7 @@ import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.entourage.GLEntourage;
 import org.caleydo.view.entourage.RcpGLSubGraphView;
+import org.caleydo.view.entourage.datamapping.DataMappingState;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.model.ITablePerspectiveScoreRow;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
@@ -46,6 +53,7 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 
 	private final DataDomainElements dataDomains = new DataDomainElements();
 	private final GroupElements groups = new GroupElements();
+
 	/**
 	 * @param entourage
 	 * @param vis
@@ -61,7 +69,6 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		}
 	}
 
-
 	@Override
 	public void attach() {
 		// TODO Auto-generated method stub
@@ -76,7 +83,7 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 
 	@Override
 	public void setup(GLElementContainer lineUp) {
-		lineUp.add(0, wrap("Choose Datasets to Map", this.dataDomains, 130));
+		lineUp.add(0, wrap("Choose Datasets to Map", this.dataDomains, 200));
 		GLElementContainer body = new GLElementContainer(GLLayouts.flowVertical(2));
 		body.add(drawText("Choose Stratification"));
 		lineUp.add(1, body); // add already here such existing elements will be moved instead of takeDown/setup stuff
@@ -96,7 +103,7 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		c.add(filterStratifications);
 		filterStratifications.add(lineUp.get(2)); // move data domain selector
 		c.add(lineUp.get(2)); // move table
-		lineUp.add(lineUp.size() - 1, wrap("Choose Groupings", this.groups, 160));
+		lineUp.add(lineUp.size() - 1, wrap("Choose Groups", this.groups, 160));
 	}
 
 	@Override
@@ -111,7 +118,6 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		lineUp.add(1, c.get(1)); // move table
 		lineUp.remove(2); // remove wrapper
 	}
-
 
 	private GLElementContainer wrap(String label, GLElement content, int width) {
 		GLElementContainer c = new GLElementContainer(GLLayouts.flowVertical(2));
@@ -130,7 +136,6 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 				-1, size);
 	}
 
-
 	@Override
 	public boolean isPreviewing(AScoreRow row) {
 		assert row instanceof ITablePerspectiveScoreRow;
@@ -141,8 +146,27 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 	@Override
 	public boolean isVisible(AScoreRow row) {
 		assert row instanceof ITablePerspectiveScoreRow;
-		// TODO Auto-generated method stub
+		Perspective perspective = toPerspective((ITablePerspectiveScoreRow) row);
+		return perspective.equals(entourage.getDataMappingState().getSourcePerspective());
+	}
+
+	public boolean isDataDomainVisible(ATableBasedDataDomain dataDomain) {
+		DataMappingState dmState = entourage.getDataMappingState();
+		return dmState.getDataDomains().contains(dataDomain);
+	}
+
+	public boolean isGroupVisible(Group group) {
+		DataMappingState dmState = entourage.getDataMappingState();
+		GroupList groupList = dmState.getSelectedPerspective().getVirtualArray().getGroupList();
+		for (Group g : groupList) {
+			if (g.equals(group))
+				return true;
+		}
 		return false;
+	}
+
+	public GroupList getSourceGroupList() {
+		return entourage.getDataMappingState().getSourcePerspective().getVirtualArray().getGroupList();
 	}
 
 	@Override
@@ -154,8 +178,11 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		assert new_ == null || new_ instanceof ITablePerspectiveScoreRow;
 		// TODO Auto-generated method stub
 
-		Perspective perspecitive = toPerspective((ITablePerspectiveScoreRow) new_);
-		groups.set(perspecitive);
+		Perspective perspective = toPerspective((ITablePerspectiveScoreRow) new_);
+		DataMappingState dmState = entourage.getDataMappingState();
+		dmState.setSourcePerspective(perspective);
+		dmState.setSelectedPerspective(perspective);
+		groups.set(perspective);
 	}
 
 	/**
@@ -166,24 +193,86 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		if (new_ == null)
 			return null;
 		TablePerspective t = new_.asTablePerspective();
-		// TODO correctly determine which dimension
+		if (areRecordsGenes(t.getDataDomain()))
+			return t.getDimensionPerspective();
+
+		// Take the record perspective if the datadomain has no genes.
 		return t.getRecordPerspective();
 	}
 
+	private boolean areRecordsGenes(ATableBasedDataDomain dataDomain) {
+		if (dataDomain instanceof GeneticDataDomain) {
+			GeneticDataDomain dd = (GeneticDataDomain) dataDomain;
+			IDCategory geneIDCategory = dd.getGeneIDType().getIDCategory();
+			return dd.getRecordIDCategory().equals(geneIDCategory);
+		}
+		return false;
+	}
 
 	@Override
 	public void onSelectionChanged(GLButton button, boolean selected) {
-		final IDataDomain dataDomain = button.getLayoutDataAs(IDataDomain.class, null);
+		final ATableBasedDataDomain dataDomain = button.getLayoutDataAs(ATableBasedDataDomain.class, null);
+		DataMappingState dmState = entourage.getDataMappingState();
 		if (dataDomain != null) {
-			// TODO dataDomain selection update
+			if (selected)
+				dmState.addDataDomain(dataDomain);
+			else
+				dmState.removeDataDomain(dataDomain);
 			return;
 		}
 
 		final Group group = button.getLayoutDataAs(Group.class, null);
 		if (group != null) {
-			// TODO groupn selection update
+			Perspective sourcePerspective = dmState.getSourcePerspective();
+			Perspective currentPerspective = dmState.getSelectedPerspective();
+
+			if (sourcePerspective != null && currentPerspective != null) {
+				VirtualArray va = sourcePerspective.getVirtualArray();
+				GroupList sourceGroupList = va.getGroupList();
+				GroupList currentGroupList = currentPerspective.getVirtualArray().getGroupList();
+
+				ATableBasedDataDomain dd = (ATableBasedDataDomain) sourcePerspective.getDataDomain();
+				List<Integer> indices = new ArrayList<>(va.size());
+				List<Integer> groupSizes = new ArrayList<>(currentGroupList.size() + 1);
+				List<Integer> sampleElements = new ArrayList<>(currentGroupList.size() + 1);
+				List<String> groupNames = new ArrayList<>(currentGroupList.size() + 1);
+
+				int currentGroupIndex = 0;
+				for (int i = 0; i < sourceGroupList.size(); i++) {
+					Group sourceGroup = sourceGroupList.get(i);
+					Group currentGroup = null;
+					if (currentGroupIndex < currentGroupList.size())
+						currentGroup = currentGroupList.get(currentGroupIndex);
+					if (sourceGroup.equals(currentGroup)) {
+						currentGroupIndex++;
+						if (!(!selected && group.equals(sourceGroup))) {
+							addGroupToLists(indices, groupSizes, sampleElements, groupNames, sourceGroup, va);
+						}
+					}
+					if (selected && group.equals(sourceGroup)) {
+						addGroupToLists(indices, groupSizes, sampleElements, groupNames, sourceGroup, va);
+					}
+				}
+				Perspective perspective = new Perspective(dd, sourcePerspective.getIdType());
+				PerspectiveInitializationData data = new PerspectiveInitializationData();
+				data.setData(indices, groupSizes, sampleElements, groupNames);
+				perspective.init(data);
+				perspective.setLabel(sourcePerspective.getLabel(), true);
+				perspective.setPrivate(true);
+
+				dmState.setSelectedPerspective(perspective);
+			}
+
 			return;
 		}
+	}
+
+	private void addGroupToLists(List<Integer> indices, List<Integer> groupSizes, List<Integer> sampleElements,
+			List<String> groupNames, Group group, VirtualArray va) {
+		indices.addAll(va.getIDsOfGroup(group.getGroupIndex()));
+		groupSizes.add(group.getSize());
+		sampleElements.add(group.getRepresentativeElementIndex());
+		groupNames.add(group.getLabel());
 	}
 
 	@Override
