@@ -188,8 +188,17 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 		@Override
 		public boolean apply(Pair<TablePerspective, Group> pair) {
-			return isGoodDataDomain(pair.getFirst().getDataDomain())
-					&& !(pair.getFirst() instanceof PathwayTablePerspective);
+			if (!isGoodDataDomain(pair.getFirst().getDataDomain())
+					|| (pair.getFirst() instanceof PathwayTablePerspective))
+				return false;
+			// remove all table perspectives with a single record group -> #1662, as we are comparing one-vs-rest
+			if (pair.getFirst().getRecordPerspective().getVirtualArray().getGroupList().size() <= 1)
+				return false;
+			// remove empty groups
+			if (pair.getSecond().getSize() <= 0)
+				return false;
+			// is valid
+			return true;
 		}
 
 		@Override

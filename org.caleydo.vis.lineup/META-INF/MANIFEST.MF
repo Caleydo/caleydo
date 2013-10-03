@@ -15,3 +15,4 @@ Export-Package: org.caleydo.vis.lineup.config,
  org.caleydo.vis.lineup.model.mixin,
  org.caleydo.vis.lineup.ui,
  org.caleydo.vis.lineup.ui.detail
+Bundle-Activator: org.caleydo.vis.lineup.internal.Activator

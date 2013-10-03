@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
@@ -142,10 +141,7 @@ public class TablePerspectivePickingListener extends APickingListener {
 
 						if (category.getAttribute("viewID").equals(bundleID)
 								&& Boolean.valueOf(category.getAttribute("isDataView"))) {
-							boolean isReleaseView = Boolean.valueOf(category.getAttribute("isReleaseView"));
-							if (GeneralManager.RELEASE_MODE && !isReleaseView) {
-								continue;
-							}
+
 							int indexOfLastDot = -1;
 							for (int i = 0; i < 4; i++) {
 								indexOfLastDot = bundleID.indexOf('.', indexOfLastDot + 1);

@@ -429,16 +429,6 @@
             </page>
    </extension>
       <extension
-            point="org.eclipse.ui.services">
-         <sourceProvider
-               provider="org.caleydo.core.internal.AbstractSourceProvider">
-            <variable
-                  name="org.caleydo.core.isReleaseState"
-                  priorityLevel="workbench">
-            </variable>
-         </sourceProvider>
-      </extension>
-      <extension
             point="org.caleydo.datadomain.DataDomainActions">
          <factory
                class="org.caleydo.core.data.datadomain.GroupingDataDomainActionFactory">
