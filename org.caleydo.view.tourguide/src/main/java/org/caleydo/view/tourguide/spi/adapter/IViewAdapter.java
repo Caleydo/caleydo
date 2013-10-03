@@ -7,6 +7,7 @@ package org.caleydo.view.tourguide.spi.adapter;
 
 import java.util.Collection;
 
+import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -31,16 +32,16 @@ public interface IViewAdapter {
 	/**
 	 * last detach
 	 */
-	void cleanUp();
+	void cleanup(GLElementContainer lineUp);
 
 	/**
 	 * first attach version
 	 */
-	void setup();
+	void setup(GLElementContainer lineUp);
 
 	/**
 	 * is the given row currently previewed?
-	 * 
+	 *
 	 * @param row
 	 * @return
 	 */

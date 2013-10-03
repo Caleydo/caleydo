@@ -533,8 +533,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 				gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
 				List<String> emptyStrings = new ArrayList<>();
-				for (IStratomeXAddIn addin : addins)
+				for (IStratomeXAddIn addin : addins) {
+					addin.renderOptionTrigger(gl, 0, getArchTopY(), getViewFrustum().getWidth(), getArchBottomY()
+							- getArchTopY(), 0);
 					emptyStrings.addAll(addin.addEmptyStrings());
+				}
 				if (emptyStrings.isEmpty())
 					emptyStrings.addAll(Arrays.asList("Please use the the Data-View Integrator view to assign ",
 							"one or multiple dataset(s) to StratomeX.",

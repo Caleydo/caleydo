@@ -7,12 +7,19 @@ package org.caleydo.view.tourguide.entourage;
 
 import java.util.Collection;
 
+import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.entourage.GLEntourage;
 import org.caleydo.view.entourage.RcpGLSubGraphView;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.model.ITablePerspectiveScoreRow;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.vis.ITourGuideView;
+import org.caleydo.view.tourguide.entourage.ui.DataDomainElements;
 import org.caleydo.view.tourguide.spi.adapter.IViewAdapter;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.ui.IWorkbenchPart;
@@ -21,10 +28,12 @@ import org.eclipse.ui.IWorkbenchPart;
  * @author Samuel Gratzl
  *
  */
-public class EntourageAdapter implements IViewAdapter {
+public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 
 	private final GLEntourage entourage;
 	private final ITourGuideView vis;
+
+	private final DataDomainElements dataDomains = new DataDomainElements();
 
 	/**
 	 * @param entourage
@@ -33,7 +42,13 @@ public class EntourageAdapter implements IViewAdapter {
 	public EntourageAdapter(GLEntourage entourage, ITourGuideView vis) {
 		this.entourage = entourage;
 		this.vis = vis;
+		this.dataDomains.setCallback(this);
+
+		for (GeneticDataDomain d : DataDomainManager.get().getDataDomainsByType(GeneticDataDomain.class)) {
+			this.dataDomains.addDataDomain(d);
+		}
 	}
+
 
 	@Override
 	public void attach() {
@@ -48,15 +63,14 @@ public class EntourageAdapter implements IViewAdapter {
 	}
 
 	@Override
-	public void cleanUp() {
-		// TODO Auto-generated method stub
+	public void cleanup(GLElementContainer lineUp) {
+		lineUp.remove(0);
 
 	}
 
 	@Override
-	public void setup() {
-		// TODO Auto-generated method stub
-
+	public void setup(GLElementContainer lineUp) {
+		lineUp.add(0, this.dataDomains);
 	}
 
 	@Override
@@ -82,6 +96,15 @@ public class EntourageAdapter implements IViewAdapter {
 		assert new_ == null || new_ instanceof ITablePerspectiveScoreRow;
 		// TODO Auto-generated method stub
 
+
+	}
+
+	@Override
+	public void onSelectionChanged(GLButton button, boolean selected) {
+		final IDataDomain dataDomain = button.getLayoutDataAs(IDataDomain.class, null);
+		assert dataDomain != null;
+
+		// TODO dataDomain selection update
 	}
 
 	@Override

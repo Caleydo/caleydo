@@ -25,6 +25,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
+import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.RcpGLStratomexView;
 import org.caleydo.view.stratomex.addin.IStratomeXAddIn;
@@ -80,7 +81,7 @@ public class StratomexAdapter implements IViewAdapter {
 	}
 
 	@Override
-	public void cleanUp() {
+	public void cleanup(GLElementContainer lineup) {
 		cleanupPreview();
 	}
 
@@ -381,7 +382,7 @@ public class StratomexAdapter implements IViewAdapter {
 	}
 
 	@Override
-	public void setup() {
+	public void setup(GLElementContainer lineup) {
 
 	}
 

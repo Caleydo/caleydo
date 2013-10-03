@@ -104,6 +104,13 @@ public class Pick {
 	}
 
 	/**
+	 * @return
+	 */
+	public Vec2f getD() {
+		return dv.copy();
+	}
+
+	/**
 	 * @return the objectID, see {@link #objectID}
 	 */
 	public int getObjectID() {
@@ -121,7 +128,7 @@ public class Pick {
 
 	/**
 	 * return the point in DIPs
-	 * 
+	 *
 	 * @return
 	 */
 	public Vec2f getPickedPoint() {
