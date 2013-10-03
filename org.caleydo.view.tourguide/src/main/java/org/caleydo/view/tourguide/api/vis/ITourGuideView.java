@@ -5,6 +5,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.vis;
 
+import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 /**
@@ -14,18 +15,25 @@ import org.caleydo.view.tourguide.spi.score.IScore;
 public interface ITourGuideView {
 
 	/**
-	 *
+	 * removes all leading score columns, e.g. to cleanup between states
 	 */
 	void removeLeadingScoreColumns();
 
 	/**
-	 * @param scores
+	 * adds some columns to tour guide
 	 */
 	void addColumns(IScore... scores);
 
 	/**
-	 * @param object
+	 * clear selection
 	 */
 	void clearSelection();
+
+	/**
+	 * returns the currently selected row or null if none is selected
+	 *
+	 * @return
+	 */
+	AScoreRow getSelection();
 
 }

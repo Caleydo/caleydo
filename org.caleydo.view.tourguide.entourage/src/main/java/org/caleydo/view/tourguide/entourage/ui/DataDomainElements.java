@@ -11,6 +11,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 
 import com.google.common.collect.Iterables;
@@ -19,7 +20,7 @@ import com.google.common.collect.Iterables;
  * @author Samuel Gratzl
  *
  */
-public class DataDomainElements extends GLElementContainer {
+public class DataDomainElements extends GLElementContainer implements IHasMinSize {
 
 	private ISelectionCallback callback;
 
@@ -42,5 +43,10 @@ public class DataDomainElements extends GLElementContainer {
 		this.callback = callback;
 		for (GLButton b : Iterables.filter(this, GLButton.class))
 			b.setCallback(callback);
+	}
+
+	@Override
+	public Vec2f getMinSize() {
+		return new Vec2f(130, (18 + 4) * size());
 	}
 }

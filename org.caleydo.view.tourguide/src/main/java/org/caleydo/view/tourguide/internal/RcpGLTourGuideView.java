@@ -142,13 +142,14 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 					m.detachFromView();
 				}
 			} else if (part instanceof IViewPart) {
-				outer: for (IViewAdapterFactory factory : ViewAdapters.get()) {
-					IViewAdapter adapter = factory.createFor((IViewPart) part, mode, m);
+				IViewAdapter adapter = null;
+				for (IViewAdapterFactory factory : ViewAdapters.get()) {
+					adapter = factory.createFor((IViewPart) part, mode, m);
 					if (adapter != null) {
-						m.switchTo(adapter);
-						break outer;
+						break;
 					}
 				}
+				m.switchTo(adapter);
 			}
 		}
 	};
