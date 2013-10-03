@@ -239,7 +239,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		column.add(dataMappingWindow);
 		// column.add(nodeInfoContainer);
 		rankingWindow = new SideWindow("Pathways", this, SideWindow.SLIDE_LEFT_OUT);
-		rankingWindow.setSize(150, Float.NaN);
+		rankingWindow.setSize(170, Float.NaN);
 		rankingElement = new RankingElement(this);
 		rankingWindow.setContent(rankingElement);
 		slideInElement = new SlideInElement(rankingWindow, ESlideInElementPosition.RIGHT);
@@ -248,10 +248,10 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			public void onSelectionChanged(GLButton button, boolean selected) {
 				AnimatedGLElementContainer anim = (AnimatedGLElementContainer) rankingWindow.getParent();
 				if (selected) {
-					if (rankingElement.getNumTableColumns() > 1) {
-						anim.resizeChild(rankingWindow, 200, Float.NaN);
+					if (rankingElement.hasScoreColumn()) {
+						anim.resizeChild(rankingWindow, 270, Float.NaN);
 					} else {
-						anim.resizeChild(rankingWindow, 150, Float.NaN);
+						anim.resizeChild(rankingWindow, 220, Float.NaN);
 					}
 				} else {
 					anim.resizeChild(rankingWindow, 1, Float.NaN);
