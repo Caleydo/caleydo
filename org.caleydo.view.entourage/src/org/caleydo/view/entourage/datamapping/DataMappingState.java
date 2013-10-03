@@ -94,16 +94,16 @@ public class DataMappingState {
 			IDCategory geneIDCategory = geneticDataDomain.getGeneIDType().getIDCategory();
 			if (geneticDataDomain.getRecordIDCategory() == geneIDCategory) {
 				sourcePerspective = geneticDataDomain.getTable().getDefaultDimensionPerspective(false);
-				setPerspective(sourcePerspective);
+				setSelectedPerspective(sourcePerspective);
 			} else {
 				sourcePerspective = geneticDataDomain.getTable().getDefaultRecordPerspective(false);
-				setPerspective(sourcePerspective);
+				setSelectedPerspective(sourcePerspective);
 			}
 			addDataDomain(geneticDataDomain);
 		} else {
 			ATableBasedDataDomain dd = dataDomains.get(0);
 			sourcePerspective = dd.getTable().getDefaultRecordPerspective(false);
-			setPerspective(sourcePerspective);
+			setSelectedPerspective(sourcePerspective);
 			addDataDomain(dd);
 		}
 	}
@@ -148,7 +148,7 @@ public class DataMappingState {
 	}
 
 	/** Removes a previous and sets the new perspective on the event space */
-	public void setPerspective(Perspective perspective) {
+	public void setSelectedPerspective(Perspective perspective) {
 		selectedPerspective = perspective;
 
 		ClearGroupSelectionEvent clearEvent = new ClearGroupSelectionEvent();

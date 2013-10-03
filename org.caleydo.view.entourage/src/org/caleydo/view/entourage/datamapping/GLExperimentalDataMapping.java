@@ -190,7 +190,7 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 			// todo find default element
 		}
 		// Set default data
-		dmState.setPerspective(defaultPerspective);
+		dmState.setSelectedPerspective(defaultPerspective);
 		if (defaultElement != null) {
 			defaultElement.setSelected(true);
 		}
@@ -209,7 +209,7 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 
 	@Override
 	public void onSelectionChanged(GLButton button, boolean selected) {
-		dmState.setPerspective(button.getLayoutDataAs(Perspective.class, null));
+		dmState.setSelectedPerspective(button.getLayoutDataAs(Perspective.class, null));
 	}
 
 	/**

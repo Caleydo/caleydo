@@ -150,6 +150,25 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		return perspective.equals(entourage.getDataMappingState().getSourcePerspective());
 	}
 
+	public boolean isDataDomainVisible(ATableBasedDataDomain dataDomain) {
+		DataMappingState dmState = entourage.getDataMappingState();
+		return dmState.getDataDomains().contains(dataDomain);
+	}
+
+	public boolean isGroupVisible(Group group) {
+		DataMappingState dmState = entourage.getDataMappingState();
+		GroupList groupList = dmState.getSelectedPerspective().getVirtualArray().getGroupList();
+		for (Group g : groupList) {
+			if (g.equals(group))
+				return true;
+		}
+		return false;
+	}
+
+	public GroupList getSourceGroupList() {
+		return entourage.getDataMappingState().getSourcePerspective().getVirtualArray().getGroupList();
+	}
+
 	@Override
 	public void update(AScoreRow old, AScoreRow new_, Collection<IScore> visibleScores, EDataDomainQueryMode mode,
 			IScore sortedByScore) {
@@ -162,7 +181,7 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		Perspective perspective = toPerspective((ITablePerspectiveScoreRow) new_);
 		DataMappingState dmState = entourage.getDataMappingState();
 		dmState.setSourcePerspective(perspective);
-		dmState.setPerspective(perspective);
+		dmState.setSelectedPerspective(perspective);
 		groups.set(perspective);
 	}
 
@@ -241,7 +260,7 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 				perspective.setLabel(sourcePerspective.getLabel(), true);
 				perspective.setPrivate(true);
 
-				dmState.setPerspective(perspective);
+				dmState.setSelectedPerspective(perspective);
 			}
 
 			return;
