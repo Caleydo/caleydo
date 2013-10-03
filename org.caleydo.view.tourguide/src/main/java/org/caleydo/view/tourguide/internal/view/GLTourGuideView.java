@@ -843,6 +843,11 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		getTableBodyUI().repaint();
 	}
 
+	@Override
+	public AScoreRow getSelection() {
+		return (AScoreRow) table.getSelectedRow();
+	}
+
 	private class RankTableUIConfig extends RankTableUIConfigBase {
 		public RankTableUIConfig() {
 			super(true, true, true);
