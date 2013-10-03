@@ -34,12 +34,12 @@ public class GroupElements extends GLElementContainer implements IHasMinSize {
 	 */
 	public GroupElements() {
 		super(GLLayouts.flowVertical(4));
-		setLayoutData(new Vec2f(130, 100));
+		setLayoutData(new Vec2f(150, 100));
 	}
 
 	@Override
 	public Vec2f getMinSize() {
-		return new Vec2f(130, (18 + 4) * size());
+		return new Vec2f(150, (18 + 4) * size());
 	}
 
 	public void set(Perspective perspective) {
@@ -49,6 +49,7 @@ public class GroupElements extends GLElementContainer implements IHasMinSize {
 		for (Group g : perspective.getVirtualArray().getGroupList()) {
 			this.add(g);
 		}
+		relayoutParent();
 	}
 
 	public Set<Group> getSelection() {

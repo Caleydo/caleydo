@@ -182,6 +182,9 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	private IGLKeyListener tableKeyListener2; // lazy and manually scanned
 	private IGLMouseListener tableMouseListener; // lazy
 
+	private DataDomainQueryUI dataDomainQueryUI;
+	private TableUI tableUI;
+
 	/**
 	 * history of added score to select what was the last added score, see #1493, use a weak list to avoid creating
 	 * references
@@ -531,8 +534,8 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		table.setDataMask(this.mask);
 	}
 
-	private TourGuideVis getVis() {
-		return (TourGuideVis) getRoot();
+	private GLElementContainer getVis() {
+		return (GLElementContainer) getRoot();
 	}
 
 	@Override
@@ -583,7 +586,14 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 
 	@Override
 	protected GLElement createRoot() {
-		return new TourGuideVis();
+		GLElementContainer vis = new GLElementContainer(new ReactiveFlowLayout(10));
+		this.dataDomainQueryUI = new DataDomainQueryUI(queries, modeSpecifics);
+		vis.add(dataDomainQueryUI);
+		this.tableUI = new TableUI(table, new RankTableUIConfig(), RowHeightLayouts.UNIFORM);
+		ScrollingDecorator sc = new ScrollingDecorator(tableUI, new ScrollBar(true), null, RenderStyle.SCROLLBAR_WIDTH);
+		vis.add(sc);
+		vis.add(new ScorePoolUI(table, new RankTableUIConfig(), GLTourGuideView.this));
+		return vis;
 	}
 
 	@Override
@@ -623,26 +633,16 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	}
 
 	private DataDomainQueryUI getDataDomainQueryUI() {
-		for (GLElement elem : getVis()) {
-			if (elem instanceof DataDomainQueryUI)
-				return (DataDomainQueryUI) elem;
-		}
-		throw new IllegalStateException("no data domain query");
+		return dataDomainQueryUI;
 	}
 
 	/**
 	 * @return
 	 */
 	private TableBodyUI getTableBodyUI() {
-		GLElement root = getRoot();
-		if (root == null)
+		if (this.tableUI == null)
 			return null;
-		TourGuideVis r = (TourGuideVis) root;
-		for (GLElement elem : r) {
-			if (elem instanceof ScrollingDecorator && ((ScrollingDecorator) elem).getContent() instanceof TableUI)
-				return ((TableUI) ((ScrollingDecorator) elem).getContent()).getBody();
-		}
-		throw new IllegalStateException("no table body");
+		return this.tableUI.getBody();
 	}
 
 	/**
@@ -813,7 +813,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	public void switchTo(IViewAdapter adapter) {
 		if (Objects.equals(adapter, this.adapter))
 			return;
-		final TourGuideVis root = getVis();
+		final GLElementContainer root = getVis();
 		if (this.adapter != null && root != null) {
 			this.adapter.cleanup(root);
 			eventListeners.unregister(this.adapter);
@@ -928,18 +928,6 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		@Override
 		public boolean isFastFiltering() {
 			return true;
-		}
-	}
-
-	private class TourGuideVis extends GLElementContainer {
-		public TourGuideVis() {
-			setLayout(new ReactiveFlowLayout(10));
-			this.add(new DataDomainQueryUI(queries, modeSpecifics));
-			TableUI tableui = new TableUI(table, new RankTableUIConfig(), RowHeightLayouts.UNIFORM);
-			ScrollingDecorator sc = new ScrollingDecorator(tableui, new ScrollBar(true), null,
-					RenderStyle.SCROLLBAR_WIDTH);
-			this.add(sc);
-			this.add(new ScorePoolUI(table, new RankTableUIConfig(), GLTourGuideView.this));
 		}
 	}
 }
