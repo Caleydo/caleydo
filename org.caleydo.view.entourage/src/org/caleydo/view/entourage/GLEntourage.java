@@ -71,6 +71,7 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.entourage.GLWindow.ICloseWindowListener;
 import org.caleydo.view.entourage.MultiLevelSlideInElement.IWindowState;
 import org.caleydo.view.entourage.SlideInElement.ESlideInElementPosition;
+import org.caleydo.view.entourage.datamapping.DataMappingState;
 import org.caleydo.view.entourage.datamapping.GLExperimentalDataMapping;
 import org.caleydo.view.entourage.event.AddPathwayEvent;
 import org.caleydo.view.entourage.event.AddPathwayEventFactory;
@@ -94,7 +95,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	// private Set<String> remoteRenderedPathwayMultiformViewIDs;
 
-	private String pathEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
+	private final String pathEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
 
 	private AnimatedGLElementContainer baseContainer = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(
 			true, 10, GLPadding.ZERO));
@@ -147,7 +148,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	protected GLPathwayGridLayout3 pathwayLayout = new GLPathwayGridLayout3(this, GLPadding.ZERO, 10);
 
-	protected GLExperimentalDataMapping experimentalDataMappingElement = new GLExperimentalDataMapping(this);
+	protected GLExperimentalDataMapping experimentalDataMappingElement;
 
 	/**
 	 * Determines whether path selection mode is currently active.
@@ -207,7 +208,13 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	private boolean isControlKeyPressed = false;
 
-	public boolean showSrcWindowLinks=false;
+	public boolean showSrcWindowLinks = false;
+
+	/**
+	 * Reflects current state of data mapping.
+	 */
+	protected final DataMappingState dataMappingState;
+
 	/**
 	 * Constructor.
 	 *
@@ -217,6 +224,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	 */
 	public GLEntourage(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		dataMappingState = new DataMappingState(pathEventSpace);
+		experimentalDataMappingElement = new GLExperimentalDataMapping(this);
 
 		AnimatedGLElementContainer column = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(false, 10,
 				GLPadding.ZERO));
@@ -504,8 +513,10 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				boolean iswPressed = e.isKeyDown('w');
 				// augmentation.showPortals(isPPressed);
 				if (iswPressed) {
-					if(showSrcWindowLinks) showSrcWindowLinks=false;
-					else showSrcWindowLinks=true;
+					if (showSrcWindowLinks)
+						showSrcWindowLinks = false;
+					else
+						showSrcWindowLinks = true;
 				}
 			}
 		});
@@ -540,6 +551,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				PathwayDataDomain.DATA_DOMAIN_TYPE);
 		List<TablePerspective> tablePerspectives = new ArrayList<>(experimentalDataMappingElement.getDmState()
 				.getTablePerspectives());
+
 		TablePerspective tablePerspective = tablePerspectives.get(0);
 		Perspective recordPerspective = tablePerspective.getRecordPerspective();
 		Perspective dimensionPerspective = tablePerspective.getDimensionPerspective();
@@ -1460,5 +1472,12 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	@Override
 	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
 		return default_;
+	}
+
+	/**
+	 * @return the dataMappingState, see {@link #dataMappingState}
+	 */
+	public DataMappingState getDataMappingState() {
+		return dataMappingState;
 	}
 }

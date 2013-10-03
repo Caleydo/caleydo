@@ -31,14 +31,12 @@ public class Group implements IDefaultLabelHolder, IUniqueObject {
 	private int startIndex = 0;
 
 	/**
-	 * The index of the group in the group list. For a unique ID of the group
-	 * use {@link #getID()}
+	 * The index of the group in the group list. For a unique ID of the group use {@link #getID()}
 	 */
 	private Integer groupIndex = -1;
 
 	/**
-	 * Flag specifying whether this group is considered collapsed (i.e. the
-	 * elements are not shown)
+	 * Flag specifying whether this group is considered collapsed (i.e. the elements are not shown)
 	 */
 	private boolean isCollapsed = false;
 
@@ -48,14 +46,12 @@ public class Group implements IDefaultLabelHolder, IUniqueObject {
 	private SelectionType selectionType = SelectionType.NORMAL;
 
 	/**
-	 * In case of groups determined in dendrogram view the corresponding node in
-	 * the tree must be stored for use in HHM
+	 * In case of groups determined in dendrogram view the corresponding node in the tree must be stored for use in HHM
 	 */
 	private ClusterNode clusterNode;
 
 	/**
-	 * In some cases a perspective is created for a group, this is the
-	 * corresponding ID.
+	 * In some cases a perspective is created for a group, this is the corresponding ID.
 	 */
 	private String perspectiveID = null;
 
@@ -63,7 +59,6 @@ public class Group implements IDefaultLabelHolder, IUniqueObject {
 	 * array with mean expression values --> representative element
 	 */
 	private float[] meanValuesRepresentativeElement;
-
 
 	private String label = "Group " + id;
 	@XmlElement
@@ -98,8 +93,7 @@ public class Group implements IDefaultLabelHolder, IUniqueObject {
 	 * @param size
 	 *            the size of the group
 	 * @param representativeElementIndex
-	 *            the index of an element considered to be representative of
-	 *            this group (i.e. the most typical element)
+	 *            the index of an element considered to be representative of this group (i.e. the most typical element)
 	 */
 	public Group(int size, int representativeElementIndex) {
 		this.setSize(size);
@@ -112,11 +106,9 @@ public class Group implements IDefaultLabelHolder, IUniqueObject {
 	 * @param size
 	 *            the size of the group
 	 * @param representativeElementIndex
-	 *            the index of an element considered to be representative of
-	 *            this group (i.e. the most typical element)
+	 *            the index of an element considered to be representative of this group (i.e. the most typical element)
 	 * @param clusterNode
-	 *            a cluster node from which the pre-order of the leaves is this
-	 *            group
+	 *            a cluster node from which the pre-order of the leaves is this group
 	 */
 	public Group(int size, int representativeElementIndex, ClusterNode clusterNode) {
 		this.setSize(size);
@@ -254,5 +246,26 @@ public class Group implements IDefaultLabelHolder, IUniqueObject {
 	@Override
 	public int getID() {
 		return id;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (obj == this)
+			return true;
+		if (obj instanceof Group) {
+			Group g = (Group) obj;
+			return g.size == size && g.label.equals(label);
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + size;
+		result = 31 * result + label.hashCode();
+		return result;
 	}
 }
