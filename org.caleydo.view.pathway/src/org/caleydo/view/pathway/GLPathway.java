@@ -54,6 +54,7 @@ import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.AddTablePerspectivesListener;
+import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -1747,6 +1748,12 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		for (TablePerspective tp : newTablePerspectives)
 			addTablePerspective(tp);
 
+	}
+
+	@ListenTo
+	public void removeTablePerspective(RemoveTablePerspectiveEvent event) {
+		removeTablePerspective(event.getTablePerspective());
+		setDisplayListDirty();
 	}
 
 	@Override
