@@ -37,6 +37,7 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 
 /**
  * Holds the currently selected data sets and stratifications.
@@ -121,10 +122,7 @@ public class DataMappingState {
 
 	public void addTablePerspective(ATableBasedDataDomain dd, Perspective recordPerspective) {
 
-		Perspective convertedPerspective = dd.convertForeignPerspective(recordPerspective);
-		TablePerspective tablePerspective = new TablePerspective(dd, convertedPerspective, dd.getTable()
-				.getDefaultDimensionPerspective(false));
-		tablePerspective.setLabel(dd.getLabel() + " - " + recordPerspective.getLabel());
+		TablePerspective tablePerspective = createTablePerspective(dd, recordPerspective);
 
 		mappedTablePerspectives.add(tablePerspective);
 		hashDDToTablePerspective.put(dd, tablePerspective);
@@ -133,6 +131,14 @@ public class DataMappingState {
 		event.setEventSpace(eventSpace);
 		event.setSender(this);
 		EventPublisher.trigger(event);
+	}
+
+	private TablePerspective createTablePerspective(ATableBasedDataDomain dd, Perspective foreignPerspective) {
+		Perspective convertedPerspective = dd.convertForeignPerspective(foreignPerspective);
+		TablePerspective tablePerspective = new TablePerspective(dd, convertedPerspective, dd.getTable()
+				.getDefaultDimensionPerspective(false));
+		tablePerspective.setLabel(dd.getLabel() + " - " + foreignPerspective.getLabel());
+		return tablePerspective;
 	}
 
 	public void removeDataDomain(ATableBasedDataDomain dd) {
@@ -179,11 +185,26 @@ public class DataMappingState {
 	}
 
 	/**
+	 * Creates and sets a table perspective based on the provided data domain.
+	 *
+	 * @param dd
+	 */
+	public void setPathwayMappedDataDomain(ATableBasedDataDomain dd) {
+		if (dd == null)
+			setPathwayMappedTablePerspective(null);
+		TablePerspective tablePerspective = createTablePerspective(dd, selectedPerspective);
+		setPathwayMappedTablePerspective(tablePerspective);
+	}
+
+	/**
 	 * @param pathwayMappedTablePerspective
 	 *            setter, see {@link pathwayMappedTablePerspective}
 	 */
 	public void setPathwayMappedTablePerspective(TablePerspective pathwayMappedTablePerspective) {
 		this.pathwayMappedTablePerspective = pathwayMappedTablePerspective;
+		PathwayMappingEvent event = new PathwayMappingEvent(pathwayMappedTablePerspective);
+		event.setEventSpace(eventSpace);
+		EventPublisher.trigger(event);
 	}
 
 	/**

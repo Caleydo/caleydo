@@ -79,7 +79,6 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		});
 	}
 
-
 	@Override
 	public void attach() {
 		// TODO Auto-generated method stub
@@ -204,6 +203,13 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		return entourage.getDataMappingState().getSourcePerspective().getVirtualArray().getGroupList();
 	}
 
+	public ATableBasedDataDomain getPathwayMappingDataDomain() {
+		TablePerspective tablePerspective = entourage.getDataMappingState().getPathwayMappedTablePerspective();
+		if (tablePerspective == null)
+			return null;
+		return tablePerspective.getDataDomain();
+	}
+
 	@Override
 	public void update(AScoreRow old, AScoreRow new_, Collection<IScore> visibleScores, EDataDomainQueryMode mode,
 			IScore sortedByScore) {
@@ -263,8 +269,7 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 	 * @param aTableBasedDataDomain
 	 */
 	protected void setOnNodeElement(ATableBasedDataDomain dataDomain) {
-		// TODO Auto-generated method stub
-		// maybe null
+		entourage.getDataMappingState().setPathwayMappedDataDomain(dataDomain);
 	}
 
 	@Override
