@@ -42,6 +42,8 @@ import org.caleydo.view.tourguide.spi.adapter.IViewAdapter;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.ui.IWorkbenchPart;
 
+import com.google.common.collect.Iterables;
+
 /**
  * @author Samuel Gratzl
  *
@@ -104,6 +106,19 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		filterStratifications.add(lineUp.get(2)); // move data domain selector
 		c.add(lineUp.get(2)); // move table
 		lineUp.add(lineUp.size() - 1, wrap("Choose Groups", this.groups, 160));
+
+		loadState();
+	}
+
+	/**
+	 *
+	 */
+	private void loadState() {
+		for(GLButton b : Iterables.filter(dataDomains,GLButton.class)) {
+			final ATableBasedDataDomain d = b.getLayoutDataAs(ATableBasedDataDomain.class, null);
+			assert d != null;
+			b.setSelected(isDataDomainVisible(d));
+		}
 	}
 
 	@Override
@@ -183,6 +198,19 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		dmState.setSourcePerspective(perspective);
 		dmState.setSelectedPerspective(perspective);
 		groups.set(perspective);
+
+		loadGroupState();
+	}
+
+	/**
+	 *
+	 */
+	private void loadGroupState() {
+		for (GLButton b : Iterables.filter(groups, GLButton.class)) {
+			final Group g = b.getLayoutDataAs(Group.class, null);
+			assert g != null;
+			b.setSelected(isGroupVisible(g));
+		}
 	}
 
 	/**
