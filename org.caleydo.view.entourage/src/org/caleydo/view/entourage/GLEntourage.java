@@ -74,6 +74,7 @@ import org.caleydo.view.entourage.SlideInElement.ESlideInElementPosition;
 import org.caleydo.view.entourage.datamapping.DataMappingState;
 import org.caleydo.view.entourage.event.AddPathwayEvent;
 import org.caleydo.view.entourage.event.AddPathwayEventFactory;
+import org.caleydo.view.entourage.event.ClearWorkspaceEvent;
 import org.caleydo.view.entourage.event.SelectPathwayEventFactory;
 import org.caleydo.view.entourage.event.ShowCommonNodesPathwaysEvent;
 import org.caleydo.view.entourage.event.ShowNodeContextEventFactory;
@@ -649,21 +650,25 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			pathwayWindow.onClose(new ICloseWindowListener() {
 				@Override
 				public void onWindowClosed(GLWindow w) {
-					pathwayLayout.removeWindow(pathwayWindow);
-					parent.remove(pathwayWindow);
-					pathwayInfos.remove(pathwayWindow.info);
-					for (PathwayVertexRep vertexRep : ((PathwayMultiFormInfo) (pathwayWindow.info)).pathway.vertexSet()) {
-						allVertexReps.remove(vertexRep.getID());
-					}
-					if (activeWindow == pathwayWindow) {
-						activeWindow = null;
-						portalFocusWindow = null;
-					}
+					removePathwayWindow(pathwayWindow);
 				}
 			});
 		}
 		info.window = window;
 		parent.add(window);
+	}
+
+	private void removePathwayWindow(GLPathwayWindow pathwayWindow) {
+		pathwayLayout.removeWindow(pathwayWindow);
+		((AnimatedGLElementContainer) pathwayWindow.getParent()).remove(pathwayWindow);
+		pathwayInfos.remove(pathwayWindow.info);
+		for (PathwayVertexRep vertexRep : ((PathwayMultiFormInfo) (pathwayWindow.info)).pathway.vertexSet()) {
+			allVertexReps.remove(vertexRep.getID());
+		}
+		if (activeWindow == pathwayWindow) {
+			activeWindow = null;
+			portalFocusWindow = null;
+		}
 	}
 
 	@Override
@@ -727,44 +732,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		return null;
 	}
 
-	protected void updatePathLinks() {
-		// clearWindowStubSets();
-		// augmentation.isDirty = true;
-		// augmentation.setPxlSize(this.getParentGLCanvas().getWidth(), this.getParentGLCanvas().getHeight());
-		//
-		// List<Rectangle2D> path = new ArrayList<>();
-		//
-		// IPathwayRepresentation pathwayRepresentation = null;
-		// PathwayMultiFormInfo pwInfo = null;
-		// for (PathwayPath segment : pathSegments) {
-		// if (segment == null) {
-		// System.out.println("updatePathLinks() ..  PathwayPath segment : pathSegments .. segment==null");
-		// break;
-		// }
-		// for (PathwayMultiFormInfo info : pathwayInfos) {
-		// pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
-		// info.multiFormRenderer.getActiveRendererID());
-		// if (pathwayRepresentation != null && (segment.getPathway() == pathwayRepresentation.getPathway())) {
-		// pwInfo = info;
-		// break;
-		// }
-		// }
-		// if (pathwayRepresentation != null && pwInfo != null) {
-		// for (PathwayVertexRep v : segment.getNodes()) {
-		// Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, v, pwInfo.container);
-		// if (rect != null)
-		// path.add(rect);
-		// }
-		// }
-		// }
-		//
-		// augmentation.setPath(path);
-	}
-
 	public void updateAugmentation() {
 		clearWindowStubSets();
-		updatePathLinks();
-		// updatePortalLinks();
 		updatePathwayPortals();
 	}
 
@@ -961,6 +930,13 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	protected ArrayList<Rectangle2D> portalRects = new ArrayList<>();
 
+	@ListenTo(sendToMe = true)
+	public void onClearWorkspace(ClearWorkspaceEvent event) {
+		for (PathwayMultiFormInfo info : new ArrayList<PathwayMultiFormInfo>(pathwayInfos)) {
+			removePathwayWindow((GLPathwayWindow) info.window);
+		}
+	}
+
 	private class PathEventSpaceHandler {
 
 		// @ListenTo(restrictExclusiveToEventSpace = true)
@@ -980,25 +956,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				}
 			}
 			updatePathwayPortals();
-			updatePathLinks();
 		}
-
-		// @ListenTo(restrictExclusiveToEventSpace = true)
-		// public void onShowNodeInfo(ShowNodeInfoEvent event) {
-		// GLNodeInfo nodeInfo = new GLNodeInfo(event.getVertexRep());
-		// nodeInfo.setSize(80, 80);
-		// nodeInfoContainer.add(nodeInfo, 200, new InOutTransitionBase(InOutInitializers.BOTTOM,
-		// MoveTransitions.MOVE_LINEAR));
-		// nodeInfoContainer.setSize(Float.NaN, 80);
-		// nodeInfoContainer.relayout();
-		// }
-
-		// @ListenTo(restrictExclusiveToEventSpace = true)
-		// public void onShowPathwaysWithVertex(ShowCommonNodePathwaysEvent event) {
-		// rankingElement.setFilter(new PathwayFilters.CommonVertexFilter(event.getVertexRep(), false));
-		// rankingElement.setRanking(new PathwayRankings.CommonVerticesRanking(event.getVertexRep().getPathway()));
-		// isLayoutDirty = true;
-		// }
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
 		public void onMinSizeUpdate(MinSizeUpdateEvent event) {
