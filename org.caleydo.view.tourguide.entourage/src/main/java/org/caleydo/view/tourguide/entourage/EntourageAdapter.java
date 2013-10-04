@@ -58,6 +58,7 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 
 	private final DataDomainElements dataDomains = new DataDomainElements();
 	private final GroupElements groups = new GroupElements();
+	private final ISelectionCallback onNodeCallback;
 
 	/**
 	 * @param entourage
@@ -72,14 +73,14 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		for (GeneticDataDomain d : DataDomainManager.get().getDataDomainsByType(GeneticDataDomain.class)) {
 			this.dataDomains.addDataDomain(d);
 		}
-		this.dataDomains.setOnNodeCallback(new ISelectionCallback() {
+		this.onNodeCallback = new ISelectionCallback() {
 			@Override
 			public void onSelectionChanged(GLButton button, boolean selected) {
 				setOnNodeElement(button == null ? null : button.getLayoutDataAs(ATableBasedDataDomain.class, null));
 			}
-		});
+		};
+		this.dataDomains.setOnNodeCallback(onNodeCallback);
 	}
-
 
 	@Override
 	public void attach() {
@@ -98,8 +99,8 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		lineUp.add(
 				0,
 				wrap("Mapping Datasets", "Select which datasets to visualize", this.dataDomains, 200,
-						new DataDomainHeader().setSize(-1, 38),
-						dataDomains.getOnNodeNode()));
+						new DataDomainHeader().setSize(-1, 38), dataDomains.getOnNoneNode()));
+
 		GLElementContainer body = new GLElementContainer(GLLayouts.flowVertical(2));
 		body.add(drawText("Stratification", "Select the stratification (grouping) of the data"));
 		lineUp.add(1, body); // add already here such existing elements will be moved instead of takeDown/setup stuff
@@ -133,11 +134,14 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 	 */
 	private void loadState() {
 		dataDomains.setCallback(null);
+		dataDomains.setOnNodeCallback(null);
 		for (GLButton b : dataDomains.getSelectionButtons()) {
 			final ATableBasedDataDomain d = b.getLayoutDataAs(ATableBasedDataDomain.class, null);
 			assert d != null;
 			b.setSelected(isDataDomainVisible(d));
 		}
+		dataDomains.setActiveOnNodeDataDomain(getPathwayMappingDataDomain());
+		dataDomains.setOnNodeCallback(onNodeCallback);
 		dataDomains.setCallback(this);
 	}
 
@@ -209,6 +213,13 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		return entourage.getDataMappingState().getSourcePerspective().getVirtualArray().getGroupList();
 	}
 
+	public ATableBasedDataDomain getPathwayMappingDataDomain() {
+		TablePerspective tablePerspective = entourage.getDataMappingState().getPathwayMappedTablePerspective();
+		if (tablePerspective == null)
+			return null;
+		return tablePerspective.getDataDomain();
+	}
+
 	@Override
 	public void update(AScoreRow old, AScoreRow new_, Collection<IScore> visibleScores, EDataDomainQueryMode mode,
 			IScore sortedByScore) {
@@ -268,8 +279,7 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 	 * @param aTableBasedDataDomain
 	 */
 	protected void setOnNodeElement(ATableBasedDataDomain dataDomain) {
-		// TODO Auto-generated method stub
-		// maybe null
+		entourage.getDataMappingState().setPathwayMappedDataDomain(dataDomain);
 	}
 
 	@Override
