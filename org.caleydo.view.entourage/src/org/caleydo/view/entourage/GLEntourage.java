@@ -72,7 +72,6 @@ import org.caleydo.view.entourage.GLWindow.ICloseWindowListener;
 import org.caleydo.view.entourage.MultiLevelSlideInElement.IWindowState;
 import org.caleydo.view.entourage.SlideInElement.ESlideInElementPosition;
 import org.caleydo.view.entourage.datamapping.DataMappingState;
-import org.caleydo.view.entourage.datamapping.GLExperimentalDataMapping;
 import org.caleydo.view.entourage.event.AddPathwayEvent;
 import org.caleydo.view.entourage.event.AddPathwayEventFactory;
 import org.caleydo.view.entourage.event.SelectPathwayEventFactory;
@@ -148,7 +147,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	protected GLPathwayGridLayout3 pathwayLayout = new GLPathwayGridLayout3(this, GLPadding.ZERO, 10);
 
-	protected GLExperimentalDataMapping experimentalDataMappingElement;
+	// protected GLExperimentalDataMapping experimentalDataMappingElement;
 
 	/**
 	 * Determines whether path selection mode is currently active.
@@ -196,7 +195,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	private List<Pair<PathwayVertexRep, PathwayVertexRep>> selectedPortalLinks = new ArrayList<>();
 
-	private GLWindow dataMappingWindow;
+	// private GLWindow dataMappingWindow;
 
 	private List<AContextMenuItem> contextMenuItemsToShow = new ArrayList<>();
 
@@ -225,33 +224,33 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	public GLEntourage(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 		dataMappingState = new DataMappingState(pathEventSpace);
-		experimentalDataMappingElement = new GLExperimentalDataMapping(this);
+		// experimentalDataMappingElement = new GLExperimentalDataMapping(this);
 
 		AnimatedGLElementContainer column = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(false, 10,
 				GLPadding.ZERO));
 		column.add(baseContainer);
 		nodeInfoContainer.setSize(Float.NaN, 0);
-		dataMappingWindow = new SideWindow("Data Mapping", this, SideWindow.SLIDE_BOTTOM_OUT);
+		// dataMappingWindow = new SideWindow("Data Mapping", this, SideWindow.SLIDE_BOTTOM_OUT);
 		// dataMappingWindow.setDefaultInTransition(new InOutTransitions.InOutTransitionBase(InOutInitializers.TOP,
 		// MoveTransitions.MOVE_LINEAR));
 		// dataMappingWindow.setDefaultMoveTransition(MoveTransitions.GROW_LINEAR);
-		dataMappingWindow.setSize(Float.NaN, 80);
-		dataMappingWindow.setContent(experimentalDataMappingElement);
-		dataMappingWindow.setShowCloseButton(false);
-		SlideInElement slideInElement = new SlideInElement(dataMappingWindow, ESlideInElementPosition.TOP);
-		dataMappingWindow.addSlideInElement(slideInElement);
+		// dataMappingWindow.setSize(Float.NaN, 80);
+		// dataMappingWindow.setContent(experimentalDataMappingElement);
+		// dataMappingWindow.setShowCloseButton(false);
+		// SlideInElement slideInElement = new SlideInElement(dataMappingWindow, ESlideInElementPosition.TOP);
+		// dataMappingWindow.addSlideInElement(slideInElement);
 
 		vertexSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType(EGeneIDTypes.PATHWAY_VERTEX_REP
 				.name()));
 		vertexSelectionManager.registerEventListeners();
 
-		column.add(dataMappingWindow);
+		// column.add(dataMappingWindow);
 		// column.add(nodeInfoContainer);
 		rankingWindow = new SideWindow("Pathways", this, SideWindow.SLIDE_LEFT_OUT);
 		rankingWindow.setSize(170, Float.NaN);
 		rankingElement = new RankingElement(this);
 		rankingWindow.setContent(rankingElement);
-		slideInElement = new SlideInElement(rankingWindow, ESlideInElementPosition.RIGHT);
+		SlideInElement slideInElement = new SlideInElement(rankingWindow, ESlideInElementPosition.RIGHT);
 		slideInElement.setCallBack(new ISelectionCallback() {
 			@Override
 			public void onSelectionChanged(GLButton button, boolean selected) {
@@ -321,7 +320,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	public void init(GL2 gl) {
 		super.init(gl);
 		pathInfo = new MultiFormInfo();
-		createMultiformRenderer(new ArrayList<>(experimentalDataMappingElement.getDmState().getTablePerspectives()),
+		createMultiformRenderer(new ArrayList<>(dataMappingState.getTablePerspectives()),
 				EnumSet.of(EEmbeddingID.PATH_LEVEL1, EEmbeddingID.PATH_LEVEL2), baseContainer, 0.3f, pathInfo);
 		MultiLevelSlideInElement slideInElement = new MultiLevelSlideInElement(pathInfo.window,
 				ESlideInElementPosition.LEFT);
@@ -454,8 +453,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 					return;
 				if (setWindowActive(mousePosition, rankingWindow))
 					return;
-				if (setWindowActive(mousePosition, dataMappingWindow))
-					return;
+				// if (setWindowActive(mousePosition, dataMappingWindow))
+				// return;
 			}
 
 			private boolean setWindowActive(Vec2f mousePosition, GLWindow window) {
@@ -549,8 +548,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 				PathwayDataDomain.DATA_DOMAIN_TYPE);
-		List<TablePerspective> tablePerspectives = new ArrayList<>(experimentalDataMappingElement.getDmState()
-				.getTablePerspectives());
+		List<TablePerspective> tablePerspectives = new ArrayList<>(dataMappingState.getTablePerspectives());
 
 		TablePerspective tablePerspective = tablePerspectives.get(0);
 		Perspective recordPerspective = tablePerspective.getRecordPerspective();
@@ -587,8 +585,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		}
 		lastUsedRenderer = info.multiFormRenderer;
 
-		PathwayMappingEvent event = new PathwayMappingEvent(experimentalDataMappingElement.getDmState()
-				.getPathwayMappedTablePerspective());
+		PathwayMappingEvent event = new PathwayMappingEvent(dataMappingState.getPathwayMappedTablePerspective());
 		event.setEventSpace(pathEventSpace);
 		EventPublisher.trigger(event);
 
@@ -1335,7 +1332,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	@Override
 	public List<TablePerspective> getTablePerspectives() {
 		// TODO Auto-generated method stub
-		return experimentalDataMappingElement.getDmState().getTablePerspectives();
+		return dataMappingState.getTablePerspectives();
 	}
 
 	@Override
