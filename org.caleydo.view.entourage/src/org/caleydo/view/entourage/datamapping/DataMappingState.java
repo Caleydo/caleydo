@@ -113,6 +113,8 @@ public class DataMappingState {
 	}
 
 	public void addDataDomain(ATableBasedDataDomain dd) {
+		if (hashDDToTablePerspective.containsKey(dd))
+			return;
 
 		addTablePerspective(dd, selectedPerspective);
 	}
