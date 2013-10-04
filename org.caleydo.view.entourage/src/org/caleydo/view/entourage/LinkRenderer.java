@@ -41,7 +41,7 @@ import org.caleydo.view.entourage.GLEntourage.PathwayMultiFormInfo;
 /**
  * Renders a single Link as augmentation.
  *
- * @author Christian Partl
+ * @author: denis
  *
  */
 
@@ -142,7 +142,7 @@ public class LinkRenderer extends PickableGLElement {
 	// /////
 	public void render(GLGraphics g, float w, float h) {
 
-		if (this.isLocation1Window && this.isLocation2Window)
+		if ((this.isLocation1Window && this.isLocation2Window) || info1.window.isZoomed() || info2.window.isZoomed())
 			return;
 
 		g.incZ(2.5f);

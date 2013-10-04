@@ -22,6 +22,8 @@ package org.caleydo.view.entourage;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.caleydo.core.view.opengl.layout.util.IZoomListener;
+import org.caleydo.core.view.opengl.layout.util.Zoomer;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.util.GLElementViewSwitchingBar;
 import org.caleydo.view.entourage.GLEntourage.MultiFormInfo;
@@ -35,13 +37,24 @@ public class GLMultiFormWindow extends GLWindow {
 	protected final MultiFormInfo info;
 	protected final GLElementViewSwitchingBar viewSwitchingBar;
 	protected boolean showViewSwitchingBar = true;
+	protected boolean isZoomed = false;
 
-	public GLMultiFormWindow(String title, GLEntourage view, MultiFormInfo info, boolean isScrollable) {
+	public GLMultiFormWindow(String title, final GLEntourage view, MultiFormInfo info, boolean isScrollable) {
 		super(title, view);
 		this.info = info;
 
 		GLElementAdapter container = isScrollable ? new ScrollableGLElementAdapter(view, info.multiFormRenderer)
 				: new GLElementAdapter(view, info.multiFormRenderer, true);
+		container.addZoomListener(new IZoomListener() {
+
+			@Override
+			public void update(Zoomer zoomer) {
+				if (isZoomed != zoomer.isZoomed()) {
+					isZoomed = zoomer.isZoomed();
+					view.setLayoutDirty();
+				}
+			}
+		});
 		info.container = container;
 		setContent(container);
 
@@ -120,5 +133,12 @@ public class GLMultiFormWindow extends GLWindow {
 			viewSwitchingBar.setVisibility(EVisibility.NONE);
 		}
 
+	}
+
+	/**
+	 * @return the isZoomed, see {@link #isZoomed}
+	 */
+	public boolean isZoomed() {
+		return isZoomed;
 	}
 }
