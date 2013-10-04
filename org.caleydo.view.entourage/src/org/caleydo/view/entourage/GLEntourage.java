@@ -71,7 +71,9 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.entourage.GLWindow.ICloseWindowListener;
 import org.caleydo.view.entourage.MultiLevelSlideInElement.IWindowState;
 import org.caleydo.view.entourage.SlideInElement.ESlideInElementPosition;
+import org.caleydo.view.entourage.datamapping.DataMappers;
 import org.caleydo.view.entourage.datamapping.DataMappingState;
+import org.caleydo.view.entourage.datamapping.IDataMapper;
 import org.caleydo.view.entourage.event.AddPathwayEvent;
 import org.caleydo.view.entourage.event.AddPathwayEventFactory;
 import org.caleydo.view.entourage.event.ClearWorkspaceEvent;
@@ -90,6 +92,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	public static String VIEW_TYPE = "org.caleydo.view.subgraph";
 
 	public static String VIEW_NAME = "Entourage";
+
+	private IDataMapper dataMapper;
 
 	// private List<TablePerspective> tablePerspectives = new ArrayList<>();
 
@@ -225,6 +229,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	public GLEntourage(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 		dataMappingState = new DataMappingState(pathEventSpace);
+		dataMapper = DataMappers.getDataMapper();
 		// experimentalDataMappingElement = new GLExperimentalDataMapping(this);
 
 		AnimatedGLElementContainer column = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(false, 10,

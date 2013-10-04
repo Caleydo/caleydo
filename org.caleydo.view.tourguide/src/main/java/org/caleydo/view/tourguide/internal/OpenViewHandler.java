@@ -13,6 +13,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -45,7 +46,7 @@ public class OpenViewHandler extends AbstractHandler {
 
 	/**
 	 * triggers to open tour guide
-	 * 
+	 *
 	 * @param mode
 	 * @return
 	 */
@@ -60,6 +61,27 @@ public class OpenViewHandler extends AbstractHandler {
 		} else {
 			return showTourGuideImpl(PlatformUI.getWorkbench().getActiveWorkbenchWindow(), mode);
 		}
+	}
+
+	public static void hideTourGuide(final EDataDomainQueryMode mode) {
+		if (Display.getDefault().getThread() != Thread.currentThread()) { // not the right thread
+			Display.getDefault().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					hideTourGuideImpl(PlatformUI.getWorkbench().getActiveWorkbenchWindow(), mode);
+				}
+			});
+		} else {
+			hideTourGuideImpl(PlatformUI.getWorkbench().getActiveWorkbenchWindow(), mode);
+		}
+	}
+
+	private static void hideTourGuideImpl(IWorkbenchWindow window, EDataDomainQueryMode mode) {
+		IWorkbenchPage activePage = window.getActivePage();
+		IViewReference viewReference = activePage.findViewReference(GLTourGuideView.VIEW_TYPE,
+				EDataDomainQueryMode.STRATIFICATIONS.name());
+		if (viewReference != null)
+			activePage.hideView(viewReference);
 	}
 
 }

@@ -10,7 +10,8 @@ import org.caleydo.view.tourguide.internal.OpenViewHandler;
 
 /**
  * @author Samuel Gratzl
- *
+ * @author Christian Partl
+ * 
  */
 public class TourGuideUtils {
 	/**
@@ -21,6 +22,15 @@ public class TourGuideUtils {
 	 */
 	public static ITourGuideView showTourGuide(final EDataDomainQueryMode mode) {
 		return OpenViewHandler.showTourGuide(mode).getView();
+	}
+
+	/**
+	 * Hides the tour guide instance with the specified mode.
+	 *
+	 * @param mode
+	 */
+	public static void hideTourGuide(final EDataDomainQueryMode mode) {
+		OpenViewHandler.hideTourGuide(mode);
 	}
 
 }

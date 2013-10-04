@@ -7,5 +7,11 @@
             class="org.caleydo.view.tourguide.entourage.EntourageAdapterFactory">
       </adapter>
    </extension>
+   <extension
+         point="org.caleydo.view.entourage.datamapper">
+      <DataMapper
+            class="org.caleydo.view.tourguide.entourage.DataMapper">
+      </DataMapper>
+   </extension>
    
 </plugin>

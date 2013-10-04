@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="org.caleydo.view.entourage.datamapper" name="Entourage Data Mapper" schema="schema/org.caleydo.view.entourage.datamapper.exsd"/>
    <extension
          point="org.eclipse.ui.views">
       <view
