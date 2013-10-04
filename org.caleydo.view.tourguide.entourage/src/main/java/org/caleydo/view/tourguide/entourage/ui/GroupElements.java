@@ -65,8 +65,8 @@ public class GroupElements extends GLElementContainer implements IHasMinSize {
 	 */
 	private void add(Group g) {
 		GLButton b = new GLButton(EButtonMode.CHECKBOX);
-		b.setSelected(true);
-		b.setRenderer(GLButton.createCheckRenderer(g.getLabel()));
+		b.setSelected(false);
+		b.setRenderer(GLButton.createCheckRenderer(String.format("%s (%d)", g.getLabel(), g.getSize())));
 		b.setLayoutData(g);
 		b.setSize(-1, 18);
 		b.setCallback(callback);

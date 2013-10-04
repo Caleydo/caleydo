@@ -38,6 +38,7 @@ import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.vis.ITourGuideView;
 import org.caleydo.view.tourguide.entourage.ui.DataDomainElements;
 import org.caleydo.view.tourguide.entourage.ui.GroupElements;
+import org.caleydo.view.tourguide.entourage.ui.SelectAllNoneElement;
 import org.caleydo.view.tourguide.spi.adapter.IViewAdapter;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.ui.IWorkbenchPart;
@@ -105,7 +106,11 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		c.add(filterStratifications);
 		filterStratifications.add(lineUp.get(2)); // move data domain selector
 		c.add(lineUp.get(2)); // move table
-		lineUp.add(lineUp.size() - 1, wrap("Choose Groups", this.groups, 160));
+
+		lineUp.add(
+				lineUp.size() - 1,
+				wrap("Choose Groups", this.groups, 160,
+						new SelectAllNoneElement(Iterables.filter(this.groups, GLButton.class))));
 
 		loadState();
 	}
@@ -134,9 +139,11 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		lineUp.remove(2); // remove wrapper
 	}
 
-	private GLElementContainer wrap(String label, GLElement content, int width) {
+	private GLElementContainer wrap(String label, GLElement content, int width, GLElement... postLabel) {
 		GLElementContainer c = new GLElementContainer(GLLayouts.flowVertical(2));
 		c.add(drawText(label));
+		for (GLElement p : postLabel)
+			c.add(p);
 		c.add(ScrollingDecorator.wrap(content, 8));
 		c.setSize(width, -1);
 		return c;
