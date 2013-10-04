@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
@@ -43,6 +44,8 @@ public abstract class AScoreRow extends ARow implements ILabeled, Cloneable, ICo
 	};
 
 	public abstract boolean is(TablePerspective tablePerspective);
+
+	public abstract boolean is(Perspective p);
 
 	public abstract Collection<GroupInfo> getGroupInfos();
 

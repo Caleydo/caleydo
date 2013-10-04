@@ -13,6 +13,7 @@ import java.util.Set;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
@@ -75,6 +76,11 @@ public final class PathwayPerspectiveRow extends AScoreRow {
 	public boolean is(TablePerspective tablePerspective) {
 		return tablePerspective instanceof PathwayTablePerspective
 				&& ((PathwayTablePerspective) tablePerspective).getPathway().equals(pathway);
+	}
+
+	@Override
+	public boolean is(Perspective p) {
+		return false;
 	}
 
 	@Override

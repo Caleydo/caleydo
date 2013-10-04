@@ -86,4 +86,9 @@ public final class StratificationPerspectiveRow extends AVirtualArrayScoreRow im
 	public boolean is(TablePerspective tablePerspective) {
 		return stratification.equals(tablePerspective.getRecordPerspective());
 	}
+
+	@Override
+	public boolean is(Perspective p) {
+		return stratification.equals(p);
+	}
 }

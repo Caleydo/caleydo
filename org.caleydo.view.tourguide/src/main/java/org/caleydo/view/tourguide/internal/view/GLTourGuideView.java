@@ -235,6 +235,20 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	}
 
 	/**
+	 * @return the queries, see {@link #queries}
+	 */
+	@Override
+	public List<ADataDomainQuery> getQueries() {
+		return Collections.unmodifiableList(queries);
+	}
+
+	@Override
+	public void updateQueryUIStates() {
+		if (this.dataDomainQueryUI != null)
+			this.dataDomainQueryUI.updateSelections();
+	}
+
+	/**
 	 * @return the mode, see {@link #mode}
 	 */
 	public EDataDomainQueryMode getMode() {
@@ -609,7 +623,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	}
 
 	protected void onSelectRow(AScoreRow old, AScoreRow new_) {
-		if (adapter.canShowPreviews())
+		if (adapter != null && adapter.canShowPreviews())
 			updatePreview(old, new_);
 	}
 
@@ -813,12 +827,19 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	public void switchTo(IViewAdapter adapter) {
 		if (Objects.equals(adapter, this.adapter))
 			return;
+
 		final GLElementContainer root = getVis();
 		if (this.adapter != null && root != null) {
 			this.adapter.cleanup(root);
 			eventListeners.unregister(this.adapter);
 		}
+		this.adapter = null;
+
+		resetAdapter();
+
 		this.adapter = adapter;
+
+
 		if (this.adapter != null && root != null) {
 			eventListeners.register(this.adapter);
 			this.adapter.setup(root);
@@ -828,6 +849,12 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		if (popupLayer == null)
 			return;
 		updateAdapterState();
+	}
+
+
+	private void resetAdapter() {
+		this.table.setSelectedRow(null); // reset selection
+		removeAllSimpleFilter();
 	}
 
 	/**
@@ -846,6 +873,11 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	@Override
 	public AScoreRow getSelection() {
 		return (AScoreRow) table.getSelectedRow();
+	}
+
+	@Override
+	public void setSelection(AScoreRow row) {
+		table.setSelectedRow(row);
 	}
 
 	private class RankTableUIConfig extends RankTableUIConfigBase {

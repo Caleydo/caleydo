@@ -67,8 +67,8 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 	}
 
 	public void updateSelection() {
-		if (this.isSelected() && !model.isActive())
-			this.setSelected(false);
+		if (this.isSelected() != model.isActive())
+			this.setSelected(model.isActive());
 	}
 	/**
 	 * @return the model, see {@link #model}

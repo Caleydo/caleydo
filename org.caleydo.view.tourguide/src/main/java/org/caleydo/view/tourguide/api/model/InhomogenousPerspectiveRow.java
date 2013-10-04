@@ -85,4 +85,9 @@ public final class InhomogenousPerspectiveRow extends AVirtualArrayScoreRow impl
 	public boolean is(TablePerspective tablePerspective) {
 		return clinical.equals(tablePerspective);
 	}
+
+	@Override
+	public boolean is(Perspective p) {
+		return clinical.getRecordPerspective().equals(p) || clinical.getDimensionPerspective().equals(p);
+	}
 }

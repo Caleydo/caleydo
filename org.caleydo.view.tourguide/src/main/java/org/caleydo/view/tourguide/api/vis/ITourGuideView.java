@@ -5,6 +5,9 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.vis;
 
+import java.util.List;
+
+import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
@@ -35,5 +38,11 @@ public interface ITourGuideView {
 	 * @return
 	 */
 	AScoreRow getSelection();
+
+	void setSelection(AScoreRow row);
+
+	List<ADataDomainQuery> getQueries();
+
+	void updateQueryUIStates();
 
 }

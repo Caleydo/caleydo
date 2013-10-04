@@ -11,6 +11,7 @@ import java.util.Collections;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
@@ -131,5 +132,13 @@ public final class CategoricalPerspectiveRow extends AVirtualArrayScoreRow imple
 		// estimator using the same label
 		return tablePerspective.getDataDomain().equals(query.getDataDomain())
 				&& tablePerspective.getLabel().equals(label);
+	}
+
+	@Override
+	public boolean is(Perspective p) {
+		if (perspective != null)
+			return perspective.getRecordPerspective().equals(p) && perspective.getDimensionPerspective().equals(p);
+		// estimator using the same label
+		return p.getDataDomain().equals(query.getDataDomain()) && p.getLabel().equals(label);
 	}
 }

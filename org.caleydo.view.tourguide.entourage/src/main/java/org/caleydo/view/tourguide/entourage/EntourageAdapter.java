@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
@@ -32,6 +33,7 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.entourage.GLEntourage;
 import org.caleydo.view.entourage.RcpGLSubGraphView;
 import org.caleydo.view.entourage.datamapping.DataMappingState;
+import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.model.ITablePerspectiveScoreRow;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
@@ -131,6 +133,31 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 	 *
 	 */
 	private void loadState() {
+		loadDataDomainSelection();
+		loadStratificationSelection();
+	}
+
+	private void loadStratificationSelection() {
+		final Perspective active = getSourcePerspective();
+		if (active == null)
+			return;
+		IDataDomain dataDomain = active.getDataDomain();
+		for (ADataDomainQuery query : vis.getQueries()) {
+			if (dataDomain.equals(query.getDataDomain())) {
+				query.setActive(true);
+				for (AScoreRow r : query.getOrCreate()) {
+					if (r.is(active)) {
+						vis.setSelection(r);
+						break;
+					}
+				}
+			} else
+				query.setActive(false);
+		}
+		vis.updateQueryUIStates();
+	}
+
+	private void loadDataDomainSelection() {
 		dataDomains.setCallback(null);
 		dataDomains.setOnNodeCallback(null);
 		for (GLButton b : dataDomains.getSelectionButtons()) {
@@ -177,16 +204,18 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 
 	@Override
 	public boolean isPreviewing(AScoreRow row) {
-		assert row instanceof ITablePerspectiveScoreRow;
-		// TODO Auto-generated method stub
-		return false;
+		return false; // just a single selection
 	}
 
 	@Override
 	public boolean isVisible(AScoreRow row) {
 		assert row instanceof ITablePerspectiveScoreRow;
 		Perspective perspective = toPerspective((ITablePerspectiveScoreRow) row);
-		return perspective.equals(entourage.getDataMappingState().getSourcePerspective());
+		return perspective.equals(getSourcePerspective());
+	}
+
+	private Perspective getSourcePerspective() {
+		return entourage.getDataMappingState().getSourcePerspective();
 	}
 
 	public boolean isDataDomainVisible(ATableBasedDataDomain dataDomain) {
@@ -205,7 +234,7 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 	}
 
 	public GroupList getSourceGroupList() {
-		return entourage.getDataMappingState().getSourcePerspective().getVirtualArray().getGroupList();
+		return getSourcePerspective().getVirtualArray().getGroupList();
 	}
 
 	public ATableBasedDataDomain getPathwayMappingDataDomain() {

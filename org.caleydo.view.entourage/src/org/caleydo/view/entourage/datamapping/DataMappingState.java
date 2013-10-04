@@ -157,6 +157,8 @@ public class DataMappingState {
 
 	/** Removes a previous and sets the new perspective on the event space */
 	public void setSelectedPerspective(Perspective perspective) {
+		if (this.selectedPerspective == perspective)
+			return;
 		selectedPerspective = perspective;
 
 		ClearGroupSelectionEvent clearEvent = new ClearGroupSelectionEvent();
@@ -170,8 +172,10 @@ public class DataMappingState {
 		}
 
 		mappedTablePerspectives.clear();
-		for (ATableBasedDataDomain dd : hashDDToTablePerspective.keySet()) {
-			addTablePerspective(dd, selectedPerspective);
+		if (selectedPerspective != null) {
+			for (ATableBasedDataDomain dd : hashDDToTablePerspective.keySet()) {
+				addTablePerspective(dd, selectedPerspective);
+			}
 		}
 	}
 
