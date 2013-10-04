@@ -5,32 +5,26 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.entourage.ui;
 
-import org.caleydo.core.data.datadomain.IDataDomain;
+import gleem.linalg.Vec2f;
+
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.basic.EButtonIcon;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 
 /**
  * @author Samuel Gratzl
  *
  */
-class DataDomainElement extends GLButton {
-	private final IDataDomain dataDomain;
-
-	public DataDomainElement(IDataDomain dataDomain) {
-		super(EButtonMode.CHECKBOX);
-		this.dataDomain = dataDomain;
-		setLayoutData(dataDomain);
-	}
+public class DataDomainHeader extends GLElement {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		g.drawText("Map onto Pathway", 43, 1, w - 43, 12);
+		g.drawText("Map in enRoute", 43, 16, w - 43, 12);
+		g.incZ(1);
+		g.drawPath(false, new Vec2f(0, h), new Vec2f(20, 0), new Vec2f(w, 0));
+		g.drawPath(false, new Vec2f(20, h), new Vec2f(32, 14), new Vec2f(w, 14));
+		g.drawPath(false, new Vec2f(40, h), new Vec2f(44, 30), new Vec2f(w, 30));
+		g.incZ(-1);
 		super.renderImpl(g, w, h);
-		if (isSelected())
-			g.color(dataDomain.getColor()).fillRect(2, 2, 14, 14);
-		g.fillImage(EButtonIcon.CHECKBOX.get(false), 0, 0, 18, 18);
-
-		g.drawText(this.dataDomain.getLabel(), 26, 1, w - 26, 14);
 	}
-
 }

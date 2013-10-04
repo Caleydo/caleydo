@@ -7,12 +7,21 @@ package org.caleydo.view.tourguide.entourage.ui;
 
 import gleem.linalg.Vec2f;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.basic.EButtonIcon;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
+import org.caleydo.core.view.opengl.layout2.basic.RadioController;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 
 import com.google.common.collect.Iterables;
 
@@ -22,8 +31,10 @@ import com.google.common.collect.Iterables;
  */
 public class DataDomainElements extends GLElementContainer implements IHasMinSize {
 
-	private ISelectionCallback callback;
+	private ISelectionCallback selectionCallback;
+	private RadioController onNodeController = new RadioController();
 
+	private GLElement onNodeNode = createSelectAllNone();
 	/**
 	 *
 	 */
@@ -33,16 +44,62 @@ public class DataDomainElements extends GLElementContainer implements IHasMinSiz
 	}
 
 	public void addDataDomain(IDataDomain dataDomain) {
+		GLElementContainer c = new GLElementContainer(GLLayouts.flowHorizontal(2));
+		c.setSize(-1, 18);
 		final DataDomainElement new_ = new DataDomainElement(dataDomain);
-		new_.setSize(-1, 18);
-		this.add(new_);
-		new_.setCallback(callback);
+		new_.setCallback(selectionCallback);
+		final DataDomainRadioElement new_2 = new DataDomainRadioElement(dataDomain);
+		new_2.setSize(16, -1);
+		onNodeController.add(new_2);
+		c.add(new_2);
+		c.add(new_);
+		this.add(c);
 	}
 
+	/**
+	 * @return the onNodeNode, see {@link #onNodeNode}
+	 */
+	public GLElement getOnNodeNode() {
+		return onNodeNode;
+	}
+
+	private GLElement createSelectAllNone() {
+		GLButton b = new GLButton(EButtonMode.CHECKBOX);
+		onNodeController.add(b);
+		b.setRenderer(new IGLRenderer() {
+			@Override
+			public void render(GLGraphics g, float w, float h, GLElement parent) {
+				final boolean s = ((GLButton)parent).isSelected();
+				g.fillImage(EButtonIcon.RADIO.get(s), 0, 0, 18, 18);
+
+				g.drawText("None", 26+20, 1, w - 26-20, 14);
+			}
+		});
+		b.setSize(-1, 18);
+		return b;
+	}
+
+	public Iterable<GLButton> getSelectionButtons() {
+		List<GLButton> b = new ArrayList<>(size());
+		for (GLElementContainer c : Iterables.filter(this, GLElementContainer.class)) {
+			b.add((GLButton) c.get(1));
+		}
+		return b;
+	}
+
+	public GLButton getActiveOnNodeButton() {
+		return onNodeController.getSelectedItem();
+	}
+
+
 	public void setCallback(GLButton.ISelectionCallback callback) {
-		this.callback = callback;
-		for (GLButton b : Iterables.filter(this, GLButton.class))
+		this.selectionCallback = callback;
+		for (GLButton b : getSelectionButtons())
 			b.setCallback(callback);
+	}
+
+	public void setOnNodeCallback(GLButton.ISelectionCallback callback) {
+		onNodeController.setCallback(callback);
 	}
 
 	@Override

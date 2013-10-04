@@ -14,23 +14,17 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton;
  * @author Samuel Gratzl
  *
  */
-class DataDomainElement extends GLButton {
-	private final IDataDomain dataDomain;
+class DataDomainRadioElement extends GLButton {
 
-	public DataDomainElement(IDataDomain dataDomain) {
+	public DataDomainRadioElement(IDataDomain dataDomain) {
 		super(EButtonMode.CHECKBOX);
-		this.dataDomain = dataDomain;
 		setLayoutData(dataDomain);
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
-		if (isSelected())
-			g.color(dataDomain.getColor()).fillRect(2, 2, 14, 14);
-		g.fillImage(EButtonIcon.CHECKBOX.get(false), 0, 0, 18, 18);
-
-		g.drawText(this.dataDomain.getLabel(), 26, 1, w - 26, 14);
+		g.fillImage(EButtonIcon.RADIO.get(isSelected()), 0, 0, 18, 18);
 	}
 
 }

@@ -195,7 +195,7 @@ public class GLButton extends AGLButton {
 		void onSelectionChanged(GLButton button, boolean selected);
 	}
 
-	private static final ISelectionCallback DUMMY_CALLBACK = new ISelectionCallback() {
+	static final ISelectionCallback DUMMY_CALLBACK = new ISelectionCallback() {
 		@Override
 		public void onSelectionChanged(GLButton button, boolean selected) {
 

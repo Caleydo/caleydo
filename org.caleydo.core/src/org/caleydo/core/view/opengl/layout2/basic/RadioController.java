@@ -6,24 +6,45 @@
 package org.caleydo.core.view.opengl.layout2.basic;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 
+import com.google.common.collect.Iterators;
+
 /**
  * a controller class for a bunch of {@link GLButton}s that act as a single radio group, i.e only one can be selected at
  * one time
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public class RadioController implements GLButton.ISelectionCallback {
+public class RadioController implements GLButton.ISelectionCallback, Iterable<GLButton> {
 	private List<GLButton> buttons = new ArrayList<>();
 	private int selected = 0;
 
-	private final GLButton.ISelectionCallback callback;
+	private GLButton.ISelectionCallback callback = GLButton.DUMMY_CALLBACK;
 
 	public RadioController(GLButton.ISelectionCallback callback) {
+		this.callback = callback;
+	}
+
+	public RadioController() {
+	}
+
+	@Override
+	public Iterator<GLButton> iterator() {
+		return Iterators.unmodifiableIterator(buttons.iterator());
+	}
+
+	/**
+	 * @param callback
+	 *            setter, see {@link callback}
+	 */
+	public void setCallback(GLButton.ISelectionCallback callback) {
+		if (callback == null)
+			callback = GLButton.DUMMY_CALLBACK;
 		this.callback = callback;
 	}
 
@@ -62,6 +83,10 @@ public class RadioController implements GLButton.ISelectionCallback {
 	 */
 	public int getSelected() {
 		return selected;
+	}
+
+	public GLButton getSelectedItem() {
+		return selected < 0 ? null : buttons.get(selected);
 	}
 
 	@Override

@@ -37,6 +37,7 @@ import org.caleydo.view.tourguide.api.model.ITablePerspectiveScoreRow;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.vis.ITourGuideView;
 import org.caleydo.view.tourguide.entourage.ui.DataDomainElements;
+import org.caleydo.view.tourguide.entourage.ui.DataDomainHeader;
 import org.caleydo.view.tourguide.entourage.ui.GroupElements;
 import org.caleydo.view.tourguide.entourage.ui.SelectAllNoneElement;
 import org.caleydo.view.tourguide.spi.adapter.IViewAdapter;
@@ -70,7 +71,14 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		for (GeneticDataDomain d : DataDomainManager.get().getDataDomainsByType(GeneticDataDomain.class)) {
 			this.dataDomains.addDataDomain(d);
 		}
+		this.dataDomains.setOnNodeCallback(new ISelectionCallback() {
+			@Override
+			public void onSelectionChanged(GLButton button, boolean selected) {
+				setOnNodeElement(button == null ? null : button.getLayoutDataAs(ATableBasedDataDomain.class, null));
+			}
+		});
 	}
+
 
 	@Override
 	public void attach() {
@@ -86,7 +94,10 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 
 	@Override
 	public void setup(GLElementContainer lineUp) {
-		lineUp.add(0, wrap("Choose Datasets to Map", this.dataDomains, 200));
+		lineUp.add(
+				0,
+				wrap("Choose Datasets to Map", this.dataDomains, 200, new DataDomainHeader().setSize(-1, 38),
+						dataDomains.getOnNodeNode()));
 		GLElementContainer body = new GLElementContainer(GLLayouts.flowVertical(2));
 		body.add(drawText("Choose Stratification"));
 		lineUp.add(1, body); // add already here such existing elements will be moved instead of takeDown/setup stuff
@@ -119,11 +130,13 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 	 *
 	 */
 	private void loadState() {
-		for(GLButton b : Iterables.filter(dataDomains,GLButton.class)) {
+		dataDomains.setCallback(null);
+		for (GLButton b : dataDomains.getSelectionButtons()) {
 			final ATableBasedDataDomain d = b.getLayoutDataAs(ATableBasedDataDomain.class, null);
 			assert d != null;
 			b.setSelected(isDataDomainVisible(d));
 		}
+		dataDomains.setCallback(this);
 	}
 
 	@Override
@@ -213,11 +226,13 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 	 *
 	 */
 	private void loadGroupState() {
+		groups.setCallback(null);
 		for (GLButton b : Iterables.filter(groups, GLButton.class)) {
 			final Group g = b.getLayoutDataAs(Group.class, null);
 			assert g != null;
 			b.setSelected(isGroupVisible(g));
 		}
+		groups.setCallback(this);
 	}
 
 	/**
@@ -242,6 +257,14 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 			return dd.getRecordIDCategory().equals(geneIDCategory);
 		}
 		return false;
+	}
+
+	/**
+	 * @param aTableBasedDataDomain
+	 */
+	protected void setOnNodeElement(ATableBasedDataDomain dataDomain) {
+		// TODO Auto-generated method stub
+		// maybe null
 	}
 
 	@Override
