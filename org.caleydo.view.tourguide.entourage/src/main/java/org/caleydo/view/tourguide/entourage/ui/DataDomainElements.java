@@ -9,6 +9,7 @@ import gleem.linalg.Vec2f;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -34,7 +35,7 @@ public class DataDomainElements extends GLElementContainer implements IHasMinSiz
 	private ISelectionCallback selectionCallback;
 	private RadioController onNodeController = new RadioController();
 
-	private GLElement onNodeNode = createSelectAllNone();
+	private GLButton onNodeNode = createSelectAllNone();
 	/**
 	 *
 	 */
@@ -59,11 +60,11 @@ public class DataDomainElements extends GLElementContainer implements IHasMinSiz
 	/**
 	 * @return the onNodeNode, see {@link #onNodeNode}
 	 */
-	public GLElement getOnNodeNode() {
+	public GLButton getOnNoneNode() {
 		return onNodeNode;
 	}
 
-	private GLElement createSelectAllNone() {
+	private GLButton createSelectAllNone() {
 		GLButton b = new GLButton(EButtonMode.CHECKBOX);
 		onNodeController.add(b);
 		b.setRenderer(new IGLRenderer() {
@@ -89,6 +90,22 @@ public class DataDomainElements extends GLElementContainer implements IHasMinSiz
 
 	public GLButton getActiveOnNodeButton() {
 		return onNodeController.getSelectedItem();
+	}
+
+	public void setActiveOnNodeDataDomain(IDataDomain dataDomain) {
+		if (dataDomain == null)
+			onNodeController.setSelected(0);
+		else {
+			int i = 0;
+			for (GLButton b : onNodeController) {
+				IDataDomain d = b.getLayoutDataAs(IDataDomain.class, null);
+				if (Objects.equals(d, dataDomain)) {
+					onNodeController.setSelected(i);
+				}
+				i++;
+			}
+		}
+
 	}
 
 
