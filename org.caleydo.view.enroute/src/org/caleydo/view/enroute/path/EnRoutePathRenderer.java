@@ -164,7 +164,6 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 			}
 
 			pathwayHeight += spacing.getCurrentAnchorNodeSpacing();
-			setLayoutDirty(true);
 		}
 
 		if (expandedBranchSummaryNode != null) {
@@ -178,6 +177,7 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 				pixelGLConverter.getPixelHeightForGLHeight(pathwayHeight)));
 		setMinWidthPixels(pixelGLConverter.getPixelWidthForGLWidth(branchColumnWidth
 				+ (pathway == null ? pathwayTitleColumnWidth : 0) + pathColumnWidth));
+		setLayoutDirty(true);
 	}
 
 	// @Override

@@ -336,8 +336,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	private void renderEmptyViewInfo(GL2 gl, int displayListIndex) {
 		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
-		renderEmptyViewText(gl, new String[] { EMPTY_VIEW_TEXT_LINE_ONE, EMPTY_VIEW_TEXT_LINE_TWO,
-				"Refer to http://help.caleydo.org for more information." });
+		if (!isRenderedRemote()) {
+			renderEmptyViewText(gl, new String[] { EMPTY_VIEW_TEXT_LINE_ONE, EMPTY_VIEW_TEXT_LINE_TWO,
+					"Refer to http://help.caleydo.org for more information." });
+		}
 		gl.glEndList();
 	}
 
