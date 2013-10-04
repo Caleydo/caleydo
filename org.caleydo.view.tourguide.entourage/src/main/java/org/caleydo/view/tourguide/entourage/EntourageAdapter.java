@@ -22,6 +22,7 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
@@ -99,10 +100,11 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 	public void setup(GLElementContainer lineUp) {
 		lineUp.add(
 				0,
-				wrap("Choose Datasets to Map", this.dataDomains, 200, new DataDomainHeader().setSize(-1, 38),
-						dataDomains.getOnNoneNode()));
+				wrap("Mapping Datasets", "Select which datasets to visualize", this.dataDomains, 200,
+						new DataDomainHeader().setSize(-1, 38), dataDomains.getOnNoneNode()));
+
 		GLElementContainer body = new GLElementContainer(GLLayouts.flowVertical(2));
-		body.add(drawText("Choose Stratification"));
+		body.add(drawText("Stratification", "Select the stratification (grouping) of the data"));
 		lineUp.add(1, body); // add already here such existing elements will be moved instead of takeDown/setup stuff
 		// tree
 		// body V
@@ -115,15 +117,15 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		GLElementContainer c = new GLElementContainer(GLLayouts.flowHorizontal(10));
 		body.add(c);
 		GLElementContainer filterStratifications = new GLElementContainer(GLLayouts.flowVertical(2));
-		filterStratifications.add(drawText("Filter Stratifications", 12));
+		filterStratifications.add(drawText("Filter Stratifications",
+				"Select the datasets that are associated with statifications", 16));
 		filterStratifications.setSize(130, -1);
 		c.add(filterStratifications);
 		filterStratifications.add(lineUp.get(2)); // move data domain selector
 		c.add(lineUp.get(2)); // move table
-
 		lineUp.add(
 				lineUp.size() - 1,
-				wrap("Choose Groups", this.groups, 160,
+				wrap("Groups", "Select the groups to show", this.groups, 160,
 						new SelectAllNoneElement(Iterables.filter(this.groups, GLButton.class))));
 
 		loadState();
@@ -183,9 +185,9 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		lineUp.remove(2); // remove wrapper
 	}
 
-	private GLElementContainer wrap(String label, GLElement content, int width, GLElement... postLabel) {
+	private GLElementContainer wrap(String label, String toolTip, GLElement content, int width, GLElement... postLabel) {
 		GLElementContainer c = new GLElementContainer(GLLayouts.flowVertical(2));
-		c.add(drawText(label));
+		c.add(drawText(label, toolTip));
 		for (GLElement p : postLabel)
 			c.add(p);
 		c.add(ScrollingDecorator.wrap(content, 8));
@@ -193,13 +195,16 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		return c;
 	}
 
-	private GLElement drawText(String label) {
-		return drawText(label, 20);
+	private GLElement drawText(String label, String toolTip) {
+		return drawText(label, toolTip, 20);
 	}
 
-	private GLElement drawText(String label, int size) {
-		return new GLElement(GLRenderers.drawText(label, VAlign.LEFT, new GLPadding(4, 2), ETextStyle.BOLD)).setSize(
-				-1, size);
+	private GLElement drawText(String label, String toolTip, int size) {
+		PickableGLElement element = new PickableGLElement();
+		element.setRenderer(GLRenderers.drawText(label, VAlign.LEFT, new GLPadding(4, 2), ETextStyle.BOLD));
+		element.setSize(-1, size);
+		element.setTooltip(toolTip);
+		return element;
 	}
 
 	@Override
