@@ -15,12 +15,16 @@ public final class DataMappers {
 
 	private static final String EXTENSION_ID = "org.caleydo.view.entourage.datamapper";
 
+	private static IDataMapper dataMapper;
+
 	private DataMappers() {
 
 	}
 
 	public static final IDataMapper getDataMapper() {
-		return ExtensionUtils.findFirstImplementation(EXTENSION_ID, "class", IDataMapper.class);
+		if (dataMapper == null)
+			dataMapper = ExtensionUtils.findFirstImplementation(EXTENSION_ID, "class", IDataMapper.class);
+		return dataMapper;
 	}
 
 }

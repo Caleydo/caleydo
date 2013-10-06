@@ -25,7 +25,9 @@ import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.datadomain.pathway.toolbar.ClearPathAction;
 import org.caleydo.datadomain.pathway.toolbar.SelectFreePathAction;
 import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
+import org.caleydo.view.entourage.datamapping.DataMappers;
 import org.caleydo.view.entourage.toolbar.ClearWorkspaceAction;
+import org.caleydo.view.entourage.toolbar.ShowDataMapperAction;
 import org.caleydo.view.entourage.toolbar.ShowPortalsAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
@@ -59,6 +61,8 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 		initializeView();
 
 		createPartControlGL();
+
+		DataMappers.getDataMapper().show();
 	}
 
 	@Override
@@ -86,11 +90,11 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 		toolBarManager.add(selectFreePathAction);
 		toolBarManager.add(new ClearPathAction(entourage.getPathEventSpace()));
 		toolBarManager.add(showPortalsAction);
+		toolBarManager.add(new ShowDataMapperAction());
 		toolBarManager.add(new ClearWorkspaceAction(entourage));
 		// toolBarManager.add(highlightAllPortalsAction);
 
-		toolBarManager.add(new OpenOnlineHelpAction(
-GeneralManager.HELP_URL + "/views/enroute.md#Pathway_View", false));
+		toolBarManager.add(new OpenOnlineHelpAction(GeneralManager.HELP_URL + "/views/enroute.md#Pathway_View", false));
 
 	}
 
