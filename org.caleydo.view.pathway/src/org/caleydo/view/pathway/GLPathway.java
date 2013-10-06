@@ -1456,6 +1456,23 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private void selectPath(PathwayVertexRep vertexRep, SelectionType selectionType) {
 		if (vertexRep == null || isControlKeyDown)
 			return;
+
+		// Use parent node, if available and the current node has no edges -> selection of complex nodes
+		PathwayVertexRep parent = null;
+		Set<DefaultEdge> edges = pathway.edgesOf(vertexRep);
+		while (edges.isEmpty()) {
+			parent = vertexRep.getParent();
+			if (parent == null)
+				break;
+			edges = pathway.edgesOf(parent);
+		}
+		if (parent != null)
+			vertexRep = parent;
+
+		if (!isPathStartSelected && selectionType == SelectionType.SELECTION) {
+			pathStartVertexRep = vertexRep;
+		}
+
 		boolean triggerPathUpdate = false;
 		if (!isPathStartSelected) {// ////////////////////////////////
 			// if (isControlKeyDown) {// shrink previous selected path
@@ -1590,12 +1607,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		PathwayVertexRep vertexRep = pathwayItemManager.getPathwayVertexRep(externalID);
 
 		if (isPathSelectionMode && !isControlKeyDown) {
-
-			if (!isPathStartSelected && selectionType == SelectionType.SELECTION) {
-				pathStartVertexRep = vertexRep;
-				// pathwayItemManager.getPathwayVertexRep((Integer) vertexSelectionManager
-				// .getElements(SelectionType.SELECTION).toArray()[0]);
-			}
 			selectPath(vertexRep, selectionType);
 		}
 
