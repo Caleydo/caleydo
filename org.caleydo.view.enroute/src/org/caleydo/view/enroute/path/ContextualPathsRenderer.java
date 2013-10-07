@@ -129,7 +129,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 		if (showThumbnail) {
 			PathwayTextureCreator creator = new PathwayTextureCreator();
-			pathwayView = (GLPathway) creator.createRemoteView(view, tablePerspectives, eventSpace);
+			pathwayView = (GLPathway) creator.create(view, pathway, tablePerspectives, null, eventSpace);
 
 			ElementLayout pathwayTextureLayout = new ElementLayout();
 			pathwayTextureLayout.setPixelSizeY(pathwayView.getMinPixelHeight());

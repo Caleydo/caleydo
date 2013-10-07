@@ -19,5 +19,6 @@ Export-Package: org.caleydo.view.entourage,
  org.caleydo.view.entourage.contextmenu,
  org.caleydo.view.entourage.datamapping,
  org.caleydo.view.entourage.event,
+ org.caleydo.view.entourage.pathway,
  org.caleydo.view.entourage.ranking,
  org.caleydo.view.entourage.toolbar

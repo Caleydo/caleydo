@@ -372,8 +372,6 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		super.initialize();
 		registerPickingListeners();
 		augmentationRenderer = new GLPathwayAugmentationRenderer(viewFrustum, this);
-
-		augmentationRenderer.setMappingPerspective(null);
 	}
 
 	@Override
@@ -1114,7 +1112,11 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	public void onMapTablePerspective(PathwayMappingEvent event) {
 		if (event.getReceiver() != this && event.getEventSpace() != pathwayPathEventSpace)
 			return;
-		augmentationRenderer.setMappingPerspective(event.getTablePerspective());
+		setOnNodeMappingTablePerspective(event.getTablePerspective());
+	}
+
+	public void setOnNodeMappingTablePerspective(TablePerspective tablePerspective) {
+		augmentationRenderer.setMappingPerspective(tablePerspective);
 		setDisplayListDirty();
 	}
 

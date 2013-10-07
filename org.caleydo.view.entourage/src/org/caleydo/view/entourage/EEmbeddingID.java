@@ -30,30 +30,30 @@ public enum EEmbeddingID {
 	/**
 	 * Embedding id for views that shall be used as one pathway multiform instance for level 1 (highest detail).
 	 */
-	PATHWAY_LEVEL1("org.caleydo.view.subgraph.pathway.multiform.level1", 4),
+	PATHWAY_LEVEL1("org.caleydo.view.subgraph.pathway.multiform.level1", 4, true),
 	/**
 	 * Embedding id for views that shall be used as one pathway multiform instance for level 2 (medium detail).
 	 */
-	PATHWAY_LEVEL2("org.caleydo.view.subgraph.pathway.multiform.level2", 3),
+	PATHWAY_LEVEL2("org.caleydo.view.subgraph.pathway.multiform.level2", 3, true),
 	/**
 	 * Embedding id for views that shall be used as one pathway multiform instance for level 3 (low detail).
 	 */
-	PATHWAY_LEVEL3("org.caleydo.view.subgraph.pathway.multiform.level3", 2),
+	PATHWAY_LEVEL3("org.caleydo.view.subgraph.pathway.multiform.level3", 2, true),
 	/**
 	 * Embedding id for views that shall be used as one pathway multiform instance for level 3 (low detail).
 	 */
-	PATHWAY_LEVEL4("org.caleydo.view.subgraph.pathway.multiform.level4", 1),
+	PATHWAY_LEVEL4("org.caleydo.view.subgraph.pathway.multiform.level4", 1, true),
 
 	/**
 	 * Embedding id for views that shall represent the extracted path, possibly over multiple pathways, in level 1
 	 * (highest detail).
 	 */
-	PATH_LEVEL1("org.caleydo.view.subgraph.path.level1", 4),
+	PATH_LEVEL1("org.caleydo.view.subgraph.path.level1", 4, false),
 	/**
 	 * Embedding id for views that shall represent the extracted path, possibly over multiple pathways, in level 2
 	 * (medium detail).
 	 */
-	PATH_LEVEL2("org.caleydo.view.subgraph.path.level2", 3);
+	PATH_LEVEL2("org.caleydo.view.subgraph.path.level2", 3, false);
 
 	/**
 	 * ID of the embedding that is associated with a certain pathway multiform level.
@@ -66,9 +66,12 @@ public enum EEmbeddingID {
 
 	private final int renderPriority;
 
-	private EEmbeddingID(String id, int renderPriority) {
+	private final boolean isPathway;
+
+	private EEmbeddingID(String id, int renderPriority, boolean isPathway) {
 		this.embeddingID = id;
 		this.renderPriority = renderPriority;
+		this.isPathway = isPathway;
 	}
 
 	/**
@@ -116,5 +119,12 @@ public enum EEmbeddingID {
 			return PATH_LEVEL2;
 		}
 		return null;
+	}
+
+	/**
+	 * @return the isPathway, see {@link #isPathway}
+	 */
+	public boolean isPathway() {
+		return isPathway;
 	}
 }

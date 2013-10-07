@@ -2,6 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="org.caleydo.view.entourage.datamapper" name="Entourage Data Mapper" schema="schema/org.caleydo.view.entourage.datamapper.exsd"/>
+   <extension-point id="org.caleydo.view.entourage.pathway" name="Pathway Visualization" schema="schema/org.caleydo.view.entourage.pathway.exsd"/>
    <extension
          point="org.eclipse.ui.views">
       <view
@@ -103,6 +104,16 @@
             </Embedding>
          </ParentView>
       </EmbeddingInfo>
+   </extension>
+   <extension
+         point="org.caleydo.view.entourage.pathway">
+      <pathway
+            embeddingID="org.caleydo.view.subgraph.pathway.multiform.level4"
+            icon="resources/icons/pathway_lv4.png">
+         <rendererCreator
+               class="org.caleydo.view.entourage.PathwayLevel4Creator">
+         </rendererCreator>
+      </pathway>
    </extension>
 
 </plugin>

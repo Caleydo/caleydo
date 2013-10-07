@@ -33,11 +33,13 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.events.ClearGroupSelectionEvent;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
+import org.caleydo.view.entourage.GLEntourage;
 
 /**
  * Holds the currently selected data sets and stratifications.
@@ -64,8 +66,11 @@ public class DataMappingState {
 
 	private final String eventSpace;
 
-	public DataMappingState(String eventSpace) {
-		this.eventSpace = eventSpace;
+	private final GLEntourage entourage;
+
+	public DataMappingState(GLEntourage entourage) {
+		this.entourage = entourage;
+		this.eventSpace = entourage.getPathEventSpace();
 		applyDefaultState();
 	}
 
@@ -131,6 +136,9 @@ public class DataMappingState {
 		event.setEventSpace(eventSpace);
 		event.setSender(this);
 		EventPublisher.trigger(event);
+		TablePerspectivesChangedEvent e = new TablePerspectivesChangedEvent(entourage);
+		e.setSender(this);
+		EventPublisher.trigger(e);
 	}
 
 	private TablePerspective createTablePerspective(ATableBasedDataDomain dd, Perspective foreignPerspective) {
@@ -177,6 +185,14 @@ public class DataMappingState {
 				addTablePerspective(dd, selectedPerspective);
 			}
 		}
+
+		// also update pathway mapping
+		if (pathwayMappedTablePerspective != null) {
+			setPathwayMappedDataDomain(pathwayMappedTablePerspective.getDataDomain());
+		}
+		TablePerspectivesChangedEvent e = new TablePerspectivesChangedEvent(entourage);
+		e.setSender(this);
+		EventPublisher.trigger(e);
 	}
 
 	/** Returns all data domains that are currently mapped */
