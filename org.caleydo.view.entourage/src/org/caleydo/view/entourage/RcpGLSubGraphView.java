@@ -23,7 +23,6 @@ import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.datadomain.pathway.toolbar.ClearPathAction;
-import org.caleydo.datadomain.pathway.toolbar.SelectFreePathAction;
 import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
 import org.caleydo.view.entourage.datamapping.DataMappers;
 import org.caleydo.view.entourage.toolbar.ClearWorkspaceAction;
@@ -76,9 +75,9 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 		GLEntourage entourage = (GLEntourage) view;
 
 		SelectPathAction selectPathAction = new SelectPathAction(false, entourage.getPathEventSpace());
-		SelectFreePathAction selectFreePathAction = new SelectFreePathAction(false, entourage.getPathEventSpace());
-		selectPathAction.setSelectFreePathAction(selectFreePathAction);
-		selectFreePathAction.setSelectPathAction(selectPathAction);
+		// SelectFreePathAction selectFreePathAction = new SelectFreePathAction(false, entourage.getPathEventSpace());
+		// selectPathAction.setSelectFreePathAction(selectFreePathAction);
+		// selectFreePathAction.setSelectPathAction(selectPathAction);
 		ShowPortalsAction showPortalsAction = new ShowPortalsAction(entourage.getPathEventSpace());
 		// HighlightAllPortalsAction highlightAllPortalsAction = new HighlightAllPortalsAction(subgraph);
 		// subgraph.setHighlightAllPortalsButton(highlightAllPortalsAction);
@@ -87,7 +86,7 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 		// if (view instanceof GLSubGraph)
 		// ((GLSubGraph) view).setSelectPathAction(selectPathAction);
 		toolBarManager.add(selectPathAction);
-		toolBarManager.add(selectFreePathAction);
+		// toolBarManager.add(selectFreePathAction);
 		toolBarManager.add(new ClearPathAction(entourage.getPathEventSpace()));
 		toolBarManager.add(showPortalsAction);
 		toolBarManager.add(new ShowDataMapperAction());
