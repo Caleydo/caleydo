@@ -72,7 +72,7 @@ public final class ImportExternalScoreCommand implements Runnable {
 			return Collections.emptyList();
 		IDType target = inDimensionDirection ? d.getDimensionIDType() : d.getRecordIDType();
 
-		Collection<ISerializeableScore> scores = new ExternalIDTypeScoreParser(spec, target).call();
+		Collection<ISerializeableScore> scores = new ExternalIDTypeScoreParser(spec, target, d).call();
 		return scores;
 	}
 

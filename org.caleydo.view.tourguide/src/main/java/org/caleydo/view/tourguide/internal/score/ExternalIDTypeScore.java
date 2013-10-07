@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -18,6 +17,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataSupportDefinitions;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
@@ -26,6 +28,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.view.tourguide.api.external.ScoreParseSpecification;
 import org.caleydo.view.tourguide.api.score.ECombinedOperator;
+import org.caleydo.view.tourguide.internal.serialize.DataDomainAdapter;
 import org.caleydo.view.tourguide.internal.serialize.IDTypeAdapter;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
@@ -51,6 +54,8 @@ public final class ExternalIDTypeScore extends AExternalScore {
 	private ECombinedOperator operator;
 	private boolean isRank;
 	private Map<Integer, Double> scores = new HashMap<>();
+	@XmlJavaTypeAdapter(DataDomainAdapter.class)
+	private ATableBasedDataDomain dataDomain;
 
 	// cache my id type mapping results
 	@XmlTransient
@@ -67,17 +72,19 @@ public final class ExternalIDTypeScore extends AExternalScore {
 				}
 			});
 
+
 	public ExternalIDTypeScore() {
 		super();
 	}
 
 	public ExternalIDTypeScore(String label, ScoreParseSpecification spec, IDType idType, boolean isRank,
-			Map<Integer, Double> scores) {
+			ATableBasedDataDomain dataDomain, Map<Integer, Double> scores) {
 		super(label, spec);
 		this.idType = idType;
 		this.isRank = isRank;
 		this.operator = spec.getOperator();
 		this.scores.putAll(scores);
+		this.dataDomain = dataDomain;
 	}
 
 	public boolean isCompatible(IDType type) {
@@ -100,43 +107,48 @@ public final class ExternalIDTypeScore extends AExternalScore {
 
 	@Override
 	public double apply(IComputeElement elem, Group g) {
-		if (!isCompatible(elem.getIdType()) && !isCompatible(elem.getDimensionIdType())) {
-			// can't map
-			return Double.NaN;
+		final IDType record = elem.getIdType();
+		final IDType dim = elem.getDimensionIdType();
+		if (dataDomain == null) { //backward case
+			if (isCompatible(record)) {
+				return addScores(record, elem.of(g));
+			} else if (isCompatible(dim)) { // for all dimensions
+				return addScores(dim, elem.getDimensionIDs());
+			}
+		} else {
+			final boolean inDimension = dataDomain.getDimensionIDCategory().isOfCategory(this.idType);
+			final boolean isCompatibleDataDomain = isCompatible(elem.getDataDomain(), inDimension);
+			if (!isCompatibleDataDomain)
+				return Double.NaN;
+			if (!inDimension && isCompatible(record)) {
+				return addScores(record, elem.of(g));
+			} else if (inDimension && isCompatible(dim)) { // for all dimensions
+				return addScores(dim, elem.getDimensionIDs());
+			}
 		}
-		Collection<Double> scores = new ArrayList<>();
+		return Double.NaN;
+	}
 
-		if (isCompatible(elem.getIdType())) {
-			final IDType target = elem.getIdType();
-			try {
-				for (Integer id : elem.of(g)) {
-					Optional<Integer> my = mapping.get(Pair.make(target, id));
-					if (!my.isPresent())
-						continue;
-					Double s = this.scores.get(my.get());
-					if (s == null)
-						continue;
-					scores.add(s);
-				}
-			} catch (ExecutionException e) {
-				log.warn("can't get mapping value", e);
-			}
-		} else if (isCompatible(elem.getDimensionIdType())) {
-			// for all dimensions
-			final IDType target = elem.getDimensionIdType();
-			try {
-				for (Integer id : elem.getDimensionIDs()) {
-					Optional<Integer> my = mapping.get(Pair.make(target, id));
-					if (!my.isPresent())
-						continue;
-					Double s = this.scores.get(my.get());
-					if (s == null)
-						continue;
-					scores.add(s);
-				}
-			} catch (ExecutionException e) {
-				log.warn("can't get mapping value", e);
-			}
+	private boolean isCompatible(IDataDomain current, boolean inDimension) {
+		if (inDimension) {
+			// current must be categorical datadomain: mutation, copy-number
+			return DataSupportDefinitions.categoricalTables.apply(current);
+			// return Objects.equals(current, dataDomain); //same data domain
+		} else {
+			return true;
+		}
+	}
+
+	private double addScores(final IDType target, final Iterable<Integer> ids) {
+		Collection<Double> scores = new ArrayList<>();
+		for (Integer id : ids) {
+			Optional<Integer> my = mapping.getUnchecked(Pair.make(target, id));
+			if (!my.isPresent())
+				continue;
+			Double s = this.scores.get(my.get());
+			if (s == null)
+				continue;
+			scores.add(s);
 		}
 		if (scores.isEmpty())
 			return Double.NaN;
@@ -159,13 +171,15 @@ public final class ExternalIDTypeScore extends AExternalScore {
 		if (getClass() != obj.getClass())
 			return false;
 		ExternalIDTypeScore other = (ExternalIDTypeScore) obj;
-		if (Objects.equal(idType, other.idType))
+		if (!Objects.equal(idType, other.idType))
 			return false;
-		if (Objects.equal(isRank, other.isRank))
+		if (!Objects.equal(isRank, other.isRank))
 			return false;
-		if (Objects.equal(operator, other.operator))
+		if (!Objects.equal(operator, other.operator))
 			return false;
-		if (Objects.equal(getLabel(), other.getLabel()))
+		if (!Objects.equal(getLabel(), other.getLabel()))
+			return false;
+		if (!Objects.equal(dataDomain, other.dataDomain))
 			return false;
 		return true;
 	}

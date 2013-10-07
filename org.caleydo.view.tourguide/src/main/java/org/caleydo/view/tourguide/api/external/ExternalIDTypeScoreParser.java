@@ -8,6 +8,7 @@ package org.caleydo.view.tourguide.api.external;
 import java.util.Map;
 import java.util.Set;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
@@ -25,14 +26,16 @@ public class ExternalIDTypeScoreParser extends AExternalScoreParser<ScoreParseSp
 	private final IIDTypeMapper<String, Integer> idMapper;
 	private final IDTypeParsingRules parsingRules;
 
+	private final ATableBasedDataDomain dataDomain;
 
-	public ExternalIDTypeScoreParser(ScoreParseSpecification spec, IDType targetIDType) {
+	public ExternalIDTypeScoreParser(ScoreParseSpecification spec, IDType targetIDType, ATableBasedDataDomain dataDomain) {
 		super(spec);
 		this.targetIDType = targetIDType;
 		this.sourceIDType = IDType.getIDType(spec.getRowIDSpecification().getIdType());
 		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
 				this.sourceIDType.getIDCategory());
 		idMapper = idMappingManager.getIDTypeMapper(sourceIDType, targetIDType);
+		this.dataDomain = dataDomain;
 
 		this.parsingRules = extractParsingRules(this.sourceIDType, spec.getRowIDSpecification());
 	}
@@ -68,6 +71,6 @@ public class ExternalIDTypeScoreParser extends AExternalScoreParser<ScoreParseSp
 	 */
 	@Override
 	protected ExternalIDTypeScore createScore(String label, boolean isRank, Map<Integer, Double> scores) {
-		return new ExternalIDTypeScore(label, spec, this.targetIDType, isRank, scores);
+		return new ExternalIDTypeScore(label, spec, this.targetIDType, isRank, dataDomain, scores);
 	}
 }
