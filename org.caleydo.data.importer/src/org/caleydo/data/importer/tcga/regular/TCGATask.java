@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.HTMLFormatter;
 import org.caleydo.core.io.MetaDataElement;
 import org.caleydo.core.serialize.ProjectMetaData;
@@ -130,19 +129,19 @@ public class TCGATask extends ATCGATask {
 	private void loadExternalScores(ScoreParseSpecification spec, Collection<ATableBasedDataDomain> dataDomains) {
 		// spec.set
 		// find mutation or copy number for the target type
-		IDType targetIDType = null;
+		ATableBasedDataDomain target = null;
 		for (ATableBasedDataDomain dataDomain : dataDomains) {
 			if (dataDomain.getLabel().contains("Mutation")) {
-				targetIDType = dataDomain.getDimensionIDType();
+				target = dataDomain;
 				break;
 			}
 		}
-		if (targetIDType == null) {
+		if (target == null) {
 			System.err.println("skipping loading mutsig values as there is no mutation data domain");
 			return;
 		}
 
-		ExternalIDTypeScoreParser parser = new ExternalIDTypeScoreParser(spec, targetIDType);
+		ExternalIDTypeScoreParser parser = new ExternalIDTypeScoreParser(spec, target.getDimensionIDType(), target);
 		Collection<ISerializeableScore> scores = parser.call();
 		final Scores s = Scores.get();
 		for (ISerializeableScore score : scores) {
