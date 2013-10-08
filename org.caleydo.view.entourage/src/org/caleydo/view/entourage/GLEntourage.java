@@ -19,6 +19,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.MinSizeUpdateEvent;
@@ -64,12 +65,12 @@ import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
 import org.caleydo.view.entourage.GLWindow.ICloseWindowListener;
 import org.caleydo.view.entourage.MultiLevelSlideInElement.IWindowState;
 import org.caleydo.view.entourage.SlideInElement.ESlideInElementPosition;
-import org.caleydo.view.entourage.datamapping.DataMappers;
 import org.caleydo.view.entourage.datamapping.DataMappingState;
-import org.caleydo.view.entourage.datamapping.IDataMapper;
+import org.caleydo.view.entourage.datamapping.DataMappingWizard;
 import org.caleydo.view.entourage.event.AddPathwayEvent;
 import org.caleydo.view.entourage.event.AddPathwayEventFactory;
 import org.caleydo.view.entourage.event.ClearWorkspaceEvent;
@@ -89,8 +90,6 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	public static String VIEW_TYPE = "org.caleydo.view.entourage";
 
 	public static String VIEW_NAME = "Entourage";
-
-	private IDataMapper dataMapper;
 
 	// private List<TablePerspective> tablePerspectives = new ArrayList<>();
 
@@ -216,6 +215,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	 */
 	protected final DataMappingState dataMappingState;
 
+	private SelectPathAction selectPathAction;
+
 	/**
 	 * Constructor.
 	 *
@@ -226,7 +227,6 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	public GLEntourage(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 		dataMappingState = new DataMappingState(this);
-		dataMapper = DataMappers.getDataMapper();
 		// experimentalDataMappingElement = new GLExperimentalDataMapping(this);
 
 		AnimatedGLElementContainer column = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(false, 10,
@@ -402,6 +402,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		pathInfo.window.addSlideInElement(slideInElement);
 		pathInfo.window.setShowCloseButton(false);
 		pathInfo.window.setShowViewSwitchingBar(false);
+		pathInfo.window.contentContainer.add(new DataMappingWizard(this));
 		// This assumes that a path level 2 view exists.
 		int rendererID = pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL2).get(0);
 		if (pathInfo.multiFormRenderer.getActiveRendererID() != rendererID) {
@@ -533,6 +534,10 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	public void registerEventListeners() {
 		super.registerEventListeners();
 		eventListeners.register(pathEventSpaceHandler, pathEventSpace);
+	}
+
+	public EventListenerManager getEventListenerManager() {
+		return eventListeners;
 	}
 
 	@Override
@@ -1463,5 +1468,20 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	 */
 	public DataMappingState getDataMappingState() {
 		return dataMappingState;
+	}
+
+	/**
+	 * @param selectPathAction
+	 *            setter, see {@link selectPathAction}
+	 */
+	public void setSelectPathAction(SelectPathAction selectPathAction) {
+		this.selectPathAction = selectPathAction;
+	}
+
+	/**
+	 * @return the selectPathAction, see {@link #selectPathAction}
+	 */
+	public SelectPathAction getSelectPathAction() {
+		return selectPathAction;
 	}
 }
