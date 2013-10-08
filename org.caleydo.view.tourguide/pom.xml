@@ -10,8 +10,4 @@
 	</parent>
 	<artifactId>org.caleydo.view.tourguide</artifactId>
 	<packaging>eclipse-plugin</packaging>
-	
-	<build>
-		<sourceDirectory>src</sourceDirectory>
-	</build>
 </project>

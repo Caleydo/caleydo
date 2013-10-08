@@ -47,10 +47,13 @@
 		<module>org.caleydo.view.stratomex</module>
 		<module>org.caleydo.view.search</module>
 		<module>org.caleydo.view.table</module>
-		<module>org.caleydo.view.tourguide</module>
 		<module>org.caleydo.view.treemap</module>
 		
 		<module>org.caleydo.vis.lineup</module>
+		
+		<module>org.caleydo.view.tourguide</module>
+		<module>org.caleydo.view.tourguide.stratomex</module>
+		<module>org.caleydo.view.tourguide.entourage</module>
 		
 		<module>org.caleydo.data.importer</module>
 

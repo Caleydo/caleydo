@@ -92,6 +92,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	protected final boolean showThumbnail;
 
 	private boolean isControlKeyPressed = false;
+	private boolean isShiftKeyPressed = false;
 
 	/**
 	 * Context menu items that shall be displayed when right-clicking on a path node.
@@ -128,7 +129,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 		if (showThumbnail) {
 			PathwayTextureCreator creator = new PathwayTextureCreator();
-			pathwayView = (GLPathway) creator.createRemoteView(view, tablePerspectives, eventSpace);
+			pathwayView = (GLPathway) creator.create(view, pathway, tablePerspectives, null, eventSpace);
 
 			ElementLayout pathwayTextureLayout = new ElementLayout();
 			pathwayTextureLayout.setPixelSizeY(pathwayView.getMinPixelHeight());
@@ -624,11 +625,13 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		@Override
 		public void keyPressed(IKeyEvent e) {
 			isControlKeyPressed = e.isControlDown();
+			isShiftKeyPressed = e.isShiftDown();
 		}
 
 		@Override
 		public void keyReleased(IKeyEvent e) {
 			isControlKeyPressed = e.isControlDown();
+			isShiftKeyPressed = e.isShiftDown();
 		}
 
 	}
@@ -645,6 +648,13 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	 */
 	public boolean isControlKeyPressed() {
 		return isControlKeyPressed;
+	}
+
+	/**
+	 * @return the isShiftKeyPressed, see {@link #isShiftKeyPressed}
+	 */
+	public boolean isShiftKeyPressed() {
+		return isShiftKeyPressed;
 	}
 
 	public void contextPathsChanged() {

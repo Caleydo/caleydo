@@ -13,6 +13,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
+import org.caleydo.core.view.opengl.util.text.ETextStyle;
 
 /**
  * factory class for {@link IGLRenderer}
@@ -73,8 +74,12 @@ public final class GLRenderers {
 	public static IGLRenderer drawText(final String text, final VAlign valign) {
 		return drawText(text, valign, GLPadding.ZERO);
 	}
-
 	public static IGLRenderer drawText(final String text, final VAlign valign, final GLPadding padding) {
+		return drawText(text, valign, padding, ETextStyle.PLAIN);
+	}
+
+	public static IGLRenderer drawText(final String text, final VAlign valign, final GLPadding padding,
+			final ETextStyle style) {
 		return new IGLRenderer() {
 
 			@Override
@@ -83,7 +88,7 @@ public final class GLRenderers {
 				if (text.indexOf('\n') >= 0) {
 					t = text.substring(0, text.indexOf('\n'));
 				}
-				g.drawText(t, padding.left, padding.top, w - padding.hor(), h - padding.vert(), valign);
+				g.drawText(t, padding.left, padding.top, w - padding.hor(), h - padding.vert(), valign, style);
 			}
 
 			@Override

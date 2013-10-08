@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.model;
 
+import org.caleydo.view.tourguide.api.model.MaxGroupCombiner;
 import org.caleydo.vis.lineup.model.IRow;
 
 import com.google.common.base.Function;

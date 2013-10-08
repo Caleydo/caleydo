@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.ui,
  org.caleydo.datadomain.genetic;bundle-version="3.0.5.qualifier",
  org.caleydo.datadomain.pathway;bundle-version="3.0.5.qualifier",
  org.caleydo.util.bubblesets;bundle-version="3.0.5.qualifier",
- org.caleydo.vis.lineup;bundle-version="3.0.5.qualifier"
+ org.caleydo.vis.lineup;bundle-version="3.0.5.qualifier",
+ org.caleydo.view.tourguide;bundle-version="3.0.5"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.caleydo.view.entourage,
@@ -18,5 +19,6 @@ Export-Package: org.caleydo.view.entourage,
  org.caleydo.view.entourage.contextmenu,
  org.caleydo.view.entourage.datamapping,
  org.caleydo.view.entourage.event,
+ org.caleydo.view.entourage.pathway,
  org.caleydo.view.entourage.ranking,
  org.caleydo.view.entourage.toolbar

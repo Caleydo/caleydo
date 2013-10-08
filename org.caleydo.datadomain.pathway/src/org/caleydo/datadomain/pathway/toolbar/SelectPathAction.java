@@ -20,19 +20,13 @@ public class SelectPathAction extends SimpleAction {
 	public static final String LABEL = "Toggle path selection (Ctrl + O)";
 	public static final String ICON = "resources/icons/view/pathway/path_selection.png";
 	private String eventSpace;
-	private SelectFreePathAction selectFreePathAction;
+
+	// private SelectFreePathAction selectFreePathAction;
 
 	public SelectPathAction(boolean isChecked, String eventSpace) {
 		super(LABEL, ICON);
 		setChecked(isChecked);
 		this.eventSpace = eventSpace;
-	}
-
-	public SelectPathAction(boolean isChecked, String eventSpace, SelectFreePathAction selectFreePathAction) {
-		super(LABEL, ICON);
-		setChecked(isChecked);
-		this.eventSpace = eventSpace;
-		this.selectFreePathAction = selectFreePathAction;
 	}
 
 	@Override
@@ -42,8 +36,8 @@ public class SelectPathAction extends SimpleAction {
 			EnableFreePathSelectionEvent e = new EnableFreePathSelectionEvent(false);
 			e.setEventSpace(eventSpace);
 			GeneralManager.get().getEventPublisher().triggerEvent(e);
-			if (selectFreePathAction != null)
-				selectFreePathAction.setChecked(false);
+			// if (selectFreePathAction != null)
+			// selectFreePathAction.setChecked(false);
 		}
 
 		EnablePathSelectionEvent event = new EnablePathSelectionEvent(isChecked());
@@ -51,11 +45,11 @@ public class SelectPathAction extends SimpleAction {
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
-	/**
-	 * @param selectFreePathAction
-	 *            setter, see {@link selectFreePathAction}
-	 */
-	public void setSelectFreePathAction(SelectFreePathAction selectFreePathAction) {
-		this.selectFreePathAction = selectFreePathAction;
-	}
+	// /**
+	// * @param selectFreePathAction
+	// * setter, see {@link selectFreePathAction}
+	// */
+	// public void setSelectFreePathAction(SelectFreePathAction selectFreePathAction) {
+	// this.selectFreePathAction = selectFreePathAction;
+	// }
 }

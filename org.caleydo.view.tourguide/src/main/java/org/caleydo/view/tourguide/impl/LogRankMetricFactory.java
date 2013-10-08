@@ -23,9 +23,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
-import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
-import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
+import org.caleydo.view.tourguide.api.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
 import org.caleydo.view.tourguide.api.score.GroupSelectors;
@@ -41,7 +39,6 @@ import org.caleydo.view.tourguide.api.state.PreviewRenderer;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.impl.algorithm.LogRank;
-import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
@@ -134,8 +131,8 @@ public class LogRankMetricFactory implements IScoreFactory {
 		}
 
 		@Override
-		public void onUpdate(UpdateNumericalPreviewEvent event, IReactions adapter) {
-			TablePerspective numerical = event.getTablePerspective();
+		public void onUpdateOther(TablePerspective tablePerspective, IReactions adapter) {
+			TablePerspective numerical = tablePerspective;
 			adapter.replaceTemplate(new PreviewRenderer(adapter.createPreview(numerical), adapter.getGLView(),
 					"Browse for a stratification"));
 
@@ -154,13 +151,10 @@ public class LogRankMetricFactory implements IScoreFactory {
 		}
 
 		@Override
-		public void onUpdate(UpdateStratificationPreviewEvent event, IReactions adapter) {
-			TablePerspective tp = event.getTablePerspective();
-			if (DataDomainOracle.isCategoricalDataDomain(tp.getDataDomain()))
-				adapter.replaceTemplate(tp, new CategoricalDataConfigurer(tp), true);
-			else
-				adapter.replaceTemplate(tp, null, true);
-			adapter.replaceClinicalTemplate(tp.getRecordPerspective(), numerical, true, true);
+		public void onUpdateStratification(TablePerspective tablePerspective, IReactions adapter) {
+			TablePerspective tp = tablePerspective;
+			adapter.replaceTemplate(tp, true);
+			adapter.replaceOtherTemplate(tp.getRecordPerspective(), numerical, true, true);
 		}
 	}
 
