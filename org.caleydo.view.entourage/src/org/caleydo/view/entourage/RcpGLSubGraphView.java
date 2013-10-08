@@ -75,6 +75,7 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 		GLEntourage entourage = (GLEntourage) view;
 
 		SelectPathAction selectPathAction = new SelectPathAction(false, entourage.getPathEventSpace());
+		entourage.setSelectPathAction(selectPathAction);
 		// SelectFreePathAction selectFreePathAction = new SelectFreePathAction(false, entourage.getPathEventSpace());
 		// selectPathAction.setSelectFreePathAction(selectFreePathAction);
 		// selectFreePathAction.setSelectPathAction(selectPathAction);

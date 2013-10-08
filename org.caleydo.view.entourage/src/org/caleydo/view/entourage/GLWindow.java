@@ -44,6 +44,7 @@ public class GLWindow extends GLElementContainer {
 	protected final GLTitleBar titleBar;
 	protected final GLPathwayBackground background;
 	protected final GLElementContainer baseContainer;
+	protected final GLElementContainer contentContainer;
 	protected boolean active = false;
 	protected boolean showCloseButton = true;
 
@@ -54,6 +55,8 @@ public class GLWindow extends GLElementContainer {
 		setLayout(GLLayouts.LAYERS);
 		baseContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
 		baseContainer.add(titleBar);
+		contentContainer = new GLElementContainer(GLLayouts.LAYERS);
+		baseContainer.add(contentContainer);
 		titleBar.closeButton.setVisibility(EVisibility.NONE);
 		// contentContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(true, 0, new GLPadding(3)));
 		// baseContainer.add(contentContainer);
@@ -134,8 +137,8 @@ public class GLWindow extends GLElementContainer {
 	 */
 	public void setContent(GLElement content) {
 		if (this.content != null)
-			baseContainer.remove(this.content);
-		baseContainer.add(content);
+			contentContainer.remove(this.content);
+		contentContainer.add(content);
 		this.content = content;
 	}
 
