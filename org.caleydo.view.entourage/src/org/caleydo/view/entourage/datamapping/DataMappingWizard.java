@@ -6,6 +6,7 @@
 package org.caleydo.view.entourage.datamapping;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -13,6 +14,7 @@ import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -22,6 +24,7 @@ import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
+import org.caleydo.view.entourage.EEmbeddingID;
 import org.caleydo.view.entourage.GLEntourage;
 import org.eclipse.swt.widgets.Display;
 
@@ -50,13 +53,19 @@ public class DataMappingWizard extends GLElementContainer {
 	}
 
 	private GLEntourage entourage;
+	private GLElementContainer pathAndDataLayer;
+	private GLElementContainer dataLayer;
 
 	public DataMappingWizard(GLEntourage entourage) {
 		this.entourage = entourage;
 		entourage.getEventListenerManager().register(this, entourage.getPathEventSpace());
+		setLayout(GLLayouts.LAYERS);
+		setupPathAndDataLayer();
+		setupDataLayer();
+	}
 
-		setLayout(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
-
+	private void setupPathAndDataLayer() {
+		pathAndDataLayer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
 		GLElementContainer selectPathButtonContainer = createButtonLayout("resources/icons/icon_32.png",
 				new IPickingListener() {
 					@Override
@@ -89,17 +98,49 @@ public class DataMappingWizard extends GLElementContainer {
 					}
 				});
 
-		add(createSpacing());
-		add(new TextLineRenderer("To visualize"));
-		add(new TextLineRenderer("experimental data"));
-		add(new TextLineRenderer("select a path"));
-		add(new TextLineRenderer("in a pathway"));
-		add(selectPathButtonContainer);
-		add(new TextLineRenderer("and use LineUp"));
-		add(openDataMapperButtonContainer);
-		add(new TextLineRenderer("to specify"));
-		add(new TextLineRenderer("which data to show."));
-		add(createSpacing());
+		pathAndDataLayer.add(createSpacing(0.5f));
+		pathAndDataLayer.add(new TextLineRenderer("To visualize"));
+		pathAndDataLayer.add(new TextLineRenderer("experimental data"));
+		pathAndDataLayer.add(new TextLineRenderer("select a path"));
+		pathAndDataLayer.add(new TextLineRenderer("in a pathway"));
+		pathAndDataLayer.add(selectPathButtonContainer);
+		pathAndDataLayer.add(new TextLineRenderer("and use LineUp"));
+		pathAndDataLayer.add(openDataMapperButtonContainer);
+		pathAndDataLayer.add(new TextLineRenderer("to specify"));
+		pathAndDataLayer.add(new TextLineRenderer("which data to show."));
+		pathAndDataLayer.add(createSpacing(0.5f));
+
+		add(pathAndDataLayer);
+	}
+
+	private void setupDataLayer() {
+		dataLayer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(true, 1, GLPadding.ZERO));
+
+		GLElementContainer column = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
+
+		GLElementContainer openDataMapperButtonContainer = createButtonLayout(
+				"resources/icons/view/pathway/data_mapping.png", new IPickingListener() {
+					@Override
+					public void pick(Pick pick) {
+						if (pick.getPickingMode() == PickingMode.CLICKED) {
+							DataMappers.getDataMapper().show();
+						}
+					}
+				});
+
+		column.add(createSpacing(0.5f));
+		column.add(new TextLineRenderer("Use LineUp"));
+		column.add(openDataMapperButtonContainer);
+		column.add(new TextLineRenderer("to specify"));
+		column.add(new TextLineRenderer("the experimental data"));
+		column.add(new TextLineRenderer("to show."));
+		column.add(createSpacing(0.5f));
+
+		dataLayer.setVisibility(EVisibility.NONE);
+		dataLayer.add(createSpacing(0.4f));
+		dataLayer.add(column);
+
+		add(dataLayer);
 	}
 
 	private GLElementContainer createButtonLayout(String iconPath, IPickingListener pickingListener) {
@@ -111,16 +152,16 @@ public class DataMappingWizard extends GLElementContainer {
 
 		GLElementContainer row = new GLElementContainer(new GLSizeRestrictiveFlowLayout(true, 1, new GLPadding(2)));
 		row.setSize(Float.NaN, 32);
-		row.add(createSpacing());
+		row.add(createSpacing(0.5f));
 		row.add(button);
-		row.add(createSpacing());
+		row.add(createSpacing(0.5f));
 
 		return row;
 	}
 
-	private GLElement createSpacing() {
+	private GLElement createSpacing(float relativeSpacing) {
 		GLElement spacing = new GLElement();
-		spacing.setLayoutData(0.5f);
+		spacing.setLayoutData(relativeSpacing);
 		return spacing;
 	}
 
@@ -143,9 +184,38 @@ public class DataMappingWizard extends GLElementContainer {
 	public void onPathwayPathSelected(PathwayPathSelectionEvent e) {
 
 		if (!e.getPathSegments().isEmpty()) {
-			setVisibility(EVisibility.NONE);
+			pathAndDataLayer.setVisibility(EVisibility.NONE);
+			updateDataLayerVisibility();
 		} else {
-			setVisibility(EVisibility.PICKABLE);
+			pathAndDataLayer.setVisibility(EVisibility.VISIBLE);
+			dataLayer.setVisibility(EVisibility.NONE);
+		}
+	}
+
+	@ListenTo
+	public void onTablePerspectivesChanged(TablePerspectivesChangedEvent e) {
+		if (e.getView() == entourage) {
+			updateDataLayerVisibility();
+		}
+	}
+
+	public void onPathLevelChanged() {
+		updateDataLayerVisibility();
+	}
+
+	private void updateDataLayerVisibility() {
+		if (entourage.getTablePerspectives().isEmpty()) {
+			if (pathAndDataLayer.getVisibility() != EVisibility.NONE) {
+				dataLayer.setVisibility(EVisibility.NONE);
+			} else {
+				if (entourage.getCurrentlyDisplayedPathLevel() == EEmbeddingID.PATH_LEVEL1) {
+					dataLayer.setVisibility(EVisibility.VISIBLE);
+				} else {
+					dataLayer.setVisibility(EVisibility.NONE);
+				}
+			}
+		} else {
+			dataLayer.setVisibility(EVisibility.NONE);
 		}
 	}
 }

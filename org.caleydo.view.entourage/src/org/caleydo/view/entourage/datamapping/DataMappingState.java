@@ -163,6 +163,10 @@ public class DataMappingState {
 
 		mappedTablePerspectives.remove(hashDDToTablePerspective.get(dd));
 		hashDDToTablePerspective.remove(dd);
+
+		TablePerspectivesChangedEvent e = new TablePerspectivesChangedEvent(entourage);
+		e.setSender(this);
+		EventPublisher.trigger(e);
 	}
 
 	/** Removes a previous and sets the new perspective on the event space */

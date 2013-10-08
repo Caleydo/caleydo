@@ -128,6 +128,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	 */
 	private MultiFormInfo pathInfo;
 
+	private DataMappingWizard dataMappingWizard;
+
 	private boolean wasContextChanged = false;
 
 	// /**
@@ -402,7 +404,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		pathInfo.window.addSlideInElement(slideInElement);
 		pathInfo.window.setShowCloseButton(false);
 		pathInfo.window.setShowViewSwitchingBar(false);
-		pathInfo.window.contentContainer.add(new DataMappingWizard(this));
+		dataMappingWizard = new DataMappingWizard(this);
+		pathInfo.window.contentContainer.add(dataMappingWizard);
 		// This assumes that a path level 2 view exists.
 		int rendererID = pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL2).get(0);
 		if (pathInfo.multiFormRenderer.getActiveRendererID() != rendererID) {
@@ -835,6 +838,11 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			}
 
 			pathwayRow.relayout();
+		}
+
+		if (multiFormRenderer == pathInfo.multiFormRenderer) {
+			if (dataMappingWizard != null)
+				dataMappingWizard.onPathLevelChanged();
 		}
 	}
 
@@ -1323,7 +1331,6 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	@Override
 	public List<TablePerspective> getTablePerspectives() {
-		// TODO Auto-generated method stub
 		return dataMappingState.getTablePerspectives();
 	}
 
@@ -1484,4 +1491,9 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	public SelectPathAction getSelectPathAction() {
 		return selectPathAction;
 	}
+
+	public EEmbeddingID getCurrentlyDisplayedPathLevel() {
+		return pathInfo.getCurrentEmbeddingID();
+	}
+
 }
