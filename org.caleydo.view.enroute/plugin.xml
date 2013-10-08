@@ -66,9 +66,9 @@
       <EmbeddingInfo
             viewID="org.caleydo.view.enroute">
          <ParentView
-               viewID="org.caleydo.view.subgraph">
+               viewID="org.caleydo.view.entourage">
             <Embedding
-                  embeddingID="org.caleydo.view.subgraph.path.level1"
+                  embeddingID="org.caleydo.view.entourage.path.level1"
                   icon="resources/icons/enroute.png"
                   isDefaultView="false"
                   visInfo="org.caleydo.view.enroute.enRouteVisInfo">
@@ -81,9 +81,9 @@
       <EmbeddingInfo
             viewID="org.caleydo.view.enroute.path">
          <ParentView
-               viewID="org.caleydo.view.subgraph">
+               viewID="org.caleydo.view.entourage">
             <Embedding
-                  embeddingID="org.caleydo.view.subgraph.path.level2"
+                  embeddingID="org.caleydo.view.entourage.path.level2"
                   icon="resources/icons/path.png"
                   isDefaultView="true"
                   visInfo="org.caleydo.view.enroute.path.PathVisInfo">
@@ -93,53 +93,26 @@
             </Embedding>
          </ParentView>
       </EmbeddingInfo>
-      <EmbeddingInfo
-            viewID="org.caleydo.view.enroute.contextual.paths.thumbnail">
-         <ParentView
-               viewID="org.caleydo.view.subgraph">
-            <Embedding
-                  embeddingID="org.caleydo.view.subgraph.pathway.multiform.level2"
-                  icon="resources/icons/pathway_lv2_2.png"
-                  isDefaultView="false"
-                  visInfo="org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo">
-               <RendererCreator
-                     class="org.caleydo.view.enroute.path.ThumbnailedContextualPathsCreator">
-               </RendererCreator>
-            </Embedding>
-         </ParentView>
-      </EmbeddingInfo>
-      <EmbeddingInfo
-            viewID="org.caleydo.view.enroute.contextual.paths">
-         <ParentView
-               viewID="org.caleydo.view.subgraph">
-            <Embedding
-                  embeddingID="org.caleydo.view.subgraph.pathway.multiform.level3"
-                  icon="resources/icons/pathway_lv3.png"
-                  isDefaultView="false"
-                  visInfo="org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo">
-               <RendererCreator
-                     class="org.caleydo.view.enroute.path.ContextualPathsCreator">
-               </RendererCreator>
-            </Embedding>
-         </ParentView>
-      </EmbeddingInfo>
    </extension>
    <extension
-         point="org.caleydo.view.entourage.pathway">
-      <pathway
-            embeddingID="org.caleydo.view.subgraph.pathway.multiform.level2"
-            icon="resources/icons/pathway_lv2_2.png">
-         <rendererCreator
-               class="org.caleydo.view.enroute.path.EntourageLevel2PathwayCreator">
-         </rendererCreator>
-      </pathway>
-      <pathway
-            embeddingID="org.caleydo.view.subgraph.pathway.multiform.level3"
-            icon="resources/icons/pathway_lv3.png">
-         <rendererCreator
-               class="org.caleydo.view.enroute.path.EntourageLevel3PathwayCreator">
-         </rendererCreator>
-      </pathway>
+         point="org.caleydo.datadomain.pathway.embeddedPathway">
+      <parent
+            viewID="org.caleydo.view.entourage">
+         <pathway
+               embeddingID="org.caleydo.view.entourage.pathway.multiform.level2"
+               icon="resources/icons/pathway_lv2_2.png">
+            <rendererCreator
+                  class="org.caleydo.view.enroute.path.EntourageLevel2PathwayCreator">
+            </rendererCreator>
+         </pathway>
+         <pathway
+               embeddingID="org.caleydo.view.entourage.pathway.multiform.level3"
+               icon="resources/icons/pathway_lv3.png">
+            <rendererCreator
+                  class="org.caleydo.view.enroute.path.EntourageLevel3PathwayCreator">
+            </rendererCreator>
+         </pathway>
+      </parent>
    </extension>
 
 </plugin>

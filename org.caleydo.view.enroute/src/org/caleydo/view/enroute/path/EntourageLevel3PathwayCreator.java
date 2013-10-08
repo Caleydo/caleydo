@@ -5,8 +5,8 @@ import java.util.List;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.datadomain.pathway.embedding.IPathwayRendererCreator;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.entourage.pathway.IPathwayRendererCreator;
 
 public class EntourageLevel3PathwayCreator implements IPathwayRendererCreator {
 

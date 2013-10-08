@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.caleydo.view.entourage" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.caleydo.datadomain.pathway" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.caleydo.view.entourage" id="org.caleydo.view.entourage.pathway" name="Pathway Visualization"/>
+         <meta.schema plugin="org.caleydo.datadomain.pathway" id="org.caleydo.datadomain.pathway.embeddedPathway" name="Embedded Pathway"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="pathway"/>
+            <element ref="parent"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -41,6 +41,24 @@
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="parent">
+      <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="pathway"/>
+         </sequence>
+         <attribute name="viewID" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier" basedOn="org.caleydo.view.ViewEmbeddingProvider/Provider/@id"/>
                </appinfo>
             </annotation>
          </attribute>
@@ -84,7 +102,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.caleydo.view.entourage.pathway.IPathwayViewCreator"/>
+                  <meta.attribute kind="java" basedOn=":org.caleydo.datadomain.pathway.embedding.IPathwayViewCreator"/>
                </appinfo>
             </annotation>
          </attribute>
@@ -99,7 +117,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.caleydo.view.entourage.pathway.IPathwayRendererCreator"/>
+                  <meta.attribute kind="java" basedOn=":org.caleydo.datadomain.pathway.embedding.IPathwayRendererCreator"/>
                </appinfo>
             </annotation>
          </attribute>

@@ -13,8 +13,8 @@ import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
+import org.caleydo.datadomain.pathway.embedding.IPathwayViewCreator;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.entourage.pathway.IPathwayViewCreator;
 
 /**
  * @author Christian
@@ -36,7 +36,6 @@ public class PathwayTextureCreator implements IPathwayViewCreator {
 		for (TablePerspective tablePerspective : tablePerspectives) {
 			pathwayView.addTablePerspective(tablePerspective);
 		}
-		pathwayView.setOnNodeMappingTablePerspective(mappingTablePerspective);
 
 		pathwayView.setPathwayPathEventSpace(embeddingEventSpace);
 		pathwayView.setMinHeightPixels(150);
@@ -44,6 +43,7 @@ public class PathwayTextureCreator implements IPathwayViewCreator {
 		pathwayView.setHighlightVertices(false);
 		// pathwayView.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		pathwayView.initialize();
+		pathwayView.setOnNodeMappingTablePerspective(mappingTablePerspective);
 
 		return pathwayView;
 	}

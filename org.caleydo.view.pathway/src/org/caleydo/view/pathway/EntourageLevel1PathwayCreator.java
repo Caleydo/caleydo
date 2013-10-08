@@ -8,12 +8,12 @@ import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
+import org.caleydo.datadomain.pathway.embedding.IPathwayViewCreator;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.entourage.pathway.IPathwayViewCreator;
 
-public class EntouragePathwayCreator implements IPathwayViewCreator {
+public class EntourageLevel1PathwayCreator implements IPathwayViewCreator {
 
-	public EntouragePathwayCreator() {
+	public EntourageLevel1PathwayCreator() {
 	}
 
 	@Override
@@ -31,11 +31,11 @@ public class EntouragePathwayCreator implements IPathwayViewCreator {
 		for (TablePerspective tablePerspective : tablePerspectives) {
 			pathwayView.addTablePerspective(tablePerspective);
 		}
-		pathwayView.setOnNodeMappingTablePerspective(mappingTablePerspective);
 
 		pathwayView.setPathwayPathEventSpace(embeddingEventSpace);
 		// pathwayView.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		pathwayView.initialize();
+		pathwayView.setOnNodeMappingTablePerspective(mappingTablePerspective);
 
 		return pathwayView;
 	}

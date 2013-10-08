@@ -3,23 +3,25 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.view.entourage.pathway;
+package org.caleydo.datadomain.pathway.embedding;
 
 import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 /**
- * @author Christian
+ * Factory for pathway views.
+ *
+ * @author Christian Partl
  *
  */
-public interface IPathwayRendererCreator {
+public interface IPathwayViewCreator {
+
 	/**
 	 * Creates a pathway view.
-	 * 
+	 *
 	 * @param remoteRenderingView
 	 *            View that remote-renders the created view.
 	 * @param pathway
@@ -34,7 +36,7 @@ public interface IPathwayRendererCreator {
 	 *            should get.
 	 * @return the The layout renderer to visualize the pathway.
 	 */
-	public ALayoutRenderer create(AGLView remoteRenderingView, PathwayGraph pathway,
+	public AGLView create(AGLView remoteRenderingView, PathwayGraph pathway,
 			List<TablePerspective> tablePerspectives, TablePerspective mappingTablePerspective,
 			String embeddingEventSpace);
 }

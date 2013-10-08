@@ -86,7 +86,7 @@ import org.caleydo.view.entourage.toolbar.ShowPortalsAction;
 public class GLEntourage extends AGLElementGLView implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView,
 		IMultiFormChangeListener, IEventBasedSelectionManagerUser {
 
-	public static String VIEW_TYPE = "org.caleydo.view.subgraph";
+	public static String VIEW_TYPE = "org.caleydo.view.entourage";
 
 	public static String VIEW_NAME = "Entourage";
 
@@ -646,9 +646,6 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		info.multiFormRenderer = renderer;
 
 		for (EEmbeddingID embedding : embeddingIDs) {
-			if (embedding.isPathway()) {
-
-			}
 			String embeddingID = embedding.id();
 			Set<String> ids = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE, embeddingID);
 

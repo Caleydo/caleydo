@@ -10,7 +10,7 @@
             category="org.caleydo.core.views"
             class="org.caleydo.view.entourage.RcpGLSubGraphView"
             icon="resources/icons/icon.png"
-            id="org.caleydo.view.subgraph"
+            id="org.caleydo.view.entourage"
             name="Entourage">
       </view>
    </extension>
@@ -47,7 +47,7 @@
       <ViewCategory
             isDataView="true"
             isReleaseView="true"
-            viewID="org.caleydo.view.subgraph">
+            viewID="org.caleydo.view.entourage">
       </ViewCategory>
    </extension>
    <extension
@@ -55,7 +55,7 @@
       <perspectiveExtension
             targetID="org.caleydo.core.gui.perspective">
          <view
-               id="org.caleydo.view.subgraph"
+               id="org.caleydo.view.entourage"
                minimized="false"
                relationship="stack"
                relative="main"
@@ -66,54 +66,39 @@
    <extension
          point="org.caleydo.view.ViewEmbeddingProvider">
       <Provider
-            id="org.caleydo.view.subgraph">
+            id="org.caleydo.view.entourage">
          <Embedding
-               id="org.caleydo.view.subgraph.pathway.multiform.level1">
+               id="org.caleydo.view.entourage.pathway.multiform.level1">
          </Embedding>
          <Embedding
-               id="org.caleydo.view.subgraph.pathway.multiform.level2">
+               id="org.caleydo.view.entourage.pathway.multiform.level2">
          </Embedding>
          <Embedding
-               id="org.caleydo.view.subgraph.pathway.multiform.level3">
+               id="org.caleydo.view.entourage.pathway.multiform.level3">
          </Embedding>
          <Embedding
-               id="org.caleydo.view.subgraph.pathway.multiform.level4">
+               id="org.caleydo.view.entourage.pathway.multiform.level4">
          </Embedding>
          <Embedding
-               id="org.caleydo.view.subgraph.path.level1">
+               id="org.caleydo.view.entourage.path.level1">
          </Embedding>
          <Embedding
-               id="org.caleydo.view.subgraph.path.level2">
+               id="org.caleydo.view.entourage.path.level2">
          </Embedding>
       </Provider>
    </extension>
    <extension
-         point="org.caleydo.view.EmbeddedView">
-      <EmbeddingInfo
-            viewID="org.caleydo.view.subgraph.level4">
-         <ParentView
-               viewID="org.caleydo.view.subgraph">
-            <Embedding
-                  embeddingID="org.caleydo.view.subgraph.pathway.multiform.level4"
-                  icon="resources/icons/pathway_lv4.png"
-                  isDefaultView="false"
-                  visInfo="org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo">
-               <RendererCreator
-                     class="org.caleydo.view.entourage.Level4Creator">
-               </RendererCreator>
-            </Embedding>
-         </ParentView>
-      </EmbeddingInfo>
-   </extension>
-   <extension
-         point="org.caleydo.view.entourage.pathway">
-      <pathway
-            embeddingID="org.caleydo.view.subgraph.pathway.multiform.level4"
-            icon="resources/icons/pathway_lv4.png">
-         <rendererCreator
-               class="org.caleydo.view.entourage.PathwayLevel4Creator">
-         </rendererCreator>
-      </pathway>
+         point="org.caleydo.datadomain.pathway.embeddedPathway">
+      <parent
+            viewID="org.caleydo.view.entourage">
+         <pathway
+               embeddingID="org.caleydo.view.entourage.pathway.multiform.level4"
+               icon="resources/icons/pathway_lv4.png">
+            <rendererCreator
+                  class="org.caleydo.view.entourage.PathwayLevel4Creator">
+            </rendererCreator>
+         </pathway>
+      </parent>
    </extension>
 
 </plugin>

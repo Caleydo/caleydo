@@ -142,6 +142,8 @@ public class DataMappingState {
 	}
 
 	private TablePerspective createTablePerspective(ATableBasedDataDomain dd, Perspective foreignPerspective) {
+		if (dd == null || foreignPerspective == null)
+			return null;
 		Perspective convertedPerspective = dd.convertForeignPerspective(foreignPerspective);
 		TablePerspective tablePerspective = new TablePerspective(dd, convertedPerspective, dd.getTable()
 				.getDefaultDimensionPerspective(false));

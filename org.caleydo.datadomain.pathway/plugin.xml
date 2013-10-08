@@ -2,6 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="org.caleydo.data.pathway.PathwayParser" name="PathwayParser" schema="schema/org.caleydo.data.pathway.PathwayParser.exsd"/>
+   <extension-point id="org.caleydo.datadomain.pathway.embeddedPathway" name="Embedded Pathway" schema="schema/org.caleydo.datadomain.pathway.embeddedPathway.exsd"/>
    <extension
         id="org.caleydo.datadomain.pathway"
         name="PathwayDataDomain"
