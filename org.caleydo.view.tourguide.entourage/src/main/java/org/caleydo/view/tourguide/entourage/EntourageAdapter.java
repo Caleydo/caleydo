@@ -179,6 +179,8 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 		lineUp.remove(lineUp.size() - 2); // remove choose groupings
 
 		final GLElementContainer body = (GLElementContainer) lineUp.get(0);
+		if (!(body.get(1) instanceof GLElementContainer))
+			return;
 		GLElementContainer c = (GLElementContainer) body.get(1);
 		lineUp.add(0, ((GLElementContainer) c.get(0)).get(1)); // move dataset again
 		lineUp.add(1, c.get(1)); // move table
