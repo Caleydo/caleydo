@@ -3,11 +3,11 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.view.pathway.toolbar;
+package org.caleydo.datadomain.pathway.toolbar;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.view.pathway.ESampleMappingMode;
-import org.caleydo.view.pathway.event.SampleMappingModeEvent;
+import org.caleydo.datadomain.pathway.listener.ESampleMappingMode;
+import org.caleydo.datadomain.pathway.listener.SampleMappingModeEvent;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

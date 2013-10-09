@@ -7,13 +7,14 @@ package org.caleydo.view.pathway.event;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.datadomain.pathway.listener.SampleMappingModeEvent;
 import org.caleydo.view.pathway.GLPathway;
 
 /**
  * Listener for {@link SampleMappingModeEvent} for pathways.
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class SampleMappingModeListener
 	extends AEventListener<GLPathway> {

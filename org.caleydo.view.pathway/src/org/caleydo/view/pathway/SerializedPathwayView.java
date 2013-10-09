@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.serialize.ASerializedMultiTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
+import org.caleydo.datadomain.pathway.listener.ESampleMappingMode;
 
 /**
  * Serialized form of a pathway-view.

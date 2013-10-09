@@ -6,10 +6,9 @@
 /**
  * 
  */
-package org.caleydo.view.pathway.event;
+package org.caleydo.datadomain.pathway.listener;
 
 import org.caleydo.core.event.AEvent;
-import org.caleydo.view.pathway.ESampleMappingMode;
 
 /**
  * Event that signals which of the {@link ESampleMappingMode}s should be used in

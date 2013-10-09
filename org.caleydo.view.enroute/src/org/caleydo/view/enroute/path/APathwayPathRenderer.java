@@ -44,6 +44,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.ESampleMappingMode;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.event.ShowPathEvent;
@@ -59,7 +60,6 @@ import org.caleydo.view.enroute.path.node.mode.CompoundNodeLinearizedMode;
 import org.caleydo.view.enroute.path.node.mode.CompoundNodePreviewMode;
 import org.caleydo.view.enroute.path.node.mode.GeneNodeLinearizedMode;
 import org.caleydo.view.enroute.path.node.mode.GeneNodePreviewMode;
-import org.caleydo.view.pathway.ESampleMappingMode;
 import org.caleydo.view.pathway.GLPathway;
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
@@ -477,7 +477,9 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 	@Override
 	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
-
+		if (selectionManager == sampleSelectionManager && sampleMappingMode == ESampleMappingMode.SELECTED) {
+			setLayoutDirty(true);
+		}
 	}
 
 	/**
