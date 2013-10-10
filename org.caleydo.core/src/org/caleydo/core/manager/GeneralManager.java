@@ -215,7 +215,9 @@ public class GeneralManager {
 		if (caleydoVersion == null)
 			return false;
 		Version tocheck = Version.parseVersion(caleydoVersion);
-		return VERSION.getMajor() == tocheck.getMajor() && VERSION.getMinor() == tocheck.getMinor();
+		if (VERSION.getMajor() != tocheck.getMajor())
+			return false;
+		return VERSION.getMinor() >= tocheck.getMinor();
 	}
 
 	public void setSplashProgressMonitor(IProgressMonitor splashProgressMonitor) {
