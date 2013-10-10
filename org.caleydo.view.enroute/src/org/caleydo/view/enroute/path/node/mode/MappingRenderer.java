@@ -83,6 +83,8 @@ public class MappingRenderer extends ColorRenderer {
 
 					average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA,
 							mappedPerspective.getDataDomain(), idType, ids);
+					if (Double.isNaN(average.getArithmeticMean()))
+						average = null;
 				}
 			}
 

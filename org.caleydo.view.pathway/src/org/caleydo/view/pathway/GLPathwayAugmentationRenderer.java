@@ -587,6 +587,8 @@ public class GLPathwayAugmentationRenderer {
 					// rendering the std-dev box
 					if (!stdDev.isNaN() && this.glPathwayView.isShowStdDevBars()) {
 						renderStdDevBar(gl, width, height, stdDev);
+					} else {
+						int i = 0;
 					}
 
 					// Handle selection highlighting of element
@@ -978,6 +980,8 @@ public class GLPathwayAugmentationRenderer {
 		} else {
 			average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA, tablePerspective.getDataDomain(),
 					david, mappedDavidIds);
+			if (Double.isNaN(average.getArithmeticMean()))
+				return null;
 		}
 		return average;
 	}
