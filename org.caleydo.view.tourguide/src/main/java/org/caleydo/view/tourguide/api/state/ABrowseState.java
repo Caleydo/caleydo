@@ -5,17 +5,16 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
-import org.caleydo.view.stratomex.tourguide.event.UpdateNumericalPreviewEvent;
-import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
-import org.caleydo.view.stratomex.tourguide.event.UpdateStratificationPreviewEvent;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.OpenViewHandler;
 
 /**
  * basic {@link IState} for browsing something in tour guides
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public abstract class ABrowseState implements IState {
 	private final EDataDomainQueryMode mode;
@@ -46,31 +45,31 @@ public abstract class ABrowseState implements IState {
 
 	/**
 	 * called when the user browsed for a stratification
-	 * 
+	 *
 	 * @param event
 	 * @param adapter
 	 */
-	public void onUpdate(UpdateStratificationPreviewEvent event, IReactions adapter) {
+	public void onUpdateStratification(TablePerspective tablePerspective, IReactions adapter) {
 
 	}
 
 	/**
 	 * called when the user browsed for a pathway
-	 * 
+	 *
 	 * @param event
 	 * @param adapter
 	 */
-	public void onUpdate(UpdatePathwayPreviewEvent event, IReactions adapter) {
+	public void onUpdatePathway(PathwayGraph pathway, IReactions adapter) {
 
 	}
 
 	/**
 	 * called when the user browsed for a numerical variable, i.e. other
-	 * 
+	 *
 	 * @param event
 	 * @param adapter
 	 */
-	public void onUpdate(UpdateNumericalPreviewEvent event, IReactions adapter) {
+	public void onUpdateOther(TablePerspective tablePerspective, IReactions adapter) {
 
 	}
 }

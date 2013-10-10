@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Heatmap View
 Bundle-SymbolicName: org.caleydo.view.heatmap;singleton:=true
-Bundle-Version: 3.0.4
-Require-Bundle: org.caleydo.core;bundle-version="3.0.4",
- org.caleydo.datadomain.genetic;bundle-version="3.0.4",
- org.caleydo.datadomain.pathway;bundle-version="3.0.4"
+Bundle-Version: 3.1.0
+Require-Bundle: org.caleydo.core;bundle-version="3.1.0",
+ org.caleydo.datadomain.genetic;bundle-version="3.1.0",
+ org.caleydo.datadomain.pathway;bundle-version="3.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.caleydo.view.heatmap,
  org.caleydo.view.heatmap.command.handler,

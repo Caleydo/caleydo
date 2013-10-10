@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.RGB;
 
 /**
  * Class representing a color using RGBA values.
@@ -322,6 +323,16 @@ public class Color implements Cloneable {
 		if (Float.floatToIntBits(r) != Float.floatToIntBits(other.r))
 			return false;
 		return true;
+	}
+
+	/**
+	 * convert this color to SWT {@link RGB}
+	 * 
+	 * @return
+	 */
+	public RGB asRGB() {
+		int[] rgba = getIntRGBA();
+		return new RGB(rgba[0], rgba[1], rgba[2]);
 	}
 
 }

@@ -8,6 +8,7 @@ package org.caleydo.vis.lineup.ui.detail;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.vis.lineup.internal.prefs.MyPreferences;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.ui.RenderStyle;
 
@@ -48,7 +49,7 @@ public class ColoredValueElement extends ValueElement {
 			float alpha = 1 - (remaining / (float) duration);
 
 			float calpha = RenderStyle.computeHighlightAlpha(alpha, rankDelta);
-			Color base = rankDelta < 0 ? Color.GREEN : Color.RED;
+			Color base = rankDelta < 0 ? MyPreferences.getTransitionUpColor() : MyPreferences.getTransitionDownColor();
 			Color c = new Color(base.r, base.g, base.b, calpha);
 			g.decZ();
 			g.color(c);

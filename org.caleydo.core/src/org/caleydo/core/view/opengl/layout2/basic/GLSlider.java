@@ -7,6 +7,7 @@ package org.caleydo.core.view.opengl.layout2.basic;
 
 import java.util.Locale;
 
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -67,7 +68,7 @@ public class GLSlider extends PickableGLElement {
 	/**
 	 * horizontal or vertical rendering
 	 */
-	private boolean isHorizontal = true;
+	private EDimension dim = EDimension.DIMENSION;
 
 	/**
 	 * show the value or not
@@ -101,18 +102,18 @@ public class GLSlider extends PickableGLElement {
 	}
 
 	/**
-	 * @return the isHorizontal, see {@link #isHorizontal}
+	 * @return the dim, see {@link #dim}
 	 */
-	public boolean isHorizontal() {
-		return isHorizontal;
+	public EDimension getDim() {
+		return dim;
 	}
 
 	/**
-	 * @param isHorizontal
-	 *            setter, see {@link isHorizontal}
+	 * @param dim
+	 *            setter, see {@link dim}
 	 */
-	public GLSlider setHorizontal(boolean isHorizontal) {
-		this.isHorizontal = isHorizontal;
+	public GLSlider setDim(EDimension dim) {
+		this.dim = dim;
 		return this;
 	}
 
@@ -237,7 +238,7 @@ public class GLSlider extends PickableGLElement {
 		boolean showText = valueVisibility.show(dragged, hovered);
 		boolean showMinMaxText = minMaxVisibility.show(dragged, hovered);
 
-		if (isHorizontal) {
+		if (dim.isHorizontal()) {
 			float x = mapValue(w) + 1;
 			g.fillRect(x, 0, Math.min(BAR_WIDTH, w - x), h);
 			if (showMinMaxText) {
@@ -279,7 +280,7 @@ public class GLSlider extends PickableGLElement {
 	}
 
 	private float unmapValue(float v) {
-		float total = isHorizontal ? getSize().x() : getSize().y();
+		float total = dim.isHorizontal() ? getSize().x() : getSize().y();
 		total -= BAR_WIDTH + 2;
 		float range = max - min;
 		float factor = total / range;
@@ -292,7 +293,7 @@ public class GLSlider extends PickableGLElement {
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (isHorizontal) {
+		if (dim.isHorizontal()) {
 			float x = mapValue(w);
 			g.fillRect(x, 0, Math.min(BAR_WIDTH, w - x), h);
 		} else {
@@ -338,7 +339,7 @@ public class GLSlider extends PickableGLElement {
 		if (!pick.isDoDragging())
 			return;
 		float v;
-		if (isHorizontal) {
+		if (dim.isHorizontal()) {
 			v = mapValue(getSize().x()) + pick.getDx();
 		} else {
 			v = mapValue(getSize().y()) + pick.getDy();
@@ -414,7 +415,8 @@ public class GLSlider extends PickableGLElement {
 	public static void main(String[] args) {
 		GLElementContainer c = new GLElementContainer(GLLayouts.flowHorizontal(2));
 		c.add(new GLElement());
-		c.add(new GLSlider(1, 20, 0.2f).setHorizontal(true).setMinMaxVisibility(EValueVisibility.VISIBLE_DRAGGED)
+		c.add(new GLSlider(1, 20, 0.2f).setDim(EDimension.DIMENSION)
+				.setMinMaxVisibility(EValueVisibility.VISIBLE_DRAGGED)
 				.setSize(-1, 32));
 		c.add(new GLElement());
 		GLSandBox.main(args, c);

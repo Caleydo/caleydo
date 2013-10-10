@@ -13,9 +13,9 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
+import org.caleydo.view.tourguide.api.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.api.score.Scores;
-import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.external.ui.ImportExternalGroupLabelScoreDialog;
 import org.caleydo.view.tourguide.internal.external.ui.ImportExternalIDTypeScoreDialog;
 import org.caleydo.view.tourguide.internal.external.ui.ImportExternalLabelScoreDialog;
@@ -72,7 +72,7 @@ public final class ImportExternalScoreCommand implements Runnable {
 			return Collections.emptyList();
 		IDType target = inDimensionDirection ? d.getDimensionIDType() : d.getRecordIDType();
 
-		Collection<ISerializeableScore> scores = new ExternalIDTypeScoreParser(spec, target).call();
+		Collection<ISerializeableScore> scores = new ExternalIDTypeScoreParser(spec, target, d).call();
 		return scores;
 	}
 

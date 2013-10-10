@@ -13,11 +13,6 @@ package org.caleydo.core.internal;
  */
 public class ConsoleFlags {
 	/**
-	 * enables experimental features, which are not yet released
-	 */
-	public static final boolean EXPERIMENTAL_MODE = Boolean.getBoolean("org.caleydo.experimental");
-
-	/**
 	 * chooses the implementation for the jogl canvas, possible values are: awt, swt (default) and newt
 	 */
 	public static final String CANVAS_IMPLEMENTATION = System.getProperty("org.caleydo.opengl", "swt");

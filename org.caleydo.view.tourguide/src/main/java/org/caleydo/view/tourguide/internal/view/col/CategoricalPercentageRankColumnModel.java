@@ -10,7 +10,7 @@ import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
-import org.caleydo.view.tourguide.internal.model.CategoricalPerspectiveRow;
+import org.caleydo.view.tourguide.api.model.CategoricalPerspectiveRow;
 import org.caleydo.vis.lineup.data.ADoubleFunction;
 import org.caleydo.vis.lineup.data.DoubleInferrers;
 import org.caleydo.vis.lineup.data.IDoubleFunction;

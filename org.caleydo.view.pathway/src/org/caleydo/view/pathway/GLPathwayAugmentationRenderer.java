@@ -22,6 +22,8 @@ import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
@@ -156,6 +158,9 @@ public class GLPathwayAugmentationRenderer {
 
 			selectedSamplesVA = new VirtualArray(glPathwayView.getSampleSelectionManager().getIDType(),
 					selectedSamplesArray);
+			GroupList groupList = new GroupList();
+			groupList.append(new Group(selectedSamplesVA.size()));
+			selectedSamplesVA.setGroupList(groupList);
 
 			break;
 		default:
@@ -582,6 +587,8 @@ public class GLPathwayAugmentationRenderer {
 					// rendering the std-dev box
 					if (!stdDev.isNaN() && this.glPathwayView.isShowStdDevBars()) {
 						renderStdDevBar(gl, width, height, stdDev);
+					} else {
+						int i = 0;
 					}
 
 					// Handle selection highlighting of element
@@ -973,6 +980,8 @@ public class GLPathwayAugmentationRenderer {
 		} else {
 			average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA, tablePerspective.getDataDomain(),
 					david, mappedDavidIds);
+			if (Double.isNaN(average.getArithmeticMean()))
+				return null;
 		}
 		return average;
 	}

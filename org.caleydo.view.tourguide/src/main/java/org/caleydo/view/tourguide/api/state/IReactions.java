@@ -10,7 +10,6 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
@@ -42,7 +41,7 @@ public interface IReactions {
 	 * @param with
 	 * @param configurer
 	 */
-	void replaceTemplate(TablePerspective with, IBrickConfigurer configurer, boolean highlight);
+	void replaceTemplate(TablePerspective with, boolean highlight);
 
 	/**
 	 * replaces the current template with the given renderer
@@ -59,7 +58,7 @@ public interface IReactions {
 	 * @param extra
 	 *            whether an extra brick should be replaced/created or the main one
 	 */
-	void replaceClinicalTemplate(Perspective underlying, TablePerspective numerical, boolean extra, boolean highlight);
+	void replaceOtherTemplate(Perspective underlying, TablePerspective numerical, boolean extra, boolean highlight);
 
 	/**
 	 * replaces the current template with a visualization of the given pathway

@@ -20,7 +20,6 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedStratificationScore;
@@ -79,15 +78,16 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 			TablePerspective source) {
 		IState start = stateMachine.get(IStateMachine.ADD_PATHWAY);
 
-		if (mode == EWizardMode.GLOBAL) {
-			String disabled = !hasGoodOnes(existing) ? "At least one valid numerical GENE stratification must already be visible"
+		if (mode == EWizardMode.GLOBAL || mode == EWizardMode.DEPENDENT) {
+			String disabled = !hasGoodOnes(mode == EWizardMode.DEPENDENT ? Collections.singletonList(source) : existing) ? "At least one valid numerical GENE stratification must already be visible"
 					: null;
-			UpdateAndBrowsePathways browseG = new UpdateAndBrowsePathways(true);
+			final Perspective limitTo = source == null ? null : source.getRecordPerspective();
+			UpdateAndBrowsePathways browseG = new UpdateAndBrowsePathways(true, limitTo);
 			stateMachine.addState("browseAndUpdateGSEA", browseG);
-			UpdateAndBrowsePathways browseP = new UpdateAndBrowsePathways(false);
+			UpdateAndBrowsePathways browseP = new UpdateAndBrowsePathways(false, limitTo);
 			stateMachine.addState("browseAndUpdatePAGE", browseP);
-			IState target = stateMachine.addState("GSEA", new CreateGSEAState(browseG, true));
-			IState target2 = stateMachine.addState("PAGE", new CreateGSEAState(browseP, false));
+			IState target = stateMachine.addState("GSEA", new CreateGSEAState(browseG, true, limitTo));
+			IState target2 = stateMachine.addState("PAGE", new CreateGSEAState(browseP, false, limitTo));
 			stateMachine.addTransition(start, new SimpleTransition(target,
 					"Find with GSEA based on displayed stratification", disabled));
 			stateMachine.addTransition(start, new SimpleTransition(target2,
@@ -180,17 +180,30 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	private class CreateGSEAState extends SimpleState implements ISelectGroupState {
 		private final UpdateAndBrowsePathways target;
 		private final boolean createGSEA;
+		private final Perspective limitTo;
 
-		public CreateGSEAState(UpdateAndBrowsePathways target, boolean createGSEA) {
+		public CreateGSEAState(UpdateAndBrowsePathways target, boolean createGSEA, Perspective limitTo) {
 			super("Select query group by clicking on a framed block of one of the displayed columns");
 			this.target = target;
 			this.createGSEA = createGSEA;
+			this.limitTo = limitTo;
 		}
 
 		@Override
 		public boolean apply(Pair<TablePerspective, Group> pair) {
-			return isGoodDataDomain(pair.getFirst().getDataDomain())
-					&& !(pair.getFirst() instanceof PathwayTablePerspective);
+			if (!isGoodDataDomain(pair.getFirst().getDataDomain())
+					|| (pair.getFirst() instanceof PathwayTablePerspective))
+				return false;
+			if (limitTo != null && !limitTo.equals(pair.getFirst().getRecordPerspective()))
+				return false;
+			// remove all table perspectives with a single record group -> #1662, as we are comparing one-vs-rest
+			if (pair.getFirst().getRecordPerspective().getVirtualArray().getGroupList().size() <= 1)
+				return false;
+			// remove empty groups
+			if (pair.getSecond().getSize() <= 0)
+				return false;
+			// is valid
+			return true;
 		}
 
 		@Override
@@ -213,16 +226,18 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		protected Perspective underlying;
 		protected PathwayGraph pathway;
 		private final boolean createGSEA;
+		private final Perspective limitTo;
 
-		public UpdateAndBrowsePathways(boolean createGSEA) {
+		public UpdateAndBrowsePathways(boolean createGSEA, Perspective limitTo) {
 			super(EDataDomainQueryMode.PATHWAYS, "Select a pathway in the LineUp to preview.\n"
 					+ "Then confirm or cancel your selection" + "Change query by clicking on other block at any time");
 			this.createGSEA = createGSEA;
+			this.limitTo = limitTo;
 		}
 
 		@Override
 		public boolean apply(Pair<TablePerspective, Group> pair) {
-			return true;
+			return limitTo == null ? true : limitTo.equals(pair.getFirst().getRecordPerspective());
 		}
 
 		@Override
@@ -239,9 +254,9 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		}
 
 		@Override
-		public void onUpdate(UpdatePathwayPreviewEvent event, IReactions adapter) {
-			pathway = event.getPathway();
-			adapter.replacePathwayTemplate(underlying, event.getPathway(), false, true);
+		public void onUpdatePathway(PathwayGraph pathway, IReactions adapter) {
+			this.pathway = pathway;
+			adapter.replacePathwayTemplate(underlying, pathway, false, true);
 		}
 
 		@Override

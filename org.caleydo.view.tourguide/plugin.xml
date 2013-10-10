@@ -2,6 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="org.caleydo.tourguide.scorefactory" name="ScoreFactory" schema="schema/org.caleydo.tourguide.scorefactory.exsd"/>
+   <extension-point id="org.caleydo.view.tourguide.adapter" name="TourGuide View Adapter" schema="schema/org.caleydo.view.tourguide.adapter.exsd"/>
    <extension
          point="org.eclipse.ui.views">
       <view
@@ -64,12 +65,6 @@
       <factory
             class="org.caleydo.view.tourguide.impl.LogRankMetricFactory"
             name="Log Rank Score">
-      </factory>
-   </extension>
-   <extension
-         point="org.caleydo.view.stratomex.AddWizardElementFactory">
-      <factory
-            class="org.caleydo.view.tourguide.internal.stratomex.AddWizardElementFactory">
       </factory>
    </extension>
    <extension

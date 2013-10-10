@@ -22,9 +22,13 @@ package org.caleydo.view.entourage;
 import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.datadomain.pathway.listener.ESampleMappingMode;
 import org.caleydo.datadomain.pathway.toolbar.ClearPathAction;
-import org.caleydo.datadomain.pathway.toolbar.SelectFreePathAction;
+import org.caleydo.datadomain.pathway.toolbar.SampleSelectionMode;
 import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
+import org.caleydo.view.entourage.datamapping.DataMappers;
+import org.caleydo.view.entourage.toolbar.ClearWorkspaceAction;
+import org.caleydo.view.entourage.toolbar.ShowDataMapperAction;
 import org.caleydo.view.entourage.toolbar.ShowPortalsAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
@@ -58,32 +62,42 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 		initializeView();
 
 		createPartControlGL();
+
+		DataMappers.getDataMapper().show();
+	}
+
+	@Override
+	public GLEntourage getView() {
+		return (GLEntourage) super.getView();
 	}
 
 	@Override
 	public void addToolBarContent(IToolBarManager toolBarManager) {
 
-		GLEntourage subgraph = (GLEntourage) view;
+		GLEntourage entourage = (GLEntourage) view;
 
-		SelectPathAction selectPathAction = new SelectPathAction(false, subgraph.getPathEventSpace());
-		SelectFreePathAction selectFreePathAction = new SelectFreePathAction(false, subgraph.getPathEventSpace());
-		selectPathAction.setSelectFreePathAction(selectFreePathAction);
-		selectFreePathAction.setSelectPathAction(selectPathAction);
-		ShowPortalsAction showPortalsAction = new ShowPortalsAction(subgraph.getPathEventSpace());
+		SelectPathAction selectPathAction = new SelectPathAction(false, entourage.getPathEventSpace());
+		entourage.setSelectPathAction(selectPathAction);
+		// SelectFreePathAction selectFreePathAction = new SelectFreePathAction(false, entourage.getPathEventSpace());
+		// selectPathAction.setSelectFreePathAction(selectFreePathAction);
+		// selectFreePathAction.setSelectPathAction(selectPathAction);
+		ShowPortalsAction showPortalsAction = new ShowPortalsAction(entourage.getPathEventSpace());
 		// HighlightAllPortalsAction highlightAllPortalsAction = new HighlightAllPortalsAction(subgraph);
 		// subgraph.setHighlightAllPortalsButton(highlightAllPortalsAction);
-		subgraph.setShowPortalsButton(showPortalsAction);
+		entourage.setShowPortalsButton(showPortalsAction);
 
 		// if (view instanceof GLSubGraph)
 		// ((GLSubGraph) view).setSelectPathAction(selectPathAction);
+		toolBarManager.add(new SampleSelectionMode(ESampleMappingMode.ALL));
 		toolBarManager.add(selectPathAction);
-		toolBarManager.add(selectFreePathAction);
-		toolBarManager.add(new ClearPathAction(subgraph.getPathEventSpace()));
+		// toolBarManager.add(selectFreePathAction);
+		toolBarManager.add(new ClearPathAction(entourage.getPathEventSpace()));
 		toolBarManager.add(showPortalsAction);
+		toolBarManager.add(new ShowDataMapperAction());
+		toolBarManager.add(new ClearWorkspaceAction(entourage));
 		// toolBarManager.add(highlightAllPortalsAction);
 
-		toolBarManager.add(new OpenOnlineHelpAction(
-GeneralManager.HELP_URL + "/views/enroute.md#Pathway_View", false));
+		toolBarManager.add(new OpenOnlineHelpAction(GeneralManager.HELP_URL + "/views/enroute.md#Pathway_View", false));
 
 	}
 

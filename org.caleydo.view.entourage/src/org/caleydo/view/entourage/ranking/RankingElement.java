@@ -24,6 +24,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,6 +39,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.entourage.EEmbeddingID;
 import org.caleydo.view.entourage.GLEntourage;
@@ -48,6 +50,7 @@ import org.caleydo.vis.lineup.config.RankTableUIConfigBase;
 import org.caleydo.vis.lineup.data.DoubleInferrers;
 import org.caleydo.vis.lineup.layout.RowHeightLayouts;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
+import org.caleydo.vis.lineup.model.CategoricalRankColumnModel;
 import org.caleydo.vis.lineup.model.DoubleRankColumnModel;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.RankTableModel;
@@ -55,6 +58,8 @@ import org.caleydo.vis.lineup.model.StringRankColumnModel;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.lineup.ui.RenderStyle;
 import org.caleydo.vis.lineup.ui.TableUI;
+
+import com.google.common.base.Function;
 
 /**
  * @author Samuel Gratzl
@@ -82,19 +87,19 @@ public class RankingElement extends GLElementContainer {
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (window == null || window.getSize().x() < 2)
 				return;
-			if (table.getColumns().size() > 1) {
-				if (window.getSize().x() != 200)
-					window.setSize(200, Float.NaN);
+			if (hasScoreColumn()) {
+				if (window.getSize().x() != 220)
+					window.setSize(220, Float.NaN);
 			} else {
-				if (window.getSize().y() != 150)
-					window.setSize(150, Float.NaN);
+				if (window.getSize().y() != 170)
+					window.setSize(170, Float.NaN);
 				setFilter(PathwayFilters.NONE);
 			}
 		}
 	};
 
-	public int getNumTableColumns() {
-		return table.getColumns().size();
+	public boolean hasScoreColumn() {
+		return table.getColumns().size() > 2;
 	}
 
 	public RankingElement(final GLEntourage view) {
@@ -234,14 +239,19 @@ public class RankingElement extends GLElementContainer {
 				StringRankColumnModel.FilterStrategy.SUBSTRING);
 		textColumn.setWidth(140);
 		table.add(textColumn);
-		// table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Pathway Type", VAlign.CENTER),
-		// new Function<IRow, String>() {
-		// @Override
-		// public String apply(IRow in) {
-		// PathwayRow r = (PathwayRow) in;
-		// return r.getPathway().getType().getName();
-		// }
-		// }));
+
+		Collection<String> dbtypes = new ArrayList<>(2);
+		for(EPathwayDatabaseType type : EPathwayDatabaseType.values()) {
+			dbtypes.add(type.getName());
+		}
+		table.add(CategoricalRankColumnModel.createSimple(GLRenderers.drawText("Pathway Type", VAlign.CENTER),
+				new Function<IRow, String>() {
+					@Override
+					public String apply(IRow in) {
+						PathwayRow r = (PathwayRow) in;
+						return r.getPathway().getType().getName();
+					}
+				}, dbtypes).setCollapsed(true));
 
 		// IFloatFunction<IRow> pathwaySize = new AFloatFunction<IRow>() {
 		// @Override
@@ -265,8 +275,7 @@ public class RankingElement extends GLElementContainer {
 
 	private DoubleRankColumnModel createDefaultFloatRankColumnModel(IPathwayRanking ranking) {
 		DoubleRankColumnModel column = new DoubleRankColumnModel(ranking.getRankingFunction(), GLRenderers.drawText(
-				ranking.getRankingCriterion(), VAlign.CENTER), org.caleydo.core.util.color.Color.GRAY,
-				org.caleydo.core.util.color.Color.LIGHT_GRAY, new PiecewiseMapping(0,
+				ranking.getRankingCriterion(), VAlign.CENTER), Color.GRAY, Color.LIGHT_GRAY, new PiecewiseMapping(0,
 				Float.NaN), DoubleInferrers.MEAN);
 		column.setWidth(50);
 		return column;
@@ -290,7 +299,7 @@ public class RankingElement extends GLElementContainer {
 	public void setRanking(IPathwayRanking ranking) {
 		// this.ranking = ranking;
 		DoubleRankColumnModel newRankModel = createDefaultFloatRankColumnModel(ranking);
-		if (table.getColumns().size() > 1) {
+		if (table.getColumns().size() > 2) {
 			table.replace(currentRankColumnModel, newRankModel);
 		} else {
 			table.add(newRankModel);

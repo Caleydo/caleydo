@@ -11,10 +11,10 @@ import java.util.List;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
+import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.internal.event.InitialScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
-import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
-import org.caleydo.view.tourguide.internal.model.AScoreRow;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;

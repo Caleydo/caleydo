@@ -27,6 +27,7 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -61,7 +62,12 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 			}
 		};
 
-		Composite g = new Composite(parent, SWT.NONE);
+		ScrolledComposite scrolledComposite = new ScrolledComposite(parent, SWT.V_SCROLL);
+		scrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		scrolledComposite.setExpandVertical(true);
+		scrolledComposite.setExpandHorizontal(true);
+
+		Composite g = new Composite(scrolledComposite, SWT.NONE);
 		g.setLayout(new GridLayout(1, false));
 
 		Button first = null;
@@ -79,7 +85,11 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 			first.setSelection(true);
 			selectedChoice = (URL) first.getData();
 		}
-		return g;
+
+		scrolledComposite.setContent(g);
+		scrolledComposite.setMinSize(g.computeSize(500, SWT.DEFAULT));
+
+		return scrolledComposite;
 	}
 
 	private Button createSample(String url, String name, String description, Composite g, SelectionListener l,
@@ -101,7 +111,7 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 				selectedChoice = u;
 			}
 
-			Link desc = new Link(g, SWT.NONE);
+			Link desc = new Link(g, SWT.WRAP);
 			desc.setText(description);
 			desc.addSelectionListener(BrowserUtils.LINK_LISTENER);
 			gd = new GridData(GridData.FILL_HORIZONTAL);

@@ -14,13 +14,12 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.MinSizeUpdateEvent;
@@ -55,9 +54,7 @@ import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
-import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
-import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
@@ -68,16 +65,20 @@ import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
 import org.caleydo.view.entourage.GLWindow.ICloseWindowListener;
 import org.caleydo.view.entourage.MultiLevelSlideInElement.IWindowState;
 import org.caleydo.view.entourage.SlideInElement.ESlideInElementPosition;
-import org.caleydo.view.entourage.datamapping.GLExperimentalDataMapping;
+import org.caleydo.view.entourage.datamapping.DataMappingState;
+import org.caleydo.view.entourage.datamapping.DataMappingWizard;
 import org.caleydo.view.entourage.event.AddPathwayEvent;
 import org.caleydo.view.entourage.event.AddPathwayEventFactory;
+import org.caleydo.view.entourage.event.ClearWorkspaceEvent;
 import org.caleydo.view.entourage.event.SelectPathwayEventFactory;
 import org.caleydo.view.entourage.event.ShowCommonNodesPathwaysEvent;
 import org.caleydo.view.entourage.event.ShowNodeContextEventFactory;
 import org.caleydo.view.entourage.event.ShowPortalsEvent;
+import org.caleydo.view.entourage.pathway.PathwayViews;
 import org.caleydo.view.entourage.ranking.PathwayFilters;
 import org.caleydo.view.entourage.ranking.PathwayRankings;
 import org.caleydo.view.entourage.ranking.RankingElement;
@@ -86,7 +87,7 @@ import org.caleydo.view.entourage.toolbar.ShowPortalsAction;
 public class GLEntourage extends AGLElementGLView implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView,
 		IMultiFormChangeListener, IEventBasedSelectionManagerUser {
 
-	public static String VIEW_TYPE = "org.caleydo.view.subgraph";
+	public static String VIEW_TYPE = "org.caleydo.view.entourage";
 
 	public static String VIEW_NAME = "Entourage";
 
@@ -94,7 +95,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	// private Set<String> remoteRenderedPathwayMultiformViewIDs;
 
-	private String pathEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
+	private final String pathEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
 
 	private AnimatedGLElementContainer baseContainer = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(
 			true, 10, GLPadding.ZERO));
@@ -127,6 +128,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	 */
 	private MultiFormInfo pathInfo;
 
+	private DataMappingWizard dataMappingWizard;
+
 	private boolean wasContextChanged = false;
 
 	// /**
@@ -147,7 +150,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	protected GLPathwayGridLayout3 pathwayLayout = new GLPathwayGridLayout3(this, GLPadding.ZERO, 10);
 
-	protected GLExperimentalDataMapping experimentalDataMappingElement = new GLExperimentalDataMapping(this);
+	// protected GLExperimentalDataMapping experimentalDataMappingElement;
 
 	/**
 	 * Determines whether path selection mode is currently active.
@@ -195,7 +198,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	private List<Pair<PathwayVertexRep, PathwayVertexRep>> selectedPortalLinks = new ArrayList<>();
 
-	private GLWindow dataMappingWindow;
+	// private GLWindow dataMappingWindow;
 
 	private List<AContextMenuItem> contextMenuItemsToShow = new ArrayList<>();
 
@@ -207,7 +210,15 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	private boolean isControlKeyPressed = false;
 
-	public boolean showSrcWindowLinks=false;
+	public boolean showSrcWindowLinks = false;
+
+	/**
+	 * Reflects current state of data mapping.
+	 */
+	protected final DataMappingState dataMappingState;
+
+	private SelectPathAction selectPathAction;
+
 	/**
 	 * Constructor.
 	 *
@@ -217,41 +228,43 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	 */
 	public GLEntourage(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		dataMappingState = new DataMappingState(this);
+		// experimentalDataMappingElement = new GLExperimentalDataMapping(this);
 
 		AnimatedGLElementContainer column = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(false, 10,
 				GLPadding.ZERO));
 		column.add(baseContainer);
 		nodeInfoContainer.setSize(Float.NaN, 0);
-		dataMappingWindow = new SideWindow("Data Mapping", this, SideWindow.SLIDE_BOTTOM_OUT);
+		// dataMappingWindow = new SideWindow("Data Mapping", this, SideWindow.SLIDE_BOTTOM_OUT);
 		// dataMappingWindow.setDefaultInTransition(new InOutTransitions.InOutTransitionBase(InOutInitializers.TOP,
 		// MoveTransitions.MOVE_LINEAR));
 		// dataMappingWindow.setDefaultMoveTransition(MoveTransitions.GROW_LINEAR);
-		dataMappingWindow.setSize(Float.NaN, 80);
-		dataMappingWindow.setContent(experimentalDataMappingElement);
-		dataMappingWindow.setShowCloseButton(false);
-		SlideInElement slideInElement = new SlideInElement(dataMappingWindow, ESlideInElementPosition.TOP);
-		dataMappingWindow.addSlideInElement(slideInElement);
+		// dataMappingWindow.setSize(Float.NaN, 80);
+		// dataMappingWindow.setContent(experimentalDataMappingElement);
+		// dataMappingWindow.setShowCloseButton(false);
+		// SlideInElement slideInElement = new SlideInElement(dataMappingWindow, ESlideInElementPosition.TOP);
+		// dataMappingWindow.addSlideInElement(slideInElement);
 
 		vertexSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType(EGeneIDTypes.PATHWAY_VERTEX_REP
 				.name()));
 		vertexSelectionManager.registerEventListeners();
 
-		column.add(dataMappingWindow);
+		// column.add(dataMappingWindow);
 		// column.add(nodeInfoContainer);
 		rankingWindow = new SideWindow("Pathways", this, SideWindow.SLIDE_LEFT_OUT);
-		rankingWindow.setSize(150, Float.NaN);
+		rankingWindow.setSize(170, Float.NaN);
 		rankingElement = new RankingElement(this);
 		rankingWindow.setContent(rankingElement);
-		slideInElement = new SlideInElement(rankingWindow, ESlideInElementPosition.RIGHT);
+		SlideInElement slideInElement = new SlideInElement(rankingWindow, ESlideInElementPosition.RIGHT);
 		slideInElement.setCallBack(new ISelectionCallback() {
 			@Override
 			public void onSelectionChanged(GLButton button, boolean selected) {
 				AnimatedGLElementContainer anim = (AnimatedGLElementContainer) rankingWindow.getParent();
 				if (selected) {
-					if (rankingElement.getNumTableColumns() > 1) {
-						anim.resizeChild(rankingWindow, 200, Float.NaN);
+					if (rankingElement.hasScoreColumn()) {
+						anim.resizeChild(rankingWindow, 270, Float.NaN);
 					} else {
-						anim.resizeChild(rankingWindow, 150, Float.NaN);
+						anim.resizeChild(rankingWindow, 220, Float.NaN);
 					}
 				} else {
 					anim.resizeChild(rankingWindow, 1, Float.NaN);
@@ -312,7 +325,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	public void init(GL2 gl) {
 		super.init(gl);
 		pathInfo = new MultiFormInfo();
-		createMultiformRenderer(new ArrayList<>(experimentalDataMappingElement.getDmState().getTablePerspectives()),
+		createSelectedPathMultiformRenderer(new ArrayList<>(dataMappingState.getTablePerspectives()),
 				EnumSet.of(EEmbeddingID.PATH_LEVEL1, EEmbeddingID.PATH_LEVEL2), baseContainer, 0.3f, pathInfo);
 		MultiLevelSlideInElement slideInElement = new MultiLevelSlideInElement(pathInfo.window,
 				ESlideInElementPosition.LEFT);
@@ -391,6 +404,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		pathInfo.window.addSlideInElement(slideInElement);
 		pathInfo.window.setShowCloseButton(false);
 		pathInfo.window.setShowViewSwitchingBar(false);
+		dataMappingWizard = new DataMappingWizard(this);
+		pathInfo.window.contentContainer.add(dataMappingWizard);
 		// This assumes that a path level 2 view exists.
 		int rendererID = pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL2).get(0);
 		if (pathInfo.multiFormRenderer.getActiveRendererID() != rendererID) {
@@ -445,8 +460,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 					return;
 				if (setWindowActive(mousePosition, rankingWindow))
 					return;
-				if (setWindowActive(mousePosition, dataMappingWindow))
-					return;
+				// if (setWindowActive(mousePosition, dataMappingWindow))
+				// return;
 			}
 
 			private boolean setWindowActive(Vec2f mousePosition, GLWindow window) {
@@ -504,8 +519,10 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				boolean iswPressed = e.isKeyDown('w');
 				// augmentation.showPortals(isPPressed);
 				if (iswPressed) {
-					if(showSrcWindowLinks) showSrcWindowLinks=false;
-					else showSrcWindowLinks=true;
+					if (showSrcWindowLinks)
+						showSrcWindowLinks = false;
+					else
+						showSrcWindowLinks = true;
 				}
 			}
 		});
@@ -522,6 +539,10 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		eventListeners.register(pathEventSpaceHandler, pathEventSpace);
 	}
 
+	public EventListenerManager getEventListenerManager() {
+		return eventListeners;
+	}
+
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
@@ -536,32 +557,35 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	public void addPathway(PathwayGraph pathway, EEmbeddingID level) {
 
-		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
-				PathwayDataDomain.DATA_DOMAIN_TYPE);
-		List<TablePerspective> tablePerspectives = new ArrayList<>(experimentalDataMappingElement.getDmState()
-				.getTablePerspectives());
-		TablePerspective tablePerspective = tablePerspectives.get(0);
-		Perspective recordPerspective = tablePerspective.getRecordPerspective();
-		Perspective dimensionPerspective = tablePerspective.getDimensionPerspective();
-
-		PathwayTablePerspective pathwayTablePerspective = new PathwayTablePerspective(tablePerspective.getDataDomain(),
-				pathwayDataDomain, recordPerspective, dimensionPerspective, pathway);
-		pathwayDataDomain.addTablePerspective(pathwayTablePerspective);
-
-		List<TablePerspective> pathwayTablePerspectives = new ArrayList<>(1);
-		pathwayTablePerspectives.add(pathwayTablePerspective);
-		for (int i = 1; i < tablePerspectives.size(); i++) {
-			pathwayTablePerspectives.add(tablePerspectives.get(i));
-		}
+		// PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+		// PathwayDataDomain.DATA_DOMAIN_TYPE);
+		// List<TablePerspective> tablePerspectives = new ArrayList<>(dataMappingState.getTablePerspectives());
+		//
+		// TablePerspective tablePerspective = tablePerspectives.get(0);
+		// Perspective recordPerspective = tablePerspective.getRecordPerspective();
+		// Perspective dimensionPerspective = tablePerspective.getDimensionPerspective();
+		//
+		// PathwayTablePerspective pathwayTablePerspective = new
+		// PathwayTablePerspective(tablePerspective.getDataDomain(),
+		// pathwayDataDomain, recordPerspective, dimensionPerspective, pathway);
+		// pathwayDataDomain.addTablePerspective(pathwayTablePerspective);
+		//
+		// List<TablePerspective> pathwayTablePerspectives = new ArrayList<>(1);
+		// pathwayTablePerspectives.add(pathwayTablePerspective);
+		// for (int i = 1; i < tablePerspectives.size(); i++) {
+		// pathwayTablePerspectives.add(tablePerspectives.get(i));
+		// }
 
 		PathwayMultiFormInfo info = new PathwayMultiFormInfo();
 		info.pathway = pathway;
 
 		info.age = currentPathwayAge--;
 		// pathwayColumn.setLayout(new GLSizeRestrictiveFlowLayout(false, 10, GLPadding.ZERO));
-		createMultiformRenderer(pathwayTablePerspectives, EnumSet.of(EEmbeddingID.PATHWAY_LEVEL1,
-				EEmbeddingID.PATHWAY_LEVEL2, EEmbeddingID.PATHWAY_LEVEL3, EEmbeddingID.PATHWAY_LEVEL4), pathwayRow,
-				Float.NaN, info);
+		// createSelectedPathMultiformRenderer(pathwayTablePerspectives, EnumSet.of(EEmbeddingID.PATHWAY_LEVEL1,
+		// EEmbeddingID.PATHWAY_LEVEL2, EEmbeddingID.PATHWAY_LEVEL3, EEmbeddingID.PATHWAY_LEVEL4), pathwayRow,
+		// Float.NaN, info);
+		createPathwayMultiFormRenderer(pathway, EnumSet.of(EEmbeddingID.PATHWAY_LEVEL1, EEmbeddingID.PATHWAY_LEVEL2,
+				EEmbeddingID.PATHWAY_LEVEL3, EEmbeddingID.PATHWAY_LEVEL4), pathwayRow, Float.NaN, info);
 		pathwayLayout.addColumn((GLPathwayWindow) info.window);
 		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
 			allVertexReps.put(vertexRep.getID(), vertexRep);
@@ -575,8 +599,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		}
 		lastUsedRenderer = info.multiFormRenderer;
 
-		PathwayMappingEvent event = new PathwayMappingEvent(experimentalDataMappingElement.getDmState()
-				.getPathwayMappedTablePerspective());
+		PathwayMappingEvent event = new PathwayMappingEvent(dataMappingState.getPathwayMappedTablePerspective());
 		event.setEventSpace(pathEventSpace);
 		EventPublisher.trigger(event);
 
@@ -585,8 +608,42 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		wasPathwayAdded = true;
 	}
 
-	private void createMultiformRenderer(List<TablePerspective> tablePerspectives, EnumSet<EEmbeddingID> embeddingIDs,
+	private void createPathwayMultiFormRenderer(PathwayGraph pathway, EnumSet<EEmbeddingID> embeddingIDs,
 			final AnimatedGLElementContainer parent, Object layoutData, MultiFormInfo info) {
+		MultiFormRenderer renderer = new MultiFormRenderer(this, false);
+		renderer.addChangeListener(this);
+		info.multiFormRenderer = renderer;
+
+		for (EEmbeddingID embedding : embeddingIDs) {
+			int rendererID = PathwayViews.addPathwayView(this, pathway, dataMappingState.getTablePerspectives(),
+					dataMappingState.getPathwayMappedTablePerspective(), pathEventSpace, embedding, renderer);
+			if (rendererID == -1)
+				continue;
+			List<Integer> rendererIDList = info.embeddingIDToRendererIDs.get(embedding);
+			if (rendererIDList == null) {
+				rendererIDList = new ArrayList<>();
+				info.embeddingIDToRendererIDs.put(embedding, rendererIDList);
+			}
+			rendererIDList.add(rendererID);
+			initPathwayRepresentation(renderer, rendererID);
+		}
+
+		final GLPathwayWindow pathwayWindow = new GLPathwayWindow(pathway.getTitle(), this,
+				(PathwayMultiFormInfo) info, false);
+		pathwayWindow.onClose(new ICloseWindowListener() {
+			@Override
+			public void onWindowClosed(GLWindow w) {
+				removePathwayWindow(pathwayWindow);
+			}
+		});
+
+		info.window = pathwayWindow;
+		parent.add(pathwayWindow);
+	}
+
+	private void createSelectedPathMultiformRenderer(List<TablePerspective> tablePerspectives,
+			EnumSet<EEmbeddingID> embeddingIDs, final AnimatedGLElementContainer parent, Object layoutData,
+			MultiFormInfo info) {
 
 		// GLElementContainer backgroundContainer = new GLElementContainer(GLLayouts.LAYERS);
 		// backgroundContainer.setLayoutData(layoutData);
@@ -595,66 +652,60 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		MultiFormRenderer renderer = new MultiFormRenderer(this, false);
 		renderer.addChangeListener(this);
 		info.multiFormRenderer = renderer;
-		PathwayGraph pathway = null;
 
 		for (EEmbeddingID embedding : embeddingIDs) {
 			String embeddingID = embedding.id();
 			Set<String> ids = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE, embeddingID);
 
 			for (String viewID : ids) {
+
 				List<Integer> rendererIDList = info.embeddingIDToRendererIDs.get(embedding);
 				if (rendererIDList == null) {
-					rendererIDList = new ArrayList<>(ids.size());
+					rendererIDList = new ArrayList<>();
 					info.embeddingIDToRendererIDs.put(embedding, rendererIDList);
 				}
 
 				int rendererID = renderer.addPluginVisualization(viewID, getViewType(), embeddingID, tablePerspectives,
 						pathEventSpace);
 				rendererIDList.add(rendererID);
-
-				IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(renderer, rendererID);
-				if (pathwayRepresentation != null) {
-					pathway = pathwayRepresentation.getPathway();
-					// pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
-					// "Show Node Info", ShowNodeInfoEvent.class, pathEventSpace));
-					// pathwayRepresentation.addVertexRepBasedContextMenuItem(new ShowCommonNodeItem(
-					// ShowCommonNodePathwaysEvent.class, pathEventSpace));
-					pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
-							"Show Context", ShowNodeContextEvent.class, pathEventSpace));
-					pathwayRepresentation.addVertexRepBasedSelectionEvent(new ShowNodeContextEventFactory(
-							pathEventSpace, this), PickingMode.CLICKED);
-					pathwayRepresentation.addVertexRepBasedSelectionEvent(new AddPathwayEventFactory(pathEventSpace),
-							PickingMode.DOUBLE_CLICKED);
-					pathwayRepresentation.addVertexRepBasedSelectionEvent(
-							new SelectPathwayEventFactory(pathEventSpace), PickingMode.MOUSE_OVER);
-				}
 			}
 		}
-		GLMultiFormWindow window = null;
-		if (pathway == null) {
-			window = new GLMultiFormWindow("Selected Path", this, info, true);
-		} else {
-			final GLPathwayWindow pathwayWindow = new GLPathwayWindow(pathway.getTitle(), this,
-					(PathwayMultiFormInfo) info, false);
-			window = pathwayWindow;
-			pathwayWindow.onClose(new ICloseWindowListener() {
-				@Override
-				public void onWindowClosed(GLWindow w) {
-					pathwayLayout.removeWindow(pathwayWindow);
-					parent.remove(pathwayWindow);
-					pathwayInfos.remove(pathwayWindow.info);
-					for (PathwayVertexRep vertexRep : ((PathwayMultiFormInfo) (pathwayWindow.info)).pathway.vertexSet()) {
-						allVertexReps.remove(vertexRep.getID());
-					}
-					if (activeWindow == pathwayWindow) {
-						activeWindow = null;
-						portalFocusWindow = null;
-					}
-				}
-			});
-		}
+		GLMultiFormWindow window = new GLMultiFormWindow("Selected Path", this, info, true);
+
 		info.window = window;
 		parent.add(window);
+	}
+
+	private void initPathwayRepresentation(MultiFormRenderer renderer, int rendererID) {
+		IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(renderer, rendererID);
+		if (pathwayRepresentation != null) {
+			// PathwayGraph pathway = pathwayRepresentation.getPathway();
+			// pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
+			// "Show Node Info", ShowNodeInfoEvent.class, pathEventSpace));
+			// pathwayRepresentation.addVertexRepBasedContextMenuItem(new ShowCommonNodeItem(
+			// ShowCommonNodePathwaysEvent.class, pathEventSpace));
+			pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem("Show Context",
+					ShowNodeContextEvent.class, pathEventSpace));
+			pathwayRepresentation.addVertexRepBasedSelectionEvent(
+					new ShowNodeContextEventFactory(pathEventSpace, this), PickingMode.CLICKED);
+			pathwayRepresentation.addVertexRepBasedSelectionEvent(new AddPathwayEventFactory(pathEventSpace),
+					PickingMode.DOUBLE_CLICKED);
+			pathwayRepresentation.addVertexRepBasedSelectionEvent(new SelectPathwayEventFactory(pathEventSpace),
+					PickingMode.MOUSE_OVER);
+		}
+	}
+
+	private void removePathwayWindow(GLPathwayWindow pathwayWindow) {
+		pathwayLayout.removeWindow(pathwayWindow);
+		((AnimatedGLElementContainer) pathwayWindow.getParent()).remove(pathwayWindow);
+		pathwayInfos.remove(pathwayWindow.info);
+		for (PathwayVertexRep vertexRep : ((PathwayMultiFormInfo) (pathwayWindow.info)).pathway.vertexSet()) {
+			allVertexReps.remove(vertexRep.getID());
+		}
+		if (activeWindow == pathwayWindow) {
+			activeWindow = null;
+			portalFocusWindow = null;
+		}
 	}
 
 	@Override
@@ -718,44 +769,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		return null;
 	}
 
-	protected void updatePathLinks() {
-		// clearWindowStubSets();
-		// augmentation.isDirty = true;
-		// augmentation.setPxlSize(this.getParentGLCanvas().getWidth(), this.getParentGLCanvas().getHeight());
-		//
-		// List<Rectangle2D> path = new ArrayList<>();
-		//
-		// IPathwayRepresentation pathwayRepresentation = null;
-		// PathwayMultiFormInfo pwInfo = null;
-		// for (PathwayPath segment : pathSegments) {
-		// if (segment == null) {
-		// System.out.println("updatePathLinks() ..  PathwayPath segment : pathSegments .. segment==null");
-		// break;
-		// }
-		// for (PathwayMultiFormInfo info : pathwayInfos) {
-		// pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
-		// info.multiFormRenderer.getActiveRendererID());
-		// if (pathwayRepresentation != null && (segment.getPathway() == pathwayRepresentation.getPathway())) {
-		// pwInfo = info;
-		// break;
-		// }
-		// }
-		// if (pathwayRepresentation != null && pwInfo != null) {
-		// for (PathwayVertexRep v : segment.getNodes()) {
-		// Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, v, pwInfo.container);
-		// if (rect != null)
-		// path.add(rect);
-		// }
-		// }
-		// }
-		//
-		// augmentation.setPath(path);
-	}
-
 	public void updateAugmentation() {
 		clearWindowStubSets();
-		updatePathLinks();
-		// updatePortalLinks();
 		updatePathwayPortals();
 	}
 
@@ -823,6 +838,11 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			}
 
 			pathwayRow.relayout();
+		}
+
+		if (multiFormRenderer == pathInfo.multiFormRenderer) {
+			if (dataMappingWizard != null)
+				dataMappingWizard.onPathLevelChanged();
 		}
 	}
 
@@ -952,6 +972,13 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	protected ArrayList<Rectangle2D> portalRects = new ArrayList<>();
 
+	@ListenTo(sendToMe = true)
+	public void onClearWorkspace(ClearWorkspaceEvent event) {
+		for (PathwayMultiFormInfo info : new ArrayList<PathwayMultiFormInfo>(pathwayInfos)) {
+			removePathwayWindow((GLPathwayWindow) info.window);
+		}
+	}
+
 	private class PathEventSpaceHandler {
 
 		// @ListenTo(restrictExclusiveToEventSpace = true)
@@ -971,25 +998,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				}
 			}
 			updatePathwayPortals();
-			updatePathLinks();
 		}
-
-		// @ListenTo(restrictExclusiveToEventSpace = true)
-		// public void onShowNodeInfo(ShowNodeInfoEvent event) {
-		// GLNodeInfo nodeInfo = new GLNodeInfo(event.getVertexRep());
-		// nodeInfo.setSize(80, 80);
-		// nodeInfoContainer.add(nodeInfo, 200, new InOutTransitionBase(InOutInitializers.BOTTOM,
-		// MoveTransitions.MOVE_LINEAR));
-		// nodeInfoContainer.setSize(Float.NaN, 80);
-		// nodeInfoContainer.relayout();
-		// }
-
-		// @ListenTo(restrictExclusiveToEventSpace = true)
-		// public void onShowPathwaysWithVertex(ShowCommonNodePathwaysEvent event) {
-		// rankingElement.setFilter(new PathwayFilters.CommonVertexFilter(event.getVertexRep(), false));
-		// rankingElement.setRanking(new PathwayRankings.CommonVerticesRanking(event.getVertexRep().getPathway()));
-		// isLayoutDirty = true;
-		// }
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
 		public void onMinSizeUpdate(MinSizeUpdateEvent event) {
@@ -1322,8 +1331,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	@Override
 	public List<TablePerspective> getTablePerspectives() {
-		// TODO Auto-generated method stub
-		return experimentalDataMappingElement.getDmState().getTablePerspectives();
+		return dataMappingState.getTablePerspectives();
 	}
 
 	@Override
@@ -1461,4 +1469,31 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
 		return default_;
 	}
+
+	/**
+	 * @return the dataMappingState, see {@link #dataMappingState}
+	 */
+	public DataMappingState getDataMappingState() {
+		return dataMappingState;
+	}
+
+	/**
+	 * @param selectPathAction
+	 *            setter, see {@link selectPathAction}
+	 */
+	public void setSelectPathAction(SelectPathAction selectPathAction) {
+		this.selectPathAction = selectPathAction;
+	}
+
+	/**
+	 * @return the selectPathAction, see {@link #selectPathAction}
+	 */
+	public SelectPathAction getSelectPathAction() {
+		return selectPathAction;
+	}
+
+	public EEmbeddingID getCurrentlyDisplayedPathLevel() {
+		return pathInfo.getCurrentEmbeddingID();
+	}
+
 }

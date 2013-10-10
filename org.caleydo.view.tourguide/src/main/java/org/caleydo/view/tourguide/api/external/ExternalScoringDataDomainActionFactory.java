@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.util.collection.Pair;
@@ -26,7 +27,8 @@ public class ExternalScoringDataDomainActionFactory {
 		Collection<Pair<String,? extends AEvent>> r = new ArrayList<>(4);
 		if (dataDomain instanceof ATableBasedDataDomain) {
 			ATableBasedDataDomain d = (ATableBasedDataDomain) dataDomain;
-			r.add(make("Load Scoring for " + d.getDimensionIDCategory().getCategoryName(),
+			if (DataSupportDefinitions.categoricalTables.apply(d))
+				r.add(make("Load Scoring for " + d.getDimensionIDCategory().getCategoryName(),
 					new ImportExternalScoreEvent(d, true, ExternalIDTypeScore.class).from(sender)));
 			r.add(make("Load Scoring for " + d.getRecordIDCategory().getCategoryName(), new ImportExternalScoreEvent(d,
 					false, ExternalIDTypeScore.class).from(sender)));

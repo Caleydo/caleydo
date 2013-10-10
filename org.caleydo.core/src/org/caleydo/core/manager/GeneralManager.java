@@ -18,7 +18,6 @@ import java.util.Properties;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.internal.Activator;
-import org.caleydo.core.internal.ConsoleFlags;
 import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.logging.Logger;
@@ -43,13 +42,8 @@ import org.osgi.framework.Version;
 public class GeneralManager {
 
 	/**
-	 * In release mode non-stable or student views are automatically removed from the workbench.
-	 */
-	public static final boolean RELEASE_MODE = !ConsoleFlags.EXPERIMENTAL_MODE;
-
-	/**
 	 * This is the current version of Caleydo. The value must be the same as specified in the plugin/bundle. We need to
-	 * access the version before the workbench is started. Therefore we have to set it hardcoded at this point.
+	 * access the version before the workbench is started. Therefore we have to set it hard-coded at this point.
 	 */
 	public static final Version VERSION = readVersion();
 
@@ -58,8 +52,6 @@ public class GeneralManager {
 	/** The major version number determines the name of the Caleydo folder **/
 	private static final String CALEYDO_FOLDER = ".caleydo_" + VERSION.getMajor() + "." + VERSION.getMinor();
 
-	// public static final String CALEYDO_HOME_PATH =
-	// Platform.getLocation().toOSString()+ File.separator;
 	public static final String CALEYDO_HOME_PATH = System.getProperty("user.home") + File.separator + CALEYDO_FOLDER
 			+ File.separator;
 	public static final String CALEYDO_LOG_PATH = CALEYDO_HOME_PATH + "logs" + File.separator;
@@ -223,7 +215,9 @@ public class GeneralManager {
 		if (caleydoVersion == null)
 			return false;
 		Version tocheck = Version.parseVersion(caleydoVersion);
-		return VERSION.getMajor() == tocheck.getMajor() && VERSION.getMinor() == tocheck.getMinor();
+		if (VERSION.getMajor() != tocheck.getMajor())
+			return false;
+		return VERSION.getMinor() >= tocheck.getMinor();
 	}
 
 	public void setSplashProgressMonitor(IProgressMonitor splashProgressMonitor) {

@@ -126,8 +126,10 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 
 	@Override
 	protected void takeDown() {
-		for (GLElement elem : this)
-			elem.takeDown();
+		for (GLElement elem : this) {
+			if (elem.context != null)
+				elem.takeDown();
+		}
 		super.takeDown();
 	}
 
@@ -199,7 +201,8 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 
 	public final boolean remove(GLElement child) {
 		if (children.remove(child)) {
-			child.takeDown();
+			if (child.context != null)
+				child.takeDown();
 			child.setParent(null);
 			relayout();
 			return true;

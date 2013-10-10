@@ -66,6 +66,11 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 	private PathwayGraph pathway;
 
 	/**
+	 * Parent of this vertex rep. May be null, if there is no parent.
+	 */
+	private PathwayVertexGroupRep parent;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param name
@@ -309,4 +314,18 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 		return average;
 	}
 
+	/**
+	 * @return the parent, see {@link #parent}
+	 */
+	public PathwayVertexGroupRep getParent() {
+		return parent;
+	}
+
+	/**
+	 * @param parent
+	 *            setter, see {@link parent}
+	 */
+	void setParent(PathwayVertexGroupRep parent) {
+		this.parent = parent;
+	}
 }

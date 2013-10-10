@@ -6,7 +6,7 @@
 package org.caleydo.view.tourguide.internal.view.specific;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.view.tourguide.internal.model.ADataDomainQuery;
+import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.vis.lineup.model.RankTableModel;
 
 /**

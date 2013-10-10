@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -258,9 +259,10 @@ public final class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<C
 			if (info == null)
 				return;
 			float hi = Math.min(h, 18);
-			if (!(((IColumnRenderInfo) getParent()).isCollapsed())) {
-				g.drawText(info, 1, 1 + (h - hi) * 0.5f, w - 2, hi - 5);
-			}
+			final boolean collapsed = (((IColumnRenderInfo) getParent()).isCollapsed());
+			if (collapsed)
+				info = StringUtils.substring(info, 0, 1);
+			g.drawText(info, 1, 1 + (h - hi) * 0.5f, w - 2, hi - 5);
 		}
 
 		@Override

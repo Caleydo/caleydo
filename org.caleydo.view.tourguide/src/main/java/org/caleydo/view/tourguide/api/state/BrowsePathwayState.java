@@ -6,7 +6,7 @@
 package org.caleydo.view.tourguide.api.state;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.view.stratomex.tourguide.event.UpdatePathwayPreviewEvent;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 
 /**
@@ -29,7 +29,7 @@ public class BrowsePathwayState extends ABrowseState {
 	}
 
 	@Override
-	public void onUpdate(UpdatePathwayPreviewEvent event, IReactions adapter) {
-		adapter.replacePathwayTemplate(underlying, event.getPathway(), false, true);
+	public void onUpdatePathway(PathwayGraph pathway, IReactions adapter) {
+		adapter.replacePathwayTemplate(underlying, pathway, false, true);
 	}
 }

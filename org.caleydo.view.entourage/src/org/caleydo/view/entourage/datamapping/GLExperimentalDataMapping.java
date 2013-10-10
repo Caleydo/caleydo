@@ -31,8 +31,6 @@ import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.basic.RadioController;
-import org.caleydo.core.view.opengl.layout2.layout.GLFlowLayout;
-import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.view.entourage.GLEntourage;
@@ -53,29 +51,27 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 
 	public GLExperimentalDataMapping(GLEntourage view) {
 		this.view = view;
-
-		setLayout(new GLFlowLayout(true, 2, new GLPadding(5)));
-		setSize(-1, 50);
-
-		dmState = new DataMappingState(view.getPathEventSpace());
-
-		GLElementContainer generalMapping = new GLElementContainer(new GLFlowLayout(false, 10, new GLPadding(5)));
-
-		GLElementContainer ddElements = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(5)));
-		GLElementContainer stratElements = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(5)));
-
-		generalMapping.setLayoutData(0.5f);
-		generalMapping.add(ddElements);
-		generalMapping.add(stratElements);
-
-		pathwayDatasets = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(10)));
-
-		addPerspectiveElements(stratElements);
-		addDataDomainElements(ddElements);
-		updatePathwayDatasets();
-
-		this.add(generalMapping);
-		this.add(pathwayDatasets);
+		this.dmState = view.getDataMappingState();
+		// setLayout(new GLFlowLayout(true, 2, new GLPadding(5)));
+		// setSize(-1, 50);
+		//
+		// GLElementContainer generalMapping = new GLElementContainer(new GLFlowLayout(false, 10, new GLPadding(5)));
+		//
+		// GLElementContainer ddElements = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(5)));
+		// GLElementContainer stratElements = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(5)));
+		//
+		// generalMapping.setLayoutData(0.5f);
+		// generalMapping.add(ddElements);
+		// generalMapping.add(stratElements);
+		//
+		// pathwayDatasets = new GLElementContainer(new GLFlowLayout(true, 10, new GLPadding(10)));
+		//
+		// addPerspectiveElements(stratElements);
+		// addDataDomainElements(ddElements);
+		// updatePathwayDatasets();
+		//
+		// this.add(generalMapping);
+		// this.add(pathwayDatasets);
 
 	}
 
@@ -117,7 +113,6 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 					PathwayMappingEvent event = new PathwayMappingEvent(perspective);
 					event.setEventSpace(view.getPathEventSpace());
 					EventPublisher.trigger(event);
-
 
 				}
 
@@ -195,7 +190,7 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 			// todo find default element
 		}
 		// Set default data
-		dmState.setPerspective(defaultPerspective);
+		dmState.setSelectedPerspective(defaultPerspective);
 		if (defaultElement != null) {
 			defaultElement.setSelected(true);
 		}
@@ -214,7 +209,7 @@ public class GLExperimentalDataMapping extends AnimatedGLElementContainer implem
 
 	@Override
 	public void onSelectionChanged(GLButton button, boolean selected) {
-		dmState.setPerspective(button.getLayoutDataAs(Perspective.class, null));
+		dmState.setSelectedPerspective(button.getLayoutDataAs(Perspective.class, null));
 	}
 
 	/**

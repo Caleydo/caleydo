@@ -6,6 +6,7 @@
 package org.caleydo.view.tourguide.api.score.ui;
 
 import org.caleydo.core.util.color.Color;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +15,10 @@ import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.view.tourguide.api.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
-import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.jface.dialogs.Dialog;

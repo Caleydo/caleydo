@@ -50,17 +50,17 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.ESampleMappingMode;
 import org.caleydo.datadomain.pathway.listener.EnableFreePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
+import org.caleydo.datadomain.pathway.listener.SampleMappingModeEvent;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.event.ShowPathEvent;
-import org.caleydo.view.pathway.ESampleMappingMode;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.PathwayTextureCreator;
-import org.caleydo.view.pathway.event.SampleMappingModeEvent;
 
 /**
  * Renderer that shows the alternative entrances
@@ -92,6 +92,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	protected final boolean showThumbnail;
 
 	private boolean isControlKeyPressed = false;
+	private boolean isShiftKeyPressed = false;
 
 	/**
 	 * Context menu items that shall be displayed when right-clicking on a path node.
@@ -128,7 +129,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 		if (showThumbnail) {
 			PathwayTextureCreator creator = new PathwayTextureCreator();
-			pathwayView = (GLPathway) creator.createRemoteView(view, tablePerspectives, eventSpace);
+			pathwayView = (GLPathway) creator.create(view, pathway, tablePerspectives, null, eventSpace);
 
 			ElementLayout pathwayTextureLayout = new ElementLayout();
 			pathwayTextureLayout.setPixelSizeY(pathwayView.getMinPixelHeight());
@@ -624,11 +625,13 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		@Override
 		public void keyPressed(IKeyEvent e) {
 			isControlKeyPressed = e.isControlDown();
+			isShiftKeyPressed = e.isShiftDown();
 		}
 
 		@Override
 		public void keyReleased(IKeyEvent e) {
 			isControlKeyPressed = e.isControlDown();
+			isShiftKeyPressed = e.isShiftDown();
 		}
 
 	}
@@ -645,6 +648,13 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	 */
 	public boolean isControlKeyPressed() {
 		return isControlKeyPressed;
+	}
+
+	/**
+	 * @return the isShiftKeyPressed, see {@link #isShiftKeyPressed}
+	 */
+	public boolean isShiftKeyPressed() {
+		return isShiftKeyPressed;
 	}
 
 	public void contextPathsChanged() {

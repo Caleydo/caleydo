@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.ui;
 
-import org.caleydo.view.tourguide.internal.model.PathwayDataDomainQuery;
+import org.caleydo.view.tourguide.api.model.PathwayDataDomainQuery;
 
 public class PathwayDataDomainElement extends ADataDomainElement {
 

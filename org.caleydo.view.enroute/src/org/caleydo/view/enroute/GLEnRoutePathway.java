@@ -315,9 +315,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	private void renderBackground(GL2 gl) {
 		gl.glPushMatrix();
-		gl.glTranslatef(0, 0, -0.2f);
+		gl.glTranslatef(0, 0, -0.001f);
 		gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BACKGROUND.name(), 0));
-		gl.glColor4f(1, 0, 0, 0);
+		gl.glColor4f(0, 0, 0, 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(0, viewFrustum.getHeight(), 0);
@@ -336,8 +336,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	private void renderEmptyViewInfo(GL2 gl, int displayListIndex) {
 		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
-		renderEmptyViewText(gl, new String[] { EMPTY_VIEW_TEXT_LINE_ONE, EMPTY_VIEW_TEXT_LINE_TWO,
-				"Refer to http://help.caleydo.org for more information." });
+		if (!isRenderedRemote()) {
+			renderEmptyViewText(gl, new String[] { EMPTY_VIEW_TEXT_LINE_ONE, EMPTY_VIEW_TEXT_LINE_TWO,
+					"Refer to http://help.caleydo.org for more information." });
+		}
 		gl.glEndList();
 	}
 

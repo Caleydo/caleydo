@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.caleydo</groupId>
 	<artifactId>org.caleydo.parent</artifactId>
-	<version>3.0.4</version>
+	<version>3.1.0</version>
 	<packaging>pom</packaging>
 	<url>https://github.com/Caleydo/caleydo</url>
 
@@ -165,6 +165,7 @@
 						</dependency>
 					</dependencies> -->
 					<configuration>
+						<strictVersions>false</strictVersions><!--skip not matching versions-->
 						<strictBinIncludes>false</strictBinIncludes>
 						<format>'v'yyyyMMdd-HHmm</format>
 						<!-- <timestampProvider>jgit</timestampProvider>

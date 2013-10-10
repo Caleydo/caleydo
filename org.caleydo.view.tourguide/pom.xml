@@ -5,13 +5,9 @@
 	<parent>
 		<groupId>org.caleydo</groupId>
 		<artifactId>org.caleydo.parent</artifactId>
-		<version>3.0.4</version>
+		<version>3.1.0</version>
 		<relativePath>../org.caleydo.parent</relativePath>
 	</parent>
 	<artifactId>org.caleydo.view.tourguide</artifactId>
 	<packaging>eclipse-plugin</packaging>
-	
-	<build>
-		<sourceDirectory>src</sourceDirectory>
-	</build>
 </project>

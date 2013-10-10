@@ -15,7 +15,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.base.Labels;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.view.tourguide.internal.model.InhomogenousDataDomainQuery;
+import org.caleydo.view.tourguide.api.model.InhomogenousDataDomainQuery;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;

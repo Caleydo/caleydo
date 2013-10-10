@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.caleydo.vis.lineup.internal.prefs.MyPreferences">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.caleydo.core.gui.preferences.views"
+            class="org.caleydo.vis.lineup.internal.prefs.MyPreferencePage"
+            id="org.caleydo.vis.lineup"
+            name="LineUp">
+      </page>
+   </extension>
+
+</plugin>

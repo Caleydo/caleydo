@@ -233,10 +233,12 @@ public class MappedDataRenderer {
 
 	private void createLayout(LayoutManager layoutManager, boolean isHighlightLayout) {
 
-		float rowSpacingHeight = 5;
-
 		Row baseRow = new Row("baseRow");
 		layoutManager.setBaseElementLayout(baseRow);
+
+		if ((contextualTablePerspectives == null || contextualTablePerspectives.isEmpty())
+				&& (geneTablePerspectives == null || geneTablePerspectives.isEmpty()))
+			return;
 
 		ElementLayout xSpacing = new ElementLayout();
 		xSpacing.setPixelSizeX(SPACING_PIXEL_WIDTH);

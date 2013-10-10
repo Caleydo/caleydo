@@ -9,9 +9,12 @@ import gleem.linalg.Vec2f;
 
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2ES1;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -56,12 +59,13 @@ public final class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler
 
 	private float relativeViewTranlateY;
 
-
 	private ViewFrustum viewFrustum;
 
 	private GLMouseListener glMouseListener;
 
 	private ElementLayout parentLayout;
+
+	private Set<IZoomListener> listeners = new HashSet<>();
 
 	public Zoomer(AGLView parentView, ElementLayout parentLayout) {
 		this.parentView = parentView;
@@ -142,19 +146,21 @@ public final class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler
 		viewArea_dip.width = pixelGLConverter.getPixelWidthForGLWidth(w);
 		viewArea_dip.height = pixelGLConverter.getPixelHeightForGLHeight(h);
 
-		// double[] clipPlane1 = new double[] { 0.0, 1.0, 0.0, 0.0 };
-		// double[] clipPlane2 = new double[] { 1.0, 0.0, 0.0, 0.0 };
-		// double[] clipPlane3 = new double[] { -1.0, 0.0, 0.0, parentLayout.getSizeScaledX() };
-		// double[] clipPlane4 = new double[] { 0.0, -1.0, 0.0, parentLayout.getSizeScaledY() };
-		//
-		// gl.glClipPlane(GL2ES1.GL_CLIP_PLANE0, clipPlane1, 0);
-		// gl.glClipPlane(GL2ES1.GL_CLIP_PLANE1, clipPlane2, 0);
-		// gl.glClipPlane(GL2ES1.GL_CLIP_PLANE2, clipPlane3, 0);
-		// gl.glClipPlane(GL2ES1.GL_CLIP_PLANE3, clipPlane4, 0);
-		// gl.glEnable(GL2ES1.GL_CLIP_PLANE0);
-		// gl.glEnable(GL2ES1.GL_CLIP_PLANE1);
-		// gl.glEnable(GL2ES1.GL_CLIP_PLANE2);
-		// gl.glEnable(GL2ES1.GL_CLIP_PLANE3);
+		// We need to do both, clip planes and a scissor test, clip panes do not work with shaders, and the scissor test
+		// is apparently ignored for picking.
+		double[] clipPlane1 = new double[] { 0.0, 1.0, 0.0, 0.0 };
+		double[] clipPlane2 = new double[] { 1.0, 0.0, 0.0, 0.0 };
+		double[] clipPlane3 = new double[] { -1.0, 0.0, 0.0, parentLayout.getSizeScaledX() };
+		double[] clipPlane4 = new double[] { 0.0, -1.0, 0.0, parentLayout.getSizeScaledY() };
+
+		gl.glClipPlane(GL2ES1.GL_CLIP_PLANE0, clipPlane1, 0);
+		gl.glClipPlane(GL2ES1.GL_CLIP_PLANE1, clipPlane2, 0);
+		gl.glClipPlane(GL2ES1.GL_CLIP_PLANE2, clipPlane3, 0);
+		gl.glClipPlane(GL2ES1.GL_CLIP_PLANE3, clipPlane4, 0);
+		gl.glEnable(GL2ES1.GL_CLIP_PLANE0);
+		gl.glEnable(GL2ES1.GL_CLIP_PLANE1);
+		gl.glEnable(GL2ES1.GL_CLIP_PLANE2);
+		gl.glEnable(GL2ES1.GL_CLIP_PLANE3);
 		// gl.glScissor(viewportPositionX, viewportPositionY, 2000, 1000);
 
 		// System.out.println(currentZoomScale);
@@ -268,12 +274,12 @@ public final class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler
 	 */
 	public void endZoom(GL2 gl) {
 		previousZoomScale = currentZoomScale;
-
-		// gl.glDisable(GL2ES1.GL_CLIP_PLANE0);
-		// gl.glDisable(GL2ES1.GL_CLIP_PLANE1);
-		// gl.glDisable(GL2ES1.GL_CLIP_PLANE2);
-		// gl.glDisable(GL2ES1.GL_CLIP_PLANE3);
 		gl.glDisable(GL.GL_SCISSOR_TEST);
+
+		gl.glDisable(GL2ES1.GL_CLIP_PLANE0);
+		gl.glDisable(GL2ES1.GL_CLIP_PLANE1);
+		gl.glDisable(GL2ES1.GL_CLIP_PLANE2);
+		gl.glDisable(GL2ES1.GL_CLIP_PLANE3);
 
 		if (currentZoomScale == 1.0f)
 			return;
@@ -298,6 +304,7 @@ public final class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler
 			wasMouseWheeled = true;
 			mouseWheelPosition = mousePos_dip;
 		}
+		notifyListeners();
 	}
 
 	@Override
@@ -325,6 +332,7 @@ public final class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler
 
 			relativeViewTranlateY = viewTranslateY / viewFrustum.getHeight();
 		}
+		notifyListeners();
 	}
 
 	public void setLimits(float x, float y) {
@@ -337,5 +345,23 @@ public final class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler
 
 		hScrollBarLayoutManager.updateLayout();
 		vScrollBarLayoutManager.updateLayout();
+	}
+
+	private void notifyListeners() {
+		for (IZoomListener listener : listeners) {
+			listener.update(this);
+		}
+	}
+
+	public void addListener(IZoomListener listener) {
+		listeners.add(listener);
+	}
+
+	public void removeListener(IZoomListener listener) {
+		listeners.remove(listener);
+	}
+
+	public boolean isZoomed() {
+		return Float.compare(1.0f, currentZoomScale) != 0;
 	}
 }

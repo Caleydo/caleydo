@@ -35,7 +35,7 @@ public class MultiMappingAttributeRenderer extends ANodeAttributeRenderer {
 		Vec3f nodePos = node.getPosition();
 		float nodeHeight = node.getHeight();
 		float nodeWidth = node.getWidth();
-		float size = pixelGLConverter.getGLHeightForGLWidth(GLYPH_SIZE);
+		float size = pixelGLConverter.getGLHeightForPixelHeight(GLYPH_SIZE);
 		gl.glColor4f(0.3f, 0.3f, 0.3f, 1f);
 		gl.glBegin(GL.GL_TRIANGLES);
 		gl.glVertex3f(nodePos.x() - nodeWidth / 2.0f, nodePos.y() + nodeHeight / 2.0f, nodePos.z() + 0.1f);
