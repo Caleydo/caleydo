@@ -44,6 +44,10 @@ public enum EDimension {
 		return this == DIMENSION ? dim : rec;
 	}
 
+	public int select(int dim, int rec) {
+		return this == DIMENSION ? dim : rec;
+	}
+
 	public float select(Vec2f xy) {
 		return this == DIMENSION ? xy.x() : xy.y();
 	}
