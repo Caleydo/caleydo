@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Data-View Integrator
 Bundle-SymbolicName: org.caleydo.view.dvi;singleton:=true
-Bundle-Version: 3.1.0.beta1
+Bundle-Version: 3.1.1.qualifier
 Bundle-Activator: org.caleydo.view.dvi.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.caleydo.core;bundle-version="3.1.0.beta1",
- org.caleydo.datadomain.pathway;bundle-version="3.1.0.beta1"
+ org.caleydo.core;bundle-version="3.1.1.qualifier",
+ org.caleydo.datadomain.pathway;bundle-version="3.1.1.qualifier"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: www.caleydo.org
