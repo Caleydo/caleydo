@@ -1,8 +1,0 @@
-# @title don't suggest awt and swing
-# @description don't suggest awt and swing during organize, open type,...
-# @task_type LASTMOD
-#
-# Created by the Workspace Mechanic Preference Recorder
-#Mon Nov 12 16:13:27 CET 2012
-file_export_version=3.0
-/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.typefilter.enabled=com.sun.*;javax.swing.*;java.awt.*;

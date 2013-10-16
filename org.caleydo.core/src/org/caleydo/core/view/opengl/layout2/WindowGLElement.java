@@ -25,9 +25,9 @@ public final class WindowGLElement extends GLElementContainer {
 		this.root = root;
 		this.add(root);
 		this.popupLayer = new PopupLayer();
-		this.add(popupLayer.setzDelta(2.f));
+		this.add(popupLayer.setzDelta(3.f));
 		this.mouseLayer = new MouseLayer();
-		this.add(mouseLayer.setzDelta(5.f));
+		this.add(mouseLayer.setzDelta(6.f));
 	}
 
 	/**

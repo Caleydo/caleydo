@@ -5,11 +5,14 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
+import gleem.linalg.Vec2f;
+
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -22,7 +25,6 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 
 import com.jogamp.common.nio.Buffers;
@@ -316,38 +318,35 @@ public class PickingManager {
 
 		GLMouseListener glMouseListener = glView.getGLMouseListener();
 
-		Point pickPoint = null;
-
 		PickingMode ePickingMode = PickingMode.CLICKED;
 
 		if (glMouseListener.wasMouseDoubleClicked()) {
-			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.DOUBLE_CLICKED;
 		} else if (glMouseListener.wasMouseDragged()) {
-			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.DRAGGED;
 		} else if (glMouseListener.wasLeftMouseButtonPressed()) {
-			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.CLICKED;
 		} else if (glMouseListener.wasRightMouseButtonPressed()) {
-			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.RIGHT_CLICKED;
 		} else if (glMouseListener.wasMouseMoved()) {
 			// Restart timer
 			// hashViewIDToLastMouseMovedTimeStamp.put(viewID,
 			// System.nanoTime());
 			hashViewIDToIsMouseOverPickingEvent.put(glView.getID(), true);
-			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.MOUSE_OVER;
 		} else if (hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) != null
 				&& hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) == true) {
+
 			// pickPoint = glMouseListener.getPickedPoint();
 			// hashViewIDToLastMouseMovedTimeStamp.put(viewID,
 			// System.nanoTime());
 			// ePickingMode = PickingMode.MOUSE_OVER;
+			return;
+		} else {
+			return;
 		}
-
-		if (pickPoint == null)
+		Point pickRealPoint = glMouseListener.getRAWPickedPoint();
+		if (pickRealPoint == null)
 			return;
 
 		hashViewIDToIsMouseOverPickingEvent.put(glView.getID(), false);
@@ -373,8 +372,9 @@ public class PickingManager {
 
 		/* create 5x5 pixel picking region near cursor location */
 		GLU glu = new GLU();
-		glu.gluPickMatrix(pickPoint.x, (viewport[3] - pickPoint.y),//
+		glu.gluPickMatrix(pickRealPoint.x, (viewport[3] - pickRealPoint.y),//
 				5.0, 5.0, viewport, 0); // pick width and height is set to 5
+
 		// (i.e. picking tolerance)
 
 		float fAspectRatio = (float) (viewport[3] - viewport[1]) / (float) (viewport[2] - viewport[0]);
@@ -385,21 +385,13 @@ public class PickingManager {
 		// gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 
 		// Store picked point
-		Point tmpPickPoint = (Point) pickPoint.clone();
-		// Reset picked point
-		pickPoint = null;
+		Vec2f pickDIPPoint = glMouseListener.getDIPPickedPoint();
 
-		// FIXME: Bad hack trying to solve picking issues in scrolled views on Mac
-		if (System.getProperty("os.name").contains("Mac")) {
-		PixelGLConverter pixelGLConverter = glView.getPixelGLConverter();
+		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		gl.glPushMatrix();
-		gl.glTranslatef(pixelGLConverter.getGLWidthForPixelWidth(-glView.getScrollX()),
-				pixelGLConverter.getGLHeightForPixelHeight(-glView.getScrollY()), 0);
+		gl.glLoadIdentity();
 		glView.display(gl);
 		gl.glPopMatrix();
-		} else {
-			glView.display(gl);
-		}
 
 		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 		gl.glPopMatrix();
@@ -417,9 +409,11 @@ public class PickingManager {
 		IGLCanvas parentCanvas = glView.getParentGLCanvas();
 
 		if (iAlPickedObjectId.size() > 0) {
-			processPicks(iAlPickedObjectId, ePickingMode, tmpPickPoint, glMouseListener.getPickedPointDragStart());
+			processPicks(iAlPickedObjectId, ePickingMode, pickDIPPoint, glMouseListener.getDIPPickedPointDragStart());
 
 			Set<Integer> processedViews = new HashSet<Integer>();
+
+			List<Integer> currentPickedObjectIDs = new ArrayList<>(iAlPickedObjectId);
 
 			// We have to add a MOUSE_OUT on other remote rendered views, if a
 			// picking event occurred
@@ -524,31 +518,45 @@ public class PickingManager {
 										// but different view ID).
 										// FIXME: THIS IS PROBABLY ONE OF THE WORST HACKS EVER! FIX BY USING NEW
 										// PICKINGMANGER
-										if (!(glView.getViewType().equals("org.caleydo.view.stratomex"))
-												|| (!pickingType.equals(pickAssociatedValues.getSecond()) && previousPick
-														.getObjectID() != getPickedObjectIDFromPickingID(pickedViewID,
-														pickAssociatedValues.getSecond(), pickingID))) {
+										// if (!(glView.getViewType().equals("org.caleydo.view.stratomex"))
+										// || (!pickingType.equals(pickAssociatedValues.getSecond()) && previousPick
+										// .getObjectID() != getPickedObjectIDFromPickingID(pickedViewID,
+										// pickAssociatedValues.getSecond(), pickingID))) {
 
-											ViewSpecificHitListContainer hitContainer = hashViewIDToViewSpecificHitListContainer
-													.get(viewID);
-											if (hitContainer == null) {
-												hitContainer = new ViewSpecificHitListContainer();
-												hashViewIDToViewSpecificHitListContainer.put(viewID, hitContainer);
+										ViewSpecificHitListContainer hitContainer = hashViewIDToViewSpecificHitListContainer
+												.get(viewID);
+										if (hitContainer == null) {
+											hitContainer = new ViewSpecificHitListContainer();
+											hashViewIDToViewSpecificHitListContainer.put(viewID, hitContainer);
+										}
+
+										boolean picksExist = false;
+										for (String pT : hitContainer.getPickingTypes()) {
+											if (hitContainer.getPicksForPickingType(pT).size() > 0) {
+												picksExist = true;
+												break;
 											}
-											// if (hitContainer.getPickingTypes().size() <= 0) {
+										}
+
+										// Only add a mouse out if the object was currently not picked
+										if (!picksExist
+												&& !currentPickedObjectIDs.contains(getPickingID(viewID, pickingType,
+														previousPick.getObjectID()))) {
 											Pick pick = new Pick(previousPick.getObjectID(), PickingMode.MOUSE_OUT,
-													tmpPickPoint, glMouseListener.getPickedPointDragStart(),
+													pickDIPPoint, glMouseListener.getDIPPickedPointDragStart(),
 													fMinimumZValue);
 											hitContainer.addPicksForPickingType(pickingType, pick, true);
 
 											processedViews.add(viewID);
-											// }
+											hashViewIDToPreviousViewSpecificHitListContainer.put(viewID,
+													new ViewSpecificHitListContainer());
 										}
+										// }
 									}
 								}
 							}
-							hashViewIDToPreviousViewSpecificHitListContainer.put(viewID,
-									new ViewSpecificHitListContainer());
+							// hashViewIDToPreviousViewSpecificHitListContainer.put(viewID,
+							// new ViewSpecificHitListContainer());
 						}
 
 					}
@@ -570,9 +578,42 @@ public class PickingManager {
 
 			}
 
-			addMouseOutForPicksOfSpecifiedViews(remoteRenderedViewIDs, glMouseListener, tmpPickPoint);
+			addMouseOutForPicksOfSpecifiedViews(remoteRenderedViewIDs, glMouseListener, pickDIPPoint);
 
 		}
+
+		// FOR DEBUGGING:
+		// StringBuilder builder = new StringBuilder();
+		// boolean show = false;
+		// for (Entry<Integer, ViewSpecificHitListContainer> entry :
+		// hashViewIDToViewSpecificHitListContainer.entrySet()) {
+		// AGLView view = ViewManager.get().getGLView(entry.getKey());
+		// if (view == null)
+		// continue;
+		//
+		// StringBuilder tempBuilder = new StringBuilder();
+		// boolean showView = false;
+		// tempBuilder.append("=== View " + view.getLabel() + " ===\n");
+		// for (Entry<String, ArrayList<Pick>> pickEntry : entry.getValue().hashPickingTypeToPicks.entrySet()) {
+		// if (!pickEntry.getValue().isEmpty()) {
+		// tempBuilder.append(pickEntry.getKey() + ":\n");
+		// for (Pick pick : pickEntry.getValue()) {
+		// tempBuilder.append(pick.getPickingMode() + "\n");
+		// }
+		// show = true;
+		// showView = true;
+		// }
+		// }
+		// if (showView) {
+		// builder.append(tempBuilder.toString());
+		// }
+		// }
+		// if (show) {
+		// System.out.println("===================================");
+		// System.out.println(builder.toString());
+		// System.out.println("===================================");
+		// }
+
 	}
 
 	static boolean isParentViewOfView(int viewID, int parentViewID) {
@@ -598,7 +639,7 @@ public class PickingManager {
 	 * @param pickedPoint
 	 */
 	private void addMouseOutForPicksOfSpecifiedViews(Set<Integer> viewIDs, GLMouseListener glMouseListener,
-			Point pickedPoint) {
+			Vec2f pickedDIPPoint) {
 
 		for (Integer viewID : viewIDs) {
 
@@ -616,8 +657,8 @@ public class PickingManager {
 							hitContainer = new ViewSpecificHitListContainer();
 							hashViewIDToViewSpecificHitListContainer.put(viewID, hitContainer);
 						}
-						Pick pick = new Pick(previousPick.getObjectID(), PickingMode.MOUSE_OUT, pickedPoint,
-								glMouseListener.getPickedPointDragStart(), fMinimumZValue);
+						Pick pick = new Pick(previousPick.getObjectID(), PickingMode.MOUSE_OUT, pickedDIPPoint,
+								glMouseListener.getDIPPickedPointDragStart(), fMinimumZValue);
 						hitContainer.addPicksForPickingType(pickingType, pick, true);
 					}
 				}
@@ -667,6 +708,7 @@ public class PickingManager {
 	public void flushHits(int viewID, String ePickingType) {
 
 		if (hashViewIDToViewSpecificHitListContainer.get(viewID) != null) {
+			// hashViewIDToViewSpecificHitListContainer.get(viewID).hashPickingTypeToPicks.remove(ePickingType);
 			hashViewIDToViewSpecificHitListContainer.get(viewID).getPicksForPickingType(ePickingType).clear();
 		}
 	}
@@ -765,7 +807,6 @@ public class PickingManager {
 		for (int iNameCount = 0; iNameCount < iNumberOfNames; iNameCount++) {
 			iAlPickedObjectId.add(iArPickingBuffer[iNearestObjectIndex + 3 + iNameCount]);
 		}
-
 		return iAlPickedObjectId;
 		// iPickingBufferCounter += iNumberOfNames;
 
@@ -786,8 +827,8 @@ public class PickingManager {
 	 * @param pickedPoint
 	 * @param dragStartPoint
 	 */
-	private void processPicks(ArrayList<Integer> alPickingIDs, PickingMode myMode, Point pickedPoint,
-			Point dragStartPoint) {
+	private void processPicks(ArrayList<Integer> alPickingIDs, PickingMode myMode, Vec2f pickedDIPPoint,
+			Vec2f dragStartPoint) {
 
 		HashMap<Integer, ViewSpecificHitListContainer> currentHitListContainers = new HashMap<Integer, ViewSpecificHitListContainer>();
 		HashMap<Integer, HashMap<String, ArrayList<Pick>>> picksToAddToPreviousHitListContainers = new HashMap<Integer, HashMap<String, ArrayList<Pick>>>();
@@ -797,7 +838,7 @@ public class PickingManager {
 			String eType = pickAssociatedValues.getSecond();
 			int viewIDToUse = pickAssociatedValues.getFirst();
 
-			Pick pick = new Pick(getPickedObjectIDFromPickingID(viewIDToUse, eType, pickingID), myMode, pickedPoint,
+			Pick pick = new Pick(getPickedObjectIDFromPickingID(viewIDToUse, eType, pickingID), myMode, pickedDIPPoint,
 					dragStartPoint, fMinimumZValue);
 
 			ViewSpecificHitListContainer hitContainer = hashViewIDToViewSpecificHitListContainer.get(viewIDToUse);
@@ -897,7 +938,7 @@ public class PickingManager {
 
 						if (isMouseOutOnPreviousPick) {
 							hitContainer.addPicksForPickingType(pickingType, new Pick(previousPick.getObjectID(),
-									PickingMode.MOUSE_OUT, pickedPoint, dragStartPoint, fMinimumZValue), false);
+									PickingMode.MOUSE_OUT, pickedDIPPoint, dragStartPoint, fMinimumZValue), false);
 						}
 					}
 

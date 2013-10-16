@@ -5,15 +5,13 @@
  ******************************************************************************/
 package org.caleydo.view.treemap;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.view.treemap.actions.LevelHighlightingAction;
 import org.caleydo.view.treemap.actions.ToggleColoringModeAction;
 import org.caleydo.view.treemap.actions.ToggleLabelAction;
 import org.caleydo.view.treemap.actions.ZoomInAction;
 import org.caleydo.view.treemap.actions.ZoomOutAction;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLTreeMapView extends ARcpGLViewPart {
@@ -22,24 +20,14 @@ public class RcpGLTreeMapView extends ARcpGLViewPart {
 	 * Constructor.
 	 */
 	public RcpGLTreeMapView() {
-		super();
-
-		try {
-			viewContext = JAXBContext
-					.newInstance(SerializedHierarchicalTreeMapView.class);
-			viewContext = JAXBContext.newInstance(SerializedTreeMapView.class);
-
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		super(SerializedHierarchicalTreeMapView.class);
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLHierarchicalTreeMap(glCanvas, parentComposite,
-				serializedView.getViewFrustum());
+		view = new GLHierarchicalTreeMap(glCanvas, serializedView.getViewFrustum());
 		initializeView();
 		createPartControlGL();
 	}
@@ -51,12 +39,8 @@ public class RcpGLTreeMapView extends ARcpGLViewPart {
 	}
 
 	@Override
-	public String getViewGUIID() {
-		return GLHierarchicalTreeMap.VIEW_TYPE;
-	}
-
-	@Override
-	public void addToolBarContent() {
+	public void addToolBarContent(IToolBarManager toolBarManager) {
+		super.addToolBarContent(toolBarManager);
 		toolBarManager.add(new LevelHighlightingAction());
 		toolBarManager.add(new ToggleColoringModeAction());
 		toolBarManager.add(new ToggleLabelAction());

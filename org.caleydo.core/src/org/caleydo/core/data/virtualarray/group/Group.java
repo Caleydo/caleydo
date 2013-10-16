@@ -5,26 +5,24 @@
  ******************************************************************************/
 package org.caleydo.core.data.virtualarray.group;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
+import org.caleydo.core.util.base.IUniqueObject;
 
 /**
  * @author Bernhard Schlegl
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class Group implements IDefaultLabelHolder {
-
-	private static AtomicInteger GROUP_ID_COUNTER = new AtomicInteger();
-
+public class Group implements IDefaultLabelHolder, IUniqueObject {
 	/** unique ID */
-	private int id = 0;
+	@XmlTransient
+	private int id = IDCreator.createVMUniqueID(Group.class);
 
 	/** number of elements in the group/cluster */
 	private int size = 0;
@@ -33,14 +31,12 @@ public class Group implements IDefaultLabelHolder {
 	private int startIndex = 0;
 
 	/**
-	 * The index of the group in the group list. For a unique ID of the group
-	 * use {@link #getID()}
+	 * The index of the group in the group list. For a unique ID of the group use {@link #getID()}
 	 */
 	private Integer groupIndex = -1;
 
 	/**
-	 * Flag specifying whether this group is considered collapsed (i.e. the
-	 * elements are not shown)
+	 * Flag specifying whether this group is considered collapsed (i.e. the elements are not shown)
 	 */
 	private boolean isCollapsed = false;
 
@@ -50,14 +46,12 @@ public class Group implements IDefaultLabelHolder {
 	private SelectionType selectionType = SelectionType.NORMAL;
 
 	/**
-	 * In case of groups determined in dendrogram view the corresponding node in
-	 * the tree must be stored for use in HHM
+	 * In case of groups determined in dendrogram view the corresponding node in the tree must be stored for use in HHM
 	 */
 	private ClusterNode clusterNode;
 
 	/**
-	 * In some cases a perspective is created for a group, this is the
-	 * corresponding ID.
+	 * In some cases a perspective is created for a group, this is the corresponding ID.
 	 */
 	private String perspectiveID = null;
 
@@ -66,8 +60,7 @@ public class Group implements IDefaultLabelHolder {
 	 */
 	private float[] meanValuesRepresentativeElement;
 
-
-	private String label;
+	private String label = "Group " + id;
 	@XmlElement
 	private boolean isDefaultLabel = true;
 
@@ -75,19 +68,17 @@ public class Group implements IDefaultLabelHolder {
 	 * Default Constructor
 	 */
 	public Group() {
-		init();
 	}
 
 	public Group(int size) {
 		this.setSize(size);
-		init();
 	}
 
 	/**
 	 * Initialize a clone of a group with the same size, ID and label. Start index may vary.
 	 *
 	 * TODO: this is not synchronous for changes
-	 * 
+	 *
 	 * @param clone
 	 */
 	public Group(Group clone) {
@@ -96,22 +87,15 @@ public class Group implements IDefaultLabelHolder {
 		this.label = clone.label;
 	}
 
-	private void init() {
-		id = GROUP_ID_COUNTER.getAndIncrement();
-		label = "Group " + id;
-	}
-
 	/**
 	 * Constructor
 	 *
 	 * @param size
 	 *            the size of the group
 	 * @param representativeElementIndex
-	 *            the index of an element considered to be representative of
-	 *            this group (i.e. the most typical element)
+	 *            the index of an element considered to be representative of this group (i.e. the most typical element)
 	 */
 	public Group(int size, int representativeElementIndex) {
-		init();
 		this.setSize(size);
 		this.setRepresentativeElementIndex(representativeElementIndex);
 	}
@@ -122,14 +106,11 @@ public class Group implements IDefaultLabelHolder {
 	 * @param size
 	 *            the size of the group
 	 * @param representativeElementIndex
-	 *            the index of an element considered to be representative of
-	 *            this group (i.e. the most typical element)
+	 *            the index of an element considered to be representative of this group (i.e. the most typical element)
 	 * @param clusterNode
-	 *            a cluster node from which the pre-order of the leaves is this
-	 *            group
+	 *            a cluster node from which the pre-order of the leaves is this group
 	 */
 	public Group(int size, int representativeElementIndex, ClusterNode clusterNode) {
-		init();
 		this.setSize(size);
 		this.setRepresentativeElementIndex(representativeElementIndex);
 		this.setClusterNode(clusterNode);
@@ -262,7 +243,29 @@ public class Group implements IDefaultLabelHolder {
 	/**
 	 * @return the id, see {@link #id}
 	 */
+	@Override
 	public int getID() {
 		return id;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (obj == this)
+			return true;
+		if (obj instanceof Group) {
+			Group g = (Group) obj;
+			return g.size == size && g.label.equals(label);
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + size;
+		result = 31 * result + label.hashCode();
+		return result;
 	}
 }

@@ -39,6 +39,7 @@ import com.google.common.collect.HashBiMap;
  */
 public final class RemoteFile implements IRunnableWithProgress {
 	private static final Logger log = Logger.create(RemoteFile.class);
+	private static final String PATTERN = "Downloading: %s (%d MB)";
 
 	private static final int BUFFER_SIZE = 4096;
 	private static final int WORK_TRIGGER_FREQUENCY = 64;
@@ -51,12 +52,19 @@ public final class RemoteFile implements IRunnableWithProgress {
 	private boolean successful = true;
 	private Exception caught = null;
 
-	private RemoteFile(URL url) {
+	private RemoteFile(URL url, String localSuffix) {
 		this.url = url;
 		File f = RemoteFileCache.inCache(url);
 		if (f == null)
-			f = RemoteFileCache.reserve(url);
+			f = RemoteFileCache.reserve(url, localSuffix);
 		this.file = f;
+	}
+
+	/**
+	 * @return the url, see {@link #url}
+	 */
+	public URL getUrl() {
+		return url;
 	}
 
 	/**
@@ -66,7 +74,11 @@ public final class RemoteFile implements IRunnableWithProgress {
 	 * @return
 	 */
 	public static RemoteFile of(URL url) {
-		return new RemoteFile(url);
+		return new RemoteFile(url, "");
+	}
+
+	public static RemoteFile of(URL url, String localSuffix) {
+		return new RemoteFile(url, localSuffix);
 	}
 
 	/**
@@ -119,18 +131,25 @@ public final class RemoteFile implements IRunnableWithProgress {
 	}
 
 	public File getOrLoad(boolean checkModificationDate, IProgressMonitor monitor) {
+		return getOrLoad(checkModificationDate, monitor, PATTERN);
+	}
+
+	public File getOrLoad(boolean checkModificationDate, IProgressMonitor monitor, String pattern) {
 		if (!inCache(checkModificationDate)) {
 			delete();
-			run(monitor);
+			run(monitor, pattern);
 			if (!file.exists())
 				return null;
 			return file;
 		}
 		return file;
 	}
-
 	@Override
 	public void run(IProgressMonitor monitor) {
+		run(monitor, PATTERN);
+	}
+
+	public void run(IProgressMonitor monitor, String pattern) {
 		if (inCache(false)) {
 			monitor.done();
 			return;
@@ -148,7 +167,7 @@ public final class RemoteFile implements IRunnableWithProgress {
 			lastModified = connection.getLastModified();
 			if (length < 0)
 				length = IProgressMonitor.UNKNOWN;
-			monitor.beginTask(String.format("Downloading: %s (%d MB)", url, length / 1024 / 1024), length);
+			monitor.beginTask(String.format(pattern, url, length / 1024 / 1024), length);
 
 
 			try (InputStream in = new BufferedInputStream(connection.getInputStream())) {
@@ -223,7 +242,7 @@ public final class RemoteFile implements IRunnableWithProgress {
 		static {
 			if (cacheContentsFile.exists()) {
 				try {
-					for (String line : Files.readAllLines(cacheContentsFile.toPath(), Charset.defaultCharset())) {
+					for (String line : Files.readAllLines(cacheContentsFile.toPath(), Charset.forName("UTF-8"))) {
 						if (line.isEmpty())
 							continue;
 						String[] url_path = line.split("\t");
@@ -253,10 +272,10 @@ public final class RemoteFile implements IRunnableWithProgress {
 			return relative.toString();
 		}
 
-		static synchronized File reserve(URL url) {
+		static synchronized File reserve(URL url, String localSuffix) {
 			String path = url.getPath();
 			int i = path.lastIndexOf('.');
-			String suffix = "";
+			String suffix = localSuffix;
 			if (i > 0) {
 				suffix = path.substring(i);
 				path = path.substring(0, i);

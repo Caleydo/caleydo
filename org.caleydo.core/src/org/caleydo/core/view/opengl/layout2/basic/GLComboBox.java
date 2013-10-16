@@ -7,12 +7,11 @@ package org.caleydo.core.view.opengl.layout2.basic;
 
 import gleem.linalg.Vec2f;
 
-import org.caleydo.core.util.color.Color;
-import java.awt.Point;
 import java.util.List;
 import java.util.Objects;
 
 import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
@@ -83,12 +82,13 @@ public class GLComboBox<T> extends AGLButton {
 	 * @param zDeltaList
 	 *            setter, see {@link zDeltaList}
 	 */
-	public void setzDeltaList(float zDeltaList) {
+	public GLComboBox<T> setzDeltaList(float zDeltaList) {
 		if (this.zDeltaList == zDeltaList)
-			return;
+			return this;
 		this.zDeltaList = zDeltaList;
 		if (isOpen)
 			repaintAll();
+		return this;
 	}
 
 	/**
@@ -104,16 +104,18 @@ public class GLComboBox<T> extends AGLButton {
 		return this;
 	}
 
-	public void setSelected(int index) {
+	public GLComboBox<T> setSelected(int index) {
 		if (selected == index)
-			return;
+			return this;
 		this.selected = index;
 		onSelectionChanged(getSelectedItem());
 		repaint();
+		return this;
 	}
 
-	public void setSelectedItem(T item) {
+	public GLComboBox<T> setSelectedItem(T item) {
 		setSelected(model.indexOf(item));
+		return this;
 	}
 
 	/**
@@ -246,7 +248,7 @@ public class GLComboBox<T> extends AGLButton {
 	 * @param pickedPoint
 	 * @return -1 if none else the index
 	 */
-	private int toIndex(Point pickedPoint) {
+	private int toIndex(Vec2f pickedPoint) {
 		if (!isOpen)
 			return -1;
 		float y = toRelative(pickedPoint).y();

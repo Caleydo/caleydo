@@ -7,20 +7,21 @@ package org.caleydo.core.view.opengl.layout2.internal;
 
 import static org.caleydo.core.view.opengl.layout2.IPopupLayer.FLAG_BORDER;
 import static org.caleydo.core.view.opengl.layout2.IPopupLayer.FLAG_CLOSEABLE;
+import static org.caleydo.core.view.opengl.layout2.IPopupLayer.FLAG_COLLAPSABLE;
 import static org.caleydo.core.view.opengl.layout2.IPopupLayer.FLAG_MOVEABLE;
 import static org.caleydo.core.view.opengl.layout2.IPopupLayer.FLAG_RESIZEABLE;
 import gleem.linalg.Vec2f;
-import gleem.linalg.Vec4f;
 
-import org.caleydo.core.util.color.Color;
 import java.util.List;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -32,14 +33,16 @@ import org.eclipse.swt.SWT;
 
 /**
  * a specific popup
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer, GLButton.ISelectionCallback {
+	private static final int FLAG_HAS_HEADER = FLAG_MOVEABLE | FLAG_COLLAPSABLE;
 	private final GLElement content;
 	private final int flags;
 	private int headerPickingId = -1;
+	private boolean collapsed = false;
 	private IPickingListener l = new IPickingListener() {
 		@Override
 		public void pick(Pick pick) {
@@ -47,22 +50,19 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		}
 	};
 
-	public PopupElement(GLElement content, Vec4f bounds, int flags) {
+	private Vec2f expandedSized;
+
+	public PopupElement(GLElement content, Rect bounds, int flags) {
 		this.content = content;
 		this.flags = flags;
 		setLayout(this);
 		this.add(content);
-		boolean hasHeader = false;
-		if (isFlagSet(FLAG_MOVEABLE)) {
-			hasHeader = true;
-		}
-
 		GLButton close = new GLButton();
 		close.setRenderer(this);
 		close.setCallback(this);
 		close.setTooltip("close this popup");
 		close.setHoverEffect(GLRenderers.drawRoundedRect(Color.WHITE));
-		close.setzDelta(0.5f);
+		close.setzDelta(1.f);
 		close.setVisibility(isFlagSet(FLAG_CLOSEABLE) ? EVisibility.PICKABLE : EVisibility.HIDDEN);
 		this.add(close);
 
@@ -71,8 +71,10 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		resize.setVisibility(isFlagSet(FLAG_RESIZEABLE) ? EVisibility.PICKABLE : EVisibility.HIDDEN);
 		this.add(resize);
 
-		if (bounds != null)
-			this.setBounds(bounds.x(), bounds.y(), bounds.z(), bounds.w() + (hasHeader ? 8 : 0));
+		if (bounds != null) {
+			this.setSize(bounds.width(), bounds.height() + (isFlagSet(FLAG_HAS_HEADER) ? 8 : 0));
+			this.setLayoutData(bounds.xy()); // store the encoded location within the layout data
+		}
 		setVisibility(EVisibility.PICKABLE); // as a barrier to the underlying
 	}
 
@@ -92,6 +94,22 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 	}
 
 	/**
+	 * @param collapsed
+	 *            setter, see {@link collapsed}
+	 */
+	public void toggleCollapsed() {
+		this.collapsed = !collapsed;
+		if (this.collapsed) {
+			expandedSized = getSize();
+			setSize(expandedSized.x(), 8);
+		} else {
+			setSize(expandedSized.x(), expandedSized.y());
+		}
+		relayoutParent();
+		relayout();
+	}
+
+	/**
 	 * @param pick
 	 */
 	protected void onTitlePicked(Pick pick) {
@@ -100,6 +118,11 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		switch (pick.getPickingMode()) {
 		case MOUSE_OVER:
 			context.getSWTLayer().setCursor(SWT.CURSOR_HAND);
+			break;
+		case DOUBLE_CLICKED:
+			if (isFlagSet(FLAG_COLLAPSABLE)) {
+				toggleCollapsed();
+			}
 			break;
 		case CLICKED:
 			pick.setDoDragging(true);
@@ -114,8 +137,8 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 			context.getSWTLayer().resetCursor();
 			break;
 		case DRAGGED:
-			int dx = pick.getDx();
-			int dy = pick.getDy();
+			float dx = pick.getDx();
+			float dy = pick.getDy();
 			Vec2f l = getLocation();
 			setLocation(l.x() + dx, l.y() + dy);
 			break;
@@ -127,9 +150,12 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		IGLLayoutElement body = children.get(0);
-		boolean moveAble = isFlagSet(FLAG_MOVEABLE);
-		float offset = isFlagSet(FLAG_BORDER) ? 1 : 0;
-		body.setBounds(offset, (moveAble ? 8 : offset), w - offset * 2, h - (moveAble ? 8 : offset * 2));
+		boolean hasHeader = isFlagSet(FLAG_HAS_HEADER);
+		float offset = 0; // isFlagSet(FLAG_BORDER) ? 1 : 0;
+		if (collapsed)
+			body.hide();
+		else
+			body.setBounds(offset, (hasHeader ? 8 : offset), w - offset * 2, h - (hasHeader ? 8 : 0) - offset * 2);
 		IGLLayoutElement close = children.get(1);
 		close.setBounds(w - 8, -4, 14, 14);
 		IGLLayoutElement resize = children.get(2);
@@ -145,7 +171,7 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		if (isFlagSet(FLAG_MOVEABLE)) {
+		if (isFlagSet(FLAG_HAS_HEADER)) {
 			g.color(Color.BLACK);
 			RoundedRectRenderer.render(g, 0, 0, w, 8, 3, 2, RoundedRectRenderer.FLAG_FILL
 					| RoundedRectRenderer.FLAG_TOP);
@@ -154,13 +180,15 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		if (isFlagSet(FLAG_BORDER)) {
 			// g.color(Color.LIGHT_GRAY).fillRoundedRect(0, 0, w, h, 3);
 			g.color(Color.BLACK);
+			g.incZ(1.f);
 			RoundedRectRenderer.render(g, 0, 0, w, h, 3, 2, RoundedRectRenderer.FLAG_TOP);
+			g.incZ(-1.f);
 		}
 	}
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (isFlagSet(FLAG_MOVEABLE)) {
+		if (isFlagSet(FLAG_HAS_HEADER)) {
 			g.incZ();
 			g.pushName(headerPickingId);
 			g.fillRect(0, 0, w, 8);
@@ -193,7 +221,7 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 	 * @param dx
 	 * @param dy
 	 */
-	protected void resize(int dx, int dy) {
+	protected void resize(float dx, float dy) {
 		Vec2f s = this.getSize();
 		setSize(s.x() + dx, s.y() + dy);
 		relayout();

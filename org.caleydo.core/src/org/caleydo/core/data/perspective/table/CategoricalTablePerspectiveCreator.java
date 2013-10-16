@@ -118,7 +118,7 @@ public class CategoricalTablePerspectiveCreator {
 
 
 		// for (String recordPerspectiveID : dataDomain.getTable().getRecordPerspectiveIDs()) {
-		Perspective recordPerspective = dataDomain.getTable().getDefaultRecordPerspective();
+		Perspective recordPerspective = dataDomain.getTable().getDefaultRecordPerspective(false);
 		Perspective binnedPerspective = binCategorical(convertedID, recordPerspective, dataDomain, label,
 				isTablePerspectivePrivate);
 

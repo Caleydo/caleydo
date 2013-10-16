@@ -5,8 +5,6 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.util.text;
 
-
-
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.color.Color;
@@ -40,17 +38,32 @@ public interface ITextRenderer {
 	 *
 	 * @param gl
 	 * @param text
-	 * @param xPosition
+	 * @param x
 	 *            x of lower left corner
-	 * @param yPosition
+	 * @param y
 	 *            y of lower left corner
-	 * @param zPositon
-	 * @param width
-	 *            width fo the bounding box
-	 * @param height
+	 * @param z
+	 * @param w
+	 *            width of the bounding box
+	 * @param h
 	 *            height of the bounding box
 	 */
 	public void renderTextInBounds(GL2 gl, String text, float x, float y, float z, float w, float h);
+
+	/**
+	 * Same as {@link #renderTextInBounds(GL2, String, float, float, float, float, float)} but can align right or left.
+	 *
+	 * @param gl
+	 * @param text
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param w
+	 * @param h
+	 * @param alignRight
+	 *            if true the text is aligned to start at x, if false, the text is aligned to end at x
+	 */
+	public void renderTextInBounds(GL2 gl, String text, float x, float y, float z, float w, float h, boolean alignRight);
 
 	/**
 	 * describes the rendering information of this teture renderer

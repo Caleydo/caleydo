@@ -32,6 +32,7 @@ public class PathwayVertexGroupRep extends PathwayVertexRep {
 
 	public void addVertexRep(PathwayVertexRep vertexRep) {
 		groupedVertexReps.add(vertexRep);
+		vertexRep.setParent(this);
 
 		if (groupedVertexReps.size() == 1) {
 			coords = new ArrayList<Pair<Short, Short>>(4);

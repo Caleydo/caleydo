@@ -3,6 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
+
 package org.caleydo.view.treemap.actions;
 
 import org.caleydo.core.gui.SimpleAction;
@@ -33,4 +34,6 @@ public class ToggleColoringModeAction extends SimpleAction {
 		event.setCalculateColor(isChecked());
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
+
 }
+

@@ -5,7 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.dvi.tableperspective;
 
-import java.awt.Point;
+import gleem.linalg.Vec2f;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -13,19 +14,18 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
+import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.contextmenu.AddTablePerspectiveToViewsItemContainer;
 import org.caleydo.view.dvi.contextmenu.RemoveTablePerspectiveFromViewItem;
 import org.caleydo.view.dvi.contextmenu.RenameLabelHolderItem;
 import org.caleydo.view.dvi.contextmenu.ShowTablePerspectiveInViewsItemContainer;
+import org.caleydo.view.dvi.event.CreateAndRenameTablePerspectiveEvent;
 import org.caleydo.view.dvi.node.MultiTablePerspectiveViewNode;
 import org.caleydo.view.dvi.node.ViewNode;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -40,21 +40,20 @@ public class TablePerspectivePickingListener extends APickingListener {
 	private DragAndDropController dragAndDropController;
 	private AMultiTablePerspectiveRenderer tablePerspectiveRenderer;
 
-	public TablePerspectivePickingListener(GLDataViewIntegrator view,
-			DragAndDropController dragAndDropController,
+	public TablePerspectivePickingListener(GLDataViewIntegrator view, DragAndDropController dragAndDropController,
 			AMultiTablePerspectiveRenderer tablePerspectiveRenderer) {
 		this.view = view;
 		this.dragAndDropController = dragAndDropController;
 		this.tablePerspectiveRenderer = tablePerspectiveRenderer;
 	}
 
-	private TablePerspectiveRenderer getDimensionGroupRenderer(int id) {
+	private TablePerspectiveRenderer getTablePerspectiveRenderer(int id) {
 
 		Collection<TablePerspectiveRenderer> dimensionGroupRenderers = tablePerspectiveRenderer
 				.getDimensionGroupRenderers();
 
 		for (TablePerspectiveRenderer dimensionGroupRenderer : dimensionGroupRenderers) {
-			if (dimensionGroupRenderer.getTablePerspective().getID() == id) {
+			if (dimensionGroupRenderer.hashCode() == id) {
 				return dimensionGroupRenderer;
 			}
 		}
@@ -63,18 +62,16 @@ public class TablePerspectivePickingListener extends APickingListener {
 
 	@Override
 	public void clicked(Pick pick) {
-		int dimensionGroupID = pick.getObjectID();
 
-		TablePerspectiveRenderer draggedComparisonGroupRenderer = getDimensionGroupRenderer(dimensionGroupID);
+		TablePerspectiveRenderer draggedComparisonGroupRenderer = getTablePerspectiveRenderer(pick.getObjectID());
 		if (draggedComparisonGroupRenderer == null)
 			return;
 		//
 		// draggedComparisonGroupRenderer
 		// .setSelectionType(SelectionType.SELECTION);
-		Point point = pick.getPickedPoint();
+		Vec2f point = pick.getPickedPoint();
 		dragAndDropController.clearDraggables();
-		dragAndDropController.setDraggingProperties(new Point(point.x, point.y),
-				"DimensionGroupDrag");
+		dragAndDropController.setDraggingProperties(new Vec2f(point.x(), point.y()), "DimensionGroupDrag");
 		// dragAndDropController.setDraggingStartPosition(new Point(point.x,
 		// point.y));
 		dragAndDropController.addDraggable(draggedComparisonGroupRenderer);
@@ -85,8 +82,7 @@ public class TablePerspectivePickingListener extends APickingListener {
 
 	@Override
 	public void mouseOver(Pick pick) {
-		TablePerspectiveRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick
-				.getObjectID());
+		TablePerspectiveRenderer dimensionGroupRenderer = getTablePerspectiveRenderer(pick.getObjectID());
 		if (dimensionGroupRenderer == null)
 			return;
 
@@ -96,21 +92,16 @@ public class TablePerspectivePickingListener extends APickingListener {
 
 	@Override
 	public void mouseOut(Pick pick) {
-		TablePerspectiveRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick
-				.getObjectID());
-		if (dimensionGroupRenderer == null)
+		TablePerspectiveRenderer tablePerspectiveRenderer = getTablePerspectiveRenderer(pick.getObjectID());
+		if (tablePerspectiveRenderer == null)
 			return;
 
-		TablePerspective tablePerspective = dimensionGroupRenderer.getTablePerspective();
-
-		float[] color = tablePerspective.getDataDomain().getColor().getRGBA();
-
-		if (tablePerspective instanceof PathwayTablePerspective) {
-			color = ((PathwayTablePerspective) tablePerspective).getPathwayDataDomain()
-					.getColor().getRGBA();
+		if (tablePerspectiveRenderer.isActive()) {
+			tablePerspectiveRenderer.setColor(tablePerspectiveRenderer.getActiveColor());
+		} else {
+			tablePerspectiveRenderer.setColor(TablePerspectiveRenderer.INACTIVE_COLOR);
 		}
 
-		dimensionGroupRenderer.setColor(color);
 		view.setDisplayListDirty();
 	}
 
@@ -128,18 +119,15 @@ public class TablePerspectivePickingListener extends APickingListener {
 	@Override
 	public void rightClicked(Pick pick) {
 
-		int dimensionGroupID = pick.getObjectID();
-		TablePerspectiveRenderer dimensionGroupRenderer = getDimensionGroupRenderer(dimensionGroupID);
-		if (dimensionGroupRenderer == null)
+		TablePerspectiveRenderer renderer = getTablePerspectiveRenderer(pick.getObjectID());
+		if (renderer == null)
 			return;
-		TablePerspective tablePerspective = dimensionGroupRenderer.getTablePerspective();
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 
 		List<Pair<String, String>> viewTypes = new ArrayList<Pair<String, String>>();
 
-		IConfigurationElement[] viewElements = registry
-				.getConfigurationElementsFor("org.eclipse.ui.views");
+		IConfigurationElement[] viewElements = registry.getConfigurationElementsFor("org.eclipse.ui.views");
 
 		IConfigurationElement[] categoryElements = registry
 				.getConfigurationElementsFor("org.caleydo.view.ViewCategory");
@@ -153,27 +141,19 @@ public class TablePerspectivePickingListener extends APickingListener {
 
 						if (category.getAttribute("viewID").equals(bundleID)
 								&& Boolean.valueOf(category.getAttribute("isDataView"))) {
-							boolean isReleaseView = Boolean.valueOf(category
-									.getAttribute("isReleaseView"));
-							if (GeneralManager.RELEASE_MODE && !isReleaseView) {
-								continue;
-							}
+
 							int indexOfLastDot = -1;
 							for (int i = 0; i < 4; i++) {
-								indexOfLastDot = bundleID
-										.indexOf('.', indexOfLastDot + 1);
+								indexOfLastDot = bundleID.indexOf('.', indexOfLastDot + 1);
 							}
 
-							bundleID = (indexOfLastDot == -1) ? (bundleID) : (bundleID
-									.substring(0, indexOfLastDot));
+							bundleID = (indexOfLastDot == -1) ? (bundleID) : (bundleID.substring(0, indexOfLastDot));
 
 							Bundle bundle = Platform.getBundle(bundleID);
 							if (bundle != null) {
 								bundle.start();
-								viewTypes
-										.add(new Pair<String, String>(element
-												.getAttribute("name"), element
-												.getAttribute("id")));
+								viewTypes.add(new Pair<String, String>(element.getAttribute("name"), element
+										.getAttribute("id")));
 							}
 						}
 					}
@@ -183,11 +163,8 @@ public class TablePerspectivePickingListener extends APickingListener {
 			}
 		}
 
-		Set<String> validViewIDs = DataDomainManager
-				.get()
-				.getAssociationManager()
-				.getViewTypesForDataDomain(
-						tablePerspective.getDataDomain().getDataDomainType());
+		Set<String> validViewIDs = DataDomainManager.get().getAssociationManager()
+				.getViewTypesForDataDomain(renderer.getDataDomain().getDataDomainType());
 
 		List<Pair<String, String>> finalViewTypes = new ArrayList<Pair<String, String>>();
 
@@ -201,12 +178,6 @@ public class TablePerspectivePickingListener extends APickingListener {
 
 		Collections.sort(finalViewTypes, Pair.<String> compareFirst());
 
-		if (finalViewTypes.size() > 0) {
-			view.getContextMenuCreator().addContextMenuItem(
-					new ShowTablePerspectiveInViewsItemContainer(tablePerspective,
-							finalViewTypes));
-		}
-
 		Set<ViewNode> viewNodes = view.getViewNodes();
 
 		List<IMultiTablePerspectiveBasedView> multiTablePerspectiveViews = new ArrayList<IMultiTablePerspectiveBasedView>();
@@ -214,24 +185,38 @@ public class TablePerspectivePickingListener extends APickingListener {
 		if (viewNodes != null) {
 			for (ViewNode node : viewNodes) {
 				if (node.getRepresentedView() instanceof IMultiTablePerspectiveBasedView) {
-					multiTablePerspectiveViews.add((IMultiTablePerspectiveBasedView) node
-							.getRepresentedView());
+					multiTablePerspectiveViews.add((IMultiTablePerspectiveBasedView) node.getRepresentedView());
 				}
 			}
 		}
 
-		view.getContextMenuCreator().addContextMenuItem(
-				new AddTablePerspectiveToViewsItemContainer(multiTablePerspectiveViews,
-						tablePerspective));
+		if (finalViewTypes.size() > 0) {
+			if (renderer.hasTablePerspective()) {
+				view.getContextMenuCreator().addContextMenuItem(
+						new ShowTablePerspectiveInViewsItemContainer(renderer.getTablePerspective(), finalViewTypes));
+				view.getContextMenuCreator().addContextMenuItem(
+						new AddTablePerspectiveToViewsItemContainer(multiTablePerspectiveViews, renderer
+								.getTablePerspective()));
+				view.getContextMenuCreator().addContextMenuItem(
+						new RenameLabelHolderItem(renderer.getTablePerspective()));
 
-		view.getContextMenuCreator().addContextMenuItem(
-				new RenameLabelHolderItem(tablePerspective));
+			} else {
+				view.getContextMenuCreator().addContextMenuItem(
+						new ShowTablePerspectiveInViewsItemContainer(renderer.getCreator(), finalViewTypes));
+				view.getContextMenuCreator().addContextMenuItem(
+						new AddTablePerspectiveToViewsItemContainer(multiTablePerspectiveViews, renderer.getCreator()));
+				CreateAndRenameTablePerspectiveEvent event = new CreateAndRenameTablePerspectiveEvent(
+						renderer.getCreator());
+				view.getContextMenuCreator().addContextMenuItem(
+						new GenericContextMenuItem("Rename Table Perspective", event));
+			}
+		}
 
 		if (tablePerspectiveRenderer.node instanceof MultiTablePerspectiveViewNode) {
 			view.getContextMenuCreator()
 					.addContextMenuItem(
 							new RemoveTablePerspectiveFromViewItem(
-									tablePerspective,
+									renderer.getTablePerspective(),
 									(IMultiTablePerspectiveBasedView) ((MultiTablePerspectiveViewNode) tablePerspectiveRenderer.node)
 											.getRepresentedView()));
 		}

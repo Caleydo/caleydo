@@ -387,7 +387,7 @@ public class BottomBundleConnector
 		for (TablePerspective tablePerspective : commonTablePerspectives)
 		{
 			sortedDimensionGroups.add(new Pair<Double, TablePerspective>(node
-					.getBottomTablePerspectiveAnchorPoints(tablePerspective).getFirst().getX(),
+					.getBottomObjectAnchorPoints(tablePerspective).getFirst().getX(),
 					tablePerspective));
 		}
 
@@ -398,7 +398,7 @@ public class BottomBundleConnector
 			TablePerspective tablePerspective = sortedDimensionGroups.get(i).getSecond();
 			anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
 			Pair<Point2D, Point2D> dimensionGroupAnchorPoints = node
-					.getBottomTablePerspectiveAnchorPoints(tablePerspective);
+					.getBottomObjectAnchorPoints(tablePerspective);
 			Pair<Point2D, Point2D> dimensionGroupAnchorOffsetPoints = new Pair<Point2D, Point2D>();
 			Pair<Point2D, Point2D> nodeBottomAnchorPoints = node.getBottomAnchorPoints();
 

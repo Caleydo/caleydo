@@ -23,7 +23,6 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * a {@link GLElement} based view using a {@link AGLView} for compatibility
@@ -54,9 +53,9 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	protected boolean isLayoutDirty = true;
 
 
-	public AGLElementGLView(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum, String viewType,
+	public AGLElementGLView(IGLCanvas glCanvas, ViewFrustum viewFrustum, String viewType,
 			String viewName) {
-		super(glCanvas, parentComposite, viewFrustum, viewType, viewName);
+		super(glCanvas, viewFrustum, viewType, viewName);
 		this.swtLayer = new SWTLayer(glCanvas);
 	}
 
@@ -99,7 +98,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 		init(gl);
 	}
 
@@ -152,7 +151,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	}
 
 	@Override
-	protected void updateViewFrustum(int width, int height) {
+	protected void updateViewFrustum(float width, float height) {
 		viewFrustum.setLeft(0);
 		viewFrustum.setRight(width);
 		viewFrustum.setTop(height); // still wrong but with the right dimensions, see #display(GL2 gl)
@@ -243,6 +242,11 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	@Override
 	public final IGLElementParent getParent() {
 		return null;
+	}
+
+	@Override
+	public final Vec2f getSize() {
+		return root.getSize();
 	}
 
 	@Override

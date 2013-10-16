@@ -5,12 +5,10 @@
  ******************************************************************************/
 package org.caleydo.core.gui.menu;
 
+import org.caleydo.core.manager.GeneralManager;
 
 public class HelpContentsHandler extends ABrowserContentsHandler {
-
-	private final static String URL_HELP_CONTENTS = "http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/caleydo-help";
-
 	public HelpContentsHandler() {
-		super(URL_HELP_CONTENTS);
+		super(GeneralManager.HELP_URL);
 	}
 }

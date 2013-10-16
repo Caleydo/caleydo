@@ -263,7 +263,7 @@ public class GroupList
 	 *
 	 * @return the size
 	 */
-	public Integer size() {
+	public int size() {
 		return groups.size();
 	}
 

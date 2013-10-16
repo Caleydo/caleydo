@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas;
 
+import gleem.linalg.Vec2f;
+
 import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL2;
@@ -41,6 +43,12 @@ public class PixelGLConverter {
 		this.canvas = canvas;
 	}
 
+	public Vec2f convertMouseCoord2GL(Vec2f mousePos) {
+		float x = getGLWidthForPixelWidth(mousePos.x());
+		float y = getGLHeightForPixelHeight(canvas.getDIPHeight() - mousePos.y());
+		return new Vec2f(x, y);
+	}
+
 	/**
 	 * Converts a width specified in pixels to a width that can be used for openGL drawing commands based on the current
 	 * {@link ViewFrustum} and size of the {@link GLCanvas}.
@@ -48,9 +56,9 @@ public class PixelGLConverter {
 	 * @param pixelWidth
 	 * @return
 	 */
-	public float getGLWidthForPixelWidth(int pixelWidth) {
+	public float getGLWidthForPixelWidth(float pixelWidth) {
 		float totalWidthGL = viewFrustum.getWidth();
-		int totalWidthPixel = canvas.getWidth();
+		float totalWidthPixel = canvas.getDIPWidth();
 		// System.out.println("Frustum width: " +totalWidthGL);
 		// System.out.println("Pixel width: " +totalWidthPixel);
 
@@ -70,9 +78,9 @@ public class PixelGLConverter {
 	 * @param pixelHeight
 	 * @return
 	 */
-	public float getGLHeightForPixelHeight(int pixelHeight) {
+	public float getGLHeightForPixelHeight(float pixelHeight) {
 		float totalHeightGL = viewFrustum.getHeight();
-		int totalHeightPixel = canvas.getHeight();
+		float totalHeightPixel = canvas.getDIPHeight();
 
 		if (totalHeightPixel <= 0)
 			throw new IllegalStateException("Height of Canvas in pixel is " + totalHeightPixel
@@ -90,7 +98,7 @@ public class PixelGLConverter {
 	 */
 	public int getPixelWidthForGLWidth(double glWidth) {
 		double totalWidthGL = viewFrustum.getWidth();
-		int totalWidthPixel = canvas.getWidth();
+		float totalWidthPixel = canvas.getDIPWidth();
 		if (totalWidthPixel <= 0)
 			throw new IllegalStateException("Width of Canvas in pixel is " + totalWidthPixel
 					+ ". It's likely that the canvas is not initialized.");
@@ -107,7 +115,7 @@ public class PixelGLConverter {
 	 */
 	public int getPixelHeightForGLHeight(double glHeight) {
 		double totalHeightGL = viewFrustum.getHeight();
-		int totalHeightPixel = canvas.getHeight();
+		float totalHeightPixel = canvas.getDIPHeight();
 
 		if (totalHeightPixel <= 0)
 			throw new IllegalStateException("Height of Canvas in pixel is " + totalHeightPixel
@@ -130,33 +138,19 @@ public class PixelGLConverter {
 		return getGLWidthForPixelWidth(pixelHeight);
 	}
 
-	// FIXME document
-	public float getGLHeightForCurrentGLTransform(GL2 gl) {
+	/**
+	 * returns the current accumulated translation
+	 *
+	 * @param gl
+	 * @return
+	 */
+	public Vec2f getCurrentPixelPos(GL2 gl) {
 		FloatBuffer buffer = FloatBuffer.wrap(new float[16]);
 
 		gl.glGetFloatv(GLMatrixFunc.GL_MODELVIEW_MATRIX, buffer);
 
-		return buffer.get(13);
-	}
-
-	// FIXME document
-	public float getGLWidthForCurrentGLTransform(GL2 gl) {
-		FloatBuffer buffer = FloatBuffer.wrap(new float[16]);
-
-		gl.glGetFloatv(GLMatrixFunc.GL_MODELVIEW_MATRIX, buffer);
-
-		return buffer.get(12);
-	}
-
-	// FIXME document
-	public int getPixelHeightForCurrentGLTransform(GL2 gl) {
-
-		return getPixelHeightForGLHeight(getGLHeightForCurrentGLTransform(gl));
-	}
-
-	// FIXME document
-	public int getPixelWidthForCurrentGLTransform(GL2 gl) {
-
-		return getPixelWidthForGLWidth(getGLWidthForCurrentGLTransform(gl));
+		Vec2f r = new Vec2f(getPixelWidthForGLWidth(buffer.get(12)), getPixelHeightForGLHeight(buffer.get(13)));
+		// FIXME scrolling on mac creates an offset
+		return r;
 	}
 }

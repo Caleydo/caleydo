@@ -45,6 +45,7 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 	private final int progressOffset;
 
 	protected final Table table;
+	protected final ATableBasedDataDomain dataDomain;
 	protected final VirtualArray va;
 	protected final VirtualArray oppositeVA;
 
@@ -71,6 +72,7 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 		this.va = p.getVirtualArray();
 		this.oppositeVA = opposite.getVirtualArray();
 		this.table = ((ATableBasedDataDomain) p.getDataDomain()).getTable();
+		this.dataDomain = table.getDataDomain();
 
 		this.progressMultiplier = progressMultiplier;
 		this.progressOffset = progressOffset;
@@ -79,6 +81,10 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 
 	protected final float distance(float[] a, float[] b) {
 		return this.distance.apply(a, b);
+	}
+
+	protected final float get(Integer vaID, Integer oppositeVaID) {
+		return dataDomain.getNormalizedValue(va.getIdType(), vaID, oppositeVA.getIdType(), oppositeVaID);
 	}
 
 	protected final String getPerspectiveLabel() {
@@ -99,8 +105,7 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 			SortHelper s = new SortHelper();
 			s.index = index++;
 			for (Integer opId : oppositeVA) {
-				float temp = table.getDataDomain().getNormalizedValue(va.getIdType(), vaId, oppositeVA.getIdType(),
-						opId);
+				float temp = get(vaId, opId);
 				if (!Float.isNaN(temp))
 					s.value += temp;
 			}
@@ -171,7 +176,7 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 		progress(percentCompleted, true);
 	}
 	protected static void progress(int percentCompleted, boolean forSimilaritiesBar) {
-		EventPublisher.trigger(new ClusterProgressEvent(percentCompleted, forSimilaritiesBar));
+		EventPublisher.trigger(new ClusterProgressEvent(Math.min(percentCompleted, 100), forSimilaritiesBar));
 	}
 
 	protected static void rename(String text) {

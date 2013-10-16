@@ -7,15 +7,18 @@ package org.caleydo.core.view.opengl.layout2.basic;
 
 import gleem.linalg.Vec2f;
 
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+
+import com.google.common.base.Preconditions;
 
 public abstract class AScrollBar implements IScrollBar {
 	private static final float MIN_WINDOW = 8;
 	private static final float JUMP_BUTTON_SIZE = 8;
 	private static final float JUMP_PERCENTAGE = 0.1f;
-	protected final boolean isHorizontal;
+	protected final EDimension dim;
 	protected boolean hovered = false;
 	private float offset;
 	private float window;
@@ -27,7 +30,11 @@ public abstract class AScrollBar implements IScrollBar {
 	private boolean showJumpButtons = true;
 
 	public AScrollBar(boolean isHorizontal) {
-		this.isHorizontal = isHorizontal;
+		this.dim = EDimension.get(isHorizontal);
+	}
+
+	public AScrollBar(EDimension dim) {
+		this.dim = Preconditions.checkNotNull(dim);
 	}
 
 	/**
@@ -120,14 +127,14 @@ public abstract class AScrollBar implements IScrollBar {
 	@Override
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
 		g.color(Color.LIGHT_GRAY).fillRect(0, 0, w, h);
-		float total = isHorizontal ? w : h;
+		float total = dim.select(w, h);
 		float base = hovered ? 0.6f : 0.3f;
 		g.color(0, 0, 0, base);
 		float[] s = map(total);
 
 		float jumpSize = (showJumpButtons ? JUMP_BUTTON_SIZE * 2 : 0);
 
-		if (isHorizontal) {
+		if (dim.isHorizontal()) {
 			g.fillRect(jumpSize + s[0], 0, s[1], h);
 			if (showJumpButtons) {
 				g.color(0, 0, 0, base + 0.2f);

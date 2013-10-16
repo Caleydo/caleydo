@@ -7,6 +7,7 @@ package org.caleydo.core.event;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -21,6 +22,9 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.caleydo.core.util.ClassUtils;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -33,7 +37,7 @@ import com.google.common.collect.Multimap;
  * @author Samuel Gratzl
  *
  */
-public class EventListenerManager {
+public class EventListenerManager implements DisposeListener {
 	private final Set<AEventListener<?>> listeners = new HashSet<>();
 
 	protected final IListenerOwner owner;
@@ -42,6 +46,15 @@ public class EventListenerManager {
 
 	EventListenerManager(IListenerOwner owner) {
 		this.owner = owner;
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		if (!listeners.isEmpty()) {
+			Logger.create(EventListenerManager.class).error("not empty listeners during finalize - auto unregister");
+			unregisterAll();
+		}
+		super.finalize();
 	}
 
 	/**
@@ -204,6 +217,11 @@ public class EventListenerManager {
 		listeners.clear();
 	}
 
+	@Override
+	public void widgetDisposed(DisposeEvent e) {
+		unregisterAll();
+	}
+
 	/**
 	 * unregister all registered listeners for a given object
 	 *
@@ -232,6 +250,7 @@ public class EventListenerManager {
 	@Documented
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.METHOD)
+	@Inherited
 	public @interface ListenTo {
 		/**
 		 * determines if the {@link ADirectedEvent} has as its receiver our current listener object
@@ -305,5 +324,13 @@ public class EventListenerManager {
 			return Objects.equals(listener, other.listener) && Objects.equals(method, other.method);
 		}
 
+		@Override
+		public String toString() {
+			StringBuilder b = new StringBuilder();
+			b.append("ListenTo ").append(method.getDeclaringClass().getSimpleName()).append('.')
+					.append(method.getName());
+			b.append('(').append(method.getParameterTypes()[0].getSimpleName()).append(')');
+			return b.toString();
+		}
 	}
 }

@@ -19,7 +19,8 @@ public abstract class ABrickConfigurer implements IBrickConfigurer {
 
 	protected void configureBrick(MultiFormRenderer multiFormRenderer, final GLBrick brick,
 			int compactRendererID) {
-		MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer, brick);
+		MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer,
+				brick.getStratomex());
 
 		// There should be no view switching button for the visualization that is used in compact mode, as there is a
 		// dedicated button to switch to this mode.

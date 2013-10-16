@@ -5,7 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex.column;
 
-import java.awt.Point;
+import gleem.linalg.Vec2f;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -24,6 +25,7 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -42,7 +44,6 @@ import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionEvent;
 import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionListener;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.stratomex.GLStratomex;
@@ -57,7 +58,6 @@ import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.ui.OverviewDetailBandRenderer;
 import org.caleydo.view.stratomex.event.SelectDimensionSelectionEvent;
-import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.collect.Iterables;
 
@@ -83,7 +83,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	/**
 	 * marker color for {@link #setHighlightColor(float[])} to revert to the default color
 	 */
-	public final static float[] REVERT_COLOR = new float[] { 0, 0, 0, 0 };
+	public final static Color REVERT_COLOR = new Color(0, 0, 0, 0);
 
 	/**
 	 * The brick at the top that shows information about and provides tools for interaction with the whole dimension
@@ -175,8 +175,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 	private final EventListenerManager eventListeners = EventListenerManagers.wrap(this);
 
-	public BrickColumn(IGLCanvas canvas, Composite parentComposite, ViewFrustum viewFrustum) {
-		super(canvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+	public BrickColumn(IGLCanvas canvas, ViewFrustum viewFrustum) {
+		super(canvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 	}
 
@@ -290,7 +290,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	}
 
 	public boolean isActive() {
-		return headerBrick != null && headerBrick.isActive();
+		return headerBrick != null && headerBrick.isSelected();
 	}
 
 	/**
@@ -373,18 +373,20 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 		addSortedBricks(sortedBricks);
 
-		stratomex.getRelationAnalyzer().updateRelations(tablePerspective.getRecordPerspective().getPerspectiveID(),
-				tablePerspective.getRecordPerspective().getVirtualArray());
+		stratomex.getRelationAnalyzer().updateRelations(tablePerspective.getRecordPerspective());
 
 	}
 
 	private void addSortedBricks(List<GLBrick> sortedBricks) {
+		// clusterBrickColumn.setDynamicSizeUnitsY(sortedBricks.size() + 1);
 		for (GLBrick brick : sortedBricks) {
 			// System.out.println("Average Value: "
 			// +
 			// brick.getTablePerspective().getContainerStatistics().getAverageValue());
 			ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
+			brickSpacingLayout.setDebug(false);
 			brickSpacingLayout.setPixelSizeY(BETWEEN_BRICKS_SPACING);
+			// brickSpacingLayout.setDynamicSizeUnitsY(1);
 			brickSpacingLayout.setRatioSizeX(0f);
 			BrickSpacingRenderer brickSpacingRenderer = new BrickSpacingRenderer(this, currentBrickSpacerID++, brick);
 			brickSpacingLayout.setRenderer(brickSpacingRenderer);
@@ -409,7 +411,9 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		// }
 
 		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
-		brickSpacingLayout.setRatioSizeY(1);
+		// brickSpacingLayout.setRatioSizeY(1);
+		brickSpacingLayout.setDebug(false);
+		brickSpacingLayout.setDynamicSizeUnitsY(1);
 		brickSpacingLayout.setRatioSizeX(0f);
 		BrickSpacingRenderer brickSpacingRenderer = new BrickSpacingRenderer(this, currentBrickSpacerID++, null);
 		brickSpacingLayout.setRenderer(brickSpacingRenderer);
@@ -445,6 +449,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		clusterBricks.clear();
 
 		addSortedBricks(sortedBricks);
+		if (brickConfigurer.distributeBricksUniformly())
+			distributeBricksUniformly();
 		stratomex.updateConnectionLinesBetweenColumns();
 		stratomex.setLayoutDirty();
 
@@ -460,7 +466,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			Class<? extends ABrickLayoutConfiguration> layoutTemplateClass) {
 		ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4, 4);
 		GLBrick brick = (GLBrick) GeneralManager.get().getViewManager()
-				.createGLView(GLBrick.class, parentGLCanvas, parentComposite, brickFrustum);
+				.createGLView(GLBrick.class, parentGLCanvas, brickFrustum);
 
 		brick.setDataDomain(dataDomain);
 		brick.setTablePerspective(tablePerspective);
@@ -513,12 +519,6 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			// brick.unregisterEventListeners();
 		}
 		clusterBricks.clear();
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
-		unregisterEventListeners();
 	}
 
 	/**
@@ -679,14 +679,42 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			stratomex.setLayoutDirty();
 			stratomex.updateConnectionLinesBetweenColumns();
 		}
-
+		boolean initializedBricks = !uninitializedBricks.isEmpty();
 		while (!uninitializedBricks.isEmpty()) {
 			uninitializedBricks.poll().initRemote(gl, this, glMouseListener);
+		}
+		if (initializedBricks) {
+			if (brickConfigurer.distributeBricksUniformly())
+				distributeBricksUniformly();
 			stratomex.setLayoutDirty();
 			stratomex.updateConnectionLinesBetweenColumns();
 		}
 		handleVerticalMoveDragging(gl);
 		checkForHits(gl);
+	}
+
+	protected void distributeBricksUniformly() {
+		float totalUsedHeightByBricks = 0;
+		for (GLBrick brick : clusterBricks) {
+			totalUsedHeightByBricks += pixelGLConverter.getGLHeightForPixelHeight(brick.getWrappingLayout()
+					.getPixelSizeY());
+		}
+		float heightForSpacings = clusterBrickColumn.getSizeScaledY() - totalUsedHeightByBricks;
+		int brickSpacing = Math.max(
+				pixelGLConverter.getPixelHeightForGLHeight(heightForSpacings / (clusterBricks.size() + 1)),
+				BETWEEN_BRICKS_SPACING);
+
+		if (heightForSpacings <= 0)
+			return;
+
+		for (int i = 0; i < clusterBrickColumn.size(); i++) {
+			ElementLayout layout = clusterBrickColumn.get(i);
+			if (layout.toString().equals("brickSpacingLayout")) {
+				layout.setPixelSizeY(brickSpacing);
+			}
+		}
+		stratomex.setLayoutDirty();
+		stratomex.updateConnectionLinesBetweenColumns();
 	}
 
 	@Override
@@ -740,18 +768,15 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			return;
 		}
 
-		Point currentPoint = glMouseListener.getPickedPoint();
-
-		float[] pointCordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-				currentPoint.y);
+		Vec2f pointCordinates = pixelGLConverter.convertMouseCoord2GL(glMouseListener.getDIPPickedPoint());
 
 		if (Float.isNaN(previousYCoordinate)) {
-			previousYCoordinate = pointCordinates[1];
+			previousYCoordinate = pointCordinates.y();
 			return;
 		}
 
-		float change = pointCordinates[1] - previousYCoordinate;
-		previousYCoordinate = pointCordinates[1];
+		float change = pointCordinates.y() - previousYCoordinate;
+		previousYCoordinate = pointCordinates.y();
 
 		// updateBrickSizes(topCol, topBricks, newSize);
 
@@ -779,6 +804,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		for (GLBrick clusterBrick : clusterBricks) {
 			clusterBrick.updateLayout();
 		}
+		if (brickConfigurer.distributeBricksUniformly())
+			distributeBricksUniformly();
 	}
 
 	/**
@@ -976,6 +1003,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 *            Specifies, whether the detail brick shall be expanded on the left or on the right.
 	 */
 	public void showDetailedBrick(GLBrick brick, boolean expandLeft) {
+		if (!stratomex.canShowDetailBrick())
+			return;
 
 		if (detailBrick != null) {
 			// GeneralManager.get().getViewManager().unregisterGLView(detailBrick);
@@ -1056,7 +1085,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	}
 
 	public int getDetailBrickHeightPixels() {
-		return (int) (parentGLCanvas.getHeight() * 0.9f);
+		return (int) (parentGLCanvas.getDIPHeight() * 0.9f);
 	}
 
 	/**
@@ -1074,15 +1103,15 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			otherDimensionGroupShowsDetail = otherDimensionGroup.isDetailBrickShown();
 			otherDimensionGroupColumnWidth = otherDimensionGroup.getGroupColumnWidthPixels();
 		}
-		int detailAreaWidth = parentGLCanvas.getWidth() - 2 * OVERVIEW_DETAIL_GAP_PIXEL - 2
+		float detailAreaWidth = parentGLCanvas.getDIPWidth() - 2 * OVERVIEW_DETAIL_GAP_PIXEL - 2
 				* GLStratomex.BRICK_COLUMN_SIDE_SPACING - getGroupColumnWidthPixels() - otherDimensionGroupColumnWidth;
 		int detailGapWidth = (int) (DETAIL_GAP_PORTION * detailAreaWidth);
 		detailGapWidth = (detailGapWidth < MIN_DETAIL_GAP_PIXEL) ? MIN_DETAIL_GAP_PIXEL : detailGapWidth;
 
-		int detailWidth = (otherDimensionGroupShowsDetail) ? (int) ((detailAreaWidth - detailGapWidth) / 2.0f)
+		float detailWidth = (otherDimensionGroupShowsDetail) ? (int) ((detailAreaWidth - detailGapWidth) / 2.0f)
 				: detailAreaWidth;
 
-		return detailWidth;
+		return (int) detailWidth;
 	}
 
 	/**
@@ -1150,7 +1179,6 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		return mainColumn;
 	}
 
-
 	/**
 	 * @param isVerticalMoveDraggingActive
 	 *            setter, see {@link #isVerticalMoveDraggingActive}
@@ -1190,7 +1218,10 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
-		// Nothing to do here
+		if (mainRow != null)
+			mainRow.destroy(gl);
+		this.clusterBricks.clear();
+		this.detailBrick = null;
 	}
 
 	@ListenTo(sendToMe = true)
@@ -1207,13 +1238,22 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	/**
 	 * @param fs
 	 */
-	public void setHighlightColor(float[] color) {
+	public void setHighlightColor(Color color) {
 		if (color == REVERT_COLOR)
-			color = isActive() ? SelectionType.SELECTION.getColor().getRGBA() : null;
+			color = isActive() ? SelectionType.SELECTION.getColor() : null;
 		FrameHighlightRenderer renderer = Iterables.getFirst(
 				Iterables.filter(getLayout().getBackgroundRenderer(), FrameHighlightRenderer.class), null);
 		if (renderer != null)
 			renderer.setColor(color);
 		return;
+	}
+
+	/**
+	 *
+	 */
+	public void destroyView() {
+		GL2 gl = getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2();
+		ViewManager.get().destroyView(gl, this);
+		// destroyOldBricks();
 	}
 }

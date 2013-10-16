@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.RGB;
 
 /**
  * Class representing a color using RGBA values.
@@ -17,7 +18,7 @@ import org.eclipse.swt.graphics.Device;
  * @author Christian Partl
  */
 @XmlType
-public class Color {
+public class Color implements Cloneable {
 
 	public static final Color TRANSPARENT = new Color(1f, 1, 1, 0);
 	public static final Color RED = new Color(1f, 0, 0, 1);
@@ -44,6 +45,9 @@ public class Color {
 
 	public static final Color DARK_GREEN = new Color(49, 163, 84);
 	public static final Color DARK_BLUE = new Color(43, 140, 190);
+
+	public static final Color LIGHT_RED = new Color(239, 179, 188);
+	public static final Color LIGHT_BLUE = new Color(180, 212, 231);
 
 	@XmlElement
 	public float r;
@@ -110,6 +114,17 @@ public class Color {
 	/** Creates an opaque gray color (a, g, b are set to intensity). */
 	public Color(float intensity) {
 		setRGBA(intensity, intensity, intensity, 1);
+	}
+
+	@Override
+	public Color clone() {
+		try {
+			Color c = (Color) super.clone();
+			c.intColor = null;
+			return c;
+		} catch (CloneNotSupportedException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	private void setRGBA(float r, float g, float b, float a) {
@@ -277,6 +292,47 @@ public class Color {
 	@Override
 	public String toString() {
 		return "Color [" + r + "," + g + "," + b + "," + a + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(a);
+		result = prime * result + Float.floatToIntBits(b);
+		result = prime * result + Float.floatToIntBits(g);
+		result = prime * result + Float.floatToIntBits(r);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Color other = (Color) obj;
+		if (Float.floatToIntBits(a) != Float.floatToIntBits(other.a))
+			return false;
+		if (Float.floatToIntBits(b) != Float.floatToIntBits(other.b))
+			return false;
+		if (Float.floatToIntBits(g) != Float.floatToIntBits(other.g))
+			return false;
+		if (Float.floatToIntBits(r) != Float.floatToIntBits(other.r))
+			return false;
+		return true;
+	}
+
+	/**
+	 * convert this color to SWT {@link RGB}
+	 * 
+	 * @return
+	 */
+	public RGB asRGB() {
+		int[] rgba = getIntRGBA();
+		return new RGB(rgba[0], rgba[1], rgba[2]);
 	}
 
 }

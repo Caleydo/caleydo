@@ -5,6 +5,9 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
+import gleem.linalg.Vec2f;
+
+import java.awt.Dimension;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,6 +16,8 @@ import java.util.Map;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
+import org.caleydo.core.view.opengl.canvas.Units;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 
 /**
@@ -114,14 +119,82 @@ public class PickingManager2 extends APickingManager<PickingManager2.PickingEntr
 	 */
 	public void doPicking(final GL2 gl, final AGLView view) {
 		PickingMode mode = convertToPickingMode(view.getGLMouseListener());
-		Point pickPoint = view.getGLMouseListener().getPickedPoint();
 
-		super.doPicking(mode, pickPoint, null, gl, new Runnable() {
+		Point pickPoint = view.getGLMouseListener().getRAWPickedPoint();
+		Vec2f pickDIPPoint = view.getGLMouseListener().getDIPPickedPoint();
+
+		super.doPicking(mode, new DummyMouseEvent(pickPoint, pickDIPPoint), gl, new Runnable() {
 			@Override
 			public void run() {
 				view.display(gl);
 			}
 		});
+	}
+
+	private static class DummyMouseEvent implements IMouseEvent {
+		private final Point rawPoint;
+		private final Vec2f point;
+
+		public DummyMouseEvent(Point rawPoint, Vec2f point) {
+			this.rawPoint = rawPoint;
+			this.point = point;
+		}
+
+		@Override
+		public Vec2f getPoint(Units unit) {
+			return unit.unapply(point);
+		}
+
+		@Override
+		public Vec2f getPoint() {
+			return point;
+		}
+
+		@Override
+		public Point getRAWPoint() {
+			return rawPoint;
+		}
+
+		@Override
+		public int getClickCount() {
+			return 0;
+		}
+
+		@Override
+		public int getWheelRotation() {
+			return 0;
+		}
+
+		@Override
+		public int getButton() {
+			return 0;
+		}
+
+		@Override
+		public boolean isButtonDown(int button) {
+			return false;
+		}
+
+		@Override
+		public Dimension getParentSize() {
+			return null;
+		}
+
+		@Override
+		public boolean isShiftDown() {
+			return false;
+		}
+
+		@Override
+		public boolean isAltDown() {
+			return false;
+		}
+
+		@Override
+		public boolean isCtrlDown() {
+			return false;
+		}
+
 	}
 
 	/**

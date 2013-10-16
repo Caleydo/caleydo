@@ -5,26 +5,27 @@
  ******************************************************************************/
 package org.caleydo.core.gui.toolbar;
 
-import java.util.ArrayList;
-
-import org.caleydo.core.gui.toolbar.action.ClearSelectionsAction;
-import org.caleydo.core.gui.toolbar.action.OpenProjectAction;
-import org.caleydo.core.gui.toolbar.action.SaveProjectAction;
-import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
-import org.caleydo.core.gui.toolbar.action.TakeSnapshotAction;
-import org.caleydo.core.io.gui.ExportDataAction;
-import org.caleydo.core.io.gui.ImportDataAction;
-import org.eclipse.jface.action.IToolBarManager;
+import org.caleydo.core.internal.MyPreferences;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Spinner;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.ISizeProvider;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.menus.IMenuService;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -34,25 +35,21 @@ import org.eclipse.ui.part.ViewPart;
  * @author Marc Streit
  */
 public class RcpToolBarView extends ViewPart implements ISizeProvider {
+	private static final int MAX_ITEMS_PER_LINE = 5;
+
 	public static final String ID = "org.caleydo.core.gui.toolbar.RcpToolBarView";
 
 	public static final int TOOLBAR_WIDTH = 213;
 	public static final int TOOLBAR_HEIGHT = 110;
-
-	private Composite parentComposite;
-
-	private ArrayList<Group> viewSpecificGroups;
 
 	@Override
 	public void createPartControl(Composite parent) {
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
 
 		parentComposite.setLayout(new GridLayout(1, false));
-		this.parentComposite = parentComposite;
 
-		viewSpecificGroups = new ArrayList<Group>();
-
-		addGeneralToolBar();
+		addGeneralToolBar(parentComposite);
+		// addZoomController(parentComposite);
 	}
 
 	@Override
@@ -60,70 +57,99 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 
 	}
 
-	@Override
-	public void dispose() {
-		super.dispose();
-	}
+	private void addGeneralToolBar(Composite parent) {
 
-	private void addGeneralToolBar() {
-
-		Group group = new Group(parentComposite, SWT.NULL);
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
-		layout.marginHeight = layout.marginWidth = 0;
-		group.setLayout(layout);
+		Group group = new Group(parent, SWT.NULL);
+		group.setLayout(new FillLayout(SWT.VERTICAL));
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// group.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
 
-		// Needed to simulate toolbar wrapping which is not implemented for
-		// linux
-		// See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
-		ArrayList<ToolBar> alToolBar = new ArrayList<ToolBar>();
-		ArrayList<IToolBarManager> alToolBarManager = new ArrayList<IToolBarManager>();
 
-		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
-		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
-		alToolBar.add(toolBar);
-		alToolBarManager.add(toolBarManager);
+		ToolBarManager toolBarManager = new ToolBarManager(SWT.WRAP);
+		IMenuService menuService = (IMenuService) PlatformUI.getWorkbench().getService(IMenuService.class);
+		menuService.populateContributionManager(toolBarManager, "toolbar:org.caleydo.core.gui.toolbar");
 
-		final ToolBar toolBar2 = new ToolBar(group, SWT.WRAP | SWT.FLAT);
-		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
-		alToolBar.add(toolBar2);
-		alToolBarManager.add(toolBarManager2);
+		if (toolBarManager.getSize() > MAX_ITEMS_PER_LINE) { // SystemUtils.IS_OS_LINUX &&
+			// Needed to simulate toolbar wrapping which is not implemented for
+			// linux See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
+			final IContributionItem[] items = toolBarManager.getItems();
+			for (int i = 0; i < items.length;) {
+				ToolBarManager m = new ToolBarManager();
+				for (; i < items.length && m.getSize() < MAX_ITEMS_PER_LINE; ++i)
+					if (items[i].isVisible())
+						m.add(items[i]);
+				m.createControl(group);
+			}
+		} else {
+			toolBarManager.createControl(group);
+		}
+	}
 
-		toolBarManager.add(new OpenProjectAction());
-		toolBarManager.add(new SaveProjectAction());
-		toolBarManager.add(new ImportDataAction());
-		toolBarManager.add(new ExportDataAction());
-		if (!System.getProperty("os.name").startsWith("Windows"))
-			toolBarManager.add(new TakeSnapshotAction());
+	/**
+	 * @param parentComposite
+	 */
+	private void addZoomController(Composite parent) {
+		Group group = new Group(parent, SWT.NULL);
+		group.setText("Zoom");
+		group.setLayout(new GridLayout(3, false));
+		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		// IToolBarItem startClustering = new StartClusteringDialogAction(targetViewID);
-		// actionList.add(startClustering);
+		final Spinner spinner = new Spinner(group, SWT.NONE);
+		spinner.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, true));
+		spinner.setMaximum(300);
+		spinner.setMinimum(10);
+		spinner.setIncrement(10);
+		spinner.setPageIncrement(20);
 
-		// if (DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic") != null) {
-		// toolBarManager2.add(new OpenSearchViewAction());
-		// }
+		Label l = new Label(group, SWT.NONE);
+		l.setText("%");
+		spinner.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, true));
 
-		toolBarManager2.add(new ClearSelectionsAction());
-		toolBarManager2.add(new StartClusteringAction());
-		// FIXME: removed because we need new concept for restoring data
-		// toolBarManager2.add(new RestoreOriginalDataAction());
+		final Scale scale = new Scale(group, SWT.HORIZONTAL);
+		scale.setMinimum(10);
+		scale.setMaximum(300);
+		scale.setIncrement(10);
+		scale.setPageIncrement(20);
+		scale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true));
 
-		// toolBarManager2.add(new SwitchDataRepresentationAction());
+		final IPreferenceStore prefs = MyPreferences.prefs();
 
-		toolBarManager.update(true);
+		int value = prefs.getInt(MyPreferences.VIEW_ZOOM_FACTOR);
+		scale.setSelection(value);
+		spinner.setSelection(value);
 
-		if (toolBarManager2.isEmpty())
-			toolBarManager2.dispose();
-		else
-			toolBarManager2.update(true);
+		prefs.addPropertyChangeListener(new IPropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				if (!MyPreferences.VIEW_ZOOM_FACTOR.equals(event.getProperty()))
+					return;
+				if (scale.isDisposed()) {
+					prefs.removePropertyChangeListener(this);
+					return;
+				}
+				Integer v = (Integer) event.getNewValue();
+				scale.setSelection(v.intValue());
+				spinner.setSelection(v.intValue());
+			}
+		});
 
-		Label label = new Label(group, SWT.CENTER);
-		label.setText("General");
-		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+		final SelectionAdapter listener = new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Widget widget = e.widget;
+				int s;
+				if (widget instanceof Scale)
+					s = ((Scale) widget).getSelection();
+				else if (widget instanceof Spinner)
+					s = ((Spinner) widget).getSelection();
+				else
+					return;
+				prefs.setValue(MyPreferences.VIEW_ZOOM_FACTOR, s);
+			}
+		};
+		spinner.addSelectionListener(listener);
+		scale.addSelectionListener(listener);
 	}
 
 	@Override
@@ -140,21 +166,4 @@ public class RcpToolBarView extends ViewPart implements ISizeProvider {
 	public int getSizeFlags(boolean width) {
 		return SWT.MIN;
 	}
-
-	public Composite getParentComposite() {
-		return parentComposite;
-	}
-
-	public void setParentComposite(Composite parentComposite) {
-		this.parentComposite = parentComposite;
-	}
-
-	public ArrayList<Group> getViewSpecificGroups() {
-		return viewSpecificGroups;
-	}
-
-	public void setViewSpecificGroups(ArrayList<Group> viewSpecificGroups) {
-		this.viewSpecificGroups = viewSpecificGroups;
-	}
-
 }

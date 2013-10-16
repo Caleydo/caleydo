@@ -26,8 +26,12 @@ public abstract class ADirectedEvent extends AEvent {
 	}
 
 	/**
-	 * determines whether the reiver is equal to the given object
+	 * determines whether the receiver is equal to the given object
+<<<<<<< HEAD
 	 *
+=======
+	 * 
+>>>>>>> refs/heads/entourage
 	 * @param obj
 	 * @return
 	 */
@@ -40,5 +44,13 @@ public abstract class ADirectedEvent extends AEvent {
 	 */
 	public Object getReceiver() {
 		return receiver;
+	}
+
+	/**
+	 * dummy implementation
+	 */
+	@Override
+	public boolean checkIntegrity() {
+		return true;
 	}
 }

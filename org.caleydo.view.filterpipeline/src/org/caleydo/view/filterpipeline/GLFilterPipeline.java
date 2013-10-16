@@ -40,7 +40,6 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -121,9 +120,9 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	 * Constructor.
 	 *
 	 */
-	public GLFilterPipeline(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLFilterPipeline(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		dragAndDropController = new DragAndDropController(this);
 		glKeyListener = new GLFilterPipelineKeyListener(this);
@@ -165,6 +164,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	@Override
 	public void initLocal(GL2 gl) {
 		// Register keyboard listener to GL2 canvas
+		final Composite parentComposite = parentGLCanvas.asComposite();
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -178,14 +178,15 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+		final Composite parentComposite = glParentView.getParentGLCanvas().asComposite();
+		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				glParentView.getParentComposite().addKeyListener(glKeyListener);
+				parentComposite.addKeyListener(glKeyListener);
 			}
 		});
 
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 
 		init(gl);
 	}
@@ -505,10 +506,8 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 
 	private void updateMousePosition(GL2 gl) {
 		try {
-			float windowCoords[] = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
-					glMouseListener.getPickedPoint().x, glMouseListener.getPickedPoint().y);
-
-			mousePosition.set(windowCoords[0], windowCoords[1]);
+			Vec2f pointCordinates = pixelGLConverter.convertMouseCoord2GL(glMouseListener.getDIPPickedPoint());
+			mousePosition.set(pointCordinates.x(), pointCordinates.y());
 		} catch (Exception e) {
 			// System.out.println("Failed to get mouse position: "+e);
 		}
@@ -549,8 +548,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedFilterPipelineView serializedForm = new SerializedFilterPipelineView();
-		serializedForm.setViewID(this.getID());
+		SerializedFilterPipelineView serializedForm = new SerializedFilterPipelineView(this);
 		return serializedForm;
 	}
 

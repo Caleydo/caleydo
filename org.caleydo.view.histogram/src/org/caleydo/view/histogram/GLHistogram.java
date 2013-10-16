@@ -6,8 +6,8 @@
 package org.caleydo.view.histogram;
 
 import static org.caleydo.view.histogram.HistogramRenderStyle.SIDE_SPACING;
+import gleem.linalg.Vec2f;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +24,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.view.RedrawViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
 import org.caleydo.core.util.color.mapping.IColorMappingUpdateListener;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
@@ -37,9 +38,7 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * Rendering the histogram.
@@ -84,9 +83,9 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 	 * @param viewLabel
 	 * @param viewFrustum
 	 */
-	public GLHistogram(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLHistogram(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		// registerEventListeners();
 
@@ -111,7 +110,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 		init(gl);
 	}
 
@@ -178,7 +177,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		}
 
 		renderHistogram(gl);
-		if (renderColorBars && detailLevel != EDetailLevel.LOW)
+		if (renderColorBars)// && detailLevel != EDetailLevel.LOW)
 			renderColorBars(gl);
 		gl.glEndList();
 	}
@@ -200,6 +199,8 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 			}
 		}
 
+		ColorMapper mapper = dataDomain.getTable().getColorMapper();
+
 		// GLHelperFunctions.drawSmallPointAt(gl, 0.01f, 0.01f, 1);
 		// GLHelperFunctions.drawSmallPointAt(gl, viewFrustum.getWidth() / 2, viewFrustum.getHeight() / 2, 1);
 		// GLHelperFunctions.drawSmallPointAt(gl, viewFrustum.getWidth() - 0.01f, viewFrustum.getHeight() - 0.01f, 1);
@@ -213,6 +214,9 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		CategoricalHistogram cHistogram = null;
 		if (histogram instanceof CategoricalHistogram) {
 			cHistogram = (CategoricalHistogram) histogram;
+			renderColorBars = false;
+		} else {
+			renderColorBars = true;
 		}
 
 		for (int bucketCount = 0; bucketCount < histogram.size(); bucketCount++) {
@@ -221,21 +225,10 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 			if (useColor) {
 				float[] color;
 
-				// if (dataDomain.getTable() instanceof CategoricalTable<?>) {
-				// CategoricalTable<?> cTable = (CategoricalTable<?>) dataDomain.getTable();
-				// color = cTable.getCategoryDescriptions().getCategoryProperties().get(bucketCount).getColor()
-				// .getRGBA();
-				// } else if (!dataDomain.getTable().isDataHomogeneous() && tablePerspective != null) {
 				if (cHistogram != null) {
-					// CategoricalClassDescription<?> specific = (CategoricalClassDescription<?>) dataDomain.getTable()
-					// .getDataClassSpecificDescription(
-					// tablePerspective.getDimensionPerspective().getVirtualArray().get(0),
-					// tablePerspective.getRecordPerspective().getVirtualArray().get(0));
-
 					color = cHistogram.getColor(bucketCount).getRGB();// specific.getCategoryProperties().get(bucketCount).getColor().getRGBA();
 				} else {
-					color = dataDomain.getTable().getColorMapper()
-							.getColor(continuousColorDistance * iCount + continuousColorDistance / 2);
+					color = mapper.getColor(continuousColorDistance * iCount + continuousColorDistance / 2);
 				}
 				gl.glColor3fv(color, 0);
 			}
@@ -279,7 +272,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 					iCount);
 
 			boolean bIsFirstOrLast = false;
-			float fPickingScaling = 0.8f;
+			float fPickingScaling = 1f;
 			if (iCount == 0 || iCount == markerPoints.size() - 1)
 				bIsFirstOrLast = true;
 
@@ -370,9 +363,9 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 				gl.glColor3fv(SPREAD_LINE_COLOR, 0);
 				gl.glPushName(iRightSpreadPickingID);
 				gl.glBegin(GL.GL_LINES);
-				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() + fRightSpread) * fRenderWidth, 0, 0.01f);
+				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() + fRightSpread) * fRenderWidth, 0, 0.1f);
 				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() + fRightSpread) * fRenderWidth,
-						viewFrustum.getHeight(), 0.01f);
+						viewFrustum.getHeight(), 0.1f);
 				gl.glEnd();
 				gl.glPopName();
 				if (fRightSpread > HistogramRenderStyle.SPREAD_CAPTION_THRESHOLD)
@@ -410,10 +403,17 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		double correspondingValue = ((NumericalTable) dataDomain.getTable()).getRawForNormalized(dataDomain.getTable()
 				.getDefaultDataTransformation(), normalizedValue);
 
+		textRenderer.setColor(Color.BLACK);
 		String text = Formatter.formatNumber(correspondingValue);
-		textRenderer.renderTextInBounds(gl, text, sideSpacing + normalizedValue * fRenderWidth
-				+ HistogramRenderStyle.CAPTION_SPACING, 0, 0.01f, pixelGLConverter.getGLWidthForPixelWidth(100),
-				pixelGLConverter.getGLHeightForPixelHeight(HistogramRenderStyle.SIDE_SPACING));
+		float x = sideSpacing + normalizedValue * fRenderWidth;
+		boolean alignRight = true;
+		if (normalizedValue > 0.5) {
+			alignRight = false;
+		}
+
+		textRenderer.renderTextInBounds(gl, text, x, pixelGLConverter.getGLHeightForPixelHeight(3), 0.01f,
+				pixelGLConverter.getGLWidthForPixelWidth(100),
+				pixelGLConverter.getGLHeightForPixelHeight(HistogramRenderStyle.SIDE_SPACING), alignRight);
 	}
 
 	/**
@@ -435,15 +435,12 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		}
 
 		setDisplayListDirty();
-		Point currentPoint = glMouseListener.getPickedPoint();
-
-		float[] fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
-				currentPoint.x, currentPoint.y);
+		Vec2f currentPixelPos = pixelGLConverter.getCurrentPixelPos(gl);
+		Vec2f pointCordinates = pixelGLConverter.convertMouseCoord2GL(glMouseListener.getDIPPickedPoint());
+		float fClickedPointX = pointCordinates.x() - pixelGLConverter.getGLWidthForPixelWidth(currentPixelPos.x());
 
 		List<ColorMarkerPoint> markerPoints = dataDomain.getTable().getColorMapper().getMarkerPoints();
 		ColorMarkerPoint markerPoint = markerPoints.get(iColorMappingPointMoved);
-
-		float fClickedPointX = fArTargetWorldCoordinates[0];
 
 		if (bIsFirstTimeUpdateColor && bUpdateColorPointPosition) {
 			bIsFirstTimeUpdateColor = false;
@@ -574,9 +571,9 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		case MEDIUM:
 			return 100;
 		case LOW:
-			return 40;
+			return 80;
 		default:
-			return 40;
+			return 80;
 		}
 	}
 

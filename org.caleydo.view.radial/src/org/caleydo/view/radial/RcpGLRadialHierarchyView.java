@@ -5,17 +5,12 @@
  ******************************************************************************/
 package org.caleydo.view.radial;
 
-import java.util.ArrayList;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.view.radial.actions.ChangeColorModeAction;
 import org.caleydo.view.radial.actions.GoBackInHistoryAction;
 import org.caleydo.view.radial.actions.GoForthInHistoryAction;
 import org.caleydo.view.radial.toolbar.DepthSlider;
-import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLRadialHierarchyView extends ARcpGLViewPart {
@@ -24,13 +19,7 @@ public class RcpGLRadialHierarchyView extends ARcpGLViewPart {
 	 * Constructor.
 	 */
 	public RcpGLRadialHierarchyView() {
-		super();
-
-		try {
-			viewContext = JAXBContext.newInstance(SerializedRadialHierarchyView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		super(SerializedRadialHierarchyView.class);
 	}
 
 	@Override
@@ -39,14 +28,11 @@ public class RcpGLRadialHierarchyView extends ARcpGLViewPart {
 
 		// minSizeComposite.setView(view);
 
-		view = new GLRadialHierarchy(glCanvas, parentComposite, serializedView.getViewFrustum());
+		view = new GLRadialHierarchy(glCanvas, serializedView.getViewFrustum());
 		initializeView();
 		createPartControlGL();
 	}
 
-	public static void createToolBarItems(int viewID) {
-		alToolbar = new ArrayList<IAction>();
-	}
 
 	@Override
 	public void createDefaultSerializedView() {
@@ -54,14 +40,10 @@ public class RcpGLRadialHierarchyView extends ARcpGLViewPart {
 		determineDataConfiguration(serializedView);
 	}
 
-	@Override
-	public String getViewGUIID() {
-		return GLRadialHierarchy.VIEW_TYPE;
-	}
 
 	@Override
-	public void addToolBarContent() {
-
+	public void addToolBarContent(IToolBarManager toolBarManager) {
+		super.addToolBarContent(toolBarManager);
 		toolBarManager.add(new GoBackInHistoryAction());
 		toolBarManager.add(new GoForthInHistoryAction());
 		toolBarManager.add(new ChangeColorModeAction());

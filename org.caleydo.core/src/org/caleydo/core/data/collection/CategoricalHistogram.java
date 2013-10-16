@@ -15,8 +15,8 @@ import org.caleydo.core.util.color.Color;
  *
  */
 public class CategoricalHistogram extends Histogram {
-	private CategoricalClassDescription<?> classDescription;
-	private int unkonwIndex = Integer.MAX_VALUE;
+	private final CategoricalClassDescription<?> classDescription;
+	private final int unknownIndex;
 
 	/**
 	 * @param numberOfBuckets
@@ -24,9 +24,10 @@ public class CategoricalHistogram extends Histogram {
 	public CategoricalHistogram(CategoricalClassDescription<?> classDescription) {
 		super(classDescription.sizeWithoutUnknown());
 		this.classDescription = classDescription;
-		unkonwIndex = classDescription.indexOf(classDescription.getUnknownCategory().getCategory());
-		if (unkonwIndex == -1)
-			unkonwIndex = Integer.MAX_VALUE;
+		int unknownIndex = classDescription.indexOf(classDescription.getUnknownCategory().getCategory());
+		if (unknownIndex == -1)
+			unknownIndex = Integer.MAX_VALUE;
+		this.unknownIndex = unknownIndex;
 	}
 
 	public void add(Object categoryType, Integer objectID) {
@@ -36,16 +37,22 @@ public class CategoricalHistogram extends Histogram {
 
 		} else {
 			int index = classDescription.indexOf(categoryType);
-			if (index > unkonwIndex)
+			if (index > unknownIndex)
 				index--;
 			add(index, objectID);
 		}
 	}
 
 	public Color getColor(int bucketNumber) {
-		if (bucketNumber >= unkonwIndex)
+		if (bucketNumber >= unknownIndex)
 			bucketNumber++;
 		return classDescription.getCategoryProperties().get(bucketNumber).getColor();
+	}
+
+	public String getName(int bucketNumber) {
+		if (bucketNumber >= unknownIndex)
+			bucketNumber++;
+		return classDescription.getCategoryProperties().get(bucketNumber).getCategoryName();
 	}
 
 }

@@ -73,48 +73,19 @@
                </ViewCreator>
             </Embedding>
          </ParentView>
-         <ParentView
-               viewID="org.caleydo.view.subgraph">
-            <Embedding
-                  embeddingID="org.caleydo.view.subgraph.pathway.multiform.level1"
-                  icon="resources/icons/pathway_lv1.png"
-                  isDefaultView="true"
-                  visInfo="org.caleydo.view.pathway.PathwayVisInfo">
-               <ViewCreator
-                     class="org.caleydo.view.pathway.PathwayRemoteViewCreator">
-               </ViewCreator>
-            </Embedding>
-         </ParentView>
       </EmbeddingInfo>
-      <EmbeddingInfo
-            viewID="org.caleydo.view.pathway.topological.path">
-         <ParentView
-               viewID="org.caleydo.view.subgraph">
-            <Embedding
-                  embeddingID="invalidforthemoment"
-                  icon="resources/icons/pathway.png"
-                  isDefaultView="false"
-                  visInfo="org.caleydo.view.pathway.PathwayVisInfo">
-               <ViewCreator
-                     class="org.caleydo.view.pathway.TopologicalPathwayPathCreator">
-               </ViewCreator>
-            </Embedding>
-         </ParentView>
-      </EmbeddingInfo>
-      <EmbeddingInfo
-            viewID="org.caleydo.view.pathway.texture">
-         <ParentView
-               viewID="org.caleydo.view.subgraph.invalid">
-            <Embedding
-                  embeddingID="org.caleydo.view.subgraph.pathway.multiform.level3"
-                  icon="resources/icons/pathway_lv3.png"
-                  isDefaultView="false"
-                  visInfo="org.caleydo.view.pathway.PathwayVisInfo">
-               <ViewCreator
-                     class="org.caleydo.view.pathway.PathwayTextureCreator">
-               </ViewCreator>
-            </Embedding>
-         </ParentView>
-      </EmbeddingInfo>
+   </extension>
+   <extension
+         point="org.caleydo.datadomain.pathway.embeddedPathway">
+      <parent
+            viewID="org.caleydo.view.entourage">
+         <pathway
+               embeddingID="org.caleydo.view.entourage.pathway.multiform.level1"
+               icon="resources/icons/pathway_lv1.png">
+            <viewCreator
+                  class="org.caleydo.view.pathway.EntourageLevel1PathwayCreator">
+            </viewCreator>
+         </pathway>
+      </parent>
    </extension>
 </plugin>

@@ -9,23 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 
 /**
  * Event that triggers adding a list of {@link TablePerspective}s to a specific
  * view.
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
-public class AddTablePerspectivesEvent extends AEvent {
+public class AddTablePerspectivesEvent extends ADirectedEvent {
 
 	/** The data containers that are to be added to the view */
 	private List<TablePerspective> tablePerspectives;
-
-	/** The view which is the receiver of the data containers */
-	private ITablePerspectiveBasedView receiver;
 
 	/**
 	 * Default constructor.
@@ -35,7 +32,7 @@ public class AddTablePerspectivesEvent extends AEvent {
 
 	/**
 	 * Constructor initializing the event with a single data container.
-	 * 
+	 *
 	 * @param tablePerspective
 	 *            added to a new instance of {@link #tablePerspectives}
 	 */
@@ -46,7 +43,7 @@ public class AddTablePerspectivesEvent extends AEvent {
 
 	/**
 	 * Constructor initializing the event with multiple data containers.
-	 * 
+	 *
 	 * @param tablePerspectives
 	 *            set to {@link #tablePerspectives}
 	 */
@@ -55,18 +52,11 @@ public class AddTablePerspectivesEvent extends AEvent {
 	}
 
 	/**
-	 * @param receiver
-	 *            setter, see {@link #receiver}
-	 */
-	public void setReceiver(ITablePerspectiveBasedView receiver) {
-		this.receiver = receiver;
-	}
-
-	/**
 	 * @return the receiver, see {@link #receiver}
 	 */
+	@Override
 	public ITablePerspectiveBasedView getReceiver() {
-		return receiver;
+		return (ITablePerspectiveBasedView) super.getReceiver();
 	}
 
 	public void addTablePerspective(TablePerspective tablePerspective) {

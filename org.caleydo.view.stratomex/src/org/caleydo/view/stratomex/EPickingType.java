@@ -15,6 +15,7 @@ package org.caleydo.view.stratomex;
 public enum EPickingType {
 
 	BRICK,
+	BRICK_PENETRATING,
 	BRICK_EXPAND_BUTTON,
 	BRICK_COLLAPSE_BUTTON,
 	BRICK_CLOSE_BUTTON,

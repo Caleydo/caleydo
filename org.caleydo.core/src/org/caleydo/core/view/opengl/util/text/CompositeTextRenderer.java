@@ -5,15 +5,15 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.util.text;
 
-
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.function.FloatFunctions;
-import org.caleydo.core.util.function.IFloatFunction;
+
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
 
 /**
  * composite pattern, that has a pool of underlying renderer with different text sizes and automatically selects the
@@ -30,13 +30,13 @@ public class CompositeTextRenderer implements ITextRenderer {
 	/**
 	 * maps the given height in the reference height space, i.e. pixels
 	 */
-	private final IFloatFunction mapper;
+	private final Function<Float, Float> mapper;
 
 	public CompositeTextRenderer(ETextStyle style, int size, int... sizes) {
-		this(FloatFunctions.IDENTITY, style, size, sizes);
+		this(Functions.<Float> identity(), style, size, sizes);
 	}
 
-	public CompositeTextRenderer(IFloatFunction mapper, ETextStyle style, int size, int... sizes) {
+	public CompositeTextRenderer(Function<Float, Float> mapper, ETextStyle style, int size, int... sizes) {
 		this.mapper = mapper;
 		add(style, size);
 		for (int s : sizes)
@@ -58,7 +58,6 @@ public class CompositeTextRenderer implements ITextRenderer {
 			t.setColor(color);
 	}
 
-
 	@Override
 	public float getTextWidth(String text, float height) {
 		CaleydoTextRenderer best = selectBest(height);
@@ -67,6 +66,11 @@ public class CompositeTextRenderer implements ITextRenderer {
 
 	@Override
 	public void renderTextInBounds(GL2 gl, String text, float x, float y, float z, float w, float h) {
+		renderTextInBounds(gl, text, x, y, z, w, h, true);
+	}
+
+	@Override
+	public void renderTextInBounds(GL2 gl, String text, float x, float y, float z, float w, float h, boolean alignRight) {
 		CaleydoTextRenderer best = selectBest(h);
 		best.renderTextInBounds(gl, text, x, y, z, w, h);
 	}
@@ -78,7 +82,7 @@ public class CompositeTextRenderer implements ITextRenderer {
 	 * @return
 	 */
 	private CaleydoTextRenderer selectBest(float h) {
-		Float hv = Float.valueOf(mapper.apply(h));
+		Float hv = mapper.apply(h);
 		Float select = this.pool.ceilingKey(hv);
 		if (select == null)
 			select = this.pool.lastKey();
@@ -97,6 +101,5 @@ public class CompositeTextRenderer implements ITextRenderer {
 	public boolean isOriginTopLeft() {
 		return false;
 	}
-
 
 }

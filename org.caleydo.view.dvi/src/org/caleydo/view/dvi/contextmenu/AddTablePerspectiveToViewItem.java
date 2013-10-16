@@ -6,10 +6,11 @@
 package org.caleydo.view.dvi.contextmenu;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
+import org.caleydo.view.dvi.event.CreateTablePerspectiveBeforeAddingEvent;
+import org.caleydo.view.dvi.tableperspective.TablePerspectiveCreator;
 
 /**
  * Item to add a {@link TablePerspective} to a
@@ -25,9 +26,17 @@ public class AddTablePerspectiveToViewItem extends AContextMenuItem {
 		setLabel(view.getLabel());
 
 		AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
+		event.to(view).from(this);
+		registerEvent(event);
+	}
+
+	public AddTablePerspectiveToViewItem(TablePerspectiveCreator creator, IMultiTablePerspectiveBasedView view) {
+		setLabel(view.getLabel());
+
+		CreateTablePerspectiveBeforeAddingEvent event = new CreateTablePerspectiveBeforeAddingEvent(creator);
 		event.setReceiver(view);
 		event.setSender(this);
-		EventPublisher.trigger(event);
+		registerEvent(event);
 	}
 
 }

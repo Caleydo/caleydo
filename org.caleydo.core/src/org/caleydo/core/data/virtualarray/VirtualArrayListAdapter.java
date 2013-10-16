@@ -14,29 +14,34 @@ import com.google.common.collect.Lists;
 
 /**
  * custom conversion of a List of Integer to an XML String with compression
- * 
+ *
  * assumption: just positive indices with in most of the cases increasing order
- * 
+ *
  * notation:
- * 
+ *
  * <pre>
  * number[-count]
  * </pre>
  *
  * example
- * 
+ *
  * <pre>
  * from: [1, 2, 3, 4, 5, 8, 9, 12, 14, 16, 17, 18, 19, 20, 21, 30]
  * to: [1 -4 8 -1 12 14 16 -5 30]
  * </pre>
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class VirtualArrayListAdapter extends XmlAdapter<String,ArrayList<Integer>> {
 
 	@Override
 	public ArrayList<Integer> unmarshal(String v) throws Exception {
+		if (v.isEmpty())
+			return new ArrayList<>();
+		if (v.startsWith("<")) { // old mode
+			v = v.replaceAll("</?virtualArrayList>", " ");
+		}
 		try (Scanner s = new Scanner(v)) {
 			ArrayList<Integer> r = new ArrayList<>();
 			int last = 0;

@@ -68,6 +68,7 @@ public class PathwayTablePerspective extends TablePerspective {
 		this.pathway = pathway;
 		pathwayTitle = pathway.getTitle();
 		pathwayDataBaseType = pathway.getType();
+
 	}
 
 	@Override
@@ -117,6 +118,7 @@ public class PathwayTablePerspective extends TablePerspective {
 			PathwayTablePerspective subTablePerspective = new PathwayTablePerspective(dataDomain, pathwayDataDomain,
 					recordPerspective, dimensionPerspective, getPathway());
 			subTablePerspective.setRecordGroup(group);
+			subTablePerspective.parentTablePerspective = this;
 			recordSubTablePerspectives.add(subTablePerspective);
 		}
 

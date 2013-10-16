@@ -5,9 +5,9 @@
  ******************************************************************************/
 package org.caleydo.datadomain.pathway.manager;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,20 +27,22 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ZipUtils;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.core.util.system.FileOperations;
+import org.caleydo.core.util.system.RemoteFile;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.genetic.GeneticMetaData;
 import org.caleydo.datadomain.genetic.Organism;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.parser.KgmlSaxHandler;
 import org.caleydo.datadomain.pathway.parser.PathwayImageMap;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -49,10 +50,6 @@ import org.jgrapht.DirectedGraph;
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * The pathway manager is in charge of creating and handling the pathways. The class is implemented as a singleton.
@@ -60,6 +57,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * @author Marc Streit
  */
 public class PathwayManager extends AManager<PathwayGraph> {
+	private static final Logger log = Logger.create(PathwayManager.class);
 
 	private volatile static PathwayManager pathwayManager;
 
@@ -84,8 +82,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	 * image.
 	 */
 	private PathwayImageMap currentPathwayImageMap;
-
-	private PathwayGraph currentPathwayGraph;
 
 	private boolean pathwayLoadingFinished;
 
@@ -119,29 +115,24 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		return this.mapPathwayDBToPathways.containsKey(type) && !this.mapPathwayDBToPathways.get(type).isEmpty();
 	}
 
-	public PathwayDatabase createPathwayDatabase(final EPathwayDatabaseType type, final String XMLPath,
-			final String imagePath, final String imageMapPath) {
+	public PathwayDatabase createPathwayDatabase(final EPathwayDatabaseType type) {
 
 		// Check if requested pathway database is already loaded (e.g. using
 		// caching)
 		if (hashPathwayDatabase.containsKey(type))
 			return hashPathwayDatabase.get(type);
 
-		PathwayDatabase pathwayDatabase = new PathwayDatabase(type, XMLPath, imagePath, imagePath);
+		PathwayDatabase pathwayDatabase = new PathwayDatabase(type);
 
 		hashPathwayDatabase.put(type, pathwayDatabase);
 		createPathwayResourceLoader(pathwayDatabase.getType());
-
-		Logger.log(new Status(IStatus.INFO, this.toString(), "Setting pathway loading path: database-type:[" + type
-				+ "] " + "xml-path:[" + pathwayDatabase.getXMLPath() + "] image-path:["
-				+ pathwayDatabase.getImagePath() + "] image-map-path:[" + pathwayDatabase.getImageMapPath() + "]"));
 
 		return pathwayDatabase;
 	}
 
 	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName, final String sTitle,
-			final String sImageLink, final String sExternalLink) {
-		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, sImageLink, sExternalLink);
+			final File image, final String sExternalLink) {
+		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, image, sExternalLink);
 
 		registerItem(pathway);
 		Map<String, PathwayGraph> mapTitleToPathway = mapPathwayDBToPathways.get(type);
@@ -151,8 +142,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		}
 		mapTitleToPathway.put(sTitle, pathway);
 		hashPathwayToVisibilityState.put(pathway, false);
-
-		currentPathwayGraph = pathway;
 
 		return pathway;
 	}
@@ -288,102 +277,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		throw new IllegalStateException("Unknown pathway database " + type);
 	}
 
-	public void loadPathwaysByType(PathwayDatabase pathwayDatabase) {
 
-		// // Try reading list of files directly from local hard dist
-		// File folder = new File(sXMLPath);
-		// File[] arFiles = folder.listFiles();
-
-		GeneralManager generalManager = GeneralManager.get();
-
-		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Start parsing " + pathwayDatabase.getName()
-				+ " pathways."));
-
-		String line = null;
-		String fileName = "";
-		String pathwayPath = pathwayDatabase.getXMLPath();
-		IPathwayResourceLoader pathwayResourceLoader = null;
-		Organism organism = GeneticMetaData.getOrganism();
-
-		if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG) {
-
-			if (organism == Organism.HOMO_SAPIENS) {
-				fileName = "data/pathway_list_KEGG_homo_sapiens.txt";
-			} else if (organism == Organism.MUS_MUSCULUS) {
-				fileName = "data/pathway_list_KEGG_mus_musculus.txt";
-			} else {
-				throw new IllegalStateException("Cannot load pathways from organism " + organism);
-			}
-		}
-
-		pathwayResourceLoader = PathwayManager.get().getPathwayResourceLoader(pathwayDatabase.getType());
-
-		if (pathwayResourceLoader == null)
-			return;
-
-		ResourceLoader general = GeneralManager.get().getResourceLoader();
-
-		try (BufferedReader file = (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG ? pathwayResourceLoader.getResource(fileName) : general.getResource(fileName))){
-			StringTokenizer tokenizer;
-			String pathwayName;
-
-			while ((line = file.readLine()) != null) {
-				tokenizer = new StringTokenizer(line, " ");
-
-				pathwayName = tokenizer.nextToken();
-
-				// Skip non pathway files
-				if (!pathwayName.endsWith(".xml") && !line.contains("h_") && !line.contains("m_")) {
-					continue;
-				}
-
-				InputSource in = null;
-				try {
-					XMLReader reader = XMLReaderFactory.createXMLReader();
-
-					// Entity resolver avoids the XML Reader
-					// to check external DTDs.
-					reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-
-					KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
-					reader.setEntityResolver(kgmlParser);
-					reader.setContentHandler(kgmlParser);
-
-					in = pathwayResourceLoader.getInputSource(pathwayPath + pathwayName);
-					reader.parse(in);
-
-					currentPathwayGraph.setWidth(Integer.valueOf(tokenizer.nextToken()).intValue());
-					currentPathwayGraph.setHeight(Integer.valueOf(tokenizer.nextToken()).intValue());
-
-					int iImageWidth = currentPathwayGraph.getWidth();
-					int iImageHeight = currentPathwayGraph.getHeight();
-
-					if (iImageWidth == -1 || iImageHeight == -1) {
-						Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Pathway texture width="
-								+ iImageWidth + " / height=" + iImageHeight));
-					}
-				} catch (SAXException e) {
-					Logger.log(new Status(IStatus.ERROR, "PathwayLoaderThread", "SAXParser-error during parsing file "
-							+ pathwayName + ".\n SAX error: " + e.toString(), e));
-				} finally {
-					if (in != null) {
-						if (in.getByteStream() != null)
-							in.getByteStream().close();
-						if (in.getCharacterStream() != null)
-							in.getCharacterStream().close();
-					}
-				}
-			}
-
-		} catch (FileNotFoundException e) {
-			throw new IllegalStateException("Pathway list file " + fileName + " not found.");
-		} catch (IOException e) {
-			throw new IllegalStateException("Error reading data from pathway list file: " + fileName);
-		}
-
-		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Finished parsing " + pathwayDatabase.getName()
-				+ " pathways."));
-	}
 
 	/**
 	 * Returns all pathways where a specific gene is contained at least once.
@@ -675,5 +569,41 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		}
 
 		return vertexReps;
+	}
+
+	/**
+	 * @param monitor
+	 * @param wikipathways
+	 */
+	public File preparePathwayData(EPathwayDatabaseType type, IProgressMonitor monitor) {
+		final String URL_PATTERN = GeneralManager.DATA_URL_PREFIX + "pathways/%s_%s.zip";
+		final Organism organism = GeneticMetaData.getOrganism();
+
+		URL url = null;
+		try {
+			url = new URL(String.format(URL_PATTERN, type.name().toLowerCase(), organism.name().toLowerCase()));
+			RemoteFile zip = RemoteFile.of(url);
+
+			if (!zip.inCache(true)) {
+				File tmp = zip.getFile();
+				File unpacked = new File(tmp.getParentFile(), tmp.getName().replaceAll("\\.zip", ""));
+				FileOperations.deleteDirectory(unpacked);
+			}
+
+			File localZip = zip.getOrLoad(true, monitor,
+					"Caching Pathways (this may take a while): Downloading " + type.getName() + " pathways (%2$d MB)");
+			if (localZip == null || !localZip.exists()) {
+				log.error("can't download: " + url);
+				return null;
+			}
+			File unpacked = new File(localZip.getParentFile(), localZip.getName().replaceAll("\\.zip", ""));
+			if (unpacked.exists())
+				return unpacked;
+			ZipUtils.unzipToDirectory(localZip.getAbsolutePath(), unpacked.getAbsolutePath());
+			return unpacked;
+		} catch (MalformedURLException e) {
+			log.error("can't download: " + url);
+			return null;
+		}
 	}
 }

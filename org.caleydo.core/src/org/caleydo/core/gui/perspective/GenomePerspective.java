@@ -18,8 +18,7 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.IPlaceholderFolderLayout;
 
-public class GenomePerspective
-	implements IPerspectiveFactory {
+public class GenomePerspective implements IPerspectiveFactory {
 	public static final String PERSPECTIVE_ID = "org.caleydo.core.gui.perspective";
 
 	@Override
@@ -30,24 +29,21 @@ public class GenomePerspective
 		Rectangle rectDisplay = Display.getCurrent().getPrimaryMonitor().getBounds();
 		float ratio = (float) RcpToolBarView.TOOLBAR_WIDTH / rectDisplay.width;
 
-		IFolderLayout topLeft =
-			layout.createFolder("topLeft", IPageLayout.LEFT, ratio, IPageLayout.ID_EDITOR_AREA);
+		IFolderLayout topLeft = layout.createFolder("topLeft", IPageLayout.LEFT, ratio, IPageLayout.ID_EDITOR_AREA);
 		topLeft.addView(RcpToolBarView.ID);
 
-		IFolderLayout middleLeft = layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.2f, "topLeft");
+		IFolderLayout middleLeft = layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.12f, "topLeft");
 		middleLeft.addView("org.caleydo.view.info.selection");
-		// middleLeft.addPlaceholder("org.caleydo.view.statistics");
 
 		IFolderLayout bottomLeft = layout.createFolder("bottomLeft", IPageLayout.BOTTOM, 0.4f, "middleLeft");
 		bottomLeft.addView("org.caleydo.view.info.dataset");
 
-		IFolderLayout mainLayout =
-			layout.createFolder("main", IPageLayout.RIGHT, 0.3f, IPageLayout.ID_EDITOR_AREA);
+		IFolderLayout mainLayout = layout.createFolder("main", IPageLayout.RIGHT, 0.3f, IPageLayout.ID_EDITOR_AREA);
 
 		// IPlaceholderFolderLayout rightLayout =
 		// layout.createPlaceholderFolder("right", IPageLayout.RIGHT, 1 - 2 * fRatio, "main");
-		//rightLayout.addPlaceholder("org.caleydo.view.bookmark");
-		//rightLayout.addPlaceholder("org.caleydo.view.grouper");
+		// rightLayout.addPlaceholder("org.caleydo.view.bookmark");
+		// rightLayout.addPlaceholder("org.caleydo.view.grouper");
 
 		IPlaceholderFolderLayout bottomLayout = layout.createPlaceholderFolder("bottom", IPageLayout.BOTTOM, 0.75f,
 				"main");
@@ -55,14 +51,15 @@ public class GenomePerspective
 		// bottomLayout.addPlaceholder("org.caleydo.view.filterpipeline");
 
 		// all the views that should be initially shown
-		List<String> initialViews = Arrays.asList("org.caleydo.view.dvi", "org.caleydo.view.stratomex");
+		List<String> initialViews = Arrays.asList("org.caleydo.view.dvi", "org.caleydo.view.stratomex:FIRST");
 		for (String initialView : initialViews) {
 			mainLayout.addView(initialView);
 		}
 
 		// create placeholders for all registered caleydo views depending on their prefix: tool, info or main
-		for (IConfigurationElement elem : RegistryFactory.getRegistry().getConfigurationElementsFor("org.eclipse.ui.views")) {
-			if(!"view".equals(elem.getName()))
+		for (IConfigurationElement elem : RegistryFactory.getRegistry().getConfigurationElementsFor(
+				"org.eclipse.ui.views")) {
+			if (!"view".equals(elem.getName()))
 				continue;
 			if (!"org.caleydo.core.views".equals(elem.getAttribute("category"))) // wrong category
 				continue;

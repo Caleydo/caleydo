@@ -5,13 +5,12 @@
  ******************************************************************************/
 package org.caleydo.view.enroute;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.enroute.toolbar.actions.FitToViewWidthAction;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -25,23 +24,22 @@ public class RcpGLEnRoutePathwayView extends ARcpGLViewPart {
 	 * Constructor.
 	 */
 	public RcpGLEnRoutePathwayView() {
-		super();
-
-		try {
-			viewContext = JAXBContext.newInstance(SerializedEnRoutePathwayView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		super(SerializedEnRoutePathwayView.class);
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLEnRoutePathway(glCanvas, parentComposite, serializedView.getViewFrustum());
+		view = new GLEnRoutePathway(glCanvas, serializedView.getViewFrustum());
 		initializeView();
 		minSizeComposite.setView((AGLView) view);
 		createPartControlGL();
+	}
+
+	@Override
+	public GLEnRoutePathway getView() {
+		return (GLEnRoutePathway) super.getView();
 	}
 
 	@Override
@@ -51,16 +49,10 @@ public class RcpGLEnRoutePathwayView extends ARcpGLViewPart {
 	}
 
 	@Override
-	public String getViewGUIID() {
-		return GLEnRoutePathway.VIEW_TYPE;
-	}
-
-	@Override
-	public void addToolBarContent() {
+	public void addToolBarContent(IToolBarManager toolBarManager) {
 
 		toolBarManager
 				.add(new FitToViewWidthAction(((SerializedEnRoutePathwayView) serializedView).isFitToViewWidth()));
-		toolBarManager.add(new OpenOnlineHelpAction(
-				"http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/enroute", false));
+		toolBarManager.add(new OpenOnlineHelpAction(GeneralManager.HELP_URL + "/views/enroute.md", false));
 	}
 }

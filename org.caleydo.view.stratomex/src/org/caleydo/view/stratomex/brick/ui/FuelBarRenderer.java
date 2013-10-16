@@ -15,9 +15,9 @@ import org.caleydo.view.stratomex.brick.GLBrick;
 
 /**
  * Renderer for a fuel bar.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class FuelBarRenderer extends ALayoutRenderer {
 
@@ -47,12 +47,14 @@ public class FuelBarRenderer extends ALayoutRenderer {
 
 		int currentNumElements = recordVA.size();
 
-		float fuelWidth = (float) x / totalNumElements * currentNumElements;
+		float fuelWidth = x / totalNumElements * currentNumElements;
 
 		GLStratomex stratomex = brick.getBrickColumn().getStratomexView();
 
 		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
 				EPickingType.BRICK.name(), brick.getID()));
+		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
+				EPickingType.BRICK_PENETRATING.name(), brick.getID()));
 		// gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 		// PickingType.BRICK, brick.getID()));
 		gl.glBegin(GL2.GL_QUADS);
@@ -86,9 +88,10 @@ public class FuelBarRenderer extends ALayoutRenderer {
 		gl.glEnd();
 		// gl.glPopName();
 		gl.glPopName();
+		gl.glPopName();
 
 	}
-	
+
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return true;

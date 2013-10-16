@@ -34,9 +34,4 @@ public class SerializedStratomexView extends ASerializedMultiTablePerspectiveBas
 		return GLStratomex.VIEW_TYPE;
 	}
 
-	@Override
-	public String getViewClassType() {
-		return GLStratomex.class.getName();
-	}
-
 }

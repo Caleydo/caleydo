@@ -8,11 +8,12 @@ package org.caleydo.view.dvi.node;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.media.opengl.GL2;
 
@@ -23,6 +24,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.util.base.Labels;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -37,15 +39,11 @@ import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
-import org.caleydo.view.dvi.contextmenu.ShowViewWithoutDataItem;
 import org.caleydo.view.dvi.layout.AGraphLayout;
 import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveListRenderer;
 import org.caleydo.view.dvi.tableperspective.matrix.TablePerspectiveMatrixRenderer;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
 
 public class TableBasedDataNode extends ADataNode implements IDropArea {
 
@@ -89,7 +87,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 		public OverviewState() {
 			tablePerspectiveRenderer = new TablePerspectiveListRenderer(TableBasedDataNode.this, view,
-					dragAndDropController, getTablePerspectives());
+					dragAndDropController, getVisibleTablePerspectives());
 			List<Pair<String, Integer>> pickingIDsToBePushed = new ArrayList<Pair<String, Integer>>();
 			pickingIDsToBePushed.add(new Pair<String, Integer>(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
 
@@ -105,8 +103,11 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		@Override
 		public void apply() {
 			super.apply();
+
+			List<TablePerspective> visibleTablePerspectives = getVisibleTablePerspectives();
+			tablePerspectiveRenderer.setTablePerspectives(getVisibleTablePerspectives());
 			bodyRow.clearBackgroundRenderers();
-			if (getTablePerspectives().size() > 0) {
+			if (visibleTablePerspectives.size() > 0) {
 				bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 			}
 		}
@@ -190,50 +191,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			}
 
 		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
-
-		// FIXME: Bad hack
-		if (dataDomain.getLabel().toLowerCase().contains("copy")
-				|| dataDomain.getLabel().toLowerCase().contains("mutation")) {
-			final boolean isCopyNumber = dataDomain.getLabel().toLowerCase().contains("copy");
-
-			view.addIDPickingTooltipListener("To create a " + (isCopyNumber ? "copy number" : "mutation status")
-					+ " categorization for one gene use the Search view.", DATA_GRAPH_NODE_PICKING_TYPE, id);
-
-			view.addIDPickingListener(new APickingListener() {
-
-				@Override
-				public void rightClicked(Pick pick) {
-
-					IExtensionRegistry registry = Platform.getExtensionRegistry();
-					IConfigurationElement[] viewElements = registry.getConfigurationElementsFor("org.eclipse.ui.views");
-					boolean viewExists = false;
-					for (IConfigurationElement element : viewElements) {
-
-						String bundleID = element.getAttribute("id");
-						if (bundleID.startsWith("org.caleydo.view.search")) {
-							viewExists = true;
-							break;
-						}
-
-					}
-					if (viewExists) {
-						view.getContextMenuCreator().addContextMenuItem(
-								new ShowViewWithoutDataItem("org.caleydo.view.search",
-										"Create Categorization of a Gene's "
-												+ (isCopyNumber ? "Copy Number" : "Mutation") + " Status"));
-
-					}
-
-				}
-			}, DATA_GRAPH_NODE_PICKING_TYPE, id);
-		}
-		if (dataDomain.getLabel().contains("Clinical")) {
-			view.addIDPickingTooltipListener(
-					"To add clinical data to StratomeX use context menu of a data column in StratomeX.",
-					DATA_GRAPH_NODE_PICKING_TYPE, id);
-		}
 	}
-
 
 	@Override
 	protected ElementLayout setupLayout() {
@@ -328,7 +286,11 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			toggleTablePerspectiveButton.setVisible(true);
 		}
 		currentState.apply();
-		tablePerspectiveRenderer.setTablePerspectives(getTablePerspectives());
+		if (currentState == overviewState) {
+			tablePerspectiveRenderer.setTablePerspectives(getVisibleTablePerspectives());
+		} else {
+			tablePerspectiveRenderer.setTablePerspectives(getTablePerspectives());
+		}
 	}
 
 	@Override
@@ -342,141 +304,66 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			tablePerspectives = new ArrayList<TablePerspective>();
 			return;
 		}
-		// List<Pair<String, TablePerspective>> sortedParentTablePerspectives =
-		// new
-		// ArrayList<Pair<String, TablePerspective>>();
-		// for (TablePerspective container : containerCollection) {
-		// sortedParentTablePerspectives.add(new Pair<String,
-		// TablePerspective>(container
-		// .getLabel(), container));
-		// }
 
-		Set<String> recordPerspectiveIDs = dataDomain.getRecordPerspectiveIDs();
-		if (recordPerspectiveIDs == null)
-			return;
+		Set<Perspective> records = new TreeSet<>(Labels.BY_LABEL);
+		Set<Perspective> dimensions = new TreeSet<>(Labels.BY_LABEL);
 
-		List<Pair<String, Perspective>> parentRecordPerspectives = new ArrayList<Pair<String, Perspective>>();
-		Map<Perspective, List<Pair<String, Perspective>>> childRecordPerspectiveLists = new HashMap<Perspective, List<Pair<String, Perspective>>>();
-
-		for (String perspectiveID : recordPerspectiveIDs) {
-			Perspective perspective = dataDomain.getTable().getRecordPerspective(perspectiveID);
-
-			if (perspective.isPrivate()) {
+		for(TablePerspective t : containerCollection) {
+			if (t.isPrivate())
 				continue;
-			}
-
-			parentRecordPerspectives.add(new Pair<String, Perspective>(perspective.getLabel(), perspective));
-
-			GroupList groupList = perspective.getVirtualArray().getGroupList();
-
-			if (groupList != null) {
-				List<Pair<String, Perspective>> childList = new ArrayList<Pair<String, Perspective>>(
-						groupList.size());
-				for (int i = 0; i < groupList.size(); i++) {
-
-					Group group = groupList.get(i);
-					if (group.getPerspectiveID() != null) {
-
-						Perspective childPerspective = dataDomain.getTable().getRecordPerspective(
-								group.getPerspectiveID());
-						childList
-								.add(new Pair<String, Perspective>(childPerspective.getLabel(), childPerspective));
-					}
-				}
-
-				// Collections.sort(childList);
-				childRecordPerspectiveLists.put(perspective, childList);
-			}
-
+			if (!t.getRecordPerspective().isPrivate())
+				records.add(t.getRecordPerspective());
+			if (!t.getDimensionPerspective().isPrivate())
+				dimensions.add(t.getDimensionPerspective());
 		}
 
-		Collections.sort(parentRecordPerspectives, Pair.<String> compareFirst());
+		// contains perspective id -> index in a sorted positions
+		final Map<String, Integer> perspectiveId2Index = new HashMap<>();
 
-		List<Perspective> sortedRecordPerspectives = new ArrayList<Perspective>();
+		fill(records, perspectiveId2Index);
+		fill(dimensions, perspectiveId2Index);
 
-		for (Pair<String, Perspective> parentPair : parentRecordPerspectives) {
-			sortedRecordPerspectives.add(parentPair.getSecond());
-
-			List<Pair<String, Perspective>> childList = childRecordPerspectiveLists.get(parentPair.getSecond());
-
-			if (childList != null) {
-				for (Pair<String, Perspective> childPair : childList) {
-					sortedRecordPerspectives.add(childPair.getSecond());
-				}
-			}
-		}
-
-		Set<String> dimensionPerspectiveIDs = new HashSet<>(dataDomain.getDimensionPerspectiveIDs());
-
-		List<Pair<String, Perspective>> parentDimensionPerspectives = new ArrayList<Pair<String, Perspective>>();
-		Map<Perspective, List<Pair<String, Perspective>>> childDimensionPerspectiveLists = new HashMap<Perspective, List<Pair<String, Perspective>>>();
-
-		for (String perspectiveID : dimensionPerspectiveIDs) {
-			Perspective perspective = dataDomain.getTable().getDimensionPerspective(perspectiveID);
-
-			if (perspective.isPrivate()) {
+		tablePerspectives = new ArrayList<>(containerCollection.size());
+		for (TablePerspective t : containerCollection) {
+			if (t.isPrivate())
 				continue;
+			// check if we have indices for the perspectives otherwise filter it out
+			if (!perspectiveId2Index.containsKey(t.getRecordPerspective().getPerspectiveID())
+					|| !perspectiveId2Index.containsKey(t.getDimensionPerspective().getPerspectiveID()))
+				continue;
+			tablePerspectives.add(t);
+		}
+		// sort by indices lookup
+		Collections.sort(tablePerspectives, new Comparator<TablePerspective>() {
+			@Override
+			public int compare(TablePerspective o1, TablePerspective o2) {
+				int r = compare(o1.getDimensionPerspective(), o2.getDimensionPerspective());
+				if (r != 0)
+					return r;
+				r = compare(o1.getRecordPerspective(), o2.getRecordPerspective());
+				return r;
 			}
 
-			parentDimensionPerspectives
-					.add(new Pair<String, Perspective>(perspective.getLabel(), perspective));
+			private int compare(Perspective a, Perspective b) {
+				Integer r1 = perspectiveId2Index.get(a.getPerspectiveID());
+				Integer r2 = perspectiveId2Index.get(b.getPerspectiveID());
+				assert r1 != null && r2 != null;
+				return r1.compareTo(r2);
+			}
+		});
+	}
 
+	private void fill(Set<Perspective> perspectives, final Map<String, Integer> perspectiveId2Index) {
+		int i = 0;
+		for (Perspective perspective : perspectives) {
 			GroupList groupList = perspective.getVirtualArray().getGroupList();
-
-			if (groupList != null) {
-				List<Pair<String, Perspective>> childList = new ArrayList<Pair<String, Perspective>>(
-						groupList.size());
-				for (int i = 0; i < groupList.size(); i++) {
-
-					Group group = groupList.get(i);
-					if (group.getPerspectiveID() != null) {
-
-						Perspective childPerspective = dataDomain.getTable().getDimensionPerspective(
-								group.getPerspectiveID());
-						childList.add(new Pair<String, Perspective>(childPerspective.getLabel(),
-								childPerspective));
-					}
-				}
-
-				// Collections.sort(childList);
-				childDimensionPerspectiveLists.put(perspective, childList);
-			}
-
+			perspectiveId2Index.put(perspective.getPerspectiveID(), i++);
+			if (groupList == null)
+				continue;
+			for (Group g : groupList)
+				if (g.getPerspectiveID() != null)
+					perspectiveId2Index.put(g.getPerspectiveID(), i++);
 		}
-
-		Collections.sort(parentDimensionPerspectives, Pair.<String> compareFirst());
-
-		List<Perspective> sortedDimensionPerspectives = new ArrayList<Perspective>();
-
-		for (Pair<String, Perspective> parentPair : parentDimensionPerspectives) {
-			sortedDimensionPerspectives.add(parentPair.getSecond());
-
-			List<Pair<String, Perspective>> childList = childDimensionPerspectiveLists.get(parentPair
-					.getSecond());
-
-			if (childList != null) {
-				for (Pair<String, Perspective> childPair : childList) {
-					sortedDimensionPerspectives.add(childPair.getSecond());
-				}
-			}
-		}
-
-		tablePerspectives = new ArrayList<TablePerspective>(containerCollection.size());
-
-		for (Perspective dimensionPerspective : sortedDimensionPerspectives) {
-			for (Perspective recordPerspective : sortedRecordPerspectives) {
-				if (dataDomain.hasTablePerspective(recordPerspective.getPerspectiveID(),
-						dimensionPerspective.getPerspectiveID())) {
-
-					TablePerspective tablePerspective = dataDomain.getTablePerspective(
-							recordPerspective.getPerspectiveID(), dimensionPerspective.getPerspectiveID());
-
-					if (!tablePerspective.isPrivate())
-						tablePerspectives.add(tablePerspective);
-				}
-			}
-		}
-
 	}
 
 	@Override
@@ -504,13 +391,25 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 				ATableBasedDataDomain foreignDataDomain = perspectiveRenderer.getDataDomain();
 				if (foreignDataDomain != this.dataDomain) {
 					if (perspectiveRenderer.isRecordPerspective()) {
+						if (this.dataDomain.getRecordIDCategory() != foreignDataDomain.getRecordIDCategory())
+							continue;
 						Perspective recordPerspective = foreignDataDomain.getTable().getRecordPerspective(
 								perspectiveRenderer.getPerspectiveID());
 
-						Perspective convertedPerspective = this.dataDomain
-								.convertForeignPerspective(recordPerspective);
+
+						Perspective convertedPerspective = this.dataDomain.convertForeignPerspective(recordPerspective);
 						convertedPerspective.setDefault(false);
 						this.dataDomain.getTable().registerRecordPerspective(convertedPerspective);
+					} else {
+						if (this.dataDomain.getDimensionIDCategory() != foreignDataDomain.getDimensionIDCategory())
+							continue;
+						Perspective dimensionPerspective = foreignDataDomain.getTable().getDimensionPerspective(
+								perspectiveRenderer.getPerspectiveID());
+
+						Perspective convertedPerspective = this.dataDomain
+								.convertForeignPerspective(dimensionPerspective);
+						convertedPerspective.setDefault(false);
+						this.dataDomain.getTable().registerDimensionPerspective(convertedPerspective);
 					}
 				}
 				// tablePerspectives.add(dimensionGroupRenderer.getTablePerspective());

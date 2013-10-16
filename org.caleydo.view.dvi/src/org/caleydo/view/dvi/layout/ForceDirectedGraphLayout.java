@@ -121,6 +121,18 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		map.put(node1, distance);
 	}
 
+	@Override
+	public void cleanupNode(IDVINode node) {
+		this.distanceMatrix.remove(node);
+		this.nodesToLayout.remove(node);
+		this.centeredPositions.remove(node);
+		this.forces.remove(node);
+		for (Map<Object, ?> m : this.distanceMatrix.values()) {
+			m.remove(node);
+		}
+		super.cleanupNode(node);
+	}
+
 	private double getDistance(Object node1, Object node2) {
 		if (node1 == node2)
 			return 0;

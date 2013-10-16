@@ -6,8 +6,8 @@
 package org.caleydo.core.view.opengl.picking;
 
 import static org.caleydo.core.util.collection.Pair.make;
+import gleem.linalg.Vec2f;
 
-import java.awt.Point;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -33,7 +33,7 @@ final class PickingMouseListener implements IGLMouseListener {
 		return isMouseIn;
 	}
 
-	public Point getCurrentMousePos() {
+	public Vec2f getCurrentMousePos() {
 		if (event.isEmpty())
 			return null;
 		return event.getLast().getFirst().getPoint();
@@ -79,8 +79,9 @@ final class PickingMouseListener implements IGLMouseListener {
 	}
 
 	@Override
-	public void mouseWheelMoved(IMouseEvent e) {
-
+	public void mouseWheelMoved(IMouseEvent mouseEvent) {
+		isMouseIn = true;
+		add(mouseEvent, PickingMode.MOUSE_WHEEL);
 	}
 
 	@Override

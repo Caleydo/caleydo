@@ -9,6 +9,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.dvi.event.CreateViewFromTablePerspectiveEvent;
+import org.caleydo.view.dvi.tableperspective.TablePerspectiveCreator;
 
 public class ShowTablePerspectiveInViewItem extends AContextMenuItem {
 
@@ -17,8 +18,19 @@ public class ShowTablePerspectiveInViewItem extends AContextMenuItem {
 
 		setLabel(viewName);
 
-		CreateViewFromTablePerspectiveEvent event = new CreateViewFromTablePerspectiveEvent(
-				viewType, dataDomain, tablePerspective);
+		CreateViewFromTablePerspectiveEvent event = new CreateViewFromTablePerspectiveEvent(viewType, dataDomain,
+				tablePerspective);
+		event.setSender(this);
+		registerEvent(event);
+	}
+
+	public ShowTablePerspectiveInViewItem(String viewName, String viewType, IDataDomain dataDomain,
+			TablePerspectiveCreator creator) {
+
+		setLabel(viewName);
+
+		CreateViewFromTablePerspectiveEvent event = new CreateViewFromTablePerspectiveEvent(viewType, dataDomain,
+				creator);
 		event.setSender(this);
 		registerEvent(event);
 	}

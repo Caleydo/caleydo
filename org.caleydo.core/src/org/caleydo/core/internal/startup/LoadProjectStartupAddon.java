@@ -13,6 +13,7 @@ import java.util.Date;
 
 import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.serialize.ProjectManager;
+import org.caleydo.core.startup.IStartUpDocumentListener;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.startup.LoadProjectStartupProcedure;
@@ -26,6 +27,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -35,11 +37,11 @@ import org.kohsuke.args4j.Option;
 
 /**
  * {@link IStartupAddon} for loading a project or the recent project
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public class LoadProjectStartupAddon implements IStartupAddon {
+public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentListener {
 	private static final String PROPERTY_CALEYDO_PROJECT_LOCATION = "caleydo.project.location";
 
 	private static final int WIDTH = 400;
@@ -82,6 +84,12 @@ public class LoadProjectStartupAddon implements IStartupAddon {
 			return true;
 
 		return false;
+	}
+
+	@Override
+	public void handleEvent(Event event) {
+		if (event.text != null && !event.text.isEmpty())
+			this.projectLocation = new File(event.text);
 	}
 
 	/** Check whether a string corresponds to a caleydo project file */

@@ -14,14 +14,16 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.EnableFreePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
+import org.caleydo.view.enroute.path.node.ComplexNode;
 
 /**
  * @author Christian
- *
+ * 
  */
 public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 
@@ -41,10 +43,14 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 	protected boolean isSelectedPathContinuation = false;
 
 	/**
-	 * Determines whether the path will be selected by moving the mouse over nodes. This is only possible if
-	 * {@link #isPathSelectable} is ture.
+	 * Determines whether the path will be selected by moving the mouse over nodes.
 	 */
 	protected boolean isPathSelectionMode = false;
+
+	/**
+	 * Determines whether a free path can be selected by clicking on the nodes of the path.
+	 */
+	protected boolean isFreePathSelectionMode = false;
 
 	/**
 	 * The segments of the currently selected path.
@@ -58,10 +64,11 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 	 * @param pathwayPathEventSpace
 	 */
 	public FixedPathUpdateStrategy(APathwayPathRenderer renderer, String pathwayPathEventSpace,
-			boolean isPathSelectionMode, ContextualPathsRenderer contextualPathsRenderer,
-			List<List<PathwayVertexRep>> selectedPathSegments) {
+			boolean isPathSelectionMode, boolean isFreePathSelectionMode,
+			ContextualPathsRenderer contextualPathsRenderer, List<List<PathwayVertexRep>> selectedPathSegments) {
 		super(renderer, pathwayPathEventSpace);
 		this.isPathSelectionMode = isPathSelectionMode;
+		this.isFreePathSelectionMode = isFreePathSelectionMode;
 		this.contextualPathsRenderer = contextualPathsRenderer;
 		setSelectedPathSegments(selectedPathSegments);
 	}
@@ -80,6 +87,16 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 	@Override
 	public void onEnablePathSelection(EnablePathSelectionEvent event) {
 		isPathSelectionMode = event.isPathSelectionMode();
+		if (isPathSelectionMode)
+			isFreePathSelectionMode = false;
+	}
+
+	@Override
+	public void onEnableFreePathSelection(EnableFreePathSelectionEvent event) {
+		isFreePathSelectionMode = event.isEnabled();
+		if (isFreePathSelectionMode)
+			isPathSelectionMode = false;
+
 	}
 
 	@Override
@@ -115,12 +132,24 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 			if (contextualPathsRenderer.isControlKeyPressed())
 				return;
 
+			if (contextualPathsRenderer.isShiftKeyPressed()) {
+				handleShiftClick();
+			} else {
+				handleClick();
+			}
+		}
+
+		private void handleClick() {
 			if (isPathSelectionMode) {
+				ALinearizableNode currentNode = node;
+				ComplexNode parent = node.getParentNode();
+				if(parent != null)
+					currentNode = parent;
 				isSelectedPathContinuation = false;
 				if (!selectedPathSegments.isEmpty()) {
 					List<PathwayVertexRep> lastSegment = selectedPathSegments.get(selectedPathSegments.size() - 1);
 					if (lastSegment.size() > 1) {
-						for (PathwayVertexRep v : node.getVertexReps()) {
+						for (PathwayVertexRep v : currentNode.getVertexReps()) {
 							if (v != lastSegment.get(lastSegment.size() - 1)
 									&& PathwayManager.get().areVerticesEquivalent(v,
 											lastSegment.get(lastSegment.size() - 1))) {
@@ -136,12 +165,38 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 						selectedPathSegments.clear();
 					}
 					List<PathwayVertexRep> firstSegment = new ArrayList<>();
-					firstSegment.add(node.getVertexReps().get(node.getVertexReps().size() - 1));
+					firstSegment.add(node.getVertexReps().get(currentNode.getVertexReps().size() - 1));
 					selectedPathSegments.add(firstSegment);
-					selectedPathStartNode = node;
+					selectedPathStartNode = currentNode;
 					triggerPathUpdate(selectedPathSegments);
 				}
 				createNewPathSelection = !createNewPathSelection;
+			}
+		}
+
+		private void handleShiftClick() {
+			if (isPathSelectionMode) {
+				ALinearizableNode currentNode = node;
+				ComplexNode parent = node.getParentNode();
+				if(parent != null)
+					currentNode = parent;
+				createNewPathSelection = selectedPathSegments.isEmpty();
+
+				if (contextualPathsRenderer.isShiftKeyPressed()) {
+					PathwayVertexRep vertexRep = currentNode.getVertexReps().get(currentNode.getVertexReps().size() - 1);
+
+					if (!selectedPathSegments.isEmpty()) {
+						List<PathwayVertexRep> lastSegment = selectedPathSegments.get(selectedPathSegments.size() - 1);
+						// Do not add the same node after each other
+						if (lastSegment.get(lastSegment.size() - 1) == vertexRep)
+							return;
+					}
+					List<PathwayVertexRep> newSegment = new ArrayList<>(1);
+					newSegment.add(vertexRep);
+					selectedPathSegments.add(newSegment);
+					selectedPathStartNode = currentNode;
+					triggerPathUpdate(selectedPathSegments);
+				}
 			}
 		}
 
@@ -150,7 +205,7 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 			if (contextualPathsRenderer.isControlKeyPressed())
 				return;
 
-			if (isPathSelectionMode && !createNewPathSelection
+			if (isPathSelectionMode && (!createNewPathSelection || contextualPathsRenderer.isShiftKeyPressed())
 					&& renderer.pathNodes.indexOf(node) > renderer.pathNodes.indexOf(selectedPathStartNode)) {
 				Pair<Integer, Integer> fromIndexPair = renderer.determinePathSegmentAndIndexOfPathNode(
 						selectedPathStartNode, selectedPathSegments.get(selectedPathSegments.size() - 1).get(0));

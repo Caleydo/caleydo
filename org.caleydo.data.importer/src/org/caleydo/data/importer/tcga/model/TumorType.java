@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.caleydo.core.util.base.ILabelProvider;
 
@@ -38,14 +39,33 @@ public class TumorType implements ILabelProvider {
 		return Collections.unmodifiableCollection(types);
 	}
 
+	public static Collection<TumorType> getNormalTumorTypes() {
+		Collection<TumorType> r = new ArrayList<>(types.size());
+		for (TumorType t : types) {
+			if (t.isSpecialType())
+				continue;
+			r.add(t);
+		}
+		return r;
+	}
+
 	public static TumorType byName(String name) {
 		name = name.toLowerCase();
 		for (TumorType type : types) {
 			String t = type.getName().toLowerCase();
-			if (t.equals(name) || name.startsWith(t))
+			if (t.equals(name))
 				return type;
 		}
 		return null;
+	}
+
+	public static Collection<TumorType> byNameMatches(Pattern pattern) {
+		Collection<TumorType> r = new ArrayList<>(types.size());
+		for (TumorType type : types) {
+			if (pattern.matcher(type.getName()).matches())
+				r.add(type);
+		}
+		return r;
 	}
 
 	private static Collection<TumorType> readAll(String fileName) {
@@ -73,6 +93,19 @@ public class TumorType implements ILabelProvider {
 		return label;
 	}
 
+	/**
+	 * by convention types with a "-" in it are special ones
+	 * @return
+	 */
+	public boolean isSpecialType() {
+		return name.contains("-");
+	}
+
+	public String getBaseName() {
+		if (!isSpecialType())
+			return name;
+		return name.substring(0, name.indexOf('-'));
+	}
 	@Override
 	public String getProviderName() {
 		return "TumorType";
@@ -110,5 +143,13 @@ public class TumorType implements ILabelProvider {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	/**
+	 * @param type
+	 * @return
+	 */
+	public static TumorType createDummy(String type) {
+		return new TumorType(type, type);
 	}
 }

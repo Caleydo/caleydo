@@ -16,6 +16,8 @@
    <extension-point id="org.caleydo.core.util.Clusterer" name="Clusterer" schema="schema/org.caleydo.core.util.Clusterer.exsd"/>
    <extension-point id="org.caleydo.core.StartupAddon" name="StartupAddon" schema="schema/org.caleydo.core.StartupAddon.exsd"/>
    <extension-point id="org.caleydo.core.SampleProject" name="Sample Project Description" schema="schema/org.caleydo.core.SampleProject.exsd"/>
+   <extension-point id="org.caleydo.core.CacheInitializer" name="CacheInitializer" schema="schema/org.caleydo.core.CacheInitializer.exsd"/>
+   <extension-point id="org.caleydo.ui.GLElementFactory" name="GLElementFactory" schema="schema/org.caleydo.ui.GLElementFactory.exsd"/>
 
    <extension
          id="application"
@@ -59,11 +61,11 @@
             name="Caleydo">
          <property
                name="appName"
-               value="Caleydo">
+               value="%appName">
          </property>
          <property
                name="aboutImage"
-               value="resources/wizard/wizard.png">
+               value="resources/icons/about.png">
          </property>
          <property
                name="windowImages"
@@ -75,7 +77,7 @@
          </property>
          <property
                name="aboutText"
-               value="Caleydo - Visualization for Molecular Biology&#x0A;http:// caleydo.org&#x0A;&#x0A;Copyright 2008 - 2013  by the Caleydo Team.&#x0A;Caleydo is open-source software licenced under the New BSD license.">
+               value="%aboutText">
          </property>
       </product>
    </extension>
@@ -99,7 +101,7 @@
             name="Exit">
       </command>
       <command
-            defaultHandler="org.caleydo.core.gui.FullScreenHandler"
+            defaultHandler="org.caleydo.core.gui.command.FullScreenHandler"
             id="org.caleydo.core.gui.fullscreen"
             name="Full Screen">
       </command>
@@ -114,7 +116,12 @@
             name="Import Data">
       </command>
       <command
-            defaultHandler="org.caleydo.core.io.gui.SaveProjectHandler"
+            defaultHandler="org.caleydo.core.gui.command.TakeSnapshotHandler"
+            id="org.caleydo.core.io.gui.snapshot"
+            name="Take Snapshot">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.gui.command.SaveProjectHandler"
             id="org.caleydo.core.io.gui.save_project"
             name="Save Project">
       </command>
@@ -152,6 +159,22 @@
             defaultHandler="org.caleydo.core.internal.startup.OpenProjectCommand"
             id="org.caleydo.core.startup.open"
             name="Open Project">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.gui.command.ClearSelectionsHandler"
+            id="org.caleydo.core.startup.clearselections"
+            name="Clear Selections">
+      </command>
+      <command
+            defaultHandler="org.caleydo.core.gui.command.ZoomHandler"
+            id="org.caleydo.core.startup.zoom"
+            name="Change Zoom Factor">
+         <commandParameter
+               id="action"
+               name="Zooming action"
+               optional="true"
+               values="org.caleydo.core.gui.command.ZoomHandlerParameters">
+         </commandParameter>
       </command>
 
    </extension>
@@ -303,6 +326,89 @@
             </command>
          </menu>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.caleydo.core.gui.toolbar">
+         <command
+               commandId="org.caleydo.core.startup.open"
+               icon="resources/icons/general/open.png"
+               label="&amp;Open Project"
+               style="push">
+         </command>
+         <command
+               commandId="org.caleydo.core.io.gui.import_data"
+               icon="resources/icons/general/import_data.png"
+               id="import"
+               label="&amp;Import Data"
+               style="push">
+         </command>
+         <command
+               commandId="org.caleydo.core.io.gui.export_data"
+               icon="resources/icons/general/export_data.png"
+               label="&amp;Export Data"
+               style="push">
+         </command>
+         <command
+               commandId="org.caleydo.core.io.gui.save_project"
+               icon="resources/icons/general/save.png"
+               id="save"
+               label="&amp;Save Project"
+               style="push">
+         </command>
+         <command
+               commandId="org.caleydo.core.startup.zoom"
+               icon="resources/icons/general/magnifier_zoom_in.png"
+               id="zoomin"
+               label="Zoom &amp;In"
+               style="push"
+               tooltip="Increase scaling factor">
+            <parameter
+                  name="action"
+                  value="zoomIn">
+            </parameter>
+         </command>
+         <command
+               commandId="org.caleydo.core.startup.zoom"
+               icon="resources/icons/general/magnifier_zoom_out.png"
+               label="Zoom &amp;Out"
+               style="push"
+               tooltip="Decrease scaling factor">
+            <parameter
+                  name="action"
+                  value="zoomOut">
+            </parameter>
+         </command>
+         <command
+               commandId="org.caleydo.core.io.gui.snapshot"
+               icon="resources/icons/general/snapshot.png"
+               label="&amp;Take Snapshot"
+               style="push"
+               tooltip="Take a Snapshot">
+            <visibleWhen
+                  checkEnabled="false">
+               <not>
+                  <systemTest
+                        property="osgi.os"
+                        value="win32">
+                  </systemTest>
+               </not>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.caleydo.core.startup.clearselections"
+               icon="resources/icons/general/clear_selections.png"
+               label="Clea&amp;r Selections"
+               style="push"
+               tooltip="Clears all selected elements">
+         </command>
+         <command
+               commandId="org.caleydo.core.util.clusterer.gui.cluster"
+               icon="resources/icons/general/clustering.png"
+               label="Start &amp;Clustering"
+               style="push"
+               tooltip="Trigger the clustering creation">
+         </command>
+      </menuContribution>
    </extension>
       <extension
          point="org.eclipse.ui.preferencePages">
@@ -322,16 +428,6 @@
                   name="Views">
             </page>
    </extension>
-      <extension
-            point="org.eclipse.ui.services">
-         <sourceProvider
-               provider="org.caleydo.core.internal.AbstractSourceProvider">
-            <variable
-                  name="org.caleydo.core.isReleaseState"
-                  priorityLevel="workbench">
-            </variable>
-         </sourceProvider>
-      </extension>
       <extension
             point="org.caleydo.datadomain.DataDomainActions">
          <factory
@@ -369,14 +465,82 @@
       <extension
             point="org.caleydo.core.SampleProject">
          <sample
-               description="The ideal choice if you want to try out multi-dataset analysis with StratomeX in Calyedo. &#x0A;&#x0A;This project loads eight linked datasets for Glioblastoma Multiforme (GBM), collected by &lt;a href=&quot;http://cancergenome.nih.gov&quot;&gt;TCGA&lt;/a&gt; and made available by the Broad Institute&apos;s &lt;a href=&quot;http://gdac.broadinstitute.org&quot;&gt;Genome Data Analysis Center (GDAC)&lt;/a&gt;.&#x0A;The datasets are mRNA expression data (chip-based and sequencing based separately), microRNA expression, methylation, mutation, copy-number, RPPA as well as clinical data. The project contains 300-550 samples for each dataset. The expression datasets contain about 1,500 pre-selected values, copy number status is availiabe for about 5,000 genes.&#x0A;&#x0A;Download Size: 17 MB "
-               name="Try Caleydo with TCGA Glioblastoma Multiforme Dataset"
-               url="http://data.icg.tugraz.at/caleydo/download/3.0/samples/tcga_gbm.cal">
+               description="%sample1.desc"
+               name="%sample1.name"
+               url="%sample1.url">
          </sample>
          <sample
-            description="The ideal choice if you want to try out pathway-centric analysis with enRoute in Calyedo.&#x0A;&#x0A;This project loads four linked datasets from the &lt;a href=&quot;http://www.broadinstitute.org/ccle&quot;&gt;Cancer Cell Line Encyclopedia (CCLE)&lt;/a&gt; collected by the Broad Institute and the Novartis Institutes for Biomedical Research. &#x0A;The datasets are mRNA expression, mutation and copy-number data as well as IC 50 values for the cell lines and 24 known anti cancer drugs. The project contains between 500 and 1000 samples for each dataset. The genetic datasets contain between 1,600 (mutation data) and roughly 20,000 values (other datatasets).&#x0A; &#x0A;Download Size: 77 MB"
-               name="Try Caleydo with CCLE Dataset"
-               url="http://data.icg.tugraz.at/caleydo/download/3.0/samples/ccle.cal">
+               description="%sample2.desc"
+               name="%sample2.name"
+               url="%sample2.url">
          </sample>
+         <sample
+               description="%sample3.desc"
+               name="%sample3.name"
+               url="%sample3.url">
+         </sample>
+      </extension>
+      <extension
+            point="org.eclipse.core.runtime.preferences">
+         <initializer
+               class="org.caleydo.core.internal.MyPreferences">
+         </initializer>
+      </extension>
+      <extension
+            point="org.eclipse.ui.bindings">
+         <key
+               commandId="org.caleydo.core.io.gui.save_project"
+               schemeId="org.caleydo.scheme"
+               sequence="M1+S">
+         </key>
+         <key
+               commandId="org.caleydo.core.startup.open"
+               schemeId="org.caleydo.scheme"
+               sequence="M1+O">
+         </key>
+         <key
+               commandId="org.caleydo.core.startup.clearselections"
+               schemeId="org.caleydo.scheme"
+               sequence="M1+R">
+         </key>
+         <scheme
+               id="org.caleydo.scheme"
+               name="Caleydo Key Bindings">
+         </scheme>
+         <key
+               commandId="org.caleydo.core.startup.zoom"
+               schemeId="org.caleydo.scheme"
+               sequence="M1+M3++">
+            <parameter
+                  id="action"
+                  value="zoomIn">
+            </parameter>
+         </key>
+         <key
+               commandId="org.caleydo.core.startup.zoom"
+               schemeId="org.caleydo.scheme"
+               sequence="M1+M3+-">
+            <parameter
+                  id="action"
+                  value="zoomOut">
+            </parameter>
+         </key>
+         <key
+               commandId="org.caleydo.core.startup.zoom"
+               schemeId="org.caleydo.scheme"
+               sequence="M1+M3+0">
+            <parameter
+                  id="action"
+                  value="reset">
+            </parameter>
+         </key>
+      </extension>
+      <extension
+            point="org.eclipse.ui.installationPages">
+         <page
+               class="org.caleydo.core.internal.gui.LicenseInstallationPage"
+               id="org.caleydo.core.installationpage.license"
+               name="Licensed Materials">
+         </page>
       </extension>
 </plugin>

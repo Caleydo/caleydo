@@ -5,17 +5,22 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.basic;
 
-import org.caleydo.core.util.color.Color;
 import java.util.Locale;
 
+import org.caleydo.core.data.collection.EDimension;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
+import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * a simple basic widget for a slider
@@ -52,13 +57,18 @@ public class GLSlider extends PickableGLElement {
 	 */
 	private float value = 0.5f;
 
+	/**
+	 * if the user uses the mouse wheel to manipulate the value, how many DIPs are one mouse wheel rotation
+	 */
+	private float wheelInc = 1f;
+
 	private boolean hovered = false;
 	private boolean dragged = false;
 
 	/**
 	 * horizontal or vertical rendering
 	 */
-	private boolean isHorizontal = true;
+	private EDimension dim = EDimension.DIMENSION;
 
 	/**
 	 * show the value or not
@@ -79,22 +89,31 @@ public class GLSlider extends PickableGLElement {
 	public GLSlider(float min, float max, float value) {
 		this.min = min;
 		this.max = max;
-		this.value = value;
+		this.value = clamp(value);
 	}
 
 	/**
-	 * @return the isHorizontal, see {@link #isHorizontal}
+	 * @param wheelInc
+	 *            setter, see {@link wheelInc}
 	 */
-	public boolean isHorizontal() {
-		return isHorizontal;
+	public GLSlider setWheelInc(float wheelInc) {
+		this.wheelInc = wheelInc;
+		return this;
 	}
 
 	/**
-	 * @param isHorizontal
-	 *            setter, see {@link isHorizontal}
+	 * @return the dim, see {@link #dim}
 	 */
-	public GLSlider setHorizontal(boolean isHorizontal) {
-		this.isHorizontal = isHorizontal;
+	public EDimension getDim() {
+		return dim;
+	}
+
+	/**
+	 * @param dim
+	 *            setter, see {@link dim}
+	 */
+	public GLSlider setDim(EDimension dim) {
+		this.dim = dim;
 		return this;
 	}
 
@@ -157,7 +176,7 @@ public class GLSlider extends PickableGLElement {
 	 *            setter, see {@link value}
 	 */
 	public GLSlider setValue(float value) {
-		value = Math.max(min, Math.min(max, value));
+		value = clamp(value);
 		if (this.value == value)
 			return this;
 		this.value = value;
@@ -171,7 +190,7 @@ public class GLSlider extends PickableGLElement {
 			return this;
 		this.min = min;
 		this.max = max;
-		this.value = Math.max(min, Math.min(max, value));
+		this.value = clamp(value);
 		repaintAll();
 		return this;
 	}
@@ -219,8 +238,8 @@ public class GLSlider extends PickableGLElement {
 		boolean showText = valueVisibility.show(dragged, hovered);
 		boolean showMinMaxText = minMaxVisibility.show(dragged, hovered);
 
-		if (isHorizontal) {
-			float x = mapValue(w);
+		if (dim.isHorizontal()) {
+			float x = mapValue(w) + 1;
 			g.fillRect(x, 0, Math.min(BAR_WIDTH, w - x), h);
 			if (showMinMaxText) {
 				g.textColor(Color.DARK_GRAY);
@@ -231,7 +250,7 @@ public class GLSlider extends PickableGLElement {
 			if (showText)
 				g.drawText(format(value), 2, 2, w - 4, h - 8, VAlign.CENTER);
 		} else {
-			float y = mapValue(h);
+			float y = mapValue(h) + 1;
 			g.fillRect(0, y, w, Math.min(BAR_WIDTH, h - y));
 			if (showText || showMinMaxText)
 				g.save().gl.glRotatef(90, 0, 0, 1);
@@ -254,23 +273,27 @@ public class GLSlider extends PickableGLElement {
 	}
 
 	private float mapValue(float total) {
-		total -= BAR_WIDTH;
+		total -= BAR_WIDTH + 2;
 		float range = max - min;
 		float factor = total / range;
-		return value * factor;
+		return (value - min) * factor;
 	}
 
 	private float unmapValue(float v) {
-		float total = isHorizontal ? getSize().x() : getSize().y();
-		total -= BAR_WIDTH;
+		float total = dim.isHorizontal() ? getSize().x() : getSize().y();
+		total -= BAR_WIDTH + 2;
 		float range = max - min;
 		float factor = total / range;
-		return Math.max(min, Math.min(max, v / factor));
+		return clamp(v / factor + min);
+	}
+
+	private float clamp(float v) {
+		return Math.max(min, Math.min(max, v));
 	}
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (isHorizontal) {
+		if (dim.isHorizontal()) {
 			float x = mapValue(w);
 			g.fillRect(x, 0, Math.min(BAR_WIDTH, w - x), h);
 		} else {
@@ -297,6 +320,12 @@ public class GLSlider extends PickableGLElement {
 	}
 
 	@Override
+	protected void onMouseWheel(Pick pick) {
+		setValue(unmapValue(mapValue(getSize().x()) + ((IMouseEvent) (pick)).getWheelRotation() * wheelInc));
+		repaintAll();
+	}
+
+	@Override
 	protected void onClicked(Pick pick) {
 		if (pick.isAnyDragging())
 			return;
@@ -310,7 +339,7 @@ public class GLSlider extends PickableGLElement {
 		if (!pick.isDoDragging())
 			return;
 		float v;
-		if (isHorizontal) {
+		if (dim.isHorizontal()) {
 			v = mapValue(getSize().x()) + pick.getDx();
 		} else {
 			v = mapValue(getSize().y()) + pick.getDy();
@@ -323,6 +352,16 @@ public class GLSlider extends PickableGLElement {
 	protected void onMouseReleased(Pick pick) {
 		this.dragged = false;
 		repaint();
+	}
+
+	@Override
+	protected void onDoubleClicked(Pick pick) {
+		context.getSWTLayer().run(new ISWTLayerRunnable() {
+			@Override
+			public void run(Display display, Composite canvas) {
+				new InputBox(canvas).open();
+			}
+		});
 	}
 
 	/**
@@ -342,10 +381,42 @@ public class GLSlider extends PickableGLElement {
 		}
 	};
 
+	private class InputBox extends AInputBoxDialog {
+		public InputBox(Composite canvas) {
+			super(null, "Set Value", GLSlider.this, canvas);
+		}
+
+		@Override
+		protected void set(String value) {
+			setValue(Float.parseFloat(value));
+		}
+
+		@Override
+		protected String verify(String value) {
+			try {
+				float v = Float.parseFloat(value);
+				if (v < min)
+					return "Too small, needs to be in the range: [" + min + "," + max + "]";
+				if (v > max)
+					return "Too large, needs to be in the range: [" + min + "," + max + "]";
+			} catch (NumberFormatException e) {
+				return "The value: '" + value + "' can't be parsed to Float: " + e.getMessage();
+			}
+			return null;
+		}
+
+		@Override
+		protected String getInitialValue() {
+			return String.valueOf(getValue());
+		}
+
+	}
+
 	public static void main(String[] args) {
 		GLElementContainer c = new GLElementContainer(GLLayouts.flowHorizontal(2));
 		c.add(new GLElement());
-		c.add(new GLSlider(0, 1, 0.2f).setHorizontal(true).setMinMaxVisibility(EValueVisibility.VISIBLE_DRAGGED)
+		c.add(new GLSlider(1, 20, 0.2f).setDim(EDimension.DIMENSION)
+				.setMinMaxVisibility(EValueVisibility.VISIBLE_DRAGGED)
 				.setSize(-1, 32));
 		c.add(new GLElement());
 		GLSandBox.main(args, c);

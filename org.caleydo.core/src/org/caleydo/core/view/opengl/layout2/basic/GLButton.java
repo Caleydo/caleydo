@@ -195,7 +195,7 @@ public class GLButton extends AGLButton {
 		void onSelectionChanged(GLButton button, boolean selected);
 	}
 
-	private static final ISelectionCallback DUMMY_CALLBACK = new ISelectionCallback() {
+	static final ISelectionCallback DUMMY_CALLBACK = new ISelectionCallback() {
 		@Override
 		public void onSelectionChanged(GLButton button, boolean selected) {
 
@@ -209,7 +209,7 @@ public class GLButton extends AGLButton {
 	 * @return
 	 */
 	public static IconLabelRenderer createCheckRenderer(String label) {
-		return new IconLabelRenderer(label, "checkbox");
+		return new IconLabelRenderer(label, EButtonIcon.CHECKBOX);
 	}
 
 	/**
@@ -219,20 +219,16 @@ public class GLButton extends AGLButton {
 	 * @return
 	 */
 	public static IconLabelRenderer createRadioRenderer(String label) {
-		return new IconLabelRenderer(label, "radio");
-	}
-
-	protected static String getStandardIcon(String mode, boolean selected) {
-		return String.format("resources/icons/general/%s_%sselected.png", mode, (selected ? "" : "not_"));
+		return new IconLabelRenderer(label, EButtonIcon.RADIO);
 	}
 
 	public static class IconLabelRenderer implements IGLRenderer {
 		private final String label;
-		private final String prefix;
+		private final EButtonIcon icon;
 
-		private IconLabelRenderer(String label, String prefix) {
+		private IconLabelRenderer(String label, EButtonIcon prefix) {
 			this.label = label;
-			this.prefix = prefix;
+			this.icon = prefix;
 		}
 
 		/**
@@ -246,7 +242,7 @@ public class GLButton extends AGLButton {
 		public void render(GLGraphics g, float w, float h, GLElement parent) {
 			boolean s = ((GLButton) parent).isSelected();
 
-			String icon = getStandardIcon(prefix, s);
+			String icon = this.icon.get(s);
 			g.fillImage(icon, 1, 1, h - 2, h - 2);
 			if (label != null && label.length() > 0)
 				g.drawText(label, h, 0, w - h, 13);

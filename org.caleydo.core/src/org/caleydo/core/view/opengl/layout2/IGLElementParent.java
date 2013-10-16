@@ -7,13 +7,15 @@ package org.caleydo.core.view.opengl.layout2;
 
 import gleem.linalg.Vec2f;
 
+import org.caleydo.core.view.opengl.layout2.layout.IHasGLLayoutData;
+
 /**
  * an element that can be the parent of another element
  *
  * @author Samuel Gratzl
  *
  */
-public interface IGLElementParent {
+public interface IGLElementParent extends IHasGLLayoutData {
 	/**
 	 * triggers that the parent should be re layouted
 	 */
@@ -44,7 +46,7 @@ public interface IGLElementParent {
 
 	/**
 	 * converts the relative location in the parent coordinate system to an absolute one
-	 * 
+	 *
 	 * @param relative
 	 * @return
 	 */
@@ -52,10 +54,11 @@ public interface IGLElementParent {
 
 	/**
 	 * converts the absolute location in relative to the parent coordinate system
-	 * 
+	 *
 	 * @param absolute
 	 * @return
 	 */
 	Vec2f toRelative(Vec2f absolute);
 
+	Vec2f getSize();
 }

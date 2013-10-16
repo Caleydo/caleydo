@@ -11,6 +11,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 /**
@@ -22,7 +23,12 @@ public class OpenProjectCommand extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		FileDialog fileDialog = new FileDialog(HandlerUtil.getActiveShell(event), SWT.OPEN);
+		openProject(HandlerUtil.getActiveShell(event));
+		return null;
+	}
+
+	public static void openProject(Shell shell) {
+		FileDialog fileDialog = new FileDialog(shell, SWT.OPEN);
 		fileDialog.setText("Load Project");
 		String[] filterExt = { "*.cal" };
 		fileDialog.setFilterExtensions(filterExt);
@@ -34,6 +40,5 @@ public class OpenProjectCommand extends AbstractHandler {
 			// restart
 			PlatformUI.getWorkbench().restart();
 		}
-		return null;
 	}
 }

@@ -81,18 +81,18 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 	private SelectionCommandListener selectionCommandListener;
 
 	private RedrawViewListener redrawViewListener;
+	private Composite parentComposite;
 
 	/**
 	 * Constructor.
 	 */
 	public SelectionBrowserView(Composite parentComposite) {
 
-		super(-1, parentComposite, "SelectionBrowser???", "Selection Browser");
-		generalManager = GeneralManager.get();
-		eventPublisher = generalManager.getEventPublisher();
+		super("SelectionBrowser???", "Selection Browser");
 		registerEventListeners();
 		recordSelectionManager = new SelectionManager(IDType.getIDType("SAMPLE"));
 		initSelectedByGroupSelectionTypes();
+		this.parentComposite = parentComposite;
 	}
 
 	private void initContent() {
@@ -429,10 +429,5 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		return new SerializedSelectionBrowserView();
-	}
-
-	@Override
-	public void initFromSerializableRepresentation(ASerializedView serializedView) {
-
 	}
 }

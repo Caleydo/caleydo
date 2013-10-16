@@ -6,7 +6,9 @@
 package org.caleydo.data.importer.tcga;
 
 import java.io.File;
+import java.net.Authenticator;
 import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.text.ParseException;
@@ -16,6 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.importer.tcga.model.TumorType;
@@ -34,6 +37,11 @@ import com.google.gson.GsonBuilder;
  *
  */
 public class Settings {
+
+	public static enum ClusterOptions {
+		NONE, AFFINITY, KMEANS, TREE;
+	}
+
 	private static String CALEYDO_JNLP_GENERATOR_URL = "http://data.icg.tugraz.at/caleydo/download/webstart_"
 			+ GeneralManager.VERSION + "/{0}_{1}.jnlp"; // jnlpgenerator.php?date={0}&tumor={1}";
 
@@ -55,13 +63,14 @@ public class Settings {
 	 */
 	private static final String ANALYSIS_PATTERN = BASE_URL
 			+ "analyses__{0,date,yyyy_MM_dd}/data/{1}/{0,date,yyyyMMdd}/{3}";
+
 	/**
 	 * 0..run (date), 1..tumor
 	 */
 	private static final String REPORT_PATTERN = BASE_URL + "analyses__{0,date,yyyy_MM_dd}/reports/cancer/{1}/";
 
-	@Option(name = "-awg", required = false, usage = "indicate an AWG run, i.e. use exact tumor type labels")
-	private boolean awgRun = false;
+	@Option(name = "-awg", required = false, usage = "indicate an AWG run, i.e. use exact tumor type labels and automatically set specific urls")
+	private String awgGroup = null;
 
 	@Option(name = "-t", required = false, aliases = { "--tumortypes" }, usage = "the tumor types to export default: \"all known\"")
 	private List<String> tumorTypes = null;
@@ -71,6 +80,7 @@ public class Settings {
 
 	@Argument(required = true, usage = "the dates on the analysis runs as argument list separated by spaces")
 	private List<String> analysisRuns = null;
+
 	@Option(name = "-d", required = false, usage = "the dates of the data runs to use default the same as the analysis runs")
 	private List<String> dataRuns = null;
 
@@ -87,6 +97,9 @@ public class Settings {
 
 	@Option(name = "-b", aliases = { "--batch" }, usage = "batch size of parallel top tasks default \"4\"")
 	private int batchSize = 4;
+
+	@Option(name = "-cg", required = false, aliases = { "--cluster" }, usage = "cluster genes with options {tree|kmeans|none|affinity}, default \"tree\"")
+	private ClusterOptions cluster = ClusterOptions.TREE;
 
 	// create path of archive search directory
 	// 0 .. analysisRun
@@ -114,11 +127,14 @@ public class Settings {
 	@Option(name = "--downloadOnly", usage = "if enabled only the files will be downloaded")
 	private boolean downloadOnly = false;
 
+	@Option(name = "--username", usage = "the username to use for authentication")
+	private String username = null;
+
+	@Option(name = "--password", usage = "the password to use for authentication")
+	private String password = null;
+
 	private Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().setDateFormat("yyyy_MM_dd")
 			.create();
-
-
-
 
 	public boolean validate() {
 		if (dataRuns == null)
@@ -131,6 +147,34 @@ public class Settings {
 
 		if (numThreads <= 0)
 			numThreads = Runtime.getRuntime().availableProcessors();
+
+		if (username != null && password != null) {
+			// set Authenticator for following urls
+			Authenticator.setDefault(new Authenticator() {
+				@Override
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(username, password.toCharArray());
+				}
+			});
+		}
+
+		if (awgGroup != null) {
+			String tumor = awgGroup.toUpperCase();
+			// check if not manually overridden
+			if (analysisPattern.equals(ANALYSIS_PATTERN))
+				analysisPattern = BASE_URL + "awg_" + awgGroup + "__{0,date,yyyy_MM_dd}/data/{2}/{0,date,yyyyMMdd}/{3}";
+			if (filePattern.equals(FILE_PATTERN))
+				filePattern = "gdac.broadinstitute.org_{1}.{3}.Level_{4}.{0,date,yyyyMMdd}00.0.0.tar.gz";
+			if (dataPattern.equals(DATA_PATTERN))
+				dataPattern = BASE_URL + "/stddata__{0,date,yyyy_MM_dd}/data/" + tumor
+					+ "/{0,date,yyyyMMdd}/{3}";
+			if (dataFilePattern.equals(DATAFILE_PATTERN))
+				dataFilePattern = "gdac.broadinstitute.org_" + tumor + ".{3}.Level_{4}.{0,date,yyyyMMdd}00.0.0.tar.gz";
+			if (reportPattern.equals(REPORT_PATTERN))
+				reportPattern = BASE_URL + "awg_" + awgGroup
+					+ "__{0,date,yyyy_MM_dd}/reports/cancer/{1}/";
+		}
+
 		return true;
 	}
 
@@ -214,14 +258,18 @@ public class Settings {
 	 */
 	public Collection<TumorType> getTumorTypes() {
 		if (this.tumorTypes == null || this.tumorTypes.isEmpty())
-			return TumorType.values();
+			return TumorType.getNormalTumorTypes();
 		List<TumorType> types = new ArrayList<>();
-		for(String t : tumorTypes) {
+		for (String t : tumorTypes) {
+			if (t.contains("*"))
+				types.addAll(TumorType.byNameMatches(Pattern.compile("\\Q" + t.replace("*", "\\E.*\\Q") + "\\E",
+						Pattern.CASE_INSENSITIVE)));
 			TumorType type = TumorType.byName(t);
 			if (type == null) {
-				System.err.println("unknown tumor type: "+t);
-			} else
-				types.add(type);
+				System.err.println("unknown tumor type: " + t + " creating dummy");
+				type = TumorType.createDummy(t);
+			}
+			types.add(type);
 		}
 		return types;
 	}
@@ -238,8 +286,7 @@ public class Settings {
 		return r;
 	}
 
-	public FirehoseProvider createFirehoseProvider(TumorType tumor, Date analysisRunIdentifier,
-			Date dataRunIdentifier) {
+	public FirehoseProvider createFirehoseProvider(TumorType tumor, Date analysisRunIdentifier, Date dataRunIdentifier) {
 		return new FirehoseProvider(tumor, analysisRunIdentifier, dataRunIdentifier, this);
 	}
 
@@ -256,11 +303,18 @@ public class Settings {
 	}
 
 	public boolean isAwgRun() {
-		return awgRun;
+		return awgGroup != null;
 	}
 
 	public int getBatchSize() {
 		return batchSize;
+	}
+
+	/**
+	 * @return the cluster, see {@link #cluster}
+	 */
+	public ClusterOptions getCluster() {
+		return cluster;
 	}
 
 	public URL getDataURL(Date run, TumorType tumor, String tumorSample, String pipelineName, int level)
@@ -280,7 +334,6 @@ public class Settings {
 	public String getReportUrl(Date run, TumorType tumor) {
 		return MessageFormat.format(reportPattern, run, tumor);
 	}
-
 
 	/**
 	 * @return the gson, see {@link #gson}

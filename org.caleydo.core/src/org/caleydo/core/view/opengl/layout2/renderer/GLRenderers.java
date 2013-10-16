@@ -6,11 +6,14 @@
 package org.caleydo.core.view.opengl.layout2.renderer;
 
 
+import java.net.URL;
+
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
+import org.caleydo.core.view.opengl.util.text.ETextStyle;
 
 /**
  * factory class for {@link IGLRenderer}
@@ -71,8 +74,12 @@ public final class GLRenderers {
 	public static IGLRenderer drawText(final String text, final VAlign valign) {
 		return drawText(text, valign, GLPadding.ZERO);
 	}
-
 	public static IGLRenderer drawText(final String text, final VAlign valign, final GLPadding padding) {
+		return drawText(text, valign, padding, ETextStyle.PLAIN);
+	}
+
+	public static IGLRenderer drawText(final String text, final VAlign valign, final GLPadding padding,
+			final ETextStyle style) {
 		return new IGLRenderer() {
 
 			@Override
@@ -81,7 +88,7 @@ public final class GLRenderers {
 				if (text.indexOf('\n') >= 0) {
 					t = text.substring(0, text.indexOf('\n'));
 				}
-				g.drawText(t, padding.left, padding.top, w - padding.hor(), h - padding.vert(), valign);
+				g.drawText(t, padding.left, padding.top, w - padding.hor(), h - padding.vert(), valign, style);
 			}
 
 			@Override
@@ -93,7 +100,15 @@ public final class GLRenderers {
 
 	public static IGLRenderer fillImage(final String image) {
 		return new IGLRenderer() {
+			@Override
+			public void render(GLGraphics g, float w, float h, GLElement parent) {
+				g.fillImage(image, 0, 0, w, h);
+			}
+		};
+	}
 
+	public static IGLRenderer fillImage(final URL image) {
+		return new IGLRenderer() {
 			@Override
 			public void render(GLGraphics g, float w, float h, GLElement parent) {
 				g.fillImage(image, 0, 0, w, h);
@@ -135,6 +150,41 @@ public final class GLRenderers {
 				g.fillRect(0, 0, w, h);
 				break;
 			}
+		}
+	}
+
+	public static IGLRenderer drawHorLine(Color color, float lineWidth, float offset) {
+		return new LineRenderer(color, lineWidth, offset, true);
+	}
+
+	public static IGLRenderer drawVertLine(Color color, float lineWidth, float offset) {
+		return new LineRenderer(color, lineWidth, offset, true);
+	}
+
+	private static class LineRenderer implements IGLRenderer {
+		private final Color color;
+		private final float lineWidth;
+		private final float offset;
+		private final boolean hor;
+
+		public LineRenderer(Color color, float lineWidth, float offset, boolean hor) {
+			this.color = color;
+			this.lineWidth = lineWidth;
+			this.offset = offset;
+			this.hor = hor;
+		}
+
+		@Override
+		public void render(GLGraphics g, float w, float h, GLElement parent) {
+			g.color(color);
+			if (lineWidth != 1)
+				g.lineWidth(lineWidth);
+			if (hor)
+				g.drawLine(offset, h * 0.5f, w - offset, h * 0.5f);
+			else
+				g.drawLine(w * 0.5f, offset, w * 0.5f, h - offset);
+			if (lineWidth != 1)
+				g.lineWidth(1);
 		}
 	}
 

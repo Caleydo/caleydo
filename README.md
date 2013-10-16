@@ -1,9 +1,11 @@
-Caleydo - Visualization for Molecular Biology
+Caleydo - Visualization for Molecular Biology 
 =============================================
+
+[![Build Status](http://dev.caleydo.org/jenkins/buildStatus/icon?job=caleydo)](http://dev.caleydo.org/jenkins/job/caleydo/)
 
 Caleydo is a visualization framework for molecular biology data. It is targeted at analyzing multiple heterogeneous but related tabular datasets (e.g.,  mRNA expression, copy number status and clinical variables), stratifications or clusters in these datasets and their relationships to biological pathways.  
 
-For user documentation and installation based on binaries please refer to the [Caleydo Website](http://caleydo.org). This guide assumes that you want to install Caleydo from source. 
+For user documentation please refer to the [Caleydo Help](http://help.caleydo.org). For general information and downloads based on binaries please use the [Caleydo Website](http://caleydo.org). This guide assumes that you want to install Caleydo from source. 
 
 Installation
 ============

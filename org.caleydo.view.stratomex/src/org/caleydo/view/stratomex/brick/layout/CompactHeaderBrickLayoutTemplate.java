@@ -194,4 +194,10 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 		configurer.configure(this);
 	}
 
+	@Override
+	public ToolBar getToolBar() {
+		// No toolbar
+		return null;
+	}
+
 }

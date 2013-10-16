@@ -26,8 +26,11 @@ import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.data.importer.tcga.model.TCGADataSet;
 import org.caleydo.data.importer.tcga.model.TCGADataSets;
 import org.caleydo.data.importer.tcga.utils.IOUtils;
+import org.caleydo.view.tourguide.api.score.ISerializeableScore;
+import org.caleydo.view.tourguide.api.score.Scores;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.gson.JsonElement;
 
@@ -42,7 +45,7 @@ public abstract class ATCGATask extends RecursiveTask<JsonElement> {
 			String template = IOUtils.readAll(ATCGATask.class.getResourceAsStream("/resources/caleydo.jnlp"));
 			template = template.replaceAll("CALEYDO_PROJECT_URL", projectRemoteOutputURL);
 			template = template.replaceAll("JNLP_NAME", jnlpFile.getName());
-			Files.write(template, jnlpFile, Charset.defaultCharset());
+			Files.write(template, jnlpFile, Charset.forName("UTF-8"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -84,7 +87,8 @@ public abstract class ATCGATask extends RecursiveTask<JsonElement> {
 				Perspective p = record ? table.getRecordPerspective(id) : table.getDimensionPerspective(id);
 				if (p.isPrivate())
 					continue;
-				if (p.equals(record ? table.getDefaultRecordPerspective() : table.getDefaultRecordPerspective()))
+				if (p.equals(record ? table.getDefaultRecordPerspective(false) : table
+						.getDefaultRecordPerspective(false)))
 					continue;
 				if (p.getLabel().equalsIgnoreCase("ungrouped"))
 					continue;
@@ -121,11 +125,15 @@ public abstract class ATCGATask extends RecursiveTask<JsonElement> {
 	protected static Collection<ATableBasedDataDomain> loadProject(TCGADataSets project) {
 		Collection<ATableBasedDataDomain> dataDomains = new ArrayList<>();
 		for (TCGADataSet desc : project) {
+			try {
 			ATableBasedDataDomain dataDomain = DataLoader.loadData(desc.getDescription(), new NullProgressMonitor());
 			if (dataDomain == null)
 				continue;
 			dataDomains.add(dataDomain);
 			desc.setDataDomain(dataDomain);
+			} catch (Exception e) {
+				continue;
+			}
 		}
 		return dataDomains;
 	}
@@ -134,5 +142,9 @@ public abstract class ATCGATask extends RecursiveTask<JsonElement> {
 		log.info("cleanup " + dataDomains.size() + " data domains");
 		for (IDataDomain dataDomain : dataDomains)
 			DataDomainManager.get().unregister(dataDomain);
+		// remove external scores
+		final Scores scores = Scores.get();
+		for (ISerializeableScore s : Lists.newArrayList(scores.getPersistentScores()))
+			scores.removePersistentScore(s);
 	}
 }

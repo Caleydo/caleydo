@@ -4,7 +4,7 @@
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
 /**
- * 
+ *
  */
 package org.caleydo.core.gui.util;
 
@@ -31,9 +31,9 @@ import org.eclipse.swt.widgets.ToolItem;
  * Creates a nice looking help button in push style. Do not set setHelpAvailable
  * to true in {@link IWizard}, otherwise an additional help button will be
  * displayed.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class HelpButtonWizardDialog extends WizardDialog {
 
@@ -55,6 +55,7 @@ public class HelpButtonWizardDialog extends WizardDialog {
 		return true;
 	}
 
+	@Override
 	protected Control createHelpControl(Composite parent) {
 		Image helpImage = JFaceResources.getImage(DLG_IMG_HELP);
 		if (helpImage != null) {
@@ -70,6 +71,7 @@ public class HelpButtonWizardDialog extends WizardDialog {
 		final Cursor cursor = new Cursor(parent.getDisplay(), SWT.CURSOR_HAND);
 		toolBar.setCursor(cursor);
 		toolBar.addDisposeListener(new DisposeListener() {
+			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				cursor.dispose();
 			}
@@ -79,6 +81,7 @@ public class HelpButtonWizardDialog extends WizardDialog {
 		helpButton.setToolTipText(JFaceResources.getString("helpToolTip"));
 		helpButton.setData(new Integer(IDialogConstants.HELP_ID));
 		helpButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				buttonPressed(((Integer) event.widget.getData()).intValue());
 			}

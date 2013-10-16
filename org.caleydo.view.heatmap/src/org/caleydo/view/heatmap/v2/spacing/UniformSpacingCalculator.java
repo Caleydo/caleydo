@@ -10,6 +10,11 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy;
 
+/**
+ * uniform spacing strategy implementation
+ *
+ * @author Samuel Gratzl
+ */
 public class UniformSpacingCalculator implements ISpacingStrategy {
 
 	/**
@@ -32,6 +37,19 @@ public class UniformSpacingCalculator implements ISpacingStrategy {
 		public float getSize(int index) {
 			return fieldHeight;
 		}
+
+		@Override
+		public int getIndex(float position) {
+			float pos = position / fieldHeight;
+			if (pos < 0)
+				return -1;
+			return (int) Math.round(Math.floor(pos));
+		}
+
+		@Override
+		public boolean isUniform() {
+			return true;
+		}
 	}
 
 	@Override
@@ -45,5 +63,10 @@ public class UniformSpacingCalculator implements ISpacingStrategy {
 		final float fieldHeight = size / nrRecordElements;
 
 		return new UniformSpacingImpl(fieldHeight);
+	}
+
+	@Override
+	public float minSize(int count, boolean isShowingLabels) {
+		return count * (isShowingLabels ? 16 : 1);
 	}
 }

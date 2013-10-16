@@ -99,10 +99,16 @@ public final class DataDescriptionUtil {
 	public static DataDescription createCategoricalDataDescription(List<List<String>> dataMatrix) {
 
 		Set<String> categories = new HashSet<>();
+		boolean isIntCategory = true;
 
 		for (List<String> row : dataMatrix) {
 			for (String value : row) {
 				categories.add(value);
+				try {
+					Integer.parseInt(value);
+				} catch (NumberFormatException e) {
+					isIntCategory = false;
+				}
 			}
 		}
 
@@ -110,7 +116,7 @@ public final class DataDescriptionUtil {
 		Collections.sort(categoryValues);
 
 		CategoricalClassDescription<String> categoricalClassDescription = new CategoricalClassDescription<>();
-		categoricalClassDescription.setCategoryType(ECategoryType.ORDINAL);
+		categoricalClassDescription.setCategoryType(isIntCategory ? ECategoryType.ORDINAL : ECategoryType.NOMINAL);
 		categoricalClassDescription.setRawDataType(EDataType.STRING);
 
 		for (String categoryValue : categoryValues) {
@@ -120,18 +126,12 @@ public final class DataDescriptionUtil {
 		return new DataDescription(EDataClass.CATEGORICAL, EDataType.STRING, categoricalClassDescription);
 	}
 
-	/**
-	 * Creates a {@link DataDescription} for a specified column of the dataMatrix. It tries to automatically detect
-	 * whether it is categorical or numerical data and fills the description accordingly.
-	 *
-	 * @param dataMatrix
-	 *            Matrix containing data values. The outer list refers to rows.
-	 * @param columnIndex
-	 *            index of the column a {@link DataDescription} should be created for.
-	 * @return
-	 */
-	public static DataDescription createDataDescription(List<List<String>> dataMatrix, int columnIndex) {
+	public static DataDescription createCategoricalDataDescription(List<List<String>> dataMatrix, int columnIndex) {
+		return createDataDescription(dataMatrix, columnIndex, true, false);
+	}
 
+	private static DataDescription createDataDescription(List<List<String>> dataMatrix, int columnIndex,
+			boolean categoricalOnly, boolean numericalOnly) {
 		Set<String> categories = new HashSet<>();
 		float min = Float.POSITIVE_INFINITY;
 		float max = Float.NEGATIVE_INFINITY;
@@ -165,11 +165,12 @@ public final class DataDescriptionUtil {
 					}
 				}
 			} catch (NumberFormatException e) {
+				useIntegers = false;
 				continue;
 			}
 		}
 
-		if (numNumbers >= dataMatrix.size() * 0.5f) {
+		if (!categoricalOnly && (numNumbers >= dataMatrix.size() * 0.5f || numericalOnly)) {
 			NumericalProperties numericalProperties = new NumericalProperties();
 
 			if (max > 0 && min < 0) {
@@ -182,25 +183,41 @@ public final class DataDescriptionUtil {
 
 			return new DataDescription(useIntegers ? EDataClass.NATURAL_NUMBER : EDataClass.REAL_NUMBER,
 					useIntegers ? EDataType.INTEGER : EDataType.FLOAT, numericalProperties);
-		} else {
-			List<String> categoryValues = new ArrayList<>(categories);
-			Collections.sort(categoryValues);
-
-			CategoricalClassDescription<String> categoricalClassDescription = new CategoricalClassDescription<>();
-			categoricalClassDescription.setCategoryType(ECategoryType.ORDINAL);
-			categoricalClassDescription.setRawDataType(EDataType.STRING);
-
-			Iterator<Color> colorIterator = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).iterator();
-
-			for (String categoryValue : categoryValues) {
-				if (!colorIterator.hasNext()) {
-					colorIterator = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).iterator();
-				}
-				categoricalClassDescription.addCategoryProperty(categoryValue, categoryValue, colorIterator.next());
-			}
-
-			return new DataDescription(EDataClass.CATEGORICAL, EDataType.STRING, categoricalClassDescription);
 		}
+
+		List<String> categoryValues = new ArrayList<>(categories);
+		Collections.sort(categoryValues);
+
+		CategoricalClassDescription<String> categoricalClassDescription = new CategoricalClassDescription<>();
+		categoricalClassDescription.setCategoryType(useIntegers ? ECategoryType.ORDINAL : ECategoryType.NOMINAL);
+		categoricalClassDescription.setRawDataType(EDataType.STRING);
+
+		Iterator<Color> colorIterator = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).iterator();
+
+		for (String categoryValue : categoryValues) {
+			if (!colorIterator.hasNext()) {
+				colorIterator = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).iterator();
+			}
+			categoricalClassDescription.addCategoryProperty(categoryValue, categoryValue, colorIterator.next());
+		}
+
+		return new DataDescription(EDataClass.CATEGORICAL, EDataType.STRING, categoricalClassDescription);
+
+	}
+
+	/**
+	 * Creates a {@link DataDescription} for a specified column of the dataMatrix. It tries to automatically detect
+	 * whether it is categorical or numerical data and fills the description accordingly. The data is considered
+	 * numerical, if most data points are floats or ints.
+	 *
+	 * @param dataMatrix
+	 *            Matrix containing data values. The outer list refers to rows.
+	 * @param columnIndex
+	 *            index of the column a {@link DataDescription} should be created for.
+	 * @return
+	 */
+	public static DataDescription createDataDescription(List<List<String>> dataMatrix, int columnIndex) {
+		return createDataDescription(dataMatrix, columnIndex, false, false);
 	}
 
 }

@@ -13,6 +13,7 @@ package org.caleydo.core.view.opengl.layout2.layout;
  */
 public final class GLPadding {
 	public static final GLPadding ZERO = new GLPadding(0, 0, 0, 0);
+	public static final GLPadding ONE = new GLPadding(1, 1, 1, 1);
 
 	public final float left, top, right, bottom;
 

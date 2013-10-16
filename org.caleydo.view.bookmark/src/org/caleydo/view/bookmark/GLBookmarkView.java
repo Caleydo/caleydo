@@ -36,7 +36,6 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * The list heat map that shows elements on the right of a view that have been selected. It is registered to special
@@ -99,9 +98,9 @@ public class GLBookmarkView extends ATableBasedView {
 	/**
 	 * Constructor.
 	 */
-	public GLBookmarkView(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLBookmarkView(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 
 		bookmarkContainers = new ArrayList<ABookmarkContainer>();
@@ -263,7 +262,6 @@ public class GLBookmarkView extends ATableBasedView {
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedBookmarkView serializedForm = new SerializedBookmarkView(this);
-		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
 

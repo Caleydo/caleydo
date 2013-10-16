@@ -108,8 +108,8 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			handles = DEFAULT_HANDLES;
 		}
 
-		baseRow.addForeGroundRenderer(new HandleRenderer(brick, 10, brick.getTextureManager(),
- handles));
+		handleRenderer = new HandleRenderer(brick, 10, brick.getTextureManager(), handles);
+		baseRow.addForeGroundRenderer(handleRenderer);
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
@@ -273,6 +273,12 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	public void configure(IBrickConfigurer configurer) {
 		configurer.configure(this);
+	}
+
+	@Override
+	public ToolBar getToolBar() {
+		// No toolbar
+		return null;
 	}
 
 }

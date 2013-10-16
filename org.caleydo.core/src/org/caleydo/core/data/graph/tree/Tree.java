@@ -1,9 +1,11 @@
+
 /*******************************************************************************
  * Caleydo - Visualization for Molecular Biology - http://caleydo.org
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
 package org.caleydo.core.data.graph.tree;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +18,7 @@ import org.caleydo.core.id.IDType;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
+
 
 /**
  * A implementation of a sorted tree, based on the JGraphT library.
@@ -350,3 +353,4 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	}
 
 }
+

@@ -15,7 +15,7 @@ import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
  * Abstract class for all serialized view representations that handle a single
  * {@link ATableBasedDataDomain} (In contrast to container views that hold
  * multiple of those views).
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -41,7 +41,7 @@ public abstract class ASerializedSingleTablePerspectiveBasedView extends ASerial
 	 */
 	public ASerializedSingleTablePerspectiveBasedView(
 			ISingleTablePerspectiveBasedView singleTablePerspectiveBasedView) {
-		this.viewID = singleTablePerspectiveBasedView.getID();
+		super(singleTablePerspectiveBasedView);
 		if (singleTablePerspectiveBasedView.getDataDomain() != null) {
 			this.dataDomainID = singleTablePerspectiveBasedView.getDataDomain()
 					.getDataDomainID();
@@ -54,18 +54,8 @@ public abstract class ASerializedSingleTablePerspectiveBasedView extends ASerial
 	}
 
 	/**
-	 * Constructor setting the viewID, dataDomainID, tablePerspectiveKey
-	 */
-	public ASerializedSingleTablePerspectiveBasedView(int viewID, String dataDomainID,
-			String tablePerspectiveKey) {
-		this.viewID = viewID;
-		this.dataDomainID = dataDomainID;
-		this.tablePerspectiveKey = tablePerspectiveKey;
-	}
-
-	/**
 	 * Sets the data domain associated with a view
-	 * 
+	 *
 	 * @param dataDomain
 	 */
 	public void setDataDomainID(String dataDomainID) {
@@ -74,7 +64,7 @@ public abstract class ASerializedSingleTablePerspectiveBasedView extends ASerial
 
 	/**
 	 * Returns the data domain a view is associated with
-	 * 
+	 *
 	 * @return
 	 */
 	public String getDataDomainID() {

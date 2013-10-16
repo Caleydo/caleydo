@@ -6,6 +6,8 @@
 package org.caleydo.data.importer.tcga.regular;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,21 +17,27 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.io.HTMLFormatter;
+import org.caleydo.core.io.MetaDataElement;
 import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.data.importer.tcga.ATCGATask;
 import org.caleydo.data.importer.tcga.Settings;
 import org.caleydo.data.importer.tcga.model.TCGADataSet;
 import org.caleydo.data.importer.tcga.model.TCGADataSets;
 import org.caleydo.data.importer.tcga.model.TumorType;
+import org.caleydo.view.tourguide.api.external.ExternalIDTypeScoreParser;
+import org.caleydo.view.tourguide.api.external.ScoreParseSpecification;
+import org.caleydo.view.tourguide.api.score.ISerializeableScore;
+import org.caleydo.view.tourguide.api.score.Scores;
 
+import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /**
- * This class handles the whole workflow of creating a Caleydo project from TCGA
- * data.
+ * This class handles the whole workflow of creating a Caleydo project from TCGA data.
  *
  * @author Marc Streit
  *
@@ -77,8 +85,11 @@ public class TCGATask extends ATCGATask {
 
 		log.info("Post Processing project file for tumor type " + tumorType + " for analysis run " + run);
 		for (TCGADataSet set : project) {
-			new TCGAPostprocessingTask(set, settings).invoke();
+			new TCGAPostprocessingTask(set).invoke();
 		}
+
+		if (project.getMutsigParser() != null)
+			loadExternalScores(project.getMutsigParser(), dataDomains);
 
 		final String projectOutputPath = runSpecificOutputPath + run + "_" + tumorType + ".cal";
 
@@ -95,12 +106,13 @@ public class TCGATask extends ATCGATask {
 			return null;
 		}
 
+		saveProjectSpecificReport(dataDomains, tumorType, runSpecificOutputPath, run);
+
 		log.info("Built project file for tumor type " + tumorType + " for analysis run " + run);
 
 		project = null;
 
-		String projectRemoteOutputURL = settings.getTcgaServerURL() + run + "/" + run + "_" + tumorType
-				+ ".cal";
+		String projectRemoteOutputURL = settings.getTcgaServerURL() + run + "/" + run + "_" + tumorType + ".cal";
 
 		String jnlpFileName = run + "_" + tumorType + ".jnlp";
 
@@ -114,9 +126,50 @@ public class TCGATask extends ATCGATask {
 	}
 
 
+	private void loadExternalScores(ScoreParseSpecification spec, Collection<ATableBasedDataDomain> dataDomains) {
+		// spec.set
+		// find mutation or copy number for the target type
+		ATableBasedDataDomain target = null;
+		for (ATableBasedDataDomain dataDomain : dataDomains) {
+			if (dataDomain.getLabel().contains("Mutation")) {
+				target = dataDomain;
+				break;
+			}
+		}
+		if (target == null) {
+			System.err.println("skipping loading mutsig values as there is no mutation data domain");
+			return;
+		}
 
-	protected JsonObject generateTumorReportLine(Collection<ATableBasedDataDomain> dataDomains,
- TumorType tumor,
+		ExternalIDTypeScoreParser parser = new ExternalIDTypeScoreParser(spec, target.getDimensionIDType(), target);
+		Collection<ISerializeableScore> scores = parser.call();
+		final Scores s = Scores.get();
+		for (ISerializeableScore score : scores) {
+			s.addPersistentScoreIfAbsent(score);
+		}
+	}
+
+	protected void saveProjectSpecificReport(Collection<ATableBasedDataDomain> dataDomains, TumorType tumorType,
+			String outputPath, String run) {
+		MetaDataElement rootElement = new MetaDataElement();
+		for (ATableBasedDataDomain dataDomain : dataDomains) {
+			MetaDataElement ddElement = new MetaDataElement(dataDomain.getLabel());
+			MetaDataElement md = dataDomain.getDataSetDescription().getMetaData();
+			if (md != null) {
+				ddElement.addElement(md);
+			}
+			rootElement.addElement(ddElement);
+		}
+		String projectReport = new HTMLFormatter().format(rootElement, "Report " + tumorType.getLabel());
+		String fileName = run + "_" + tumorType + "_report.html";
+		try {
+			Files.write(projectReport, new File(outputPath, fileName), Charset.defaultCharset());
+		} catch (IOException e) {
+			log.warning("Could not save project report to " + outputPath + "/" + fileName);
+		}
+	}
+
+	protected JsonObject generateTumorReportLine(Collection<ATableBasedDataDomain> dataDomains, TumorType tumor,
 			Date analysisRun, String projectOutputPath) {
 
 		AdditionalInfo addInfoMRNA = null;
@@ -139,29 +192,21 @@ public class TCGATask extends ATCGATask {
 
 			if (dataSetName.equals("mRNA")) {
 				addInfoMRNA = new AdditionalInfo(dataDomain);
-			}
-			else if (dataSetName.equals("mRNA-seq")) {
+			} else if (dataSetName.equals("mRNA-seq")) {
 				addInfoMRNASeq = new AdditionalInfo(dataDomain);
-			}
-			else if (dataSetName.equals("microRNA")) {
+			} else if (dataSetName.equals("microRNA")) {
 				addInfoMicroRNA = new AdditionalInfo(dataDomain);
-			}
-			else if (dataSetName.equals("microRNA-seq")) {
+			} else if (dataSetName.equals("microRNA-seq")) {
 				addInfoMicroRNASeq = new AdditionalInfo(dataDomain);
-			}
-			else if (dataSetName.equals("Clinical")) {
+			} else if (dataSetName.equals("Clinical")) {
 				addInfoClinical = new ClinicalInfos(dataDomain);
-			}
-			else if (dataSetName.equals("Mutations")) {
+			} else if (dataSetName.equals("Mutations")) {
 				addInfoMutations = new AdditionalInfo(dataDomain);
-			}
-			else if (dataSetName.equals("Copy Number")) {
+			} else if (dataSetName.equals("Copy Number")) {
 				addInfoCopyNumber = new AdditionalInfo(dataDomain);
-			}
-			else if (dataSetName.equals("Methylation")) {
+			} else if (dataSetName.equals("Methylation")) {
 				addInfoMethylation = new AdditionalInfo(dataDomain);
-			}
-			else if (dataSetName.equals("RPPA")) {
+			} else if (dataSetName.equals("RPPA")) {
 				addInfoRPPA = new AdditionalInfo(dataDomain);
 			}
 		}
@@ -201,9 +246,11 @@ public class TCGATask extends ATCGATask {
 
 		public ClinicalInfos(ATableBasedDataDomain dataDomain) {
 			count = dataDomain.getTable().depth();
-			VirtualArray dimensionVA = dataDomain.getTable().getDefaultDimensionPerspective().getVirtualArray();
-			for (int dimensionID : dimensionVA) {
-				parameters.add(dataDomain.getDimensionLabel(dimensionID));
+			for (String id : dataDomain.getTable().getDimensionPerspectiveIDs()) {
+				Perspective p = dataDomain.getTable().getDimensionPerspective(id);
+				if (p.isDefault())
+					continue;
+				parameters.add(p.getLabel());
 			}
 		}
 

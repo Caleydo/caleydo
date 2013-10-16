@@ -6,6 +6,8 @@
 package org.caleydo.data.tcga.internal.model;
 
 import java.net.URL;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -20,6 +22,9 @@ public class TumorProject implements Comparable<TumorProject> {
 	@SerializedName("Firehose Report")
 	private URL report;
 
+	private Map<String, AdditionalInfo> genomic = new LinkedHashMap<>();
+	private Map<String, ClinicalInfo> nonGenomic = new LinkedHashMap<>();
+
 	private transient Run parent;
 
 	@Override
@@ -31,6 +36,30 @@ public class TumorProject implements Comparable<TumorProject> {
 	 */
 	public URL getProject() {
 		return project;
+	}
+
+	/**
+	 * @param project
+	 *            setter, see {@link project}
+	 */
+	public void setProject(URL project) {
+		this.project = project;
+	}
+
+	/**
+	 * @param tumorAbbreviation
+	 *            setter, see {@link tumorAbbreviation}
+	 */
+	public void setTumorAbbreviation(String tumorAbbreviation) {
+		this.tumorAbbreviation = tumorAbbreviation;
+	}
+
+	/**
+	 * @param tumorName
+	 *            setter, see {@link tumorName}
+	 */
+	public void setTumorName(String tumorName) {
+		this.tumorName = tumorName;
 	}
 
 	/**
@@ -52,4 +81,44 @@ public class TumorProject implements Comparable<TumorProject> {
 	public int compareTo(TumorProject o) {
 		return tumorAbbreviation.compareToIgnoreCase(o.tumorAbbreviation);
 	}
+
+	/**
+	 * @return the genomic, see {@link #genomic}
+	 */
+	public Map<String, AdditionalInfo> getGenomic() {
+		return genomic;
+	}
+
+	/**
+	 * @return the nonGenomic, see {@link #nonGenomic}
+	 */
+	public Map<String, ClinicalInfo> getNonGenomic() {
+		return nonGenomic;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((tumorAbbreviation == null) ? 0 : tumorAbbreviation.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TumorProject other = (TumorProject) obj;
+		if (tumorAbbreviation == null) {
+			if (other.tumorAbbreviation != null)
+				return false;
+		} else if (!tumorAbbreviation.equals(other.tumorAbbreviation))
+			return false;
+		return true;
+	}
+
 }

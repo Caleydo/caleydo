@@ -8,13 +8,12 @@ package org.caleydo.core.io;
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
-import org.caleydo.core.data.collection.table.Table;
 
 /**
  * Container for all meta-data on the data. Can be set on a whole-dataset level or on a column-by-column level.
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class DataDescription {
 
@@ -30,10 +29,7 @@ public class DataDescription {
 	 */
 	private EDataType rawDataType = EDataType.FLOAT;
 
-	/**
-	 * The data transformation that should be used by default.
-	 */
-	private String defaultDataTransformation = Table.Transformation.NONE;
+
 
 	/**
 	 * Set this if your data is homogeneous (i.e. all the columns in the file are of the same semantic data type, i.e.
@@ -126,20 +122,20 @@ public class DataDescription {
 		return rawDataType;
 	}
 
-	/**
-	 * @param defaultDataTransformation
-	 *            setter, see {@link defaultDataTransformation}
-	 */
-	public void setDefaultDataTransformation(String defaultDataTransformation) {
-		this.defaultDataTransformation = defaultDataTransformation;
-	}
-
-	/**
-	 * @return the defaultDataTransformation, see {@link #defaultDataTransformation}
-	 */
-	public String getDefaultDataTransformation() {
-		return defaultDataTransformation;
-	}
+	// /**
+	// * @param defaultDataTransformation
+	// * setter, see {@link defaultDataTransformation}
+	// */
+	// public void setDefaultDataTransformation(String defaultDataTransformation) {
+	// this.defaultDataTransformation = defaultDataTransformation;
+	// }
+	//
+	// /**
+	// * @return the defaultDataTransformation, see {@link #defaultDataTransformation}
+	// */
+	// public String getDefaultDataTransformation() {
+	// return defaultDataTransformation;
+	// }
 
 	/**
 	 * @param numericalProperties

@@ -9,9 +9,6 @@ import java.util.Collections;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionType;
@@ -25,6 +22,7 @@ import org.caleydo.view.info.selection.model.SelectionTypeItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -64,19 +62,27 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 	 * Constructor.
 	 */
 	public RcpSelectionInfoView() {
-		super();
-		isSupportView = true;
-		try {
-			viewContext = JAXBContext.newInstance(SerializedSelectionInfoView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+		super(SerializedSelectionInfoView.class);
 
 		for (IDCategory idCategory : IDCategory.getAllRegisteredIDCategories()) {
 			if (idCategory.isInternaltCategory() || idCategory.getPrimaryMappingType() == null)
 				continue;
-			categories.add(new CategoryItem(idCategory, this));
+			CategoryItem item = new CategoryItem(idCategory, this);
+			categories.add(item);
+			item.getManager().registerEventListeners();
 		}
+	}
+
+	@Override
+	public boolean isSupportView() {
+		return true;
+	}
+
+	@Override
+	public void dispose() {
+		for (CategoryItem item : categories)
+			item.getManager().unregisterEventListeners();
+		super.dispose();
 	}
 
 	@Override
@@ -114,7 +120,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 
 		selectionTree.setInput(this.categories);
 
-		addToolBarContent();
+		fillToolBar();
 	}
 
 	/**
@@ -136,20 +142,6 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public void registerEventListeners() {
-		for (CategoryItem item : categories)
-			item.getManager().registerEventListeners();
-		super.registerEventListeners();
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-		for (CategoryItem item : categories)
-			item.getManager().unregisterEventListeners();
-		super.unregisterEventListeners();
 	}
 
 	private static class SelectionContentProvider implements ITreeContentProvider {
@@ -206,7 +198,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 
 	}
 
-	public class SelectionLabelProvider extends StyledCellLabelProvider {
+	private static class SelectionLabelProvider extends StyledCellLabelProvider {
 		@Override
 		protected void measure(Event event, Object element) {
 			super.measure(event, element);
@@ -296,12 +288,12 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 	}
 
 	@Override
-	public void addToolBarContent() {
+	public void addToolBarContent(IToolBarManager toolBarManager) {
 		this.openExternalWrapper = new OpenExternalWrappingAction();
 		toolBarManager.add(openExternalWrapper);
 		this.copyToClipBoard = new CopySelectionToClipBoardAction();
 		toolBarManager.add(copyToClipBoard);
-		super.addToolBarContent();
+		super.addToolBarContent(toolBarManager);
 	}
 
 	@Override
@@ -313,7 +305,6 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements IEventBa
 	@Override
 	public synchronized void notifyOfSelectionChange(final EventBasedSelectionManager selectionManager) {
 		if (parentComposite.isDisposed()) {
-			unregisterEventListeners();
 			return;
 		}
 		parentComposite.getDisplay().asyncExec(new Runnable() {

@@ -171,4 +171,9 @@ public class CategoricalDataConfigurer extends ATableBasedDataConfigurer {
 	public int getDefaultWidth() {
 		return 50;
 	}
+
+	@Override
+	public boolean distributeBricksUniformly() {
+		return false;
+	}
 }

@@ -12,91 +12,47 @@ package org.caleydo.core.view.opengl.canvas;
  */
 public class GLMouseAdapter implements IGLMouseListener {
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener#mousePressed(org.caleydo.core.view.opengl.canvas.
-	 * IGLMouseListener.IMouseEvent)
-	 */
 	@Override
-	public void mousePressed(IMouseEvent mouseEvent) {
+	public void mousePressed(IMouseEvent e) {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.IGLMouseListener#mouseMoved(org.caleydo.core.view.opengl.canvas.IGLMouseListener
-	 * .IMouseEvent)
-	 */
+
 	@Override
-	public void mouseMoved(IMouseEvent mouseEvent) {
+	public void mouseMoved(IMouseEvent e) {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener#mouseClicked(org.caleydo.core.view.opengl.canvas.
-	 * IGLMouseListener.IMouseEvent)
-	 */
+
 	@Override
-	public void mouseClicked(IMouseEvent arg0) {
+	public void mouseClicked(IMouseEvent e) {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener#mouseReleased(org.caleydo.core.view.opengl.canvas.
-	 * IGLMouseListener.IMouseEvent)
-	 */
+
 	@Override
-	public void mouseReleased(IMouseEvent mouseEvent) {
+	public void mouseReleased(IMouseEvent e) {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener#mouseDragged(org.caleydo.core.view.opengl.canvas.
-	 * IGLMouseListener.IMouseEvent)
-	 */
+
 	@Override
-	public void mouseDragged(IMouseEvent mouseEvent) {
+	public void mouseDragged(IMouseEvent e) {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener#mouseWheelMoved(org.caleydo.core.view.opengl.canvas.
-	 * IGLMouseListener.IMouseEvent)
-	 */
 	@Override
 	public void mouseWheelMoved(IMouseEvent e) {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener#mouseEntered(org.caleydo.core.view.opengl.canvas.
-	 * IGLMouseListener.IMouseEvent)
-	 */
+
 	@Override
-	public void mouseEntered(IMouseEvent arg0) {
+	public void mouseEntered(IMouseEvent e) {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.IGLMouseListener#mouseExited(org.caleydo.core.view.opengl.canvas.IGLMouseListener
-	 * .IMouseEvent)
-	 */
+
 	@Override
 	public void mouseExited(IMouseEvent e) {
 

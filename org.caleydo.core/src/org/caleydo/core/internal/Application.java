@@ -7,6 +7,7 @@ package org.caleydo.core.internal;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
@@ -15,6 +16,8 @@ import java.util.TreeSet;
 import org.caleydo.core.internal.gui.CaleydoProjectWizard;
 import org.caleydo.core.internal.startup.StartupAddons;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.startup.CacheInitializers;
+import org.caleydo.core.startup.IStartUpDocumentListener;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.util.logging.Logger;
@@ -24,7 +27,10 @@ import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.osgi.service.datalocation.Location;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -44,6 +50,7 @@ public class Application implements IApplication {
 	}
 
 	private IStartupProcedure startup;
+	private volatile boolean startupDone;
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
@@ -68,7 +75,16 @@ public class Application implements IApplication {
 
 			// create a select the startup pro
 			Display display = PlatformUI.createDisplay();
-			startup = selectStartupProcedure(startups, display);
+			for (IStartupAddon addon : startups.values()) {
+				if (addon instanceof IStartUpDocumentListener) {
+					display.addListener(SWT.OpenDocument, (IStartUpDocumentListener) addon);
+				}
+			}
+			while (!display.isDisposed() && display.readAndDispatch()) { // dispatch all pending
+				// dispatch events
+			}
+
+			startup = selectStartupProcedure(startups, display, log);
 			if (startup == null)
 				return EXIT_OK; // unstartable
 			startups = null; // cleanup
@@ -101,11 +117,13 @@ public class Application implements IApplication {
 	 * @param display
 	 * @return
 	 */
-	private IStartupProcedure selectStartupProcedure(Map<String, IStartupAddon> startups, Display display) {
+	private IStartupProcedure selectStartupProcedure(Map<String, IStartupAddon> startups, Display display, Logger log) {
 		for (IStartupAddon startup : startups.values()) {
 			if (startup.init())
 				return startup.create();
 		}
+
+		log.info("creating wizard shell");
 		// not yet configured choose one
 		Shell shell = new Shell(display);
 		shell.moveAbove(null);
@@ -113,9 +131,12 @@ public class Application implements IApplication {
 		WizardDialog wizard = new WizardDialog(shell, wizardImpl);
 		wizard.setMinimumPageSize(750, 500);
 		shell.forceActive();
+
+		log.info("open wizard");
 		boolean ok = wizard.open() == Window.OK;
 		if (!shell.isDisposed())
 			shell.dispose();
+		log.info("wizard done");
 		return ok ? wizardImpl.getResult() : null;
 	}
 
@@ -207,13 +228,44 @@ public class Application implements IApplication {
 	public void runStartup() {
 		assert startup != null;
 		// run the startup in an own thread but wait in the gui thread till its done
-		Thread t = new Thread(startup);
+		final Runnable dummy = new Runnable() {
+			@Override
+			public void run() {
+				//mark as done
+				startupDone = true;
+			}
+		};
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					CacheInitializers.runInitializers(GeneralManager.get().createSubProgressMonitor());
+					startup.run();
+				} finally {
+					//notify and wake up main thread
+					Display.getDefault().asyncExec(dummy);
+				}
+			}
+		});
 		t.start();
-		Display display = Display.getCurrent();
-		while (t.isAlive() && !display.isDisposed()) {
+		final Display display = Display.getCurrent();
+		while (!startupDone && !display.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
+		//strange issue #1413 the workbench shell needs to be active to start running. Try to start it up
+		display.addFilter(SWT.Show, new Listener() {
+
+			@Override
+			public void handleEvent(Event event) {
+				if (event.widget instanceof Shell) {
+					System.out.println("show: "+
+							((Shell)event.widget).getText());
+					display.removeFilter(SWT.Show, this);
+					((Shell)event.widget).forceActive();
+				}
+			}
+		});
 	}
 
 	/**
@@ -223,5 +275,27 @@ public class Application implements IApplication {
 		startup.postWorkbenchOpen(windowConfigurer);
 		windowConfigurer.getWindow().getShell().setMaximized(true);
 		startup = null;
+	}
+
+	public class OpenDocumentEventProcessor implements Listener {
+		private ArrayList<String> filesToOpen = new ArrayList<String>(1);
+
+		@Override
+		public void handleEvent(Event event) {
+			if (event.text != null)
+				filesToOpen.add(event.text);
+		}
+
+		public void openFiles() {
+			if (filesToOpen.isEmpty())
+				return;
+
+			String[] filePaths = filesToOpen.toArray(new String[filesToOpen.size()]);
+			filesToOpen.clear();
+
+			for (String path : filePaths) {
+				// open the file path
+			}
+		}
 	}
 }

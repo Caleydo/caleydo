@@ -92,9 +92,9 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLHierarchicalTreeMap(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLHierarchicalTreeMap(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		parentGLCanvas.addMouseListener(new GLMouseAdapter() {
 			@Override
@@ -142,14 +142,15 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+		final Composite composite = glParentView.getParentGLCanvas().asComposite();
+		composite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				glParentView.getParentComposite().addKeyListener(glKeyListener);
+				composite.addKeyListener(glKeyListener);
 			}
 		});
 
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 
 		init(gl);
 
@@ -477,7 +478,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, (int) fHeatMapHeight, 0,
 				(int) fHeatMapWidth, -20, 20);
 
-		GLTreeMap treemap = new GLTreeMap(parentGLCanvas, parentComposite, viewFrustum);
+		GLTreeMap treemap = new GLTreeMap(parentGLCanvas, viewFrustum);
 		treemap.setDataDomain(dataDomain);
 		treemap.setRemoteRenderingGLView(this);
 		treemap.registerEventListeners();

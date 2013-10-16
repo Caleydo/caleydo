@@ -26,15 +26,6 @@
                      commandId="org.caleydo.view.filterpipeline.command.openfilterpipeline"
                      icon="resources/icons/icon.png"
                      style="push">
-                  <visibleWhen
-                        checkEnabled="false">
-                     <with
-                           variable="org.caleydo.core.isReleaseState">
-                        <equals
-                              value="releaseVersion">
-                        </equals>
-                     </with>
-                  </visibleWhen>
                </command>
             </menu>
          </menu>

@@ -7,10 +7,12 @@ package org.caleydo.view.stratomex.brick.configurer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ViewManager;
@@ -32,9 +34,13 @@ import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.TitleOnlyHeaderBrickLayoutTemplate;
+import org.caleydo.view.stratomex.brick.sorting.ExternallyProvidedSortingStrategy;
 import org.caleydo.view.stratomex.brick.sorting.IBrickSortingStrategy;
 import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.stratomex.brick.ui.KaplanMeierSummaryRenderer;
+import org.caleydo.view.stratomex.column.BrickColumn;
+
+import com.google.common.collect.Maps;
 
 /**
  * Configurer for bricks that display numerical clinical data, such as disease free survival etc.
@@ -48,6 +54,23 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 	protected static final int SPACING_PIXELS = 32;
 
 	private IBrickSortingStrategy sortingStrategy = new NoSortingSortingStrategy();
+
+	public static ClinicalDataConfigurer create(GLStratomex handler, TablePerspective underlying,
+			TablePerspective kaplan) {
+		ClinicalDataConfigurer dataConfigurer = null;
+		BrickColumn brickColumn = handler.getBrickColumnManager().getBrickColumn(underlying);
+		if (brickColumn != null) {
+			// dependent sorting
+			dataConfigurer = new ClinicalDataConfigurer();
+			ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
+			sortingStrategy.setExternalBrick(brickColumn);
+			HashMap<Perspective, Perspective> m = Maps.newHashMap();
+			m.put(kaplan.getRecordPerspective(), underlying.getRecordPerspective());
+			sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(m);
+			dataConfigurer.setSortingStrategy(sortingStrategy);
+		}
+		return dataConfigurer;
+	}
 
 	@Override
 	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {
@@ -83,8 +106,8 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK.name(), layoutTemplate.getBrick().getID()));
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
-		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick(), pickingIDs,
-				layoutTemplate.getBrick()));
+		toolBarElements.add(createCaptionLayout(layoutTemplate, pickingIDs, layoutTemplate.getBrick().getBrickColumn()
+				.getStratomexView()));
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setToolBarElements(toolBarElements);
@@ -114,12 +137,12 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 				.getDimensionGroup().getID()));
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
-		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick(), pickingIDs, layoutTemplate
-				.getDimensionGroup().getStratomexView()));
+		headerBarElements.add(createCaptionLayout(layoutTemplate, pickingIDs, layoutTemplate.getDimensionGroup()
+				.getStratomexView()));
 		return headerBarElements;
 	}
 
-	private ElementLayout createCaptionLayout(ABrickLayoutConfiguration layoutTemplate, AGLView labelProvider,
+	private ElementLayout createCaptionLayout(ABrickLayoutConfiguration layoutTemplate,
 			List<Pair<String, Integer>> pickingIDs, AGLView view) {
 
 		ElementLayout captionLayout = new ElementLayout("caption1");
@@ -175,8 +198,8 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 			brick.associateIDs(globalRendererID++, localRendererID);
 		}
 
-		ALayoutRenderer kaplanMeierSummaryRenderer = new KaplanMeierSummaryRenderer(brick, brick.getLabel(),
-				EPickingType.BRICK.name(), brick.getID());
+		ALayoutRenderer kaplanMeierSummaryRenderer = new KaplanMeierSummaryRenderer(brick.getBrickColumn()
+				.getStratomexView(), brick.getLabel(), EPickingType.BRICK.name(), brick.getID());
 
 		IEmbeddedVisualizationInfo visInfo = new DefaultVisInfo() {
 			@Override
@@ -224,6 +247,11 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 	@Override
 	public int getDefaultWidth() {
 		return 100;
+	}
+
+	@Override
+	public boolean distributeBricksUniformly() {
+		return true;
 	}
 
 }

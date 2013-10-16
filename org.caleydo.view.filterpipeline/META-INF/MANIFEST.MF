@@ -2,14 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Filter Pipeline View
 Bundle-SymbolicName: org.caleydo.view.filterpipeline;singleton:=true
-Bundle-Version: 3.0
-Require-Bundle: org.caleydo.core;bundle-version="2.2",
- org.caleydo.datadomain.genetic;bundle-version="2.2",
- org.caleydo.view.histogram;bundle-version="2.2"
+Bundle-Version: 3.1.1.qualifier
+Require-Bundle: org.caleydo.datadomain.genetic;bundle-version="3.1.1.qualifier",
+ org.caleydo.view.histogram;bundle-version="3.1.1.qualifier",
+ org.caleydo.core;bundle-version="3.1.1.qualifier"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: gleem.linalg,
- javax.media.opengl,
- org.caleydo.data.loader
 Export-Package: org.caleydo.view.filterpipeline,
  org.caleydo.view.filterpipeline.toolbar
 Bundle-Vendor: www.caleydo.org

@@ -9,8 +9,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.commons.lang.StringUtils;
 import org.caleydo.core.gui.util.FontUtil;
 import org.caleydo.core.internal.MyPreferences;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.startup.LoadProjectStartupProcedure;
@@ -25,6 +27,7 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -59,13 +62,19 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 			}
 		};
 
-		Composite g = new Composite(parent, SWT.NONE);
+		ScrolledComposite scrolledComposite = new ScrolledComposite(parent, SWT.V_SCROLL);
+		scrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		scrolledComposite.setExpandVertical(true);
+		scrolledComposite.setExpandHorizontal(true);
+
+		Composite g = new Composite(scrolledComposite, SWT.NONE);
 		g.setLayout(new GridLayout(1, false));
 
 		Button first = null;
 		for (IConfigurationElement elem : RegistryFactory.getRegistry().getConfigurationElementsFor(EXTENSION_POINT)) {
 			String name = elem.getAttribute("name");
-			String url = elem.getAttribute("url");
+			String url = elem.getAttribute("url").replace("DATA_URL_PREFIX",
+					StringUtils.removeEnd(GeneralManager.DATA_URL_PREFIX, "/"));
 			String description = elem.getAttribute("description");
 			if (first == null)
 				first = createSample(url, name, description, g, l, true);
@@ -76,7 +85,11 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 			first.setSelection(true);
 			selectedChoice = (URL) first.getData();
 		}
-		return g;
+
+		scrolledComposite.setContent(g);
+		scrolledComposite.setMinSize(g.computeSize(500, SWT.DEFAULT));
+
+		return scrolledComposite;
 	}
 
 	private Button createSample(String url, String name, String description, Composite g, SelectionListener l,
@@ -98,7 +111,7 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 				selectedChoice = u;
 			}
 
-			Link desc = new Link(g, SWT.NONE);
+			Link desc = new Link(g, SWT.WRAP);
 			desc.setText(description);
 			desc.addSelectionListener(BrowserUtils.LINK_LISTENER);
 			gd = new GridData(GridData.FILL_HORIZONTAL);

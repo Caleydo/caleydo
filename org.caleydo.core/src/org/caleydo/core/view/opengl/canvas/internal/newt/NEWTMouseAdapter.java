@@ -5,14 +5,18 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas.internal.newt;
 
+import gleem.linalg.Vec2f;
+
 import java.awt.Dimension;
 import java.awt.Point;
 
 import javax.media.opengl.GLDrawable;
 
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.view.opengl.canvas.AGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
+import org.caleydo.core.view.opengl.canvas.Units;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
@@ -29,9 +33,11 @@ import com.jogamp.newt.event.MouseListener;
 final class NEWTMouseAdapter implements MouseListener {
 
 	private final IGLMouseListener listener;
+	private final AGLCanvas canvas;
 
-	public NEWTMouseAdapter(IGLMouseListener listener) {
+	public NEWTMouseAdapter(IGLMouseListener listener, AGLCanvas canvas) {
 		this.listener = listener;
+		this.canvas = canvas;
 	}
 
 	/**
@@ -86,20 +92,32 @@ final class NEWTMouseAdapter implements MouseListener {
 	 * @param e
 	 * @return
 	 */
-	private static IMouseEvent wrap(MouseEvent e) {
-		return new NEWTMouseEventAdapter(e);
+	private IMouseEvent wrap(MouseEvent e) {
+		return new NEWTMouseEventAdapter(e, canvas.toDIP(new Point(e.getX(), e.getY())));
 	}
 
 	private static class NEWTMouseEventAdapter implements IMouseEvent {
 		private final MouseEvent event;
+		private final Vec2f point;
 
-		NEWTMouseEventAdapter(MouseEvent event) {
+		NEWTMouseEventAdapter(MouseEvent event, Vec2f point) {
 			this.event = event;
+			this.point = point;
 		}
 
 		@Override
-		public Point getPoint() {
+		public Point getRAWPoint() {
 			return new Point(event.getX(), event.getY());
+		}
+
+		@Override
+		public Vec2f getPoint() {
+			return point;
+		}
+
+		@Override
+		public Vec2f getPoint(Units unit) {
+			return unit.unapply(point);
 		}
 
 		@Override
@@ -109,7 +127,7 @@ final class NEWTMouseAdapter implements MouseListener {
 
 		@Override
 		public int getWheelRotation() {
-			return (int) event.getWheelRotation();
+			return (int) event.getRotationScale();
 		}
 
 		@Override

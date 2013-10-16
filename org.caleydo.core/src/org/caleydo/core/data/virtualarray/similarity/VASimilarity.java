@@ -7,11 +7,16 @@ package org.caleydo.core.data.virtualarray.similarity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * The similarities of two specific virtual arrays on a {@link Group} basis. Each VASimilarity object is stored twice -
@@ -21,6 +26,13 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
  * @param <VirtualArray>
  */
 public class VASimilarity {
+
+	/** The two virtual arrays stored by their key */
+	private final Map<String, VirtualArray> vaMap = new LinkedHashMap<>(4);
+	/**
+	 * Contains one ArrayList for every VA, which in turn contains the GroupSimilarity for every group
+	 */
+	private final Map<String, List<GroupSimilarity>> groupListSimilarities = new HashMap<>(4);
 
 	/**
 	 * Returns the VA associated with the provided perspectiveID
@@ -62,7 +74,6 @@ public class VASimilarity {
 
 		if (vaMap.size() <= 2 && !vaMap.containsKey(perspectiveID)) {
 			vaMap.put(perspectiveID, va);
-			keys.add(perspectiveID);
 		} else {
 			if (!vaMap.containsKey(perspectiveID))
 				throw new IllegalStateException("VASimilarity has already two VAs.");
@@ -74,25 +85,18 @@ public class VASimilarity {
 	// -------------------- END OF PUBLIC INTERFACE
 	// ----------------------------------
 
-	/** The two virtual arrays stored by their key */
-	HashMap<String, VirtualArray> vaMap = new HashMap<String, VirtualArray>(4);
-	/** The keys */
-	ArrayList<String> keys = new ArrayList<String>(4);
-	/**
-	 * Contains one ArrayList for every VA, which in turn contains the GroupSimilarity for every group
-	 */
-	HashMap<String, ArrayList<GroupSimilarity>> groupListSimilarities = new HashMap<>(4);
-
 	/**
 	 * Calculates the similarities of the previously specified VAs
 	 */
 	void calculateSimilarities() {
-		System.out.println("Calculating similarities");
+		// System.out.println("Calculating similarities");
 		groupListSimilarities.clear();
 		VirtualArray va1;
 		VirtualArray va2;
 		String key1;
 		String key2;
+
+		final List<String> keys = ImmutableList.copyOf(vaMap.keySet());
 		if (keys.size() == 1 || vaMap.size() == 1) {
 			key1 = key2 = keys.get(0);
 			va1 = vaMap.get(keys.get(0));
@@ -113,7 +117,7 @@ public class VASimilarity {
 		// ------ first we calculate the similarities from 1 to 2 ------
 
 		// the list of all similarities from group 1 to group 2
-		ArrayList<GroupSimilarity> groupSimilarities1 = new ArrayList<>(
+		List<GroupSimilarity> groupSimilarities1 = new ArrayList<>(
 				groupList1.size());
 
 		for (Group group : groupList1) {
@@ -132,7 +136,7 @@ public class VASimilarity {
 		// -----
 
 		// the list of all similarities from group 2 to group 1
-		ArrayList<GroupSimilarity> groupSimilarities2 = new ArrayList<>(groupList2.size());
+		List<GroupSimilarity> groupSimilarities2 = new ArrayList<>(groupList2.size());
 
 		// for (Group group : groupList2) {
 		// GroupSimilarity<VirtualArray, GroupList> groupSimilarity =
@@ -163,6 +167,6 @@ public class VASimilarity {
 
 	@Override
 	public String toString() {
-		return "VASimilarity between " + keys;
+		return "VASimilarity between " + vaMap.keySet();
 	}
 }

@@ -15,6 +15,7 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout.util.IZoomListener;
 import org.caleydo.core.view.opengl.layout.util.Zoomer;
 
 /**
@@ -25,14 +26,15 @@ import org.caleydo.core.view.opengl.layout.util.Zoomer;
  * @author Samuel Gratzl
  *
  */
-public class GLElementAdapter extends GLElement {
+public class GLElementAdapter extends GLElementContainer {
 	/**
 	 * faked elements
 	 */
 	private final LayoutManager layout;
 	private final ViewFrustum viewFrustum;
 	private final PixelGLConverter pixelGLConverter;
-	private final AGLView view;
+	protected final AGLView view;
+	private Zoomer zoomer;
 
 	/**
 	 * the underlying element
@@ -86,11 +88,18 @@ public class GLElementAdapter extends GLElement {
 		if (this.wrappee == null) {
 			this.wrappee = new ElementLayout("wrappee");
 			if (isZoomable) {
-				this.wrappee.setZoomer(new Zoomer(view, wrappee));
+				zoomer = new Zoomer(view, wrappee);
+				this.wrappee.setZoomer(zoomer);
 			}
 		}
 		this.wrappee.setRenderer(renderer);
 		return this;
+	}
+
+	public void addZoomListener(IZoomListener listener) {
+		if (zoomer != null) {
+			zoomer.addListener(listener);
+		}
 	}
 
 	public GLElementAdapter setElement(ElementLayout element) {

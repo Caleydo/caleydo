@@ -31,8 +31,7 @@ public class PathwayDataNode extends ADataNode {
 	private Row bodyRow;
 
 	public PathwayDataNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
-			DragAndDropController dragAndDropController, Integer id,
-			IDataDomain dataDomain) {
+			DragAndDropController dragAndDropController, Integer id, IDataDomain dataDomain) {
 		super(graphLayout, view, dragAndDropController, id, dataDomain);
 		this.dataDomain = (PathwayDataDomain) dataDomain;
 
@@ -57,18 +56,17 @@ public class PathwayDataNode extends ADataNode {
 
 		bodyRow = new Row("bodyRow");
 
-		if (getTablePerspectives().size() > 0) {
+		if (getVisibleTablePerspectives().size() > 0) {
 			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}
 
 		bodyColumn = new Column("bodyColumn");
 
-		tablePerspectiveRenderer = new TablePerspectiveListRenderer(this, view,
-				dragAndDropController, getTablePerspectives());
+		tablePerspectiveRenderer = new TablePerspectiveListRenderer(this, view, dragAndDropController,
+				getVisibleTablePerspectives());
 
 		List<Pair<String, Integer>> pickingIDsToBePushed = new ArrayList<Pair<String, Integer>>();
-		pickingIDsToBePushed.add(new Pair<String, Integer>(
-				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
+		pickingIDsToBePushed.add(new Pair<String, Integer>(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
 
 		tablePerspectiveRenderer.setPickingIDsToBePushed(pickingIDsToBePushed);
 
@@ -98,9 +96,10 @@ public class PathwayDataNode extends ADataNode {
 
 	@Override
 	public void update() {
-		tablePerspectiveRenderer.setTablePerspectives(getTablePerspectives());
+		tablePerspectiveRenderer.setTablePerspectives(getVisibleTablePerspectives());
 		recalculateNodeSize();
-		if (getTablePerspectives().size() > 0) {
+		bodyRow.clearBackgroundRenderers();
+		if (getVisibleTablePerspectives().size() > 0) {
 			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}
 	}
@@ -123,14 +122,12 @@ public class PathwayDataNode extends ADataNode {
 				containers.size());
 
 		for (PathwayTablePerspective container : containers) {
-			sortedContainers.add(new Pair<String, TablePerspective>(container.getLabel(),
-					container));
+			sortedContainers.add(new Pair<String, TablePerspective>(container.getLabel(), container));
 		}
 
 		Collections.sort(sortedContainers, Pair.<String> compareFirst());
 
-		List<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>(
-				containers.size());
+		List<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>(containers.size());
 		for (Pair<String, TablePerspective> containerPair : sortedContainers) {
 			tablePerspectives.add(containerPair.getSecond());
 		}
@@ -143,10 +140,8 @@ public class PathwayDataNode extends ADataNode {
 	@Override
 	protected int getMinTitleBarWidthPixels() {
 
-		float textWidth = view.getTextRenderer().getRequiredTextWidthWithMax(
-				dataDomain.getLabel(),
-				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS),
-				MIN_TITLE_BAR_WIDTH_PIXELS);
+		float textWidth = view.getTextRenderer().getRequiredTextWidthWithMax(dataDomain.getLabel(),
+				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS), MIN_TITLE_BAR_WIDTH_PIXELS);
 
 		return pixelGLConverter.getPixelWidthForGLWidth(textWidth);
 	}

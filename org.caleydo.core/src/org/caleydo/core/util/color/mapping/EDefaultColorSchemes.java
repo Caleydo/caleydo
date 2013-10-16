@@ -92,7 +92,6 @@ public enum EDefaultColorSchemes {
 			Color.NEUTRAL_GREY,
 			new Color(202, 0, 32));
 
-	private ArrayList<ColorMarkerPoint> colorMarkerPoints;
 	/**
 	 * The name of the color scheme, human readable, to, e.g., be displayed in choosing dialogs.
 	 */
@@ -109,8 +108,9 @@ public enum EDefaultColorSchemes {
 	private boolean isDiscrete;
 
 	/**
-	 *
+	 * The colors of this color scheme
 	 */
+	private Color[] colors;
 
 	private EDefaultColorSchemes(String colorSchemeName, String colorShemeDescription, Color... colors) {
 		initialize(colorSchemeName, colorShemeDescription, false, colors);
@@ -128,7 +128,12 @@ public enum EDefaultColorSchemes {
 		this.isDiscrete = isDiscrete;
 		if (colors.length < 2)
 			throw new IllegalStateException("At least two values required");
-		colorMarkerPoints = new ArrayList<ColorMarkerPoint>();
+		this.colors = colors;
+
+	}
+
+	private ArrayList<ColorMarkerPoint> createMarkerPoints() {
+		ArrayList<ColorMarkerPoint> colorMarkerPoints = new ArrayList<ColorMarkerPoint>();
 
 		int colorCount = 0;
 		ColorMarkerPoint point;
@@ -153,7 +158,7 @@ public enum EDefaultColorSchemes {
 			nextMappingVlaue += mappingValueDistance;
 			colorCount++;
 		}
-
+		return colorMarkerPoints;
 	}
 
 	/**
@@ -170,15 +175,8 @@ public enum EDefaultColorSchemes {
 		return colorSchemeDescription;
 	}
 
-	/**
-	 * @return the colorMarkerPoints, see {@link #colorMarkerPoints}
-	 */
-	public ArrayList<ColorMarkerPoint> getColorMarkerPoints() {
-		return colorMarkerPoints;
-	}
-
 	ColorMapper getDefaultColorMapper() {
-		ColorMapper colorMapper = new ColorMapper(colorMarkerPoints);
+		ColorMapper colorMapper = new ColorMapper(createMarkerPoints());
 		colorMapper.setColorSchemeName(colorSchemeName);
 		colorMapper.setColorSchemeDescription(colorSchemeDescription);
 		return colorMapper;

@@ -2,6 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="org.caleydo.tourguide.scorefactory" name="ScoreFactory" schema="schema/org.caleydo.tourguide.scorefactory.exsd"/>
+   <extension-point id="org.caleydo.view.tourguide.adapter" name="TourGuide View Adapter" schema="schema/org.caleydo.view.tourguide.adapter.exsd"/>
    <extension
          point="org.eclipse.ui.views">
       <view
@@ -54,7 +55,7 @@
             name="Adjusted Rank Score">
       </factory>
       <factory
-            class="org.caleydo.view.tourguide.impl.ClusterSimilarityScoreFactory"
+            class="org.caleydo.view.tourguide.impl.SetSimilarityScoreFactory"
             name="Jaccard Index Score">
       </factory>
       <factory
@@ -67,9 +68,18 @@
       </factory>
    </extension>
    <extension
-         point="org.caleydo.view.stratomex.AddWizardElementFactory">
-      <factory
-            class="org.caleydo.view.tourguide.internal.stratomex.AddWizardElementFactory">
-      </factory>
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.caleydo.view.tourguide.api.prefs.MyPreferences">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.caleydo.core.gui.preferences.views"
+            class="org.caleydo.view.tourguide.internal.prefs.MyPreferencePage"
+            id="org.caleydo.view.tourguide"
+            name="Tour Guide">
+      </page>
    </extension>
 </plugin>

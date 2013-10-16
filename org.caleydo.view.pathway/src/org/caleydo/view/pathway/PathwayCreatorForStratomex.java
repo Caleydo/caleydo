@@ -30,7 +30,6 @@ public class PathwayCreatorForStratomex implements IRemoteViewCreator {
 				.get()
 				.getViewManager()
 				.createGLView(GLPathway.class, remoteRenderingView.getParentGLCanvas(),
-						remoteRenderingView.getParentComposite(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
 		TablePerspective tablePerspective = null;
 		if (tablePerspectives.size() > 0) {
@@ -47,6 +46,7 @@ public class PathwayCreatorForStratomex implements IRemoteViewCreator {
 		pathwayView.setMinHeightPixels(120);
 		pathwayView.setMinWidthPixels(120);
 		pathwayView.setDynamicDetail(true);
+		pathwayView.setShowStdDevBars(false);
 		// pathwayView.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		pathwayView.initialize();
 		PathwayMappingEvent event = new PathwayMappingEvent(tablePerspective);

@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -37,8 +37,9 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer.EAlignmentX;
+import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer.EAlignmentY;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * <p>
@@ -57,13 +58,13 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 	public static final String VIEW_TYPE = "org.caleydo.view.kaplanmeier";
 	public static final String VIEW_NAME = "Kaplan-Meier Plot";
 
-	private static final int LEFT_AXIS_SPACING_PIXELS = 70;
-	private static final int BOTTOM_AXIS_SPACING_PIXELS = 50;
-	private static final int TOP_AXIS_SPACING_PIXELS = 8;
-	private static final int RIGHT_AXIS_SPACING_PIXELS = 20;
-	private static final int AXIS_LABEL_TEXT_HEIGHT_PIXELS = 20;
-	private static final int AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS = 5;
-	private static final int AXIS_TICK_LABEL_SPACING_PIXELS = 12;
+	public static final int LEFT_AXIS_SPACING_PIXELS = 70;
+	public static final int BOTTOM_AXIS_SPACING_PIXELS = 50;
+	public static final int TOP_AXIS_SPACING_PIXELS = 8;
+	public static final int RIGHT_AXIS_SPACING_PIXELS = 20;
+	public static final int AXIS_LABEL_TEXT_HEIGHT_PIXELS = 20;
+	public static final int AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS = 5;
+	public static final int AXIS_TICK_LABEL_SPACING_PIXELS = 12;
 
 	private EventBasedSelectionManager recordGroupSelectionManager;
 
@@ -99,9 +100,9 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 	 * @param viewLabel
 	 * @param viewFrustum
 	 */
-	public GLKaplanMeier(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLKaplanMeier(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		textRenderer = new CaleydoTextRenderer(24);
 	}
@@ -187,23 +188,25 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		final Table table = tablePerspective.getDataDomain().getTable();
 		final Integer dimensionID = dimensionVA.get(0);
 		for (Integer recordID : recordVA) {
-			int rawValue = table.getRaw(dimensionID, recordID);
+			Number raw = table.getRaw(dimensionID, recordID);
 
 			// check for invalid data
-			if (rawValue == Integer.MIN_VALUE)
+			if (raw == null || (raw instanceof Integer && raw.intValue() == Integer.MIN_VALUE)
+					|| (raw instanceof Float && ((Float) raw).isNaN()))
 				continue;
 
-			if (rawValue > 0)
+			int v = raw.intValue();
+			if (v > 0)
 				containsPositiveValues = true;
-			if (rawValue < 0)
+			if (v < 0)
 				containsNegativeValues = true;
 
 			if (containsPositiveValues && containsNegativeValues) {
 				throw new IllegalStateException(
 						"Data contains positive and negative values. KM plot cannot handle this data.");
 			}
-			if (Math.abs(rawValue) > Math.abs(maxAxisTime))
-				maxAxisTime = rawValue;
+			if (Math.abs(v) > Math.abs(maxAxisTime))
+				maxAxisTime = v;
 		}
 
 		return maxAxisTime;
@@ -217,7 +220,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
-		this.glMouseListener = glMouseListener;
+		setMouseListener(glMouseListener);
 
 		init(gl);
 	}
@@ -302,7 +305,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 		gl.glLineWidth(lineWidth);
 
-		renderSingleKaplanMeierCurve(gl, recordIDs, fillCurve, group.getID(), color);
+		renderSingleKaplanMeierCurve(gl, recordIDs, fillCurve, group, color);
 
 	}
 
@@ -350,9 +353,11 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 			if (isXAxis) {
 				lineLabelRenderer.setLineOffsetPixels(-AXIS_TICK_LABEL_SPACING_PIXELS);
 				lineLabelRenderer.setXCentered(true);
+				lineLabelRenderer.setAlignmentX(EAlignmentX.RIGHT);
 			} else {
 				lineLabelRenderer.setLineOffsetPixels(AXIS_TICK_LABEL_SPACING_PIXELS);
 				lineLabelRenderer.setYCentered(true);
+				lineLabelRenderer.setAlignmentY(EAlignmentY.MIDDLE);
 			}
 			lineCrossingRenderer.setLineWidth(2);
 			axis.addAttributeRenderer(lineCrossingRenderer);
@@ -374,7 +379,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 						+ RIGHT_AXIS_SPACING_PIXELS) : 0);
 	}
 
-	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs, boolean fillCurve, int groupID,
+	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs, boolean fillCurve, Group group,
 			Color color) {
 
 		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
@@ -388,13 +393,13 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 			if (Float.isNaN(normalizedValue)) {
 				// we assume that those who don't have an entry are still alive.
 				dataVector.add(1f);
-			}
-			dataVector.add(normalizedValue);
+			} else
+				dataVector.add(normalizedValue);
 		}
 
 		Collections.sort(dataVector);
 
-		gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.KM_CURVE.name(), groupID));
+		gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.KM_CURVE.name(), group.getID()));
 
 		if (fillCurve) {
 			//
@@ -410,8 +415,8 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 		}
 
-		gl.glColor4fv(color.getRGBA(), 0);
-		drawCurve(gl, dataVector);
+		// gl.glColor4fv(color.getRGBA(), 0);
+		drawCurve(gl, dataVector, color, group);
 		gl.glPopName();
 
 	}
@@ -441,7 +446,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 			float y = remainingItemCount * ySingleSampleSize;
 
-			gl.glBegin(GL2.GL_QUADS);
+			gl.glBegin(GL2GL3.GL_QUADS);
 			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing, z);
 			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
 			currentTimeBin += timeBinStepSize;
@@ -452,7 +457,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 	}
 
-	private void drawCurve(GL2 gl, ArrayList<Float> dataVector) {
+	private void drawCurve(GL2 gl, ArrayList<Float> dataVector, Color color, Group group) {
 
 		float plotHeight = getPlotHeight();
 		float plotWidth = getPlotWidth();
@@ -469,8 +474,10 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		float ySingleSampleSize = plotHeight / dataVector.size();
 
 		float z = 0.11f;
-		gl.glBegin(GL.GL_LINE_STRIP);
-		gl.glVertex3f(leftAxisSpacing, bottomAxisSpacing + plotHeight, z);
+		List<Vec3f> linePoints = new ArrayList<>();
+		linePoints.add(new Vec3f(leftAxisSpacing, bottomAxisSpacing + plotHeight, z));
+		// gl.glBegin(GL.GL_LINE_STRIP);
+		// gl.glVertex3f(leftAxisSpacing, bottomAxisSpacing + plotHeight, z);
 
 		for (int binIndex = 0; binIndex < Math.abs(maxAxisTime); binIndex++) {
 
@@ -481,18 +488,48 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 			float y = remainingItemCount * ySingleSampleSize;
 
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
+			// gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
+			linePoints.add(new Vec3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z));
 			currentTimeBin += timeBinStepSize;
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
+			linePoints.add(new Vec3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z));
+			// gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, z);
 		}
 
-		gl.glEnd();
+		ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
+		connectionLineRenderer.setLineColor(color.getRGBA());
+		float translationZ = 0;
+		if (detailLevel == EDetailLevel.HIGH) {
+			LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(1f, pixelGLConverter, group.getLabel(),
+					textRenderer);
+			SelectionType selectionType = recordGroupSelectionManager.getHighestSelectionType(group.getID());
+			if (selectionType == SelectionType.SELECTION) {
+				translationZ = 0.1f;
+				lineLabelRenderer.setBackGroundColor(new float[] { 1, 1, 1, 1f });
+				lineLabelRenderer.setTextColor(color.getRGBA());
+			} else if (selectionType == SelectionType.MOUSE_OVER) {
+				lineLabelRenderer.setBackGroundColor(new float[] { 1, 1, 1, 1f });
+				lineLabelRenderer.setTextColor(color.getRGBA());
+				translationZ = 0.2f;
+			} else {
+				lineLabelRenderer.setBackGroundColor(new float[] { 1, 1, 1, 0.5f });
+			}
+
+			lineLabelRenderer.setAlignmentX(EAlignmentX.RIGHT);
+
+
+			lineLabelRenderer.setLabelTranslation(10, 0);
+			connectionLineRenderer.addAttributeRenderer(lineLabelRenderer);
+		}
+		gl.glPushMatrix();
+		gl.glTranslatef(0, 0, translationZ);
+		connectionLineRenderer.renderLine(gl, linePoints);
+		gl.glPopMatrix();
+		// gl.glEnd();
 	}
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedKaplanMeierView serializedForm = new SerializedKaplanMeierView();
-		serializedForm.setViewID(this.getID());
+		SerializedKaplanMeierView serializedForm = new SerializedKaplanMeierView(this);
 		return serializedForm;
 	}
 

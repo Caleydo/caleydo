@@ -47,9 +47,7 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
-public class ViewNode
-	extends ADefaultTemplateNode
-	implements IDropArea {
+public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 
 	// private TablePerspectiveListRenderer overviewTablePerspectiveRenderer;
 	protected IView representedView;
@@ -61,7 +59,7 @@ public class ViewNode
 		super(graphLayout, view, dragAndDropController, id);
 
 		this.representedView = representedView;
-		dataDomains = new HashSet<>(representedView.getDataDomains()); //local copy
+		dataDomains = new HashSet<>(representedView.getDataDomains()); // local copy
 
 		setRepresentedViewInfo();
 		// setupLayout();
@@ -137,8 +135,7 @@ public class ViewNode
 			URL iconURL = viewPlugin.getEntry(iconPath);
 			try {
 				iconPath = FileLocator.toFileURL(iconURL).getPath();
-			}
-			catch (IOException e) {
+			} catch (IOException e) {
 				new IllegalStateException("Cannot load view icon texture");
 			}
 		}
@@ -272,7 +269,11 @@ public class ViewNode
 		for (IDraggable draggable : draggables) {
 			if (draggable instanceof TablePerspectiveRenderer) {
 				TablePerspectiveRenderer tablePerspectiveRenderer = (TablePerspectiveRenderer) draggable;
-				tablePerspectives.add(tablePerspectiveRenderer.getTablePerspective());
+				if (tablePerspectiveRenderer.hasTablePerspective()) {
+					tablePerspectives.add(tablePerspectiveRenderer.createOrGetTablePerspective());
+				} else {
+
+				}
 			}
 		}
 
@@ -281,14 +282,12 @@ public class ViewNode
 			// System.out.println("Drop");
 			TablePerspective tablePerspective = tablePerspectives.get(0);
 			AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
-			event.setReceiver((ITablePerspectiveBasedView) representedView);
-			event.setSender(this);
+			event.to(representedView).from(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 			if (tablePerspective instanceof PathwayTablePerspective) {
 				dataDomains.add(((PathwayTablePerspective) tablePerspective).getPathwayDataDomain());
-			}
-			else {
+			} else {
 				dataDomains.add(tablePerspective.getDataDomain());
 			}
 			view.updateGraphEdgesOfViewNode(this);
@@ -302,9 +301,9 @@ public class ViewNode
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.util.draganddrop.IDropArea#handleDragOver
-	 * (javax.media.opengl.GL2, java.util.Set, float, float)
+	 *
+	 * @see org.caleydo.core.view.opengl.util.draganddrop.IDropArea#handleDragOver (javax.media.opengl.GL2,
+	 * java.util.Set, float, float)
 	 */
 	@Override
 	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX, float mouseCoordinateY) {
@@ -314,8 +313,8 @@ public class ViewNode
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.util.draganddrop.IDropArea#
-	 * handleDropAreaReplaced()
+	 *
+	 * @see org.caleydo.core.view.opengl.util.draganddrop.IDropArea# handleDropAreaReplaced()
 	 */
 	@Override
 	public void handleDropAreaReplaced() {

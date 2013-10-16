@@ -51,4 +51,14 @@ public interface INumericalContainer<DATA_TYPE extends Number> extends IContaine
 	 */
 	public FloatContainer log(int base);
 
+	/**
+	 * <p>
+	 * Sets the value at the specified index in the container.
+	 * </p>
+	 *
+	 * @param index
+	 * @param value
+	 */
+	public void set(int index, DATA_TYPE value);
+
 }

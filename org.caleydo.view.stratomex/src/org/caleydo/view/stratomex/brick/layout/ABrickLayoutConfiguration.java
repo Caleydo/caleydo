@@ -45,6 +45,8 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 
 	protected Integer handles = null;
 
+	protected HandleRenderer handleRenderer = null;
+
 	public ABrickLayoutConfiguration(GLBrick brick, BrickColumn brickColumn, GLStratomex stratomex) {
 		this.brick = brick;
 		this.brickColumn = brickColumn;
@@ -106,6 +108,8 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	public void setHandles(int handles) {
 		this.handles = handles;
 	}
+
+	public abstract ToolBar getToolBar();
 
 	/**
 	 * Registers PickingListeners. Should be called after the layout has been configured by a {@link IBrickConfigurer}.
@@ -299,7 +303,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	public void setSelected(boolean selected) {
 
 		if (brick.isHeaderBrick()) {
-			brickColumn.setHighlightColor(selected ? SelectionType.SELECTION.getColor().getRGBA() : null);
+			brickColumn.setHighlightColor(selected ? SelectionType.SELECTION.getColor() : null);
 			return;
 		} else {
 			if (selected) {
@@ -326,5 +330,12 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	 */
 	public ElementLayout getViewLayout() {
 		return viewLayout;
+	}
+
+	/**
+	 * @return the handleRenderer, see {@link #handleRenderer}
+	 */
+	public HandleRenderer getHandleRenderer() {
+		return handleRenderer;
 	}
 }

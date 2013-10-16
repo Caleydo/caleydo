@@ -7,15 +7,12 @@ package org.caleydo.datadomain.pathway.manager;
 
 import java.io.BufferedReader;
 
+import org.caleydo.data.loader.ITextureLoader;
 import org.xml.sax.InputSource;
 
-import com.jogamp.opengl.util.texture.Texture;
-
-public interface IPathwayResourceLoader {
+public interface IPathwayResourceLoader extends ITextureLoader {
 
 	public BufferedReader getResource(String file);
 
 	public InputSource getInputSource(String file);
-
-	public Texture getTexture(String file);
 }

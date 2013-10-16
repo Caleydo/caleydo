@@ -83,10 +83,10 @@ public class TCGARunTask extends RecursiveAction {
 		report.add("analysisRun", gson.toJsonTree(analysisRun));
 		report.add("dataRun", gson.toJsonTree(dataRun));
 		report.add("details", detailedReports);
-		report.addProperty("caleydoVersion", GeneralManager.VERSION);
+		report.addProperty("caleydoVersion", GeneralManager.VERSION.toString());
 		report.add("dataSetColors", dataSetColors);
 
 		String r = gson.toJson(report);
-		Files.write(r, new File(runSpecificOutputPath, reportJSONOutputPath), Charset.defaultCharset());
+		Files.write(r, new File(runSpecificOutputPath, reportJSONOutputPath), Charset.forName("UTF-8"));
 	}
 }

@@ -13,6 +13,7 @@ import org.caleydo.view.dvi.Edge;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.Graph;
 import org.caleydo.view.dvi.layout.edge.rendering.AEdgeRenderer;
+import org.caleydo.view.dvi.node.IDVINode;
 
 public abstract class AGraphLayout {
 
@@ -23,6 +24,11 @@ public abstract class AGraphLayout {
 	public AGraphLayout(GLDataViewIntegrator view, Graph graph) {
 		this.view = view;
 		this.graph = graph;
+	}
+
+	public void cleanupNode(IDVINode node) {
+		nodePositions.remove(node);
+		graph.removeNode(node);
 	}
 
 	public abstract void setNodePosition(Object node, Point2D position);
@@ -36,7 +42,7 @@ public abstract class AGraphLayout {
 	/**
 	 * Updates the positions of the nodes so that they do not exceed the
 	 * boundaries of the drawing area.
-	 * 
+	 *
 	 * @param area
 	 */
 	public abstract void fitNodesToDrawingArea(Rectangle2D area);
@@ -55,7 +61,7 @@ public abstract class AGraphLayout {
 	 * In this method the nodes are layouted in a computationally less expensive
 	 * way. However, {@link #layout(Rectangle2D)} has to be called before and
 	 * every time the graph structure changes.
-	 * 
+	 *
 	 * @param area The area the where the graph shall be layouted, specified in
 	 *            pixels.
 	 */

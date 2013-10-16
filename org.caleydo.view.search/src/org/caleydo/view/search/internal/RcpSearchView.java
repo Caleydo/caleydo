@@ -119,6 +119,13 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 	 */
 	private ControlDecoration nothingFound;
 
+	/**
+	 *
+	 */
+	public RcpSearchView() {
+		super(SerializedSearchView.class);
+	}
+
 	private static final Comparator<ILabelHolder> byLabel = new Comparator<ILabelHolder>() {
 		@Override
 		public int compare(ILabelHolder o1, ILabelHolder o2) {
@@ -138,10 +145,10 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		createFilterGroup(root);
 
 		this.resultsScrolled = new ScrolledComposite(root, SWT.H_SCROLL | SWT.V_SCROLL);
-		resultsScrolled.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		resultsScrolled.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
 		resultsScrolled.setExpandVertical(true);
 		resultsScrolled.setExpandHorizontal(true);
-		resultsScrolled.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));
+		// resultsScrolled.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));
 
 		results = new Composite(resultsScrolled, SWT.NONE);
 		results.setLayout(new GridLayout(1, false));
@@ -213,11 +220,12 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 			@Override
 			public void keyPressed(KeyEvent event) {
 				switch (event.keyCode) {
-				case SWT.CR: {
+				case SWT.CR:
 					if (searchButton.isEnabled())
 						search(searchText.getText(), caseSensitive.getSelection(), regexSearch.getSelection());
 					break;
-				}
+				default:
+					break;
 				}
 			}
 		});
@@ -230,7 +238,7 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		caseSensitive.setText("Case sensitive");
 
 		regexSearch = new Button(row, SWT.CHECK);
-		regexSearch.setText("Regular Expression");
+		regexSearch.setText("Regular expression");
 
 	}
 
@@ -357,6 +365,7 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		// update layouts
 		results.layout();
 		resultsScrolled.setMinSize(results.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		root.layout();
 	}
 
 	protected void deleteOldSearchResult(boolean dispose) {
@@ -375,8 +384,11 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 	 * @return
 	 */
 	private static Pattern toPattern(String query, boolean caseSensitive, boolean regexSearch) {
-		if (!regexSearch)
+		if (!regexSearch) {
+			if (query.indexOf('*') < 0)
+				query = "*" + query + "*";
 			query = starToRegex(query);
+		}
 		return Pattern.compile(query, caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
 	}
 
@@ -440,12 +452,13 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 	 */
 	private Group createResultTable(Composite composite, IDCategory category, final Map<IDType, Set<?>> foundIdTypes) {
 		Group group = new Group(results, SWT.SHADOW_ETCHED_IN);
-		final GridData gd = new GridData(SWT.FILL, SWT.TOP, true, false);
+		final GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		group.setLayoutData(gd);
 		group.setLayout(new FillLayout());
 		group.setText(category.getCategoryName());
 
-		final TableViewer viewer = new TableViewer(group, SWT.FULL_SELECTION | SWT.BORDER | SWT.VIRTUAL | SWT.NO_SCROLL);
+		final TableViewer viewer = new TableViewer(group, SWT.FULL_SELECTION | SWT.BORDER | SWT.VIRTUAL | SWT.NO_SCROLL
+				| SWT.MULTI);
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().setHeaderVisible(true);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
@@ -648,10 +661,10 @@ public final class RcpSearchView extends CaleydoRCPViewPart {
 		List<Perspective> dataDomainPerspectives = new ArrayList<>(dataDomains.size());
 		for (ATableBasedDataDomain dd : dataDomains) {
 			if (dd.getRecordIDCategory() == category)
-				dataDomainPerspectives.add(dd.getTable().getDefaultRecordPerspective());
+				dataDomainPerspectives.add(dd.getTable().getDefaultRecordPerspective(false));
 
 			if (dd.getDimensionIDCategory() == category)
-				dataDomainPerspectives.add(dd.getTable().getDefaultDimensionPerspective());
+				dataDomainPerspectives.add(dd.getTable().getDefaultDimensionPerspective(false));
 		}
 		Collections.sort(dataDomainPerspectives, byLabel);
 		return dataDomainPerspectives;

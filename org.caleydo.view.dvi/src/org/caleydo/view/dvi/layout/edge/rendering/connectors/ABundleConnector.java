@@ -59,7 +59,7 @@ public abstract class ABundleConnector
 		for (TablePerspective tablePerspective : tablePerspectives)
 		{
 			Pair<Point2D, Point2D> anchorPoints = node
-					.getBottomTablePerspectiveAnchorPoints(tablePerspective);
+					.getBottomObjectAnchorPoints(tablePerspective);
 			if (anchorPoints == null)
 				return (float) node.getPosition().getX();
 			summedX += anchorPoints.getFirst().getX() + anchorPoints.getSecond().getX();

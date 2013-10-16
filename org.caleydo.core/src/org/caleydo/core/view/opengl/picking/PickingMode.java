@@ -34,5 +34,11 @@ public enum PickingMode {
 	 * special event, when the mouse was released, supported just by {@link SimplePickingManager} and
 	 * {@link PickingManager2}
 	 */
-	MOUSE_RELEASED
+	MOUSE_RELEASED,
+
+	/**
+	 * special event, when the mouse wheel was moved, supported just by {@link SimplePickingManager} and
+	 * {@link PickingManager2}
+	 */
+	MOUSE_WHEEL
 }

@@ -2,25 +2,20 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: StratomeX View
 Bundle-SymbolicName: org.caleydo.view.stratomex;singleton:=true
-Bundle-Version: 3.0
-Require-Bundle: org.caleydo.core;bundle-version="2.2",
- org.caleydo.datadomain.genetic;bundle-version="2.2",
+Bundle-Version: 3.1.1.qualifier
+Require-Bundle: org.caleydo.core;bundle-version="3.1.1.qualifier",
+ org.caleydo.datadomain.genetic;bundle-version="3.1.1.qualifier",
  org.caleydo.datadomain.pathway
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: gleem.linalg,
- javax.media.opengl,
- org.caleydo.data.loader,
- org.caleydo.datadomain.pathway.manager,
- org.caleydo.view.pathway
 Export-Package: org.caleydo.view.stratomex,
+ org.caleydo.view.stratomex.addin,
  org.caleydo.view.stratomex.brick,
  org.caleydo.view.stratomex.brick.configurer,
  org.caleydo.view.stratomex.brick.sorting,
  org.caleydo.view.stratomex.column,
  org.caleydo.view.stratomex.event,
- org.caleydo.view.stratomex.toolbar,
- org.caleydo.view.stratomex.tourguide,
- org.caleydo.view.stratomex.tourguide.event
+ org.caleydo.view.stratomex.toolbar
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.stratomex.Activator
+Import-Package: org.caleydo.view.pathway

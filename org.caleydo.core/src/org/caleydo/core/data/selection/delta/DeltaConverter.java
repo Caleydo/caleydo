@@ -10,6 +10,7 @@ import java.util.Set;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
 
 /**
  * <p>
@@ -61,9 +62,12 @@ public class DeltaConverter {
 			throw new IllegalStateException(
 				"This type of delta is not supported by the DeltaConverter, add appropriate implementation");
 
+		IIDTypeMapper<Integer, Integer> idTypeMapper = idMappingManager.getIDTypeMapper(delta.getIDType(), targetType);
+		if (idTypeMapper == null)
+			return newDelta;
 		for (Object tempItem : delta) {
 			IDeltaItem item = (IDeltaItem) tempItem;
-			Set<Integer> tableIDs = idMappingManager.getIDAsSet(delta.getIDType(), targetType, item.getID());
+			Set<Integer> tableIDs = idTypeMapper.apply(item.getID());
 			if (tableIDs == null) {
 				continue;
 			}

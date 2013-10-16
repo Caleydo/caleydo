@@ -786,4 +786,11 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	public synchronized void setSelectionType(SelectionType selectionType) {
 		this.selectionType = selectionType;
 	}
+
+	/**
+	 * @return whether the current delta is empty or not
+	 */
+	public boolean hasSomeDelta() {
+		return !selectionDelta.isEmpty();
+	}
 }

@@ -77,6 +77,13 @@ public class TwoLayeredGraphLayout
 	}
 
 	@Override
+	public void cleanupNode(IDVINode node) {
+		this.sortedDataNodes.remove(node);
+		this.sortedViewNodes.remove(node);
+		super.cleanupNode(node);
+	}
+
+	@Override
 	public void setNodePosition(Object node, Point2D position) {
 		nodePositions.put(node, position);
 	}

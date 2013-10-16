@@ -66,9 +66,9 @@ public class TCGAQCDataSetTypeTask extends RecursiveAction {
 		JsonObject report = new JsonObject();
 		report.addProperty("analysisRun", dataSetType.getName());
 		report.add("details", detailedReports);
-		report.addProperty("caleydoVersion", GeneralManager.VERSION);
+		report.addProperty("caleydoVersion", GeneralManager.VERSION.toString());
 
 		String r = settings.getGson().toJson(report);
-		Files.write(r, new File(dataSetTypeSpecificOutputPath, dataSetType + ".json"), Charset.defaultCharset());
+		Files.write(r, new File(dataSetTypeSpecificOutputPath, dataSetType + ".json"), Charset.forName("UTF-8"));
 	}
 }
