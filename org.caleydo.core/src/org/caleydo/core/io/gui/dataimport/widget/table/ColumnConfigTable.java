@@ -194,7 +194,8 @@ public class ColumnConfigTable {
 
 			@Override
 			public void run(NatTable natTable, MouseEvent event) {
-				onSetColumnProperties.on(natTable.getColumnPositionByX(event.x) - 1);
+				int columnIndex = natTable.getColumnIndexByPosition(natTable.getColumnPositionByX(event.x));
+				onSetColumnProperties.on(columnIndex);
 			}
 		});
 
