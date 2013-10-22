@@ -304,7 +304,15 @@ public class TabularDataParser extends ATextParser {
 				if (columnDescription.getDataDescription() != null) {
 					dataDescription = columnDescription.getDataDescription();
 				}
-				String cellContent = splitLine[columnDescription.getColumn()];
+				int columnIndex = columnDescription.getColumn();
+				String cellContent = null;
+				if (columnIndex >= splitLine.length) {
+					cellContent = "NA";
+					Logger.log(new Status(IStatus.WARNING, this.toString(), "Not enough cells specified in line: "
+							+ lineCounter + ". Adding NA."));
+				} else {
+					cellContent = splitLine[columnIndex];
+				}
 
 				try {
 					switch (dataDescription.getRawDataType())
