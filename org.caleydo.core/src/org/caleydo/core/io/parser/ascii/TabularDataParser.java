@@ -291,7 +291,7 @@ public class TabularDataParser extends ATextParser {
 		while ((line = reader.readLine()) != null) {
 			// && lineInFile <= stopParsingAtLine) {
 
-			String splitLine[] = line.split(dataSetDescription.getDelimiter());
+			String splitLine[] = line.split(dataSetDescription.getDelimiter(), -1);
 
 			// id mapping
 			String id = splitLine[columnOfRowIDs];

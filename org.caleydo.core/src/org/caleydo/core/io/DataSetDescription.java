@@ -343,7 +343,7 @@ public class DataSetDescription extends MatrixDefinition {
 
 			String dataLine = reader.readLine();
 			reader.close();
-			String[] columns = dataLine.split(delimiter);
+			String[] columns = dataLine.split(delimiter, -1);
 			numberOfColumns = columns.length;
 
 		} catch (IOException e) {

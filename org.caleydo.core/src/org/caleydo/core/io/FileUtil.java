@@ -39,7 +39,7 @@ public final class FileUtil {
 		String[][] parts = new String[data.size()][];
 		int maxCol = -1;
 		for (int i = 0; i < data.size(); ++i) {
-			parts[i] = data.get(i).split(delimiter);
+			parts[i] = data.get(i).split(delimiter, -1);
 			if (parts[i].length > maxCol)
 				maxCol = parts[i].length;
 		}
