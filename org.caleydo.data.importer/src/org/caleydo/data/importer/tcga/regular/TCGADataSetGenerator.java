@@ -52,12 +52,13 @@ public class TCGADataSetGenerator extends RecursiveTask<TCGADataSets> {
 			t.add(ti);
 		}
 
-		MutSigTask mutSigTask = new MutSigTask(fileProvider);
-		t.add(mutSigTask);
+		//MutSigTask mutSigTask = new MutSigTask(fileProvider);
+		//t.add(mutSigTask);
 
 		invokeAll(t); // fork and wait
 
 		TCGADataSets result = new TCGADataSets(tumorAbbreviation.getLabel());
+		/*
 		try {
 			result.setMutsigParser(mutSigTask.get());
 		} catch (InterruptedException e) {
@@ -65,6 +66,7 @@ public class TCGADataSetGenerator extends RecursiveTask<TCGADataSets> {
 		} catch (ExecutionException e) {
 			System.err.println(e.getMessage());
 		}
+		*/
 		for (ForkJoinTask<TCGADataSet> task : tasks) {
 			try {
 				TCGADataSet ds = task.get();
