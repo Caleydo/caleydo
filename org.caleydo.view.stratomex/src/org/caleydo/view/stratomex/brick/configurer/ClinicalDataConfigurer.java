@@ -116,10 +116,9 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK.name(), layoutTemplate.getBrick().getID()));
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
-		// toolBarElements.add(createCaptionLayout(layoutTemplate, pickingIDs,
-		// layoutTemplate.getBrick().getBrickColumn()
-		// .getStratomexView()));
-		// toolBarElements.add(createSpacingLayout(layoutTemplate, true));
+//		toolBarElements.add(createCaptionLayout(layoutTemplate, pickingIDs, layoutTemplate.getBrick().getBrickColumn()
+//				.getStratomexView()));
+//		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setToolBarElements(toolBarElements);
 
@@ -130,21 +129,12 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
 		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate);
 
-		ElementLayout leftPaddingLayout = new ElementLayout("padding");
-		leftPaddingLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-		toolBarElements.add(leftPaddingLayout);
-
-		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
-
 		layoutTemplate.setToolBarElements(toolBarElements);
-
 		layoutTemplate.showFooterBar(false);
 	}
 
 	private List<ElementLayout> createHeaderBarElements(ABrickLayoutConfiguration layoutTemplate) {
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
-
-
 
 		List<Pair<String, Integer>> pickingIDs = new ArrayList<>();
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.DIMENSION_GROUP.name(), layoutTemplate
