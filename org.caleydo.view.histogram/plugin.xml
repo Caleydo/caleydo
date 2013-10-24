@@ -94,6 +94,30 @@
                </ViewCreator>
             </Embedding>
          </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.clinical.header.brick"
+                  icon="resources/icons/histogram.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.view.histogram.HistogramVisInfo">
+               <ViewCreator
+                     class="org.caleydo.view.histogram.HistogramRemoteViewCreator">
+               </ViewCreator>
+            </Embedding>
+         </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.clinical.segment.brick"
+                  icon="resources/icons/histogram.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.view.histogram.HistogramVisInfo">
+               <ViewCreator
+                     class="org.caleydo.view.histogram.HistogramRemoteViewCreator">
+               </ViewCreator>
+            </Embedding>
+         </ParentView>
       </EmbeddingInfo>
    </extension>
    <extension

@@ -49,8 +49,8 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 
 	protected TablePerspective tablePerspective;
 
-	public ATableBasedDataConfigurer(TablePerspective dimensionGroupData) {
-		this.tablePerspective = dimensionGroupData;
+	public ATableBasedDataConfigurer(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 
 	protected ArrayList<ElementLayout> createHeaderBarElements(HeaderBrickLayoutTemplate layoutTemplate) {
