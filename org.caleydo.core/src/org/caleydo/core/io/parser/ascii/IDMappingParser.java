@@ -40,6 +40,8 @@ public class IDMappingParser extends ATextParser {
 
 	protected final IDMappingManager idMappingManager;
 
+	public static final String TAB = "\t";
+
 	/** Defines the token separator. TAB is default. */
 	protected String tokenSeparator = TAB;
 
@@ -100,7 +102,7 @@ public class IDMappingParser extends ATextParser {
 	 * Constructor.
 	 */
 	private IDMappingParser(IDCategory idCategory, String fileName, MappingType mappingType) {
-		super(fileName);
+		super(fileName, null);
 
 		this.mappingType = mappingType;
 		this.idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idCategory);

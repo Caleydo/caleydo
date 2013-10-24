@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.MatrixDefinition;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.data.loader.ResourceLoader;
@@ -24,11 +25,13 @@ import org.eclipse.core.runtime.Status;
  */
 public abstract class ATextParser {
 
-	public static final String SPACE = " ";
-	public static final String SEMICOLON = ";";
-	public static final String TAB = "\t";
 
-	/** The path of the file to parse */
+	/**
+	 * The path of the file to parse
+	 *
+	 * @deprecated should be replaced with the matrixDefinition
+	 */
+	@Deprecated
 	protected final String filePath;
 
 	/**
@@ -53,16 +56,16 @@ public abstract class ATextParser {
 	 */
 	protected int stopParsingAtLine = Integer.MAX_VALUE;
 
+	/** The meta-data about the file */
+	private MatrixDefinition matrixDefinition;
+
 	/**
 	 * Constructor.
 	 */
-	public ATextParser(final String fileName) {
-		this(fileName, GeneralManager.get().getResourceLoader());
-	}
-
-	public ATextParser(final String fileName, ResourceLoader loader) {
-		this.filePath = fileName;
-		this.loader = loader;
+	public ATextParser(final String filePath, MatrixDefinition matrixDefinition) {
+		this.filePath = filePath;
+		this.loader = GeneralManager.get().getResourceLoader();
+		this.matrixDefinition = matrixDefinition;
 	}
 
 	/**
@@ -94,9 +97,39 @@ public abstract class ATextParser {
 	 */
 	protected final int calculateNumberOfLinesInFile() {
 		try {
-			LineNumberReader lnr = new LineNumberReader(loader.getResource(filePath));
-			lnr.skip(Long.MAX_VALUE);
-			numberOfLinesInFile = lnr.getLineNumber();
+			LineNumberReader lnr;
+			lnr = new LineNumberReader(loader.getResource(filePath));
+
+			// no checks for the header lines - they can contain arbitrary stuff.
+			if (matrixDefinition != null) {
+				for (int lineCount = 0; lineCount < matrixDefinition.getNumberOfHeaderLines(); lineCount++) {
+					lnr.readLine();
+				}
+			}
+			String line = null;
+			while (true) {
+				line = lnr.readLine();
+				if (line == null || line.isEmpty()) {
+					numberOfLinesInFile = lnr.getLineNumber() - 1;
+					if (line == null) {
+						numberOfLinesInFile++;
+					}
+					break;
+				}
+			}
+			// checking whether there is still some stuff (other than empty lines) after we encountered and empty line
+			while (true) {
+				line = lnr.readLine();
+				if (line == null) {
+					break;
+				}
+				if (!line.isEmpty()) {
+					lnr.close();
+					System.out.println("Fail" + numberOfLinesInFile);
+					throw new IllegalStateException("File has empty line at line number " + numberOfLinesInFile + 1
+							+ "\n File: " + matrixDefinition.getDataSourcePath());
+				}
+			}
 			lnr.close();
 
 		} catch (IOException ioe) {
@@ -133,8 +166,8 @@ public abstract class ATextParser {
 		return true;
 	}
 
-	protected void parseFile(BufferedReader reader) throws IOException {
-	}
+
+	protected abstract void parseFile(BufferedReader reader) throws IOException;
 
 	/**
 	 * Converts a sourceID based on the {@link IDTypeParsingRules} specified and returns a new string with the converted

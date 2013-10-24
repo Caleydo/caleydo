@@ -62,14 +62,14 @@ public class TabularDataParser extends ATextParser {
 	/** The {@link ATableBasedDataDomain} for which the file is loaded */
 	private ATableBasedDataDomain dataDomain;
 
-	/** The {@link DataSetDescription} on which the loading of the file is based */
+	/** The metadata about the file to parse */
 	private DataSetDescription dataSetDescription;
 
 	/**
 	 * Constructor.
 	 */
 	public TabularDataParser(ATableBasedDataDomain dataDomain, DataSetDescription dataSetDescription) {
-		super(dataSetDescription.getDataSourcePath());
+		super(dataSetDescription.getDataSourcePath(), dataSetDescription);
 
 		this.dataDomain = dataDomain;
 		this.dataSetDescription = dataSetDescription;

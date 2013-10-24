@@ -40,7 +40,7 @@ public class GroupingParser extends ATextParser {
 	private ArrayList<PerspectiveInitializationData> perspectiveInitializationDatas;
 
 	public GroupingParser(GroupingParseSpecification groupingSpecifications, IDType targetIDType) {
-		super(groupingSpecifications.getDataSourcePath());
+		super(groupingSpecifications.getDataSourcePath(), groupingSpecifications);
 		this.groupingSpecifications = groupingSpecifications;
 		this.targetIDType = targetIDType;
 	}
