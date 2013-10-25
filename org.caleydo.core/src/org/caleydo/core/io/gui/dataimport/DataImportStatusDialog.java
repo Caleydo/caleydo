@@ -52,11 +52,15 @@ public class DataImportStatusDialog extends AStatusDialog {
 		statusLabel.setLayoutData(gd);
 		statusLabel.setText("The file " + fileName + " was imported successfully!");
 		for (Pair<String, String> attribute : attributes) {
-			Label attributeLabel = new Label(parentComposite, SWT.NONE);
+			Label attributeLabel = new Label(parentComposite, SWT.NONE | SWT.WRAP);
+			gd = new GridData(SWT.FILL, SWT.FILL, false, false);
+			gd.widthHint = 320;
+			attributeLabel.setLayoutData(gd);
 			attributeLabel.setText(attribute.getFirst());
 			FontUtil.makeBold(attributeLabel);
 
-			Label valueLabel = new Label(parentComposite, SWT.NONE);
+			Label valueLabel = new Label(parentComposite, SWT.RIGHT);
+			valueLabel.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false));
 			valueLabel.setText(attribute.getSecond());
 		}
 		return super.createDialogArea(parent);
