@@ -54,7 +54,7 @@ public class LoadFileWidget {
 		FileDialog fileDialog = new FileDialog(new Shell());
 		fileDialog.setText("Open");
 		// fileDialog.setFilterPath(filePath);
-		String[] filterExt = { "*.csv;*.txt;*.gct", "*.*" };
+		String[] filterExt = { "*.csv;*.txt;*.gct;*.tsv", "*.*" };
 		fileDialog.setFilterExtensions(filterExt);
 
 		String inputFileName = fileDialog.open();
