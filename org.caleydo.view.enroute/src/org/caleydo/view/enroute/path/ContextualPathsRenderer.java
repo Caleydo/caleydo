@@ -336,7 +336,13 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		}
 
 		Set<APathwayPathRenderer> renderersToRemove = new HashSet<>(renderers.keySet());
-		renderersToRemove.remove(selectedPathRenderer);
+		for (PathwayVertexRep vertexRep : PathUtil.flattenSegments(selectedPathSegments)) {
+			for (APathwayPathRenderer renderer : renderers.keySet()) {
+				if (PathUtil.containsVertexRep(renderer.pathSegments, vertexRep)) {
+					renderersToRemove.remove(renderer);
+				}
+			}
+		}
 
 		for (PathwayVertexRep vertexRep : vertexReps) {
 			boolean createNewPath = true;
@@ -409,44 +415,44 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 		List<List<PathwayVertexRep>> selectedPathSegments = event.getPathSegmentsAsVertexList();
 
-		if (isFreePathSelectionMode) {
-			List<PathwayVertexRep> selectedPathVertexReps = PathUtil.flattenSegments(selectedPathSegments);
-			boolean allVerticesShown = true;
-			for (PathwayVertexRep vertexRep : selectedPathVertexReps) {
-				if (vertexRep.getPathway() == pathway) {
-					boolean vertexShown = false;
-					for (APathwayPathRenderer renderer : renderers.keySet()) {
-						List<PathwayVertexRep> currentPathVertexReps = PathUtil.flattenSegments(renderer.pathSegments);
-						if (currentPathVertexReps.contains(vertexRep)) {
-							vertexShown = true;
-							break;
-						}
-					}
-					if (!vertexShown) {
-						allVerticesShown = false;
+		// if (isFreePathSelectionMode) {
+		List<PathwayVertexRep> selectedPathVertexReps = PathUtil.flattenSegments(selectedPathSegments);
+		boolean allVerticesShown = true;
+		for (PathwayVertexRep vertexRep : selectedPathVertexReps) {
+			if (vertexRep.getPathway() == pathway) {
+				boolean vertexShown = false;
+				for (APathwayPathRenderer renderer : renderers.keySet()) {
+					List<PathwayVertexRep> currentPathVertexReps = PathUtil.flattenSegments(renderer.pathSegments);
+					if (currentPathVertexReps.contains(vertexRep)) {
+						vertexShown = true;
 						break;
 					}
 				}
-			}
-			if (allVerticesShown)
-				return;
-		} else {
-			boolean isSelectedPathShown = false;
-			if (selectedPathRenderer != null) {
-				isSelectedPathShown = PathUtil.isPathShown(selectedPathRenderer.pathSegments, selectedPathSegments,
-						pathway);
-				if (isSelectedPathShown)
-					return;
-			}
-
-			for (APathwayPathRenderer renderer : renderers.keySet()) {
-				isSelectedPathShown = PathUtil.isPathShown(renderer.pathSegments, selectedPathSegments, pathway);
-				if (isSelectedPathShown) {
-					selectedPathRenderer = renderer;
-					return;
+				if (!vertexShown) {
+					allVerticesShown = false;
+					break;
 				}
 			}
 		}
+		if (allVerticesShown)
+			return;
+		// } else {
+		// boolean isSelectedPathShown = false;
+		// if (selectedPathRenderer != null) {
+		// isSelectedPathShown = PathUtil.isPathShown(selectedPathRenderer.pathSegments, selectedPathSegments,
+		// pathway);
+		// if (isSelectedPathShown)
+		// return;
+		// }
+		//
+		// for (APathwayPathRenderer renderer : renderers.keySet()) {
+		// isSelectedPathShown = PathUtil.isPathShown(renderer.pathSegments, selectedPathSegments, pathway);
+		// if (isSelectedPathShown) {
+		// selectedPathRenderer = renderer;
+		// return;
+		// }
+		// }
+		// }
 
 		APathwayPathRenderer pathRendererWithMostEqualNodes = null;
 		int maxEqualVertices = 0;

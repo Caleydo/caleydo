@@ -22,9 +22,12 @@ package org.caleydo.view.entourage;
 import gleem.linalg.Vec2f;
 
 import java.awt.geom.Rectangle2D;
+import java.security.InvalidParameterException;
 import java.util.Set;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.EventPublisher;
@@ -66,6 +69,8 @@ public class LinkRenderer extends PickableGLElement {
 			PathwayMultiFormInfo info1, PathwayMultiFormInfo info2, float stubSize, boolean isLocation1Window,
 			boolean isLocation2Window, boolean isContextLink, boolean isPathLink, PathwayVertexRep vertexRep1,
 			PathwayVertexRep vertexRep2, ColoredConnectionBandRenderer newBandRenderer) {
+		if (loc1 == null || loc2 == null)
+			throw new InvalidParameterException("One of the specified link locations was null");
 		this.loc1 = loc1;
 		this.loc2 = loc2;
 		this.drawLink = drawLink;
@@ -206,7 +211,6 @@ public class LinkRenderer extends PickableGLElement {
 		float dir_endX = ex;
 		float dir_endY = ey;
 		Vec2f dir = new Vec2f(dir_startX - dir_endX, dir_startY - dir_endY);
-		;
 
 		hline.normalize();
 		dir.normalize();
@@ -220,12 +224,12 @@ public class LinkRenderer extends PickableGLElement {
 		bandWidth = Math.min((float) loc1.getHeight(), (float) loc2.getHeight()) / 4.0f;
 		stubLength = Math.min((float) loc1.getWidth(), (float) loc2.getWidth());
 		// // prepare rendering
-		gl.glEnable(GL2.GL_BLEND);
-		gl.glEnable(GL2.GL_LINE_SMOOTH);
-		gl.glEnable(GL2.GL_POLYGON_SMOOTH);
-		gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_NICEST);
-		gl.glHint(GL2.GL_POLYGON_SMOOTH_HINT, GL2.GL_NICEST);
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glEnable(GL.GL_LINE_SMOOTH);
+		gl.glEnable(GL2GL3.GL_POLYGON_SMOOTH);
+		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
+		gl.glHint(GL2GL3.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		// //
 
 		// node highlights
@@ -261,7 +265,6 @@ public class LinkRenderer extends PickableGLElement {
 		float angleThreshold = 0.8f;
 		// //////////////////////////////////
 		int whichConnector = 1;
-		boolean isLocationAWithinBoundsofB = false;
 		if (loc1.getX() < loc2.getX() && loc1.getX() + loc1.getWidth() < loc2.getX()) {
 			// RIGHT / LEFT CONNECTOR
 			whichConnector = 2;
@@ -284,9 +287,6 @@ public class LinkRenderer extends PickableGLElement {
 			renderSrcStub = false;
 		}
 
-		float tmpR = bandColor[0];
-		float tmpG = bandColor[1];
-		float tmpB = bandColor[2];
 		float angle = 0.0f;
 		switch (whichConnector) {
 		default:
@@ -344,7 +344,7 @@ public class LinkRenderer extends PickableGLElement {
 		}
 
 		// // clean up
-		gl.glDisable(GL2.GL_POLYGON_SMOOTH);
+		gl.glDisable(GL2GL3.GL_POLYGON_SMOOTH);
 	}
 
 	protected void renderLeftOffsetStub(GL2 gl, Rectangle2D loc, Rectangle2D locTarget, boolean isWindow,
@@ -495,9 +495,6 @@ public class LinkRenderer extends PickableGLElement {
 		// }
 		//
 
-		float byS = p01Y + (float) loc.getHeight();
-		float byE = p00Y + (float) loc.getHeight();
-
 		if (locTarget.getY() > loc.getY()) { // top tp bottom
 			yS = (float) loc.getY() + (float) loc.getHeight();
 			yE = (float) locTarget.getY();
@@ -506,7 +503,7 @@ public class LinkRenderer extends PickableGLElement {
 			yE = (float) locTarget.getY() + (float) locTarget.getHeight();
 		}
 		if (true) {
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			gl.glColor4f(red, green, blue, this.outlineOpacity);
 			gl.glVertex3f(p00X, p00Y, z);
 			gl.glColor4f(red, green, blue, fadeToOpacity);
@@ -527,7 +524,7 @@ public class LinkRenderer extends PickableGLElement {
 
 			gl.glEnd();
 
-			gl.glBegin(GL2.GL_QUADS);
+			gl.glBegin(GL2GL3.GL_QUADS);
 			gl.glColor4f(red, green, blue, linkOpacity);
 			gl.glVertex3f(p00X, p00Y, z);
 			gl.glVertex3f(p01X, p01Y, z);
@@ -717,9 +714,6 @@ public class LinkRenderer extends PickableGLElement {
 		// }
 		//
 
-		float byS = p01Y + (float) loc.getHeight();
-		float byE = p00Y + (float) loc.getHeight();
-
 		if (locTarget.getY() > loc.getY()) { // top tp bottom
 			yS = (float) loc.getY() + (float) loc.getHeight();
 			yE = (float) locTarget.getY();
@@ -728,7 +722,7 @@ public class LinkRenderer extends PickableGLElement {
 			yE = (float) locTarget.getY() + (float) locTarget.getHeight();
 		}
 
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glColor4f(red, green, blue, this.outlineOpacity);
 		gl.glVertex3f(p00X, p00Y, z);
 		gl.glColor4f(red, green, blue, fadeToOpacity);
@@ -749,7 +743,7 @@ public class LinkRenderer extends PickableGLElement {
 
 		gl.glEnd();
 
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glColor4f(red, green, blue, linkOpacity);
 		gl.glVertex3f(p00X, p00Y, z);
 		gl.glVertex3f(p01X, p01Y, z);
@@ -886,7 +880,7 @@ public class LinkRenderer extends PickableGLElement {
 		if (fadeToOpacity < linkOpacity && !renderStub)
 			return;
 
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glColor4f(red, green, blue, this.outlineOpacity);
 		gl.glVertex3f(p00X, p00Y, z);
 		gl.glColor4f(red, green, blue, fadeToOpacity);
@@ -897,7 +891,7 @@ public class LinkRenderer extends PickableGLElement {
 		gl.glColor4f(red, green, blue, fadeToOpacity);
 		gl.glVertex3f(stubConnectionPointE_X, stubConnectionPointE_Y, z);
 		gl.glEnd();
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glColor4f(red, green, blue, linkOpacity);
 		gl.glVertex3f(p00X, p00Y, z);
 		gl.glVertex3f(p01X, p01Y, z);
@@ -1005,7 +999,7 @@ public class LinkRenderer extends PickableGLElement {
 		if (fadeToOpacity < linkOpacity && !renderStub)
 			return;
 
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glColor4f(red, green, blue, this.outlineOpacity);
 		gl.glVertex3f(p00X, p00Y, z);
 		gl.glColor4f(red, green, blue, fadeToOpacity);
@@ -1016,7 +1010,7 @@ public class LinkRenderer extends PickableGLElement {
 		gl.glColor4f(red, green, blue, fadeToOpacity);
 		gl.glVertex3f(stubConnectionPoint2_X, stubConnectionPoint2_Y, z);
 		gl.glEnd();
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glColor4f(red, green, blue, linkOpacity);
 		gl.glVertex3f(p00X, p00Y, z);
 		gl.glVertex3f(p01X, p01Y, z);
@@ -1027,7 +1021,7 @@ public class LinkRenderer extends PickableGLElement {
 		// gl.glDisable(GL2.GL_BLEND);
 		if (isWindow) {
 			float zn = 0.35f;
-			gl.glBegin(GL2.GL_QUADS);
+			gl.glBegin(GL2GL3.GL_QUADS);
 			gl.glColor4f(red, green, blue, linkOpacity);
 			// gl.glColor4f(1f, 0f,0f,1f);
 			gl.glVertex3f(p00X, p00Y, zn);
@@ -1037,7 +1031,7 @@ public class LinkRenderer extends PickableGLElement {
 			gl.glVertex3f(p00X - (float) loc.getHeight() / 1.0f, p00Y, zn);
 			gl.glEnd();
 			zn = 2f;
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			gl.glColor4f(red, green, blue, this.outlineOpacity);
 			// gl.glColor4f(1f, 0f,0f,1f);
 			gl.glVertex3f(p01X, p01Y, zn);
@@ -1140,7 +1134,7 @@ public class LinkRenderer extends PickableGLElement {
 		if (fadeToOpacity < linkOpacity && !renderStub)
 			return;
 
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glColor4f(red, green, blue, this.outlineOpacity);
 		gl.glVertex3f(p00X, p00Y, z);
 		gl.glColor4f(red, green, blue, fadeToOpacity);
@@ -1151,7 +1145,7 @@ public class LinkRenderer extends PickableGLElement {
 		gl.glColor4f(red, green, blue, fadeToOpacity);
 		gl.glVertex3f(stubConnectionPointE_X, stubConnectionPointE_Y, z);
 		gl.glEnd();
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glColor4f(red, green, blue, linkOpacity);
 		gl.glVertex3f(p00X, p00Y, z);
 		gl.glVertex3f(p01X, p01Y, z);
@@ -1197,8 +1191,6 @@ public class LinkRenderer extends PickableGLElement {
 		if (isWindow && !this.drawLink) {
 			Pair<PathwayMultiFormInfo, PathwayMultiFormInfo> windowPair = new Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>(
 					info, infoTarget);
-			Pair<PathwayMultiFormInfo, PathwayMultiFormInfo> windowPairRev = new Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>(
-					infoTarget, info);
 
 			// xE = (float)loc.getX()+(float)locTarget.getHeight()/2.0f;;
 			// z=0.5f;
@@ -1261,7 +1253,7 @@ public class LinkRenderer extends PickableGLElement {
 
 		if (fadeToOpacity < linkOpacity && !renderStub)
 			return;
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glColor4f(red, green, blue, this.outlineOpacity);
 		gl.glVertex3f(p10X, p10Y, z);
 		gl.glColor4f(red, green, blue, fadeToOpacity);
@@ -1272,7 +1264,7 @@ public class LinkRenderer extends PickableGLElement {
 		gl.glColor4f(red, green, blue, fadeToOpacity);
 		gl.glVertex3f(stubConnectionPoint4_X, stubConnectionPoint4_Y, z);
 		gl.glEnd();
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glColor4f(red, green, blue, linkOpacity);
 		gl.glVertex3f(p10X, p10Y, z);
 		gl.glVertex3f(p11X, p11Y, z);
@@ -1282,7 +1274,7 @@ public class LinkRenderer extends PickableGLElement {
 		gl.glEnd();
 		if (isWindow) {
 			float zn = 0.35f;
-			gl.glBegin(GL2.GL_QUADS);
+			gl.glBegin(GL2GL3.GL_QUADS);
 			gl.glColor4f(red, green, blue, linkOpacity);
 			// gl.glColor4f(1f, 0f,0f,1f);
 			gl.glVertex3f(p10X, p10Y, zn);
@@ -1292,7 +1284,7 @@ public class LinkRenderer extends PickableGLElement {
 			gl.glVertex3f(p10X + (float) loc.getHeight() * 1.5f, p10Y, zn);
 			gl.glEnd();
 			zn = 2f;
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			gl.glColor4f(red, green, blue, this.outlineOpacity);
 			// gl.glColor4f(1f, 0f,0f,1f);
 
@@ -1311,7 +1303,7 @@ public class LinkRenderer extends PickableGLElement {
 	protected void connectStubs(GL2 gl) {
 		// outline
 		gl.glColor4f(bandColor[0], bandColor[1], bandColor[2], this.outlineOpacity);
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(stubConnectionPoint1_X, stubConnectionPoint1_Y, z);
 		gl.glVertex3f(stubConnectionPoint3_X, stubConnectionPoint3_Y, z);
 		//
@@ -1320,7 +1312,7 @@ public class LinkRenderer extends PickableGLElement {
 		gl.glEnd();
 
 		gl.glColor4f(bandColor[0], bandColor[1], bandColor[2], linkOpacity);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glVertex3f(stubConnectionPoint1_X, stubConnectionPoint1_Y, z);
 		gl.glVertex3f(stubConnectionPoint3_X, stubConnectionPoint3_Y, z);
 		gl.glVertex3f(stubConnectionPoint4_X, stubConnectionPoint4_Y, z);
