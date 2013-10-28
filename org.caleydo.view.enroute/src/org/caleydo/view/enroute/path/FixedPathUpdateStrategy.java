@@ -7,6 +7,7 @@ package org.caleydo.view.enroute.path;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.MinSizeUpdateEvent;
@@ -23,7 +24,7 @@ import org.caleydo.view.enroute.path.node.ComplexNode;
 
 /**
  * @author Christian
- * 
+ *
  */
 public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 
@@ -116,7 +117,12 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 	public void nodesCreated() {
 		for (ALinearizableNode node : renderer.pathNodes) {
 			node.addPickingListener(new PathSelectionPickingListener(node));
+			if (selectedPathStartNode != null
+					&& node.getVertexReps().containsAll(selectedPathStartNode.getVertexReps())) {
+				selectedPathStartNode = node;
+			}
 		}
+
 	}
 
 	protected class PathSelectionPickingListener extends APickingListener {
@@ -143,7 +149,7 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 			if (isPathSelectionMode) {
 				ALinearizableNode currentNode = node;
 				ComplexNode parent = node.getParentNode();
-				if(parent != null)
+				if (parent != null)
 					currentNode = parent;
 				isSelectedPathContinuation = false;
 				if (!selectedPathSegments.isEmpty()) {
@@ -178,12 +184,13 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 			if (isPathSelectionMode) {
 				ALinearizableNode currentNode = node;
 				ComplexNode parent = node.getParentNode();
-				if(parent != null)
+				if (parent != null)
 					currentNode = parent;
 				createNewPathSelection = selectedPathSegments.isEmpty();
 
 				if (contextualPathsRenderer.isShiftKeyPressed()) {
-					PathwayVertexRep vertexRep = currentNode.getVertexReps().get(currentNode.getVertexReps().size() - 1);
+					PathwayVertexRep vertexRep = currentNode.getVertexReps()
+							.get(currentNode.getVertexReps().size() - 1);
 
 					if (!selectedPathSegments.isEmpty()) {
 						List<PathwayVertexRep> lastSegment = selectedPathSegments.get(selectedPathSegments.size() - 1);
@@ -238,10 +245,11 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 
 	@Override
 	public boolean isPathChangePermitted(List<List<PathwayVertexRep>> newPath) {
-		if (renderer != contextualPathsRenderer.getSelectedPathRenderer())
+		Set<PathwayVertexRep> commonVertices = PathUtil.getCommonVertices(selectedPathSegments, renderer.pathSegments);
+		if (commonVertices.isEmpty())
 			return true;
-
-		if (PathUtil.isPathShown(newPath, selectedPathSegments, renderer.pathway))
+		List<PathwayVertexRep> newPathFlat = PathUtil.flattenSegments(newPath);
+		if (newPathFlat.containsAll(commonVertices))
 			return true;
 		return false;
 	}
