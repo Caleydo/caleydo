@@ -213,6 +213,9 @@ public class AddGroupingsPageMediator {
 			dataSetDescription.setRowGroupingSpecifications(rowGroupingSpecifications);
 		}
 
+		page.rowGroupingsGroup.setText(dataSetDescription.getRowIDSpecification().getIdCategory() + " Groupings");
+		page.columnGroupingsGroup.setText(dataSetDescription.getColumnIDSpecification().getIdCategory() + " Groupings");
+
 		guiCreated();
 
 	}
