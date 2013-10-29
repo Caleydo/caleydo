@@ -65,7 +65,8 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 
 		numericalDataPropertiesWidget = new NumericalDataPropertiesCollectionWidget(parentComposite, this, EnumSet.of(
 				ENumericalDataProperties.CLIPPING, ENumericalDataProperties.DATA_CENTER,
-				ENumericalDataProperties.SCALING, ENumericalDataProperties.IMPUTATION));
+				ENumericalDataProperties.SCALING, ENumericalDataProperties.IMPUTATION,
+				ENumericalDataProperties.Z_SCORE_NORMALIZATION));
 
 		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, getWizard(),
 				dataSetDescription.isTransposeMatrix());
@@ -112,6 +113,8 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 			numericalDataPropertiesWidget.setDataType(dataSetDescription.getDataDescription().getRawDataType());
 			initFromDataDescription = false;
 		}
+		numericalDataPropertiesWidget.dataSetDescriptionUpdated(dataSetDescription);
+
 		getWizard().setChosenDataTypePage(this);
 		getWizard().getContainer().updateButtons();
 		dataTranspositionWidget.update();

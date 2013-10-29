@@ -70,6 +70,8 @@ public class ImputationWidgets implements INumericalDataPropertiesWidgets {
 	public void setProperties(NumericalProperties numericalProperties) {
 		if (useImputationButton.getSelection()) {
 			numericalProperties.setImputeDescription(new KNNImputeDescription());
+		} else {
+			numericalProperties.setImputeDescription(null);
 		}
 	}
 

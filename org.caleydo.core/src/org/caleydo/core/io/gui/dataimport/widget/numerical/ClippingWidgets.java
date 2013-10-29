@@ -69,12 +69,12 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 	public void create(Composite parent, Listener listener) {
 		clippingGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		clippingGroup.setText("Data Clipping");
-		clippingGroup.setLayout(new GridLayout(2, false));
+		clippingGroup.setLayout(new GridLayout(2, true));
 		clippingGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		minMaxClippingButton = new Button(clippingGroup, SWT.RADIO);
 		minMaxClippingButton.setText("Minimum/Maximum Value Clipping");
-		minMaxClippingButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, true, false, 2, 1));
+		minMaxClippingButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, true, false));
 		minMaxClippingButton.addListener(SWT.Selection, listener);
 		minMaxClippingButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -83,14 +83,33 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 			}
 		});
 
-		minMaxClippingExplanationLabel = new Label(clippingGroup, SWT.WRAP);
+		stdDevClippingButton = new Button(clippingGroup, SWT.RADIO);
+		stdDevClippingButton.setText("Standard Deviation Clipping");
+		stdDevClippingButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, true, false));
+		stdDevClippingButton.addListener(SWT.Selection, listener);
+		stdDevClippingButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				useMinMaxClipping(false);
+			}
+		});
+
+		Composite minMaxComposite = new Composite(clippingGroup, SWT.NONE);
+		minMaxComposite.setLayout(new GridLayout(2, false));
+		minMaxComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+		Composite stdDevComposite = new Composite(clippingGroup, SWT.NONE);
+		stdDevComposite.setLayout(new GridLayout(2, false));
+		stdDevComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+		minMaxClippingExplanationLabel = new Label(minMaxComposite, SWT.WRAP);
 		minMaxClippingExplanationLabel
 				.setText("Specify the value range for the dataset using a minimum and/or maximum value. This can be used to specify bounds in the data. For example, if you want to see your data relative to 0 but all data points are greater than 0 you should specify 0 here as the minimum. You can also use this to clip your data. If you, for example, select '3' as the maximum every data point exceeding this range will be clipped to '3' for display.");
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gridData.widthHint = 200;
 		minMaxClippingExplanationLabel.setLayoutData(gridData);
 
-		maxButton = new Button(clippingGroup, SWT.CHECK);
+		maxButton = new Button(minMaxComposite, SWT.CHECK);
 		maxButton.setText("Max");
 		maxButton.addListener(SWT.Selection, listener);
 		maxButton.addSelectionListener(new SelectionAdapter() {
@@ -101,12 +120,12 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 			}
 		});
 
-		maxTextField = new Text(clippingGroup, SWT.BORDER);
+		maxTextField = new Text(minMaxComposite, SWT.BORDER);
 		maxTextField.addListener(SWT.Modify, listener);
 		maxTextField.setEnabled(false);
 		maxButton.setEnabled(true);
 
-		minButton = new Button(clippingGroup, SWT.CHECK);
+		minButton = new Button(minMaxComposite, SWT.CHECK);
 		minButton.setText("Min");
 		minButton.addListener(SWT.Selection, listener);
 		minButton.addSelectionListener(new SelectionAdapter() {
@@ -116,31 +135,22 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 			}
 		});
 
-		minTextField = new Text(clippingGroup, SWT.BORDER);
+		minTextField = new Text(minMaxComposite, SWT.BORDER);
 		minTextField.addListener(SWT.Modify, listener);
 		minTextField.setEnabled(false);
 
-		stdDevClippingButton = new Button(clippingGroup, SWT.RADIO);
-		stdDevClippingButton.setText("Standard Deviation Clipping");
-		stdDevClippingButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, true, false, 2, 1));
-		stdDevClippingButton.addListener(SWT.Selection, listener);
-		stdDevClippingButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				useMinMaxClipping(false);
-			}
-		});
 
-		stdDevClippingExplanationLabel = new Label(clippingGroup, SWT.WRAP);
+
+		stdDevClippingExplanationLabel = new Label(stdDevComposite, SWT.WRAP);
 		stdDevClippingExplanationLabel
 				.setText("Specify the value range for the dataset using a scaling factor for the standard deviation of values in this dataset. All data points above mean value + (scaling factor * standard deviation) and mean value - (scaling factor * standard deviation) will be clipped.");
 		gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gridData.widthHint = 200;
 		stdDevClippingExplanationLabel.setLayoutData(gridData);
 
-		stdDevFactorLabel = new Label(clippingGroup, SWT.NONE);
+		stdDevFactorLabel = new Label(stdDevComposite, SWT.NONE);
 		stdDevFactorLabel.setText("Standard Deviation Scaling Factor");
-		stdDevFactorTextField = new Text(clippingGroup, SWT.BORDER);
+		stdDevFactorTextField = new Text(stdDevComposite, SWT.BORDER);
 		stdDevFactorTextField.addListener(SWT.Modify, listener);
 		stdDevFactorTextField.setEnabled(false);
 
@@ -270,7 +280,12 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 					numericalProperties.setClipToStdDevFactor(factor);
 				}
 			}
+		} else {
+			numericalProperties.setMin(null);
+			numericalProperties.setMax(null);
+			numericalProperties.setClipToStdDevFactor(null);
 		}
+
 	}
 
 	@Override

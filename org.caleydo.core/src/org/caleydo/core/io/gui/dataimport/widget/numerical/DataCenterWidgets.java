@@ -104,6 +104,8 @@ public class DataCenterWidgets implements INumericalDataPropertiesWidgets {
 	public void setProperties(NumericalProperties numericalProperties) {
 		if (useDataCenterButton.getSelection()) {
 			numericalProperties.setDataCenter(Double.parseDouble(dataCenterTextField.getText()));
+		} else {
+			numericalProperties.setDataCenter(null);
 		}
 	}
 
