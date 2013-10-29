@@ -31,7 +31,10 @@ import org.eclipse.swt.widgets.Listener;
 public class NumericalDataPropertiesCollectionWidget {
 
 	public static enum ENumericalDataProperties {
-		SCALING(ScalingWidgets.class), CLIPPING(ClippingWidgets.class), DATA_CENTER(DataCenterWidgets.class);
+		SCALING(ScalingWidgets.class),
+		CLIPPING(ClippingWidgets.class),
+		DATA_CENTER(DataCenterWidgets.class),
+		IMPUTATION(ImputationWidgets.class);
 
 		private Class<? extends INumericalDataPropertiesWidgets> propertiesWidgetClass;
 

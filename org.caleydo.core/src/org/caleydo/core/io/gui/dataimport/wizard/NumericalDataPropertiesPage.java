@@ -65,7 +65,7 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 
 		numericalDataPropertiesWidget = new NumericalDataPropertiesCollectionWidget(parentComposite, this, EnumSet.of(
 				ENumericalDataProperties.CLIPPING, ENumericalDataProperties.DATA_CENTER,
-				ENumericalDataProperties.SCALING));
+				ENumericalDataProperties.SCALING, ENumericalDataProperties.IMPUTATION));
 
 		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, getWizard(),
 				dataSetDescription.isTransposeMatrix());
