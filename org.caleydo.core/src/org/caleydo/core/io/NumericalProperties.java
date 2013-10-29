@@ -127,7 +127,7 @@ public class NumericalProperties {
 	 *            setter, see {@link #min}
 	 */
 	public void setMin(Float min) {
-		if (clipToStdDevFactor != null)
+		if (clipToStdDevFactor != null && min != null)
 			throw new IllegalStateException("Can't set min/max at the same time as std-dev based clipping.");
 		this.min = min;
 	}
@@ -144,7 +144,7 @@ public class NumericalProperties {
 	 *            setter, see {@link #max}
 	 */
 	public void setMax(Float max) {
-		if (clipToStdDevFactor != null)
+		if (clipToStdDevFactor != null && max != null)
 			throw new IllegalStateException("Can't set min/max at the same time as std-dev based clipping.");
 		this.max = max;
 	}
@@ -161,7 +161,7 @@ public class NumericalProperties {
 	 *            setter, see {@link clipToStdDevFactor}
 	 */
 	public void setClipToStdDevFactor(Float clipToStdDevFactor) {
-		if (min != null || max != null) {
+		if ((min != null || max != null) && clipToStdDevFactor != null) {
 			throw new IllegalStateException("Can't set std-dev based clipping at the same time as min/max.");
 		}
 		this.clipToStdDevFactor = clipToStdDevFactor;

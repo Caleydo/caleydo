@@ -6,6 +6,8 @@
 package org.caleydo.core.internal;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPersistentPreferenceStore;
@@ -18,9 +20,14 @@ import org.eclipse.jface.preference.PreferenceStore;
  */
 public class MyPreferences extends AbstractPreferenceInitializer {
 	private static final String LAST_CHOSEN_PROJECT_MODE = "lastChosenApplicationMode";
+	/**
+	 * Note that this string is used as prefix for multiple last chosen projects.
+	 */
 	private static final String LAST_MANUALLY_CHOSEN_PROJECT = "lastManuallyChosenProject";
+	private static final String LAST_CHOSE_RECENT_PROJECT = "lastChoseRecentProject";
 	private static final String LAST_SAMPLE_CHOSEN_PROJECT = "lastChosenSampleProject";
 	private static final String AUTO_PROJECT_LOAD = "autoload";
+	private static final int MAX_MANUALLY_CHOSEN_PROJECTS_TO_SAVE = 5;
 
 	public static final String VIEW_ZOOM_FACTOR = "view.zoomfactor";
 	public static final String FPS = "view.fps";
@@ -43,12 +50,25 @@ public class MyPreferences extends AbstractPreferenceInitializer {
 		return prefs().getInt(VIEW_ZOOM_FACTOR) / 100.f;
 	}
 
+	public static boolean wasRecentProjectChosenLastly() {
+		return prefs().getBoolean(LAST_CHOSE_RECENT_PROJECT);
+	}
+
+	public static void setRecentProjectChosenLastly(boolean recentProjectChosen) {
+		prefs().setValue(LAST_CHOSE_RECENT_PROJECT, recentProjectChosen);
+	}
+
 	public static String getLastManuallyChosenProject() {
-		return prefs().getString(LAST_MANUALLY_CHOSEN_PROJECT);
+		return prefs().getString(LAST_MANUALLY_CHOSEN_PROJECT + 0);
 	}
 
 	public static void setLastManuallyChosenProject(String value) {
-		prefs().setValue(LAST_MANUALLY_CHOSEN_PROJECT, value);
+		List<String> lastProjects = getLastManuallyChosenProjects();
+		lastProjects.remove(value);
+		lastProjects.add(0, value);
+		for (int i = 0; i < MAX_MANUALLY_CHOSEN_PROJECTS_TO_SAVE && i < lastProjects.size(); i++) {
+			prefs().setValue(LAST_MANUALLY_CHOSEN_PROJECT + i, lastProjects.get(i));
+		}
 	}
 
 	public static String getLastChosenSampleProject() {
@@ -76,6 +96,16 @@ public class MyPreferences extends AbstractPreferenceInitializer {
 			prefs().setToDefault(AUTO_PROJECT_LOAD);
 		else
 			prefs().setValue(AUTO_PROJECT_LOAD, fileName);
+	}
+
+	public static List<String> getLastManuallyChosenProjects() {
+		List<String> projects = new ArrayList<>();
+		for (int i = 0; i < MAX_MANUALLY_CHOSEN_PROJECTS_TO_SAVE; i++) {
+			String project = prefs().getString(LAST_MANUALLY_CHOSEN_PROJECT + i);
+			if (project != null && !project.isEmpty())
+				projects.add(project);
+		}
+		return projects;
 	}
 
 	public static void flush() {
