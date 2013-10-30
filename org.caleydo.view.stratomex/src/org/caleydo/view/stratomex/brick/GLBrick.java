@@ -437,13 +437,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		gl.glEnd();
 		gl.glPopName();
 
-
 		// The full brick content will not be rendered with DetailLevel.LOW
 		if (brickColumn.getDetailLevel() != EDetailLevel.LOW || isHeaderBrick)
 			layoutManager.render(gl);
 
 		gl.glPopName();
-
 
 		// gl.glCallList(baseDisplayListIndex);
 
@@ -1333,10 +1331,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 						// TableUtils.export(dataDomain, fileName, recordPerspective, dimensionPerspective, null, null,
 						// false);
 						TableUtils.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
-								dimensionPerspective, null, null, false);
+								dimensionPerspective, null, null, isHeaderBrick, false);
 					} else {
 						TableUtils.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
-								tablePerspective.getDimensionPerspective(), null, null, false);
+								tablePerspective.getDimensionPerspective(), null, null, isHeaderBrick, false);
 					}
 				}
 			}

@@ -199,7 +199,7 @@ public class ExportDataDialog
 
 		TableUtils.export(dataChooserComposite.getDataDomain(), sFileName,
 			dataChooserComposite.getRecordPerspective(), dataChooserComposite.getDimensionPerspective(),
-			null, null, false);
+ null, null, false, false);
 
 		super.okPressed();
 	}

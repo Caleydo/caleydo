@@ -55,6 +55,8 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -195,6 +197,51 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		}
 
 		applyAutomaticLayout = true;
+
+		addTypePickingTooltipListener(new IPickingLabelProvider() {
+
+			@Override
+			public String getLabel(Pick pick) {
+				Edge e = dataGraph.getEdge(pick.getObjectID());
+				if (e == null)
+					return null;
+				IDVINode node1 = e.getNode1();
+				IDVINode node2 = e.getNode2();
+
+				MultiTablePerspectiveViewNode viewNode = null;
+				ADataNode dataNode = null;
+
+				if (node1 instanceof MultiTablePerspectiveViewNode) {
+					viewNode = (MultiTablePerspectiveViewNode) node1;
+				} else if (node1 instanceof ADataNode) {
+					dataNode = (ADataNode) node1;
+				}
+
+				if (node2 instanceof MultiTablePerspectiveViewNode) {
+					viewNode = (MultiTablePerspectiveViewNode) node2;
+				} else if (node2 instanceof ADataNode) {
+					dataNode = (ADataNode) node2;
+				}
+
+				if (viewNode == null || dataNode == null)
+					return null;
+
+				List<TablePerspective> viewTablePerspectives = viewNode.getTablePerspectives();
+				List<TablePerspective> dataTablePerspectives = dataNode.getTablePerspectives();
+				boolean isGenericBand = true;
+				for (TablePerspective vtp : viewTablePerspectives) {
+					if (dataTablePerspectives.contains(vtp)) {
+						isGenericBand = false;
+						break;
+					}
+				}
+				if (isGenericBand) {
+					return viewNode.getLabel() + " currently displays data from the " + dataNode.getLabel()
+							+ " dataset, but uses a stratification of a different dataset.";
+				}
+				return null;
+			}
+		}, PickingType.EDGE_BAND.name());
 	}
 
 	@Override

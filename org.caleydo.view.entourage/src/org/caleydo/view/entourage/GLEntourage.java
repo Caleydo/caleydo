@@ -14,6 +14,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -60,6 +61,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
+import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
@@ -979,6 +981,15 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		}
 	}
 
+	@ListenTo
+	public void onShowPathwaysWithGene(LoadPathwaysByGeneEvent event) {
+		Set<PathwayGraph> pathways = PathwayManager.get().getPathwayGraphsByGeneID(event.getIdType(),
+				event.getGeneID());
+		if (pathways != null) {
+			rankingElement.setFilter(new PathwayFilters.PathwaySetFilter(pathways));
+		}
+	}
+
 	private class PathEventSpaceHandler {
 
 		// @ListenTo(restrictExclusiveToEventSpace = true)
@@ -1319,19 +1330,30 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	@Override
 	public void addTablePerspective(TablePerspective newTablePerspective) {
-		// TODO Auto-generated method stub
+		dataMappingState.addTablePerspective(newTablePerspective);
 
 	}
 
 	@Override
 	public void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
-		// TODO Auto-generated method stub
+		for (TablePerspective tablePerspective : newTablePerspectives) {
+			addTablePerspective(tablePerspective);
+		}
 
 	}
 
 	@Override
 	public List<TablePerspective> getTablePerspectives() {
-		return dataMappingState.getTablePerspectives();
+		return new ArrayList<>(dataMappingState.getTablePerspectives());
+	}
+
+	@Override
+	public Set<IDataDomain> getDataDomains() {
+		Set<IDataDomain> dataDomains = new HashSet<>();
+		for (TablePerspective tp : getTablePerspectives()) {
+			dataDomains.add(tp.getDataDomain());
+		}
+		return dataDomains;
 	}
 
 	@Override
