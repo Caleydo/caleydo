@@ -141,6 +141,19 @@ public class DataMappingState {
 		EventPublisher.trigger(e);
 	}
 
+	public void addTablePerspective(TablePerspective tablePerspective) {
+		mappedTablePerspectives.add(tablePerspective);
+		hashDDToTablePerspective.put(tablePerspective.getDataDomain(), tablePerspective);
+
+		AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
+		event.setEventSpace(eventSpace);
+		event.setSender(this);
+		EventPublisher.trigger(event);
+		TablePerspectivesChangedEvent e = new TablePerspectivesChangedEvent(entourage);
+		e.setSender(this);
+		EventPublisher.trigger(e);
+	}
+
 	private TablePerspective createTablePerspective(ATableBasedDataDomain dd, Perspective foreignPerspective) {
 		if (dd == null || foreignPerspective == null)
 			return null;

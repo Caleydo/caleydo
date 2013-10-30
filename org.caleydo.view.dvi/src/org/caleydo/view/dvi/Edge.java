@@ -9,13 +9,15 @@ import org.caleydo.view.dvi.layout.edge.rendering.AEdgeRenderer;
 import org.caleydo.view.dvi.node.IDVINode;
 
 public class Edge {
+	private final int id;
 	private IDVINode node1;
 	private IDVINode node2;
 	private AEdgeRenderer edgeRenderer;
 
-	public Edge(IDVINode node1, IDVINode node2) {
+	public Edge(IDVINode node1, IDVINode node2, int id) {
 		this.node1 = node1;
 		this.node2 = node2;
+		this.id = id;
 	}
 
 	public IDVINode getNode1() {
@@ -40,6 +42,13 @@ public class Edge {
 
 	public void setEdgeRenderer(AEdgeRenderer edgeRenderer) {
 		this.edgeRenderer = edgeRenderer;
+	}
+
+	/**
+	 * @return the id, see {@link #id}
+	 */
+	public int getId() {
+		return id;
 	}
 
 }

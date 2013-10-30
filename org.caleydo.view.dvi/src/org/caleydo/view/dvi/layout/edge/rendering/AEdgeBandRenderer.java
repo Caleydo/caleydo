@@ -22,6 +22,7 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.dvi.Edge;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
+import org.caleydo.view.dvi.PickingType;
 import org.caleydo.view.dvi.layout.edge.rendering.connectors.ABundleConnector;
 import org.caleydo.view.dvi.layout.edge.rendering.connectors.ANodeConnector;
 import org.caleydo.view.dvi.layout.edge.rendering.connectors.BottomBundleConnector;
@@ -52,8 +53,7 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 	}
 
 	@Override
-	public void renderEdge(GL2 gl,
-			ConnectionBandRenderer connectionBandRenderer, boolean highlight) {
+	public void renderEdge(GL2 gl, ConnectionBandRenderer connectionBandRenderer, boolean highlight) {
 		maxDataAmount = view.getMaxDataAmount();
 
 		List<TablePerspective> commonTablePerspectivesNode1 = new ArrayList<TablePerspective>();
@@ -134,8 +134,7 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 
 		Pair<ANodeConnector, ANodeConnector> nodeConnectors = new Pair<ANodeConnector, ANodeConnector>();
 
-		determineNodeConnectors(nodeConnectors, leftNode, rightNode,
-				bottomNode, topNode, commonTablePerspectivesNode1,
+		determineNodeConnectors(nodeConnectors, leftNode, rightNode, bottomNode, topNode, commonTablePerspectivesNode1,
 				commonTablePerspectivesNode2, connectionBandRenderer);
 
 		ANodeConnector connector1 = nodeConnectors.getFirst();
@@ -162,8 +161,8 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 		edgePoints.add(0, connector1.getBandHelperPoint());
 		edgePoints.add(connector2.getBandHelperPoint());
 
-		List<Vec3f> bandPoints = connectionBandRenderer.calcInterpolatedBand(
-				gl, edgePoints, bandWidth, pixelGLConverter);
+		List<Vec3f> bandPoints = connectionBandRenderer.calcInterpolatedBand(gl, edgePoints, bandWidth,
+				pixelGLConverter);
 		renderBand(gl, connectionBandRenderer, bandPoints, bandColor, highlight);
 
 		connector1.render(gl, bandPoints, true, bandColor);
@@ -171,18 +170,13 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 
 	}
 
-	protected abstract void determineNodeConnectors(
-			Pair<ANodeConnector, ANodeConnector> nodeConnectors,
-			IDVINode leftNode, IDVINode rightNode,
-			IDVINode bottomNode, IDVINode topNode,
-			List<TablePerspective> commonTablePerspectivesNode1,
-			List<TablePerspective> commonTablePerspectivesNode2,
+	protected abstract void determineNodeConnectors(Pair<ANodeConnector, ANodeConnector> nodeConnectors,
+			IDVINode leftNode, IDVINode rightNode, IDVINode bottomNode, IDVINode topNode,
+			List<TablePerspective> commonTablePerspectivesNode1, List<TablePerspective> commonTablePerspectivesNode2,
 			ConnectionBandRenderer connectionBandRenderer);
 
-	protected void determineBundleConnectors(
-			Pair<ANodeConnector, ANodeConnector> nodeConnectors,
-			List<TablePerspective> commonTablePerspectivesNode1,
-			List<TablePerspective> commonTablePerspectivesNode2,
+	protected void determineBundleConnectors(Pair<ANodeConnector, ANodeConnector> nodeConnectors,
+			List<TablePerspective> commonTablePerspectivesNode1, List<TablePerspective> commonTablePerspectivesNode2,
 			ConnectionBandRenderer connectionBandRenderer) {
 
 		ANodeConnector connector1 = nodeConnectors.getFirst();
@@ -195,15 +189,13 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 				ANodeConnector currentConnector = null;
 
 				if (node1.isUpsideDown()) {
-					currentConnector = new TopBundleConnector(node1,
-							pixelGLConverter, connectionBandRenderer,
-							commonTablePerspectivesNode1, minBandWidth,
-							maxBandWidth, maxDataAmount, node2, viewFrustum, view);
+					currentConnector = new TopBundleConnector(node1, pixelGLConverter, connectionBandRenderer,
+							commonTablePerspectivesNode1, minBandWidth, maxBandWidth, maxDataAmount, node2,
+							viewFrustum, view);
 				} else {
-					currentConnector = new BottomBundleConnector(node1,
-							pixelGLConverter, connectionBandRenderer,
-							commonTablePerspectivesNode1, minBandWidth,
-							maxBandWidth, maxDataAmount, node2, viewFrustum, view);
+					currentConnector = new BottomBundleConnector(node1, pixelGLConverter, connectionBandRenderer,
+							commonTablePerspectivesNode1, minBandWidth, maxBandWidth, maxDataAmount, node2,
+							viewFrustum, view);
 				}
 
 				if (connector1.getNode() == node1) {
@@ -218,15 +210,13 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 				ANodeConnector currentConnector = null;
 
 				if (node2.isUpsideDown()) {
-					currentConnector = new TopBundleConnector(node2,
-							pixelGLConverter, connectionBandRenderer,
-							commonTablePerspectivesNode2, minBandWidth,
-							maxBandWidth, maxDataAmount, node1, viewFrustum, view);
+					currentConnector = new TopBundleConnector(node2, pixelGLConverter, connectionBandRenderer,
+							commonTablePerspectivesNode2, minBandWidth, maxBandWidth, maxDataAmount, node1,
+							viewFrustum, view);
 				} else {
-					currentConnector = new BottomBundleConnector(node2,
-							pixelGLConverter, connectionBandRenderer,
-							commonTablePerspectivesNode2, minBandWidth,
-							maxBandWidth, maxDataAmount, node1, viewFrustum, view);
+					currentConnector = new BottomBundleConnector(node2, pixelGLConverter, connectionBandRenderer,
+							commonTablePerspectivesNode2, minBandWidth, maxBandWidth, maxDataAmount, node1,
+							viewFrustum, view);
 				}
 
 				if (connector1.getNode() == node2) {
@@ -251,28 +241,25 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 		return bandWidth;
 	}
 
-	protected void renderBand(GL2 gl,
-			ConnectionBandRenderer connectionBandRenderer,
-			List<Vec3f> bandPoints, Color color, boolean highlightBand) {
+	protected void renderBand(GL2 gl, ConnectionBandRenderer connectionBandRenderer, List<Vec3f> bandPoints,
+			Color color, boolean highlightBand) {
 
-		gl.glColor4f(color.getRGB()[0], color.getRGB()[1], color.getRGB()[2],
-				(highlightBand) ? 1 : 0.5f);
+		gl.glPushName(view.getPickingManager().getPickingID(view.getID(), PickingType.EDGE_BAND.name(), edge.getId()));
+		gl.glColor4f(color.getRGB()[0], color.getRGB()[1], color.getRGB()[2], (highlightBand) ? 1 : 0.5f);
 		connectionBandRenderer.render(gl, bandPoints);
 		gl.glColor4fv(color.getRGBA(), 0);
 		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i < bandPoints.size() / 2; i++) {
-			gl.glVertex3f(bandPoints.get(i).x(), bandPoints.get(i).y(),
-					bandPoints.get(i).z());
+			gl.glVertex3f(bandPoints.get(i).x(), bandPoints.get(i).y(), bandPoints.get(i).z());
 		}
 		gl.glEnd();
 
 		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = bandPoints.size() / 2; i < bandPoints.size(); i++) {
-			gl.glVertex3f(bandPoints.get(i).x(), bandPoints.get(i).y(),
-					bandPoints.get(i).z());
+			gl.glVertex3f(bandPoints.get(i).x(), bandPoints.get(i).y(), bandPoints.get(i).z());
 		}
 		gl.glEnd();
-
+		gl.glPopName();
 	}
 
 	public int getMaxBandWidth() {

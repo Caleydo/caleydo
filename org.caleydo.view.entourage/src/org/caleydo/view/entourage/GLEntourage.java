@@ -14,6 +14,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -1319,19 +1320,30 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	@Override
 	public void addTablePerspective(TablePerspective newTablePerspective) {
-		// TODO Auto-generated method stub
+		dataMappingState.addTablePerspective(newTablePerspective);
 
 	}
 
 	@Override
 	public void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
-		// TODO Auto-generated method stub
+		for (TablePerspective tablePerspective : newTablePerspectives) {
+			addTablePerspective(tablePerspective);
+		}
 
 	}
 
 	@Override
 	public List<TablePerspective> getTablePerspectives() {
-		return dataMappingState.getTablePerspectives();
+		return new ArrayList<>(dataMappingState.getTablePerspectives());
+	}
+
+	@Override
+	public Set<IDataDomain> getDataDomains() {
+		Set<IDataDomain> dataDomains = new HashSet<>();
+		for (TablePerspective tp : getTablePerspectives()) {
+			dataDomains.add(tp.getDataDomain());
+		}
+		return dataDomains;
 	}
 
 	@Override
