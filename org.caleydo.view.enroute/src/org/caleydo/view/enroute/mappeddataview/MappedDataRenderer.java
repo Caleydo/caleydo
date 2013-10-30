@@ -690,6 +690,10 @@ public class MappedDataRenderer {
 				rowSelectionManager.clearSelection(SelectionType.SELECTION);
 				rowSelectionManager.addToType(SelectionType.SELECTION, pick.getObjectID());
 				rowSelectionManager.triggerSelectionUpdateEvent();
+				// LoadPathwaysByGeneEvent e = new LoadPathwaysByGeneEvent();
+				// e.setGeneID(pick.getObjectID());
+				// e.setTableIDType(rowSelectionManager.getIDType());
+				// EventPublisher.trigger(e);
 				parentView.setDisplayListDirty();
 
 			}
