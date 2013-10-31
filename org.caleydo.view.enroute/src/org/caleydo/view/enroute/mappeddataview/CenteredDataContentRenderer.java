@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
@@ -20,15 +21,25 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
 
-public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer {
+public class CenteredDataContentRenderer extends ACategoricalRowContentRenderer {
 
-	public CopyNumberRowContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType,
+	protected float dataCenter = 0;
+	protected float minValue = 0;
+	protected float maxValue = 0;
+
+	public CenteredDataContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType,
 			Integer resolvedRowID, ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
-			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
+			MappedDataRenderer parent, Group group, boolean isHighlightMode, float dataCenter, float minValue,
+			float maxValue) {
 		super(rowIDType, rowID, resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, parent,
 				group, isHighlightMode);
+		this.dataCenter = dataCenter;
+		this.minValue = minValue;
+		this.maxValue = maxValue;
 	}
 
 	@Override
@@ -41,8 +52,17 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
 				columnPerspective.getVirtualArray(), dimensionVirtualArray);
 
-		registerPickingListener();
+		registerPickingListeners();
 
+	}
+
+	protected float getNormalizedValue(float rawValue) {
+		float value = (rawValue - minValue) / (maxValue - minValue);
+		if (value > 1)
+			return 1;
+		if (value < 0)
+			return 0;
+		return value;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -60,19 +80,32 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 		// float[] tempTopBarColor = topBarColor;
 		// float[] tempBottomBarColor = bottomBarColor;
 
+		float center = getNormalizedValue(dataCenter);
+		// float center = 0.5f;
+
 		gl.glColor3f(0, 0, 0);
 		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(0, 0.5f * y, z);
-		gl.glVertex3f(x, 0.5f * y, z);
+		gl.glVertex3f(0, center * y, z);
+		gl.glVertex3f(x, center * y, z);
 		gl.glEnd();
 
 		for (Integer columnID : columnPerspective.getVirtualArray()) {
 
 			float value;
 			if (rowID != null) {
-				value = dataDomain.getNormalizedValue(resolvedRowIDType, resolvedRowID, resolvedColumnIDType, columnID);
-
-				if (value < 0.5001 && value > 0.499) {
+				// value = dataDomain.getNormalizedValue(resolvedRowIDType, resolvedRowID, resolvedColumnIDType,
+				// columnID);
+				Object rawValue = dataDomain.getRaw(resolvedRowIDType, resolvedRowID, resolvedColumnIDType, columnID);
+				if (rawValue instanceof Integer) {
+					value = getNormalizedValue(((Integer) rawValue).floatValue());
+				} else if (rawValue instanceof Float) {
+					value = getNormalizedValue(((Float) rawValue).floatValue());
+				} else if (rawValue instanceof Double) {
+					value = getNormalizedValue(((Double) rawValue).floatValue());
+				} else {
+					throw new IllegalStateException("The value " + rawValue + " is not supported.");
+				}
+				if (value < center + 0.0001 && value > center - 0.0001) {
 					experimentCount++;
 					continue;
 				}
@@ -117,15 +150,17 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 						parent.sampleIDType, columnID);
 				gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
 						EPickingType.SAMPLE.name(), resolvedColumnID));
+				gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
+						EPickingType.SAMPLE.name() + hashCode(), columnID));
 
 				gl.glColor3fv(bottomBarColor, 0);
-				gl.glBegin(GL2.GL_QUADS);
+				gl.glBegin(GL2GL3.GL_QUADS);
 
-				gl.glVertex3f(leftEdge, 0.5f * y, z);
+				gl.glVertex3f(leftEdge, center * y, z);
 				if (useShading) {
 					gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f);
 				}
-				gl.glVertex3f(leftEdge + xIncrement, 0.5f * y, z);
+				gl.glVertex3f(leftEdge + xIncrement, center * y, z);
 
 				if (useShading) {
 					gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
@@ -140,6 +175,7 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 				gl.glEnd();
 
 				gl.glPopName();
+				gl.glPopName();
 				// gl.glPopName();
 				experimentCount++;
 				// topBarColor = tempTopBarColor;
@@ -149,4 +185,27 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 		}
 	}
 
+	@Override
+	protected void registerPickingListeners() {
+		super.registerPickingListeners();
+		parentView.addTypePickingTooltipListener(new IPickingLabelProvider() {
+
+			@Override
+			public String getLabel(Pick pick) {
+				if (dataDomain.getDataSetDescription().getDataDescription().getCategoricalClassDescription() != null) {
+					return dataDomain
+							.getDataSetDescription()
+							.getDataDescription()
+							.getCategoricalClassDescription()
+							.getCategoryProperty(
+									dataDomain.getRaw(resolvedRowIDType, resolvedRowID, resolvedColumnIDType,
+											pick.getObjectID())).getCategoryName();
+				}
+
+				return ""
+						+ dataDomain.getRawAsString(resolvedRowIDType, resolvedRowID, resolvedColumnIDType,
+								pick.getObjectID());
+			}
+		}, EPickingType.SAMPLE.name() + hashCode());
+	}
 }

@@ -50,7 +50,7 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
 				columnPerspective.getVirtualArray(), dimensionVirtualArray);
 
-		registerPickingListener();
+		registerPickingListeners();
 	}
 
 	@Override

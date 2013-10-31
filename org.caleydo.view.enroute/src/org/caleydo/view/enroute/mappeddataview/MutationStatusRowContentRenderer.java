@@ -42,7 +42,7 @@ public class MutationStatusRowContentRenderer extends ACategoricalRowContentRend
 				columnPerspective.getVirtualArray(), dimensionVirtualArray);
 
 
-		registerPickingListener();
+		registerPickingListeners();
 
 	}
 

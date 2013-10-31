@@ -18,10 +18,10 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
 
@@ -270,25 +270,34 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		};
 
 		parentView.addIDPickingListener(pickingListener, EPickingType.SAMPLE_GROUP_RENDERER.name(), rendererID);
+		parentView.addTypePickingTooltipListener(new IPickingLabelProvider() {
 
-		for (final Integer sampleID : columnPerspective.getVirtualArray()) {
-			// FIXME: add one type listener
-			parentView.addIDPickingTooltipListener(new ILabelProvider() {
+			@Override
+			public String getLabel(Pick pick) {
+				return ""
+						+ dataDomain.getRawAsString(resolvedRowIDType, resolvedRowID, resolvedColumnIDType,
+								pick.getObjectID());
+			}
+		}, EPickingType.SAMPLE.name() + hashCode());
 
-				@Override
-				public String getProviderName() {
-					return "";
-				}
-
-				@Override
-				public String getLabel() {
-					return ""
-							+ dataDomain.getRawAsString(resolvedRowIDType, resolvedRowID, resolvedColumnIDType,
-									sampleID);
-				}
-			}, EPickingType.SAMPLE.name() + hashCode(), sampleID);
-
-		}
+		// for (final Integer sampleID : columnPerspective.getVirtualArray()) {
+		// // FIXME: add one type listener
+		// parentView.addIDPickingTooltipListener(new ILabelProvider() {
+		//
+		// @Override
+		// public String getProviderName() {
+		// return "";
+		// }
+		//
+		// @Override
+		// public String getLabel() {
+		// return ""
+		// + dataDomain.getRawAsString(resolvedRowIDType, resolvedRowID, resolvedColumnIDType,
+		// sampleID);
+		// }
+		// }, EPickingType.SAMPLE.name() + hashCode(), sampleID);
+		//
+		// }
 
 	}
 

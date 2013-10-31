@@ -11,6 +11,10 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
+import org.caleydo.core.data.collection.column.container.CategoryProperty;
+import org.caleydo.core.data.collection.table.NumericalTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -24,6 +28,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
@@ -651,12 +656,43 @@ public class MappedDataRenderer {
 			// this, group);
 			// captionLayout.setRenderer(columnCaptionRenderer);
 
-			// FIXME: BAAAAD Hack to distinguish categorical data
-			if (dataDomain.getLabel().toLowerCase().contains("copy")) {
-				tablePerspectiveLayout.setRenderer(new CopyNumberRowContentRenderer(rowIDType, rowID,
-						resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
-						isHighlightLayout));
-			} else if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
+			Table table = dataDomain.getTable();
+			DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
+			if (table instanceof NumericalTable) {
+				NumericalTable numTable = (NumericalTable) table;
+				Double dataCenter = numTable.getDataCenter();
+				if (numTable.getDataCenter() != null || (numTable.getMax() > 0 && numTable.getMin() < 0)) {
+					tablePerspectiveLayout.setRenderer(new CenteredDataContentRenderer(rowIDType, rowID,
+							resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
+							isHighlightLayout, (dataCenter != null ? (float) dataCenter.floatValue() : 0),
+							(float) numTable.getMin(), (float) numTable.getMax()));
+					continue;
+				}
+			} else {
+				if (dataSetDescription.getDataDescription().getCategoricalClassDescription().getCategoryType() == ECategoryType.ORDINAL) {
+					Integer minValue = Integer.MAX_VALUE;
+					Integer maxValue = Integer.MIN_VALUE;
+					for (CategoryProperty<?> p : dataSetDescription.getDataDescription()
+							.getCategoricalClassDescription()) {
+						if (p.getCategory() instanceof Integer) {
+							Integer number = (Integer) p.getCategory();
+							if (number > maxValue) {
+								maxValue = number;
+							}
+							if (number < minValue) {
+								minValue = number;
+							}
+						}
+					}
+					if (minValue < 0 && maxValue > 0) {
+						tablePerspectiveLayout.setRenderer(new CenteredDataContentRenderer(rowIDType, rowID,
+								resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this,
+								group, isHighlightLayout, 0, minValue, maxValue));
+						continue;
+					}
+				}
+			}
+			if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
 				tablePerspectiveLayout.setRenderer(new MutationStatusMatrixRowContentRenderer(rowIDType, rowID,
 						resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
 						isHighlightLayout));

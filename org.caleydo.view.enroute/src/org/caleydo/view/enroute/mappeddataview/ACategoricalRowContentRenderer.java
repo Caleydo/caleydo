@@ -146,7 +146,7 @@ public abstract class ACategoricalRowContentRenderer extends ContentRenderer {
 		}
 	}
 
-	protected void registerPickingListener() {
+	protected void registerPickingListeners() {
 		pickingListener = new APickingListener() {
 
 			@Override
