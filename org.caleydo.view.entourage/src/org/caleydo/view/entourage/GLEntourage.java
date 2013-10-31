@@ -116,6 +116,12 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	protected GLWindow rankingWindow;
 
+	/**
+	 * Determines whether a selection update event shall be triggered for the current focus node. This is sometimes
+	 * necessary as new context paths do not get the selection events as when they are created.
+	 */
+	private boolean updateSelectionForFocusNode = false;
+
 	// private List<IPathwayRepresentation> pathwayRepresentations = new ArrayList<>();
 
 	private PathEventSpaceHandler pathEventSpaceHandler = new PathEventSpaceHandler();
@@ -792,6 +798,15 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			updateAugmentation = true;
 
 		super.display(gl);
+
+		if (wasContextChanged) {
+			// We need to remove and add it again, otherwise there is no selection delta, as the currentContextVertexRep
+			// is already selected
+			vertexSelectionManager.removeFromType(SelectionType.SELECTION, currentContextVertexRep.getID());
+			vertexSelectionManager.addToType(SelectionType.SELECTION, currentContextVertexRep.getID());
+			vertexSelectionManager.triggerSelectionUpdateEvent();
+		}
+
 		// for (AContextMenuItem item : contextMenuItemsToShow) {
 		// getContextMenuCreator().add(item);
 		// }
@@ -983,8 +998,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	@ListenTo
 	public void onShowPathwaysWithGene(LoadPathwaysByGeneEvent event) {
-		Set<PathwayGraph> pathways = PathwayManager.get().getPathwayGraphsByGeneID(event.getIdType(),
-				event.getGeneID());
+		Set<PathwayGraph> pathways = PathwayManager.get()
+				.getPathwayGraphsByGeneID(event.getIdType(), event.getGeneID());
 		if (pathways != null) {
 			rankingElement.setFilter(new PathwayFilters.PathwaySetFilter(pathways));
 		}

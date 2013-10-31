@@ -493,8 +493,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 						&& glRemoteRenderingView.getViewType().equals("org.caleydo.view.brick"))
 					return;
 
-				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
 				triggerNodeEvents(pick.getPickingMode(), pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
+				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
 				// triggerNodeEvents(PickingMode.MOUSE_OVER,
 				// pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
 			}
