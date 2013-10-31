@@ -37,20 +37,20 @@ public class ImputationWidgets implements INumericalDataPropertiesWidgets {
 	@Override
 	public void create(Composite parent, Listener listener) {
 		imputationGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		imputationGroup.setText("Data Imputation");
+		imputationGroup.setText("Handling Missing Data");
 		imputationGroup.setLayout(new GridLayout(1, false));
 		imputationGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		Label imputationExplanationLabel = new Label(imputationGroup, SWT.WRAP);
 		imputationExplanationLabel
-				.setText("Impute missing and NaN values from other values using a k-nearest neighbor algorithm.");
+				.setText("Infer missing values. (Imputation based on a k-nearest neighbors algorithm).");
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		gridData.widthHint = 600;
 		imputationExplanationLabel.setLayoutData(gridData);
 		useImputationButton = new Button(imputationGroup, SWT.CHECK);
-		useImputationButton.setText("Use imputation");
+		useImputationButton.setText("Use data inference");
 		useImputationButton.addListener(SWT.Selection, listener);
-		useImputationButton.setSelection(false);
+		useImputationButton.setSelection(true);
 
 		imputationGroup.layout(true, true);
 

@@ -48,17 +48,18 @@ public class ZScoreNormalizationWidgets implements INumericalDataPropertiesWidge
 	@Override
 	public void create(Composite parent, Listener listener) {
 		normalizationGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		normalizationGroup.setText("Z-Score Normalization");
+		normalizationGroup.setText("Normalize to standard scores");
 		normalizationGroup.setLayout(new GridLayout(2, false));
 		normalizationGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		Label normalizationExplanationLabel = new Label(normalizationGroup, SWT.WRAP);
-		normalizationExplanationLabel.setText("Apply z-score normalization to rows or columns.");
+		normalizationExplanationLabel
+				.setText("Replace the raw values with standard scores (z-scores). The data of a column or a row (choose below) will be transformed to have a mean of 0 and a standard deviation of 1.");
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gridData.widthHint = 600;
 		normalizationExplanationLabel.setLayoutData(gridData);
 		useNormalizationButton = new Button(normalizationGroup, SWT.CHECK);
-		useNormalizationButton.setText("Use z-score normalization for");
+		useNormalizationButton.setText("Standardize for ");
 		useNormalizationButton.addListener(SWT.Selection, listener);
 		useNormalizationButton.addSelectionListener(new SelectionAdapter() {
 
@@ -76,7 +77,7 @@ public class ZScoreNormalizationWidgets implements INumericalDataPropertiesWidge
 		normalizationTargetCombo.addListener(SWT.Modify, listener);
 		normalizationTargetCombo.setItems(new String[] { rowsName, columnsName });
 		normalizationTargetCombo.select(0);
-		normalizationTargetCombo.setEnabled(false);
+		normalizationTargetCombo.setEnabled(true);
 		normalizationGroup.layout(true, true);
 	}
 

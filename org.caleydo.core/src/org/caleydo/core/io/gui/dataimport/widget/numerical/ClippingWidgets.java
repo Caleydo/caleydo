@@ -153,6 +153,7 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 		stdDevFactorTextField = new Text(stdDevComposite, SWT.BORDER);
 		stdDevFactorTextField.addListener(SWT.Modify, listener);
 		stdDevFactorTextField.setEnabled(false);
+		stdDevFactorTextField.setText("3");
 
 		clippingGroup.layout(true, true);
 	}
