@@ -41,6 +41,8 @@ public class DataCenterWidgets implements INumericalDataPropertiesWidgets {
 	 */
 	protected Group dataCenterGroup;
 
+	protected Label dataCenterExplanationLabel;
+
 	@Override
 	public void create(Composite parent, Listener listener) {
 		dataCenterGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
@@ -48,12 +50,12 @@ public class DataCenterWidgets implements INumericalDataPropertiesWidgets {
 		dataCenterGroup.setLayout(new GridLayout(2, false));
 		dataCenterGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
-		Label dateCenterExplanationLabel = new Label(dataCenterGroup, SWT.WRAP);
-		dateCenterExplanationLabel
+		dataCenterExplanationLabel = new Label(dataCenterGroup, SWT.WRAP);
+		dataCenterExplanationLabel
 				.setText("The data center is a value that, if set, determines a neutral center point of the data. A common example is that 0 is the neutral value, lower values are in the negative and larger values are in the positive range. If the data center is set it is assumed that the extend into both, positive and negative direction is the same. For example, for a dataset [-0.5, 0.7] with a center set at 0, the value range will be set to -0.7 to 0.7.");
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gridData.widthHint = 600;
-		dateCenterExplanationLabel.setLayoutData(gridData);
+		dataCenterExplanationLabel.setLayoutData(gridData);
 		useDataCenterButton = new Button(dataCenterGroup, SWT.CHECK);
 		// useDataCenterButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
 		// true, true, 1,
@@ -96,7 +98,14 @@ public class DataCenterWidgets implements INumericalDataPropertiesWidgets {
 
 	@Override
 	public void updateProperties(final NumericalProperties numericalProperties) {
-		// TODO Auto-generated method stub
+		if (numericalProperties.getDataCenter() != null) {
+			useDataCenterButton.setSelection(true);
+			useDataCenterButtonSelected();
+			dataCenterTextField.setText(numericalProperties.getDataCenter().toString());
+		} else {
+			useDataCenterButton.setSelection(false);
+			useDataCenterButtonSelected();
+		}
 
 	}
 
@@ -112,6 +121,13 @@ public class DataCenterWidgets implements INumericalDataPropertiesWidgets {
 	@Override
 	public void dispose() {
 		dataCenterGroup.dispose();
+	}
+
+	protected void setEnabled(boolean enabled) {
+		dataCenterGroup.setEnabled(enabled);
+		useDataCenterButton.setEnabled(enabled);
+		dataCenterTextField.setEnabled(enabled);
+		dataCenterExplanationLabel.setEnabled(enabled);
 	}
 
 }

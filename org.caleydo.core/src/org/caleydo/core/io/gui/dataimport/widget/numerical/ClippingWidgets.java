@@ -94,8 +94,6 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 			}
 		});
 
-
-
 		Composite stdDevComposite = new Composite(clippingGroup, SWT.NONE);
 		stdDevComposite.setLayout(new GridLayout(2, false));
 		stdDevComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
@@ -245,16 +243,12 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 		else
 			stdDevFactorTextField.setText("3");
 
-		if (minDefined || maxDefined) {
-			stdDevClippingButton.setSelection(false);
-			minMaxClippingButton.setSelection(true);
-			useMinMaxClipping(true);
-		} else {
-			// stddev clipping should be default, even if nothing is specified in properties
-			minMaxClippingButton.setSelection(false);
-			stdDevClippingButton.setSelection(true);
-			useMinMaxClipping(false);
-		}
+		// stddev clipping should be default, even if minmax is specified (which is automatically set when parsing for
+		// the data type) or nothing is specified in properties
+		minMaxClippingButton.setSelection(false);
+		stdDevClippingButton.setSelection(true);
+		useMinMaxClipping(false);
+
 	}
 
 	@Override
