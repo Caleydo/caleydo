@@ -8,6 +8,7 @@ package org.caleydo.core.io.gui.dataimport.wizard;
 import org.caleydo.core.gui.util.FontUtil;
 import org.caleydo.core.io.DataDescriptionUtil;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.gui.dataimport.widget.DataTranspositionWidget;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -36,6 +37,8 @@ public class DataSetTypePage extends AImportDataPage {
 	 */
 	protected boolean datasetChanged = true;
 
+	protected DataTranspositionWidget dataTranspositionWidget;
+
 	/**
 	 * @param pageName
 	 * @param dataSetDescription
@@ -50,7 +53,7 @@ public class DataSetTypePage extends AImportDataPage {
 		Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		group.setText("Select the data type of your homogeneous dataset.");
 		group.setLayout(new GridLayout(1, true));
-		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		group.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		numericalDatasetButton = new Button(group, SWT.RADIO);
 		numericalDatasetButton.setText("Numerical");
@@ -72,6 +75,9 @@ public class DataSetTypePage extends AImportDataPage {
 		gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gridData.widthHint = 200;
 		categoricalDatasetLabel.setLayoutData(gridData);
+
+		dataTranspositionWidget = new DataTranspositionWidget(parent, getWizard(),
+				dataSetDescription.isTransposeMatrix());
 	}
 
 	@Override
@@ -96,6 +102,8 @@ public class DataSetTypePage extends AImportDataPage {
 				getWizard().getCategoricalDataPage().setInitFromDataDescription(true);
 			}
 		}
+
+		dataSetDescription.setTransposeMatrix(dataTranspositionWidget.isTransposition());
 		// else {
 		// if (datasetChanged || dataSetDescription.getDataDescription() != null) {
 		// getWizard().getInhomogeneousDataPropertiesPage().setInitColumnDescriptions(true);
@@ -149,7 +157,7 @@ public class DataSetTypePage extends AImportDataPage {
 		// updateWidgets();
 		getWizard().setChosenDataTypePage(null);
 		getWizard().getContainer().updateButtons();
-
+		dataTranspositionWidget.update();
 	}
 
 	@Override

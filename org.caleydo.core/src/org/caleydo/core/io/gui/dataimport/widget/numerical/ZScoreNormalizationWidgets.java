@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Listener;
  * @author Christian Partl
  *
  */
-public class ZScoreNormalizationWidgets implements INumericalDataPropertiesWidgets {
+public class ZScoreNormalizationWidgets implements INumericalDataPropertiesWidgets, IRowAndColumnDenominationUser {
 
 	/**
 	 * Button to determine whether a data center is used.
@@ -81,6 +81,16 @@ public class ZScoreNormalizationWidgets implements INumericalDataPropertiesWidge
 		normalizationGroup.layout(true, true);
 	}
 
+	/**
+	 * Adds a listener to the button that determines whether z score normalization should be used.
+	 *
+	 * @param listener
+	 */
+	protected void addUsageSelectionListener(SelectionAdapter listener) {
+		useNormalizationButton.addSelectionListener(listener);
+	}
+
+	@Override
 	public void setRowAndColumnDenomination(String rowName, String columnName) {
 		int index = normalizationTargetCombo.getSelectionIndex();
 		normalizationTargetCombo.setItems(new String[] { rowName, columnName });

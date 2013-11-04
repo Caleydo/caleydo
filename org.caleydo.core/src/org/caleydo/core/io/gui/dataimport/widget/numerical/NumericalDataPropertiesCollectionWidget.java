@@ -32,11 +32,9 @@ import org.eclipse.swt.widgets.Listener;
 public class NumericalDataPropertiesCollectionWidget {
 
 	public static enum ENumericalDataProperties {
-		SCALING(ScalingWidgets.class),
-		CLIPPING(ClippingWidgets.class),
-		DATA_CENTER(DataCenterWidgets.class),
-		IMPUTATION(ImputationWidgets.class),
-		Z_SCORE_NORMALIZATION(ZScoreNormalizationWidgets.class);
+		SCALING(ScalingWidgets.class), CLIPPING(ClippingWidgets.class), Z_SCORE_NORMALIZATION(
+				ZScoreNormalizationWidgets.class), DATA_CENTER(DataCenterWidgets.class), IMPUTATION(
+				ImputationWidgets.class);
 
 		private Class<? extends INumericalDataPropertiesWidgets> propertiesWidgetClass;
 
@@ -74,8 +72,17 @@ public class NumericalDataPropertiesCollectionWidget {
 	public NumericalDataPropertiesCollectionWidget(Composite parent, Listener listener,
 			final EnumSet<ENumericalDataProperties> properties) {
 		this.parent = parent;
+		EnumSet<ENumericalDataProperties> props = EnumSet.copyOf(properties);
+		boolean useDataCenterAndZScore = false;
+		if (props.contains(ENumericalDataProperties.DATA_CENTER)
+				&& props.contains(ENumericalDataProperties.Z_SCORE_NORMALIZATION)) {
+			props.remove(ENumericalDataProperties.DATA_CENTER);
+			props.remove(ENumericalDataProperties.Z_SCORE_NORMALIZATION);
+			useDataCenterAndZScore = true;
+		}
+
 		List<INumericalDataPropertiesWidgets> propertiesWidgets = new ArrayList<>(properties.size());
-		for (ENumericalDataProperties p : properties) {
+		for (ENumericalDataProperties p : props) {
 			try {
 				propertiesWidgets.add(p.getPropertiesWidgetClass().newInstance());
 			} catch (InstantiationException | IllegalAccessException e) {
@@ -83,6 +90,10 @@ public class NumericalDataPropertiesCollectionWidget {
 						+ p.name()));
 			}
 		}
+		if (useDataCenterAndZScore) {
+			propertiesWidgets.add(new DataCenterAndZScoreWidgets());
+		}
+
 		this.propertiesWidgets = Collections.unmodifiableList(propertiesWidgets);
 
 		createDataTypeGroup(parent);
@@ -94,9 +105,9 @@ public class NumericalDataPropertiesCollectionWidget {
 
 	public void dataSetDescriptionUpdated(DataSetDescription dataSetDescription) {
 		for (INumericalDataPropertiesWidgets w : propertiesWidgets) {
-			if (dataSetDescription != null && w instanceof ZScoreNormalizationWidgets) {
-				ZScoreNormalizationWidgets z = (ZScoreNormalizationWidgets) w;
-				z.setRowAndColumnDenomination(dataSetDescription.getRowIDSpecification().getIdCategory(),
+			if (dataSetDescription != null && w instanceof IRowAndColumnDenominationUser) {
+				IRowAndColumnDenominationUser u = (IRowAndColumnDenominationUser) w;
+				u.setRowAndColumnDenomination(dataSetDescription.getRowIDSpecification().getIdCategory(),
 						dataSetDescription.getColumnIDSpecification().getIdCategory());
 			}
 		}

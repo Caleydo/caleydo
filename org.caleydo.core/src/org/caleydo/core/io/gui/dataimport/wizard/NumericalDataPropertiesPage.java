@@ -16,7 +16,6 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.gui.dataimport.widget.DataTranspositionWidget;
 import org.caleydo.core.io.gui.dataimport.widget.numerical.NumericalDataPropertiesCollectionWidget;
 import org.caleydo.core.io.gui.dataimport.widget.numerical.NumericalDataPropertiesCollectionWidget.ENumericalDataProperties;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -45,7 +44,7 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 
 	protected NumericalDataPropertiesCollectionWidget numericalDataPropertiesWidget;
 
-	protected DataTranspositionWidget dataTranspositionWidget;
+	// protected DataTranspositionWidget dataTranspositionWidget;
 
 	/**
 	 * Determines whether this page should init its widgets from the {@link DataDescription} .
@@ -68,8 +67,8 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 				ENumericalDataProperties.SCALING, ENumericalDataProperties.IMPUTATION,
 				ENumericalDataProperties.Z_SCORE_NORMALIZATION));
 
-		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, getWizard(),
-				dataSetDescription.isTransposeMatrix());
+		// dataTranspositionWidget = new DataTranspositionWidget(parentComposite, getWizard(),
+		// dataSetDescription.isTransposeMatrix());
 	}
 
 	@Override
@@ -89,7 +88,7 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 		DataDescription dataDescription = new DataDescription(dataType == EDataType.FLOAT ? EDataClass.REAL_NUMBER
 				: EDataClass.NATURAL_NUMBER, dataType, numericalDataPropertiesWidget.getNumericalProperties());
 		dataSetDescription.setDataDescription(dataDescription);
-		dataSetDescription.setTransposeMatrix(dataTranspositionWidget.isTransposition());
+		// dataSetDescription.setTransposeMatrix(dataTranspositionWidget.isTransposition());
 
 		ArrayList<ColumnDescription> inputPattern = new ArrayList<ColumnDescription>();
 		DataImportWizard wizard = getWizard();
@@ -117,7 +116,7 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 
 		getWizard().setChosenDataTypePage(this);
 		getWizard().getContainer().updateButtons();
-		dataTranspositionWidget.update();
+		// dataTranspositionWidget.update();
 
 	}
 
