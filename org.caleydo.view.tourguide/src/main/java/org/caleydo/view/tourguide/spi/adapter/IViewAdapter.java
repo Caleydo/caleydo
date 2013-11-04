@@ -8,9 +8,11 @@ package org.caleydo.view.tourguide.spi.adapter;
 import java.util.Collection;
 
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.vis.lineup.model.RankTableModel;
 import org.eclipse.ui.IWorkbenchPart;
 
 /**
@@ -79,4 +81,12 @@ public interface IViewAdapter {
 	 * @return
 	 */
 	boolean isRepresenting(IWorkbenchPart part);
+
+	/**
+	 * @param table
+	 * @param pickingMode
+	 * @param row
+	 * @param isSelected
+	 */
+	void onRowClick(RankTableModel table, PickingMode pickingMode, AScoreRow row, boolean isSelected);
 }
