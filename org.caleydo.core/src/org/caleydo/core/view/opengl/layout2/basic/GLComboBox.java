@@ -234,7 +234,8 @@ public class GLComboBox<T> extends AGLButton {
 			hoveredIndex = -1;
 			repaintAll();
 		} else {
-			setSelected(hoveredIndex);
+			if (hoveredIndex >= 0)
+				setSelected(hoveredIndex);
 			isOpen = false;
 			hoveredIndex = -1;
 			repaintAll();
