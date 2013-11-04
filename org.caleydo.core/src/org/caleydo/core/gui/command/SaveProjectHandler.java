@@ -24,9 +24,10 @@ import org.eclipse.ui.PlatformUI;
 public class SaveProjectHandler extends AbstractHandler implements IHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final boolean onlyData = "true".equalsIgnoreCase(event.getParameter("onlyData"));
 
 		FileDialog fileDialog = new FileDialog(new Shell(), SWT.SAVE);
-		fileDialog.setText("Save Project");
+		fileDialog.setText("Save Project" + (onlyData ? " (Only Data)" : ""));
 		String[] filterExt = { "*.cal" };
 		fileDialog.setFilterExtensions(filterExt);
 
@@ -40,7 +41,7 @@ public class SaveProjectHandler extends AbstractHandler implements IHandler {
 
 		try {
 			new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(true, false,
-					ProjectManager.save(fileName));
+					ProjectManager.save(fileName, onlyData));
 		} catch (InvocationTargetException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -200,6 +200,16 @@
                   style="push">
             </command>
             <command
+                  commandId="org.caleydo.core.io.gui.save_project"
+                  icon="resources/icons/general/save.png"
+                  label="Save Project (Data Only)"
+                  style="push">
+               <parameter
+                     name="onlyData"
+                     value="true">
+               </parameter>
+            </command>
+            <command
                   commandId="org.caleydo.core.io.gui.import_data"
                   icon="resources/icons/general/import_data.png"
                   label="Import Data"
