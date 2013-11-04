@@ -72,17 +72,6 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 		clippingGroup.setLayout(new GridLayout(2, true));
 		clippingGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
-		minMaxClippingButton = new Button(clippingGroup, SWT.RADIO);
-		minMaxClippingButton.setText("Minimum/Maximum Value Clipping");
-		minMaxClippingButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, true, false));
-		minMaxClippingButton.addListener(SWT.Selection, listener);
-		minMaxClippingButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				useMinMaxClipping(true);
-			}
-		});
-
 		stdDevClippingButton = new Button(clippingGroup, SWT.RADIO);
 		stdDevClippingButton.setText("Standard Deviation Clipping");
 		stdDevClippingButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, true, false));
@@ -94,13 +83,26 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 			}
 		});
 
-		Composite minMaxComposite = new Composite(clippingGroup, SWT.NONE);
-		minMaxComposite.setLayout(new GridLayout(2, false));
-		minMaxComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		minMaxClippingButton = new Button(clippingGroup, SWT.RADIO);
+		minMaxClippingButton.setText("Minimum/Maximum Value Clipping");
+		minMaxClippingButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, true, false));
+		minMaxClippingButton.addListener(SWT.Selection, listener);
+		minMaxClippingButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				useMinMaxClipping(true);
+			}
+		});
+
+
 
 		Composite stdDevComposite = new Composite(clippingGroup, SWT.NONE);
 		stdDevComposite.setLayout(new GridLayout(2, false));
 		stdDevComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+		Composite minMaxComposite = new Composite(clippingGroup, SWT.NONE);
+		minMaxComposite.setLayout(new GridLayout(2, false));
+		minMaxComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		minMaxClippingExplanationLabel = new Label(minMaxComposite, SWT.WRAP);
 		minMaxClippingExplanationLabel
@@ -139,8 +141,6 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 		minTextField.addListener(SWT.Modify, listener);
 		minTextField.setEnabled(false);
 
-
-
 		stdDevClippingExplanationLabel = new Label(stdDevComposite, SWT.WRAP);
 		stdDevClippingExplanationLabel
 				.setText("Specify the value range for the dataset using a scaling factor for the standard deviation of values in this dataset. All data points above mean value + (scaling factor * standard deviation) and mean value - (scaling factor * standard deviation) will be clipped.");
@@ -153,7 +153,6 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 		stdDevFactorTextField = new Text(stdDevComposite, SWT.BORDER);
 		stdDevFactorTextField.addListener(SWT.Modify, listener);
 		stdDevFactorTextField.setEnabled(false);
-		stdDevFactorTextField.setText("3");
 
 		clippingGroup.layout(true, true);
 	}
@@ -206,7 +205,9 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 		}
 		if (stdDevClippingButton.getSelection()) {
 			try {
-				Float.parseFloat(stdDevFactorTextField.getText());
+				float val = Float.parseFloat(stdDevFactorTextField.getText());
+				if (val < 0)
+					return false;
 			} catch (NumberFormatException e) {
 				return false;
 			}
@@ -242,17 +243,17 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 		if (stdDevScalingFactorDefined)
 			stdDevFactorTextField.setText(numericalProperties.getClipToStdDevFactor().toString());
 		else
-			stdDevFactorTextField.setText("");
+			stdDevFactorTextField.setText("3");
 
-		if (stdDevScalingFactorDefined) {
-			minMaxClippingButton.setSelection(false);
-			stdDevClippingButton.setSelection(true);
-			useMinMaxClipping(false);
-		} else {
-			// minmax clipping should be default, even if nothing is specified in properties
+		if (minDefined || maxDefined) {
 			stdDevClippingButton.setSelection(false);
 			minMaxClippingButton.setSelection(true);
 			useMinMaxClipping(true);
+		} else {
+			// stddev clipping should be default, even if nothing is specified in properties
+			minMaxClippingButton.setSelection(false);
+			stdDevClippingButton.setSelection(true);
+			useMinMaxClipping(false);
 		}
 	}
 
