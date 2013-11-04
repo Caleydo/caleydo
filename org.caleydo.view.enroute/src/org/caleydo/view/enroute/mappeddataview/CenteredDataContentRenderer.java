@@ -31,6 +31,8 @@ public class CenteredDataContentRenderer extends ACategoricalRowContentRenderer 
 	protected float minValue = 0;
 	protected float maxValue = 0;
 
+	protected boolean showCenterLineAtRowCenter = false;
+
 	public CenteredDataContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType,
 			Integer resolvedRowID, ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group, boolean isHighlightMode, float dataCenter, float minValue,
@@ -79,14 +81,35 @@ public class CenteredDataContentRenderer extends ACategoricalRowContentRenderer 
 
 		// float[] tempTopBarColor = topBarColor;
 		// float[] tempBottomBarColor = bottomBarColor;
+		float spacing = 0;
+		float range = y;
+		// dataCenter = 1;
+		// showCenterLineAtRowCenter = true;
+		if (showCenterLineAtRowCenter) {
+			float diffMax = maxValue - dataCenter;
+			float diffMin = dataCenter - minValue;
+			float totalValueRange = 0;
+			if (diffMax >= diffMin) {
+				totalValueRange = diffMax * 2.0f;
+			} else {
+				totalValueRange = diffMin * 2.0f;
+			}
+			float numberSpacing = diffMax - diffMin;
+			if (totalValueRange != 0) {
+				spacing = numberSpacing / totalValueRange * y;
+			}
+			range = y - Math.abs(spacing);
+			if (spacing < 0)
+				spacing = 0;
+		}
 
 		float center = getNormalizedValue(dataCenter);
 		// float center = 0.5f;
 
 		gl.glColor3f(0, 0, 0);
 		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(0, center * y, z);
-		gl.glVertex3f(x, center * y, z);
+		gl.glVertex3f(0, (center * range) + spacing, z);
+		gl.glVertex3f(x, (center * range) + spacing, z);
 		gl.glEnd();
 
 		for (Integer columnID : columnPerspective.getVirtualArray()) {
@@ -141,7 +164,7 @@ public class CenteredDataContentRenderer extends ACategoricalRowContentRenderer 
 
 				float leftEdge = xIncrement * experimentCount;
 
-				float upperEdge = value * y;
+				float upperEdge = (value * range) + spacing;
 
 				// gl.glPushName(parentView.getPickingManager().getPickingID(
 				// parentView.getID(), PickingType.ROW_PRIMARY.name(), rowID));
@@ -156,11 +179,11 @@ public class CenteredDataContentRenderer extends ACategoricalRowContentRenderer 
 				gl.glColor3fv(bottomBarColor, 0);
 				gl.glBegin(GL2GL3.GL_QUADS);
 
-				gl.glVertex3f(leftEdge, center * y, z);
+				gl.glVertex3f(leftEdge, (center * range) + spacing, z);
 				if (useShading) {
 					gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f);
 				}
-				gl.glVertex3f(leftEdge + xIncrement, center * y, z);
+				gl.glVertex3f(leftEdge + xIncrement, (center * range) + spacing, z);
 
 				if (useShading) {
 					gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
@@ -207,5 +230,13 @@ public class CenteredDataContentRenderer extends ACategoricalRowContentRenderer 
 								pick.getObjectID());
 			}
 		}, EPickingType.SAMPLE.name() + hashCode());
+	}
+
+	/**
+	 * @param showCenterLineAtRowCenter
+	 *            setter, see {@link showCenterLineAtRowCenter}
+	 */
+	public void setShowCenterLineAtRowCenter(boolean showCenterLineAtRowCenter) {
+		this.showCenterLineAtRowCenter = showCenterLineAtRowCenter;
 	}
 }
