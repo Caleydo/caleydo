@@ -12,7 +12,6 @@ import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.gui.dataimport.widget.CategoricalDataPropertiesWidget;
-import org.caleydo.core.io.gui.dataimport.widget.DataTranspositionWidget;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -31,7 +30,7 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 
 	public static final String PAGE_DESCRIPTION = "Specify properties for the categorical dataset.";
 
-	protected DataTranspositionWidget dataTranspositionWidget;
+	// protected DataTranspositionWidget dataTranspositionWidget;
 
 	protected Composite parentComposite;
 
@@ -59,15 +58,15 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 
 		categoricalDataWidget = new CategoricalDataPropertiesWidget(parentComposite);
 
-		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, getWizard(),
-				dataSetDescription.isTransposeMatrix());
+		// dataTranspositionWidget = new DataTranspositionWidget(parentComposite, getWizard(),
+		// dataSetDescription.isTransposeMatrix());
 
 	}
 
 	@Override
 	public void fillDataSetDescription() {
 
-		dataSetDescription.setTransposeMatrix(dataTranspositionWidget.isTransposition());
+		// dataSetDescription.setTransposeMatrix(dataTranspositionWidget.isTransposition());
 
 		dataSetDescription.getDataDescription().setCategoricalClassDescription(
 				categoricalDataWidget.getCategoricalClassDescription());
@@ -97,7 +96,7 @@ public class CategoricalDataPropertiesPage extends AImportDataPage {
 					(CategoricalClassDescription<String>) dataSetDescription.getDataDescription()
 							.getCategoricalClassDescription());
 		}
-		dataTranspositionWidget.update();
+		// dataTranspositionWidget.update();
 
 		// categoryTable.update();
 		parentComposite.layout(true);
