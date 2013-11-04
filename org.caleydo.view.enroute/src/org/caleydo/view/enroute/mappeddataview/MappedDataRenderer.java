@@ -41,6 +41,8 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.util.button.Button;
+import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.GLEnRoutePathway;
@@ -140,6 +142,8 @@ public class MappedDataRenderer {
 
 	/** the spacing between the top of the view and the first node if no contextual data is present */
 	private int defaultSpacing = -1;
+
+	private boolean showCenteredDataLineInRowCenter = false;
 
 	/**
 	 * Constructor with parent view as parameter.
@@ -259,9 +263,24 @@ public class MappedDataRenderer {
 		// captionColumn.setDebug(true);
 
 		captionColumn.setPixelSizeX(CAPTION_COLUMN_PIXEL_WIDTH);
-		ElementLayout columnCaptionSpacing = new ElementLayout();
-		columnCaptionSpacing.setPixelSizeY(50);
-		captionColumn.append(columnCaptionSpacing);
+
+		Row buttonRow = new Row("buttonRow");
+		buttonRow.setPixelSizeY(50);
+
+		Button button = new Button(EPickingType.CENTER_LINE_ALIGNMENT_BUTTON.name(), 0,
+				"resources/icons/view/enroute/center_data_line.png");
+		ButtonRenderer buttonRender = new ButtonRenderer.Builder(parentView, button).build();
+
+		ElementLayout buttonLayout = new ElementLayout();
+		buttonLayout.setPixelSizeX(20);
+		buttonLayout.setPixelSizeY(20);
+		buttonLayout.setRenderer(buttonRender);
+		buttonRow.append(buttonLayout);
+
+		// ElementLayout columnCaptionSpacing = new ElementLayout();
+		// columnCaptionSpacing.setPixelSizeY(50);
+		captionColumn.append(buttonRow);
+		// captionColumn.append(columnCaptionSpacing);
 		baseRow.append(captionColumn);
 
 		int nodeCount = 0;
@@ -662,10 +681,12 @@ public class MappedDataRenderer {
 				NumericalTable numTable = (NumericalTable) table;
 				Double dataCenter = numTable.getDataCenter();
 				if (numTable.getDataCenter() != null || (numTable.getMax() > 0 && numTable.getMin() < 0)) {
-					tablePerspectiveLayout.setRenderer(new CenteredDataContentRenderer(rowIDType, rowID,
+					CenteredDataContentRenderer renderer = new CenteredDataContentRenderer(rowIDType, rowID,
 							resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
 							isHighlightLayout, (dataCenter != null ? (float) dataCenter.floatValue() : 0),
-							(float) numTable.getMin(), (float) numTable.getMax()));
+							(float) numTable.getMin(), (float) numTable.getMax());
+					renderer.setShowCenterLineAtRowCenter(showCenteredDataLineInRowCenter);
+					tablePerspectiveLayout.setRenderer(renderer);
 					continue;
 				}
 			} else {
@@ -685,9 +706,11 @@ public class MappedDataRenderer {
 						}
 					}
 					if (minValue < 0 && maxValue > 0) {
-						tablePerspectiveLayout.setRenderer(new CenteredDataContentRenderer(rowIDType, rowID,
+						CenteredDataContentRenderer renderer = new CenteredDataContentRenderer(rowIDType, rowID,
 								resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this,
-								group, isHighlightLayout, 0, minValue, maxValue));
+								group, isHighlightLayout, 0, minValue, maxValue);
+						renderer.setShowCenterLineAtRowCenter(showCenteredDataLineInRowCenter);
+						tablePerspectiveLayout.setRenderer(renderer);
 						continue;
 					}
 				}
@@ -832,6 +855,18 @@ public class MappedDataRenderer {
 			}
 
 		}, EPickingType.SAMPLE_GROUP_VIEW_MODE.name());
+
+		parentView.addTypePickingListener(new APickingListener() {
+
+			@Override
+			protected void clicked(Pick pick) {
+				showCenteredDataLineInRowCenter = !showCenteredDataLineInRowCenter;
+				parentView.setLayoutDirty();
+			}
+		}, EPickingType.CENTER_LINE_ALIGNMENT_BUTTON.name());
+
+		parentView.addTypePickingTooltipListener("Toggle center line alignment for centered data.",
+				EPickingType.CENTER_LINE_ALIGNMENT_BUTTON.name());
 	}
 
 	public void unregisterPickingListeners() {
@@ -978,6 +1013,14 @@ public class MappedDataRenderer {
 	 */
 	public List<Integer> getContextRowIDs() {
 		return contextRowIDs;
+	}
+
+	/**
+	 * @param showCenteredDataLineInRowCenter
+	 *            setter, see {@link showCenteredDataLineInRowCenter}
+	 */
+	public void setShowCenteredDataLineInRowCenter(boolean showCenteredDataLineInRowCenter) {
+		this.showCenteredDataLineInRowCenter = showCenteredDataLineInRowCenter;
 	}
 
 }

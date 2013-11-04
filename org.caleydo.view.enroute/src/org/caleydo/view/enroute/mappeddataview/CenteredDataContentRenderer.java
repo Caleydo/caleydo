@@ -83,7 +83,7 @@ public class CenteredDataContentRenderer extends ACategoricalRowContentRenderer 
 		// float[] tempBottomBarColor = bottomBarColor;
 		float spacing = 0;
 		float range = y;
-		// dataCenter = 1;
+		// dataCenter = -1;
 		// showCenterLineAtRowCenter = true;
 		if (showCenterLineAtRowCenter) {
 			float diffMax = maxValue - dataCenter;
