@@ -13,6 +13,7 @@ import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
 import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
 import org.caleydo.view.heatmap.v2.BarPlotElement;
 import org.caleydo.view.heatmap.v2.BasicBlockColorer;
+import org.caleydo.view.heatmap.v2.EScalingMode;
 import org.caleydo.view.heatmap.v2.EShowLabels;
 import org.caleydo.view.heatmap.v2.IBlockColorer;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy;
@@ -42,8 +43,8 @@ public class BarPlotElementFactory implements IGLElementFactory {
 		IBlockColorer blockColorer = context.get(IBlockColorer.class, BasicBlockColorer.INSTANCE);
 		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
 
-		BarPlotElement elem = new BarPlotElement(data, blockColorer, detailLevel,
-				context.is("scaleLocally"));
+		BarPlotElement elem = new BarPlotElement(data, blockColorer, detailLevel, context.get(EScalingMode.class,
+				EScalingMode.GLOBAL));
 
 		EShowLabels default_ = context.get(EShowLabels.class, EShowLabels.NONE);
 		elem.setDimensionLabels(context.get("dimensionLabels", EShowLabels.class, default_));

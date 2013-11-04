@@ -7,6 +7,9 @@ package org.caleydo.view.heatmap.v2;
 
 import gleem.linalg.Vec2f;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -16,7 +19,6 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.DoubleFunctions;
 import org.caleydo.core.util.function.DoubleStatistics;
-import org.caleydo.core.util.function.ExpressionFunctions;
 import org.caleydo.core.util.function.IDoubleFunction;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -31,19 +33,19 @@ public class BarPlotElement extends AHeatMapElement {
 	/**
 	 * whether the plot should be scaled to the local extreme or the global extreme (default)
 	 */
-	private final boolean scaleLocally;
+	private final EScalingMode scalingMode;
 
-	private float normalizedCenter;
-	private IDoubleFunction normalize;
+	private float rawCenter;
+	private IRowNormalizer normalizer;
 
 	public BarPlotElement(TablePerspective tablePerspective) {
-		this(tablePerspective, BasicBlockColorer.INSTANCE, EDetailLevel.HIGH, false);
+		this(tablePerspective, BasicBlockColorer.INSTANCE, EDetailLevel.HIGH, EScalingMode.GLOBAL);
 	}
 
-	public BarPlotElement(TablePerspective tablePerspective, IBlockColorer blockColorer,
-			EDetailLevel detailLevel, boolean scaleLocally) {
+	public BarPlotElement(TablePerspective tablePerspective, IBlockColorer blockColorer, EDetailLevel detailLevel,
+			EScalingMode scalingMode) {
 		super(tablePerspective, blockColorer, detailLevel);
-		this.scaleLocally = scaleLocally;
+		this.scalingMode = scalingMode;
 	}
 
 	@Override
@@ -77,6 +79,7 @@ public class BarPlotElement extends AHeatMapElement {
 			if (i % 2 == 1) // alternate shading
 				g.color(0.95f).fillRect(0, y, w, fieldHeight);
 
+			float normalizedCenter = normalizer.apply(i, rawCenter);
 			float center = fieldHeight * (1 - normalizedCenter);
 
 			g.color(Color.GRAY).drawLine(0, y + center, w, y + center);
@@ -94,7 +97,7 @@ public class BarPlotElement extends AHeatMapElement {
 					continue;
 				Color color = blockColorer.apply(recordID, dimensionID, dataDomain, deSelected);
 				g.color(color);
-				float v = (float) normalize.apply(value);
+				float v = normalizer.apply(i, value);
 				v = (v - normalizedCenter) * fieldHeight;
 				g.fillRect(x, y + center, fieldWidth, -v);
 			}
@@ -106,16 +109,74 @@ public class BarPlotElement extends AHeatMapElement {
 		super.onVAUpdate(tablePerspective);
 		Table table = tablePerspective.getDataDomain().getTable();
 		assert table instanceof NumericalTable;
-		this.normalizedCenter = (float) ((NumericalTable) table).getNormalizedForRaw(Table.Transformation.LINEAR, 0);
+		this.rawCenter = (float) ((NumericalTable) table).getNormalizedForRaw(Table.Transformation.LINEAR, 0);
 
-		if (scaleLocally) {
+		switch (this.scalingMode) {
+		case GLOBAL:
+			this.normalizer = IDENTITY_NORMALZIZER;
+			break;
+		case LOCAL:
 			DoubleStatistics stats = DoubleStatistics.of(TableDoubleLists.asNormalizedList(tablePerspective));
-			double max = Math.max(-stats.getMin(), stats.getMax());
-			normalize = DoubleFunctions.normalize(-max, max);
-		} else {
-			normalize = ExpressionFunctions.IDENTITY;
+			{
+				double max = Math.max(-stats.getMin(), stats.getMax());
+				this.normalizer = new UniformNormalizer(DoubleFunctions.normalize(-max, max));
+			}
+			break;
+		case LOCAL_ROW:
+			List<IDoubleFunction> functions = new ArrayList<>(tablePerspective.getNrRecords());
+			final VirtualArray dimVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+			for (Integer recordID : tablePerspective.getRecordPerspective().getVirtualArray()) {
+				double max = Double.NEGATIVE_INFINITY;
+				for (Integer dimensionID : dimVA) {
+					max = Math.max(max, Math.abs(table.getNormalizedValue(dimensionID, recordID)));
+				}
+				functions.add(DoubleFunctions.normalize(-max, max));
+			}
+			this.normalizer = new RowNormalizer(functions.toArray(new IDoubleFunction[0]));
+			break;
 		}
-		this.normalizedCenter = (float) normalize.apply(this.normalizedCenter);
 	}
 
+	private static interface IRowNormalizer {
+		float apply(int row, float value);
+	}
+
+	private static final IRowNormalizer IDENTITY_NORMALZIZER = new IRowNormalizer() {
+		@Override
+		public float apply(int row, float value) {
+			return value;
+		}
+	};
+
+	private static final class UniformNormalizer implements IRowNormalizer {
+		private final IDoubleFunction normalize;
+
+		/**
+		 * @param normalize
+		 */
+		public UniformNormalizer(IDoubleFunction normalize) {
+			this.normalize = normalize;
+		}
+
+		@Override
+		public float apply(int row, float value) {
+			return (float) normalize.apply(value);
+		}
+	}
+
+	private static final class RowNormalizer implements IRowNormalizer {
+		private final IDoubleFunction[] normalize;
+
+		/**
+		 * @param normalize
+		 */
+		public RowNormalizer(IDoubleFunction[] normalize) {
+			this.normalize = normalize;
+		}
+
+		@Override
+		public float apply(int row, float value) {
+			return (float) normalize[row].apply(value);
+		}
+	}
 }
