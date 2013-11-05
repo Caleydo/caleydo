@@ -33,7 +33,6 @@ import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.entourage.GLEntourage;
-import org.caleydo.view.entourage.RcpGLSubGraphView;
 import org.caleydo.view.entourage.datamapping.DataMappingState;
 import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
@@ -44,22 +43,18 @@ import org.caleydo.view.tourguide.entourage.ui.DataDomainElements;
 import org.caleydo.view.tourguide.entourage.ui.DataDomainHeader;
 import org.caleydo.view.tourguide.entourage.ui.GroupElements;
 import org.caleydo.view.tourguide.entourage.ui.SelectAllNoneElement;
-import org.caleydo.view.tourguide.spi.adapter.IViewAdapter;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.lineup.model.RankTableModel;
-import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.collect.Iterables;
 
 /**
+ * adapter for tourguide to the entourage view
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
-
-	private final GLEntourage entourage;
-	private final ITourGuideView vis;
-
+public class EntourageAdapter extends AEntourageAdapter implements ISelectionCallback {
 	private final DataDomainElements dataDomains = new DataDomainElements();
 	private final GroupElements groups = new GroupElements();
 	private final ISelectionCallback onNodeCallback;
@@ -69,8 +64,7 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 	 * @param vis
 	 */
 	public EntourageAdapter(GLEntourage entourage, ITourGuideView vis) {
-		this.entourage = entourage;
-		this.vis = vis;
+		super(entourage, vis);
 		this.dataDomains.setCallback(this);
 		this.groups.setCallback(this);
 
@@ -84,18 +78,6 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 			}
 		};
 		this.dataDomains.setOnNodeCallback(onNodeCallback);
-	}
-
-	@Override
-	public void attach() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void detach() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -382,12 +364,6 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 	}
 
 	@Override
-	public void preDisplay() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public boolean canShowPreviews() {
 		return true;
 	}
@@ -400,12 +376,5 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 			System.out.println("here");
 			break;
 		}
-	}
-
-	@Override
-	public boolean isRepresenting(IWorkbenchPart part) {
-		if (part instanceof RcpGLSubGraphView)
-			return ((RcpGLSubGraphView) part).getView() == entourage;
-		return false;
 	}
 }
