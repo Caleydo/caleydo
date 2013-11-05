@@ -193,6 +193,12 @@
                id="org.caleydo.menu.file"
                label="File">
             <command
+                  commandId="org.caleydo.core.startup.restart"
+                  icon="resources/icons/general/new.gif"
+                  label="&amp;NewProject"
+                  style="push">
+            </command>
+            <command
                   commandId="org.caleydo.core.startup.open"
                   icon="resources/icons/general/open.png"
                   label="Open Project"
@@ -234,15 +240,6 @@
                   commandId="org.eclipse.ui.window.preferences"
                   label="Preferences"
                   mnemonic="P"
-                  style="push">
-            </command>
-            <separator
-                  name="org.caleydo.core.separator2"
-                  visible="true">
-            </separator>
-            <command
-                  commandId="org.caleydo.core.startup.restart"
-                  label="Restart"
                   style="push">
             </command>
             <command
