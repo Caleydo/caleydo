@@ -76,6 +76,12 @@ public class StratomexAdapter implements IViewAdapter {
 		this.receiver = new WeakReference<GLStratomex>(receiver);
 	}
 
+	@Override
+	public final String getLabel() {
+		GLStratomex r = receiver.get();
+		return r == null ? "" : r.getLabel();
+	}
+
 	public void sendDelayedEvents() {
 		for (AEvent event : delayedEvents)
 			triggerEvent(event);

@@ -606,6 +606,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		this.tableUI = new TableUI(table, new RankTableUIConfig(), RowHeightLayouts.UNIFORM);
 		ScrollingDecorator sc = new ScrollingDecorator(tableUI, new ScrollBar(true), null, RenderStyle.SCROLLBAR_WIDTH);
 		vis.add(sc);
+
 		vis.add(new ScorePoolUI(table, new RankTableUIConfig(), GLTourGuideView.this));
 		return vis;
 	}
