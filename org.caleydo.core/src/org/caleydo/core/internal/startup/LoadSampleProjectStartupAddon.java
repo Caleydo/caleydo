@@ -36,6 +36,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -53,7 +54,7 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 	private URL selectedChoice = null;
 
 	@Override
-	public Composite create(Composite parent, final WizardPage page) {
+	public Composite create(Composite parent, final WizardPage page, Listener listener) {
 		SelectionListener l = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -77,9 +78,9 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 					StringUtils.removeEnd(GeneralManager.DATA_URL_PREFIX, "/"));
 			String description = elem.getAttribute("description");
 			if (first == null)
-				first = createSample(url, name, description, g, l, true);
+				first = createSample(url, name, description, g, l, true, listener);
 			else
-				createSample(url, name, description, g, l, false);
+				createSample(url, name, description, g, l, false, listener);
 		}
 		if (selectedChoice == null && first != null) {
 			first.setSelection(true);
@@ -93,7 +94,7 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 	}
 
 	private Button createSample(String url, String name, String description, Composite g, SelectionListener l,
-			boolean first) {
+			boolean first, Listener listener) {
 		try {
 			URL u = new URL(url);
 			Button button = new Button(g, SWT.RADIO);
@@ -102,6 +103,7 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 
 			button.setData(u);
 			button.addSelectionListener(l);
+			button.addListener(SWT.Selection, listener);
 			GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 			gd.verticalIndent = first ? 0 : 20;
 			button.setLayoutData(gd);
