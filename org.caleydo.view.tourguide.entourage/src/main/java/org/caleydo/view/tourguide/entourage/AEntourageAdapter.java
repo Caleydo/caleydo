@@ -43,7 +43,6 @@ abstract class AEntourageAdapter implements IViewAdapter {
 
 	}
 
-
 	@Override
 	public void preDisplay() {
 
