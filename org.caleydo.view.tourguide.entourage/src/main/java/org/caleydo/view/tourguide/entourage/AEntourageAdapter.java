@@ -5,6 +5,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.entourage;
 
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.entourage.GLEntourage;
 import org.caleydo.view.entourage.RcpGLSubGraphView;
@@ -54,7 +55,8 @@ abstract class AEntourageAdapter implements IViewAdapter {
 	}
 
 	@Override
-	public void onRowClick(RankTableModel table, PickingMode pickingMode, AScoreRow row, boolean isSelected) {
+	public void onRowClick(RankTableModel table, PickingMode pickingMode, AScoreRow row, boolean isSelected,
+			IGLElementContext context) {
 	}
 
 	@Override
