@@ -8,6 +8,7 @@ package org.caleydo.core.internal.gui;
 import java.util.Map;
 
 import org.caleydo.core.internal.MyPreferences;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.util.collection.Pair;
@@ -30,7 +31,7 @@ public class CaleydoProjectWizard
 	 */
 	public CaleydoProjectWizard(Map<String, IStartupAddon> addons) {
 
-		this.setWindowTitle("Caleydo - Choose Data Source");
+		this.setWindowTitle("Caleydo " + GeneralManager.VERSION + " - Project Wizard");
 		this.addons = addons;
 	}
 
