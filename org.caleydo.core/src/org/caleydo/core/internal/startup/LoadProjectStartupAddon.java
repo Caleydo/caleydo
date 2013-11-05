@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
@@ -103,7 +104,7 @@ public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentL
 	}
 
 	@Override
-	public Composite create(Composite parent, final WizardPage page) {
+	public Composite create(Composite parent, final WizardPage page, Listener listener) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
 
@@ -159,6 +160,7 @@ public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentL
 				page.setPageComplete(true);
 			}
 		});
+		recentProject.addListener(SWT.Selection, listener);
 
 		loadProject.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -172,6 +174,7 @@ public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentL
 				}
 			}
 		});
+		recentProject.addListener(SWT.Selection, listener);
 
 		String lastProjectFileName = MyPreferences.getLastManuallyChosenProject();
 		boolean recentProjectChosen = MyPreferences.wasRecentProjectChosenLastly();
@@ -223,6 +226,7 @@ public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentL
 
 			}
 		});
+		projectLocationUI.addListener(SWT.Modify, listener);
 
 		return composite;
 	}

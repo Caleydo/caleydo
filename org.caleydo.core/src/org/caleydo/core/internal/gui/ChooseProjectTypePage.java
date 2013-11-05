@@ -14,9 +14,13 @@ import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
@@ -27,7 +31,7 @@ import org.eclipse.swt.widgets.TabItem;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class ChooseProjectTypePage extends WizardPage {
+public class ChooseProjectTypePage extends WizardPage implements Listener {
 
 	public static final String PAGE_NAME = "Project Wizard";
 
@@ -62,11 +66,19 @@ public class ChooseProjectTypePage extends WizardPage {
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.widthHint = WIDTH;
 		tabFolder.setLayoutData(gridData);
+		tabFolder.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// When changing the page should be set complete by default
+				setPageComplete(true);
+				updateButtons();
+			}
+		});
 
 		String previous = MyPreferences.getLastChosenProjectMode();
 
 		for (Map.Entry<String, IStartupAddon> addon : addons.entrySet()) {
-			Composite tabContent = addon.getValue().create(tabFolder, this);
+			Composite tabContent = addon.getValue().create(tabFolder, this, this);
 			if (tabContent == null)
 				continue;
 			tabContent.pack();
@@ -92,6 +104,23 @@ public class ChooseProjectTypePage extends WizardPage {
 			return null;
 		Pair<String, IStartupAddon> r = (Pair<String, IStartupAddon>) tabFolder.getItem(tab).getData();
 		return r;
+	}
+
+	@Override
+	public boolean isPageComplete() {
+		if (getSelectedAddon().getSecond().validate())
+			return super.isPageComplete();
+		return false;
+	}
+
+	@Override
+	public void handleEvent(Event event) {
+		updateButtons();
+	}
+
+	private void updateButtons() {
+		if (getWizard().getContainer().getCurrentPage() != null)
+			getWizard().getContainer().updateButtons();
 	}
 
 }
