@@ -23,10 +23,15 @@ public class EntourageAdapterFactory implements IViewAdapterFactory {
 	public IViewAdapter createFor(IViewPart view, EDataDomainQueryMode mode, ITourGuideView vis) {
 		if (!(view instanceof RcpGLSubGraphView))
 			return null;
-		if (mode != EDataDomainQueryMode.STRATIFICATIONS)
-			return null;
 		GLEntourage entourage = ((RcpGLSubGraphView) view).getView();
-		return new EntourageAdapter(entourage, vis);
+		switch (mode) {
+		case STRATIFICATIONS:
+			return new EntourageAdapter(entourage, vis);
+		case OTHER:
+			return new EntourageOtherAdapter(entourage, vis);
+		default:
+			return null;
+		}
 	}
 
 }
