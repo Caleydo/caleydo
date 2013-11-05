@@ -100,5 +100,11 @@
          </pathway>
       </parent>
    </extension>
+   <extension
+         point="org.caleydo.datadomain.pathway.PathwayAction">
+      <factory
+            class="org.caleydo.view.entourage.contextmenu.AddPathwayActionFactory">
+      </factory>
+   </extension>
 
 </plugin>

@@ -14,6 +14,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ViewManager;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -22,6 +23,7 @@ import org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.pathway.PathwayActions;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.view.stratomex.EEmbeddingID;
@@ -98,8 +100,7 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK.name(), layoutTemplate.getBrick().getID()));
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
-		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick(), pickingIDs,
- layoutTemplate
+		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick(), pickingIDs, layoutTemplate
 				.getBrick().getBrickColumn().getStratomexView()));
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
@@ -189,8 +190,7 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 		int compactRendererID = -1;
 		if (brick.isHeaderBrick()) {
 			ALayoutRenderer pathwaysSummaryCompactRenderer = new PathwaysSummaryRenderer(brick.getBrickColumn()
-					.getStratomexView(), label,
-					EPickingType.BRICK.name(), brick.getID());
+					.getStratomexView(), label, EPickingType.BRICK.name(), brick.getID());
 			compactRendererID = multiFormRenderer.addLayoutRenderer(pathwaysSummaryCompactRenderer, null,
 					new DefaultVisInfo(), false);
 			brick.setCompactRendererID(compactRendererID);
@@ -250,5 +250,12 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 	@Override
 	public boolean distributeBricksUniformly() {
 		return true;
+	}
+
+	@Override
+	public void addDataSpecificContextMenuEntries(ContextMenuCreator creator, GLBrick brick) {
+		creator.addSeparator();
+		PathwayActions.addToContextMenu(creator, ((PathwayTablePerspective) brick.getTablePerspective()).getPathway(),
+				this, true);
 	}
 }

@@ -22,6 +22,7 @@ package org.caleydo.view.entourage.event;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.view.entourage.EEmbeddingID;
 import org.caleydo.view.entourage.GLEntourage;
 
 /**
@@ -34,6 +35,7 @@ import org.caleydo.view.entourage.GLEntourage;
 public class AddPathwayEvent extends AEvent {
 
 	protected PathwayGraph pathway;
+	protected EEmbeddingID pathwayLevel = EEmbeddingID.PATHWAY_LEVEL1;
 
 	/**
 	 *
@@ -47,6 +49,11 @@ public class AddPathwayEvent extends AEvent {
 	 */
 	public AddPathwayEvent(PathwayGraph pathway) {
 		this.pathway = pathway;
+	}
+
+	public AddPathwayEvent(PathwayGraph pathway, EEmbeddingID pathwayLevel) {
+		this.pathway = pathway;
+		this.pathwayLevel = pathwayLevel;
 	}
 
 	@Override
@@ -67,6 +74,21 @@ public class AddPathwayEvent extends AEvent {
 	 */
 	public void setPathway(PathwayGraph pathway) {
 		this.pathway = pathway;
+	}
+
+	/**
+	 * @param pathwayLevel
+	 *            setter, see {@link pathwayLevel}
+	 */
+	public void setPathwayLevel(EEmbeddingID pathwayLevel) {
+		this.pathwayLevel = pathwayLevel;
+	}
+
+	/**
+	 * @return the pathwayLevel, see {@link #pathwayLevel}
+	 */
+	public EEmbeddingID getPathwayLevel() {
+		return pathwayLevel;
 	}
 
 }

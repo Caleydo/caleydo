@@ -893,9 +893,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 						contextMenuCreator.add(new GenericContextMenuItem("Merge selected bricks", event));
 					}
 
+
 					// FIXME: if added, this line causes the context menu on the bricks to not appear
 					// selectElementsByGroup();
 				}
+				brickConfigurer.addDataSpecificContextMenuEntries(contextMenuCreator, GLBrick.this);
 			}
 		};
 
