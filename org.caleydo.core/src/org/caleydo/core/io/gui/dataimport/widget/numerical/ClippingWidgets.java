@@ -103,8 +103,7 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 		minMaxComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		minMaxClippingExplanationLabel = new Label(minMaxComposite, SWT.WRAP);
-		minMaxClippingExplanationLabel
-				.setText("Specify the value range for the dataset using a minimum and/or maximum value. This can be used to specify bounds in the data. For example, if you want to see your data relative to 0 but all data points are greater than 0 you should specify 0 here as the minimum. You can also use this to clip your data. If you, for example, select '3' as the maximum every data point exceeding this range will be clipped to '3' for display.");
+		minMaxClippingExplanationLabel.setText("Specify a minimum and/or maximum value beyond which to clip the data.");
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gridData.widthHint = 200;
 		minMaxClippingExplanationLabel.setLayoutData(gridData);
@@ -141,13 +140,13 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 
 		stdDevClippingExplanationLabel = new Label(stdDevComposite, SWT.WRAP);
 		stdDevClippingExplanationLabel
-				.setText("Specify the value range for the dataset using a scaling factor for the standard deviation of values in this dataset. All data points above mean value + (scaling factor * standard deviation) and mean value - (scaling factor * standard deviation) will be clipped.");
+				.setText("Specify a \"clipping factor\" that is used to determine which values are clipped. Values outside of mean +/- (factor * standard deviation) are clipped to the respective maximum or minimum.");
 		gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gridData.widthHint = 200;
 		stdDevClippingExplanationLabel.setLayoutData(gridData);
 
 		stdDevFactorLabel = new Label(stdDevComposite, SWT.NONE);
-		stdDevFactorLabel.setText("Standard Deviation Scaling Factor");
+		stdDevFactorLabel.setText("Clipping Factor");
 		stdDevFactorTextField = new Text(stdDevComposite, SWT.BORDER);
 		stdDevFactorTextField.addListener(SWT.Modify, listener);
 		stdDevFactorTextField.setEnabled(false);
