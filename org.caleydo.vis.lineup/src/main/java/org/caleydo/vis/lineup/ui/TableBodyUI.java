@@ -134,7 +134,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		selectRowListener.add(new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
-				config.onRowClick(table, pick.getPickingMode(), toRow(pick), false);
+				config.onRowClick(table, pick.getPickingMode(), toRow(pick), false, context);
 			}
 
 			protected IRow toRow(Pick pick) {
@@ -193,7 +193,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		default:
 			break;
 		}
-		config.onRowClick(table, pick.getPickingMode(), table.getSelectedRow(), true);
+		config.onRowClick(table, pick.getPickingMode(), table.getSelectedRow(), true, context);
 	}
 
 	@ListenTo(sendToMe = true)

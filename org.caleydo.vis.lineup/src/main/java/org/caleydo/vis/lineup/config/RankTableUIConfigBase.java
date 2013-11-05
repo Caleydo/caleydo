@@ -9,6 +9,7 @@ import gleem.linalg.Vec2f;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -119,7 +120,8 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 	}
 
 	@Override
-	public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected) {
+	public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected,
+			IGLElementContext context) {
 		if (!isSelected && pickingMode == PickingMode.CLICKED) {
 			table.setSelectedRow(row);
 		}

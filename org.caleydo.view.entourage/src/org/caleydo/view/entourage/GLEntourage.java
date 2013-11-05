@@ -1000,9 +1000,10 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	public void onShowPathwaysWithGene(LoadPathwaysByGeneEvent event) {
 		Set<PathwayGraph> pathways = PathwayManager.get()
 				.getPathwayGraphsByGeneID(event.getIdType(), event.getGeneID());
-		if (pathways != null) {
-			rankingElement.setFilter(new PathwayFilters.PathwaySetFilter(pathways));
-		}
+		if (pathways == null)
+			pathways = new HashSet<>();
+		rankingElement.setFilter(new PathwayFilters.PathwaySetFilter(pathways));
+
 	}
 
 	private class PathEventSpaceHandler {

@@ -26,6 +26,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.RcpGLStratomexView;
@@ -99,7 +100,8 @@ public class StratomexAdapter implements IViewAdapter {
 	}
 
 	@Override
-	public void onRowClick(RankTableModel table, PickingMode pickingMode, AScoreRow row, boolean isSelected) {
+	public void onRowClick(RankTableModel table, PickingMode pickingMode, AScoreRow row, boolean isSelected,
+			IGLElementContext context) {
 
 	}
 

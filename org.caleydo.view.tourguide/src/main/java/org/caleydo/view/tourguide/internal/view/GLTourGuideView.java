@@ -40,6 +40,7 @@ import org.caleydo.core.view.opengl.layout2.AGLElementView;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IPopupLayer;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
@@ -948,7 +949,8 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		}
 
 		@Override
-		public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected) {
+		public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected,
+				IGLElementContext context) {
 			if (!isSelected && pickingMode == PickingMode.CLICKED) {
 				table.setSelectedRow(row);
 			} else if ((isSelected && pickingMode == PickingMode.CLICKED && adapter != null && adapter
@@ -956,7 +958,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 					|| (pickingMode == PickingMode.DOUBLE_CLICKED && (adapter == null || !adapter.canShowPreviews()))) {
 				updatePreview(null, (AScoreRow) row);
 			} else if (adapter != null)
-				adapter.onRowClick(table, pickingMode, (AScoreRow) row, isSelected);
+				adapter.onRowClick(table, pickingMode, (AScoreRow) row, isSelected, context);
 
 		}
 

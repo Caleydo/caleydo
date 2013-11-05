@@ -9,6 +9,7 @@ import java.util.Collection;
 
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
@@ -89,5 +90,6 @@ public interface IViewAdapter extends ILabeled {
 	 * @param row
 	 * @param isSelected
 	 */
-	void onRowClick(RankTableModel table, PickingMode pickingMode, AScoreRow row, boolean isSelected);
+	void onRowClick(RankTableModel table, PickingMode pickingMode, AScoreRow row, boolean isSelected,
+			IGLElementContext context);
 }
