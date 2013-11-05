@@ -138,10 +138,11 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 	public Composite create(Composite parent, final WizardPage page, Listener listener) {
 		parent = new Composite(parent, SWT.NONE);
 		parent.setLayout(new GridLayout(1, false));
-		
+
 		Link sourceLabel = new Link(parent, SWT.NO_BACKGROUND);
 		sourceLabel.addSelectionListener(BrowserUtils.LINK_LISTENER);
-		sourceLabel.setText("We provide direct access to comprehensive data packages based on semi-automated analyses of the TCGA data set by the Firehose system developed and maintained by the <a href=\"http://gdac.broadinstitute.org\">TCGA Genome Data Analysis Center at the Broad Institute</a>.");
+		sourceLabel
+				.setText("We provide direct access to comprehensive data packages based on semi-automated analyses of the TCGA data set by the Firehose system developed and maintained by the <a href=\"http://gdac.broadinstitute.org\">TCGA Genome Data Analysis Center at the Broad Institute</a>.");
 		sourceLabel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		Link label = new Link(parent, SWT.NO_BACKGROUND);
@@ -500,9 +501,27 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 
 	@Override
 	public boolean validate() {
-		if (this.selectedChoice == null)
-			return false;
-		// Try to download the file with interruption
+		return selectedChoice != null;
+		// if (this.selectedChoice == null)
+		// return false;
+		// // Try to download the file with interruption
+		// RemoteFile file = RemoteFile.of(this.selectedChoice);
+		// if (!file.inCache(true)) {
+		// try {
+		// file.delete();
+		// new ProgressMonitorDialog(new Shell()).run(true, true, file);
+		// } catch (InvocationTargetException | InterruptedException e) {
+		// Status status = new Status(IStatus.ERROR, this.getClass().getSimpleName(), "Error during downloading: "
+		// + selectedChoice, e);
+		// ErrorDialog.openError(null, "Download Error", "Error during downloading: " + selectedChoice, status);
+		// Logger.log(status);
+		// }
+		// }
+		// return file.inCache(false);
+	}
+
+	@Override
+	public IStartupProcedure create() {
 		RemoteFile file = RemoteFile.of(this.selectedChoice);
 		if (!file.inCache(true)) {
 			try {
@@ -515,11 +534,8 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 				Logger.log(status);
 			}
 		}
-		return file.inCache(false);
-	}
-
-	@Override
-	public IStartupProcedure create() {
+		if (!file.inCache(false))
+			return null;
 		return new LoadProjectStartupProcedure(RemoteFile.of(selectedChoice).getFile().getAbsolutePath(), false);
 	}
 }

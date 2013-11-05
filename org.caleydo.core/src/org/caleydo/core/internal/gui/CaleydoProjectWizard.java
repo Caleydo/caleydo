@@ -21,11 +21,11 @@ import org.eclipse.jface.wizard.Wizard;
  * @author Werner Puff
  * @author Alexander Lex
  */
-public class CaleydoProjectWizard
-	extends Wizard {
+public class CaleydoProjectWizard extends Wizard {
 
 	private IStartupProcedure result;
 	private final Map<String, IStartupAddon> addons;
+
 	/**
 	 * Constructor.
 	 */
@@ -56,8 +56,10 @@ public class CaleydoProjectWizard
 		if (page.isPageComplete()) {
 			MyPreferences.setLastChosenProjectMode(addon.getFirst());
 			MyPreferences.flush();
-
-			setResult(addon.getSecond().create());
+			IStartupProcedure startupProcedure = addon.getSecond().create();
+			if (startupProcedure == null)
+				return false;
+			setResult(startupProcedure);
 			return true;
 		}
 
