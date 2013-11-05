@@ -19,9 +19,12 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
+import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
@@ -32,6 +35,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneEvent;
 import org.caleydo.view.entourage.GLEntourage;
 import org.caleydo.view.entourage.datamapping.DataMappingState;
 import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
@@ -369,11 +373,34 @@ public class EntourageAdapter extends AEntourageAdapter implements ISelectionCal
 	}
 
 	@Override
-	public void onRowClick(RankTableModel table, PickingMode pickingMode, AScoreRow row, boolean isSelected) {
+	public void onRowClick(RankTableModel table, PickingMode pickingMode, AScoreRow row, boolean isSelected,
+			IGLElementContext context) {
 		switch (pickingMode) {
 		case RIGHT_CLICKED:
-			// FIXME please fill me out
-			System.out.println("here");
+			ContextMenuCreator creator = new ContextMenuCreator();
+			LoadPathwaysByGeneEvent event = new LoadPathwaysByGeneEvent();
+
+			if (row instanceof ITablePerspectiveScoreRow) {
+				TablePerspective tablePerspective = ((ITablePerspectiveScoreRow) row).asTablePerspective();
+				Perspective perspective = null;
+				if (!(tablePerspective.getDataDomain() instanceof GeneticDataDomain))
+					return;
+				if (areRecordsGenes(tablePerspective.getDataDomain())) {
+					perspective = tablePerspective.getRecordPerspective();
+				} else {
+					perspective = tablePerspective.getDimensionPerspective();
+				}
+				VirtualArray va = perspective.getVirtualArray();
+				if (va.size() == 1) {
+					event.setTableIDType(perspective.getIdType());
+					event.setGeneID(va.get(0));
+					creator.addContextMenuItem(new GenericContextMenuItem("Show Pathways with " + row.getLabel(), event));
+					context.getSWTLayer().showContextMenu(creator);
+				}
+			}
+
+			break;
+		default:
 			break;
 		}
 	}
