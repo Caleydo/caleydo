@@ -52,7 +52,7 @@ public class DataCenterWidgets implements INumericalDataPropertiesWidgets {
 
 		dataCenterExplanationLabel = new Label(dataCenterGroup, SWT.WRAP);
 		dataCenterExplanationLabel
-				.setText("The data center is a value that, if set, determines a neutral center point of the data. A common example is that 0 is the neutral value, lower values are in the negative and larger values are in the positive range. If the data center is set it is assumed that the extend into both, positive and negative direction is the same. For example, for a dataset [-0.5, 0.7] with a center set at 0, the value range will be set to -0.7 to 0.7.");
+				.setText("The data center is a value that, if set, determines a neutral center point of the data. A common example is that 0 is the neutral value, lower values are in the negative and larger values are in the positive range. If the data center is set it is assumed that the extend into both, positive and negative direction is the same. For example, for a dataset [-0.5, 0.7] with a center set at 0, the value range will be set from -0.7 to 0.7.");
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gridData.widthHint = 600;
 		dataCenterExplanationLabel.setLayoutData(gridData);

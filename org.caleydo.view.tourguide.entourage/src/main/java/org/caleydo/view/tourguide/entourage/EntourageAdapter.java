@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.entourage.GLEntourage;
@@ -45,6 +46,7 @@ import org.caleydo.view.tourguide.entourage.ui.GroupElements;
 import org.caleydo.view.tourguide.entourage.ui.SelectAllNoneElement;
 import org.caleydo.view.tourguide.spi.adapter.IViewAdapter;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.vis.lineup.model.RankTableModel;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.collect.Iterables;
@@ -388,6 +390,16 @@ public class EntourageAdapter implements IViewAdapter, ISelectionCallback {
 	@Override
 	public boolean canShowPreviews() {
 		return true;
+	}
+
+	@Override
+	public void onRowClick(RankTableModel table, PickingMode pickingMode, AScoreRow row, boolean isSelected) {
+		switch (pickingMode) {
+		case RIGHT_CLICKED:
+			// FIXME please fill me out
+			System.out.println("here");
+			break;
+		}
 	}
 
 	@Override

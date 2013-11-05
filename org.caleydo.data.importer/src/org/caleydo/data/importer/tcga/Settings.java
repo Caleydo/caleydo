@@ -18,8 +18,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.importer.tcga.model.TumorType;
 import org.kohsuke.args4j.Argument;
@@ -127,10 +129,10 @@ public class Settings {
 	@Option(name = "--downloadOnly", usage = "if enabled only the files will be downloaded")
 	private boolean downloadOnly = false;
 
-	@Option(name = "--username", usage = "the username to use for authentication")
+	@Option(name = "--username", usage = "the username to use for authentication, use PROMPT for interactive prompting")
 	private String username = null;
 
-	@Option(name = "--password", usage = "the password to use for authentication")
+	@Option(name = "--password", usage = "the password to use for authentication, use PROMPT for interactive prompting")
 	private String password = null;
 
 	private Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().setDateFormat("yyyy_MM_dd")
@@ -149,6 +151,8 @@ public class Settings {
 			numThreads = Runtime.getRuntime().availableProcessors();
 
 		if (username != null && password != null) {
+			username = fixPrompt(username, "Enter the username: ");
+			password = fixPrompt(password, "Enter the password: ");
 			// set Authenticator for following urls
 			Authenticator.setDefault(new Authenticator() {
 				@Override
@@ -176,6 +180,26 @@ public class Settings {
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param username2
+	 * @param string
+	 * @return
+	 */
+	private static String fixPrompt(String var, String prompt) {
+		if ("PROMPT".equals(var)) {
+			System.out.print(prompt);
+			try (Scanner s = new Scanner(System.in)) {
+				String l = s.nextLine();
+				if (StringUtils.isBlank(l)) {
+					System.err.println("Aborting");
+					System.exit(1);
+				}
+				return l;
+			}
+		}
+		return var;
 	}
 
 	/**

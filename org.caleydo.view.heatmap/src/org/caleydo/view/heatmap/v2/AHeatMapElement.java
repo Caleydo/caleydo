@@ -361,9 +361,11 @@ public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 			final TablePerspective tablePerspective = selections.getTablePerspective();
 
 			g.color(Color.LIGHT_GRAY).lineWidth(2);
+			g.incZ();
 			renderGroupHints(g, tablePerspective.getRecordPerspective().getVirtualArray(), true, recordSpacing, w);
 			renderGroupHints(g, tablePerspective.getDimensionPerspective().getVirtualArray(), false, dimensionSpacing,
 					h);
+			g.decZ();
 			g.lineWidth(1);
 		}
 
@@ -389,7 +391,7 @@ public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 	private void renderGroupHints(GLGraphics g, VirtualArray va, boolean isRecord, ISpacingLayout spacing, float total) {
 		// indicate the grouping borders by shading
 		GroupList groupList = va.getGroupList();
-		if (groupList.size() <= 1)
+		if (groupList == null || groupList.size() <= 1)
 			return;
 
 		for (int i = 0; i < groupList.size(); ++i) {

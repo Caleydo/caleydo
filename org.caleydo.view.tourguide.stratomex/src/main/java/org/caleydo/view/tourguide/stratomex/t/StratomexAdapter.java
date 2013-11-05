@@ -26,6 +26,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.RcpGLStratomexView;
 import org.caleydo.view.stratomex.addin.IStratomeXAddIn;
@@ -47,6 +48,7 @@ import org.caleydo.view.tourguide.stratomex.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.stratomex.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.stratomex.event.WizardEndedEvent;
 import org.caleydo.view.tourguide.stratomex.s.TourGuideAddin;
+import org.caleydo.vis.lineup.model.RankTableModel;
 import org.eclipse.ui.IWorkbenchPart;
 
 /**
@@ -88,6 +90,11 @@ public class StratomexAdapter implements IViewAdapter {
 	@Override
 	public boolean canShowPreviews() {
 		return isWizardVisible();
+	}
+
+	@Override
+	public void onRowClick(RankTableModel table, PickingMode pickingMode, AScoreRow row, boolean isSelected) {
+
 	}
 
 	private TourGuideAddin getAddin() {

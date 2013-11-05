@@ -954,7 +954,9 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 					.canShowPreviews())
 					|| (pickingMode == PickingMode.DOUBLE_CLICKED && (adapter == null || !adapter.canShowPreviews()))) {
 				updatePreview(null, (AScoreRow) row);
-			}
+			} else if (adapter != null)
+				adapter.onRowClick(table, pickingMode, (AScoreRow) row, isSelected);
+
 		}
 
 		@Override

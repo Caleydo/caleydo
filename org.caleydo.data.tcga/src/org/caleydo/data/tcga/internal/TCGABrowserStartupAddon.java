@@ -138,9 +138,15 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 	public Composite create(Composite parent, final WizardPage page, Listener listener) {
 		parent = new Composite(parent, SWT.NONE);
 		parent.setLayout(new GridLayout(1, false));
+		
+		Link sourceLabel = new Link(parent, SWT.NO_BACKGROUND);
+		sourceLabel.addSelectionListener(BrowserUtils.LINK_LISTENER);
+		sourceLabel.setText("We provide direct access to comprehensive data packages based on semi-automated analyses of the TCGA data set by the Firehose system developed and maintained by the <a href=\"http://gdac.broadinstitute.org\">TCGA Genome Data Analysis Center at the Broad Institute</a>.");
+		sourceLabel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
 		Link label = new Link(parent, SWT.NO_BACKGROUND);
 		label.addSelectionListener(BrowserUtils.LINK_LISTENER);
-		label.setText("Please be advised that downloading \"The Cancer Genome Atlas\" data constitutes agreement to the <a href=\"http://cancergenome.nih.gov/abouttcga/policies/policiesguidelines\">policies and guidelines on data usage and publications</a>");
+		label.setText("Please be advised that downloading \"The Cancer Genome Atlas\" data constitutes agreement to the <a href=\"http://cancergenome.nih.gov/abouttcga/policies/policiesguidelines\">policies and guidelines on data usage and publications</a>.");
 		label.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		if (!loaded) {
