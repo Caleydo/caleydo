@@ -38,6 +38,8 @@ public class BarPlotElement extends AHeatMapElement {
 	private float rawCenter;
 	private IRowNormalizer normalizer;
 
+	private int minimumItemHeightFactor = 10;
+
 	public BarPlotElement(TablePerspective tablePerspective) {
 		this(tablePerspective, BasicBlockColorer.INSTANCE, EDetailLevel.HIGH, EScalingMode.GLOBAL);
 	}
@@ -48,12 +50,26 @@ public class BarPlotElement extends AHeatMapElement {
 		this.scalingMode = scalingMode;
 	}
 
+	/**
+	 * @param minimumItemHeightFactor
+	 *            setter, see {@link minimumItemHeightFactor}
+	 */
+	public void setMinimumItemHeightFactor(int minimumItemHeightFactor) {
+		this.minimumItemHeightFactor = minimumItemHeightFactor;
+	}
+
+	/**
+	 * @return the minimumItemHeightFactor, see {@link #minimumItemHeightFactor}
+	 */
+	public int getMinimumItemHeightFactor() {
+		return minimumItemHeightFactor;
+	}
+
 	@Override
 	protected Vec2f getMinSizeImpl() {
 		Vec2f r = super.getMinSizeImpl();
-
 		if (!recordLabels.show())
-			r.setY(r.y() * 10); // have a visible size also
+			r.setY(r.y() * minimumItemHeightFactor); // have a visible size also
 		return r;
 	}
 
@@ -118,19 +134,21 @@ public class BarPlotElement extends AHeatMapElement {
 		case LOCAL:
 			DoubleStatistics stats = DoubleStatistics.of(TableDoubleLists.asNormalizedList(tablePerspective));
 			{
-				double max = Math.max(-stats.getMin(), stats.getMax());
-				this.normalizer = new UniformNormalizer(DoubleFunctions.normalize(-max, max));
+				double maxOffset = Math.max(this.rawCenter - stats.getMin(), stats.getMax() - this.rawCenter);
+				this.normalizer = new UniformNormalizer(DoubleFunctions.normalize(this.rawCenter - maxOffset,
+						this.rawCenter + maxOffset));
 			}
 			break;
 		case LOCAL_ROW:
 			List<IDoubleFunction> functions = new ArrayList<>(tablePerspective.getNrRecords());
 			final VirtualArray dimVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 			for (Integer recordID : tablePerspective.getRecordPerspective().getVirtualArray()) {
-				double max = Double.NEGATIVE_INFINITY;
+				double maxOffset = Double.NEGATIVE_INFINITY;
 				for (Integer dimensionID : dimVA) {
-					max = Math.max(max, Math.abs(table.getNormalizedValue(dimensionID, recordID)));
+					float v = table.getNormalizedValue(dimensionID, recordID);
+					maxOffset = Math.max(maxOffset, Math.max(this.rawCenter - v, v - this.rawCenter));
 				}
-				functions.add(DoubleFunctions.normalize(-max, max));
+				functions.add(DoubleFunctions.normalize(this.rawCenter - maxOffset, this.rawCenter + maxOffset));
 			}
 			this.normalizer = new RowNormalizer(functions.toArray(new IDoubleFunction[0]));
 			break;
