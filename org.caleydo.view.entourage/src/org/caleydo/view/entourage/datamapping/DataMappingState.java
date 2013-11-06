@@ -22,8 +22,9 @@ package org.caleydo.view.entourage.datamapping;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -31,15 +32,16 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.events.ClearGroupSelectionEvent;
-import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
-import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.view.entourage.GLEntourage;
+
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table.Cell;
 
 /**
  * Holds the currently selected data sets and stratifications.
@@ -49,8 +51,13 @@ import org.caleydo.view.entourage.GLEntourage;
  */
 public class DataMappingState {
 
-	/** All considered table perspectives */
-	private List<TablePerspective> mappedTablePerspectives = new ArrayList<TablePerspective>();
+	// /** All considered table perspectives */
+	// private List<TablePerspective> mappedTablePerspectives = new ArrayList<TablePerspective>();
+	//
+	// /**
+	// * Table perspectives that are non-genetic, but provide contextual information. Shown at top of Enroute.
+	// */
+	// private List<TablePerspective> contextualTablePerspectives = new ArrayList<TablePerspective>();
 
 	/** The the perspective that gets displayed. It represents a subsets of the groups in {@link #sourcePerspective}. */
 	private Perspective selectedPerspective;
@@ -62,7 +69,10 @@ public class DataMappingState {
 
 	private TablePerspective pathwayMappedTablePerspective;
 
-	private HashMap<ATableBasedDataDomain, TablePerspective> hashDDToTablePerspective = new HashMap<ATableBasedDataDomain, TablePerspective>();
+	private LinkedHashMap<ATableBasedDataDomain, TablePerspective> hashDDToTablePerspective = new LinkedHashMap<ATableBasedDataDomain, TablePerspective>();
+
+	private HashBasedTable<ATableBasedDataDomain, Perspective, TablePerspective> contextualTablePerspectivesTable = HashBasedTable
+			.create();
 
 	private final String eventSpace;
 
@@ -115,52 +125,81 @@ public class DataMappingState {
 	}
 
 	public List<TablePerspective> getTablePerspectives() {
-		return mappedTablePerspectives;
+		return new ArrayList<>(hashDDToTablePerspective.values());
 	}
 
 	public void addDataDomain(ATableBasedDataDomain dd) {
 		if (hashDDToTablePerspective.containsKey(dd))
 			return;
 
-		addTablePerspective(dd, selectedPerspective);
+		addTablePerspective(dd);
 	}
 
-	public void addTablePerspective(ATableBasedDataDomain dd, Perspective recordPerspective) {
-
-		TablePerspective tablePerspective = createTablePerspective(dd, recordPerspective);
-
-		mappedTablePerspectives.add(tablePerspective);
+	private void addTablePerspective(ATableBasedDataDomain dd) {
+		TablePerspective tablePerspective = createTablePerspective(dd, selectedPerspective);
 		hashDDToTablePerspective.put(dd, tablePerspective);
 
+		triggerAddTablePerspectiveEvents(tablePerspective);
+	}
+
+	public void addContextualTablePerspective(ATableBasedDataDomain dd, Perspective dimensionPerspective) {
+
+		TablePerspective tablePerspective = createTablePerspective(dd, dimensionPerspective, selectedPerspective);
+		contextualTablePerspectivesTable.put(dd, dimensionPerspective, tablePerspective);
+
+		triggerAddTablePerspectiveEvents(tablePerspective);
+	}
+
+	private void triggerAddTablePerspectiveEvents(TablePerspective tablePerspective) {
+
 		AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
 		event.setEventSpace(eventSpace);
 		event.setSender(this);
 		EventPublisher.trigger(event);
+		triggerTablePerspectivesChangedEvent();
+	}
+
+	private void triggerRemoveTablePerspectiveEvents(TablePerspective tablePerspective) {
+
+		AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
+		event.setEventSpace(eventSpace);
+		event.setSender(this);
+		EventPublisher.trigger(event);
+		triggerTablePerspectivesChangedEvent();
+	}
+
+	private void triggerTablePerspectivesChangedEvent() {
 		TablePerspectivesChangedEvent e = new TablePerspectivesChangedEvent(entourage);
 		e.setSender(this);
 		EventPublisher.trigger(e);
 	}
 
-	public void addTablePerspective(TablePerspective tablePerspective) {
-		mappedTablePerspectives.add(tablePerspective);
-		hashDDToTablePerspective.put(tablePerspective.getDataDomain(), tablePerspective);
+	// public void addTablePerspective(TablePerspective tablePerspective) {
+	// mappedTablePerspectives.add(tablePerspective);
+	// hashDDToTablePerspective.put(tablePerspective.getDataDomain(), tablePerspective);
+	//
+	// AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
+	// event.setEventSpace(eventSpace);
+	// event.setSender(this);
+	// EventPublisher.trigger(event);
+	// TablePerspectivesChangedEvent e = new TablePerspectivesChangedEvent(entourage);
+	// e.setSender(this);
+	// EventPublisher.trigger(e);
+	// }
 
-		AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
-		event.setEventSpace(eventSpace);
-		event.setSender(this);
-		EventPublisher.trigger(event);
-		TablePerspectivesChangedEvent e = new TablePerspectivesChangedEvent(entourage);
-		e.setSender(this);
-		EventPublisher.trigger(e);
-	}
-
-	private TablePerspective createTablePerspective(ATableBasedDataDomain dd, Perspective foreignPerspective) {
-		if (dd == null || foreignPerspective == null)
+	private TablePerspective createTablePerspective(ATableBasedDataDomain dd, Perspective foreignRecordPerspective) {
+		if (dd == null || foreignRecordPerspective == null)
 			return null;
-		Perspective convertedPerspective = dd.convertForeignPerspective(foreignPerspective);
-		TablePerspective tablePerspective = new TablePerspective(dd, convertedPerspective, dd.getTable()
-				.getDefaultDimensionPerspective(false));
-		tablePerspective.setLabel(dd.getLabel() + " - " + foreignPerspective.getLabel());
+		return createTablePerspective(dd, dd.getTable().getDefaultDimensionPerspective(false), foreignRecordPerspective);
+	}
+
+	private TablePerspective createTablePerspective(ATableBasedDataDomain dd, Perspective ownDimensionPerspective,
+			Perspective foreignRecordPerspective) {
+		if (dd == null || ownDimensionPerspective == null || foreignRecordPerspective == null)
+			return null;
+		Perspective convertedPerspective = dd.convertForeignPerspective(foreignRecordPerspective);
+		TablePerspective tablePerspective = new TablePerspective(dd, convertedPerspective, ownDimensionPerspective);
+		tablePerspective.setLabel(dd.getLabel() + " - " + foreignRecordPerspective.getLabel());
 		return tablePerspective;
 	}
 
@@ -169,17 +208,14 @@ public class DataMappingState {
 		if (!hashDDToTablePerspective.containsKey(dd))
 			return;
 
-		AEvent event = new RemoveTablePerspectiveEvent(hashDDToTablePerspective.get(dd));
-		event.setEventSpace(eventSpace);
-		event.setSender(this);
-		EventPublisher.trigger(event);
-
-		mappedTablePerspectives.remove(hashDDToTablePerspective.get(dd));
 		hashDDToTablePerspective.remove(dd);
+		triggerRemoveTablePerspectiveEvents(hashDDToTablePerspective.get(dd));
+	}
 
-		TablePerspectivesChangedEvent e = new TablePerspectivesChangedEvent(entourage);
-		e.setSender(this);
-		EventPublisher.trigger(e);
+	public void removeContextualTablePerspective(ATableBasedDataDomain dd, Perspective dimensionPerspective) {
+
+		TablePerspective tablePerspective = contextualTablePerspectivesTable.remove(dd, dimensionPerspective);
+		triggerAddTablePerspectiveEvents(tablePerspective);
 	}
 
 	/** Removes a previous and sets the new perspective on the event space */
@@ -191,17 +227,22 @@ public class DataMappingState {
 		ClearGroupSelectionEvent clearEvent = new ClearGroupSelectionEvent();
 		EventPublisher.trigger(clearEvent);
 
-		for (TablePerspective tablePerspective : mappedTablePerspectives) {
-			AEvent event = new RemoveTablePerspectiveEvent(tablePerspective);
-			event.setEventSpace(eventSpace);
-			event.setSender(this);
-			EventPublisher.trigger(event);
+		for (TablePerspective tablePerspective : getTablePerspectives()) {
+			triggerRemoveTablePerspectiveEvents(tablePerspective);
+		}
+		for (TablePerspective tablePerspective : getContextualTablePerspectives()) {
+			triggerRemoveTablePerspectiveEvents(tablePerspective);
 		}
 
-		mappedTablePerspectives.clear();
 		if (selectedPerspective != null) {
 			for (ATableBasedDataDomain dd : hashDDToTablePerspective.keySet()) {
-				addTablePerspective(dd, selectedPerspective);
+				addTablePerspective(dd);
+			}
+			for (ATableBasedDataDomain dd : contextualTablePerspectivesTable.rowKeySet()) {
+				for (Entry<Perspective, TablePerspective> entry : contextualTablePerspectivesTable.row(dd).entrySet()) {
+					if (entry.getValue() != null)
+						addContextualTablePerspective(dd, entry.getKey());
+				}
 			}
 		}
 
@@ -209,9 +250,17 @@ public class DataMappingState {
 		if (pathwayMappedTablePerspective != null) {
 			setPathwayMappedDataDomain(pathwayMappedTablePerspective.getDataDomain());
 		}
-		TablePerspectivesChangedEvent e = new TablePerspectivesChangedEvent(entourage);
-		e.setSender(this);
-		EventPublisher.trigger(e);
+	}
+
+	public List<TablePerspective> getContextualTablePerspectives() {
+		List<TablePerspective> contextualTablePerspectives = new ArrayList<>();
+		for (Cell<ATableBasedDataDomain, Perspective, TablePerspective> cell : contextualTablePerspectivesTable
+				.cellSet()) {
+			TablePerspective tablePerspective = cell.getValue();
+			if (tablePerspective != null)
+				contextualTablePerspectives.add(tablePerspective);
+		}
+		return contextualTablePerspectives;
 	}
 
 	/** Returns all data domains that are currently mapped */
@@ -221,6 +270,10 @@ public class DataMappingState {
 
 	public TablePerspective getMatchingTablePerspective(ATableBasedDataDomain dd) {
 		return hashDDToTablePerspective.get(dd);
+	}
+
+	public TablePerspective getContextualTablePerspective(ATableBasedDataDomain dd, Perspective dimensionPerspective) {
+		return contextualTablePerspectivesTable.get(dd, dimensionPerspective);
 	}
 
 	/**
@@ -233,6 +286,7 @@ public class DataMappingState {
 			setPathwayMappedTablePerspective(null);
 		TablePerspective tablePerspective = createTablePerspective(dd, selectedPerspective);
 		setPathwayMappedTablePerspective(tablePerspective);
+		triggerTablePerspectivesChangedEvent();
 	}
 
 	/**

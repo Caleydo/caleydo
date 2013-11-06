@@ -1346,7 +1346,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	@Override
 	public void addTablePerspective(TablePerspective newTablePerspective) {
-		dataMappingState.addTablePerspective(newTablePerspective);
+		// dataMappingState.addTablePerspective(newTablePerspective);
 
 	}
 
