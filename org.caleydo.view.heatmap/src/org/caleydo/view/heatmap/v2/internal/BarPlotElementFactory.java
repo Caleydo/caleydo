@@ -50,6 +50,7 @@ public class BarPlotElementFactory implements IGLElementFactory {
 		elem.setDimensionLabels(context.get("dimensionLabels", EShowLabels.class, default_));
 		elem.setRecordLabels(context.get("recordLabels", EShowLabels.class, default_));
 		elem.setTextWidth(context.getInt("textWidth", elem.getTextWidth()));
+		elem.setMinimumItemHeightFactor(context.getInt("minimumItemHeightFactor", elem.getMinimumItemHeightFactor()));
 
 		ISpacingStrategy defaults_ = context.get(ISpacingStrategy.class, SpacingStrategies.UNIFORM);
 		elem.setDimensionSpacingStrategy(context.get("dimensionSpacingStrategy", ISpacingStrategy.class, defaults_));

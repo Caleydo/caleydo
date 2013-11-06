@@ -29,6 +29,11 @@ abstract class AEntourageAdapter implements IViewAdapter {
 	}
 
 	@Override
+	public final String getLabel() {
+		return entourage.getLabel();
+	}
+
+	@Override
 	public void attach() {
 
 	}

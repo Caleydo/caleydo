@@ -7,6 +7,7 @@ package org.caleydo.view.tourguide.spi.adapter;
 
 import java.util.Collection;
 
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -20,7 +21,7 @@ import org.eclipse.ui.IWorkbenchPart;
  * @author Samuel Gratzl
  *
  */
-public interface IViewAdapter {
+public interface IViewAdapter extends ILabeled {
 
 	/**
 	 * attach the adapter the view
