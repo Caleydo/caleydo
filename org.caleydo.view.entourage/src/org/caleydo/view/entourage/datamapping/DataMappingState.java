@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -36,11 +37,13 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
+import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.view.entourage.GLEntourage;
 
 import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import com.google.common.collect.Table.Cell;
 
 /**
@@ -69,14 +72,19 @@ public class DataMappingState {
 
 	private TablePerspective pathwayMappedTablePerspective;
 
-	private LinkedHashMap<ATableBasedDataDomain, TablePerspective> hashDDToTablePerspective = new LinkedHashMap<ATableBasedDataDomain, TablePerspective>();
+	private Map<ATableBasedDataDomain, TablePerspective> hashDDToTablePerspective = new LinkedHashMap<ATableBasedDataDomain, TablePerspective>();
 
-	private HashBasedTable<ATableBasedDataDomain, Perspective, TablePerspective> contextualTablePerspectivesTable = HashBasedTable
+	private Table<ATableBasedDataDomain, Perspective, TablePerspective> contextualTablePerspectivesTable = HashBasedTable
 			.create();
 
 	private final String eventSpace;
 
 	private final GLEntourage entourage;
+
+	/**
+	 * ID category that is used for the stratified experimental data.
+	 */
+	private IDCategory experimentalDataIDCategory;
 
 	public DataMappingState(GLEntourage entourage) {
 		this.entourage = entourage;
@@ -111,15 +119,18 @@ public class DataMappingState {
 			if (geneticDataDomain.getRecordIDCategory() == geneIDCategory) {
 				sourcePerspective = geneticDataDomain.getTable().getDefaultDimensionPerspective(false);
 				setSelectedPerspective(sourcePerspective);
+				experimentalDataIDCategory = geneticDataDomain.getDimensionIDCategory();
 			} else {
 				sourcePerspective = geneticDataDomain.getTable().getDefaultRecordPerspective(false);
 				setSelectedPerspective(sourcePerspective);
+				experimentalDataIDCategory = geneticDataDomain.getRecordIDCategory();
 			}
 			addDataDomain(geneticDataDomain);
 		} else {
 			ATableBasedDataDomain dd = dataDomains.get(0);
 			sourcePerspective = dd.getTable().getDefaultRecordPerspective(false);
 			setSelectedPerspective(sourcePerspective);
+			experimentalDataIDCategory = dd.getRecordIDCategory();
 			addDataDomain(dd);
 		}
 	}
@@ -161,7 +172,7 @@ public class DataMappingState {
 
 	private void triggerRemoveTablePerspectiveEvents(TablePerspective tablePerspective) {
 
-		AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
+		RemoveTablePerspectiveEvent event = new RemoveTablePerspectiveEvent(tablePerspective);
 		event.setEventSpace(eventSpace);
 		event.setSender(this);
 		EventPublisher.trigger(event);
@@ -208,8 +219,8 @@ public class DataMappingState {
 		if (!hashDDToTablePerspective.containsKey(dd))
 			return;
 
-		hashDDToTablePerspective.remove(dd);
 		triggerRemoveTablePerspectiveEvents(hashDDToTablePerspective.get(dd));
+		hashDDToTablePerspective.remove(dd);
 	}
 
 	public void removeContextualTablePerspective(ATableBasedDataDomain dd, Perspective dimensionPerspective) {
@@ -327,5 +338,12 @@ public class DataMappingState {
 	 */
 	public Perspective getSourcePerspective() {
 		return sourcePerspective;
+	}
+
+	/**
+	 * @return the experimentalDataIDCategory, see {@link #experimentalDataIDCategory}
+	 */
+	public IDCategory getExperimentalDataIDCategory() {
+		return experimentalDataIDCategory;
 	}
 }
