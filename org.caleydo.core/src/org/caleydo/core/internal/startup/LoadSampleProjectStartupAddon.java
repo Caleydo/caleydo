@@ -129,9 +129,33 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 
 	@Override
 	public boolean validate() {
-		if (this.selectedChoice == null)
-			return false;
+		return selectedChoice != null;
+		// if (this.selectedChoice == null)
+		// return false;
 		// Try to download the file with interruption
+		// RemoteFile file = RemoteFile.of(this.selectedChoice);
+		// if (!file.inCache(true)) {
+		// file.delete();
+		// try {
+		// new ProgressMonitorDialog(new Shell()).run(true, true, file);
+		// } catch (InvocationTargetException | InterruptedException e) {
+		// Status status = new Status(IStatus.ERROR, this.getClass().getSimpleName(), "Error during downloading: "
+		// + selectedChoice, e);
+		// ErrorDialog.openError(null, "Download Error", "Error during downloading: " + selectedChoice, status);
+		// Logger.log(status);
+		// }
+		// }
+		// return file.inCache(false);
+	}
+
+	@Override
+	public boolean init() {
+		return false;
+	}
+
+	@Override
+	public IStartupProcedure create() {
+		MyPreferences.setLastChosenSampleProject(selectedChoice.toString());
 		RemoteFile file = RemoteFile.of(this.selectedChoice);
 		if (!file.inCache(true)) {
 			file.delete();
@@ -144,17 +168,8 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 				Logger.log(status);
 			}
 		}
-		return file.inCache(false);
-	}
-
-	@Override
-	public boolean init() {
-		return false;
-	}
-
-	@Override
-	public IStartupProcedure create() {
-		MyPreferences.setLastChosenSampleProject(selectedChoice.toString());
+		if (!file.inCache(false))
+			return null;
 		return new LoadProjectStartupProcedure(RemoteFile.of(selectedChoice).getFile().getAbsolutePath(), false);
 	}
 

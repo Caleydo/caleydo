@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex.brick.configurer;
 
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.view.stratomex.brick.GLBrick;
@@ -112,5 +114,10 @@ public interface IBrickConfigurer {
 	 * @return True if the bricks should be distributed uniformly within the brick column, false otherwise.
 	 */
 	public boolean distributeBricksUniformly();
+
+	/**
+	 * Adds data specific {@link AContextMenuItem}s to the specified creator;
+	 */
+	public void addDataSpecificContextMenuEntries(ContextMenuCreator creator, GLBrick brick);
 
 }

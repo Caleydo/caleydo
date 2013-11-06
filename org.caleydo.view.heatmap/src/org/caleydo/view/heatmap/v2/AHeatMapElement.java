@@ -360,7 +360,7 @@ public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 		if (renderGroupHints) {
 			final TablePerspective tablePerspective = selections.getTablePerspective();
 
-			g.color(Color.LIGHT_GRAY).lineWidth(2);
+			g.color(Color.BLACK).lineWidth(2);
 			g.incZ();
 			renderGroupHints(g, tablePerspective.getRecordPerspective().getVirtualArray(), true, recordSpacing, w);
 			renderGroupHints(g, tablePerspective.getDimensionPerspective().getVirtualArray(), false, dimensionSpacing,

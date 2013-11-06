@@ -1084,7 +1084,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		public void onAddPathway(AddPathwayEvent event) {
 			PathwayGraph pathway = event.getPathway();
 			if (pathway != null && !hasPathway(pathway)) {
-				addPathway(pathway, EEmbeddingID.PATHWAY_LEVEL2);
+				addPathway(pathway, event.getPathwayLevel());
 			}
 		}
 
