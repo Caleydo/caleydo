@@ -11,11 +11,13 @@ public class DataMapper implements IDataMapper {
 
 	@Override
 	public void show() {
+		TourGuideUtils.showTourGuide(EDataDomainQueryMode.OTHER);
 		TourGuideUtils.showTourGuide(EDataDomainQueryMode.STRATIFICATIONS);
 	}
 
 	@Override
 	public void hide() {
+		TourGuideUtils.hideTourGuide(EDataDomainQueryMode.OTHER);
 		TourGuideUtils.hideTourGuide(EDataDomainQueryMode.STRATIFICATIONS);
 	}
 

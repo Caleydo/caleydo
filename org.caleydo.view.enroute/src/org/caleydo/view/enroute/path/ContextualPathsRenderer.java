@@ -43,6 +43,7 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
@@ -381,7 +382,14 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onAddTablePerspectives(AddTablePerspectivesEvent event) {
-		tablePerspectives.addAll(event.getTablePerspectives());
+		for (TablePerspective tablePerspective : event.getTablePerspectives()) {
+			if (!(tablePerspective.getDataDomain() instanceof GeneticDataDomain))
+				continue;
+			if (this.tablePerspectives.contains(tablePerspective))
+				continue;
+
+			this.tablePerspectives.add(tablePerspective);
+		}
 		// isPathSelectionMode = event.isPathSelectionMode();
 	}
 

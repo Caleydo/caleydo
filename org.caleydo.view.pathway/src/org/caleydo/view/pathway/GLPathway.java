@@ -1282,10 +1282,11 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 	@Override
 	public void addTablePerspective(TablePerspective tablePerspective) {
-		if (tablePerspective == null || !tablePerspective.getDataDomain().hasIDCategory(geneIDType)) {
-			throw new IllegalStateException("Perspective null or illegal for this view: " + tablePerspective);
-		}
-		if (tablePerspectives.contains(tablePerspective))
+		// if (tablePerspective == null || !tablePerspective.getDataDomain().hasIDCategory(geneIDType)) {
+		// throw new IllegalStateException("Perspective null or illegal for this view: " + tablePerspective);
+		// }
+		if (tablePerspective == null || !tablePerspective.getDataDomain().hasIDCategory(geneIDType)
+				|| tablePerspectives.contains(tablePerspective))
 			return;
 		tablePerspectives.add(tablePerspective);
 		if (tablePerspective instanceof PathwayTablePerspective)

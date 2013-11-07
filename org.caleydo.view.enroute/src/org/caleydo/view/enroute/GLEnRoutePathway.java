@@ -61,9 +61,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
-import org.caleydo.view.enroute.event.ShowContextElementSelectionDialogEvent;
 import org.caleydo.view.enroute.event.ShowGroupSelectionDialogEvent;
-import org.caleydo.view.enroute.mappeddataview.ChooseContextDataDialog;
 import org.caleydo.view.enroute.mappeddataview.ChooseGroupsDialog;
 import org.caleydo.view.enroute.mappeddataview.MappedDataRenderer;
 import org.caleydo.view.enroute.path.EnRoutePathRenderer;
@@ -110,8 +108,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	private ArrayList<TablePerspective> resolvedTablePerspectives = new ArrayList<TablePerspective>();
 
-	/** A contextual perspective which has the same column ID Type but a different row ID Type */
-	private TablePerspective contextualPerspective = null;
+	/** Contextual perspectives which has the same column ID Type but a different row ID Type */
+	private List<TablePerspective> contextualTablePerspectives = new ArrayList<>();
+	// private TablePerspective contextualPerspective = null;
 
 	/**
 	 * The {@link IDataDomain}s for which data is displayed in this view.
@@ -150,7 +149,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	private IDType columnIDType;
 
 	/** The id type for the rows for contextual data */
-	private IDType contextRowIDTYpe;
+	// private IDType contextRowIDTYpe;
 
 	private EventBasedSelectionManager geneSelectionManager;
 	private EventBasedSelectionManager metaboliteSelectionManager;
@@ -516,40 +515,44 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * {@link #resolvedTablePerspectives}
 	 */
 	private void updateContextualPerspectives() {
-		if (contextualPerspective == null) {
+		if (contextualTablePerspectives.isEmpty()) {
 			mappedDataRenderer.setContextualTablePerspectives(null);
 			return;
 		}
 
-		ATableBasedDataDomain contextualDataDomain = contextualPerspective.getDataDomain();
-		// Perspective contextualColumnPerspective = contextualPerspective.getPerspective();
-		Perspective contextualRowPerspective = contextualPerspective.getPerspective(contextRowIDTYpe);
+		List<List<TablePerspective>> contextTablePerspectives = new ArrayList<>();
+		for (TablePerspective contextualPerspective : contextualTablePerspectives) {
+			ATableBasedDataDomain contextualDataDomain = contextualPerspective.getDataDomain();
+			// Perspective contextualColumnPerspective = contextualPerspective.getPerspective();
+			Perspective contextualRowPerspective = contextualPerspective.getOppositePerspective(columnIDType);
+			List<TablePerspective> resolvedContextTablePerspectives = new ArrayList<>(resolvedTablePerspectives.size());
+			contextTablePerspectives.add(resolvedContextTablePerspectives);
 
-		ArrayList<TablePerspective> contextTablePerspectives = new ArrayList<>();
-		for (TablePerspective resolvedGeneTablePerspective : resolvedTablePerspectives) {
+			for (TablePerspective resolvedGeneTablePerspective : resolvedTablePerspectives) {
 
-			Perspective primaryColumnPerspective = resolvedGeneTablePerspective.getPerspective(columnIDType);
+				Perspective primaryColumnPerspective = resolvedGeneTablePerspective.getPerspective(columnIDType);
 
-			Perspective contextualColumnPerspective = contextualDataDomain
-					.convertForeignPerspective(primaryColumnPerspective);
+				Perspective contextualColumnPerspective = contextualDataDomain
+						.convertForeignPerspective(primaryColumnPerspective);
 
-			if (contextualColumnPerspective == null) {
-				Logger.log(new Status(IStatus.ERROR, this.toString(),
-						"Failed to convert the primary to the contex perspective"));
-			} else {
-				TablePerspective resolvedContextTablePerspective;
-
-				if (contextualDataDomain.getDimensionIDType().equals(contextRowIDTYpe)) {
-					resolvedContextTablePerspective = new TablePerspective(contextualDataDomain,
-							contextualColumnPerspective, contextualRowPerspective);
-				} else if (contextualDataDomain.getRecordIDType().equals(contextRowIDTYpe)) {
-					resolvedContextTablePerspective = new TablePerspective(contextualDataDomain,
-							contextualColumnPerspective, contextualRowPerspective);
+				if (contextualColumnPerspective == null) {
+					Logger.log(new Status(IStatus.ERROR, this.toString(),
+							"Failed to convert the primary to the contex perspective"));
 				} else {
-					throw new IllegalStateException("Context DD and IDTypes don't match up.");
+					TablePerspective resolvedContextTablePerspective;
 
+					if (contextualDataDomain.getDimensionIDType().equals(contextualRowPerspective.getIdType())) {
+						resolvedContextTablePerspective = new TablePerspective(contextualDataDomain,
+								contextualColumnPerspective, contextualRowPerspective);
+					} else if (contextualDataDomain.getRecordIDType().equals(contextualRowPerspective.getIdType())) {
+						resolvedContextTablePerspective = new TablePerspective(contextualDataDomain,
+								contextualColumnPerspective, contextualRowPerspective);
+					} else {
+						throw new IllegalStateException("Context DD and IDTypes don't match up.");
+
+					}
+					resolvedContextTablePerspectives.add(resolvedContextTablePerspective);
 				}
-				contextTablePerspectives.add(resolvedContextTablePerspective);
 			}
 		}
 
@@ -581,16 +584,17 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			}
 			if (!newTablePerspective.getDataDomain().hasIDCategory(primaryRowIDType)) {
 
-				contextRowIDTYpe = newTablePerspective.getDataDomain().getOppositeIDType(columnIDType);
-				if (mappedDataRenderer.getContextRowIDs() == null || mappedDataRenderer.getContextRowIDs().isEmpty()) {
-					// if this is the first time we select the compound
-					ShowContextElementSelectionDialogEvent contextEvent = new ShowContextElementSelectionDialogEvent(
-							newTablePerspective.getPerspective(contextRowIDTYpe));
-					eventPublisher.triggerEvent(contextEvent);
-
-				}
+				// contextRowIDTYpe = newTablePerspective.getDataDomain().getOppositeIDType(columnIDType);
+				// if (mappedDataRenderer.getContextRowIDs() == null || mappedDataRenderer.getContextRowIDs().isEmpty())
+				// {
+				// // if this is the first time we select the compound
+				// ShowContextElementSelectionDialogEvent contextEvent = new ShowContextElementSelectionDialogEvent(
+				// newTablePerspective.getPerspective(contextRowIDTYpe));
+				// eventPublisher.triggerEvent(contextEvent);
+				//
+				// }
 				// true for contextual perspective
-				contextualPerspective = newTablePerspective;
+				contextualTablePerspectives.add(newTablePerspective);
 
 				tpIterator.remove();
 			}
@@ -686,8 +690,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	@Override
 	public void removeTablePerspective(TablePerspective tablePerspective) {
-		if (tablePerspective == contextualPerspective)
-			contextualPerspective = null;
+		if (contextualTablePerspectives.contains(tablePerspective)) {
+			contextualTablePerspectives.remove(tablePerspective);
+		}
 
 		for (TablePerspective t : tablePerspectives) {
 			if (t == tablePerspective) {
@@ -773,7 +778,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public void updatePerspective(PerspectiveUpdatedEvent event) {
 		checkAndUpdatePerspectives(event, resolvedTablePerspectives);
 		checkAndUpdatePerspectives(event, tablePerspectives);
-		checkAndUpdatePerspectives(event, mappedDataRenderer.getContextualTablePerspectives());
+		List<List<TablePerspective>> ctps = mappedDataRenderer.getContextualTablePerspectives();
+		if (ctps != null) {
+			for (List<TablePerspective> resolvedContextTablePerspectives : mappedDataRenderer
+					.getContextualTablePerspectives())
+				checkAndUpdatePerspectives(event, resolvedContextTablePerspectives);
+		}
 
 	}
 
@@ -886,29 +896,29 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	}
 
-	@ListenTo
-	public void showContextSelectionDialog(final ShowContextElementSelectionDialogEvent event) {
-
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				Shell shell = new Shell();
-				ChooseContextDataDialog dialog = new ChooseContextDataDialog(shell, event.getPerspective());
-				dialog.create();
-				dialog.setBlockOnOpen(true);
-
-				if (dialog.open() == IStatus.OK) {
-
-					// FIXME this might not be thread-safe
-					List<Integer> selectedItems = dialog.getSelectedItems();
-					mappedDataRenderer.setContextRowIDs(selectedItems);
-					setLayoutDirty();
-
-				}
-			}
-
-		});
-	}
+	// @ListenTo
+	// public void showContextSelectionDialog(final ShowContextElementSelectionDialogEvent event) {
+	//
+	// Display.getDefault().asyncExec(new Runnable() {
+	// @Override
+	// public void run() {
+	// Shell shell = new Shell();
+	// ChooseContextDataDialog dialog = new ChooseContextDataDialog(shell, event.getPerspective());
+	// dialog.create();
+	// dialog.setBlockOnOpen(true);
+	//
+	// if (dialog.open() == IStatus.OK) {
+	//
+	// // FIXME this might not be thread-safe
+	// List<Integer> selectedItems = dialog.getSelectedItems();
+	// mappedDataRenderer.setContextRowIDs(selectedItems);
+	// setLayoutDirty();
+	//
+	// }
+	// }
+	//
+	// });
+	// }
 
 	@ListenTo
 	public void showGroupSelectionDialog(final ShowGroupSelectionDialogEvent event) {
