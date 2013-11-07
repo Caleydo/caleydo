@@ -845,10 +845,47 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				event.setSender(this);
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}
+		};
+
+		stratomex.addIDPickingListener(pickingListener, EPickingType.BRICK.name(), getID());
+		if (isHeaderBrick) {
+			stratomex.addIDPickingListener(pickingListener, EPickingType.DIMENSION_GROUP.name(), brickColumn.getID());
+		}
+
+		stratomex.addIDPickingTooltipListener(this, EPickingType.BRICK_TITLE.name(), getID());
+
+		addIDPickingListener(new APickingListener() {
+			@Override
+			public void clicked(Pick pick) {
+				isBrickResizeActive = true;
+			}
+		}, EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
+
+		brickPickingListener = new ATimedMouseOutPickingListener() {
 
 			@Override
-			public void rightClicked(Pick pick) {
+			public void mouseOver(Pick pick) {
+				super.mouseOver(pick);
+				if (pick.getObjectID() == getID())
+					showWidgets(true);
+				else
+					showWidgets(false);
 
+			}
+
+			@Override
+			protected void timedMouseOut(Pick pick) {
+				// TODO Auto-generated method stub
+				if (pick.getObjectID() == getID())
+					showWidgets(false);
+			}
+		};
+
+		getStratomex().addTypePickingListener(brickPickingListener, EPickingType.BRICK_PENETRATING.name());
+
+		stratomex.addIDPickingListener(new APickingListener() {
+			@Override
+			protected void rightClicked(Pick pick) {
 				// Differentiate between cases where user selects header brick
 				// or a brick
 				ContextMenuCreator contextMenuCreator = stratomex.getContextMenuCreator();
@@ -897,45 +934,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					// FIXME: if added, this line causes the context menu on the bricks to not appear
 					// selectElementsByGroup();
 				}
-				brickConfigurer.addDataSpecificContextMenuEntries(contextMenuCreator, GLBrick.this);
+
+				brickConfigurer.addDataSpecificContextMenuEntries(stratomex.getContextMenuCreator(), GLBrick.this);
 			}
-		};
-
-		stratomex.addIDPickingListener(pickingListener, EPickingType.BRICK.name(), getID());
-		if (isHeaderBrick) {
-			stratomex.addIDPickingListener(pickingListener, EPickingType.DIMENSION_GROUP.name(), brickColumn.getID());
-		}
-
-		stratomex.addIDPickingTooltipListener(this, EPickingType.BRICK_TITLE.name(), getID());
-
-		addIDPickingListener(new APickingListener() {
-			@Override
-			public void clicked(Pick pick) {
-				isBrickResizeActive = true;
-			}
-		}, EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
-
-		brickPickingListener = new ATimedMouseOutPickingListener() {
-
-			@Override
-			public void mouseOver(Pick pick) {
-				super.mouseOver(pick);
-				if (pick.getObjectID() == getID())
-					showWidgets(true);
-				else
-					showWidgets(false);
-
-			}
-
-			@Override
-			protected void timedMouseOut(Pick pick) {
-				// TODO Auto-generated method stub
-				if (pick.getObjectID() == getID())
-					showWidgets(false);
-			}
-		};
-
-		getStratomex().addTypePickingListener(brickPickingListener, EPickingType.BRICK_PENETRATING.name());
+		}, EPickingType.BRICK_PENETRATING.name(), getID());
 	}
 
 	private void unregisterPickingListeners() {

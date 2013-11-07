@@ -17,7 +17,7 @@ public class DataMapper implements IDataMapper {
 
 	@Override
 	public void hide() {
-		TourGuideUtils.showTourGuide(EDataDomainQueryMode.OTHER);
+		TourGuideUtils.hideTourGuide(EDataDomainQueryMode.OTHER);
 		TourGuideUtils.hideTourGuide(EDataDomainQueryMode.STRATIFICATIONS);
 	}
 
