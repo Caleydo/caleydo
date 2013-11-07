@@ -1,5 +1,4 @@
 Study Abbreviation	Study Name
-LAML	Acute Myeloid Leukemia
 ACC	Adrenocortical carcinoma
 BLCA	Bladder Urothelial Carcinoma
 LGG	Brain Lower Grade Glioma
