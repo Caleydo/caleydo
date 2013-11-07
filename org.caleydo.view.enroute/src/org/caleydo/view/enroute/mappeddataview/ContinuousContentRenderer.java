@@ -7,17 +7,21 @@ package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -29,7 +33,7 @@ import org.caleydo.view.enroute.EPickingType;
  * @author Alexander Lex
  *
  */
-public class ContinuousContentRenderer extends ContentRenderer {
+public class ContinuousContentRenderer extends AContentRenderer {
 
 	private static Integer rendererIDCounter = 0;
 
@@ -39,9 +43,9 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 	public ContinuousContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType, Integer resolvedRowID,
 			ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
-			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
+			MappedDataRenderer parent, Group group, boolean isHighlightMode, Perspective foreignColumnPerspective) {
 		super(rowIDType, rowID, resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, parent,
-				group, isHighlightMode);
+				group, isHighlightMode, foreignColumnPerspective);
 
 		synchronized (rendererIDCounter) {
 			rendererID = rendererIDCounter++;
@@ -85,15 +89,43 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 	@SuppressWarnings("unchecked")
 	private void renderAllBars(GL2 gl, List<SelectionType> geneSelectionTypes) {
-		float xIncrement = x / columnPerspective.getVirtualArray().size();
+		VirtualArray va = foreignColumnPerspective != null ? foreignColumnPerspective.getVirtualArray()
+				: columnPerspective.getVirtualArray();
+		float xIncrement = x / va.size();
 		int experimentCount = 0;
 
-		for (Integer columnID : columnPerspective.getVirtualArray()) {
+		for (Integer id : va) {
 
-			float value;
+			Float value = Float.NaN;
+			Integer columnID = id;
 			if (resolvedRowID != null) {
 
-				value = dataDomain.getNormalizedValue(resolvedRowIDType, resolvedRowID, resolvedColumnIDType, columnID);
+				if (foreignColumnPerspective == null) {
+					value = dataDomain.getNormalizedValue(resolvedRowIDType, resolvedRowID, resolvedColumnIDType, id);
+				} else {
+					IIDTypeMapper<Integer, Integer> mapper = columnIDMappingManager.getIDTypeMapper(
+							foreignColumnPerspective.getIdType(), resolvedColumnIDType);
+					Set<Integer> localVAIDS = mapper.apply(id);
+					if (localVAIDS != null) {
+						for (Integer localVAID : localVAIDS) {
+							value = dataDomain.getNormalizedValue(resolvedRowIDType, resolvedRowID,
+									resolvedColumnIDType, localVAID);
+							columnID = localVAID;
+							break;
+						}
+					}
+
+				}
+
+				float leftEdge = xIncrement * experimentCount;
+
+				if (Float.isNaN(value)) {
+					if (!isHighlightMode) {
+						renderMissingValue(gl, leftEdge, xIncrement);
+					}
+					experimentCount++;
+					continue;
+				}
 
 				List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
 						columnIDType, columnID);
@@ -126,7 +158,6 @@ public class ContinuousContentRenderer extends ContentRenderer {
 					bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
 				}
 
-				float leftEdge = xIncrement * experimentCount;
 				float upperEdge = value * y;
 
 				// gl.glPushName(parentView.getPickingManager().getPickingID(
@@ -141,7 +172,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 				gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
 						EPickingType.SAMPLE.name() + hashCode(), columnID));
 
-				gl.glBegin(GL2.GL_QUADS);
+				gl.glBegin(GL2GL3.GL_QUADS);
 
 				gl.glColor4fv(bottomBarColor, 0);
 				gl.glVertex3f(leftEdge, 0, z);
@@ -199,7 +230,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
 				EPickingType.SAMPLE_GROUP_RENDERER.name(), rendererID));
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glColor4fv(bottomBarColor, 0);
 		gl.glVertex3f(0, y / 3, z);
 		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f);

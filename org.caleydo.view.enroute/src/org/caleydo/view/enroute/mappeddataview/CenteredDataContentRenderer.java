@@ -6,6 +6,7 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -18,6 +19,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -36,9 +38,9 @@ public class CenteredDataContentRenderer extends ACategoricalRowContentRenderer 
 	public CenteredDataContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType,
 			Integer resolvedRowID, ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group, boolean isHighlightMode, float dataCenter, float minValue,
-			float maxValue) {
+			float maxValue, Perspective foreignColumnPerspective) {
 		super(rowIDType, rowID, resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, parent,
-				group, isHighlightMode);
+				group, isHighlightMode, foreignColumnPerspective);
 		this.dataCenter = dataCenter;
 		this.minValue = minValue;
 		this.maxValue = maxValue;
@@ -72,11 +74,13 @@ public class CenteredDataContentRenderer extends ACategoricalRowContentRenderer 
 	protected void renderAllBars(GL2 gl, List<SelectionType> geneSelectionTypes) {
 		if (resolvedRowID == null)
 			return;
-		if (x / columnPerspective.getVirtualArray().size() < parentView.getPixelGLConverter()
-				.getGLWidthForPixelWidth(3)) {
+		VirtualArray va = foreignColumnPerspective != null ? foreignColumnPerspective.getVirtualArray()
+				: columnPerspective.getVirtualArray();
+		float xIncrement = x / va.size();
+
+		if (xIncrement < parentView.getPixelGLConverter().getGLWidthForPixelWidth(3)) {
 			useShading = false;
 		}
-		float xIncrement = x / columnPerspective.getVirtualArray().size();
 		int experimentCount = 0;
 
 		// float[] tempTopBarColor = topBarColor;
@@ -106,19 +110,50 @@ public class CenteredDataContentRenderer extends ACategoricalRowContentRenderer 
 		float center = getNormalizedValue(dataCenter);
 		// float center = 0.5f;
 
-		gl.glColor3f(0, 0, 0);
-		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(0, (center * range) + spacing, z);
-		gl.glVertex3f(x, (center * range) + spacing, z);
-		gl.glEnd();
+		if (!isHighlightMode) {
+			gl.glColor3f(0, 0, 0);
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(0, (center * range) + spacing, z);
+			gl.glVertex3f(x, (center * range) + spacing, z);
+			gl.glEnd();
+		}
 
-		for (Integer columnID : columnPerspective.getVirtualArray()) {
+		for (Integer id : va) {
 
-			float value;
-			if (rowID != null) {
+			Float value = Float.NaN;
+			Object rawValue = null;
+			Integer columnID = id;
+			if (resolvedRowID != null) {
+
+				if (foreignColumnPerspective == null) {
+					rawValue = dataDomain.getRaw(resolvedRowIDType, resolvedRowID, resolvedColumnIDType, columnID);
+				} else {
+					IIDTypeMapper<Integer, Integer> mapper = columnIDMappingManager.getIDTypeMapper(
+							foreignColumnPerspective.getIdType(), resolvedColumnIDType);
+					Set<Integer> localVAIDS = mapper.apply(id);
+					if (localVAIDS != null) {
+						for (Integer localVAID : localVAIDS) {
+							rawValue = dataDomain.getRaw(resolvedRowIDType, resolvedRowID, resolvedColumnIDType,
+									localVAID);
+							columnID = localVAID;
+							break;
+						}
+					}
+
+				}
+
+				float leftEdge = xIncrement * experimentCount;
+
+				if (rawValue == null) {
+					if (!isHighlightMode) {
+						renderMissingValue(gl, leftEdge, xIncrement);
+					}
+					experimentCount++;
+					continue;
+				}
 				// value = dataDomain.getNormalizedValue(resolvedRowIDType, resolvedRowID, resolvedColumnIDType,
 				// columnID);
-				Object rawValue = dataDomain.getRaw(resolvedRowIDType, resolvedRowID, resolvedColumnIDType, columnID);
+
 				if (rawValue instanceof Integer) {
 					value = getNormalizedValue(((Integer) rawValue).floatValue());
 				} else if (rawValue instanceof Float) {
@@ -161,8 +196,6 @@ public class CenteredDataContentRenderer extends ACategoricalRowContentRenderer 
 					topBarColor = colorCalculator.getPrimaryColor().getRGB();
 					bottomBarColor = colorCalculator.getSecondaryColor().getRGB();
 				}
-
-				float leftEdge = xIncrement * experimentCount;
 
 				float upperEdge = (value * range) + spacing;
 

@@ -6,6 +6,7 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 
@@ -16,6 +17,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -25,10 +27,10 @@ public class MutationStatusRowContentRenderer extends ACategoricalRowContentRend
 
 	public MutationStatusRowContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType,
 			Integer resolvedRowID, ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
-			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
+			MappedDataRenderer parent, Group group, boolean isHighlightMode, Perspective foreignColumnPerspective) {
 
 		super(rowIDType, rowID, resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, parent,
-				group, isHighlightMode);
+				group, isHighlightMode, foreignColumnPerspective);
 
 	}
 
@@ -41,7 +43,6 @@ public class MutationStatusRowContentRenderer extends ACategoricalRowContentRend
 		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
 				columnPerspective.getVirtualArray(), dimensionVirtualArray);
 
-
 		registerPickingListeners();
 
 	}
@@ -49,14 +50,43 @@ public class MutationStatusRowContentRenderer extends ACategoricalRowContentRend
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void renderAllBars(GL2 gl, List<SelectionType> geneSelectionTypes) {
-		float xIncrement = x / columnPerspective.getVirtualArray().size();
+		VirtualArray va = foreignColumnPerspective != null ? foreignColumnPerspective.getVirtualArray()
+				: columnPerspective.getVirtualArray();
+		float xIncrement = x / va.size();
 		int experimentCount = 0;
 
-		for (Integer columnID : columnPerspective.getVirtualArray()) {
+		if (resolvedRowID != null) {
 
-			float value;
-			if (resolvedRowID != null) {
-				value = dataDomain.getNormalizedValue(resolvedRowIDType, resolvedRowID, resolvedColumnIDType, columnID);
+			for (Integer id : va) {
+				Float value = Float.NaN;
+				Integer columnID = id;
+
+				if (foreignColumnPerspective == null) {
+					value = dataDomain.getNormalizedValue(resolvedRowIDType, resolvedRowID, resolvedColumnIDType, id);
+				} else {
+					IIDTypeMapper<Integer, Integer> mapper = columnIDMappingManager.getIDTypeMapper(
+							foreignColumnPerspective.getIdType(), resolvedColumnIDType);
+					Set<Integer> localVAIDS = mapper.apply(id);
+					if (localVAIDS != null) {
+						for (Integer localVAID : localVAIDS) {
+							value = dataDomain.getNormalizedValue(resolvedRowIDType, resolvedRowID,
+									resolvedColumnIDType, localVAID);
+							columnID = localVAID;
+							break;
+						}
+					}
+
+				}
+
+				float leftEdge = xIncrement * experimentCount;
+
+				if (Float.isNaN(value)) {
+					if (!isHighlightMode) {
+						renderMissingValue(gl, leftEdge, xIncrement);
+					}
+					experimentCount++;
+					continue;
+				}
 
 				List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
 						columnIDType, columnID);
@@ -86,7 +116,6 @@ public class MutationStatusRowContentRenderer extends ACategoricalRowContentRend
 					bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
 				}
 
-				float leftEdge = xIncrement * experimentCount;
 				float upperEdge = value * y;
 
 				// gl.glPushName(parentView.getPickingManager().getPickingID(

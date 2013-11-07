@@ -34,9 +34,9 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 
 	public MutationStatusMatrixRowContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType,
 			Integer resolvedRowID, ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
-			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
+			MappedDataRenderer parent, Group group, boolean isHighlightMode, Perspective foreignColumnPerspective) {
 		super(rowIDType, rowID, resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, parent,
-				group, isHighlightMode);
+				group, isHighlightMode, foreignColumnPerspective);
 
 	}
 
