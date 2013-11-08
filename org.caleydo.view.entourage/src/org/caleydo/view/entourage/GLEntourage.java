@@ -678,7 +678,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				rendererIDList.add(rendererID);
 			}
 		}
-		GLMultiFormWindow window = new GLMultiFormWindow("Selected Path", this, info, true);
+		GLMultiFormWindow window = new GLMultiFormWindow("enRoute - experimental data for paths", this, info, true);
 
 		info.window = window;
 		parent.add(window);
