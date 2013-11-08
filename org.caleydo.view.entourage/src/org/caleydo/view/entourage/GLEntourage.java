@@ -31,11 +31,12 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
-import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IMultiFormChangeListener;
@@ -45,6 +46,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElement.EVisibility;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
@@ -202,6 +204,9 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	// private GLWindow dataMappingWindow;
 
+	/**
+	 * Items that need to be added, but come from another thread.
+	 */
 	private List<AContextMenuItem> contextMenuItemsToShow = new ArrayList<>();
 
 	protected Set<GLPathwayWindow> pinnedWindows = new HashSet<>();
@@ -435,18 +440,21 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	protected void registerListeners() {
 
-		parentGLCanvas.addMouseListener(new IGLMouseListener() {
-
-			@Override
-			public void mouseWheelMoved(IMouseEvent mouseEvent) {
-			}
-
-			@Override
-			public void mouseReleased(IMouseEvent mouseEvent) {
-			}
+		parentGLCanvas.addMouseListener(new GLMouseAdapter() {
 
 			@Override
 			public void mousePressed(IMouseEvent mouseEvent) {
+				if (mouseEvent.getButton() == 3 && activeWindow != null) {
+					for (PathwayMultiFormInfo info : pathwayInfos) {
+						if (info.window == activeWindow) {
+							ShowCommonNodesPathwaysEvent event = new ShowCommonNodesPathwaysEvent(info.pathway);
+							event.setEventSpace(pathEventSpace);
+							contextMenuItemsToShow.add(new GenericContextMenuItem(
+									"Show Related Pathways with Common Nodes", event));
+						}
+					}
+				}
+
 			}
 
 			@Override
@@ -791,6 +799,16 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		if (isLayoutDirty)
 			updateAugmentation = true;
 
+		final boolean isPickingRun = GLGraphics.isPickingPass(gl);
+		if (!isPickingRun) {
+			if (!contextMenuItemsToShow.isEmpty()) {
+				for (AContextMenuItem item : contextMenuItemsToShow) {
+					getContextMenuCreator().add(item);
+				}
+				contextMenuItemsToShow.clear();
+			}
+		}
+
 		super.display(gl);
 
 		if (wasContextChanged) {
@@ -827,7 +845,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		// methods
 		// which need alpha blending...
 		dndController.handleDragging(gl, glMouseListener);
-		contextMenuItemsToShow.clear();
+
 		// wasContextChanged = false;
 	}
 

@@ -1156,7 +1156,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
 					contexMenuItemContainer.setDataDomain(dataDomain);
 					contexMenuItemContainer.setData(recordIDType, pick.getObjectID());
-					contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
+					getContextMenuCreator().addContextMenuItemContainer(contexMenuItemContainer);
 				}
 
 			}
@@ -1453,7 +1453,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 		AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
 				+ dataDomain.getDimensionLabel(dimensionIDType, dimensionID), dimensionIDType, dimensionID);
-		contextMenuCreator.addContextMenuItem(menuItem);
+		getContextMenuCreator().addContextMenuItem(menuItem);
 
 		SortByDataEvent sortEvent = new SortByDataEvent(dataDomain.getDataDomainID(),
 				tablePerspective.getTablePerspectiveKey(), tablePerspective.getRecordPerspective().getIdType(),
@@ -1462,7 +1462,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 		AContextMenuItem sortByDimensionItem = new GenericContextMenuItem("Sort by this axis ", sortEvent);
 
-		contextMenuCreator.addContextMenuItem(sortByDimensionItem);
+		getContextMenuCreator().addContextMenuItem(sortByDimensionItem);
 
 	}
 
