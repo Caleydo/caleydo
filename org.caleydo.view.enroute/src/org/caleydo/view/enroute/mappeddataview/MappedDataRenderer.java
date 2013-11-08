@@ -533,9 +533,12 @@ public class MappedDataRenderer {
 				for (List<TablePerspective> resolvedContextTablePerspectives : contextualTablePerspectives) {
 					TablePerspective contextTablePerspective = resolvedContextTablePerspectives
 							.get(tablePerspectiveCount);
+					// VirtualArray va = contextTablePerspective.getOppositePerspective(sampleIDType).getVirtualArray();
 					prepareData(contextTablePerspective, rowListForContextTablePerspectives.get(tablePerspectiveCount),
 							null, null, contextTablePerspective.getDataDomain().getOppositeIDType(sampleIDType),
-							contextRowIDs, isHighlightLayout);
+							contextRowIDs, isHighlightLayout, geneTablePerspectives.get(tablePerspectiveCount)
+									.getPerspective(sampleIDType));
+
 				}
 			}
 
@@ -551,7 +554,7 @@ public class MappedDataRenderer {
 
 			prepareData(geneTablePerspectives.get(tablePerspectiveCount),
 					rowListForTablePerspectives.get(tablePerspectiveCount), topCaptionLayout, bottomCaptionLayout,
-					davidIDType, davidIDs, isHighlightLayout);
+					davidIDType, davidIDs, isHighlightLayout, null);
 		}
 		calcMinWidthPixels();
 
@@ -609,7 +612,7 @@ public class MappedDataRenderer {
 	 */
 	private void prepareData(TablePerspective tablePerspective, List<ElementLayout> rowLayouts,
 			ColumnCaptionLayout topCaptionLayout, ColumnCaptionLayout bottomCaptionLayout, IDType rowIDType,
-			List<Integer> rowIDs, boolean isHighlightLayout) {
+			List<Integer> rowIDs, boolean isHighlightLayout, Perspective foreignColumnPerspective) {
 		ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
 
 		Perspective columnPerspective;
@@ -671,11 +674,12 @@ public class MappedDataRenderer {
 			} else {
 				// float width = 1.0f / usedTablePerspectives.size();
 				// tablePerspectiveLayout.setRatioSizeX(0.2);
-
-				tablePerspectiveLayout.setDynamicSizeUnitsX(columnPerspective.getVirtualArray().size());
+				int numElements = foreignColumnPerspective != null ? foreignColumnPerspective.getVirtualArray().size()
+						: columnPerspective.getVirtualArray().size();
+				tablePerspectiveLayout.setDynamicSizeUnitsX(numElements);
 				if (topCaptionLayout != null && bottomCaptionLayout != null) {
-					bottomCaptionLayout.setDynamicSizeUnitsX(columnPerspective.getVirtualArray().size());
-					topCaptionLayout.setDynamicSizeUnitsX(columnPerspective.getVirtualArray().size());
+					bottomCaptionLayout.setDynamicSizeUnitsX(numElements);
+					topCaptionLayout.setDynamicSizeUnitsX(numElements);
 				}
 			}
 
@@ -687,16 +691,26 @@ public class MappedDataRenderer {
 			Table table = dataDomain.getTable();
 			DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
 
+			ContentRenderer renderer = new ContentRenderer(rowIDType, rowID, resolvedRowIDType, resolvedRowID,
+					dataDomain, columnPerspective, parentView, this, group, isHighlightLayout, foreignColumnPerspective);
+			tablePerspectiveLayout.setRenderer(renderer);
+
 			if (table instanceof NumericalTable) {
 				NumericalTable numTable = (NumericalTable) table;
 				Double dataCenter = numTable.getDataCenter();
 				if (numTable.getDataCenter() != null || (numTable.getMax() > 0 && numTable.getMin() < 0)) {
-					CenteredDataContentRenderer renderer = new CenteredDataContentRenderer(rowIDType, rowID,
-							resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
-							isHighlightLayout, (dataCenter != null ? (float) dataCenter.floatValue() : 0),
-							(float) numTable.getMin(), (float) numTable.getMax());
-					renderer.setShowCenterLineAtRowCenter(showCenteredDataLineInRowCenter);
-					tablePerspectiveLayout.setRenderer(renderer);
+
+					renderer.setDetailRenderer(new CenteredDataRenderer(renderer, showCenteredDataLineInRowCenter,
+							(float) numTable.getMin(), (float) numTable.getMax(),
+							(dataCenter != null ? (float) dataCenter.floatValue() : 0)));
+					renderer.setOverviewRenderer(new HistogramRenderer(renderer));
+
+					// CenteredDataContentRenderer renderer = new CenteredDataContentRenderer(rowIDType, rowID,
+					// resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
+					// isHighlightLayout, (dataCenter != null ? (float) dataCenter.floatValue() : 0),
+					// (float) numTable.getMin(), (float) numTable.getMax(), foreignColumnPerspective);
+					// renderer.setShowCenterLineAtRowCenter(showCenteredDataLineInRowCenter);
+
 					continue;
 				}
 
@@ -719,36 +733,48 @@ public class MappedDataRenderer {
 							}
 						}
 						if (minValue < 0 && maxValue > 0) {
-							CenteredDataContentRenderer renderer = new CenteredDataContentRenderer(rowIDType, rowID,
-									resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this,
-									group, isHighlightLayout, 0, minValue, maxValue);
-							renderer.setShowCenterLineAtRowCenter(showCenteredDataLineInRowCenter);
-							tablePerspectiveLayout.setRenderer(renderer);
+							renderer.setDetailRenderer(new CenteredDataRenderer(renderer,
+									showCenteredDataLineInRowCenter, minValue, maxValue, 0));
+							renderer.setOverviewRenderer(new HistogramRenderer(renderer));
+
+							// CenteredDataContentRenderer renderer = new CenteredDataContentRenderer(rowIDType, rowID,
+							// resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this,
+							// group, isHighlightLayout, 0, minValue, maxValue, foreignColumnPerspective);
+							// renderer.setShowCenterLineAtRowCenter(showCenteredDataLineInRowCenter);
+							// tablePerspectiveLayout.setRenderer(renderer);
 							continue;
 						}
 					}
 				}
 			}
 			if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
-				tablePerspectiveLayout.setRenderer(new MutationStatusMatrixRowContentRenderer(rowIDType, rowID,
-						resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
-						isHighlightLayout));
 
-				tablePerspectiveLayout.setDynamicSizeUnitsX((int) Math.ceil(columnPerspective.getVirtualArray().size()
-						* 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
-				if (topCaptionLayout != null && bottomCaptionLayout != null) {
-					bottomCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(columnPerspective.getVirtualArray().size()
-							* 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
-					topCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(columnPerspective.getVirtualArray().size()
-							* 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
-				}
+				renderer.setDetailRenderer(new BinaryDataRenderer(renderer));
+				renderer.setOverviewRenderer(new HistogramRenderer(renderer));
+
+				// tablePerspectiveLayout.setRenderer(new MutationStatusRowContentRenderer(rowIDType, rowID,
+				// resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
+				// isHighlightLayout, foreignColumnPerspective));
+
+				// tablePerspectiveLayout.setDynamicSizeUnitsX((int)
+				// Math.ceil(columnPerspective.getVirtualArray().size()
+				// * 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+				// if (topCaptionLayout != null && bottomCaptionLayout != null) {
+				// bottomCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(columnPerspective.getVirtualArray().size()
+				// * 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+				// topCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(columnPerspective.getVirtualArray().size()
+				// * 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+				// }
 
 				// tablePerspectiveLayout.setRenderer(new MutationStatusRowContentRenderer(rowIDType, rowID,
 				// resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
 				// isHighlightLayout));
 			} else {
-				tablePerspectiveLayout.setRenderer(new ContinuousContentRenderer(rowIDType, rowID, resolvedRowIDType,
-						resolvedRowID, dataDomain, columnPerspective, parentView, this, group, isHighlightLayout));
+				renderer.setDetailRenderer(new ContinuousDataRenderer(renderer));
+				renderer.setOverviewRenderer(new AverageBarRenderer(renderer));
+				// tablePerspectiveLayout.setRenderer(new ContinuousContentRenderer(rowIDType, rowID, resolvedRowIDType,
+				// resolvedRowID, dataDomain, columnPerspective, parentView, this, group, isHighlightLayout,
+				// foreignColumnPerspective));
 			}
 
 		}

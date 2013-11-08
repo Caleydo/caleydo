@@ -232,7 +232,6 @@ public class HeatMapTextureRenderer {
 
 		g.save();
 		//scale to be able to use pixel rendering
-		g.move(0, h);
 		g.gl.glScalef(wScale, hScale, 1.0f);
 
 		g.gl.glEnable(GL.GL_TEXTURE_2D);
@@ -261,7 +260,8 @@ public class HeatMapTextureRenderer {
 			g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
 			g.gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
 
-			g.fillImage(texture, tile.x, -tile.y, tile.width, -tile.height);
+			// flipped in y-direction
+			g.fillImage(texture, tile.x, tile.y + tile.height, tile.width, -tile.height);
 		}
 	}
 

@@ -52,6 +52,7 @@ import org.caleydo.core.util.execution.SafeCallables;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ViewManager;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.AddTablePerspectivesListener;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
@@ -534,6 +535,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				}
 
 				PathwayVertexRep vertexRep = pathwayItemManager.getPathwayVertexRep(pick.getObjectID());
+				ContextMenuCreator contextMenuCreator = getContextMenuCreator();
 
 				if (vertexRep.getType() == EPathwayVertexType.map) {
 
