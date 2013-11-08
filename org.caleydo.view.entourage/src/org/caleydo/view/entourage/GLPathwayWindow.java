@@ -22,7 +22,6 @@ package org.caleydo.view.entourage;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
@@ -30,10 +29,7 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.core.view.opengl.picking.APickingListener;
-import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.entourage.GLEntourage.PathwayMultiFormInfo;
-import org.caleydo.view.entourage.event.ShowCommonNodesPathwaysEvent;
 
 /**
  * @author Christian
@@ -45,6 +41,7 @@ public class GLPathwayWindow extends GLMultiFormWindow {
 
 	public GLPathwayWindow(String title, GLEntourage view, final PathwayMultiFormInfo info, boolean isScrollable) {
 		super(title, view, info, isScrollable);
+		// setVisibility(EVisibility.PICKABLE);
 		pinButton = new GLButton(EButtonMode.CHECKBOX);
 		pinButton.setSize(16, 16);
 		pinButton.setTooltip("Pin");
@@ -74,16 +71,16 @@ public class GLPathwayWindow extends GLMultiFormWindow {
 		});
 		titleBar.add(titleBar.size() - 2, pinButton);
 
-		background.onPick(new APickingListener() {
-			@Override
-			protected void rightClicked(Pick pick) {
-				ShowCommonNodesPathwaysEvent event = new ShowCommonNodesPathwaysEvent(info.pathway);
-				event.setEventSpace(GLPathwayWindow.this.view.getPathEventSpace());
-				GLPathwayWindow.this.view.getContextMenuCreator().add(
-						new GenericContextMenuItem("Show Pathways with Common Nodes", event));
-			}
-
-		});
+		// this.onPick(new APickingListener() {
+		// @Override
+		// protected void rightClicked(Pick pick) {
+		// ShowCommonNodesPathwaysEvent event = new ShowCommonNodesPathwaysEvent(info.pathway);
+		// event.setEventSpace(GLPathwayWindow.this.view.getPathEventSpace());
+		// GLPathwayWindow.this.view.getContextMenuCreator().add(
+		// new GenericContextMenuItem("Show Related Pathways with Common Nodes", event));
+		// }
+		//
+		// });
 		background.setTooltip(info.pathway.getTitle());
 
 	}

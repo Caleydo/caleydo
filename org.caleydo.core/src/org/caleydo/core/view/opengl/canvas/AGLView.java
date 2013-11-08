@@ -145,7 +145,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	protected EBusyState busyState = EBusyState.OFF;
 
-	protected ContextMenuCreator contextMenuCreator = new ContextMenuCreator();
+	private ContextMenuCreator contextMenuCreator = new ContextMenuCreator();
 
 	/**
 	 * The queue which holds the events
@@ -213,8 +213,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	protected AGLView(IGLCanvas glCanvas, final ViewFrustum viewFrustum, String viewType, String viewName) {
 
-		super(viewType,
-				viewName);
+		super(viewType, viewName);
 
 		parentGLCanvas = glCanvas;
 
@@ -252,7 +251,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		parentGLCanvas.removeMouseListener(this.glMouseListener);
 		this.glMouseListener = listener;
 	}
-
 
 	@Override
 	public void initialize() {
@@ -362,8 +360,9 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			GL2 gl = drawable.getGL().getGL2();
 
 			if (!wasVisible) {
-				//set the viewport again for mac bug 1476
-				gl.glViewport(0,0,parentGLCanvas.asGLAutoDrawAble().getWidth(), parentGLCanvas.asGLAutoDrawAble().getHeight());
+				// set the viewport again for mac bug 1476
+				gl.glViewport(0, 0, parentGLCanvas.asGLAutoDrawAble().getWidth(), parentGLCanvas.asGLAutoDrawAble()
+						.getHeight());
 				wasVisible = true;
 			}
 			GLGraphics.checkError(gl);
@@ -637,7 +636,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 * @param gl
 	 */
 	protected final void checkForHits(final GL2 gl) {
-		contextMenuCreator.clear();
+
 		Set<String> hTs = pickingManager.getHitTypes(uniqueID);
 		if (hTs == null)
 			return;
@@ -692,8 +691,10 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			}
 		}
 
-		if (contextMenuCreator.hasMenuItems())
+		if (contextMenuCreator.hasMenuItems()) {
 			contextMenuCreator.open(this);
+			contextMenuCreator.clear();
+		}
 	}
 
 	protected void handlePicking(String pickingType, PickingMode pickingMode, int pickedObjectID, Pick pick) {
@@ -1079,7 +1080,6 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			viewScrollEventListener = null;
 		}
 
-
 	}
 
 	/**
@@ -1098,12 +1098,12 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	/**
 	 * Check whether the view is visible. If not, it should not be rendered. Note that events should be processed
-	 * anyway.
-<<<<<<< HEAD
+	 * anyway. <<<<<<< HEAD
+	 *
 	 * @param drawable
-=======
+	 *            =======
 	 * @param drawable
->>>>>>> refs/heads/entourage
+	 *            >>>>>>> refs/heads/entourage
 	 *
 	 * @return true if it is visible
 	 */
@@ -1304,9 +1304,13 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	}
 
 	/**
-	 * Returns the instance that is responsible for creating the context menu.
+	 * Returns the instance that is responsible for creating the context menu. This is the context menu creator of the
+	 * parent view, if this view is remotely rendered.
 	 */
 	public ContextMenuCreator getContextMenuCreator() {
+		if (isRenderedRemote()) {
+			return ((AGLView) getRemoteRenderingGLView()).getContextMenuCreator();
+		}
 		return contextMenuCreator;
 	}
 

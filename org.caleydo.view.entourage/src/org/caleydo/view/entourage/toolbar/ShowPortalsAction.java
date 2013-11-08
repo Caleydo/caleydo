@@ -38,9 +38,9 @@ public class ShowPortalsAction extends SimpleAction {
 	/**
 	 * Constructor.
 	 */
-	public ShowPortalsAction(String eventSpace) {
+	public ShowPortalsAction(String eventSpace, boolean showPortals) {
 		super(LABEL, ICON);
-		setChecked(false);
+		setChecked(showPortals);
 		this.eventSpace = eventSpace;
 	}
 

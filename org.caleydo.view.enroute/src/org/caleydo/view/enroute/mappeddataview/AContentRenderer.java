@@ -5,6 +5,9 @@
  ******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
+import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -21,7 +24,7 @@ import org.caleydo.view.enroute.SelectionColorCalculator;
  * @author alexsb
  *
  */
-public abstract class ContentRenderer extends ALayoutRenderer {
+public abstract class AContentRenderer extends ALayoutRenderer {
 
 	/** The primary mapping type of the id category for rows */
 	IDType rowIDType;
@@ -57,9 +60,11 @@ public abstract class ContentRenderer extends ALayoutRenderer {
 	IDMappingManager columnIDMappingManager;
 	AGLView parentView;
 
-	public ContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType, Integer resolvedRowID,
+	Perspective foreignColumnPerspective;
+
+	public AContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType, Integer resolvedRowID,
 			ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
-			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
+			MappedDataRenderer parent, Group group, boolean isHighlightMode, Perspective foreignColumnPerspective) {
 		this.parentView = parentView;
 		Color barColor;
 		// FIXME - bad hack
@@ -83,6 +88,7 @@ public abstract class ContentRenderer extends ALayoutRenderer {
 		this.columnPerspective = columnPerspective;
 		this.group = group;
 		this.isHighlightMode = isHighlightMode;
+		this.foreignColumnPerspective = foreignColumnPerspective;
 		columnIDType = columnPerspective.getIdType();
 		resolvedColumnIDType = dataDomain.getPrimaryIDType(columnIDType);
 		columnIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(columnIDType);
@@ -99,6 +105,18 @@ public abstract class ContentRenderer extends ALayoutRenderer {
 
 	private void unRegisterPickingListener() {
 		parentView.removePickingListener(pickingListener);
+	}
+
+	protected void renderMissingValue(GL2 gl, float xPosition, float width) {
+		gl.glBegin(GL2GL3.GL_QUADS);
+
+		gl.glColor4f(1f, 1f, 1f, 1f);
+		gl.glVertex3f(xPosition, 0, z);
+		gl.glVertex3f(xPosition + width, 0, z);
+		gl.glVertex3f(xPosition + width, y, z);
+		gl.glVertex3f(xPosition, y, z);
+
+		gl.glEnd();
 	}
 
 }

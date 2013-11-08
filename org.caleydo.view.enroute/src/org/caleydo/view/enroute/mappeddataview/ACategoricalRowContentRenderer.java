@@ -27,7 +27,7 @@ import org.caleydo.view.enroute.EPickingType;
  * @author Alexander Lex
  *
  */
-public abstract class ACategoricalRowContentRenderer extends ContentRenderer {
+public abstract class ACategoricalRowContentRenderer extends AContentRenderer {
 
 	protected static final int MAX_HISTOGRAM_BAR_WIDTH_PIXELS = 20;
 
@@ -39,9 +39,9 @@ public abstract class ACategoricalRowContentRenderer extends ContentRenderer {
 	 */
 	public ACategoricalRowContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType,
 			Integer resolvedRowID, ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
-			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
+			MappedDataRenderer parent, Group group, boolean isHighlightMode, Perspective foreignColumnPerspective) {
 		super(rowIDType, rowID, resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, parent,
-				group, isHighlightMode);
+				group, isHighlightMode, foreignColumnPerspective);
 
 	}
 

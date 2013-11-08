@@ -109,7 +109,7 @@ public class RowCaptionRenderer extends ALayoutRenderer {
 		String rowName = rowIDMappingManager
 				.getID(rowIDType, rowIDType.getIDCategory().getHumanReadableIDType(), rowID);
 		if (rowName != null)
-			textRenderer.renderTextInBounds(gl, rowName, sideSpacing, (y - height) / 2, 0.1f, x, height);
+			textRenderer.renderTextInBounds(gl, rowName, sideSpacing, (y - height) / 2, 0.1f, x - sideSpacing, height);
 
 		gl.glPopName();
 	}
