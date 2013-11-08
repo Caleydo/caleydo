@@ -116,12 +116,6 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	protected GLWindow rankingWindow;
 
-	/**
-	 * Determines whether a selection update event shall be triggered for the current focus node. This is sometimes
-	 * necessary as new context paths do not get the selection events as when they are created.
-	 */
-	private boolean updateSelectionForFocusNode = false;
-
 	// private List<IPathwayRepresentation> pathwayRepresentations = new ArrayList<>();
 
 	private PathEventSpaceHandler pathEventSpaceHandler = new PathEventSpaceHandler();
@@ -179,7 +173,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	/**
 	 * Determines whether portal highlighting is currently enabled.
 	 */
-	protected boolean isShowPortals = false;
+	protected boolean isShowPortals = true;
 
 	private final DragAndDropController dndController = new DragAndDropController(this);
 
@@ -1532,6 +1526,13 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	public EEmbeddingID getCurrentlyDisplayedPathLevel() {
 		return pathInfo.getCurrentEmbeddingID();
+	}
+
+	/**
+	 * @return the isShowPortals, see {@link #isShowPortals}
+	 */
+	public boolean isShowPortals() {
+		return isShowPortals;
 	}
 
 }
