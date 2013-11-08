@@ -2,82 +2,61 @@
  * Caleydo - Visualization for Molecular Biology - http://caleydo.org
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
- ******************************************************************************/
+ *******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.id.IDType;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
 
 /**
- * @author Alexander Lex
+ * @author Christian
  *
  */
-public abstract class ACategoricalRowContentRenderer extends AContentRenderer {
+public class HistogramRenderer extends ADataRenderer {
 
 	protected static final int MAX_HISTOGRAM_BAR_WIDTH_PIXELS = 20;
 
-	Histogram histogram;
-	boolean useShading = true;
+	protected Histogram histogram;
 
-	/**
-	 *
-	 */
-	public ACategoricalRowContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType,
-			Integer resolvedRowID, ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
-			MappedDataRenderer parent, Group group, boolean isHighlightMode, Perspective foreignColumnPerspective) {
-		super(rowIDType, rowID, resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, parent,
-				group, isHighlightMode, foreignColumnPerspective);
-
-	}
-
-	@Override
-	public void renderContent(GL2 gl) {
-		if (rowID == null)
+	public HistogramRenderer(ContentRenderer contentRenderer) {
+		super(contentRenderer);
+		if (contentRenderer.resolvedRowID == null)
 			return;
-		List<SelectionType> geneSelectionTypes = parent.rowSelectionManager.getSelectionTypes(rowIDType, rowID);
 
-		List<SelectionType> selectionTypes = parent.sampleGroupSelectionManager.getSelectionTypes(group.getID());
-		if (selectionTypes.size() > 0 && selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
-			// topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
-			// bottomBarColor = topBarColor;
-
-			renderAverageBar(gl, selectionTypes);
-		} else {
-			renderAllBars(gl, geneSelectionTypes);
-		}
-
+		VirtualArray dimensionVirtualArray = new VirtualArray(contentRenderer.resolvedRowIDType);
+		dimensionVirtualArray.append(contentRenderer.resolvedRowID);
+		histogram = TablePerspectiveStatistics.calculateHistogram(contentRenderer.dataDomain.getTable(),
+				contentRenderer.columnPerspective.getVirtualArray(), dimensionVirtualArray);
 	}
-
-	protected abstract void renderAllBars(GL2 gl, List<SelectionType> geneSelectionTypes);
 
 	@SuppressWarnings("unchecked")
-	public void renderAverageBar(GL2 gl, List<SelectionType> selectionTypes) {
+	@Override
+	public void render(GL2 gl, float x, float y, List<SelectionType> selectionTypes) {
 		if (histogram == null)
 			return;
 		int bucketCount = 0;
 		float barWidth = y / histogram.size();
-		float maxBarWidth = parentView.getPixelGLConverter().getGLHeightForPixelHeight(MAX_HISTOGRAM_BAR_WIDTH_PIXELS);
+		float maxBarWidth = contentRenderer.parentView.getPixelGLConverter().getGLHeightForPixelHeight(
+				MAX_HISTOGRAM_BAR_WIDTH_PIXELS);
 		float histogramStartY = 0;
 		if (barWidth > maxBarWidth) {
 			barWidth = maxBarWidth;
 			histogramStartY = (y - histogram.size() * barWidth) / 2.0f;
 		}
-		float renderWith = x - parentView.getPixelGLConverter().getGLWidthForPixelWidth(20);
+		float renderWith = x - contentRenderer.parentView.getPixelGLConverter().getGLWidthForPixelWidth(20);
 
 		for (int bucketNumber = 0; bucketNumber < histogram.size(); bucketNumber++) {
 
@@ -88,14 +67,15 @@ public abstract class ACategoricalRowContentRenderer extends AContentRenderer {
 			// }
 			// }
 
-			if (parent.selectedBucketNumber == bucketNumber && parent.selectedBucketGeneID == rowID
-					&& parent.selectedBucketExperimentPerspective == columnPerspective) {
+			if (contentRenderer.parent.selectedBucketNumber == bucketNumber
+					&& contentRenderer.parent.selectedBucketGeneID == contentRenderer.rowID
+					&& contentRenderer.parent.selectedBucketExperimentPerspective == contentRenderer.columnPerspective) {
 				selectionTypes.add(SelectionType.SELECTION);
 			} else {
 				selectionTypes.remove(SelectionType.SELECTION);
 			}
 
-			float[] baseColor = dataDomain.getTable().getColorMapper()
+			float[] baseColor = contentRenderer.dataDomain.getTable().getColorMapper()
 					.getColor((float) bucketCount / (histogram.size() - 1));
 
 			colorCalculator.setBaseColor(new Color(baseColor[0], baseColor[1], baseColor[2]));
@@ -113,9 +93,9 @@ public abstract class ACategoricalRowContentRenderer extends AContentRenderer {
 			float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
 
 			float barHeight = value * renderWith;
-			gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
-					EPickingType.HISTOGRAM_BAR.name() + hashCode(), bucketNumber));
-			gl.glBegin(GL2.GL_QUADS);
+			gl.glPushName(contentRenderer.parentView.getPickingManager().getPickingID(
+					contentRenderer.parentView.getID(), EPickingType.HISTOGRAM_BAR.name() + hashCode(), bucketNumber));
+			gl.glBegin(GL2GL3.GL_QUADS);
 			gl.glColor3fv(bottomBarColor, 0);
 			gl.glVertex3f(0, lowerEdge, z);
 			gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f);
@@ -147,33 +127,27 @@ public abstract class ACategoricalRowContentRenderer extends AContentRenderer {
 	}
 
 	protected void registerPickingListeners() {
-		pickingListener = new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-				// System.out.println("Bucket: " + pick.getObjectID());
-
-				parent.sampleSelectionManager.clearSelection(SelectionType.SELECTION);
-				parent.sampleSelectionManager.addToType(SelectionType.SELECTION, columnIDType,
-						histogram.getIDsForBucketFromBucketID(histogram.getBucketID(pick.getObjectID())));
-				parent.sampleSelectionManager.triggerSelectionUpdateEvent();
-				parent.selectedBucketNumber = pick.getObjectID();
-				parent.selectedBucketGeneID = rowID;
-				parent.selectedBucketExperimentPerspective = columnPerspective;
-				parentView.setDisplayListDirty();
-			}
-
-		};
 
 		// for (int bucketCount = 0; bucketCount < histogram.size(); bucketCount++) {
 		// //FIXME: HACKY hashcode
-		parentView.addTypePickingListener(pickingListener, EPickingType.HISTOGRAM_BAR.name() + hashCode());
-		// }
-	}
+		contentRenderer.parentView.addTypePickingListener(new APickingListener() {
 
-	@Override
-	protected boolean permitsWrappingDisplayLists() {
-		return false;
+			@Override
+			public void clicked(Pick pick) {
+
+				contentRenderer.parent.sampleSelectionManager.clearSelection(SelectionType.SELECTION);
+				contentRenderer.parent.sampleSelectionManager.addToType(SelectionType.SELECTION,
+						contentRenderer.columnIDType,
+						histogram.getIDsForBucketFromBucketID(histogram.getBucketID(pick.getObjectID())));
+				contentRenderer.parent.sampleSelectionManager.triggerSelectionUpdateEvent();
+				contentRenderer.parent.selectedBucketNumber = pick.getObjectID();
+				contentRenderer.parent.selectedBucketGeneID = contentRenderer.rowID;
+				contentRenderer.parent.selectedBucketExperimentPerspective = contentRenderer.columnPerspective;
+				contentRenderer.parentView.setDisplayListDirty();
+			}
+
+		}, EPickingType.HISTOGRAM_BAR.name() + hashCode());
+		// }
 	}
 
 }
