@@ -148,7 +148,6 @@ public class MappedDataRenderer {
 
 	private boolean showCenteredDataLineInRowCenter = false;
 
-
 	/**
 	 * Constructor with parent view as parameter.
 	 */
@@ -537,8 +536,7 @@ public class MappedDataRenderer {
 					// VirtualArray va = contextTablePerspective.getOppositePerspective(sampleIDType).getVirtualArray();
 					prepareData(contextTablePerspective, rowListForContextTablePerspectives.get(tablePerspectiveCount),
 							null, null, contextTablePerspective.getDataDomain().getOppositeIDType(sampleIDType),
-							contextRowIDs, isHighlightLayout, geneTablePerspectives.get(tablePerspectiveCount)
-									.getPerspective(sampleIDType));
+							contextRowIDs, isHighlightLayout, geneTablePerspectives.get(tablePerspectiveCount));
 
 				}
 			}
@@ -613,23 +611,28 @@ public class MappedDataRenderer {
 	 */
 	private void prepareData(TablePerspective tablePerspective, List<ElementLayout> rowLayouts,
 			ColumnCaptionLayout topCaptionLayout, ColumnCaptionLayout bottomCaptionLayout, IDType rowIDType,
-			List<Integer> rowIDs, boolean isHighlightLayout, Perspective foreignColumnPerspective) {
+			List<Integer> rowIDs, boolean isHighlightLayout, TablePerspective foreignTablePerspective) {
 		ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
+		Perspective foreignColumnPerspective = foreignTablePerspective != null ? foreignTablePerspective
+				.getPerspective(sampleIDType) : null;
 
 		Perspective columnPerspective;
 		IDType columnIDType = dataDomain.getOppositeIDType(rowIDType);
 
 		columnPerspective = tablePerspective.getPerspective(columnIDType);
-
 		Group group = null;
 
-		group = tablePerspective.getGroup(columnIDType);
+		TablePerspective tPForGroup = foreignTablePerspective == null ? tablePerspective : foreignTablePerspective;
+		IDType columnIDTypeForGroup = foreignColumnPerspective == null ? columnIDType : foreignColumnPerspective
+				.getIdType();
+
+		group = tPForGroup.getGroup(columnIDTypeForGroup);
 		if (group == null) {
-			group = tablePerspective.getPerspective(columnIDType).getVirtualArray().getGroupList().get(0);
-			group.setLabel(tablePerspective.getLabel(), tablePerspective.isLabelDefault());
+			group = tPForGroup.getPerspective(columnIDTypeForGroup).getVirtualArray().getGroupList().get(0);
+			group.setLabel(tPForGroup.getLabel(), tPForGroup.isLabelDefault());
 		}
-		if (tablePerspective.getPerspective(columnIDType).getVirtualArray().getGroupList().size() <= 1) {
-			group.setLabel(tablePerspective.getLabel(), tablePerspective.isLabelDefault());
+		if (tPForGroup.getPerspective(columnIDTypeForGroup).getVirtualArray().getGroupList().size() <= 1) {
+			group.setLabel(tPForGroup.getLabel(), tPForGroup.isLabelDefault());
 		}
 
 		if (isHighlightLayout && topCaptionLayout != null && bottomCaptionLayout != null) {
