@@ -9,14 +9,8 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.util.collection.Algorithms;
-import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
-import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.view.enroute.EPickingType;
 
 /**
  * @author Christian
@@ -93,7 +87,6 @@ public class CenteredDataRenderer extends AColumnBasedDataRenderer {
 		super.render(gl, x, y, selectionTypes);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void renderColumnBar(GL2 gl, int columnID, float x, float y, List<SelectionType> selectionTypes,
 			boolean useShading) {
@@ -115,92 +108,11 @@ public class CenteredDataRenderer extends AColumnBasedDataRenderer {
 			return;
 		}
 
-		List<SelectionType> experimentSelectionTypes = contentRenderer.parent.sampleSelectionManager.getSelectionTypes(
-				contentRenderer.columnIDType, columnID);
-
-		float[] baseColor = contentRenderer.dataDomain.getTable().getColorMapper().getColor(value);
-		float[] topBarColor = baseColor;
-		float[] bottomBarColor = baseColor;
-
-		colorCalculator.calculateColors(Algorithms.mergeListsToUniqueList(experimentSelectionTypes, selectionTypes));
-
-		List<SelectionType> sTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes, selectionTypes);
-
-		if (contentRenderer.isHighlightMode
-				&& !(sTypes.contains(SelectionType.MOUSE_OVER) || sTypes.contains(SelectionType.SELECTION))) {
-			return;
-		}
-
-		if (contentRenderer.isHighlightMode) {
-			colorCalculator.setBaseColor(new Color(baseColor[0], baseColor[1], baseColor[2]));
-
-			colorCalculator.calculateColors(sTypes);
-
-			topBarColor = colorCalculator.getPrimaryColor().getRGB();
-			bottomBarColor = colorCalculator.getSecondaryColor().getRGB();
-		}
-
-		float upperEdge = (value * range) + spacing;
-
-		// gl.glPushName(parentView.getPickingManager().getPickingID(
-		// parentView.getID(), PickingType.ROW_PRIMARY.name(), rowID));
-
-		Integer resolvedColumnID = contentRenderer.columnIDMappingManager.getID(
-				contentRenderer.dataDomain.getPrimaryIDType(contentRenderer.columnIDType),
-				contentRenderer.parent.sampleIDType, columnID);
-		gl.glPushName(contentRenderer.parentView.getPickingManager().getPickingID(contentRenderer.parentView.getID(),
-				EPickingType.SAMPLE.name(), resolvedColumnID));
-		gl.glPushName(contentRenderer.parentView.getPickingManager().getPickingID(contentRenderer.parentView.getID(),
-				EPickingType.SAMPLE.name() + hashCode(), columnID));
-
-		gl.glColor3fv(bottomBarColor, 0);
-		gl.glBegin(GL2GL3.GL_QUADS);
-
-		gl.glVertex3f(0, (normalizedCenter * range) + spacing, z);
-		if (useShading) {
-			gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f);
-		}
-		gl.glVertex3f(x, (normalizedCenter * range) + spacing, z);
-
-		if (useShading) {
-			gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
-		} else {
-			gl.glColor3fv(topBarColor, 0);
-		}
-		gl.glVertex3f(x, upperEdge, z);
-		gl.glColor3fv(topBarColor, 0);
-
-		gl.glVertex3f(0, upperEdge, z);
-
-		gl.glEnd();
-
-		gl.glPopName();
-		gl.glPopName();
+		renderSingleBar(gl, 0, (normalizedCenter * range) + spacing, (value - normalizedCenter) * range, x,
+				selectionTypes, contentRenderer.dataDomain.getTable().getColorMapper().getColor(value), columnID,
+				useShading);
 
 	}
 
-	protected void registerPickingListeners() {
-		contentRenderer.parentView.addTypePickingTooltipListener(new IPickingLabelProvider() {
-
-			@Override
-			public String getLabel(Pick pick) {
-				if (contentRenderer.dataDomain.getDataSetDescription().getDataDescription()
-						.getCategoricalClassDescription() != null) {
-					return contentRenderer.dataDomain
-							.getDataSetDescription()
-							.getDataDescription()
-							.getCategoricalClassDescription()
-							.getCategoryProperty(
-									contentRenderer.dataDomain.getRaw(contentRenderer.resolvedRowIDType,
-											contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType,
-											pick.getObjectID())).getCategoryName();
-				}
-
-				return ""
-						+ contentRenderer.dataDomain.getRawAsString(contentRenderer.resolvedRowIDType,
-								contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, pick.getObjectID());
-			}
-		}, EPickingType.SAMPLE.name() + hashCode());
-	}
 
 }

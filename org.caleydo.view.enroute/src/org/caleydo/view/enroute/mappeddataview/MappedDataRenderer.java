@@ -753,7 +753,7 @@ public class MappedDataRenderer {
 			}
 			if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
 
-				renderer.setDetailRenderer(new BinaryDataRenderer(renderer));
+				renderer.setDetailRenderer(new ColoredColumnRenderer(renderer));
 				renderer.setOverviewRenderer(new HistogramRenderer(renderer));
 
 				// tablePerspectiveLayout.setRenderer(new MutationStatusRowContentRenderer(rowIDType, rowID,

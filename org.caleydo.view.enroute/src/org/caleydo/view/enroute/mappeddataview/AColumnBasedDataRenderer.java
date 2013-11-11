@@ -11,9 +11,16 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2GL3;
 
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IIDTypeMapper;
+import org.caleydo.core.io.DataDescription;
+import org.caleydo.core.util.collection.Algorithms;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.view.enroute.EPickingType;
 
 /**
  * @author Christian
@@ -85,4 +92,105 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 	protected abstract void renderColumnBar(GL2 gl, int columnID, float x, float y, List<SelectionType> selectionTypes,
 			boolean useShading);
 
+	protected void renderSingleBar(GL2 gl, float x, float y, float height, float width,
+			List<SelectionType> selectionTypes, float[] baseColor, int columnID, boolean useShading) {
+		float[] topBarColor = baseColor;
+		float[] bottomBarColor = baseColor;
+
+		List<SelectionType> experimentSelectionTypes = contentRenderer.parent.sampleSelectionManager.getSelectionTypes(
+				contentRenderer.columnIDType, columnID);
+
+		@SuppressWarnings("unchecked")
+		List<SelectionType> sTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes, selectionTypes);
+
+		if (contentRenderer.isHighlightMode
+				&& !(sTypes.contains(SelectionType.MOUSE_OVER) || sTypes.contains(SelectionType.SELECTION))) {
+			return;
+		}
+
+		if (contentRenderer.isHighlightMode) {
+			colorCalculator.setBaseColor(new Color(baseColor));
+
+			colorCalculator.calculateColors(sTypes);
+
+			topBarColor = colorCalculator.getPrimaryColor().getRGBA();
+			bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
+		}
+
+		Integer resolvedSampleID = contentRenderer.columnIDMappingManager.getID(contentRenderer.resolvedColumnIDType,
+				contentRenderer.parent.sampleIDType, columnID);
+
+		gl.glPushName(contentRenderer.parentView.getPickingManager().getPickingID(contentRenderer.parentView.getID(),
+				EPickingType.SAMPLE.name(), resolvedSampleID));
+		gl.glPushName(contentRenderer.parentView.getPickingManager().getPickingID(contentRenderer.parentView.getID(),
+				EPickingType.SAMPLE.name() + hashCode(), columnID));
+
+		gl.glBegin(GL2GL3.GL_QUADS);
+
+		gl.glColor4fv(bottomBarColor, 0);
+		gl.glVertex3f(x, y, z);
+		if (useShading) {
+			gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f);
+
+		}
+		gl.glVertex3f(x + width, y, z);
+		if (useShading) {
+			gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
+		} else {
+			gl.glColor4fv(topBarColor, 0);
+		}
+
+		gl.glVertex3f(x + width, y + height, z);
+		gl.glColor4fv(topBarColor, 0);
+
+		gl.glVertex3f(x, y + height, z);
+
+		gl.glEnd();
+
+		gl.glPopName();
+		gl.glPopName();
+	}
+
+	protected void registerPickingListeners() {
+		contentRenderer.parentView.addTypePickingTooltipListener(new IPickingLabelProvider() {
+
+			@Override
+			public String getLabel(Pick pick) {
+				DataDescription dataDescription = contentRenderer.dataDomain.getDataSetDescription()
+						.getDataDescription();
+				if (dataDescription != null && dataDescription.getCategoricalClassDescription() != null) {
+					return getCategoryName(contentRenderer.dataDomain.getDataSetDescription().getDataDescription()
+							.getCategoricalClassDescription(), pick.getObjectID());
+				}
+				// Integer resolvedSampleID = contentRenderer.columnIDMappingManager.getID(
+				// contentRenderer.resolvedColumnIDType, contentRenderer.parent.sampleIDType, pick.getObjectID());
+				// Object categoryDescription = null;
+				//
+				// if (contentRenderer.columnIDType.getIDCategory() == contentRenderer.dataDomain.getColumnIDCategory())
+				// {
+				// categoryDescription = contentRenderer.dataDomain.getTable().getDataClassSpecificDescription(
+				// contentRenderer.resolvedRowID, resolvedSampleID);
+				// } else {
+				//
+				// categoryDescription = contentRenderer.dataDomain.getTable().getDataClassSpecificDescription(
+				// resolvedSampleID, contentRenderer.resolvedRowID);
+				// }
+
+				// if (categoryDescription != null && !(categoryDescription instanceof NumericalProperties))
+				// return getCategoryName((CategoricalClassDescription<?>) categoryDescription, pick.getObjectID());
+
+				return ""
+						+ contentRenderer.dataDomain.getRawAsString(contentRenderer.resolvedRowIDType,
+								contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, pick.getObjectID());
+			}
+
+			private String getCategoryName(CategoricalClassDescription<?> categoryDescription, int columnID) {
+				return categoryDescription.getCategoryProperty(
+						contentRenderer.dataDomain.getRaw(contentRenderer.resolvedRowIDType,
+								contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, columnID))
+						.getCategoryName();
+			}
+
+		}, EPickingType.SAMPLE.name() + hashCode());
+	}
 }
