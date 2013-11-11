@@ -99,8 +99,8 @@ public class AverageBarRenderer extends ADataRenderer {
 		gl.glVertex3f(xMinusDeviation, y / 2, lineZ);
 		gl.glVertex3f(xPlusDeviation, y / 2, lineZ);
 
-		gl.glLineWidth(0.6f);
-
+		// gl.glLineWidth(0.6f);
+		//
 		gl.glVertex3f(xPlusDeviation, y / 2 - lineTailHeight, lineZ);
 		gl.glVertex3f(xPlusDeviation, y / 2 + lineTailHeight, lineZ);
 

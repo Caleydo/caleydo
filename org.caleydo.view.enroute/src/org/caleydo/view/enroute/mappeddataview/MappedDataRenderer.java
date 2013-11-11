@@ -148,6 +148,7 @@ public class MappedDataRenderer {
 
 	private boolean showCenteredDataLineInRowCenter = false;
 
+
 	/**
 	 * Constructor with parent view as parameter.
 	 */
