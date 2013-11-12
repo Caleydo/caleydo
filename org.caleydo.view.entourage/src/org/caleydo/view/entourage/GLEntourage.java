@@ -226,6 +226,11 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	private SelectPathAction selectPathAction;
 
+	private IWindowState pathOnlyState;
+	private IWindowState smallEnrouteState;
+
+	private MultiLevelSlideInElement enrouteSlideInElement;
+
 	/**
 	 * Constructor.
 	 *
@@ -334,9 +339,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		pathInfo = new MultiFormInfo();
 		createSelectedPathMultiformRenderer(new ArrayList<>(dataMappingState.getTablePerspectives()),
 				EnumSet.of(EEmbeddingID.PATH_LEVEL1, EEmbeddingID.PATH_LEVEL2), baseContainer, 0.3f, pathInfo);
-		MultiLevelSlideInElement slideInElement = new MultiLevelSlideInElement(pathInfo.window,
-				ESlideInElementPosition.LEFT);
-		slideInElement.addWindowState(new IWindowState() {
+		enrouteSlideInElement = new MultiLevelSlideInElement(pathInfo.window, ESlideInElementPosition.LEFT);
+		enrouteSlideInElement.addWindowState(new IWindowState() {
 
 			@Override
 			public void apply() {
@@ -351,7 +355,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				isPathWindowMaximized = false;
 			}
 		});
-		IWindowState currentWindowState = new IWindowState() {
+		pathOnlyState = new IWindowState() {
 
 			@Override
 			public void apply() {
@@ -360,16 +364,21 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				}
 				rankingWindow.setVisibility(EVisibility.VISIBLE);
 				pathwayRow.setVisibility(EVisibility.VISIBLE);
+				AnimatedGLElementContainer anim = (AnimatedGLElementContainer) pathInfo.window.getParent();
+				pathInfo.window.setLayoutData(Float.NaN);
+				anim.resizeChild(pathInfo.window, 150, Float.NaN);
+
 				// pathInfo.window.background.setVisibility(EVisibility.PICKABLE);
 				// pathInfo.window.baseContainer.setVisibility(EVisibility.VISIBLE);
 				isPathWindowMaximized = false;
-				setPathLevel(EEmbeddingID.PATH_LEVEL2);
+				pathInfo.multiFormRenderer.setActive(pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL2)
+						.get(0));
 				augmentation.enable();
 				isLayoutDirty = true;
 			}
 		};
-		slideInElement.addWindowState(currentWindowState);
-		slideInElement.addWindowState(new IWindowState() {
+		enrouteSlideInElement.addWindowState(pathOnlyState);
+		smallEnrouteState = new IWindowState() {
 
 			@Override
 			public void apply() {
@@ -381,12 +390,39 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				// pathInfo.window.background.setVisibility(EVisibility.PICKABLE);
 				// pathInfo.window.baseContainer.setVisibility(EVisibility.VISIBLE);
 				isPathWindowMaximized = false;
-				setPathLevel(EEmbeddingID.PATH_LEVEL1);
+				AnimatedGLElementContainer anim = (AnimatedGLElementContainer) pathInfo.window.getParent();
+				anim.resizeChild(pathInfo.window, Float.NaN, Float.NaN);
+				pathInfo.window.setLayoutData(0.3f);
+				pathInfo.multiFormRenderer.setActive(pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL1)
+						.get(0));
+				augmentation.enable();
+				isLayoutDirty = true;
+			}
+		};
+
+		enrouteSlideInElement.addWindowState(smallEnrouteState);
+		enrouteSlideInElement.addWindowState(new IWindowState() {
+
+			@Override
+			public void apply() {
+				if (isPathWindowMaximized) {
+					baseContainer.remove(0);
+				}
+				rankingWindow.setVisibility(EVisibility.VISIBLE);
+				pathwayRow.setVisibility(EVisibility.VISIBLE);
+				// pathInfo.window.background.setVisibility(EVisibility.PICKABLE);
+				// pathInfo.window.baseContainer.setVisibility(EVisibility.VISIBLE);
+				isPathWindowMaximized = false;
+				AnimatedGLElementContainer anim = (AnimatedGLElementContainer) pathInfo.window.getParent();
+				anim.resizeChild(pathInfo.window, Float.NaN, Float.NaN);
+				pathInfo.window.setLayoutData(0.5f);
+				pathInfo.multiFormRenderer.setActive(pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL1)
+						.get(0));
 				augmentation.enable();
 				isLayoutDirty = true;
 			}
 		});
-		slideInElement.addWindowState(new IWindowState() {
+		enrouteSlideInElement.addWindowState(new IWindowState() {
 
 			@Override
 			public void apply() {
@@ -406,11 +442,12 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				updateAugmentation();
 			}
 		});
-		slideInElement.setCurrentWindowState(currentWindowState);
+		enrouteSlideInElement.setCurrentWindowState(pathOnlyState);
+		pathOnlyState.apply();
 
-		pathInfo.window.addSlideInElement(slideInElement);
+		pathInfo.window.addSlideInElement(enrouteSlideInElement);
 		pathInfo.window.setShowCloseButton(false);
-		pathInfo.window.setShowViewSwitchingBar(false);
+		// pathInfo.window.setShowViewSwitchingBar(false);
 		dataMappingWizard = new DataMappingWizard(this);
 		pathInfo.window.contentContainer.add(dataMappingWizard);
 		// This assumes that a path level 2 view exists.
@@ -870,25 +907,25 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		}
 
 		if (multiFormRenderer == pathInfo.multiFormRenderer) {
-			if (dataMappingWizard != null)
-				dataMappingWizard.onPathLevelChanged();
+
+			if (wasTriggeredByUser) {
+				setPathLevel(pathInfo.getEmbeddingIDFromRendererID(rendererID));
+			}
 		}
 	}
 
-	private void setPathLevel(EEmbeddingID embeddingID) {
+	public void setPathLevel(EEmbeddingID embeddingID) {
 		if (embeddingID == null)
 			return;
-		AnimatedGLElementContainer anim = (AnimatedGLElementContainer) pathInfo.window.getParent();
 		if (embeddingID == EEmbeddingID.PATH_LEVEL1) {
-			anim.resizeChild(pathInfo.window, Float.NaN, Float.NaN);
-			pathInfo.window.setLayoutData(0.3f);
+			enrouteSlideInElement.setCurrentWindowState(smallEnrouteState);
+			smallEnrouteState.apply();
 		} else if (embeddingID == EEmbeddingID.PATH_LEVEL2) {
-			pathInfo.window.setLayoutData(Float.NaN);
-			pathInfo.window.setSize(150, Float.NaN);
-			anim.resizeChild(pathInfo.window, 150, Float.NaN);
+			enrouteSlideInElement.setCurrentWindowState(pathOnlyState);
+			pathOnlyState.apply();
 		}
-		pathInfo.multiFormRenderer.setActive(pathInfo.embeddingIDToRendererIDs.get(embeddingID).get(0));
-		isLayoutDirty = true;
+		if (dataMappingWizard != null)
+			dataMappingWizard.onPathLevelChanged();
 	}
 
 	@Override
