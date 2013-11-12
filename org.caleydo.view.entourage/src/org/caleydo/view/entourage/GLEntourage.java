@@ -447,16 +447,20 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 		pathInfo.window.addSlideInElement(enrouteSlideInElement);
 		pathInfo.window.setShowCloseButton(false);
+		pathInfo.window.viewSwitchingBar.setButtonToolTip("Show selected path only", pathInfo.embeddingIDToRendererIDs
+				.get(EEmbeddingID.PATH_LEVEL2).get(0));
+		pathInfo.window.viewSwitchingBar.setButtonToolTip("Show expanded enRoute with detailed experimental data",
+				pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL1).get(0));
 		// pathInfo.window.setShowViewSwitchingBar(false);
 		dataMappingWizard = new DataMappingWizard(this);
 		pathInfo.window.contentContainer.add(dataMappingWizard);
-		// This assumes that a path level 2 view exists.
-		int rendererID = pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL2).get(0);
-		if (pathInfo.multiFormRenderer.getActiveRendererID() != rendererID) {
-			pathInfo.multiFormRenderer.setActive(rendererID);
-		} else {
-			setPathLevel(EEmbeddingID.PATH_LEVEL2);
-		}
+		// This assumes that a path level 2 view exists
+		// if (pathInfo.multiFormRenderer.getActiveRendererID() != rendererID) {
+		// pathInfo.multiFormRenderer.setActive(rendererID);
+		// } else {
+		setPathLevel(EEmbeddingID.PATH_LEVEL2);
+
+		// }
 		augmentation.init(gl);
 		connectionBandRenderer.init(gl);
 		registerListeners();
