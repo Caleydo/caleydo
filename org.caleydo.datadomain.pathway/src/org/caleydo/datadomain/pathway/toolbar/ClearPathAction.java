@@ -21,7 +21,7 @@ import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 public class ClearPathAction extends SimpleAction {
 
 	public static final String LABEL = "Clear path";
-	public static final String ICON = "resources/icons/view/pathway/clear_path.png";
+	public static final String ICON = "resources/icons/view/pathway/clear_path_2.png";
 
 	private String eventSpace;
 

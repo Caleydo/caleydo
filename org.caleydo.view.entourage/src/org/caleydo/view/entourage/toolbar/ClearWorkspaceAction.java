@@ -16,7 +16,7 @@ import org.caleydo.view.entourage.event.ClearWorkspaceEvent;
  */
 public class ClearWorkspaceAction extends SimpleAction {
 	public static final String LABEL = "Remove all pathways";
-	public static final String ICON = "resources/icons/general/remove.png";
+	public static final String ICON = "resources/icons/view/pathway/clear_pathways.png";
 
 	private final GLEntourage entourage;
 
