@@ -775,7 +775,7 @@ public class MappedDataRenderer {
 				// isHighlightLayout));
 			} else {
 				renderer.setDetailRenderer(new ContinuousDataRenderer(renderer));
-				renderer.setOverviewRenderer(new AverageBarRenderer(renderer));
+				renderer.setOverviewRenderer(new SummaryGradientPlotRenderer(renderer));
 				// tablePerspectiveLayout.setRenderer(new ContinuousContentRenderer(rowIDType, rowID, resolvedRowIDType,
 				// resolvedRowID, dataDomain, columnPerspective, parentView, this, group, isHighlightLayout,
 				// foreignColumnPerspective));
