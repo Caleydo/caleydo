@@ -707,7 +707,9 @@ public class MappedDataRenderer {
 					renderer.setDetailRenderer(new CenteredDataRenderer(renderer, showCenteredDataLineInRowCenter,
 							(float) numTable.getMin(), (float) numTable.getMax(),
 							(dataCenter != null ? (float) dataCenter.floatValue() : 0)));
-					renderer.setOverviewRenderer(new HistogramRenderer(renderer));
+					renderer.setOverviewRenderer(new SummaryRendererDataCenterDecorator(
+							new SummaryBoxAndWhiskersRenderer(renderer), (float) numTable.getMin(), (float) numTable
+									.getMax(), (dataCenter != null ? (float) dataCenter.floatValue() : 0)));
 
 					// CenteredDataContentRenderer renderer = new CenteredDataContentRenderer(rowIDType, rowID,
 					// resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
@@ -775,7 +777,7 @@ public class MappedDataRenderer {
 				// isHighlightLayout));
 			} else {
 				renderer.setDetailRenderer(new ContinuousDataRenderer(renderer));
-				renderer.setOverviewRenderer(new SummaryGradientPlotRenderer(renderer));
+				renderer.setOverviewRenderer(new SummaryBoxAndWhiskersRenderer(renderer));
 				// tablePerspectiveLayout.setRenderer(new ContinuousContentRenderer(rowIDType, rowID, resolvedRowIDType,
 				// resolvedRowID, dataDomain, columnPerspective, parentView, this, group, isHighlightLayout,
 				// foreignColumnPerspective));
