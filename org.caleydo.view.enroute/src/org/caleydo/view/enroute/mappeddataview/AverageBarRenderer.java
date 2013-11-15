@@ -12,39 +12,24 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2GL3;
 
-import org.caleydo.core.data.perspective.table.Average;
-import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.collection.Algorithms;
-import org.caleydo.core.view.opengl.picking.APickingListener;
-import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
 
 /**
  * @author Christian
  *
  */
-public class AverageBarRenderer extends ADataRenderer {
+public class AverageBarRenderer extends AAverageBasedSummaryRenderer {
 
-	private static Integer rendererIDCounter = 0;
 
-	protected Average average;
-	private int rendererID;
 
 	/**
 	 * @param contentRenderer
 	 */
 	public AverageBarRenderer(ContentRenderer contentRenderer) {
 		super(contentRenderer);
-		if (contentRenderer.resolvedRowID == null)
-			return;
-		synchronized (rendererIDCounter) {
-			rendererID = rendererIDCounter++;
-		}
-		average = TablePerspectiveStatistics.calculateAverage(contentRenderer.columnPerspective.getVirtualArray(),
-				contentRenderer.dataDomain, contentRenderer.resolvedRowIDType, contentRenderer.resolvedRowID);
 
-		registerPickingListeners();
 	}
 
 	@Override
@@ -112,27 +97,6 @@ public class AverageBarRenderer extends ADataRenderer {
 
 	}
 
-	protected void registerPickingListeners() {
 
-		contentRenderer.parentView.addIDPickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-
-				contentRenderer.parent.sampleSelectionManager.clearSelection(SelectionType.SELECTION);
-
-				contentRenderer.parent.sampleSelectionManager.addToType(SelectionType.SELECTION,
-						contentRenderer.columnIDType, contentRenderer.columnPerspective.getVirtualArray().getIDs());
-				contentRenderer.parent.sampleSelectionManager.triggerSelectionUpdateEvent();
-
-				contentRenderer.parent.sampleGroupSelectionManager.clearSelection(SelectionType.SELECTION);
-
-				contentRenderer.parent.sampleGroupSelectionManager.addToType(SelectionType.SELECTION,
-						contentRenderer.group.getID());
-				contentRenderer.parent.sampleGroupSelectionManager.triggerSelectionUpdateEvent();
-				contentRenderer.parentView.setDisplayListDirty();
-			}
-		}, EPickingType.SAMPLE_GROUP_RENDERER.name(), rendererID);
-	}
 
 }
