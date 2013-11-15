@@ -322,9 +322,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				selectedPathID--;
 
 			if (selectedPathID < 0)
-				selectedPathID = 0;
-			if (selectedPathID > paths.size() - 1)
 				selectedPathID = paths.size() - 1;
+			if (selectedPathID > paths.size() - 1)
+				selectedPathID = 0;
 
 			if (allPaths.size() > 0) {
 				selectedPath = paths.get(selectedPathID);
@@ -1000,7 +1000,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			// }
 			//
 			// System.out.println("overlayBubbleSets pathSegments.size"+pathSegments.size());
-			this.bubbleSet.addPathSegements(pathSegments);
+			// this.bubbleSet.addPathSegements(pathSegments);
 			this.bubbleSet.addPathSegements(pathSegments);
 
 			if (this.highlightVertices) {
