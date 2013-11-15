@@ -41,7 +41,17 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 		float thirdQuantrileBoundary = (float) (normalizedStats.getQuartile75()) * x;
 
 		gl.glBegin(GL2GL3.GL_QUADS);
-		gl.glColor4fv(color, 0);
+		// gl.glColor4fv(color, 0);
+		gl.glColor3f(1f, 1f, 1f);
+		gl.glVertex3f(firstQuantrileBoundary, y / 3, z);
+		gl.glVertex3d(thirdQuantrileBoundary, y / 3, z);
+		gl.glVertex3d(thirdQuantrileBoundary, y / 3 * 2, z);
+		gl.glVertex3f(firstQuantrileBoundary, y / 3 * 2, z);
+		gl.glEnd();
+
+		gl.glBegin(GL.GL_LINE_LOOP);
+		// gl.glColor4fv(color, 0);
+		gl.glColor3f(0f, 0f, 0f);
 		gl.glVertex3f(firstQuantrileBoundary, y / 3, z);
 		gl.glVertex3d(thirdQuantrileBoundary, y / 3, z);
 		gl.glVertex3d(thirdQuantrileBoundary, y / 3 * 2, z);
@@ -54,12 +64,13 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 		float lineTailHeight = contentRenderer.parentView.getPixelGLConverter().getGLHeightForPixelHeight(3);
 
 		// Median
-		gl.glColor3f(0, 0, 0);
+		gl.glColor3f(0.2f, 0.2f, 0.2f);
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3d(normalizedStats.getMedian() * x, y / 3 * 2, z);
 		gl.glVertex3d(normalizedStats.getMedian() * x, y / 3, z);
 
 		// Whiskers
+		gl.glColor3f(0, 0, 0);
 		gl.glVertex3f(min, y / 2, z);
 		gl.glVertex3f(firstQuantrileBoundary, y / 2, z);
 

@@ -99,10 +99,10 @@ public abstract class AMedianBasedSummaryRenderer extends ADataRenderer {
 			@Override
 			public String getLabel() {
 				DecimalFormat df = new DecimalFormat("#.##");
-				return "Median: " + df.format(rawStats.getMedian()) + ", 1st Quartile: "
-						+ df.format(rawStats.getQuartile25()) + ", 3rd Quartile: "
+				return "Median: " + df.format(rawStats.getMedian()) + "\n1st Quartile: "
+						+ df.format(rawStats.getQuartile25()) + "\n3rd Quartile: "
 						+ df.format(rawStats.getQuartile75()) + "\nLowest value in 1.5xIQR range: "
-						+ df.format(rawIQRMin) + ", Highest value in 1.5xIQR range: " + df.format(rawIQRMax);
+						+ df.format(rawIQRMin) + "\nHighest value in 1.5xIQR range: " + df.format(rawIQRMax);
 			}
 
 			@Override
