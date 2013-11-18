@@ -21,8 +21,10 @@ import org.caleydo.view.tourguide.stratomex.event.UpdateNumericalPreviewEvent;
  *
  */
 public class VariableStratomexAdapter extends AStratomexAdapter {
+	public static final String SECONARDY_ID = "OTHER";
+
 	public VariableStratomexAdapter() {
-		super(new VariableDataMode());
+		super(VariableDataMode.INSTANCE);
 	}
 
 	@Override
@@ -32,7 +34,7 @@ public class VariableStratomexAdapter extends AStratomexAdapter {
 
 	@Override
 	public String getSecondaryID() {
-		return "OTHER";
+		return SECONARDY_ID;
 	}
 
 	@Override

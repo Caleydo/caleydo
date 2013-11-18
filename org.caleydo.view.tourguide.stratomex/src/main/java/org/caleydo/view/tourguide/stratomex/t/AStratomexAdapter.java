@@ -341,13 +341,14 @@ public abstract class AStratomexAdapter implements ITourGuideAdapter {
 
 	@Override
 	public boolean bindTo(IViewPart part) {
-		// TODO Auto-generated method stub
-		return false;
+		if (!(part instanceof RcpGLStratomexView))
+			return false;
+		this.receiver = new WeakReference<GLStratomex>(((RcpGLStratomexView) part).getView());
+		return true;
 	}
 
 	@Override
 	public boolean ignoreActive(IViewPart part) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

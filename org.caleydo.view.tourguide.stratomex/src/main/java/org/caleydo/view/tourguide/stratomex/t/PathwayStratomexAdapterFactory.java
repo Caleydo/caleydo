@@ -20,6 +20,6 @@ public class PathwayStratomexAdapterFactory implements ITourGuideAdapterFactory 
 
 	@Override
 	public String getSecondaryID() {
-		return "PATHWAYS";
+		return PathwayStratomexAdapter.SECONDARY_ID;
 	}
 }

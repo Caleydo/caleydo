@@ -8,7 +8,6 @@ package org.caleydo.view.tourguide.api.state;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.tourguide.api.vis.TourGuideUtils;
-import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
 
 /**
  * basic {@link IState} for browsing something in tour guides
@@ -17,10 +16,10 @@ import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
  *
  */
 public abstract class ABrowseState implements IState {
-	private final ITourGuideAdapter adapter;
+	private final String adapter;
 	private final String label;
 
-	public ABrowseState(ITourGuideAdapter adapter, String label) {
+	public ABrowseState(String adapter, String label) {
 		this.adapter = adapter;
 		this.label = label;
 	}
@@ -35,7 +34,7 @@ public abstract class ABrowseState implements IState {
 
 	@Override
 	public void onEnter() {
-		TourGuideUtils.showTourGuide(adapter.getSecondaryID());
+		TourGuideUtils.showTourGuide(adapter);
 	}
 
 	@Override

@@ -47,7 +47,7 @@ public class PathwayDataMode extends ATourGuideDataMode {
 	}
 
 	@Override
-	protected Collection<? extends IDataDomain> getAllDataDomains() {
+	public Collection<? extends IDataDomain> getAllDataDomains() {
 		return DataDomainManager.get().getDataDomainsByType(PathwayDataDomain.class);
 	}
 

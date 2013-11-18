@@ -23,7 +23,9 @@ import org.caleydo.view.tourguide.api.state.SimpleState;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Lists;
 
 class StateMachineImpl implements IStateMachine {
 	@DeepScan
@@ -44,8 +46,6 @@ class StateMachineImpl implements IStateMachine {
 		return state;
 	}
 
-
-
 	/**
 	 * @return
 	 */
@@ -58,6 +58,11 @@ class StateMachineImpl implements IStateMachine {
 				return (RootState) next;
 		}
 		return null;
+	}
+
+	@Override
+	public Collection<RootState> getRootStates() {
+		return Lists.newArrayList(Iterables.filter(this.states.values(), RootState.class));
 	}
 
 	/**
@@ -107,12 +112,6 @@ class StateMachineImpl implements IStateMachine {
 	@Override
 	public List<ITransition> getTransitions(IState state) {
 		return Collections.unmodifiableList(transitions.get(state));
-	}
-
-	@Override
-	public Collection<RootState> getRootStates() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

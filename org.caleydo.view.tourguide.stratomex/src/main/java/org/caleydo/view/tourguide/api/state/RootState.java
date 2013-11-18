@@ -7,7 +7,6 @@ package org.caleydo.view.tourguide.api.state;
 
 import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
 import org.caleydo.view.tourguide.internal.mode.VariableDataMode;
-import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 
 import com.google.common.base.Predicate;
@@ -17,22 +16,31 @@ import com.google.common.base.Predicate;
  *
  */
 public class RootState implements IState {
+	private final String adapter;
+	private final ITourGuideDataMode mode;
+	private final String label;
+
+	public RootState(String adapter, ITourGuideDataMode mode, String label) {
+		this.adapter = adapter;
+		this.mode = mode;
+		this.label = label;
+	}
+
 	public IState getBrowseState() {
 		return null;
 	}
 
 	public ITourGuideDataMode getMode() {
-		return null;
+		return mode;
 	}
 
-	public ITourGuideAdapter getAdapter() {
-		return null;
+	public String getAdapter() {
+		return adapter;
 	}
 
 	@Override
 	public String getLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return label;
 	}
 
 	@Override

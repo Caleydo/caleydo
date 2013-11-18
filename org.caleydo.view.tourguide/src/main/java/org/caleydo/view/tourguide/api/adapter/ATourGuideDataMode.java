@@ -30,7 +30,7 @@ public abstract class ATourGuideDataMode implements ITourGuideDataMode {
 	/**
 	 * @return
 	 */
-	protected Collection<? extends IDataDomain> getAllDataDomains() {
+	public Collection<? extends IDataDomain> getAllDataDomains() {
 		List<? extends IDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(
 				ATableBasedDataDomain.class);
 		dataDomains = Lists.newArrayList(Iterables.filter(dataDomains, this));

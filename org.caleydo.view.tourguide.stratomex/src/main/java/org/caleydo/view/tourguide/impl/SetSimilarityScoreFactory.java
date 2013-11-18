@@ -31,7 +31,6 @@ import org.caleydo.view.tourguide.api.state.RootState;
 import org.caleydo.view.tourguide.api.state.SimpleState;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.spi.IScoreFactory2;
-import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -160,7 +159,7 @@ public class SetSimilarityScoreFactory implements IScoreFactory2 {
 	}
 
 	private class UpdateAndBrowseJaccardIndex extends ABrowseState implements ISelectGroupState {
-		public UpdateAndBrowseJaccardIndex(ITourGuideAdapter adapter) {
+		public UpdateAndBrowseJaccardIndex(String adapter) {
 			super(adapter, "Select a stratification in the LineUp to preview.\n"
 					+ "Then confirm or cancel your selection"
 					+ "Change query by clicking on other block at any time");

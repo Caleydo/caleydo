@@ -37,12 +37,14 @@ import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
+import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
 import org.caleydo.view.tourguide.api.state.ABrowseState;
 import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectGroupState;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.ITransition;
+import org.caleydo.view.tourguide.api.state.RootState;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.api.vis.ITourGuideView;
 import org.caleydo.view.tourguide.api.vis.TourGuideUtils;
@@ -197,8 +199,8 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions, IPi
 		Collection<ITransition> dependent = new ArrayList<>(transitions.size());
 		Collection<ITransition> rest = new ArrayList<>(transitions.size());
 		for (ITransition t : transitions)
-			if (t instanceof SimpleTransition && (((SimpleTransition) t).getTarget() instanceof SelectStateState)
-					&& ((SelectStateState) ((SimpleTransition) t).getTarget()).getMode().isDependent())
+			if (t instanceof SimpleTransition && (((SimpleTransition) t).getTarget() instanceof RootState)
+					&& !DataDomainModes.areStratificatins(((RootState) ((SimpleTransition) t).getTarget()).getMode()))
 				dependent.add(t);
 			else
 				rest.add(t);
@@ -331,8 +333,7 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions, IPi
 
 	@Override
 	public void addScoreToTourGuide(IScore... scores) {
-		ITourGuideView tourGuide = TourGuideUtils.showTourGuide(stateMachine.findNearestRoot().getAdapter()
-				.getSecondaryID());
+		ITourGuideView tourGuide = TourGuideUtils.showTourGuide(stateMachine.findNearestRoot().getAdapter());
 		tourGuide.removeLeadingScoreColumns();
 		tourGuide.addColumns(scores);
 	}

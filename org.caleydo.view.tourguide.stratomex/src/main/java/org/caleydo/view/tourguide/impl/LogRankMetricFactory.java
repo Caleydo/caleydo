@@ -30,7 +30,6 @@ import org.caleydo.view.tourguide.api.state.PreviewRenderer;
 import org.caleydo.view.tourguide.api.state.RootState;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.spi.IScoreFactory2;
-import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
@@ -101,7 +100,7 @@ public class LogRankMetricFactory implements IScoreFactory2 {
 	private class CreateLogRankState extends BrowseOtherState {
 		private final BothUpdateLogRankState target;
 
-		public CreateLogRankState(ITourGuideAdapter adapter, BothUpdateLogRankState target) {
+		public CreateLogRankState(String adapter, BothUpdateLogRankState target) {
 			super(adapter, "Select a numerical value in the LineUp as a starting point for finding a stratification.");
 			this.target = target;
 		}
@@ -122,7 +121,7 @@ public class LogRankMetricFactory implements IScoreFactory2 {
 	private class BothUpdateLogRankState extends ABrowseState {
 		private TablePerspective numerical;
 
-		public BothUpdateLogRankState(ITourGuideAdapter adapter) {
+		public BothUpdateLogRankState(String adapter) {
 			super(adapter, "From list");
 		}
 

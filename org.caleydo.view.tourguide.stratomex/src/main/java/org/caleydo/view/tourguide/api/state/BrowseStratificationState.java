@@ -6,14 +6,13 @@
 package org.caleydo.view.tourguide.api.state;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public class BrowseStratificationState extends ABrowseState {
-	public BrowseStratificationState(ITourGuideAdapter adapter, String label) {
+	public BrowseStratificationState(String adapter, String label) {
 		super(adapter, label);
 	}
 

@@ -10,7 +10,6 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.tourguide.api.state.ABrowseState;
 import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.PreviewRenderer;
-import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
 
 /**
  * a stupid state that show the pathway but can't never be finished
@@ -20,7 +19,7 @@ import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
  */
 public class AlonePathwayState extends ABrowseState {
 
-	public AlonePathwayState(ITourGuideAdapter adapter) {
+	public AlonePathwayState(String adapter) {
 		super(adapter, "Select a pathway in the LineUp.");
 	}
 

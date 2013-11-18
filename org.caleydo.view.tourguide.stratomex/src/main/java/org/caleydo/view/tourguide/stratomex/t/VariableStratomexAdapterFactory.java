@@ -20,6 +20,6 @@ public class VariableStratomexAdapterFactory implements ITourGuideAdapterFactory
 
 	@Override
 	public String getSecondaryID() {
-		return "OTHER";
+		return VariableStratomexAdapter.SECONARDY_ID;
 	}
 }

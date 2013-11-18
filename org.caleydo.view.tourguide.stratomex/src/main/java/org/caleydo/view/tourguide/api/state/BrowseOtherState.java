@@ -7,7 +7,6 @@ package org.caleydo.view.tourguide.api.state;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
 
 /**
  * @author Samuel Gratzl
@@ -16,7 +15,7 @@ import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
 public class BrowseOtherState extends ABrowseState {
 	protected Perspective underlying;
 
-	public BrowseOtherState(ITourGuideAdapter adapter, String label) {
+	public BrowseOtherState(String adapter, String label) {
 		super(adapter, label);
 	}
 

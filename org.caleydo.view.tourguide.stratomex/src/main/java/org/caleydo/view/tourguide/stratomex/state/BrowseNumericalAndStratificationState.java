@@ -14,7 +14,6 @@ import org.caleydo.view.tourguide.api.state.BrowseOtherState;
 import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.PreviewRenderer;
-import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
 
 /**
  * @author Samuel Gratzl
@@ -24,7 +23,7 @@ public class BrowseNumericalAndStratificationState extends BrowseOtherState impl
 
 	private TablePerspective numerical;
 
-	public BrowseNumericalAndStratificationState(ITourGuideAdapter adapter) {
+	public BrowseNumericalAndStratificationState(String adapter) {
 		super(adapter, "Select a numerical value in the LineUp and select a strafication to refer to.");
 	}
 

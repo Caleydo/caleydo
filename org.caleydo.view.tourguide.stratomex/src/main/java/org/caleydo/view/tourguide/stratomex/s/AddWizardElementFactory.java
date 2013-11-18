@@ -11,6 +11,7 @@ import java.util.List;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
 import org.caleydo.view.tourguide.api.score.ScoreFactories;
 import org.caleydo.view.tourguide.api.state.BrowseOtherState;
 import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
@@ -19,12 +20,17 @@ import org.caleydo.view.tourguide.api.state.EWizardMode;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.ITransition;
+import org.caleydo.view.tourguide.api.state.RootState;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.api.util.PathwayOracle;
+import org.caleydo.view.tourguide.internal.mode.VariableDataMode;
 import org.caleydo.view.tourguide.spi.IScoreFactory2;
 import org.caleydo.view.tourguide.stratomex.state.AlonePathwayState;
 import org.caleydo.view.tourguide.stratomex.state.BrowseNumericalAndStratificationState;
 import org.caleydo.view.tourguide.stratomex.state.BrowsePathwayAndStratificationState;
+import org.caleydo.view.tourguide.stratomex.t.PathwayStratomexAdapter;
+import org.caleydo.view.tourguide.stratomex.t.StratificationStratomexAdapter;
+import org.caleydo.view.tourguide.stratomex.t.VariableStratomexAdapter;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -37,6 +43,12 @@ public class AddWizardElementFactory {
 	private static final String BROWSE_AND_SELECT_OTHER = "browseAndSelectNumerical";
 	private static final String BROWSE_AND_SELECT_PATHWAY = "browseAndSelectPathway";
 	private static final String ALONE_PATHWAY = "alonePathway";
+	private static final String BROWSE_STRATIFICATIONS = "browseStratifications";
+	private static final String BROWSE_OTHER = "browseOther";
+	private static final String BROWSE_PATHWAY = "browsePathway";
+	private static final String ADD_STRATIFICATIONS = "addStrafications";
+	private static final String ADD_OTHER = "addOther";
+	private static final String ADD_PATHWAY = "addPathway";
 
 	public static AddWizardElement create(TourGuideAddin adapter, AGLView view) {
 		return new AddWizardElement(view, adapter, createStateMachine(adapter.getVisibleTablePerspectives(),
@@ -75,17 +87,17 @@ public class AddWizardElementFactory {
 			state.addTransition(addStratification, new SimpleTransition(browseStratification, "From list", null));
 			state.addTransition(addNumerical, new SimpleTransition(browseNumerical,
 					"From list and display unstratified", null));
-			state.addState(ALONE_PATHWAY, new AlonePathwayState());
+			state.addState(ALONE_PATHWAY, new AlonePathwayState(PathwayStratomexAdapter.SECONDARY_ID));
 
 			// select pathway -> show preview -> select stratification -> show both
 			IState browseIntermediate = state.addState(BROWSE_AND_SELECT_PATHWAY,
-					new BrowsePathwayAndStratificationState());
+					new BrowsePathwayAndStratificationState(PathwayStratomexAdapter.SECONDARY_ID));
 			state.addTransition(addPathway, new SimpleTransition(browseIntermediate,
 					"From list and stratify with a displayed stratification", !existing.isEmpty() ? null
 							: "At least one mappable stratification must be already visible"));
 			// select pathway -> show preview -> select stratification -> show both
 			IState browseOtherIntermediate = state.addState(BROWSE_AND_SELECT_OTHER,
-					new BrowseNumericalAndStratificationState());
+					new BrowseNumericalAndStratificationState(VariableStratomexAdapter.SECONARDY_ID));
 			state.addTransition(addNumerical, new SimpleTransition(browseOtherIntermediate,
 					"From list and stratify with a displayed stratification", !existing.isEmpty() ? null
 							: "At least one mappable stratification must already be visible"));
@@ -107,9 +119,9 @@ public class AddWizardElementFactory {
 		fillStateMachine(state, existing, mode, source);
 
 		boolean hideEmpty = mode != EWizardMode.GLOBAL;
-		addStartTransition(state, IStateMachine.ADD_STRATIFICATIONS, hideEmpty);
-		addStartTransition(state, IStateMachine.ADD_PATHWAY, hideEmpty);
-		addStartTransition(state, IStateMachine.ADD_OTHER, hideEmpty);
+		addStartTransition(state, ADD_STRATIFICATIONS, hideEmpty);
+		addStartTransition(state, ADD_PATHWAY, hideEmpty);
+		addStartTransition(state, ADD_OTHER, hideEmpty);
 
 		skipSingleOnes(state);
 
@@ -143,22 +155,25 @@ public class AddWizardElementFactory {
 	}
 
 	private static void addDefaultStates(StateMachineImpl state) {
-		state.addState(ADD_STRATIFICATIONS, new SelectStateState("Select stratification",
-				EDataDomainQueryMode.STRATIFICATIONS));
+		state.addState(ADD_STRATIFICATIONS,
+ new RootState(StratificationStratomexAdapter.SECONDARY_ID,
+				DataDomainModes.STRATIFICATIONS, "Select stratification"));
 
 		state.addState(BROWSE_STRATIFICATIONS, new BrowseStratificationState(
+				StratificationStratomexAdapter.SECONDARY_ID,
 				"Select a stratification in the LineUp to preview.\nThen confirm or cancel your selection."));
 
-		state.addState(ADD_PATHWAY, new SelectStateState("Select pathway", EDataDomainQueryMode.PATHWAYS));
+		state.addState(ADD_PATHWAY, new RootState(PathwayStratomexAdapter.SECONDARY_ID,
+				DataDomainModes.PATHWAYS, "Select pathway"));
 
-		state.addState(BROWSE_PATHWAY, new BrowsePathwayState(
+		state.addState(BROWSE_PATHWAY, new BrowsePathwayState(PathwayStratomexAdapter.SECONDARY_ID,
 				"Select a pathway in the LineUp to preview.\n Then confirm or cancel your selection."));
 
 		state.addState(ADD_OTHER,
-				new SelectStateState("Select other data " + toString(EDataDomainQueryMode.OTHER.getAllDataDomains()),
-						EDataDomainQueryMode.OTHER));
+ new RootState(VariableStratomexAdapter.SECONARDY_ID, VariableDataMode.INSTANCE,
+				"Select other data " + toString(VariableDataMode.INSTANCE.getAllDataDomains())));
 
-		state.addState(BROWSE_OTHER, new BrowseOtherState(
+		state.addState(BROWSE_OTHER, new BrowseOtherState(VariableStratomexAdapter.SECONARDY_ID,
 				"Select a entry in the LineUp\nto preview.\n\nThen confirm or cancel your selection."));
 	}
 

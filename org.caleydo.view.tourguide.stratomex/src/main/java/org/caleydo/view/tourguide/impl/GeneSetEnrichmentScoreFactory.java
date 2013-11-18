@@ -36,7 +36,6 @@ import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.api.util.PathwayOracle;
 import org.caleydo.view.tourguide.impl.AGSEAAlgorithm.GSEAAlgorithmPValue;
 import org.caleydo.view.tourguide.spi.IScoreFactory2;
-import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
@@ -204,7 +203,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory2 {
 		private final boolean createGSEA;
 		private final Perspective limitTo;
 
-		public UpdateAndBrowsePathways(ITourGuideAdapter adapter, boolean createGSEA, Perspective limitTo) {
+		public UpdateAndBrowsePathways(String adapter, boolean createGSEA, Perspective limitTo) {
 			super(adapter, "Select a pathway in the LineUp to preview.\n"
 					+ "Then confirm or cancel your selection" + "Change query by clicking on other block at any time");
 			this.createGSEA = createGSEA;

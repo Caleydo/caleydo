@@ -25,6 +25,8 @@ import org.caleydo.view.tourguide.stratomex.event.UpdateStratificationPreviewEve
  *
  */
 public class StratificationStratomexAdapter extends AStratomexAdapter {
+	public static final String SECONDARY_ID = "STRATIFICATIONS";
+
 	public StratificationStratomexAdapter() {
 		super(DataDomainModes.STRATIFICATIONS);
 	}
@@ -36,7 +38,7 @@ public class StratificationStratomexAdapter extends AStratomexAdapter {
 
 	@Override
 	public String getSecondaryID() {
-		return "STRATIFICATIONS";
+		return SECONDARY_ID;
 	}
 
 	@Override

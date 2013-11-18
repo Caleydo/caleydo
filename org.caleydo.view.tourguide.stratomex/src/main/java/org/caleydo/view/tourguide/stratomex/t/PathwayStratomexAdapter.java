@@ -21,6 +21,8 @@ import org.caleydo.view.tourguide.stratomex.event.UpdatePathwayPreviewEvent;
  *
  */
 public class PathwayStratomexAdapter extends AStratomexAdapter {
+	public static final String SECONDARY_ID = "PATHWAYS";
+
 	public PathwayStratomexAdapter() {
 		super(DataDomainModes.PATHWAYS);
 	}
@@ -32,7 +34,7 @@ public class PathwayStratomexAdapter extends AStratomexAdapter {
 
 	@Override
 	public String getSecondaryID() {
-		return "PATHWAYS";
+		return SECONDARY_ID;
 	}
 
 	@Override

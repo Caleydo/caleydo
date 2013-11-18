@@ -20,6 +20,6 @@ public class StratomexStratificationAdapterFactory implements ITourGuideAdapterF
 
 	@Override
 	public String getSecondaryID() {
-		return "STRATIFICATIONS";
+		return StratificationStratomexAdapter.SECONDARY_ID;
 	}
 }

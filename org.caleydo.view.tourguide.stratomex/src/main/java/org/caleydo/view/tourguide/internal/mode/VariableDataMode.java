@@ -22,7 +22,11 @@ import com.google.common.collect.Sets;
  *
  */
 public class VariableDataMode extends ATourGuideDataMode {
+	public static VariableDataMode INSTANCE = new VariableDataMode();
 
+	private VariableDataMode() {
+
+	}
 	@Override
 	public boolean apply(IDataDomain dataDomain) {
 		return (dataDomain instanceof ATableBasedDataDomain && !((ATableBasedDataDomain) dataDomain).getTable()
