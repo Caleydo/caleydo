@@ -54,9 +54,9 @@ import com.google.common.collect.Iterables;
 
 /**
  * adapter for tourguide to the entourage view
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class EntourageAdapter extends AEntourageAdapter implements ISelectionCallback {
 	private final DataDomainElements dataDomains = new DataDomainElements();
@@ -250,8 +250,12 @@ public class EntourageAdapter extends AEntourageAdapter implements ISelectionCal
 
 		Perspective perspective = toPerspective((ITablePerspectiveScoreRow) new_);
 		DataMappingState dmState = entourage.getDataMappingState();
+
+		// Prevents to loose group selections when gaining new focus
+		if (dmState.getSourcePerspective() != perspective)
+			dmState.setSelectedPerspective(perspective);
 		dmState.setSourcePerspective(perspective);
-		dmState.setSelectedPerspective(perspective);
+
 		groups.set(perspective);
 
 		loadGroupState();
