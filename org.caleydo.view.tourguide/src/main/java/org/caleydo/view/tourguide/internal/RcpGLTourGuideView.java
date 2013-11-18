@@ -6,10 +6,8 @@
 package org.caleydo.view.tourguide.internal;
 
 import org.caleydo.core.view.ARcpGLViewPart;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
-import org.caleydo.view.tourguide.spi.adapter.IViewAdapter;
-import org.caleydo.view.tourguide.spi.adapter.IViewAdapterFactory;
+import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Composite;
@@ -23,7 +21,7 @@ import org.eclipse.ui.PartInitException;
 
 public class RcpGLTourGuideView extends ARcpGLViewPart {
 
-	private EDataDomainQueryMode mode;
+	private ITourGuideAdapter adapter;
 
 	public RcpGLTourGuideView() {
 		super(SerializedTourGuideView.class);
@@ -31,8 +29,10 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
+		if (this.adapter == null)
+			return; // nothing to create -> error
 		super.createPartControl(parent);
-		view = new GLTourGuideView(glCanvas, mode);
+		view = new GLTourGuideView(glCanvas, adapter);
 		initializeView();
 		createPartControlGL();
 
@@ -45,12 +45,8 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 		outer: for (MPart part : service.getParts()) {
 			if (service.isPartVisible(part)) {
 				IViewPart view = getSite().getPage().findView(part.getElementId());
-				for (IViewAdapterFactory factory : ViewAdapters.get()) {
-					IViewAdapter adapter = factory.createFor(view, mode, m);
-					if (adapter != null) {
-						m.switchTo(adapter);
-						break outer;
-					}
+				if (adapter.bindTo(view)) {
+					break outer;
 				}
 			}
 		}
@@ -59,14 +55,17 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 	@Override
 	public void init(IViewSite site) throws PartInitException {
 		super.init(site);
-		this.mode = EDataDomainQueryMode.valueOfSafe(site.getSecondaryId());
-		site.getPage().addPartListener(partListener);
+		this.adapter = TourGuideAdapters.createFrom(site.getSecondaryId());
+		// assume this.adapter != null;
+		if (this.adapter != null)
+			site.getPage().addPartListener(partListener);
 	}
 
 
 	@Override
 	public void dispose() {
-		getSite().getPage().removePartListener(partListener);
+		if (this.adapter != null)
+			getSite().getPage().removePartListener(partListener);
 		super.dispose();
 	}
 
@@ -79,7 +78,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedTourGuideView();
 		serializedView.setLabelDefault(false);
-		serializedView.setViewLabel(this.mode.getLabel() + " LineUp");
+		serializedView.setViewLabel((adapter == null ? "???" : adapter.getPartName()) + " - LineUp");
 		determineDataConfiguration(serializedView, false);
 	}
 
@@ -118,7 +117,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 			if (m == null)
 				return;
 			if (m.getAdapter() != null && m.getAdapter().isRepresenting(part))
-				m.switchTo(null);
+				m.getAdapter().bindTo(null);
 		}
 
 		@Override
@@ -135,28 +134,20 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 
 			if (ignorePartChange(part) || m == null)
 				return;
-			if (part instanceof RcpGLTourGuideView && m != null) {
-				if (part == RcpGLTourGuideView.this) { // I was activated
-					m.attachToView();
-				} else { // another tour guide than me was activated
-					m.detachFromView();
-				}
-			} else if (part instanceof IViewPart) {
+			if (part instanceof IViewPart) {
 				if (m.getAdapter() != null && m.getAdapter().isRepresenting(part))
 					return;
-				IViewAdapter adapter = null;
-				for (IViewAdapterFactory factory : ViewAdapters.get()) {
-					adapter = factory.createFor((IViewPart) part, mode, m);
-					if (adapter != null) {
-						break;
-					}
-				}
-				m.switchTo(adapter);
+
+				if (adapter.ignoreActive((IViewPart) part))
+					return;
+				adapter.bindTo((IViewPart) part);
 			}
 		}
 	};
 
 	private static boolean ignorePartChange(IWorkbenchPart part) {
+		if (part instanceof RcpGLTourGuideView)
+			return true;
 		final String canonicalName = part.getClass().getCanonicalName();
 		return canonicalName.startsWith("org.caleydo.view.info")
 				|| canonicalName.startsWith("org.caleydo.core.gui.toolbar");

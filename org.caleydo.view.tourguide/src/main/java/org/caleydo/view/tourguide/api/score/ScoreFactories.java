@@ -7,7 +7,6 @@ package org.caleydo.view.tourguide.api.score;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -16,8 +15,6 @@ import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.view.tourguide.api.event.AddScoreColumnEvent;
-import org.caleydo.view.tourguide.api.state.EWizardMode;
-import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.IScoreFactory.ScoreEntry;
 
@@ -62,13 +59,5 @@ public class ScoreFactories {
 
 	public static IScoreFactory get(String score) {
 		return factories.get(score);
-	}
-
-	public static void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing,
- EWizardMode mode,
-			TablePerspective source) {
-		for (IScoreFactory f : factories.values()) {
-			f.fillStateMachine(stateMachine, existing, mode, source);
-		}
 	}
 }

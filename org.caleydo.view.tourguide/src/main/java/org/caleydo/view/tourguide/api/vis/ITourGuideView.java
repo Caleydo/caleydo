@@ -32,6 +32,8 @@ public interface ITourGuideView {
 	 */
 	void clearSelection();
 
+	void removeAllSimpleFilter();
+
 	/**
 	 * returns the currently selected row or null if none is selected
 	 *

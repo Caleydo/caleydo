@@ -5,42 +5,50 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.entourage;
 
+import java.net.URL;
+
+import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.entourage.GLEntourage;
 import org.caleydo.view.entourage.RcpGLSubGraphView;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.vis.ITourGuideView;
-import org.caleydo.view.tourguide.spi.adapter.IViewAdapter;
+import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
 import org.caleydo.vis.lineup.model.RankTableModel;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 
 /**
  * @author Samuel Gratzl
  *
  */
-abstract class AEntourageAdapter implements IViewAdapter {
-	protected final GLEntourage entourage;
-	protected final ITourGuideView vis;
+abstract class AEntourageAdapter implements ITourGuideAdapter {
+	protected GLEntourage entourage;
+	protected ITourGuideView vis;
 
-	public AEntourageAdapter(GLEntourage entourage, ITourGuideView vis) {
-		this.entourage = entourage;
+	public AEntourageAdapter() {
+
+	}
+
+	@Override
+	public void setup(ITourGuideView vis, GLElementContainer lineUp) {
 		this.vis = vis;
 	}
 
 	@Override
+	public void cleanup() {
+		this.vis = null;
+	}
+
+	@Override
 	public final String getLabel() {
-		return entourage.getLabel();
+		return entourage == null ? "<none>" : entourage.getLabel();
 	}
 
 	@Override
-	public void attach() {
-
-	}
-
-	@Override
-	public void detach() {
-
+	public URL getIcon() {
+		return AEntourageAdapter.class.getResource("icon.png");
 	}
 
 	@Override
@@ -64,4 +72,25 @@ abstract class AEntourageAdapter implements IViewAdapter {
 			return ((RcpGLSubGraphView) part).getView() == entourage;
 		return false;
 	}
+
+	@Override
+	public final boolean bindTo(IViewPart part) {
+		if (part instanceof RcpGLSubGraphView) {
+			this.entourage = ((RcpGLSubGraphView) part).getView();
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public final boolean ignoreActive(IViewPart part) {
+		return false;
+	}
+
+	@Override
+	public final boolean isBound2View() {
+		return entourage != null;
+	}
+
+	protected abstract void loadViewState();
 }

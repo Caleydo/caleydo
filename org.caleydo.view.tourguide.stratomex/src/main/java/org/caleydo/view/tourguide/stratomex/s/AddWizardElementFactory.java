@@ -5,20 +5,12 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.stratomex.s;
 
-import static org.caleydo.view.tourguide.api.state.IStateMachine.ADD_OTHER;
-import static org.caleydo.view.tourguide.api.state.IStateMachine.ADD_PATHWAY;
-import static org.caleydo.view.tourguide.api.state.IStateMachine.ADD_STRATIFICATIONS;
-import static org.caleydo.view.tourguide.api.state.IStateMachine.BROWSE_OTHER;
-import static org.caleydo.view.tourguide.api.state.IStateMachine.BROWSE_PATHWAY;
-import static org.caleydo.view.tourguide.api.state.IStateMachine.BROWSE_STRATIFICATIONS;
-
 import java.util.Collection;
 import java.util.List;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.ScoreFactories;
 import org.caleydo.view.tourguide.api.state.BrowseOtherState;
 import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
@@ -29,11 +21,12 @@ import org.caleydo.view.tourguide.api.state.IStateMachine;
 import org.caleydo.view.tourguide.api.state.ITransition;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.api.util.PathwayOracle;
+import org.caleydo.view.tourguide.spi.IScoreFactory2;
 import org.caleydo.view.tourguide.stratomex.state.AlonePathwayState;
 import org.caleydo.view.tourguide.stratomex.state.BrowseNumericalAndStratificationState;
 import org.caleydo.view.tourguide.stratomex.state.BrowsePathwayAndStratificationState;
-import org.caleydo.view.tourguide.stratomex.state.SelectStateState;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 /**
@@ -111,7 +104,7 @@ public class AddWizardElementFactory {
 			break;
 		}
 
-		ScoreFactories.fillStateMachine(state, existing, mode, source);
+		fillStateMachine(state, existing, mode, source);
 
 		boolean hideEmpty = mode != EWizardMode.GLOBAL;
 		addStartTransition(state, IStateMachine.ADD_STRATIFICATIONS, hideEmpty);
@@ -121,6 +114,19 @@ public class AddWizardElementFactory {
 		skipSingleOnes(state);
 
 		return state;
+	}
+
+	/**
+	 * @param state
+	 * @param existing
+	 * @param mode
+	 * @param source
+	 */
+	private static void fillStateMachine(IStateMachine stateMachine, List<TablePerspective> existing, EWizardMode mode,
+			TablePerspective source) {
+		for (IScoreFactory2 f : Iterables.filter(ScoreFactories.getFactories().values(), IScoreFactory2.class)) {
+			f.fillStateMachine(stateMachine, existing, mode, source);
+		}
 	}
 
 	/**

@@ -14,8 +14,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.api.external.ExternalLabelParseSpecification;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
+import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 
 import com.google.common.base.Objects;
@@ -55,7 +55,7 @@ public final class ExternalLabelScore extends AExternalScore implements ISeriali
 	}
 
 	@Override
-	public boolean supports(EDataDomainQueryMode mode) {
+	public boolean supports(ITourGuideDataMode mode) {
 		return true;
 	}
 

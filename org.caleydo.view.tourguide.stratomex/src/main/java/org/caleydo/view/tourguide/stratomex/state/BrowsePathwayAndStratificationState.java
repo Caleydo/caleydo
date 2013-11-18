@@ -13,6 +13,7 @@ import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.PreviewRenderer;
 import org.caleydo.view.tourguide.api.util.PathwayOracle;
+import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
 
 /**
  * @author Samuel Gratzl
@@ -22,8 +23,8 @@ public class BrowsePathwayAndStratificationState extends BrowsePathwayState impl
 
 	private PathwayGraph pathway;
 
-	public BrowsePathwayAndStratificationState() {
-		super("Select a pathway in the LineUp and select a strafication to refer to.");
+	public BrowsePathwayAndStratificationState(ITourGuideAdapter adapter) {
+		super(adapter, "Select a pathway in the LineUp and select a strafication to refer to.");
 	}
 
 	@Override

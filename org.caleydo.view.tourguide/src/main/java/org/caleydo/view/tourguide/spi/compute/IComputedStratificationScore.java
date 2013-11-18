@@ -6,6 +6,7 @@
 package org.caleydo.view.tourguide.spi.compute;
 
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeScoreFilter;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;

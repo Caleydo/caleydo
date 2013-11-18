@@ -5,13 +5,12 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.vis;
 
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.OpenViewHandler;
 
 /**
  * @author Samuel Gratzl
  * @author Christian Partl
- * 
+ *
  */
 public class TourGuideUtils {
 	/**
@@ -20,8 +19,8 @@ public class TourGuideUtils {
 	 * @param mode
 	 * @return
 	 */
-	public static ITourGuideView showTourGuide(final EDataDomainQueryMode mode) {
-		return OpenViewHandler.showTourGuide(mode).getView();
+	public static ITourGuideView showTourGuide(final String secondaryID) {
+		return OpenViewHandler.showTourGuide(secondaryID).getView();
 	}
 
 	/**
@@ -29,8 +28,8 @@ public class TourGuideUtils {
 	 *
 	 * @param mode
 	 */
-	public static void hideTourGuide(final EDataDomainQueryMode mode) {
-		OpenViewHandler.hideTourGuide(mode);
+	public static void hideTourGuide(final String secondaryID) {
+		OpenViewHandler.hideTourGuide(secondaryID);
 	}
 
 }

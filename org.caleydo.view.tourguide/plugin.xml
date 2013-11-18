@@ -8,7 +8,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.core.views"
-            class="org.caleydo.view.tourguide.internal.RcpGLTourGuideView"
+            class="org.caleydo.view.tourguide.internal.ARcpGLTourGuideView"
             icon="resources/icons/icon.png"
             id="org.caleydo.view.tool.tourguide"
             name="LineUp"

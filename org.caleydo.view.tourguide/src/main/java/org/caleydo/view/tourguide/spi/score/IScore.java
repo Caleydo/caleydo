@@ -8,7 +8,7 @@ package org.caleydo.view.tourguide.spi.score;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 
@@ -25,7 +25,7 @@ public interface IScore extends ILabeled {
 	 * @param mode
 	 * @return
 	 */
-	boolean supports(EDataDomainQueryMode mode);
+	boolean supports(ITourGuideDataMode mode);
 
 	/**
 	 * @return

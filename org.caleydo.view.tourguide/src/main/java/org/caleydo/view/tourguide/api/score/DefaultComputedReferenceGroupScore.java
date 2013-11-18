@@ -10,11 +10,12 @@ import java.util.Collection;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeScoreFilter;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
-import org.caleydo.view.tourguide.spi.compute.IComputeScoreFilter;
 import org.caleydo.view.tourguide.spi.compute.IComputedReferenceGroupScore;
 import org.caleydo.view.tourguide.spi.score.IGroupSelector;
 
@@ -40,8 +41,8 @@ public class DefaultComputedReferenceGroupScore extends AReferenceGroupScore imp
 	}
 
 	@Override
-	public boolean supports(EDataDomainQueryMode mode) {
-		return mode == EDataDomainQueryMode.STRATIFICATIONS;
+	public boolean supports(ITourGuideDataMode mode) {
+		return DataDomainModes.areStratificatins(mode);
 	}
 
 	@Override

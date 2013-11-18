@@ -12,7 +12,7 @@ import java.util.Iterator;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
@@ -95,7 +95,7 @@ public class MultiScore extends DefaultLabelProvider implements IScore, Iterable
 	}
 
 	@Override
-	public boolean supports(EDataDomainQueryMode mode) {
+	public boolean supports(ITourGuideDataMode mode) {
 		for (IScore s : children) {
 			if (!s.supports(mode))
 				return false;

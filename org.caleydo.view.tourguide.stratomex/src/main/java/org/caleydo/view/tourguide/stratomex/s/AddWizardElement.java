@@ -37,7 +37,6 @@ import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.state.ABrowseState;
 import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectGroupState;
@@ -53,7 +52,6 @@ import org.caleydo.view.tourguide.stratomex.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.stratomex.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.stratomex.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.stratomex.event.WizardEndedEvent;
-import org.caleydo.view.tourguide.stratomex.state.SelectStateState;
 
 
 /**
@@ -332,12 +330,12 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions, IPi
 	}
 
 	@Override
-	public void addScoreToTourGuide(EDataDomainQueryMode mode, IScore... scores) {
-		ITourGuideView tourGuide = TourGuideUtils.showTourGuide(mode);
+	public void addScoreToTourGuide(IScore... scores) {
+		ITourGuideView tourGuide = TourGuideUtils.showTourGuide(stateMachine.findNearestRoot().getAdapter()
+				.getSecondaryID());
 		tourGuide.removeLeadingScoreColumns();
 		tourGuide.addColumns(scores);
 	}
-
 
 	public void done(boolean confirmed) {
 		EventPublisher.trigger(new WizardEndedEvent());
