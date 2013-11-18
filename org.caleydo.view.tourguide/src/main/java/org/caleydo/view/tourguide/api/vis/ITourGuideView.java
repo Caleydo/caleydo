@@ -45,6 +45,6 @@ public interface ITourGuideView {
 
 	List<ADataDomainQuery> getQueries();
 
-	void updateQueryUIStates();
+	void updateBound2ViewState();
 
 }

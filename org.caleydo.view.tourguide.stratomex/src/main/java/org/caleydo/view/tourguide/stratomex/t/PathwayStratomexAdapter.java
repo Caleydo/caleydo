@@ -29,7 +29,7 @@ public class PathwayStratomexAdapter extends AStratomexAdapter {
 
 	@Override
 	public String getPartName() {
-		return "Pathway (Dependent)";
+		return "Dependent Pathways";
 	}
 
 	@Override

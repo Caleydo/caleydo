@@ -166,7 +166,7 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 			} else
 				query.setActive(false);
 		}
-		vis.updateQueryUIStates();
+		vis.updateBound2ViewState();
 	}
 
 	private void loadDataDomainSelection() {

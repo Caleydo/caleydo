@@ -235,8 +235,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		return Collections.unmodifiableList(queries);
 	}
 
-	@Override
-	public void updateQueryUIStates() {
+	private void updateQueryUIStates() {
 		if (this.dataDomainQueryUI != null)
 			this.dataDomainQueryUI.updateSelections();
 	}
@@ -561,7 +560,9 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		this.adapter.setup(this, getVis());
 	}
 
+	@Override
 	public void updateBound2ViewState() {
+		updateQueryUIStates();
 		boolean act = this.adapter.isBound2View();
 		boolean prev = !this.noAttachedView;
 		if (act == prev)
@@ -571,6 +572,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		else
 			getPopupLayer().hide(noAttachedViewLabel);
 		this.noAttachedView = !this.noAttachedView;
+
 	}
 
 	@Override

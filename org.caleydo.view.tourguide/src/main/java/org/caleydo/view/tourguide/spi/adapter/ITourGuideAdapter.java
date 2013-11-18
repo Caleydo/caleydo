@@ -78,11 +78,6 @@ public interface ITourGuideAdapter extends ILabeled {
 	 */
 	boolean canShowPreviews();
 
-	/**
-	 * @param part
-	 * @return
-	 */
-	boolean isRepresenting(IWorkbenchPart part);
 
 	/**
 	 * @param table
@@ -110,8 +105,14 @@ public interface ITourGuideAdapter extends ILabeled {
 
 	/**
 	 * @param part
+	 * @return
 	 */
-	boolean bindTo(IViewPart part);
+	boolean isRepresenting(IWorkbenchPart part, boolean isBoundTo);
+
+	/**
+	 * @param part
+	 */
+	void bindTo(IViewPart part);
 
 	/**
 	 * @param part

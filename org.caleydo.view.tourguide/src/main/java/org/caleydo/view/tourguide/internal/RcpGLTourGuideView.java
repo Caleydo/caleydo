@@ -5,12 +5,16 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal;
 
+import java.io.IOException;
+
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewSite;
@@ -45,7 +49,8 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 		outer: for (MPart part : service.getParts()) {
 			if (service.isPartVisible(part)) {
 				IViewPart view = getSite().getPage().findView(part.getElementId());
-				if (adapter.bindTo(view)) {
+				if (adapter.isRepresenting(view, false)) {
+					adapter.bindTo(view);
 					break outer;
 				}
 			}
@@ -57,8 +62,17 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 		super.init(site);
 		this.adapter = TourGuideAdapters.createFrom(site.getSecondaryId());
 		// assume this.adapter != null;
-		if (this.adapter != null)
+		if (this.adapter != null) {
 			site.getPage().addPartListener(partListener);
+			setPartName(adapter.getLabel() + " - LineUp");
+			try {
+				Image i = new Image(Display.getCurrent(), adapter.getIcon().openStream());
+				setTitleImage(i);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 
@@ -116,7 +130,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 			GLTourGuideView m = getView();
 			if (m == null)
 				return;
-			if (m.getAdapter() != null && m.getAdapter().isRepresenting(part))
+			if (m.getAdapter() != null && m.getAdapter().isRepresenting(part, true))
 				m.getAdapter().bindTo(null);
 		}
 
@@ -135,7 +149,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 			if (ignorePartChange(part) || m == null)
 				return;
 			if (part instanceof IViewPart) {
-				if (m.getAdapter() != null && m.getAdapter().isRepresenting(part))
+				if (m.getAdapter() != null && m.getAdapter().isRepresenting(part, true))
 					return;
 
 				if (adapter.ignoreActive((IViewPart) part))

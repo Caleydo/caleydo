@@ -368,7 +368,7 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions, IPi
 	@Override
 	public void replaceOtherTemplate(Perspective underlying, TablePerspective numerical, boolean extra,
 			boolean highlight) {
-		if (numerical == null) {
+		if (underlying == null) {
 			ClinicalDataConfigurer clinicalDataConfigurer = new ClinicalDataConfigurer();
 			clinicalDataConfigurer.setSortingStrategy(new NoSortingSortingStrategy());
 			replaceTemplate(numerical, clinicalDataConfigurer, true);

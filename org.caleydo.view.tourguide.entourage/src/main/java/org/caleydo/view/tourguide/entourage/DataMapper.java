@@ -10,14 +10,16 @@ public class DataMapper implements IDataMapper {
 
 	@Override
 	public void show() {
+		TourGuideUtils.showTourGuide(EntourageStratificationAdapterFactory.SECONDARY_ID);
 		TourGuideUtils.showTourGuide(EntourageNonGeneticAdapterFactory.SECONDARY_ID);
+		// call again to get focus
 		TourGuideUtils.showTourGuide(EntourageStratificationAdapterFactory.SECONDARY_ID);
 	}
 
 	@Override
 	public void hide() {
-		TourGuideUtils.hideTourGuide(EntourageNonGeneticAdapterFactory.SECONDARY_ID);
 		TourGuideUtils.hideTourGuide(EntourageStratificationAdapterFactory.SECONDARY_ID);
+		TourGuideUtils.hideTourGuide(EntourageNonGeneticAdapterFactory.SECONDARY_ID);
 	}
 
 }

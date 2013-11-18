@@ -29,7 +29,7 @@ public class VariableStratomexAdapter extends AStratomexAdapter {
 
 	@Override
 	public String getPartName() {
-		return "Variables (Dependent)";
+		return "Dependent Variables";
 	}
 
 	@Override

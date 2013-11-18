@@ -8,7 +8,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.core.views"
-            class="org.caleydo.view.tourguide.internal.ARcpGLTourGuideView"
+            class="org.caleydo.view.tourguide.internal.RcpGLTourGuideView"
             icon="resources/icons/icon.png"
             id="org.caleydo.view.tool.tourguide"
             name="LineUp"
@@ -47,25 +47,6 @@
       <addon
             class="org.caleydo.view.tourguide.internal.serialize.TourGuideSerializationAddon">
       </addon>
-   </extension>
-   <extension
-         point="org.caleydo.tourguide.scorefactory">
-      <factory
-            class="org.caleydo.view.tourguide.impl.AdjustedRandScoreFactory"
-            name="Adjusted Rank Score">
-      </factory>
-      <factory
-            class="org.caleydo.view.tourguide.impl.SetSimilarityScoreFactory"
-            name="Jaccard Index Score">
-      </factory>
-      <factory
-            class="org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory"
-            name="Gene Set Enrichment Analysis">
-      </factory>
-      <factory
-            class="org.caleydo.view.tourguide.impl.LogRankMetricFactory"
-            name="Log Rank Score">
-      </factory>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">

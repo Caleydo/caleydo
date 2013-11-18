@@ -194,7 +194,7 @@ public abstract class AStratomexAdapter implements ITourGuideAdapter {
 		if (!hasOne())
 			return;
 
-		update(old, new_, visibleColumns, sortedBy);
+		updatePreview(old, new_, visibleColumns, sortedBy);
 		currentPreviewRowID = new_ == null ? null : new_.getPersistentID();
 	}
 
@@ -318,10 +318,10 @@ public abstract class AStratomexAdapter implements ITourGuideAdapter {
 	}
 
 	@Override
-	public boolean isRepresenting(IWorkbenchPart part) {
+	public boolean isRepresenting(IWorkbenchPart part, boolean isBoundTo) {
 		if (!(part instanceof RcpGLStratomexView))
 			return false;
-		return this.is(((RcpGLStratomexView) part).getView());
+		return !isBoundTo || this.is(((RcpGLStratomexView) part).getView());
 	}
 
 	@Override
@@ -340,11 +340,15 @@ public abstract class AStratomexAdapter implements ITourGuideAdapter {
 	}
 
 	@Override
-	public boolean bindTo(IViewPart part) {
+	public void bindTo(IViewPart part) {
 		if (!(part instanceof RcpGLStratomexView))
-			return false;
-		this.receiver = new WeakReference<GLStratomex>(((RcpGLStratomexView) part).getView());
-		return true;
+			part = null;
+		this.receiver = new WeakReference<GLStratomex>(part == null ? null : ((RcpGLStratomexView) part).getView());
+		if (tourGuide != null) {
+			tourGuide.clearSelection();
+			tourGuide.removeAllSimpleFilter();
+			tourGuide.updateBound2ViewState();
+		}
 	}
 
 	@Override

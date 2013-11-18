@@ -67,19 +67,20 @@ abstract class AEntourageAdapter implements ITourGuideAdapter {
 	}
 
 	@Override
-	public final boolean isRepresenting(IWorkbenchPart part) {
+	public final boolean isRepresenting(IWorkbenchPart part, boolean isBoundTo) {
 		if (part instanceof RcpGLSubGraphView)
-			return ((RcpGLSubGraphView) part).getView() == entourage;
+			return !isBoundTo || ((RcpGLSubGraphView) part).getView() == entourage;
 		return false;
 	}
 
 	@Override
-	public final boolean bindTo(IViewPart part) {
+	public final void bindTo(IViewPart part) {
 		if (part instanceof RcpGLSubGraphView) {
 			this.entourage = ((RcpGLSubGraphView) part).getView();
-			return true;
-		}
-		return false;
+		} else
+			this.entourage = null;
+		if (vis != null)
+			vis.updateBound2ViewState();
 	}
 
 	@Override
