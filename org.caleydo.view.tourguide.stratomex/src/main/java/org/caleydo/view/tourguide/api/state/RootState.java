@@ -5,7 +5,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.state;
 
-import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
+import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.internal.mode.VariableDataMode;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 
@@ -61,13 +61,13 @@ public class RootState implements IState {
 	public static Predicate<RootState> ARE_STRATIFICATIONS = new Predicate<RootState>() {
 		@Override
 		public boolean apply(RootState input) {
-			return input == null ? false : DataDomainModes.areStratificatins(input.getMode());
+			return input == null ? false : TourGuideDataModes.areStratificatins(input.getMode());
 		}
 	};
 	public static Predicate<RootState> ARE_PATHWAYS = new Predicate<RootState>() {
 		@Override
 		public boolean apply(RootState input) {
-			return input == null ? false : DataDomainModes.arePathways(input.getMode());
+			return input == null ? false : TourGuideDataModes.arePathways(input.getMode());
 		}
 	};
 	public static Predicate<RootState> ARE_INHOMOGENOUSVARIABLES = new Predicate<RootState>() {

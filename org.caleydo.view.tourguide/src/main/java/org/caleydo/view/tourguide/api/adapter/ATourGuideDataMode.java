@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.base.Labels;
@@ -31,9 +30,8 @@ public abstract class ATourGuideDataMode implements ITourGuideDataMode {
 	 * @return
 	 */
 	public Collection<? extends IDataDomain> getAllDataDomains() {
-		List<? extends IDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(
-				ATableBasedDataDomain.class);
-		dataDomains = Lists.newArrayList(Iterables.filter(dataDomains, this));
+		List<IDataDomain> dataDomains = Lists.newArrayList(Iterables.filter(DataDomainManager.get().getDataDomains(),
+				this));
 		Collections.sort(dataDomains, Labels.BY_LABEL);
 		return dataDomains;
 	}

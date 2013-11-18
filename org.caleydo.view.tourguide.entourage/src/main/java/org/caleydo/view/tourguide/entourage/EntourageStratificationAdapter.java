@@ -37,7 +37,7 @@ import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneEvent;
 import org.caleydo.view.entourage.datamapping.DataMappingState;
-import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
+import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.model.ITablePerspectiveScoreRow;
@@ -138,7 +138,7 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 
 	@Override
 	public ITourGuideDataMode asMode() {
-		return DataDomainModes.STRATIFICATIONS;
+		return TourGuideDataModes.STRATIFICATIONS;
 	}
 	/**
 	 *

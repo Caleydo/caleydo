@@ -37,7 +37,7 @@ import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
-import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
+import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.api.state.ABrowseState;
 import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectGroupState;
@@ -200,7 +200,7 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions, IPi
 		Collection<ITransition> rest = new ArrayList<>(transitions.size());
 		for (ITransition t : transitions)
 			if (t instanceof SimpleTransition && (((SimpleTransition) t).getTarget() instanceof RootState)
-					&& !DataDomainModes.areStratificatins(((RootState) ((SimpleTransition) t).getTarget()).getMode()))
+					&& !TourGuideDataModes.areStratificatins(((RootState) ((SimpleTransition) t).getTarget()).getMode()))
 				dependent.add(t);
 			else
 				rest.add(t);

@@ -8,7 +8,7 @@ package org.caleydo.view.tourguide.stratomex.t;
 import java.util.Collection;
 
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
+import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.model.PathwayPerspectiveRow;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -24,7 +24,7 @@ public class PathwayStratomexAdapter extends AStratomexAdapter {
 	public static final String SECONDARY_ID = "PATHWAYS";
 
 	public PathwayStratomexAdapter() {
-		super(DataDomainModes.PATHWAYS);
+		super(TourGuideDataModes.PATHWAYS);
 	}
 
 	@Override

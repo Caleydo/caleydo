@@ -146,7 +146,7 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout, 
 			return new TableDataDomainElement((StratificationDataDomainQuery) q);
 		if (q instanceof InhomogenousDataDomainQuery)
 			return new InhomogenousDataDomainElement((InhomogenousDataDomainQuery) q);
-		throw new IllegalStateException();
+		return new GenericDataDomainElement(q);
 	}
 
 	public void updateSelections() {

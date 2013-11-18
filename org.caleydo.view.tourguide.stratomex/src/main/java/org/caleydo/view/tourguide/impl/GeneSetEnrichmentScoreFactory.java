@@ -20,7 +20,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
+import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.score.DefaultComputedStratificationScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
@@ -149,7 +149,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory2 {
 
 	@Override
 	public boolean supports(ITourGuideDataMode mode) {
-		return DataDomainModes.arePathways(mode);
+		return TourGuideDataModes.arePathways(mode);
 	}
 
 	private class CreateGSEAState extends SimpleState implements ISelectGroupState {
@@ -294,7 +294,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory2 {
 
 		@Override
 		public boolean supports(ITourGuideDataMode mode) {
-			return DataDomainModes.arePathways(mode);
+			return TourGuideDataModes.arePathways(mode);
 		}
 
 		@Override
@@ -322,7 +322,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory2 {
 
 		@Override
 		public boolean supports(ITourGuideDataMode mode) {
-			return DataDomainModes.arePathways(mode);
+			return TourGuideDataModes.arePathways(mode);
 		}
 
 		@Override
@@ -341,7 +341,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory2 {
 
 		@Override
 		public boolean supports(ITourGuideDataMode mode) {
-			return DataDomainModes.arePathways(mode);
+			return TourGuideDataModes.arePathways(mode);
 		}
 
 		@Override

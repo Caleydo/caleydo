@@ -11,7 +11,7 @@ import java.util.Objects;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
+import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.model.ITablePerspectiveScoreRow;
 import org.caleydo.view.tourguide.api.model.MaxGroupCombiner;
@@ -28,7 +28,7 @@ public class StratificationStratomexAdapter extends AStratomexAdapter {
 	public static final String SECONDARY_ID = "STRATIFICATIONS";
 
 	public StratificationStratomexAdapter() {
-		super(DataDomainModes.STRATIFICATIONS);
+		super(TourGuideDataModes.STRATIFICATIONS);
 	}
 
 	@Override

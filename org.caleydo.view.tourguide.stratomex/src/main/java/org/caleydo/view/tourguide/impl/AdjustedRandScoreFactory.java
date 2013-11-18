@@ -12,7 +12,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
+import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceStratificationScore;
 import org.caleydo.view.tourguide.api.state.ABrowseState;
 import org.caleydo.view.tourguide.api.state.EWizardMode;
@@ -82,7 +82,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory2 {
 
 	@Override
 	public boolean supports(ITourGuideDataMode mode) {
-		return DataDomainModes.areStratificatins(mode);
+		return TourGuideDataModes.areStratificatins(mode);
 	}
 
 	private void createAdjustedRandScore(TablePerspective tablePerspective, IReactions reactions) {

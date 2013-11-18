@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.api.model;
 
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -20,9 +21,11 @@ import org.caleydo.core.id.IDType;
 public final class StratificationPerspectiveRow extends AVirtualArrayScoreRow implements ITablePerspectiveScoreRow {
 	private final StratificationDataDomainQuery query;
 	private final Perspective stratification;
+	private final EDimension dim;
 
-	public StratificationPerspectiveRow(Perspective stratification, StratificationDataDomainQuery query) {
+	public StratificationPerspectiveRow(Perspective stratification, EDimension dim, StratificationDataDomainQuery query) {
 		this.stratification = stratification;
+		this.dim = dim;
 		this.query = query;
 	}
 
@@ -65,7 +68,7 @@ public final class StratificationPerspectiveRow extends AVirtualArrayScoreRow im
 
 	@Override
 	public Iterable<Integer> getDimensionIDs() {
-		return query.getDimensionSelection().getVirtualArray();
+		return query.getOppositeSelection().getVirtualArray();
 	}
 
 	@Override
@@ -84,7 +87,8 @@ public final class StratificationPerspectiveRow extends AVirtualArrayScoreRow im
 
 	@Override
 	public boolean is(TablePerspective tablePerspective) {
-		return stratification.equals(tablePerspective.getRecordPerspective());
+		return stratification.equals(dim.select(tablePerspective.getDimensionPerspective(),
+				tablePerspective.getRecordPerspective()));
 	}
 
 	@Override

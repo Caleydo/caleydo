@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
+import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.api.external.AExternalScoreParseSpecification;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
@@ -51,7 +51,7 @@ public abstract class AExternalScore extends DefaultLabelProvider implements ISe
 
 	@Override
 	public boolean supports(ITourGuideDataMode mode) {
-		return DataDomainModes.areStratificatins(mode);
+		return TourGuideDataModes.areStratificatins(mode);
 	}
 
 	@Override

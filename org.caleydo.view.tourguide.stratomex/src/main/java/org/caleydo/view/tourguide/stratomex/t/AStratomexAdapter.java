@@ -360,4 +360,9 @@ public abstract class AStratomexAdapter implements ITourGuideAdapter {
 	public boolean isBound2View() {
 		return this.receiver.get() != null;
 	}
+
+	@Override
+	public boolean filterBoundView(IDataDomain dataDomain) {
+		return true;
+	}
 }

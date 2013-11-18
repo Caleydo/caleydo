@@ -6,6 +6,7 @@
 package org.caleydo.view.tourguide.internal.adapter;
 
 import org.caleydo.core.data.collection.EDataClass;
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
@@ -63,8 +64,8 @@ public class StratificationDataMode extends ATourGuideDataMode implements ITourG
 			return new InhomogenousDataDomainQuery((ATableBasedDataDomain) dd,
 					Sets.immutableEnumSet(EDataClass.CATEGORICAL));
 		if (DataSupportDefinitions.categoricalTables.apply(dd))
-			return new CategoricalDataDomainQuery((ATableBasedDataDomain) dd);
-		return new StratificationDataDomainQuery((ATableBasedDataDomain) dd);
+			return new CategoricalDataDomainQuery((ATableBasedDataDomain) dd, EDimension.DIMENSION);
+		return new StratificationDataDomainQuery((ATableBasedDataDomain) dd, EDimension.RECORD);
 	}
 
 	/**

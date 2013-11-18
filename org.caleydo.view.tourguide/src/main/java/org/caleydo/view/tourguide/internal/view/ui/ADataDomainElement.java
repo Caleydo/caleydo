@@ -8,6 +8,8 @@ package org.caleydo.view.tourguide.internal.view.ui;
 import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.ICON_FILTER;
 import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.ICON_FILTER_DISABLED;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Collection;
 
 import org.caleydo.core.data.datadomain.DataDomainActions;
@@ -27,7 +29,14 @@ import org.caleydo.view.tourguide.api.external.ExternalScoringDataDomainActionFa
 import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
 
-public abstract class ADataDomainElement extends GLButton implements GLButton.ISelectionCallback {
+/**
+ * visual element for a {@link ADataDomainQuery} model element
+ *
+ * @author Samuel Gratzl
+ *
+ */
+public abstract class ADataDomainElement extends GLButton implements GLButton.ISelectionCallback,
+		PropertyChangeListener {
 	protected final ADataDomainQuery model;
 	private boolean hasFilter = false;
 
@@ -41,6 +50,7 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 		setSize(-1, 18);
 		setSelected(model.isActive());
 		setCallback(this);
+		model.addPropertyChangeListener(ADataDomainQuery.PROP_ENABLED, this);
 	}
 
 	@Override
@@ -58,7 +68,19 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 	@Override
 	protected void takeDown() {
 		context.unregisterPickingListener(filterPickingId);
+		model.removePropertyChangeListener(ADataDomainQuery.PROP_ENABLED, this);
 		super.takeDown();
+	}
+
+	@Override
+	public final void propertyChange(PropertyChangeEvent evt) {
+		switch (evt.getPropertyName()) {
+		case ADataDomainQuery.PROP_ENABLED:
+			setVisibility(((Boolean) evt.getNewValue()) ? EVisibility.PICKABLE : EVisibility.NONE);
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override

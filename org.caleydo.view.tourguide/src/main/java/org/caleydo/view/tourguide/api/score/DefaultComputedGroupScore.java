@@ -9,7 +9,7 @@ import java.util.Collection;
 
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
+import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
@@ -44,7 +44,7 @@ public class DefaultComputedGroupScore extends AComputedGroupScore implements IC
 
 	@Override
 	public boolean supports(ITourGuideDataMode mode) {
-		return DataDomainModes.areStratificatins(mode);
+		return TourGuideDataModes.areStratificatins(mode);
 	}
 
 	@Override

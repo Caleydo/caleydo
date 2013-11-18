@@ -11,7 +11,7 @@ import java.util.List;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
+import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.api.score.ScoreFactories;
 import org.caleydo.view.tourguide.api.state.BrowseOtherState;
 import org.caleydo.view.tourguide.api.state.BrowsePathwayState;
@@ -157,14 +157,14 @@ public class AddWizardElementFactory {
 	private static void addDefaultStates(StateMachineImpl state) {
 		state.addState(ADD_STRATIFICATIONS,
  new RootState(StratificationStratomexAdapter.SECONDARY_ID,
-				DataDomainModes.STRATIFICATIONS, "Select stratification"));
+				TourGuideDataModes.STRATIFICATIONS, "Select stratification"));
 
 		state.addState(BROWSE_STRATIFICATIONS, new BrowseStratificationState(
 				StratificationStratomexAdapter.SECONDARY_ID,
 				"Select a stratification in the LineUp to preview.\nThen confirm or cancel your selection."));
 
 		state.addState(ADD_PATHWAY, new RootState(PathwayStratomexAdapter.SECONDARY_ID,
-				DataDomainModes.PATHWAYS, "Select pathway"));
+				TourGuideDataModes.PATHWAYS, "Select pathway"));
 
 		state.addState(BROWSE_PATHWAY, new BrowsePathwayState(PathwayStratomexAdapter.SECONDARY_ID,
 				"Select a pathway in the LineUp to preview.\n Then confirm or cancel your selection."));

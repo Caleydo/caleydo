@@ -8,6 +8,7 @@ package org.caleydo.view.tourguide.spi.adapter;
 import java.net.URL;
 import java.util.Collection;
 
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -103,25 +104,32 @@ public interface ITourGuideAdapter extends ILabeled {
 	 */
 	ITourGuideDataMode asMode();
 
+	boolean filterBoundView(IDataDomain dataDomain);
+
 	/**
 	 * @param part
+	 * @param isBoundTo
 	 * @return
 	 */
 	boolean isRepresenting(IWorkbenchPart part, boolean isBoundTo);
 
 	/**
+	 * bind to the specific instance
+	 * 
 	 * @param part
 	 */
 	void bindTo(IViewPart part);
 
 	/**
+	 * whether to ignore the current active part change, e.g. dvi
+	 *
 	 * @param part
 	 * @return
 	 */
 	boolean ignoreActive(IViewPart part);
 
 	/**
-	 * @return
+	 * @return whether the current adapter is bound to a specific view instance
 	 */
 	boolean isBound2View();
 }

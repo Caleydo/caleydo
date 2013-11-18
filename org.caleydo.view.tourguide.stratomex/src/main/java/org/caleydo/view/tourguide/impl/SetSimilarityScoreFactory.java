@@ -18,7 +18,7 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
+import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceGroupScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.state.ABrowseState;
@@ -207,7 +207,7 @@ public class SetSimilarityScoreFactory implements IScoreFactory2 {
 
 	@Override
 	public boolean supports(ITourGuideDataMode mode) {
-		return DataDomainModes.areStratificatins(mode);
+		return TourGuideDataModes.areStratificatins(mode);
 	}
 }
 

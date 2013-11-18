@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.data.collection.table.CategoricalTable;
@@ -64,13 +65,15 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 	private Set<CategoryProperty<?>> selected = new HashSet<>();
 	private final IDType categoryIDType;
 	private final VirtualArray categories;
+	private final EDimension dim;
 
-	public CategoricalDataDomainQuery(ATableBasedDataDomain dataDomain) {
+	public CategoricalDataDomainQuery(ATableBasedDataDomain dataDomain, EDimension dim) {
 		super(dataDomain);
+		this.dim = dim;
 		assert (DataDomainOracle.isCategoricalDataDomain(dataDomain));
 		this.selected.addAll(getCategories());
 
-		if (dataDomain.isColumnDimension()) {
+		if (dim.isRecord()) {
 			this.categoryIDType = dataDomain.getRecordIDType();
 			this.categories = dataDomain.getTable().getDefaultRecordPerspective(false).getVirtualArray();
 		} else {
@@ -228,19 +231,18 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		}
 
 		List<Integer> records;
-		boolean swap = table.getDataDomain().isColumnDimension();
-		if (swap) {
+		if (dim.isDimension()) {
 			records = table.getRowIDList();
 		} else {
 			records = table.getColumnIDList();
 		}
 
 		for (Integer recordID : records) {
-			CategoryProperty<?> property = categoryDescriptions
-.getCategoryProperty(table.getRaw(category, recordID));
+			Object raw = dim.isDimension() ? table.getRaw(category, recordID) : table.getRaw(recordID, category);
+			CategoryProperty<?> property = categoryDescriptions.getCategoryProperty(raw);
 			if (property == null) {
-				System.out.println("recordID: " + recordID + " dimensionID " + category + " raw: "
-						+ table.getRaw(category, recordID));
+				System.out.println("recordID: " + dim.select(recordID, category) + " dimensionID "
+						+ dim.select(category, recordID) + " raw: " + raw);
 			} else {
 				// System.out.println(" raw: " + table.getRaw(dimensionID, recordID));
 				List<Integer> bin = bins.get(property);
@@ -309,7 +311,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		items.setLabel(label, false);
 		items.setPrivate(false);
 
-		if (d.isColumnDimension()) {
+		if (dim.isRecord()) {
 			table.registerRecordPerspective(cat, false);
 			table.registerDimensionPerspective(items, false);
 			tablePerspective = d.getTablePerspective(cat.getPerspectiveID(), items.getPerspectiveID());
@@ -344,8 +346,8 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 			group.add(create(p.getCategory(), ctable, selected.contains(p)));
 		}
 		group = new GroupRankColumnModel(d.getLabel() + " Groupings", color, color.brighter());
-		for (String id : d.getDimensionPerspectiveIDs()) {
-			Perspective p = ctable.getDimensionPerspective(id);
+		for (String id : dim.isDimension() ? d.getDimensionPerspectiveIDs() : d.getRecordPerspectiveIDs()) {
+			Perspective p = dim.isDimension() ? ctable.getDimensionPerspective(id) : ctable.getRecordPerspective(id);
 			if (p.isDefault() || p.getVirtualArray().size() <= 1 || p.getVirtualArray().getGroupList().size() <= 1)
 				continue;
 			//use the complex perspective over multiple genes with a group list as a categorical column
@@ -423,5 +425,12 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 					&& ((CategoricalPercentageRankColumnModel) col).getDataDomain() == dataDomain)
 				toDestroy.add(col);
 		}
+	}
+
+	/**
+	 * @return the dim, see {@link #dim}
+	 */
+	public EDimension getDim() {
+		return dim;
 	}
 }

@@ -27,6 +27,7 @@ public class VariableDataMode extends ATourGuideDataMode {
 	private VariableDataMode() {
 
 	}
+
 	@Override
 	public boolean apply(IDataDomain dataDomain) {
 		return (dataDomain instanceof ATableBasedDataDomain && !((ATableBasedDataDomain) dataDomain).getTable()

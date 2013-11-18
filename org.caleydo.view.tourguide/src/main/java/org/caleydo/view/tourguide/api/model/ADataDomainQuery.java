@@ -29,6 +29,7 @@ import com.google.common.base.Predicate;
  */
 public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	public static final String PROP_ACTIVE = "active";
+	public static final String PROP_ENABLED = "enabled";
 	public static final String PROP_MASK = "mask";
 	public static final String PROP_MIN_CLUSTER_SIZE_FILTER = "minSize";
 	protected final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
@@ -47,6 +48,10 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	 * is the list currently visible
 	 */
 	private boolean active = false;
+	/**
+	 * whether this data domain query is currently possible to select
+	 */
+	private boolean enabled = true;
 
 	/**
 	 * minimum group size to be considered for computation
@@ -107,6 +112,21 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 		if (this.active == active)
 			return;
 		propertySupport.firePropertyChange(PROP_ACTIVE, this.active, this.active = active);
+	}
+
+	public final void setEnabled(boolean enabled) {
+		if (this.enabled == enabled)
+			return;
+		if (!enabled)
+			setActive(false);
+		propertySupport.firePropertyChange(PROP_ENABLED, this.enabled, this.enabled = enabled);
+	}
+
+	/**
+	 * @return the enabled, see {@link #enabled}
+	 */
+	public boolean isEnabled() {
+		return enabled;
 	}
 
 	public final void setJustActive(boolean active) {

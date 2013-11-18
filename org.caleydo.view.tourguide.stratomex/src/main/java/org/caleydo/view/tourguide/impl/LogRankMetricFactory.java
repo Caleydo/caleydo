@@ -15,7 +15,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.view.tourguide.api.adapter.DataDomainModes;
+import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
 import org.caleydo.view.tourguide.api.score.GroupSelectors;
 import org.caleydo.view.tourguide.api.score.MultiScore;
@@ -79,7 +79,7 @@ public class LogRankMetricFactory implements IScoreFactory2 {
 
 	@Override
 	public boolean supports(ITourGuideDataMode mode) {
-		return DataDomainModes.areStratificatins(mode);
+		return TourGuideDataModes.areStratificatins(mode);
 	}
 
 	private static MultiScore createLogRankScore(TablePerspective numerical) {
@@ -251,7 +251,7 @@ public class LogRankMetricFactory implements IScoreFactory2 {
 
 		@Override
 		public boolean supports(ITourGuideDataMode mode) {
-			return DataDomainModes.areStratificatins(mode);
+			return TourGuideDataModes.areStratificatins(mode);
 		}
 
 		@Override

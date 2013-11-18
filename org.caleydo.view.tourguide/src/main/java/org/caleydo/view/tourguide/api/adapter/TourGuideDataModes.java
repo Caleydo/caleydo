@@ -10,16 +10,22 @@ import org.caleydo.view.tourguide.internal.adapter.StratificationDataMode;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 
 /**
+ * common {@link ITourGuideDataMode} modes
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public class DataDomainModes {
+public class TourGuideDataModes {
 	public static final ITourGuideDataMode STRATIFICATIONS = new StratificationDataMode();
 	public static final ITourGuideDataMode PATHWAYS = new PathwayDataMode();
 
+	private TourGuideDataModes() {
+
+	}
+
 	/**
 	 * @param mode
-	 * @return
+	 * @return whether the given mode represents the standard stratification mode
 	 */
 	public static boolean areStratificatins(ITourGuideDataMode mode) {
 		return mode instanceof StratificationDataMode;
@@ -27,7 +33,7 @@ public class DataDomainModes {
 
 	/**
 	 * @param mode
-	 * @return
+	 * @return whether the given mode represents the standard pathway mode
 	 */
 	public static boolean arePathways(ITourGuideDataMode mode) {
 		return mode instanceof PathwayDataMode;

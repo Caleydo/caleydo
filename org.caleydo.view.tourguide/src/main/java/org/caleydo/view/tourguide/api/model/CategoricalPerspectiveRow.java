@@ -102,7 +102,7 @@ public final class CategoricalPerspectiveRow extends AVirtualArrayScoreRow imple
 	@Override
 	public int size() {
 		ATableBasedDataDomain dataDomain = query.getDataDomain();
-		return dataDomain.getTable().depth();
+		return query.getDim().select(dataDomain.getTable().depth(), dataDomain.getTable().size());
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public final class CategoricalPerspectiveRow extends AVirtualArrayScoreRow imple
 	@Override
 	public boolean is(Perspective p) {
 		if (perspective != null)
-			return perspective.getRecordPerspective().equals(p) && perspective.getDimensionPerspective().equals(p);
+			return perspective.getRecordPerspective().equals(p) || perspective.getDimensionPerspective().equals(p);
 		// estimator using the same label
 		return p.getDataDomain().equals(query.getDataDomain()) && p.getLabel().equals(label);
 	}

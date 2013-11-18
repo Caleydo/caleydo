@@ -7,6 +7,7 @@ package org.caleydo.view.tourguide.entourage;
 
 import java.net.URL;
 
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -64,6 +65,11 @@ abstract class AEntourageAdapter implements ITourGuideAdapter {
 	@Override
 	public void onRowClick(RankTableModel table, PickingMode pickingMode, AScoreRow row, boolean isSelected,
 			IGLElementContext context) {
+	}
+
+	@Override
+	public boolean filterBoundView(IDataDomain dataDomain) {
+		return true;
 	}
 
 	@Override

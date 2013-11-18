@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -28,13 +29,17 @@ import org.caleydo.vis.lineup.model.RankTableModel;
 public class StratificationDataDomainQuery extends ADataDomainQuery {
 	public static final String PROP_DIMENSION_SELECTION = "dimensionSelection";
 
+	private final EDimension dim;
+
 	private Perspective dimensionSelection = null;
 
 	// snapshot when creating the data for fast comparison
 	private Set<String> snapshot;
 
-	public StratificationDataDomainQuery(ATableBasedDataDomain dataDomain) {
+
+	public StratificationDataDomainQuery(ATableBasedDataDomain dataDomain, EDimension dim) {
 		super(dataDomain);
+		this.dim = dim;
 		setMinSize(MyPreferences.getMinClusterSize());
 	}
 
@@ -53,13 +58,15 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 		ATableBasedDataDomain d = (ATableBasedDataDomain) dataDomain;
 
 		List<AScoreRow> r = new ArrayList<>();
-		this.snapshot = new HashSet<>(d.getRecordPerspectiveIDs());
-		for (String rowPerspectiveID : d.getRecordPerspectiveIDs()) {
-			Perspective p = d.getTable().getRecordPerspective(rowPerspectiveID);
+		Set<String> ids = dim.isRecord() ? d.getRecordPerspectiveIDs() : d.getDimensionPerspectiveIDs();
+		this.snapshot = new HashSet<>(ids);
+		for (String rowPerspectiveID : ids) {
+			Perspective p = dim.isRecord() ? d.getTable().getRecordPerspective(rowPerspectiveID) : d.getTable()
+					.getDimensionPerspective(rowPerspectiveID);
 			if (p.isPrivate())
 				continue;
-			// include the default stratificatition see #1227
-			r.add(new StratificationPerspectiveRow(p, this));
+			// include the default stratification see #1227
+			r.add(new StratificationPerspectiveRow(p, dim, this));
 		}
 		return r;
 	}
@@ -70,9 +77,10 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 			return null;
 		ATableBasedDataDomain d = getDataDomain();
 
-		Set<String> current = new TreeSet<>(d.getRecordPerspectiveIDs());
+		Set<String> ids = dim.isRecord() ? d.getRecordPerspectiveIDs() : d.getDimensionPerspectiveIDs();
+		Set<String> current = new TreeSet<>(ids);
 
-		if (snapshot.equals(d.getRecordPerspectiveIDs()))
+		if (snapshot.equals(ids))
 			return null;
 
 		// black list and remove existing
@@ -93,17 +101,18 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 		// add new stuff
 		List<AScoreRow> added = new ArrayList<>(1);
 		for (String rowPerspectiveID : current) {
-			Perspective p = d.getTable().getRecordPerspective(rowPerspectiveID);
+			Perspective p = dim.isRecord() ? d.getTable().getRecordPerspective(rowPerspectiveID) : d.getTable()
+					.getDimensionPerspective(rowPerspectiveID);
 			if (p.isDefault() || p.isPrivate())
 				continue;
 			// try to reuse old entries
 			// we have add some stuff
-			added.add(new StratificationPerspectiveRow(p, this));
+			added.add(new StratificationPerspectiveRow(p, dim, this));
 		}
 		if (added.isEmpty())
 			updateFilter();
 
-		snapshot = new TreeSet<>(d.getRecordPerspectiveIDs());
+		snapshot = new TreeSet<>(ids);
 		return added;
 	}
 
@@ -115,11 +124,12 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 	public TablePerspective asTablePerspective(Perspective p) {
 		ATableBasedDataDomain d = getDataDomain();
 
-		String dimensionPerspectiveID = getDimensionSelection().getPerspectiveID();
+		String dimensionPerspectiveID = getOppositeSelection().getPerspectiveID();
 
 		// boolean existsAlready = d.hasTablePerspective(p.getPerspectiveID(), dimensionPerspectiveID);
 
-		TablePerspective per = d.getTablePerspective(p.getPerspectiveID(), dimensionPerspectiveID);
+		TablePerspective per = d.getTablePerspective(dim.select(dimensionPerspectiveID, p.getPerspectiveID()),
+				dim.select(p.getPerspectiveID(), dimensionPerspectiveID));
 
 		// We do not want to overwrite the state of already existing
 		// public table perspectives.
@@ -135,8 +145,8 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 	public Collection<Perspective> getDimensionPerspectives() {
 		Collection<Perspective> r = new ArrayList<>();
 		Table table = getDataDomain().getTable();
-		for (String id : table.getDimensionPerspectiveIDs()) {
-			r.add(table.getDimensionPerspective(id));
+		for (String id : dim.select(table.getRecordPerspectiveIDs(), table.getDimensionPerspectiveIDs())) {
+			r.add(dim.isRecord() ? table.getDimensionPerspective(id) : table.getRecordPerspective(id));
 		}
 		return r;
 	}
@@ -144,7 +154,7 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 	/**
 	 * @return the dimensionSelection, see {@link #dimensionSelection}
 	 */
-	public Perspective getDimensionSelection() {
+	public Perspective getOppositeSelection() {
 		if (dimensionSelection != null)
 			return dimensionSelection;
 		for (Perspective p : getDimensionPerspectives()) {
@@ -164,7 +174,7 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 	/**
 	 * @param d
 	 */
-	public void setDimensionSelection(Perspective d) {
+	public void setOppositeSelection(Perspective d) {
 		if (Objects.equals(dimensionSelection, d))
 			d = null;
 		if (Objects.equals(dimensionSelection, d))
@@ -185,6 +195,14 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 	@Override
 	public void updateSpecificColumns(RankTableModel table) {
 
+	}
+
+	/**
+	 * @return
+	 */
+	public String getOppositeIDType() {
+		return dim.select(getDataDomain().getRecordIDCategory(), getDataDomain().getDimensionIDCategory())
+				.getCategoryName();
 	}
 
 }

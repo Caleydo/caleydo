@@ -7,7 +7,10 @@ package org.caleydo.view.tourguide.entourage;
 
 import java.util.Collection;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.id.IDCategory;
 import org.caleydo.view.entourage.datamapping.DataMappingState;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.model.ITablePerspectiveScoreRow;
@@ -20,7 +23,7 @@ import org.caleydo.vis.lineup.model.RankTableModel;
  *
  */
 public class EntourageNonGeneticAdapter extends AEntourageAdapter {
-
+	private final NonGeneticDataMode mode = new NonGeneticDataMode();
 	public EntourageNonGeneticAdapter() {
 		super();
 	}
@@ -42,7 +45,17 @@ public class EntourageNonGeneticAdapter extends AEntourageAdapter {
 
 	@Override
 	public ITourGuideDataMode asMode() {
-		return new NonGeneticDataMode();
+		return mode;
+	}
+
+	@Override
+	public boolean filterBoundView(IDataDomain dataDomain) {
+		if (entourage == null)
+			return true;
+		final IDCategory target = entourage.getDataMappingState().getExperimentalDataIDCategory();
+		assert dataDomain instanceof ATableBasedDataDomain;
+		ATableBasedDataDomain d = (ATableBasedDataDomain) dataDomain;
+		return d.getRecordIDCategory().equals(target) || d.getDimensionIDCategory().equals(target);
 	}
 
 	@Override
