@@ -13,11 +13,13 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.tourguide.api.adapter.ATourGuideDataMode;
 import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.api.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.api.model.InhomogenousDataDomainQuery;
-import org.caleydo.view.tourguide.api.model.StratificationDataDomainQuery;
+import org.caleydo.view.tourguide.entourage.model.CheckColumnModel;
+import org.caleydo.view.tourguide.entourage.model.SingleIDDataDomainQuery;
 import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.StringRankColumnModel;
 
@@ -34,17 +36,15 @@ public class NonGeneticDataMode extends ATourGuideDataMode {
 	public boolean apply(IDataDomain input) {
 		if (!(input instanceof ATableBasedDataDomain))
 			return false;
-		ATableBasedDataDomain d = (ATableBasedDataDomain)input;
-		if (!DataSupportDefinitions.homogenousTables.apply(d))
-			return !d.getRecordIDCategory().equals(gene);
-
-		// FIXME
+		if (input instanceof GeneticDataDomain)
+			return false;
 		return true;
 	}
 
 	@Override
 	public void addDefaultColumns(RankTableModel table) {
 		addDataDomainRankColumn(table);
+		table.add(new CheckColumnModel());
 		final StringRankColumnModel base = new StringRankColumnModel(GLRenderers.drawText("Name"),
 				StringRankColumnModel.DEFAULT);
 		table.add(base);
@@ -56,11 +56,11 @@ public class NonGeneticDataMode extends ATourGuideDataMode {
 	protected ADataDomainQuery createFor(IDataDomain dd) {
 		if (!DataSupportDefinitions.homogenousTables.apply(dd))
 			return new InhomogenousDataDomainQuery((ATableBasedDataDomain) dd, Sets.immutableEnumSet(
-					EDataClass.NATURAL_NUMBER, EDataClass.REAL_NUMBER));
+					EDataClass.NATURAL_NUMBER, EDataClass.REAL_NUMBER, EDataClass.CATEGORICAL));
 		if (DataSupportDefinitions.categoricalTables.apply(dd))
 			return new CategoricalDataDomainQuery((ATableBasedDataDomain) dd, geneDimension((ATableBasedDataDomain) dd)
 					.opposite());
-		return new StratificationDataDomainQuery((ATableBasedDataDomain) dd, geneDimension((ATableBasedDataDomain) dd)
+		return new SingleIDDataDomainQuery((ATableBasedDataDomain) dd, geneDimension((ATableBasedDataDomain) dd)
 				.opposite());
 	}
 

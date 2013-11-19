@@ -45,12 +45,10 @@ import org.caleydo.view.tourguide.api.vis.ITourGuideView;
 import org.caleydo.view.tourguide.entourage.ui.DataDomainElements;
 import org.caleydo.view.tourguide.entourage.ui.DataDomainHeader;
 import org.caleydo.view.tourguide.entourage.ui.GroupElements;
-import org.caleydo.view.tourguide.entourage.ui.SelectAllNoneElement;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.RankTableModel;
-
-import com.google.common.collect.Iterables;
 
 /**
  * adapter for tourguide to the entourage view
@@ -69,7 +67,6 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 	 */
 	public EntourageStratificationAdapter() {
 		this.dataDomains.setCallback(this);
-		this.groups.setCallback(this);
 
 		for (GeneticDataDomain d : DataDomainManager.get().getDataDomainsByType(GeneticDataDomain.class)) {
 			this.dataDomains.addDataDomain(d);
@@ -123,8 +120,8 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 		c.add(lineUp.get(2)); // move table
 		lineUp.add(
 				lineUp.size() - 1,
-				wrap("Groups", "Select the groups to show", this.groups, 160,
-						new SelectAllNoneElement(Iterables.filter(this.groups, GLButton.class))));
+				wrap("Groups", "Select the groups to show", this.groups, 250,
+ this.groups.createSelectAllNone()));
 
 		if (isBound2View())
 			loadViewState();
@@ -134,6 +131,8 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 	@Override
 	public void addDefaultColumns(RankTableModel table) {
 		asMode().addDefaultColumns(table);
+		List<ARankColumnModel> c = table.getColumns();
+		c.get(c.size() - 1).hide();
 	}
 
 	@Override
@@ -278,13 +277,13 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 	 *
 	 */
 	private void loadGroupState() {
-		groups.setCallback(null);
-		for (GLButton b : Iterables.filter(groups, GLButton.class)) {
-			final Group g = b.getLayoutDataAs(Group.class, null);
-			assert g != null;
-			b.setSelected(isGroupVisible(g));
-		}
-		groups.setCallback(this);
+		// groups.setCallback(null);
+		// for (GLButton b : Iterables.filter(groups, GLButton.class)) {
+		// final Group g = b.getLayoutDataAs(Group.class, null);
+		// assert g != null;
+		// b.setSelected(isGroupVisible(g));
+		// }
+		// groups.setCallback(this);
 	}
 
 	/**

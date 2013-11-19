@@ -10,7 +10,7 @@ import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
-import org.caleydo.view.tourguide.api.model.CategoricalPerspectiveRow;
+import org.caleydo.view.tourguide.api.model.SingleIDPerspectiveRow;
 import org.caleydo.vis.lineup.data.ADoubleFunction;
 import org.caleydo.vis.lineup.data.DoubleInferrers;
 import org.caleydo.vis.lineup.data.IDoubleFunction;
@@ -56,12 +56,12 @@ public class CategoricalPercentageRankColumnModel extends DoubleRankColumnModel 
 		IDoubleFunction<IRow> data = new ADoubleFunction<IRow>() {
 			@Override
 			public double applyPrimitive(IRow in) {
-				if (!(in instanceof CategoricalPerspectiveRow))
+				if (!(in instanceof SingleIDPerspectiveRow))
 					return Double.NaN;
-				CategoricalPerspectiveRow r = (CategoricalPerspectiveRow) in;
+				SingleIDPerspectiveRow r = (SingleIDPerspectiveRow) in;
 				if (r.getDataDomain() != table.getDataDomain())
 					return Double.NaN;
-				int have = table.getNumberOfMatches(category, r.getCategoryIDType(), r.getDimensionID());
+				int have = table.getNumberOfMatches(category, r.getSingleIDType(), r.getDimensionID());
 				return have;
 			}
 		};

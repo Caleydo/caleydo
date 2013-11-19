@@ -20,23 +20,23 @@ import org.caleydo.core.id.IDType;
  * @author Samuel Gratzl
  *
  */
-public final class CategoricalPerspectiveRow extends AVirtualArrayScoreRow implements ITablePerspectiveScoreRow {
-	private final CategoricalDataDomainQuery query;
+public final class SingleIDPerspectiveRow extends AVirtualArrayScoreRow implements ITablePerspectiveScoreRow {
+	private final ASingleIDDataDomainQuery query;
 	private final String label;
 	private final Integer id;
 
 	private volatile VirtualArray va = null; // lazy
 	private volatile TablePerspective perspective; // lazy
 
-	public CategoricalPerspectiveRow(String label, Integer id, CategoricalDataDomainQuery query) {
+	public SingleIDPerspectiveRow(String label, Integer id, ASingleIDDataDomainQuery query) {
 		this.label = label;
 		this.id = id;
 		this.query = query;
 	}
 
 	@Override
-	public CategoricalPerspectiveRow clone() {
-		return (CategoricalPerspectiveRow) super.clone();
+	public SingleIDPerspectiveRow clone() {
+		return (SingleIDPerspectiveRow) super.clone();
 	}
 
 	@Override
@@ -68,13 +68,13 @@ public final class CategoricalPerspectiveRow extends AVirtualArrayScoreRow imple
 		return va;
 	}
 
-	public IDType getCategoryIDType() {
-		return query.getCategoryIDType();
+	public IDType getSingleIDType() {
+		return query.getSingleIDType();
 	}
 
 	@Override
 	public IDType getDimensionIdType() {
-		return getCategoryIDType();
+		return getSingleIDType();
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public final class CategoricalPerspectiveRow extends AVirtualArrayScoreRow imple
 
 	@Override
 	public IDType getIdType() {
-		return query.getDataDomain().getOppositeIDType(query.getCategoryIDType());
+		return query.getDataDomain().getOppositeIDType(query.getSingleIDType());
 	}
 
 	@Override

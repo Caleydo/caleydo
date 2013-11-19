@@ -26,16 +26,10 @@ import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
-import org.caleydo.core.id.IDMappingManager;
-import org.caleydo.core.id.IDMappingManagerRegistry;
-import org.caleydo.core.id.IDType;
-import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.base.Labels;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -52,47 +46,22 @@ import org.caleydo.vis.lineup.model.RankTableModel;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class CategoricalDataDomainQuery extends ADataDomainQuery {
+public class CategoricalDataDomainQuery extends ASingleIDDataDomainQuery {
 	public static final String PROP_GROUP_SELECTION = "selection";
 
 	private Set<CategoryProperty<?>> selected = new HashSet<>();
-	private final IDType categoryIDType;
-	private final VirtualArray categories;
-	private final EDimension dim;
 
 	public CategoricalDataDomainQuery(ATableBasedDataDomain dataDomain, EDimension dim) {
-		super(dataDomain);
-		this.dim = dim;
+		super(dataDomain, dim);
 		assert (DataDomainOracle.isCategoricalDataDomain(dataDomain));
 		this.selected.addAll(getCategories());
-
-		if (dim.isRecord()) {
-			this.categoryIDType = dataDomain.getRecordIDType();
-			this.categories = dataDomain.getTable().getDefaultRecordPerspective(false).getVirtualArray();
-		} else {
-			this.categoryIDType = dataDomain.getDimensionIDType();
-			this.categories = dataDomain.getTable().getDefaultDimensionPerspective(false).getVirtualArray();
-		}
 		setMinSize(MyPreferences.getMinClusterSize());
-	}
-
-	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return (ATableBasedDataDomain) super.getDataDomain();
-	}
-
-	/**
-	 * @return the categoryIDType, see {@link #categoryIDType}
-	 */
-	public IDType getCategoryIDType() {
-		return categoryIDType;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -119,28 +88,6 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 				return true;
 		}
 		return false;
-	}
-
-	@Override
-	protected List<AScoreRow> getAll() {
-		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(categoryIDType);
-
-		IIDTypeMapper<Integer, String> toLabel = idMappingManager.getIDTypeMapper(categoryIDType, categoryIDType
-				.getIDCategory().getHumanReadableIDType());
-
-		List<AScoreRow> r = new ArrayList<>(); // just stratifications
-		for (int category : categories) {
-			String label = toLabel.apply(category).iterator().next();
-			r.add(new CategoricalPerspectiveRow(label, category, this));
-		}
-
-		return r;
-	}
-
-	@Override
-	public List<AScoreRow> onDataDomainUpdated() {
-		// up to now not possible to create new categories
-		return null;
 	}
 
 	public void setSelection(Set<CategoryProperty<?>> selected) {
@@ -173,6 +120,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 	 * @param category
 	 * @return
 	 */
+	@Override
 	public int getGroupSize(Integer category) {
 		ATableBasedDataDomain dataDomain2 = getDataDomain();
 		CategoricalTable<?> table = (CategoricalTable<?>)dataDomain2.getTable();
@@ -180,13 +128,14 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 				.getDataClassSpecificDescription(category, 0);
 		int count = 0;
 		for (CategoryProperty<?> property : categoryDescriptions) {
-			int cp = table.getNumberOfMatches(property.getCategory(), getCategoryIDType(), category);
+			int cp = table.getNumberOfMatches(property.getCategory(), getSingleIDType(), category);
 			if (cp > 0)
 				count++;
 		}
 		return count;
 	}
 
+	@Override
 	public Collection<GroupInfo> getGroupInfos(Integer category) {
 		ATableBasedDataDomain dataDomain2 = getDataDomain();
 		CategoricalTable<?> table = (CategoricalTable<?>) dataDomain2.getTable();
@@ -194,7 +143,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 				.getDataClassSpecificDescription(category, 0);
 		Collection<GroupInfo> infos = new ArrayList<>();
 		for (CategoryProperty<?> property : categoryDescriptions) {
-			int cp = table.getNumberOfMatches(property.getCategory(), getCategoryIDType(), category);
+			int cp = table.getNumberOfMatches(property.getCategory(), getSingleIDType(), category);
 			infos.add(new GroupInfo(property.getCategoryName(), cp, property.getColor()));
 		}
 		return infos;
@@ -207,18 +156,9 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 	 * @param category
 	 * @return
 	 */
-	public VirtualArray createVirtualArray(String label, Integer category) {
+	@Override
+	public VirtualArray createVirtualArrayImpl(String label, Integer category) {
 		ATableBasedDataDomain dataDomain2 = getDataDomain();
-
-		// reuse existing
-		TablePerspective tablePerspective = findExistingTablePerspective(label);
-		if (tablePerspective != null) {
-			if (dataDomain2.getRecordIDType() != getCategoryIDType()) {
-				return tablePerspective.getRecordPerspective().getVirtualArray();
-			} else {
-				return tablePerspective.getDimensionPerspective().getVirtualArray();
-			}
-		}
 
 		Table table = dataDomain2.getTable();
 		CategoricalClassDescription<?> categoryDescriptions = (CategoricalClassDescription<?>) table
@@ -232,9 +172,9 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 
 		List<Integer> records;
 		if (dim.isDimension()) {
-			records = table.getRowIDList();
+			records = table.getDefaultRecordPerspective(false).getVirtualArray().getIDs();
 		} else {
-			records = table.getColumnIDList();
+			records = table.getDefaultDimensionPerspective(false).getVirtualArray().getIDs();
 		}
 
 		for (Integer recordID : records) {
@@ -273,66 +213,10 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 			groupIds.addAll(bin);
 		}
 
-		VirtualArray va = new VirtualArray(table.getDataDomain().getOppositeIDType(this.categoryIDType), groupIds);
+		VirtualArray va = new VirtualArray(table.getDataDomain().getOppositeIDType(this.getSingleIDType()), groupIds);
 		va.setGroupList(groupList);
 
 		return va;
-	}
-
-	/**
-	 * creates a {@link TablePerspective} out of the given data
-	 *
-	 * @param label
-	 * @param id
-	 *            the category
-	 * @param va
-	 *            the record dimension to use
-	 * @return
-	 */
-	public TablePerspective createTablePerspective(String label, Integer id, VirtualArray va) {
-		ATableBasedDataDomain d = getDataDomain();
-		final Table table = d.getTable();
-
-		TablePerspective tablePerspective = findExistingTablePerspective(label);
-		if (tablePerspective != null)
-			return tablePerspective;
-
-		Perspective cat = new Perspective(dataDomain, categoryIDType);
-		cat.setPrivate(false);
-		cat.setLabel(label, false);
-		PerspectiveInitializationData data = new PerspectiveInitializationData();
-		data.setData(Lists.newArrayList(id));
-		cat.init(data);
-
-		Perspective items = new Perspective(dataDomain, d.getOppositeIDType(categoryIDType));
-		data = new PerspectiveInitializationData();
-		data.setData(va);
-		items.init(data);
-		items.setLabel(label, false);
-		items.setPrivate(false);
-
-		if (dim.isRecord()) {
-			table.registerRecordPerspective(cat, false);
-			table.registerDimensionPerspective(items, false);
-			tablePerspective = d.getTablePerspective(cat.getPerspectiveID(), items.getPerspectiveID());
-		} else {
-			table.registerDimensionPerspective(cat, false);
-			table.registerRecordPerspective(items, false);
-			tablePerspective = d.getTablePerspective(items.getPerspectiveID(), cat.getPerspectiveID());
-		}
-		tablePerspective.setLabel(label, false);
-		tablePerspective.setPrivate(false);
-
-		return tablePerspective;
-	}
-
-	private TablePerspective findExistingTablePerspective(String label) {
-		// use existing by name
-		for (TablePerspective p : getDataDomain().getAllTablePerspectives()) {
-			if (p.getLabel().equals(label))
-				return p;
-		}
-		return null;
 	}
 
 	@Override
@@ -397,10 +281,10 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		Function<IRow, Set<String>> toGroup = new Function<IRow, Set<String>>() {
 			@Override
 			public Set<String> apply(IRow in) {
-				if (!(in instanceof CategoricalPerspectiveRow))
+				if (!(in instanceof SingleIDPerspectiveRow))
 					return null;
-				CategoricalPerspectiveRow r = (CategoricalPerspectiveRow) in;
-				if (r.getCategoryIDType() != va.getIdType())
+				SingleIDPerspectiveRow r = (SingleIDPerspectiveRow) in;
+				if (r.getSingleIDType() != va.getIdType())
 					return null;
 				List<Group> groups = va.getGroupOf(r.getDimensionID());
 				if (groups.isEmpty())
@@ -425,12 +309,5 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 					&& ((CategoricalPercentageRankColumnModel) col).getDataDomain() == dataDomain)
 				toDestroy.add(col);
 		}
-	}
-
-	/**
-	 * @return the dim, see {@link #dim}
-	 */
-	public EDimension getDim() {
-		return dim;
 	}
 }
