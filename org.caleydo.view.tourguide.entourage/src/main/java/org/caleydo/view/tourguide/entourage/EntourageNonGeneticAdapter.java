@@ -160,7 +160,7 @@ public class EntourageNonGeneticAdapter extends AEntourageAdapter implements Pro
 		final IDCategory target = dmState.getExperimentalDataIDCategory();
 
 		for(Perspective p : Arrays.asList(tp.getRecordPerspective(),tp.getDimensionPerspective())) {
-			if (!target.isOfCategory(p.getIdType()))
+			if (target.isOfCategory(p.getIdType()))
 				continue;
 			if (selected)
 				dmState.addContextualTablePerspective(dataDomain, p);

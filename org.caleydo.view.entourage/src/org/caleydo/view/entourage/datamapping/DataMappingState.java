@@ -226,7 +226,7 @@ public class DataMappingState {
 	public void removeContextualTablePerspective(ATableBasedDataDomain dd, Perspective dimensionPerspective) {
 
 		TablePerspective tablePerspective = contextualTablePerspectivesTable.remove(dd, dimensionPerspective);
-		triggerAddTablePerspectiveEvents(tablePerspective);
+		triggerRemoveTablePerspectiveEvents(tablePerspective);
 	}
 
 	/** Removes a previous and sets the new perspective on the event space */
