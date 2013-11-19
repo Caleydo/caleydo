@@ -5,27 +5,46 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.entourage;
 
+import java.beans.IndexedPropertyChangeEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDType;
 import org.caleydo.view.entourage.datamapping.DataMappingState;
+import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
+import org.caleydo.view.tourguide.api.model.ASingleIDDataDomainQuery;
 import org.caleydo.view.tourguide.api.model.ITablePerspectiveScoreRow;
+import org.caleydo.view.tourguide.api.model.InhomogenousDataDomainQuery;
+import org.caleydo.view.tourguide.entourage.model.CheckColumnModel;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.RankTableModel;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class EntourageNonGeneticAdapter extends AEntourageAdapter {
+public class EntourageNonGeneticAdapter extends AEntourageAdapter implements PropertyChangeListener {
 	private final NonGeneticDataMode mode = new NonGeneticDataMode();
+
+	private final CheckColumnModel check = new CheckColumnModel();
+
 	public EntourageNonGeneticAdapter() {
 		super();
+
+		check.addPropertyChangeListener(CheckColumnModel.PROP_CHECKED, this);
 	}
 
 	@Override
@@ -41,6 +60,15 @@ public class EntourageNonGeneticAdapter extends AEntourageAdapter {
 	@Override
 	public void addDefaultColumns(RankTableModel table) {
 		asMode().addDefaultColumns(table);
+		table.add(1, check);
+		table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				IRow new_ = (IRow) evt.getNewValue();
+				if (new_ != null)
+					check.set(new_, !check.is(new_));
+			}
+		});
 	}
 
 	@Override
@@ -49,19 +77,50 @@ public class EntourageNonGeneticAdapter extends AEntourageAdapter {
 	}
 
 	@Override
-	public boolean filterBoundView(IDataDomain dataDomain) {
+	public boolean filterBoundView(ADataDomainQuery query) {
 		if (entourage == null)
 			return true;
 		final IDCategory target = entourage.getDataMappingState().getExperimentalDataIDCategory();
-		assert dataDomain instanceof ATableBasedDataDomain;
-		ATableBasedDataDomain d = (ATableBasedDataDomain) dataDomain;
-		return d.getRecordIDCategory().equals(target) || d.getDimensionIDCategory().equals(target);
+		// filter all not experimental id categories
+		if (query instanceof InhomogenousDataDomainQuery) {
+			return ((ATableBasedDataDomain) query.getDataDomain()).getRecordIDCategory().equals(target);
+		}
+		if (query instanceof ASingleIDDataDomainQuery) {
+			IDType having = ((ASingleIDDataDomainQuery) query).getSingleIDType();
+			IDType opposite = ((ATableBasedDataDomain) query.getDataDomain()).getOppositeIDType(having);
+			return target.isOfCategory(opposite);
+		}
+		return false;
 	}
 
 	@Override
 	protected void loadViewState() {
-		// TODO Auto-generated method stub
+		if (entourage == null)
+			return;
+		List<TablePerspective> visible = entourage.getDataMappingState().getContextualTablePerspectives();
+		Set<IDataDomain> visibleDataDomains = new HashSet<>();
+		for(TablePerspective p : visible)
+			visibleDataDomains.add(p.getDataDomain());
 
+		check.removePropertyChangeListener(CheckColumnModel.PROP_CHECKED, this);
+		check.set(false);
+		for(ADataDomainQuery query : vis.getQueries()) {
+			if (!query.isEnabled())
+				continue;
+			if (visibleDataDomains.contains(query.getDataDomain())) {
+				query.setActive(true);
+				for (AScoreRow r : query.getOrCreate()) {
+					for(TablePerspective p : visible)
+						if (r.is(p)) {
+							vis.setSelection(r);
+							check.set(r, true);
+							break;
+						}
+				}
+			} else
+				query.setActive(false);
+		}
+		check.addPropertyChangeListener(CheckColumnModel.PROP_CHECKED, this);
 	}
 
 	@Override
@@ -76,23 +135,37 @@ public class EntourageNonGeneticAdapter extends AEntourageAdapter {
 
 	@Override
 	public boolean isVisible(AScoreRow row) {
-		// FIXME
-		return false;
+		return check.is(row);
 	}
 
 	@Override
 	public void update(AScoreRow old, AScoreRow new_, Collection<IScore> visibleScores, IScore sortedByScore) {
+		// nothing todo will be done via the checked stuff
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
 		if (entourage == null)
 			return;
-		assert old == null || old instanceof ITablePerspectiveScoreRow;
+		assert evt.getPropertyName().equals(CheckColumnModel.PROP_CHECKED);
+		final IRow new_ = check.getTable().getDataItem((((IndexedPropertyChangeEvent) evt)).getIndex());
+		final boolean selected = (Boolean) evt.getNewValue();
+
 		assert new_ == null || new_ instanceof ITablePerspectiveScoreRow;
 
 		DataMappingState dmState = entourage.getDataMappingState();
 		TablePerspective tp = ((ITablePerspectiveScoreRow) new_).asTablePerspective();
-		if (tp.getRecordPerspective().getIdType().getIDCategory() == dmState.getExperimentalDataIDCategory()) {
-			dmState.addContextualTablePerspective(tp.getDataDomain(), tp.getDimensionPerspective());
-		} else if (tp.getDimensionPerspective().getIdType().getIDCategory() == dmState.getExperimentalDataIDCategory()) {
-			dmState.addContextualTablePerspective(tp.getDataDomain(), tp.getRecordPerspective());
+		ATableBasedDataDomain dataDomain = tp.getDataDomain();
+
+		final IDCategory target = dmState.getExperimentalDataIDCategory();
+
+		for(Perspective p : Arrays.asList(tp.getRecordPerspective(),tp.getDimensionPerspective())) {
+			if (!target.isOfCategory(p.getIdType()))
+				continue;
+			if (selected)
+				dmState.addContextualTablePerspective(dataDomain, p);
+			else
+				dmState.removeContextualTablePerspective(dataDomain, p);
 		}
 	}
 

@@ -5,6 +5,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.adapter;
 
+import java.util.Collections;
+
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -59,6 +61,9 @@ public class StratificationDataMode extends ATourGuideDataMode implements ITourG
 	}
 
 	@Override
+	public Iterable<? extends ADataDomainQuery> createDataDomainQuery(IDataDomain dd) {
+		return Collections.singleton(createFor(dd));
+	}
 	protected ADataDomainQuery createFor(IDataDomain dd) {
 		if (!DataSupportDefinitions.homogenousTables.apply(dd))
 			return new InhomogenousDataDomainQuery((ATableBasedDataDomain) dd,

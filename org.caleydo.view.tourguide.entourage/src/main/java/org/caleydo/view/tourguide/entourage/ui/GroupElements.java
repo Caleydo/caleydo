@@ -7,6 +7,7 @@ package org.caleydo.view.tourguide.entourage.ui;
 
 import gleem.linalg.Vec2f;
 
+import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ import org.caleydo.vis.lineup.model.StringRankColumnModel;
 import org.caleydo.vis.lineup.ui.TableUI;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
 import com.google.common.collect.Iterables;
@@ -46,17 +48,17 @@ import com.google.common.collect.Iterables;
  * @author Samuel Gratzl
  *
  */
-public class GroupElements extends GLElementDecorator implements IHasMinSize {
+public class GroupElements extends GLElementDecorator implements IHasMinSize, PropertyChangeListener {
 
 	private RankTableModel table;
 	private TableUI tableUI;
 	private CheckColumnModel check;
-
+	private IGroupCallback callback;
 
 	/**
 	 *
 	 */
-	public GroupElements() {
+	public GroupElements(IGroupCallback callback) {
 		table = new RankTableModel(new RankTableConfigBase() {
 			@Override
 			public boolean isDefaultCollapseAble() {
@@ -69,6 +71,7 @@ public class GroupElements extends GLElementDecorator implements IHasMinSize {
 			}
 		});
 		check = new CheckColumnModel();
+		check.addPropertyChangeListener(CheckColumnModel.PROP_CHECKED, this);
 
 		table.add(check);
 		table.add(new StringRankColumnModel(GLRenderers.drawText("Group", VAlign.CENTER), StringRankColumnModel.DEFAULT));
@@ -100,6 +103,44 @@ public class GroupElements extends GLElementDecorator implements IHasMinSize {
 			}
 		});
 		setContent(tableUI);
+
+		this.callback = callback;
+	}
+
+	/**
+	 * @param predicate
+	 */
+	public void set(Predicate<Group> predicate) {
+		IGroupCallback bak = callback;
+		callback = null;
+		for (GroupRow row : Iterables.filter(table.getMaskedData(), GroupRow.class)) {
+			check.set(row, predicate.apply(row.getGroup()));
+		}
+		callback = bak;
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		switch(evt.getPropertyName()) {
+		case CheckColumnModel.PROP_CHECKED:
+			if (callback != null && evt instanceof IndexedPropertyChangeEvent) {
+				int index = ((IndexedPropertyChangeEvent)evt).getIndex();
+				boolean checked = (Boolean)evt.getNewValue();
+				GroupRow r = (GroupRow) table.getDataItem(index);
+				callback.onGroupSelectionChanged(r.getGroup(), checked);
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * @param callback
+	 *            setter, see {@link callback}
+	 */
+	public void setCallback(IGroupCallback callback) {
+		this.callback = callback;
 	}
 
 	@Override
@@ -160,6 +201,10 @@ public class GroupElements extends GLElementDecorator implements IHasMinSize {
 			if (label != null && label.length() > 0)
 				g.drawText(label, h, 0, w - h, 13, VAlign.LEFT, ETextStyle.ITALIC);
 		}
+	}
+
+	public interface IGroupCallback {
+		void onGroupSelectionChanged(Group group, boolean selected);
 	}
 
 }

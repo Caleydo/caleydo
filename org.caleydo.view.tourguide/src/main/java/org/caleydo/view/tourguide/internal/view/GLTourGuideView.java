@@ -543,7 +543,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		this.canvas.addKeyListener(eventListeners.register(this.tableKeyListener2));
 		this.canvas.addMouseListener(eventListeners.register(this.tableMouseListener));
 
-		this.noAttachedView = !this.adapter.isBound2View(); // artifically set to the wrong value to ensure an update
+		this.noAttachedView = this.adapter.isBound2View(); // artifically set to the wrong value to ensure an update
 		updateBound2ViewState();
 
 		// select first data domain element by default
@@ -571,7 +571,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 
 		if (this.adapter.isBound2View()) {
 			for (ADataDomainQuery query : queries)
-				query.setEnabled(this.adapter.filterBoundView(query.getDataDomain()));
+				query.setEnabled(this.adapter.filterBoundView(query));
 
 		}
 

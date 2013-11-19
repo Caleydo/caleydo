@@ -109,9 +109,4 @@ public class PathwayDataMode extends ATourGuideDataMode {
 		else
 			return Collections.emptyList();
 	}
-
-	@Override
-	protected ADataDomainQuery createFor(IDataDomain dd) {
-		throw new IllegalStateException();
-	}
 }

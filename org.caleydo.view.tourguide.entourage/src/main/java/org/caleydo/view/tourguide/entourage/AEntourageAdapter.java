@@ -7,12 +7,12 @@ package org.caleydo.view.tourguide.entourage;
 
 import java.net.URL;
 
-import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.entourage.GLEntourage;
 import org.caleydo.view.entourage.RcpGLSubGraphView;
+import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.vis.ITourGuideView;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
@@ -68,7 +68,7 @@ abstract class AEntourageAdapter implements ITourGuideAdapter {
 	}
 
 	@Override
-	public boolean filterBoundView(IDataDomain dataDomain) {
+	public boolean filterBoundView(ADataDomainQuery query) {
 		return true;
 	}
 

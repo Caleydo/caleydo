@@ -8,11 +8,11 @@ package org.caleydo.view.tourguide.spi.adapter;
 import java.net.URL;
 import java.util.Collection;
 
-import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.vis.ITourGuideView;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -104,7 +104,13 @@ public interface ITourGuideAdapter extends ILabeled {
 	 */
 	ITourGuideDataMode asMode();
 
-	boolean filterBoundView(IDataDomain dataDomain);
+	/**
+	 * predicate filter method for filtering {@link ITourGuideDataMode} defined data domains in a view specific way
+	 *
+	 * @param query
+	 * @return
+	 */
+	boolean filterBoundView(ADataDomainQuery query);
 
 	/**
 	 * @param part
@@ -115,7 +121,7 @@ public interface ITourGuideAdapter extends ILabeled {
 
 	/**
 	 * bind to the specific instance
-	 * 
+	 *
 	 * @param part
 	 */
 	void bindTo(IViewPart part);

@@ -5,7 +5,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.adapter;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +17,8 @@ import org.caleydo.view.tourguide.internal.view.col.DataDomainRankColumnModel;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 import org.caleydo.vis.lineup.model.RankTableModel;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
@@ -38,19 +39,12 @@ public abstract class ATourGuideDataMode implements ITourGuideDataMode {
 
 	@Override
 	public Iterable<? extends ADataDomainQuery> createDataDomainQueries() {
-		List<ADataDomainQuery> r = new ArrayList<>();
+		Builder<ADataDomainQuery> b = ImmutableList.builder();
 		for (IDataDomain dd : getAllDataDomains()) {
-			r.add(createFor(dd));
+			b.addAll(createDataDomainQuery(dd));
 		}
-		return r;
+		return b.build();
 	}
-
-	@Override
-	public Iterable<? extends ADataDomainQuery> createDataDomainQuery(IDataDomain dd) {
-		return Collections.singleton(createFor(dd));
-	}
-
-	protected abstract ADataDomainQuery createFor(IDataDomain dd);
 
 	@Override
 	public int getNumCategories() {

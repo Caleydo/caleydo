@@ -45,10 +45,13 @@ import org.caleydo.view.tourguide.api.vis.ITourGuideView;
 import org.caleydo.view.tourguide.entourage.ui.DataDomainElements;
 import org.caleydo.view.tourguide.entourage.ui.DataDomainHeader;
 import org.caleydo.view.tourguide.entourage.ui.GroupElements;
+import org.caleydo.view.tourguide.entourage.ui.GroupElements.IGroupCallback;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.RankTableModel;
+
+import com.google.common.base.Predicate;
 
 /**
  * adapter for tourguide to the entourage view
@@ -56,9 +59,9 @@ import org.caleydo.vis.lineup.model.RankTableModel;
  * @author Samuel Gratzl
  *
  */
-public class EntourageStratificationAdapter extends AEntourageAdapter implements ISelectionCallback {
+public class EntourageStratificationAdapter extends AEntourageAdapter implements ISelectionCallback, IGroupCallback {
 	private final DataDomainElements dataDomains = new DataDomainElements();
-	private final GroupElements groups = new GroupElements();
+	private final GroupElements groups = new GroupElements(this);
 	private final ISelectionCallback onNodeCallback;
 
 	/**
@@ -277,13 +280,12 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 	 *
 	 */
 	private void loadGroupState() {
-		// groups.setCallback(null);
-		// for (GLButton b : Iterables.filter(groups, GLButton.class)) {
-		// final Group g = b.getLayoutDataAs(Group.class, null);
-		// assert g != null;
-		// b.setSelected(isGroupVisible(g));
-		// }
-		// groups.setCallback(this);
+		 groups.set(new Predicate<Group>() {
+			 @Override
+			public boolean apply(Group input) {
+				return input != null && isGroupVisible(input);
+			}
+		});
 	}
 
 	/**
@@ -320,6 +322,52 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 	}
 
 	@Override
+	public void onGroupSelectionChanged(Group group, boolean selected) {
+		if (entourage == null)
+			return;
+		DataMappingState dmState = entourage.getDataMappingState();
+		Perspective sourcePerspective = dmState.getSourcePerspective();
+		Perspective currentPerspective = dmState.getSelectedPerspective();
+
+		if (sourcePerspective != null && currentPerspective != null) {
+			VirtualArray va = sourcePerspective.getVirtualArray();
+			GroupList sourceGroupList = va.getGroupList();
+			GroupList currentGroupList = currentPerspective.getVirtualArray().getGroupList();
+
+			ATableBasedDataDomain dd = (ATableBasedDataDomain) sourcePerspective.getDataDomain();
+			List<Integer> indices = new ArrayList<>(va.size());
+			List<Integer> groupSizes = new ArrayList<>(currentGroupList.size() + 1);
+			List<Integer> sampleElements = new ArrayList<>(currentGroupList.size() + 1);
+			List<String> groupNames = new ArrayList<>(currentGroupList.size() + 1);
+
+			int currentGroupIndex = 0;
+			for (int i = 0; i < sourceGroupList.size(); i++) {
+				Group sourceGroup = sourceGroupList.get(i);
+				Group currentGroup = null;
+				if (currentGroupIndex < currentGroupList.size())
+					currentGroup = currentGroupList.get(currentGroupIndex);
+				if (sourceGroup.equals(currentGroup)) {
+					currentGroupIndex++;
+					if (!(!selected && group.equals(sourceGroup))) {
+						addGroupToLists(indices, groupSizes, sampleElements, groupNames, sourceGroup, va);
+					}
+				}
+				if (selected && group.equals(sourceGroup)) {
+					addGroupToLists(indices, groupSizes, sampleElements, groupNames, sourceGroup, va);
+				}
+			}
+			Perspective perspective = new Perspective(dd, sourcePerspective.getIdType());
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData(indices, groupSizes, sampleElements, groupNames);
+			perspective.init(data);
+			perspective.setLabel(sourcePerspective.getLabel(), true);
+			perspective.setPrivate(true);
+
+			dmState.setSelectedPerspective(perspective);
+		}
+	}
+
+	@Override
 	public void onSelectionChanged(GLButton button, boolean selected) {
 		if (entourage == null)
 			return;
@@ -330,51 +378,6 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 				dmState.addDataDomain(dataDomain);
 			else
 				dmState.removeDataDomain(dataDomain);
-			return;
-		}
-
-		final Group group = button.getLayoutDataAs(Group.class, null);
-		if (group != null) {
-			Perspective sourcePerspective = dmState.getSourcePerspective();
-			Perspective currentPerspective = dmState.getSelectedPerspective();
-
-			if (sourcePerspective != null && currentPerspective != null) {
-				VirtualArray va = sourcePerspective.getVirtualArray();
-				GroupList sourceGroupList = va.getGroupList();
-				GroupList currentGroupList = currentPerspective.getVirtualArray().getGroupList();
-
-				ATableBasedDataDomain dd = (ATableBasedDataDomain) sourcePerspective.getDataDomain();
-				List<Integer> indices = new ArrayList<>(va.size());
-				List<Integer> groupSizes = new ArrayList<>(currentGroupList.size() + 1);
-				List<Integer> sampleElements = new ArrayList<>(currentGroupList.size() + 1);
-				List<String> groupNames = new ArrayList<>(currentGroupList.size() + 1);
-
-				int currentGroupIndex = 0;
-				for (int i = 0; i < sourceGroupList.size(); i++) {
-					Group sourceGroup = sourceGroupList.get(i);
-					Group currentGroup = null;
-					if (currentGroupIndex < currentGroupList.size())
-						currentGroup = currentGroupList.get(currentGroupIndex);
-					if (sourceGroup.equals(currentGroup)) {
-						currentGroupIndex++;
-						if (!(!selected && group.equals(sourceGroup))) {
-							addGroupToLists(indices, groupSizes, sampleElements, groupNames, sourceGroup, va);
-						}
-					}
-					if (selected && group.equals(sourceGroup)) {
-						addGroupToLists(indices, groupSizes, sampleElements, groupNames, sourceGroup, va);
-					}
-				}
-				Perspective perspective = new Perspective(dd, sourcePerspective.getIdType());
-				PerspectiveInitializationData data = new PerspectiveInitializationData();
-				data.setData(indices, groupSizes, sampleElements, groupNames);
-				perspective.init(data);
-				perspective.setLabel(sourcePerspective.getLabel(), true);
-				perspective.setPrivate(true);
-
-				dmState.setSelectedPerspective(perspective);
-			}
-
 			return;
 		}
 	}
