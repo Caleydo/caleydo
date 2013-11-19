@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.mode;
 
+import java.util.Collections;
+
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -47,6 +49,9 @@ public class VariableDataMode extends ATourGuideDataMode {
 	}
 
 	@Override
+	public Iterable<? extends ADataDomainQuery> createDataDomainQuery(IDataDomain dd) {
+		return Collections.singleton(createFor(dd));
+	}
 	protected ADataDomainQuery createFor(IDataDomain dd) {
 		return new InhomogenousDataDomainQuery((ATableBasedDataDomain) dd, Sets.immutableEnumSet(
 				EDataClass.NATURAL_NUMBER, EDataClass.REAL_NUMBER));

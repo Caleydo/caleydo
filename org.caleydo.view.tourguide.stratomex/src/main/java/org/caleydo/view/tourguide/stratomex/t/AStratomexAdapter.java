@@ -33,6 +33,7 @@ import org.caleydo.view.stratomex.RcpGLStratomexView;
 import org.caleydo.view.stratomex.addin.IStratomeXAddIn;
 import org.caleydo.view.stratomex.event.HighlightBandEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
+import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.model.ITablePerspectiveScoreRow;
 import org.caleydo.view.tourguide.api.vis.ITourGuideView;
@@ -362,7 +363,7 @@ public abstract class AStratomexAdapter implements ITourGuideAdapter {
 	}
 
 	@Override
-	public boolean filterBoundView(IDataDomain dataDomain) {
+	public boolean filterBoundView(ADataDomainQuery query) {
 		return true;
 	}
 }
