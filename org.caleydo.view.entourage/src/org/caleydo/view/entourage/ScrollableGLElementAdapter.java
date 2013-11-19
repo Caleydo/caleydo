@@ -42,21 +42,25 @@ import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
  */
 public class ScrollableGLElementAdapter extends GLElementAdapter implements IMouseWheelHandler {
 
-	protected boolean isVScrollBarVisible = false;
 	protected ALayoutRenderer renderer;
 	protected float vScrollBarPosition = 0;
 	protected float vScrollBarSize = 0;
+	protected float hScrollBarPosition = 0;
+	protected float hScrollBarSize = 0;
 	private final DragAndDropController dragAndDropController;
 
-	private class ScrollBarElement extends PickableGLElement implements IDraggable {
+	private class VScrollBarElement extends PickableGLElement implements IDraggable {
 
 		private float prevDraggingMouseY;
 
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 
-			if (vScrollBarSize < h)
+			if (vScrollBarSize < h) {
+				g.incZ(1f);
 				g.color(0.6f, 0.6f, 0.6f, 1f).fillRect(w - 10, vScrollBarPosition, 10, vScrollBarSize);
+				g.incZ(-1f);
+			}
 
 		}
 
@@ -68,7 +72,7 @@ public class ScrollableGLElementAdapter extends GLElementAdapter implements IMou
 		@Override
 		protected void onClicked(Pick pick) {
 			dragAndDropController.clearDraggables();
-			dragAndDropController.setDraggingProperties(pick.getPickedPoint(), "ScrollbarDrag");
+			dragAndDropController.setDraggingProperties(pick.getPickedPoint(), "VScrollbarDrag");
 			dragAndDropController.addDraggable(this);
 		}
 
@@ -97,6 +101,59 @@ public class ScrollableGLElementAdapter extends GLElementAdapter implements IMou
 		}
 	}
 
+	private class HScrollBarElement extends PickableGLElement implements IDraggable {
+
+		private float prevDraggingMouseX;
+
+		@Override
+		protected void renderImpl(GLGraphics g, float w, float h) {
+
+			if (hScrollBarSize < w) {
+				g.incZ(1f);
+				g.color(0.6f, 0.6f, 0.6f, 1f).fillRect(hScrollBarPosition, h - 10, hScrollBarSize, 10);
+				g.incZ(-1f);
+			}
+
+		}
+
+		@Override
+		protected void renderPickImpl(GLGraphics g, float w, float h) {
+			renderImpl(g, w, h);
+		}
+
+		@Override
+		protected void onClicked(Pick pick) {
+			dragAndDropController.clearDraggables();
+			dragAndDropController.setDraggingProperties(pick.getPickedPoint(), "HScrollbarDrag");
+			dragAndDropController.addDraggable(this);
+		}
+
+		@Override
+		public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
+			prevDraggingMouseX = mouseCoordinateX;
+
+		}
+
+		@Override
+		public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
+			float mouseDelta;
+			if (prevDraggingMouseX >= mouseCoordinateX - 0.01 && prevDraggingMouseX <= mouseCoordinateX + 0.01)
+				return;
+			mouseDelta = prevDraggingMouseX - mouseCoordinateX;
+
+			hScrollBarPosition -= mouseDelta;
+
+			prevDraggingMouseX = mouseCoordinateX;
+		}
+
+		@Override
+		public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
+			// TODO Auto-generated method stub
+
+		}
+	}
+
+
 	/**
 	 * @param view
 	 * @param renderer
@@ -108,15 +165,10 @@ public class ScrollableGLElementAdapter extends GLElementAdapter implements IMou
 		dragAndDropController = new DragAndDropController(view);
 		view.registerMouseWheelListener(this);
 		setLayout(GLLayouts.LAYERS);
-		add(new ScrollBarElement());
+		add(new VScrollBarElement());
+		add(new HScrollBarElement());
 	}
 
-	protected void updateScrollBarSize(float minWidth, float minHeight) {
-		float vScrollBarSize = getSize().y() / minHeight * getSize().y();
-		if (vScrollBarSize >= getSize().y())
-			isVScrollBarVisible = false;
-		isVScrollBarVisible = true;
-	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
@@ -146,10 +198,20 @@ public class ScrollableGLElementAdapter extends GLElementAdapter implements IMou
 				vScrollBarPosition = h - vScrollBarSize;
 			}
 		}
+
+		hScrollBarSize = (w / renderer.getMinWidthPixels()) * w;
+		if (hScrollBarSize < w) {
+			if (hScrollBarPosition < 0) {
+				hScrollBarPosition = 0;
+			}
+			if (hScrollBarPosition + hScrollBarSize > w) {
+				hScrollBarPosition = w - hScrollBarSize;
+			}
+		}
 	}
 
 	protected void beginScrollBars(GLGraphics g, float w, float h) {
-		if (vScrollBarSize < h) {
+		if (vScrollBarSize < h || hScrollBarSize < w) {
 
 			double[] clipPlane1 = new double[] { 0.0, 1.0, 0.0, 0.0 };
 			double[] clipPlane2 = new double[] { 1.0, 0.0, 0.0, 0.0 };
@@ -166,15 +228,17 @@ public class ScrollableGLElementAdapter extends GLElementAdapter implements IMou
 			g.gl.glEnable(GL2ES1.GL_CLIP_PLANE3);
 
 			g.gl.glPushMatrix();
-			g.move(0, -vScrollBarPosition / h * renderer.getMinHeightPixels());
+			g.move(-hScrollBarPosition / w * renderer.getMinWidthPixels(),
+					-vScrollBarPosition / h * renderer.getMinHeightPixels());
 
 		} else {
 			vScrollBarPosition = 0;
+			hScrollBarPosition = 0;
 		}
 	}
 
 	protected void endScrollBars(GLGraphics g, float w, float h) {
-		if (vScrollBarSize < h) {
+		if (vScrollBarSize < h || hScrollBarSize < w) {
 			g.gl.glPopMatrix();
 			g.gl.glDisable(GL2ES1.GL_CLIP_PLANE0);
 			g.gl.glDisable(GL2ES1.GL_CLIP_PLANE1);

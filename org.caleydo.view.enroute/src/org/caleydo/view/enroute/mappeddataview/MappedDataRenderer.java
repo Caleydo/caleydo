@@ -30,6 +30,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.SortByDataEvent;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataDescription;
@@ -52,6 +53,7 @@ import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.GLEnRoutePathway;
+import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.path.PathSizeConfiguration;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ComplexNode;
@@ -272,20 +274,13 @@ public class MappedDataRenderer {
 		Row buttonRow = new Row("buttonRow");
 		buttonRow.setPixelSizeY(50);
 
-		Button button = new Button(EPickingType.CENTER_LINE_ALIGNMENT_BUTTON.name(), 0,
-				"resources/icons/view/enroute/center_data_line.png");
-		ButtonRenderer buttonRender = new ButtonRenderer.Builder(parentView, button).build();
+		buttonRow.append(createButton(EPickingType.FIT_TO_VIEW_WIDTH_BUTTON.name(), 0,
+				"resources/icons/view/enroute/fit_to_width.png"));
+		buttonRow.append(xSpacing);
+		buttonRow.append(createButton(EPickingType.CENTER_LINE_ALIGNMENT_BUTTON.name(), 0,
+				"resources/icons/view/enroute/center_data_line.png"));
 
-		ElementLayout buttonLayout = new ElementLayout();
-		buttonLayout.setPixelSizeX(20);
-		buttonLayout.setPixelSizeY(20);
-		buttonLayout.setRenderer(buttonRender);
-		buttonRow.append(buttonLayout);
-
-		// ElementLayout columnCaptionSpacing = new ElementLayout();
-		// columnCaptionSpacing.setPixelSizeY(50);
 		captionColumn.append(buttonRow);
-		// captionColumn.append(columnCaptionSpacing);
 		baseRow.append(captionColumn);
 
 		int nodeCount = 0;
@@ -564,6 +559,18 @@ public class MappedDataRenderer {
 		if (!parentView.isFitWidthToScreen() && viewFrustum.getWidth() < minWidth) {
 			viewFrustum.setRight(minWidth);
 		}
+	}
+
+	private ElementLayout createButton(String pickingType, int pickingID, String icon) {
+		Button button = new Button(pickingType, pickingID, icon);
+		ButtonRenderer buttonRender = new ButtonRenderer.Builder(parentView, button).build();
+
+		ElementLayout buttonLayout = new ElementLayout();
+		buttonLayout.setPixelSizeX(20);
+		buttonLayout.setPixelSizeY(20);
+		buttonLayout.setRenderer(buttonRender);
+
+		return buttonLayout;
 	}
 
 	private void calcMinWidthPixels() {
@@ -905,6 +912,17 @@ public class MappedDataRenderer {
 
 		parentView.addTypePickingTooltipListener("Toggle center line alignment for centered data.",
 				EPickingType.CENTER_LINE_ALIGNMENT_BUTTON.name());
+
+		parentView.addTypePickingListener(new APickingListener() {
+
+			@Override
+			protected void clicked(Pick pick) {
+				EventPublisher.trigger(new FitToViewWidthEvent(!parentView.isFitWidthToScreen()));
+			}
+		}, EPickingType.FIT_TO_VIEW_WIDTH_BUTTON.name());
+
+		parentView.addTypePickingTooltipListener("Toggle fit to view width.",
+				EPickingType.FIT_TO_VIEW_WIDTH_BUTTON.name());
 	}
 
 	public void unregisterPickingListeners() {
