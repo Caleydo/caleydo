@@ -70,6 +70,7 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 		this.add(new PaperBasket(table));
 
 		this.add(new SerialFactoryPoolElem(table));
+		this.add(new SeparatorFactoryPoolElem(table));
 
 		// final EDataDomainQueryMode mode = view.getMode();
 		// for(Map.Entry<String,IScoreFactory> factory : ScoreFactories.getFactories().entrySet()) {
