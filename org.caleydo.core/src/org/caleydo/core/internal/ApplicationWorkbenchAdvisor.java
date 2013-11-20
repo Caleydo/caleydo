@@ -128,7 +128,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
 			super.postWindowOpen();
 
-			removeNonCaleydoMenuEntries(getWindowConfigurer());
+			// removeNonCaleydoMenuEntries(getWindowConfigurer());
 
 			Application.get().postWorkbenchOpen(getWindowConfigurer());
 		}
