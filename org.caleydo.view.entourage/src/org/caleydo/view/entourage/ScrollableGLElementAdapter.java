@@ -197,6 +197,8 @@ public class ScrollableGLElementAdapter extends GLElementAdapter implements IMou
 			if (vScrollBarPosition + vScrollBarSize > h) {
 				vScrollBarPosition = h - vScrollBarSize;
 			}
+		} else {
+			vScrollBarPosition = 0;
 		}
 
 		hScrollBarSize = (w / renderer.getMinWidthPixels()) * w;
@@ -207,6 +209,8 @@ public class ScrollableGLElementAdapter extends GLElementAdapter implements IMou
 			if (hScrollBarPosition + hScrollBarSize > w) {
 				hScrollBarPosition = w - hScrollBarSize;
 			}
+		} else {
+			hScrollBarPosition = 0;
 		}
 	}
 
