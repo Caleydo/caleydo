@@ -343,9 +343,13 @@ public class MappedDataRenderer {
 					rowCaption.setAbsoluteSizeY(rowHeight);
 
 					if (isHighlightLayout) {
-						RowCaptionRenderer captionRenderer = new RowCaptionRenderer(contextRowIDType, rowID,
-								parentView, this, color);
-						rowCaption.setRenderer(captionRenderer);
+						if (va.size() == 1) {
+							rowCaption.setRenderer(new RowCaptionRenderer(contextRowIDType, rowID, parentView, this,
+									color, contextTPerspective.getPerspective(contextRowIDType).getLabel()));
+						} else {
+							rowCaption.setRenderer(new RowCaptionRenderer(contextRowIDType, rowID, parentView, this,
+									color));
+						}
 					}
 
 					captionColumn.append(rowCaption);
