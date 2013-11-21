@@ -292,23 +292,33 @@ public class MappedDataRenderer {
 		 * A list of lists of element layouts where the outer list contains one nested list for every data container and
 		 * the inner list one element layout for every gene in the linearized pathway
 		 */
-		ArrayList<ArrayList<ElementLayout>> rowListForContextTablePerspectives = new ArrayList<ArrayList<ElementLayout>>();
-		List<Integer> contextRowIDs = new ArrayList<>();
+		Map<TablePerspective, List<ElementLayout>> rowsForContextTablePerspectives = new HashMap<>();
+		// ArrayList<ArrayList<ElementLayout>> rowListForContextTablePerspectives = new
+		// ArrayList<ArrayList<ElementLayout>>();
+		Map<TablePerspective, List<Integer>> contextRowIDs = new HashMap<>();
 
 		if (contextualTablePerspectives != null && !contextualTablePerspectives.isEmpty()) {
 
 			int bottomYSpacing = 10;
-			for (int count = 0; count < contextualTablePerspectives.get(0).size(); count++) {
-				rowListForContextTablePerspectives.add(new ArrayList<ElementLayout>());
-			}
+			// for (int count = 0; count < contextualTablePerspectives.get(0).size(); count++) {
+			// rowListForContextTablePerspectives.add(new ArrayList<ElementLayout>());
+			// }
 
 			int numContextRows = 0;
-			for (List<TablePerspective> resolvedContextPerspectives : contextualTablePerspectives) {
+			for (int tpRowIndex = 0; tpRowIndex < contextualTablePerspectives.size(); tpRowIndex++) {
+				List<TablePerspective> resolvedContextPerspectives = contextualTablePerspectives.get(tpRowIndex);
 				TablePerspective contextTPerspective = resolvedContextPerspectives.get(0);
 				IDType contextRowIDType = contextTPerspective.getDataDomain().getOppositeIDType(sampleIDType);
 				VirtualArray va = contextTPerspective.getPerspective(contextRowIDType).getVirtualArray();
+
+				//Row ids are shared for all table perspectives in a "table perspective row"
+				List<Integer> ids = new ArrayList<>();
+				for(TablePerspective tp : resolvedContextPerspectives) {
+					contextRowIDs.put(tp, ids);
+				}
+
 				for (Integer rowID : va) {
-					contextRowIDs.add(rowID);
+					ids.add(rowID);
 
 					if (numContextRows % 2 == 0)
 						color = EVEN_BACKGROUND_COLOR;
@@ -331,7 +341,15 @@ public class MappedDataRenderer {
 						}
 
 						row.append(tablePerspectiveLayout);
-						rowListForContextTablePerspectives.get(tablePerspectiveCount).add(tablePerspectiveLayout);
+						TablePerspective tp = contextualTablePerspectives.get(tpRowIndex).get(tablePerspectiveCount);
+						List<ElementLayout> layouts = rowsForContextTablePerspectives.get(tp);
+						if (layouts == null) {
+							layouts = new ArrayList<>();
+							rowsForContextTablePerspectives.put(tp, layouts);
+						}
+						layouts.add(tablePerspectiveLayout);
+
+						// rowListForContextTablePerspectives.get(tablePerspectiveCount).add(tablePerspectiveLayout);
 						if (tablePerspectiveCount != contextualTablePerspectives.size() - 1) {
 							row.append(xSpacing);
 						}
@@ -535,9 +553,10 @@ public class MappedDataRenderer {
 					TablePerspective contextTablePerspective = resolvedContextTablePerspectives
 							.get(tablePerspectiveCount);
 					// VirtualArray va = contextTablePerspective.getOppositePerspective(sampleIDType).getVirtualArray();
-					prepareData(contextTablePerspective, rowListForContextTablePerspectives.get(tablePerspectiveCount),
+					prepareData(contextTablePerspective, rowsForContextTablePerspectives.get(contextTablePerspective),
 							null, null, contextTablePerspective.getDataDomain().getOppositeIDType(sampleIDType),
-							contextRowIDs, isHighlightLayout, geneTablePerspectives.get(tablePerspectiveCount));
+							contextRowIDs.get(contextTablePerspective), isHighlightLayout,
+							geneTablePerspectives.get(tablePerspectiveCount));
 
 				}
 			}
