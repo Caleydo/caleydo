@@ -9,9 +9,9 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.color.Color;
@@ -36,6 +36,7 @@ public class RowCaptionRenderer extends ALayoutRenderer {
 
 	private IDType rowIDType;
 	private Integer rowID;
+	private String rowCaption;
 
 	private AGLView parentView;
 	private SelectionColorCalculator colorCalculator;
@@ -54,6 +55,22 @@ public class RowCaptionRenderer extends ALayoutRenderer {
 	 */
 	public RowCaptionRenderer(IDType rowIDType, Integer rowID, AGLView parentView, MappedDataRenderer parent,
 			float[] backgroundColor) {
+		this(rowIDType, rowID, parentView, parent, backgroundColor, (String) IDMappingManagerRegistry.get()
+				.getIDMappingManager(rowIDType)
+				.getID(rowIDType, rowIDType.getIDCategory().getHumanReadableIDType(), rowID));
+		this.parentView = parentView;
+		colorCalculator = new SelectionColorCalculator(new Color(backgroundColor));
+		this.rowID = rowID;
+		this.rowIDType = rowIDType;
+		this.parent = parent;
+
+		textRenderer = parentView.getTextRenderer();
+		pixelGLConverter = parentView.getPixelGLConverter();
+
+	}
+
+	public RowCaptionRenderer(IDType rowIDType, Integer rowID, AGLView parentView, MappedDataRenderer parent,
+			float[] backgroundColor, String rowCaption) {
 
 		this.parentView = parentView;
 		colorCalculator = new SelectionColorCalculator(new Color(backgroundColor));
@@ -61,6 +78,7 @@ public class RowCaptionRenderer extends ALayoutRenderer {
 		this.rowIDType = rowIDType;
 		this.parent = parent;
 
+		this.rowCaption = rowCaption;
 		textRenderer = parentView.getTextRenderer();
 		pixelGLConverter = parentView.getPixelGLConverter();
 
@@ -78,17 +96,17 @@ public class RowCaptionRenderer extends ALayoutRenderer {
 
 		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(), rowIDType.getTypeName(), rowID));
 
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 
 		gl.glColor3f(bottomBarColor[0], bottomBarColor[1], bottomBarColor[2]);
 
 		gl.glVertex3f(0, 0, backgroundZ);
-		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f);
+		// gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f);
 		gl.glVertex3f(x, 0, backgroundZ);
-		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
+		gl.glColor3f(topBarColor[0], topBarColor[1], topBarColor[2]);
 
 		gl.glVertex3f(x, y, backgroundZ);
-		gl.glColor4fv(topBarColor, 0);
+		// gl.glColor4fv(topBarColor, 0);
 
 		gl.glVertex3f(0, y, backgroundZ);
 
@@ -105,11 +123,10 @@ public class RowCaptionRenderer extends ALayoutRenderer {
 
 		float sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(8);
 		float height = pixelGLConverter.getGLHeightForPixelHeight(15);
-		IDMappingManager rowIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(rowIDType);
-		String rowName = rowIDMappingManager
-				.getID(rowIDType, rowIDType.getIDCategory().getHumanReadableIDType(), rowID);
-		if (rowName != null)
-			textRenderer.renderTextInBounds(gl, rowName, sideSpacing, (y - height) / 2, 0.1f, x - sideSpacing, height);
+
+		if (rowCaption != null)
+			textRenderer.renderTextInBounds(gl, rowCaption, sideSpacing, (y - height) / 2, 0.1f, x - sideSpacing,
+					height);
 
 		gl.glPopName();
 	}

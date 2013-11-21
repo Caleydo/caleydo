@@ -7,14 +7,15 @@ package org.caleydo.view.enroute.mappeddataview;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
 /**
  * Renders the background of a row
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class RowBackgroundRenderer extends ALayoutRenderer {
 
@@ -23,7 +24,7 @@ public class RowBackgroundRenderer extends ALayoutRenderer {
 	// private float[] frameColor = { 0, 0, 0, 1 };
 
 	/**
-	 * 
+	 *
 	 */
 	public RowBackgroundRenderer(float[] backgroundColor) {
 		this.backgroundColor = backgroundColor;
@@ -36,11 +37,9 @@ public class RowBackgroundRenderer extends ALayoutRenderer {
 		float frameZ = 0.3f;
 
 		gl.glColor4fv(backgroundColor, 0);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glVertex3f(0, 0, backgroundZ);
 		gl.glVertex3f(0, y, backgroundZ);
-		gl.glColor3f(backgroundColor[0] + 0.1f, backgroundColor[0] + 0.1f,
-				backgroundColor[0] + 0.1f);
 		gl.glVertex3f(x, y, backgroundZ);
 		gl.glVertex3f(x, 0, backgroundZ);
 		gl.glEnd();

@@ -13,6 +13,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.data.collection.table.NumericalTable;
@@ -29,10 +30,12 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.SortByDataEvent;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
@@ -50,6 +53,7 @@ import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.GLEnRoutePathway;
+import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.path.PathSizeConfiguration;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ComplexNode;
@@ -270,20 +274,13 @@ public class MappedDataRenderer {
 		Row buttonRow = new Row("buttonRow");
 		buttonRow.setPixelSizeY(50);
 
-		Button button = new Button(EPickingType.CENTER_LINE_ALIGNMENT_BUTTON.name(), 0,
-				"resources/icons/view/enroute/center_data_line.png");
-		ButtonRenderer buttonRender = new ButtonRenderer.Builder(parentView, button).build();
+		buttonRow.append(createButton(EPickingType.FIT_TO_VIEW_WIDTH_BUTTON.name(), 0,
+				"resources/icons/view/enroute/fit_to_width.png"));
+		buttonRow.append(xSpacing);
+		buttonRow.append(createButton(EPickingType.CENTER_LINE_ALIGNMENT_BUTTON.name(), 0,
+				"resources/icons/view/enroute/center_data_line.png"));
 
-		ElementLayout buttonLayout = new ElementLayout();
-		buttonLayout.setPixelSizeX(20);
-		buttonLayout.setPixelSizeY(20);
-		buttonLayout.setRenderer(buttonRender);
-		buttonRow.append(buttonLayout);
-
-		// ElementLayout columnCaptionSpacing = new ElementLayout();
-		// columnCaptionSpacing.setPixelSizeY(50);
 		captionColumn.append(buttonRow);
-		// captionColumn.append(columnCaptionSpacing);
 		baseRow.append(captionColumn);
 
 		int nodeCount = 0;
@@ -346,9 +343,13 @@ public class MappedDataRenderer {
 					rowCaption.setAbsoluteSizeY(rowHeight);
 
 					if (isHighlightLayout) {
-						RowCaptionRenderer captionRenderer = new RowCaptionRenderer(contextRowIDType, rowID,
-								parentView, this, color);
-						rowCaption.setRenderer(captionRenderer);
+						if (va.size() == 1) {
+							rowCaption.setRenderer(new RowCaptionRenderer(contextRowIDType, rowID, parentView, this,
+									color, contextTPerspective.getPerspective(contextRowIDType).getLabel()));
+						} else {
+							rowCaption.setRenderer(new RowCaptionRenderer(contextRowIDType, rowID, parentView, this,
+									color));
+						}
 					}
 
 					captionColumn.append(rowCaption);
@@ -564,6 +565,18 @@ public class MappedDataRenderer {
 		}
 	}
 
+	private ElementLayout createButton(String pickingType, int pickingID, String icon) {
+		Button button = new Button(pickingType, pickingID, icon);
+		ButtonRenderer buttonRender = new ButtonRenderer.Builder(parentView, button).build();
+
+		ElementLayout buttonLayout = new ElementLayout();
+		buttonLayout.setPixelSizeX(20);
+		buttonLayout.setPixelSizeY(20);
+		buttonLayout.setRenderer(buttonRender);
+
+		return buttonLayout;
+	}
+
 	private void calcMinWidthPixels() {
 
 		minWidthPixels = 0;
@@ -698,93 +711,83 @@ public class MappedDataRenderer {
 			ContentRenderer renderer = new ContentRenderer(rowIDType, rowID, resolvedRowIDType, resolvedRowID,
 					dataDomain, columnPerspective, parentView, this, group, isHighlightLayout, foreignColumnPerspective);
 			tablePerspectiveLayout.setRenderer(renderer);
+			DataDescription dataDescription = dataSetDescription.getDataDescription();
 
-			if (table instanceof NumericalTable) {
-				NumericalTable numTable = (NumericalTable) table;
-				Double dataCenter = numTable.getDataCenter();
-				if (numTable.getDataCenter() != null || (numTable.getMax() > 0 && numTable.getMin() < 0)) {
+			// homogeneous table
+			if (dataDescription != null) {
 
-					renderer.setDetailRenderer(new CenteredDataRenderer(renderer, showCenteredDataLineInRowCenter,
-							(float) numTable.getMin(), (float) numTable.getMax(),
-							(dataCenter != null ? (float) dataCenter.floatValue() : 0)));
-					renderer.setOverviewRenderer(new SummaryRendererDataCenterDecorator(
-							new SummaryBoxAndWhiskersRenderer(renderer), (float) numTable.getMin(), (float) numTable
-									.getMax(), (dataCenter != null ? (float) dataCenter.floatValue() : 0)));
+				if (table instanceof NumericalTable) {
+					NumericalTable numTable = (NumericalTable) table;
+					Double dataCenter = numTable.getDataCenter();
+					if (numTable.getDataCenter() != null || (numTable.getMax() > 0 && numTable.getMin() < 0)) {
 
-					// CenteredDataContentRenderer renderer = new CenteredDataContentRenderer(rowIDType, rowID,
-					// resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
-					// isHighlightLayout, (dataCenter != null ? (float) dataCenter.floatValue() : 0),
-					// (float) numTable.getMin(), (float) numTable.getMax(), foreignColumnPerspective);
-					// renderer.setShowCenterLineAtRowCenter(showCenteredDataLineInRowCenter);
+						renderer.setDetailRenderer(new CenteredDataRenderer(renderer, showCenteredDataLineInRowCenter,
+								(float) numTable.getMin(), (float) numTable.getMax(),
+								(dataCenter != null ? (float) dataCenter.floatValue() : 0)));
+						renderer.setOverviewRenderer(new SummaryRendererDataCenterDecorator(
+								new SummaryBoxAndWhiskersRenderer(renderer), (float) numTable.getMin(),
+								(float) numTable.getMax(), (dataCenter != null ? (float) dataCenter.floatValue() : 0)));
+						continue;
+					}
 
-					continue;
+				} else {
+					if (assignRenderersForCenteredCategoryData(dataDescription.getCategoricalClassDescription(),
+							renderer))
+						continue;
+				}
+				if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
+					renderer.setDetailRenderer(new ColoredColumnRenderer(renderer));
+					renderer.setOverviewRenderer(new HistogramRenderer(renderer));
+
+				} else {
+					renderer.setDetailRenderer(new ContinuousDataRenderer(renderer));
+					renderer.setOverviewRenderer(new SummaryBoxAndWhiskersRenderer(renderer));
 				}
 
 			} else {
-				DataDescription dataDescription = dataSetDescription.getDataDescription();
-				if (dataDescription != null) {
-					if (dataDescription.getCategoricalClassDescription().getCategoryType() == ECategoryType.ORDINAL) {
-						Integer minValue = Integer.MAX_VALUE;
-						Integer maxValue = Integer.MIN_VALUE;
-						for (CategoryProperty<?> p : dataSetDescription.getDataDescription()
-								.getCategoricalClassDescription()) {
-							if (p.getCategory() instanceof Integer) {
-								Integer number = (Integer) p.getCategory();
-								if (number > maxValue) {
-									maxValue = number;
-								}
-								if (number < minValue) {
-									minValue = number;
-								}
-							}
-						}
-						if (minValue < 0 && maxValue > 0) {
-							renderer.setDetailRenderer(new CenteredDataRenderer(renderer,
-									showCenteredDataLineInRowCenter, minValue, maxValue, 0));
-							renderer.setOverviewRenderer(new HistogramRenderer(renderer));
-
-							// CenteredDataContentRenderer renderer = new CenteredDataContentRenderer(rowIDType, rowID,
-							// resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this,
-							// group, isHighlightLayout, 0, minValue, maxValue, foreignColumnPerspective);
-							// renderer.setShowCenterLineAtRowCenter(showCenteredDataLineInRowCenter);
-							// tablePerspectiveLayout.setRenderer(renderer);
-							continue;
-						}
+				// inhomogeneous table
+				Object desc = dataDomain.getDataClassSpecificDescription(resolvedRowIDType, rowID,
+						dataDomain.getPrimaryIDType(columnIDType), 0);
+				if (desc == null || desc instanceof NumericalProperties) {
+					renderer.setDetailRenderer(new ContinuousDataRenderer(renderer));
+					renderer.setOverviewRenderer(new SummaryBoxAndWhiskersRenderer(renderer));
+				} else {
+					if (!assignRenderersForCenteredCategoryData((CategoricalClassDescription<?>) desc, renderer)) {
+						renderer.setDetailRenderer(new ColoredColumnRenderer(renderer));
+						renderer.setOverviewRenderer(new HistogramRenderer(renderer));
 					}
 				}
-			}
-			if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
 
-				renderer.setDetailRenderer(new ColoredColumnRenderer(renderer));
-				renderer.setOverviewRenderer(new HistogramRenderer(renderer));
-
-				// tablePerspectiveLayout.setRenderer(new MutationStatusRowContentRenderer(rowIDType, rowID,
-				// resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
-				// isHighlightLayout, foreignColumnPerspective));
-
-				// tablePerspectiveLayout.setDynamicSizeUnitsX((int)
-				// Math.ceil(columnPerspective.getVirtualArray().size()
-				// * 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
-				// if (topCaptionLayout != null && bottomCaptionLayout != null) {
-				// bottomCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(columnPerspective.getVirtualArray().size()
-				// * 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
-				// topCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(columnPerspective.getVirtualArray().size()
-				// * 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
-				// }
-
-				// tablePerspectiveLayout.setRenderer(new MutationStatusRowContentRenderer(rowIDType, rowID,
-				// resolvedRowIDType, resolvedRowID, dataDomain, columnPerspective, parentView, this, group,
-				// isHighlightLayout));
-			} else {
-				renderer.setDetailRenderer(new ContinuousDataRenderer(renderer));
-				renderer.setOverviewRenderer(new SummaryBoxAndWhiskersRenderer(renderer));
-				// tablePerspectiveLayout.setRenderer(new ContinuousContentRenderer(rowIDType, rowID, resolvedRowIDType,
-				// resolvedRowID, dataDomain, columnPerspective, parentView, this, group, isHighlightLayout,
-				// foreignColumnPerspective));
 			}
 
 		}
 
+	}
+
+	private boolean assignRenderersForCenteredCategoryData(CategoricalClassDescription<?> categoricalClassDescription,
+			ContentRenderer renderer) {
+		if (categoricalClassDescription.getCategoryType() == ECategoryType.ORDINAL) {
+			Integer minValue = Integer.MAX_VALUE;
+			Integer maxValue = Integer.MIN_VALUE;
+			for (CategoryProperty<?> p : categoricalClassDescription) {
+				if (p.getCategory() instanceof Integer) {
+					Integer number = (Integer) p.getCategory();
+					if (number > maxValue) {
+						maxValue = number;
+					}
+					if (number < minValue) {
+						minValue = number;
+					}
+				}
+			}
+			if (minValue < 0 && maxValue > 0) {
+				renderer.setDetailRenderer(new CenteredDataRenderer(renderer, showCenteredDataLineInRowCenter,
+						minValue, maxValue, 0));
+				renderer.setOverviewRenderer(new HistogramRenderer(renderer));
+				return true;
+			}
+		}
+		return false;
 	}
 
 	protected void registerPickingListeners() {
@@ -913,6 +916,17 @@ public class MappedDataRenderer {
 
 		parentView.addTypePickingTooltipListener("Toggle center line alignment for centered data.",
 				EPickingType.CENTER_LINE_ALIGNMENT_BUTTON.name());
+
+		parentView.addTypePickingListener(new APickingListener() {
+
+			@Override
+			protected void clicked(Pick pick) {
+				EventPublisher.trigger(new FitToViewWidthEvent(!parentView.isFitWidthToScreen()));
+			}
+		}, EPickingType.FIT_TO_VIEW_WIDTH_BUTTON.name());
+
+		parentView.addTypePickingTooltipListener("Toggle fit to view width.",
+				EPickingType.FIT_TO_VIEW_WIDTH_BUTTON.name());
 	}
 
 	public void unregisterPickingListeners() {

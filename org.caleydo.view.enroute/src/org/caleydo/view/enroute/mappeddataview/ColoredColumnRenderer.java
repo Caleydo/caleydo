@@ -67,6 +67,8 @@ public class ColoredColumnRenderer extends AColumnBasedDataRenderer {
 		CategoryProperty<?> property = categoryDescription.getCategoryProperty(contentRenderer.dataDomain.getRaw(
 				contentRenderer.resolvedColumnIDType, columnID, contentRenderer.resolvedRowIDType,
 				contentRenderer.resolvedRowID));
+		if (property == null)
+			return new float[] { 1, 1, 1, 1 };
 		return property.getColor().getRGBA();
 	}
 
