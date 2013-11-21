@@ -23,7 +23,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.TablePerspectiveSelectionMixin;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
-import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
@@ -43,8 +42,8 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.parcoords.Activator;
 import org.caleydo.view.parcoords.PCRenderStyle;
-import org.caleydo.view.parcoords.listener.ResetAxisSpacingEvent;
 import org.caleydo.view.parcoords.v2.internal.AxisElement;
+import org.caleydo.view.parcoords.v2.internal.Brush;
 
 import com.google.common.collect.Iterables;
 
@@ -53,7 +52,7 @@ import com.google.common.collect.Iterables;
  *
  */
 public class ParallelCoordinateElement extends GLElementContainer implements IGLLayout2,
-		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback, IHasMinSize {
+		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback, IHasMinSize, IPickingListener {
 
 	private static final float NAN_VALUE = 0;
 	/**
@@ -76,6 +75,7 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 	private final GLPadding padding = new GLPadding(0.03f, 0.10f, 0.03f, 0.15f);
 
 	private PickingPool pool;
+	private Brush brush;
 
 	/**
 	 *
@@ -88,6 +88,7 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 
 		createAxes(tablePerspective.getDimensionPerspective().getVirtualArray());
 		setVisibility(EVisibility.PICKABLE);
+		onPick(this);
 	}
 
 	/**
@@ -126,6 +127,29 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 		super.takeDown();
 	}
 
+	@Override
+	public void pick(Pick pick) {
+		switch(pick.getPickingMode()) {
+		case CLICKED:
+			if (!isBrushClick(pick)) // start brushing
+				return;
+			this.brush = new Brush(pick.getPickedPoint());
+			pick.setDoDragging(true);
+			repaint();
+			break;
+		case DRAGGED:
+
+		case MOUSE_RELEASED:
+			if (brush != null) {
+				brush = null;
+				repaint();
+			}
+		}
+	}
+
+	public static boolean isBrushClick(Pick pick) {
+		return ((IMouseEvent) pick).isAltDown();
+	}
 	/**
 	 * @param pick
 	 */
@@ -139,6 +163,8 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 			record.removeFromType(SelectionType.MOUSE_OVER, pick.getObjectID());
 			break;
 		case CLICKED:
+			if (isBrushClick(pick))
+				return;
 			if (!((IMouseEvent) pick).isCtrlDown())
 				record.clearSelection(SelectionType.SELECTION);
 			record.addToType(SelectionType.SELECTION, pick.getObjectID());
@@ -165,12 +191,6 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 		default:
 			return 20;
 		}
-	}
-
-	@ListenTo
-	private void onResetAxisSpacingEvent(ResetAxisSpacingEvent event) {
-		resetAxesSpacing();
-		relayout();
 	}
 
 	public void resetAxesSpacing() {
@@ -311,6 +331,8 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 		renderBackground(g, w, h);
 		super.renderImpl(g, w, h);
 		renderPolylines(g, h);
+		if (brush != null)
+			brush.render(g);
 
 		g.popResourceLocator();
 	}
@@ -349,9 +371,9 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 		List<Vec2f> points = new ArrayList<>(this.size());
 		for (AxisElement axis : Iterables.filter(this, AxisElement.class)) {
 			float raw = table.getNormalizedValue(axis.getId(), recordID);
+			if (!axis.apply(raw))
+				return Collections.emptyList();
 			if (Float.isNaN(raw)) {
-				if (axis.isHidingNan())
-					return Collections.emptyList();
 				raw = NAN_VALUE;
 			}
 			points.add(new Vec2f(axis.getX(), raw));

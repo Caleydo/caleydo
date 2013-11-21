@@ -21,6 +21,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.TablePerspectiveSelectionMixin;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.function.IDoublePredicate;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -43,12 +44,13 @@ import org.caleydo.view.parcoords.v2.ParallelCoordinateElement;
  * @author Samuel Gratzl
  *
  */
-public class AxisElement extends GLElementContainer implements IPickingListener, IGLLayout2 {
+public class AxisElement extends GLElementContainer implements IPickingListener, IGLLayout2, IDoublePredicate {
 	private final int id;
 	private final String label;
 	private final GLButton hideNaN;
 	private final GLButton addGate;
 	private final MultiButton moveAxis;
+	private GateElement gate;
 
 	public AxisElement(int id, String label) {
 		this.id = id;
@@ -74,99 +76,30 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 
 		this.moveAxis = new MultiButton();
 		this.add(this.moveAxis);
-
-		this.add(new GLButton().setCallback(new ISelectionCallback() {
-			@Override
-			public void onSelectionChanged(GLButton button, boolean selected) {
-				findParent(GLElementContainer.class).remove(AxisElement.this);
-			}
-		}).setRenderer(GLRenderers.fillImage(PCRenderStyle.DROP_DELETE)));
-
-		// if (hovered) {
-		//
-		// // the mouse over drops
-		// // texture is 63x62
-		//
-		// buttonWidht = pixelGLConverter.getGLWidthForPixelWidth(31);
-		// buttonHeight = pixelGLConverter.getGLHeightForPixelHeight(63);
-		//
-		// lowerLeftCorner.set(xOrigin - buttonWidht, fYDropOrigin - buttonHeight, AXIS_Z + 0.005f);
-		// lowerRightCorner.set(xOrigin + buttonWidht, fYDropOrigin - buttonHeight, AXIS_Z + 0.005f);
-		// upperRightCorner.set(xOrigin + buttonWidht, fYDropOrigin, AXIS_Z + 0.005f);
-		// upperLeftCorner.set(xOrigin - buttonWidht, fYDropOrigin, AXIS_Z + 0.005f);
-		//
-		// if (changeDropOnAxisNumber == count) {
-		// // tempTexture = textureManager.getIconTexture(gl,
-		// // dropTexture);
-		// textureManager.renderTexture(gl, dropTexture, lowerLeftCorner, lowerRightCorner, upperRightCorner,
-		// upperLeftCorner, Color.WHITE);
-		//
-		// if (!bWasAxisMoved) {
-		// dropTexture = PCRenderStyle.DROP_NORMAL;
-		// }
-		// } else {
-		// textureManager.renderTexture(gl, PCRenderStyle.DROP_NORMAL, lowerLeftCorner, lowerRightCorner,
-		// upperRightCorner, upperLeftCorner, Color.WHITE);
-		// }
-		//
-		// // picking for the sub-parts of the drop texture
-		//
-		// // center drop has width of 30 starts at position 16
-		// buttonWidht = pixelGLConverter.getGLWidthForPixelWidth(15);
-		// buttonHeight = pixelGLConverter.getGLHeightForPixelHeight(63);
-		//
-		// pickingID = pickingManager.getPickingID(uniqueID, EPickingType.MOVE_AXIS.name(), count);
-		// gl.glColor4f(0, 0, 0, 0f);
-		// gl.glPushName(pickingID);
-		// gl.glBegin(GL.GL_TRIANGLES);
-		// gl.glVertex3f(xOrigin, fYDropOrigin, AXIS_Z + 0.01f);
-		// gl.glVertex3f(xOrigin + buttonWidht, fYDropOrigin - buttonHeight, AXIS_Z + 0.01f);
-		// gl.glVertex3f(xOrigin - buttonWidht, fYDropOrigin - buttonHeight, AXIS_Z + 0.01f);
-		// gl.glEnd();
-		// gl.glPopName();
-		//
-		// // left drop
-		// buttonHeight = pixelGLConverter.getGLHeightForPixelHeight(63 - 14);
-		// float buttonOuterBorder = pixelGLConverter.getGLWidthForPixelWidth(31);
-		// buttonWidht = pixelGLConverter.getGLWidthForPixelWidth(16);
-		//
-		// float buttonOuterHight = pixelGLConverter.getGLHeightForPixelHeight(16);
-		//
-		// pickingID = pickingManager.getPickingID(uniqueID, EPickingType.DUPLICATE_AXIS.name(), count);
-		// // gl.glColor4f(0, 1, 0, 0.5f);
-		// gl.glPushName(pickingID);
-		// gl.glBegin(GL2.GL_POLYGON);
-		// gl.glVertex3f(xOrigin, fYDropOrigin, AXIS_Z + 0.01f);
-		// gl.glVertex3f(xOrigin - buttonOuterBorder, fYDropOrigin - buttonHeight + buttonOuterHight, AXIS_Z + 0.01f);
-		// gl.glVertex3f(xOrigin - buttonOuterBorder, fYDropOrigin - buttonHeight, AXIS_Z + 0.01f);
-		// gl.glVertex3f(xOrigin - buttonOuterBorder + buttonWidht, fYDropOrigin - buttonHeight, AXIS_Z + 0.01f);
-		// gl.glEnd();
-		// gl.glPopName();
-		//
-		// pickingID = pickingManager.getPickingID(uniqueID, EPickingType.REMOVE_AXIS.name(), count);
-		// // gl.glColor4f(0, 0, 1, 0.5f);
-		// gl.glPushName(pickingID);
-		// gl.glBegin(GL2.GL_POLYGON);
-		// gl.glVertex3f(xOrigin, fYDropOrigin, AXIS_Z + 0.01f);
-		// gl.glVertex3f(xOrigin + buttonOuterBorder, fYDropOrigin - buttonHeight + buttonOuterHight, AXIS_Z + 0.01f);
-		// gl.glVertex3f(xOrigin + buttonOuterBorder, fYDropOrigin - buttonHeight, AXIS_Z + 0.01f);
-		// gl.glVertex3f(xOrigin + buttonOuterBorder - buttonWidht, fYDropOrigin - buttonHeight, AXIS_Z + 0.01f);
-		// gl.glEnd();
-		// gl.glPopName();
-		//
-		// }
 	}
 
-	public boolean isHidingNan() {
-		return hideNaN.isSelected();
+	@Override
+	public boolean apply(double in) {
+		if (hideNaN.isSelected() && Double.isNaN(in))
+			return false;
+		if (gate != null)
+			return gate.apply(in);
+		return true;
+	}
+
+	@Override
+	public boolean apply(Double input) {
+		return apply(input.doubleValue());
 	}
 
 	/**
 	 *
 	 */
 	protected void onAddGate() {
-		// TODO Auto-generated method stub
-
+		if (gate != null)
+			return;
+		gate = new GateElement();
+		this.add(gate);
 	}
 
 	@Override
@@ -181,6 +114,9 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 		nan.setBounds(-6, h + 3, 12, 12);
 		add.setBounds(-8, -32, 16, 32);
 		move.setBounds(-8, h + 16, 16, 32);
+
+		if (children.size() > 4)
+			children.get(4).setBounds(-8, 0, 16, h);
 
 		return false;
 	}
@@ -200,6 +136,8 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 			relayout();
 			break;
 		case CLICKED:
+			if (ParallelCoordinateElement.isBrushClick(pick))
+				return;
 			if (!((IMouseEvent) pick).isCtrlDown())
 				manager.clearSelection(SelectionType.SELECTION);
 			manager.addToType(SelectionType.SELECTION, id);
