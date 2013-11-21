@@ -9,6 +9,8 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -21,12 +23,14 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.TablePerspectiveSelectionMixin;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -39,6 +43,7 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.parcoords.Activator;
 import org.caleydo.view.parcoords.PCRenderStyle;
+import org.caleydo.view.parcoords.listener.ResetAxisSpacingEvent;
 import org.caleydo.view.parcoords.v2.internal.AxisElement;
 
 import com.google.common.collect.Iterables;
@@ -51,13 +56,24 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback, IHasMinSize {
 
 	private static final float NAN_VALUE = 0;
+	/**
+	 * sort by the stored layout data defining the ordering in percentage
+	 */
+	private static final Comparator<GLElement> BY_PERCENTAGE = new Comparator<GLElement>() {
+		@Override
+		public int compare(GLElement o1, GLElement o2) {
+			float p1 = o1.getLayoutDataAs(Float.class, 0.0f);
+			float p2 = o2.getLayoutDataAs(Float.class, 0.0f);
+			return Float.compare(p1, p2);
+		}
+	};
 	@DeepScan
 	protected final TablePerspectiveSelectionMixin selections;
 	private int numberOfRandomElements;
 	private final EDetailLevel detailLevel;
 
 	// in percent
-	private final GLPadding padding = new GLPadding(0.03f, 0.10f, 0.03f, 0.12f);
+	private final GLPadding padding = new GLPadding(0.03f, 0.10f, 0.03f, 0.15f);
 
 	private PickingPool pool;
 
@@ -85,9 +101,11 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 
 		for (Integer id : va) {
 			Set<String> names = id2name == null ? null : id2name.apply(id);
-			this.add(new AxisElement(id, names == null || names.isEmpty() ? id.toString() : StringUtils.join(names,
-					", ")));
+			AxisElement axis = new AxisElement(id, names == null || names.isEmpty() ? id.toString() : StringUtils.join(names,
+					", "));
+			this.add(axis);
 		}
+		resetAxesSpacing();
 	}
 
 	@Override
@@ -149,20 +167,40 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 		}
 	}
 
+	@ListenTo
+	private void onResetAxisSpacingEvent(ResetAxisSpacingEvent event) {
+		resetAxesSpacing();
+		relayout();
+	}
+
+	public void resetAxesSpacing() {
+		final int total = this.size();
+		float p = 0;
+		final float delta = 1.f / (total - 1); // percent
+		for (GLElement elem : this) {
+			elem.setLayoutData(p);
+			p += delta;
+		}
+		relayout();
+	}
+
 	@Override
 	public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent,
 			int deltaTimeMs) {
 		//uniformly distribute the axis
-		final int size = children.size();
-		float delta = (w - padding.hor() * w) / (size - 1);
-		float x = padding.left * w;
+		final float scale = (w - padding.hor() * w);
+		final float x = padding.left * w;
 		final float y = h * padding.top;
 		final float hi = axisHeight(h);
 		for (IGLLayoutElement child : children) {
-			child.setBounds(x, y, 1, hi);
-			x += delta;
+			float p = child.getLayoutDataAs(Float.class, 0.0f);
+			child.setBounds(x + p * scale, y, 1, hi);
 		}
 		return false;
+	}
+
+	public void axisMoved() {
+		sortBy(BY_PERCENTAGE);
 	}
 
 	private float axisHeight(float h) {
@@ -190,12 +228,14 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 
 	@Override
 	public void onSelectionUpdate(SelectionManager manager) {
-		repaintAll();
+		repaint();
+		repaintChildren();
 	}
 
 	@Override
 	public void onVAUpdate(TablePerspective tablePerspective) {
-		repaintAll();
+		repaint();
+		repaintChildren();
 	}
 
 	@Override
@@ -240,6 +280,8 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 		for (int i = 0; i < va.size(); i += displayEveryNthPolyline) {
 			int recordID = va.get(i);
 			List<Vec2f> points = asPoints(recordID);
+			if (points == null || points.isEmpty()) //skip empty
+				continue;
 			if (g.isPickingPass()) {
 				g.pushName(pool.get(recordID));
 				g.drawPath(points, false);
@@ -307,8 +349,11 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 		List<Vec2f> points = new ArrayList<>(this.size());
 		for (AxisElement axis : Iterables.filter(this, AxisElement.class)) {
 			float raw = table.getNormalizedValue(axis.getId(), recordID);
-			if (Float.isNaN(raw))
+			if (Float.isNaN(raw)) {
+				if (axis.isHidingNan())
+					return Collections.emptyList();
 				raw = NAN_VALUE;
+			}
 			points.add(new Vec2f(axis.getX(), raw));
 		}
 		return points;
@@ -319,5 +364,17 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 	 */
 	public TablePerspectiveSelectionMixin getSelections() {
 		return selections;
+	}
+
+	/**
+	 * @param axisElement
+	 * @param dx
+	 */
+	public void move(AxisElement axisElement, float dx) {
+		float total = getSize().x();
+		float shift = dx / total;
+		Float oldShift = axisElement.getLayoutDataAs(Float.class, 0.f);
+		axisElement.setLayoutData(oldShift + shift);
+		axisMoved();
 	}
 }

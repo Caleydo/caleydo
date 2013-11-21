@@ -10,6 +10,7 @@ import static org.caleydo.view.parcoords.PCRenderStyle.NUMBER_AXIS_MARKERS;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_COLOR;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_LINE_WIDTH;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH;
+import gleem.linalg.Vec2f;
 
 import java.util.List;
 
@@ -19,12 +20,16 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.TablePerspectiveSelectionMixin;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout2;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
@@ -41,10 +46,9 @@ import org.caleydo.view.parcoords.v2.ParallelCoordinateElement;
 public class AxisElement extends GLElementContainer implements IPickingListener, IGLLayout2 {
 	private final int id;
 	private final String label;
-	private boolean hovered = false;
 	private final GLButton hideNaN;
 	private final GLButton addGate;
-	private GLButton moveAxis;
+	private final MultiButton moveAxis;
 
 	public AxisElement(int id, String label) {
 		this.id = id;
@@ -52,11 +56,11 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 		setLayout(this);
 
 		this.add(new AxisLine().onPick(this));
-		this.hideNaN = new GLButton();
+		this.hideNaN = new GLButton(EButtonMode.CHECKBOX);
 		this.add(hideNaN.setCallback(new ISelectionCallback() {
 			@Override
 			public void onSelectionChanged(GLButton button, boolean selected) {
-				onHideNan();
+				getParent().repaint();
 			}
 		}).setRenderer(GLRenderers.fillImage(PCRenderStyle.NAN)));
 
@@ -68,13 +72,15 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 			}
 		}).setRenderer(GLRenderers.fillImage(PCRenderStyle.ADD_GATE)));
 
-		this.moveAxis = new GLButton();
-		this.add(moveAxis.setCallback(new ISelectionCallback() {
+		this.moveAxis = new MultiButton();
+		this.add(this.moveAxis);
+
+		this.add(new GLButton().setCallback(new ISelectionCallback() {
 			@Override
 			public void onSelectionChanged(GLButton button, boolean selected) {
-				onMoveAxis();
+				findParent(GLElementContainer.class).remove(AxisElement.this);
 			}
-		}).setRenderer(GLRenderers.fillImage(PCRenderStyle.SMALL_DROP)));
+		}).setRenderer(GLRenderers.fillImage(PCRenderStyle.DROP_DELETE)));
 
 		// if (hovered) {
 		//
@@ -151,26 +157,14 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 		// }
 	}
 
-	/**
-	 *
-	 */
-	protected void onMoveAxis() {
-		// TODO Auto-generated method stub
-
+	public boolean isHidingNan() {
+		return hideNaN.isSelected();
 	}
 
 	/**
 	 *
 	 */
 	protected void onAddGate() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 *
-	 */
-	protected void onHideNan() {
 		// TODO Auto-generated method stub
 
 	}
@@ -186,10 +180,7 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 		axis.setBounds(0, 0, w, h);
 		nan.setBounds(-6, h + 3, 12, 12);
 		add.setBounds(-8, -32, 16, 32);
-		if (hovered)
-			move.hide();
-		else
-			move.setBounds(-8, h + 16, 16, 32);
+		move.setBounds(-8, h + 16, 16, 32);
 
 		return false;
 	}
@@ -202,12 +193,10 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 		switch (pick.getPickingMode()) {
 		case MOUSE_OVER:
 			manager.addToType(SelectionType.MOUSE_OVER, id);
-			hovered = true;
 			relayout();
 			break;
 		case MOUSE_OUT:
 			manager.removeFromType(SelectionType.MOUSE_OVER, id);
-			hovered = false;
 			relayout();
 			break;
 		case CLICKED:
@@ -237,7 +226,7 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 	}
 
 	private TablePerspectiveSelectionMixin findSelectionManager() {
-		ParallelCoordinateElement p = findParent(ParallelCoordinateElement.class);
+		ParallelCoordinateElement p = findParent();
 		assert p != null;
 		return p.getSelections();
 	}
@@ -295,6 +284,40 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 		g.gl.glPopAttrib();
 	}
 
+	private ParallelCoordinateElement findParent() {
+		return findParent(ParallelCoordinateElement.class);
+	}
+	/**
+	 *
+	 */
+	void remove() {
+		findParent().remove(this);
+	}
+
+	/**
+	 * @param dx
+	 * @param dy
+	 */
+	void move(float dx, float dy) {
+		findParent().move(this, dx);
+	}
+
+	/**
+	 *
+	 */
+	public void resetAxis() {
+		ParallelCoordinateElement p = findParent();
+		p.resetAxesSpacing();
+	}
+
+	/**
+	 *
+	 */
+	void duplicate() {
+		ParallelCoordinateElement p = findParent();
+		p.add(new AxisElement(id, label));
+		p.resetAxesSpacing();
+	}
 
 
 	/**
@@ -336,4 +359,197 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 		g.lineWidth(3).drawLine(0, 0, 0, h).lineWidth(1);
 		super.renderPickImpl(g, w, h);
 	}
+
+	private final class MultiButton extends PickableGLElement implements IPickingListener {
+		private static final int DUPLICATE = 1;
+		private static final int REMOVE = 2;
+		private static final int MOVE = 3;
+		private int duplicatePickingId;
+		private int removePickingId;
+		private int movePickingId;
+
+		private int hoveredSub = 0;
+		private boolean hovered = false;
+		private boolean armed;
+
+		@Override
+		protected void init(IGLElementContext context) {
+			duplicatePickingId = context.registerPickingListener(this, DUPLICATE);
+			removePickingId = context.registerPickingListener(this, REMOVE);
+			movePickingId = context.registerPickingListener(this, MOVE);
+			super.init(context);
+		}
+
+		@Override
+		protected void onMouseOver(Pick pick) {
+			if (pick.isAnyDragging())
+				return;
+			hovered = true;
+			repaintAll();
+		}
+
+		@Override
+		protected void onMouseOut(Pick pick) {
+			if (!hovered)
+				return;
+			hovered = false;
+			repaintAll();
+		}
+
+		@Override
+		public void pick(Pick pick) {
+			switch (pick.getObjectID()) {
+			case DUPLICATE:
+				onDuplicatePicked(pick);
+				break;
+			case MOVE:
+				onMovePicked(pick);
+				break;
+			case REMOVE:
+				onRemovePicked(pick);
+				break;
+			default:
+				break;
+			}
+		}
+
+		/**
+		 * @param pick
+		 */
+		private void onRemovePicked(Pick pick) {
+			if (pick.isAnyDragging())
+				return;
+			switch (pick.getPickingMode()) {
+			case MOUSE_OVER:
+				hoveredSub = REMOVE;
+				repaint();
+				break;
+			case MOUSE_OUT:
+				hoveredSub = 0;
+				repaint();
+				break;
+			case CLICKED:
+				armed = true;
+				repaint();
+				break;
+			case MOUSE_RELEASED:
+				if (hoveredSub == REMOVE)
+					remove();
+				break;
+			default:
+				break;
+			}
+		}
+
+		/**
+		 * @param pick
+		 */
+		private void onMovePicked(Pick pick) {
+			switch (pick.getPickingMode()) {
+			case MOUSE_OVER:
+				if (pick.isAnyDragging())
+					return;
+				hoveredSub = MOVE;
+				repaint();
+				break;
+			case MOUSE_OUT:
+				hoveredSub = 0;
+				repaint();
+				break;
+			case CLICKED:
+				if (pick.isAnyDragging())
+					return;
+				pick.setDoDragging(true);
+				armed = true;
+				repaint();
+				break;
+			case DOUBLE_CLICKED:
+				resetAxis();
+				break;
+			case DRAGGED:
+				if (!armed)
+					return;
+				move(pick.getDx(), pick.getDy());
+				break;
+			case MOUSE_RELEASED:
+				if (hoveredSub == MOVE)
+					armed = false;
+				repaint();
+				break;
+			default:
+				break;
+			}
+		}
+
+		/**
+		 * @param pick
+		 */
+		private void onDuplicatePicked(Pick pick) {
+			if (pick.isAnyDragging())
+				return;
+			switch (pick.getPickingMode()) {
+			case MOUSE_OVER:
+				hoveredSub = DUPLICATE;
+				repaint();
+				break;
+			case MOUSE_OUT:
+				hoveredSub = 0;
+				repaint();
+				break;
+			case CLICKED:
+				armed = true;
+				repaint();
+				break;
+			case MOUSE_RELEASED:
+				if (hoveredSub == DUPLICATE)
+					duplicate();
+				break;
+			default:
+				break;
+			}
+		}
+
+		@Override
+		protected void renderImpl(GLGraphics g, float w, float h) {
+			String image = hovered ? PCRenderStyle.DROP_NORMAL : PCRenderStyle.SMALL_DROP;
+			switch (hoveredSub) {
+			case DUPLICATE:
+				image = PCRenderStyle.DROP_DUPLICATE;
+				break;
+			case REMOVE:
+				image = PCRenderStyle.DROP_DELETE;
+				break;
+			case MOVE:
+				image = PCRenderStyle.DROP_MOVE;
+				break;
+			}
+			if (hovered)
+				g.fillImage(image, -32 + 8, 0, 64, 63);
+			else
+				g.fillImage(image, 0, 0, w, h);
+		}
+
+		@Override
+		protected void renderPickImpl(GLGraphics g, float w, float h) {
+			super.renderPickImpl(g, w, h);
+			final float s = w * 0.5f;
+			if (hovered && getVisibility() == EVisibility.PICKABLE) {
+				g.incZ();
+				g.pushName(duplicatePickingId);
+				g.color(Color.RED).fillPolygon(new Vec2f(s, 0), new Vec2f(s + -31, 49 - 16), new Vec2f(s + -31, 49),
+						new Vec2f(s + -31 + 16, 49));
+				g.popName();
+				g.pushName(movePickingId);
+				g.color(Color.BLUE).fillPolygon(new Vec2f(s, 0), new Vec2f(s + -15, 63), new Vec2f(s + 15, 63));
+				g.popName();
+				g.pushName(removePickingId);
+				g.color(Color.GREEN).fillPolygon(new Vec2f(s, 0), new Vec2f(s + 31, 49 - 16), new Vec2f(s + 31, 49),
+						new Vec2f(s + 31 - 16, 49));
+				g.popName();
+				g.color(Color.BLACK);
+				g.decZ();
+			}
+		}
+	}
+
 }

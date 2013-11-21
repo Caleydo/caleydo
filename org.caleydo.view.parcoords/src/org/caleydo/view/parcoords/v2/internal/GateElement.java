@@ -13,4 +13,5 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
  */
 public class GateElement extends GLElement {
 
+
 }
