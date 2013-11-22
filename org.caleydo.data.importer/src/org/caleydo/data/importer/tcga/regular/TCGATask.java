@@ -114,10 +114,6 @@ public class TCGATask extends ATCGATask {
 
 		String projectRemoteOutputURL = settings.getTcgaServerURL() + run + "/" + run + "_" + tumorType + ".cal";
 
-		String jnlpFileName = run + "_" + tumorType + ".jnlp";
-
-		generateJNLP(new File(settings.getJNLPOutputDirectory(), jnlpFileName), projectRemoteOutputURL);
-
 		JsonObject report = generateTumorReportLine(dataDomains, tumorType, analysisRun, projectRemoteOutputURL);
 
 		cleanUp(dataDomains);
@@ -182,8 +178,6 @@ public class TCGATask extends ATCGATask {
 		AdditionalInfo addInfoMethylation = null;
 		AdditionalInfo addInfoRPPA = null;
 
-		String jnlpURL = settings.getJNLPURL(Settings.format(analysisRun), tumor);
-
 		String firehoseReportURL = settings.getReportUrl(analysisRun, tumor);
 
 		for (ATableBasedDataDomain dataDomain : dataDomains) {
@@ -232,8 +226,6 @@ public class TCGATask extends ATCGATask {
 			report.add("nonGenomic", nonGenomic);
 			nonGenomic.add("Clinical", gson.toJsonTree(addInfoClinical));
 		}
-
-		report.addProperty("Caleydo JNLP", jnlpURL);
 		report.addProperty("Caleydo Project", projectOutputPath);
 		report.addProperty("Firehose Report", firehoseReportURL);
 

@@ -44,9 +44,6 @@ public class Settings {
 		NONE, AFFINITY, KMEANS, TREE;
 	}
 
-	private static String CALEYDO_JNLP_GENERATOR_URL = "http://data.icg.tugraz.at/caleydo/download/webstart_"
-			+ GeneralManager.VERSION + "/{0}_{1}.jnlp"; // jnlpgenerator.php?date={0}&tumor={1}";
-
 	private static final String BASE_URL = "http://gdac.broadinstitute.org/runs/";
 	/**
 	 * 0..run (a date), 1..tumor, 2..tumorSample (e.g. -TP), 3..pipelineName, 4..level
@@ -207,17 +204,6 @@ public class Settings {
 	 */
 	public boolean isDownloadOnly() {
 		return downloadOnly;
-	}
-
-	public String getJNLPOutputDirectory() {
-		if (this.flatOutput)
-			return ensureExistingDir(outputPath);
-		else
-			return ensureExistingDir(new File(outputPath, "jnlp" + GeneralManager.VERSION));
-	}
-
-	public String getJNLPURL(String declare, TumorType tumor) {
-		return MessageFormat.format(CALEYDO_JNLP_GENERATOR_URL, declare, tumor);
 	}
 
 	private static String ensureExistingDir(File f) {
