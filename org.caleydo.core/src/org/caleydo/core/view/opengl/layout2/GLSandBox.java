@@ -47,6 +47,9 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
+import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
@@ -67,6 +70,35 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementContext {
+	private static PreferenceStore store = new PreferenceStore();
+
+	@SafeVarargs
+	public static IPreferenceStore prefs(Class<? extends AbstractPreferenceInitializer>... initializers) {
+		for (final Class<? extends AbstractPreferenceInitializer> init : initializers) {
+			runInitializer(init);
+		}
+		return store;
+	}
+
+	private static void runInitializer(final Class<? extends AbstractPreferenceInitializer> init) {
+		// just once
+		if (store.getBoolean("init.done.for." + init.getCanonicalName()))
+			return;
+		store.setValue("init.done.for." + init.getCanonicalName(), true);
+		Display.getDefault().syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					init.newInstance().initializeDefaultPreferences();
+				} catch (InstantiationException | IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
 	private final GLAnimatorControl animator;
 	private final WindowGLElement root;
 
