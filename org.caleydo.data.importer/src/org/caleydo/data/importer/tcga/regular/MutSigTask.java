@@ -6,6 +6,7 @@
 package org.caleydo.data.importer.tcga.regular;
 
 import java.util.concurrent.RecursiveTask;
+import java.util.logging.Logger;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.data.importer.tcga.FirehoseProvider;
@@ -21,6 +22,7 @@ import org.caleydo.vis.lineup.model.mapping.EStandardMappings;
  */
 public class MutSigTask extends RecursiveTask<ScoreParseSpecification> {
 	private static final long serialVersionUID = 193680768589791994L;
+	private static final Logger log = Logger.getLogger(MutSigTask.class.getName());
 	private final FirehoseProvider fileProvider;
 
 	public MutSigTask(FirehoseProvider fileProvider) {
@@ -29,9 +31,13 @@ public class MutSigTask extends RecursiveTask<ScoreParseSpecification> {
 
 	@Override
 	protected ScoreParseSpecification compute() {
+		log.info(fileProvider + " start");
 		TCGAFileInfo mutsig = fileProvider.findMutSigReport();
-		if (mutsig == null)
+		if (mutsig == null) {
+			log.warning(fileProvider + " file not found");
 			return null;
+		}
+		log.warning(fileProvider + " data found: " + mutsig);
 		ScoreParseSpecification spec = new ScoreParseSpecification(mutsig.getFile().getAbsolutePath());
 
 

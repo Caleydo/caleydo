@@ -31,7 +31,7 @@ import com.google.gson.JsonElement;
 
 public abstract class ATCGATask extends RecursiveTask<JsonElement> {
 	private static final long serialVersionUID = 6349085075502142673L;
-	private static final Logger log = Logger.getLogger(ATCGATask.class.getSimpleName());
+	private static final Logger log = Logger.getLogger(ATCGATask.class.getName());
 
 	public static class AdditionalInfo {
 		private AdditionalPerspectiveInfo gene;

@@ -351,4 +351,50 @@ public class Settings {
 	public Gson getGson() {
 		return gson;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Settings [analysisRuns=");
+		builder.append(analysisRuns);
+		builder.append(", dataRuns=");
+		builder.append(dataRuns);
+		builder.append(", tumorTypes=");
+		builder.append(tumorTypes);
+		builder.append(", cluster=");
+		builder.append(cluster);
+		builder.append(", awgGroup=");
+		builder.append(awgGroup);
+		builder.append(", clinicalVariables=");
+		builder.append(clinicalVariables);
+		builder.append(", outputPath=");
+		builder.append(outputPath);
+		builder.append(", flatOutput=");
+		builder.append(flatOutput);
+		builder.append(", cleanCache=");
+		builder.append(cleanCache);
+		builder.append(", numThreads=");
+		builder.append(numThreads);
+		builder.append(", batchSize=");
+		builder.append(batchSize);
+		builder.append(", analysisPattern=");
+		builder.append(analysisPattern);
+		builder.append(", filePattern=");
+		builder.append(filePattern);
+		builder.append(", dataPattern=");
+		builder.append(dataPattern);
+		builder.append(", dataFilePattern=");
+		builder.append(dataFilePattern);
+		builder.append(", reportPattern=");
+		builder.append(reportPattern);
+		builder.append(", downloadOnly=");
+		builder.append(downloadOnly);
+		builder.append(", username=");
+		builder.append(username);
+		builder.append(", password=");
+		builder.append(password);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }
