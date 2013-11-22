@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.caleydo.core.data.collection.EDimension;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
+import org.caleydo.core.data.collection.table.CategoricalTable;
+import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -42,8 +46,11 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.parcoords.Activator;
 import org.caleydo.view.parcoords.PCRenderStyle;
-import org.caleydo.view.parcoords.v2.internal.AxisElement;
+import org.caleydo.view.parcoords.v2.internal.AAxisElement;
 import org.caleydo.view.parcoords.v2.internal.Brush;
+import org.caleydo.view.parcoords.v2.internal.CategoricalAxisElement;
+import org.caleydo.view.parcoords.v2.internal.NumericalAxisElement;
+import org.caleydo.view.parcoords.v2.internal.SimpleAxisElement;
 
 import com.google.common.collect.Iterables;
 
@@ -86,7 +93,8 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 		setLayout(this);
 		this.numberOfRandomElements = fromLevel(detailLevel);
 
-		createAxes(tablePerspective.getDimensionPerspective().getVirtualArray());
+		createAxes(tablePerspective.getDimensionPerspective().getVirtualArray(), tablePerspective.getDataDomain()
+				.getTable(), EDimension.DIMENSION);
 		setVisibility(EVisibility.PICKABLE);
 		onPick(this);
 	}
@@ -95,18 +103,38 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 	 * @param virtualArray
 	 * @return
 	 */
-	private void createAxes(VirtualArray va) {
+	private void createAxes(VirtualArray va, Table table, EDimension dim) {
 		IDType idtype = va.getIdType();
 		IIDTypeMapper<Integer, String> id2name = IDMappingManagerRegistry.get().getIDMappingManager(idtype)
 				.getIDTypeMapper(idtype, idtype.getIDCategory().getHumanReadableIDType());
-
-		for (Integer id : va) {
-			Set<String> names = id2name == null ? null : id2name.apply(id);
-			AxisElement axis = new AxisElement(id, names == null || names.isEmpty() ? id.toString() : StringUtils.join(names,
-					", "));
-			this.add(axis);
+		if (table instanceof NumericalTable) {
+			for (Integer id : va)
+				this.add(new NumericalAxisElement(id, toName(id2name, id)));
+		} else if (table instanceof CategoricalTable<?>) {
+			CategoricalClassDescription<?> desc = ((CategoricalTable<?>) table).getCategoryDescriptions();
+			for (Integer id : va)
+				this.add(new CategoricalAxisElement(id, toName(id2name, id), desc));
+		} else { // hybrid table
+			assert dim == EDimension.DIMENSION;
+			for(Integer id : va) {
+				final String name = toName(id2name, id);
+				switch(table.getDataClass(id,0)) {
+				case CATEGORICAL:
+					this.add(new CategoricalAxisElement(id, name, (CategoricalClassDescription<?>) table.getDataClassSpecificDescription(id, 0)));
+					break;
+				default:
+					this.add(new SimpleAxisElement(id, name));
+					break;
+				}
+			}
 		}
 		resetAxesSpacing();
+	}
+
+	private String toName(IIDTypeMapper<Integer, String> id2name, Integer id) {
+		Set<String> names = id2name == null ? null : id2name.apply(id);
+		String name = names == null || names.isEmpty() ? id.toString() : StringUtils.join(names, ", ");
+		return name;
 	}
 
 	@Override
@@ -329,8 +357,8 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 		g.pushResourceLocator(Activator.getResourceLocator());
 
 		renderBackground(g, w, h);
-		super.renderImpl(g, w, h);
 		renderPolylines(g, h);
+		super.renderImpl(g, w, h);
 		if (brush != null)
 			brush.render(g);
 
@@ -369,7 +397,7 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 	private List<Vec2f> asPoints(Integer recordID) {
 		final Table table = getTablePerspective().getDataDomain().getTable();
 		List<Vec2f> points = new ArrayList<>(this.size());
-		for (AxisElement axis : Iterables.filter(this, AxisElement.class)) {
+		for (AAxisElement axis : Iterables.filter(this, AAxisElement.class)) {
 			float raw = table.getNormalizedValue(axis.getId(), recordID);
 			if (!axis.apply(raw))
 				return Collections.emptyList();
@@ -392,7 +420,7 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 	 * @param axisElement
 	 * @param dx
 	 */
-	public void move(AxisElement axisElement, float dx) {
+	public void move(AAxisElement axisElement, float dx) {
 		float total = getSize().x();
 		float shift = dx / total;
 		Float oldShift = axisElement.getLayoutDataAs(Float.class, 0.f);

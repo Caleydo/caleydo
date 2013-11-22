@@ -6,7 +6,6 @@
 package org.caleydo.view.parcoords.v2.internal;
 
 import static org.caleydo.view.parcoords.PCRenderStyle.AXIS_MARKER_WIDTH;
-import static org.caleydo.view.parcoords.PCRenderStyle.NUMBER_AXIS_MARKERS;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_COLOR;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_LINE_WIDTH;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH;
@@ -44,15 +43,14 @@ import org.caleydo.view.parcoords.v2.ParallelCoordinateElement;
  * @author Samuel Gratzl
  *
  */
-public class AxisElement extends GLElementContainer implements IPickingListener, IGLLayout2, IDoublePredicate {
-	private final int id;
-	private final String label;
+public abstract class AAxisElement extends GLElementContainer implements IPickingListener, IGLLayout2,
+ IDoublePredicate {
+	protected final int id;
+	protected final String label;
 	private final GLButton hideNaN;
-	private final GLButton addGate;
 	private final MultiButton moveAxis;
-	private GateElement gate;
 
-	public AxisElement(int id, String label) {
+	public AAxisElement(int id, String label) {
 		this.id = id;
 		this.label = label;
 		setLayout(this);
@@ -66,14 +64,6 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 			}
 		}).setRenderer(GLRenderers.fillImage(PCRenderStyle.NAN)));
 
-		this.addGate = new GLButton();
-		this.add(addGate.setCallback(new ISelectionCallback() {
-			@Override
-			public void onSelectionChanged(GLButton button, boolean selected) {
-				onAddGate();
-			}
-		}).setRenderer(GLRenderers.fillImage(PCRenderStyle.ADD_GATE)));
-
 		this.moveAxis = new MultiButton();
 		this.add(this.moveAxis);
 	}
@@ -82,24 +72,12 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 	public boolean apply(double in) {
 		if (hideNaN.isSelected() && Double.isNaN(in))
 			return false;
-		if (gate != null)
-			return gate.apply(in);
 		return true;
 	}
 
 	@Override
-	public boolean apply(Double input) {
+	public final boolean apply(Double input) {
 		return apply(input.doubleValue());
-	}
-
-	/**
-	 *
-	 */
-	protected void onAddGate() {
-		if (gate != null)
-			return;
-		gate = new GateElement();
-		this.add(gate);
 	}
 
 	@Override
@@ -107,16 +85,11 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 			int deltaTimeMs) {
 		final IGLLayoutElement axis = children.get(0);
 		final IGLLayoutElement nan = children.get(1);
-		final IGLLayoutElement add = children.get(2);
-		final IGLLayoutElement move = children.get(3);
+		final IGLLayoutElement move = children.get(2);
 
 		axis.setBounds(0, 0, w, h);
 		nan.setBounds(-6, h + 3, 12, 12);
-		add.setBounds(-8, -32, 16, 32);
 		move.setBounds(-8, h + 16, 16, 32);
-
-		if (children.size() > 4)
-			children.get(4).setBounds(-8, 0, 16, h);
 
 		return false;
 	}
@@ -152,14 +125,14 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 	/**
 	 * @return the id, see {@link #id}
 	 */
-	public int getId() {
+	public final int getId() {
 		return id;
 	}
 
 	/**
 	 * @return
 	 */
-	public float getX() {
+	public final float getX() {
 		return getLocation().x();
 	}
 
@@ -222,7 +195,7 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 		g.gl.glPopAttrib();
 	}
 
-	private ParallelCoordinateElement findParent() {
+	protected final ParallelCoordinateElement findParent() {
 		return findParent(ParallelCoordinateElement.class);
 	}
 	/**
@@ -243,7 +216,7 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 	/**
 	 *
 	 */
-	public void resetAxis() {
+	void resetAxis() {
 		ParallelCoordinateElement p = findParent();
 		p.resetAxesSpacing();
 	}
@@ -253,44 +226,22 @@ public class AxisElement extends GLElementContainer implements IPickingListener,
 	 */
 	void duplicate() {
 		ParallelCoordinateElement p = findParent();
-		p.add(new AxisElement(id, label));
+		p.add(createClone());
 		p.resetAxesSpacing();
 	}
 
+
+	/**
+	 * @return
+	 */
+	protected abstract AAxisElement createClone();
 
 	/**
 	 * @param g
 	 * @param w
 	 * @param h
 	 */
-	private void renderMarkers(GLGraphics g, float w, float h) {
-		// markers on axis
-		g.color(Y_AXIS_COLOR);
-		float delta = h / (NUMBER_AXIS_MARKERS + 1);
-		for (int i = 1; i < NUMBER_AXIS_MARKERS; ++i) {
-			float at = delta * i;
-			// if (count == 0) {
-			// if (dataDomain.getTable() instanceof NumericalTable) {
-			// float fNumber = (float) ((NumericalTable) dataDomain.getTable()).getRawForNormalized(
-			// dataTransformation, currentHeight / renderStyle.getAxisHeight());
-			//
-			// float width = pixelGLConverter.getGLWidthForPixelWidth(40);
-			// float height = pixelGLConverter.getGLHeightForPixelHeight(12);
-			//
-			// float xOrigin = xPosition - width - axisMarkerWidth;
-			//
-			// float yOrigin = currentHeight - height / 2;
-			//
-			// textRenderer.renderTextInBounds(gl, Formatter.formatNumber(fNumber), xOrigin, yOrigin,
-			// PCRenderStyle.TEXT_ON_LABEL_Z, width, height);
-			//
-			// } else {
-			// // TODO: dimension based access
-			// }
-			// }
-			g.drawLine(-AXIS_MARKER_WIDTH, at, +AXIS_MARKER_WIDTH, at);
-		}
-	}
+	protected abstract void renderMarkers(GLGraphics g, float w, float h);
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
