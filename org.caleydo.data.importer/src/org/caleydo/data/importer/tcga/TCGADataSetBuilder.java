@@ -161,20 +161,27 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		addDataSourceMetaData(dataset, fileInfo);
 		dataset.addAttribute("Full Genes", new Boolean(loadFullGenes).toString());
 
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setParseUntilEnd(true);
+		parsingRule.setColumnDescripton(new ColumnDescription());
+
 		if (!loadFullGenes) {
-			// the gct files have 3 header lines and are centered<
+			// the first column contains the gene ids and the second column contains additional (or the same) identifiers
+			parsingRule.setFromColumn(2);
+			
+			// the gct files have 3 header lines and are centered
 			dataSet.setNumberOfHeaderLines(3);
 			dataSet.getDataDescription().getNumericalProperties().setDataCenter(0d);
 		} else {
+			// full matrices don't have the extra column before the actual data that gct files have
+			parsingRule.setFromColumn(1);
+
 			// the files with all the genes have the ids in the first row, then a row with "signal" and then the data
-			dataSet.setNumberOfHeaderLines(2);
+			// NG: I can't confirm the above and I found counter examples, e.g. in mRNA-seq for THCA
+			dataSet.setNumberOfHeaderLines(1);
 			dataSet.setRowOfColumnIDs(0);
 		}
 
-		ParsingRule parsingRule = new ParsingRule();
-		parsingRule.setFromColumn(2);
-		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription());
 		dataSet.addParsingRule(parsingRule);
 		dataSet.setTransposeMatrix(true);
 
