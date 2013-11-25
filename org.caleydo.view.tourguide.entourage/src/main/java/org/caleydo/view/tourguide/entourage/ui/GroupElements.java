@@ -121,14 +121,21 @@ public class GroupElements extends GLElementDecorator implements IHasMinSize, Pr
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		switch(evt.getPropertyName()) {
+		switch (evt.getPropertyName()) {
 		case CheckColumnModel.PROP_CHECKED:
-			if (callback != null && evt instanceof IndexedPropertyChangeEvent) {
-				int index = ((IndexedPropertyChangeEvent)evt).getIndex();
-				boolean checked = (Boolean)evt.getNewValue();
-				GroupRow r = (GroupRow) table.getDataItem(index);
-				callback.onGroupSelectionChanged(r.getGroup(), checked);
+			if (callback != null) {
+				boolean checked = (Boolean) evt.getNewValue();
+				if (evt instanceof IndexedPropertyChangeEvent) {
+					int index = ((IndexedPropertyChangeEvent) evt).getIndex();
+					GroupRow r = (GroupRow) table.getDataItem(index);
+					callback.onGroupSelectionChanged(r.getGroup(), checked);
+				} else {
+					for (IRow r : table.getData()) {
+						callback.onGroupSelectionChanged(((GroupRow) r).getGroup(), checked);
+					}
+				}
 			}
+
 			break;
 		default:
 			break;
