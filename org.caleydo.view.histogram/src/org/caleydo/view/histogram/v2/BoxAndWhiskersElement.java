@@ -22,7 +22,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.view.ASingleTablePerspectiveElement;
 
 /**
- * renders an average bar similar to enroute.
+ * renders an box and whiskers plot for numerical data domains
  *
  * @author Samuel Gratzl
  */
@@ -31,7 +31,7 @@ public class BoxAndWhiskersElement extends ASingleTablePerspectiveElement {
 	 * height of the box in percentage of the total height
 	 */
 	private static final float BOX_HEIGHT_PERCENTAGE = 1 / 3.f;
-	private static final int LINE_TAIL_HEIGHT = 3;
+	private static final float LINE_TAIL_HEIGHT_PERCENTAGE = 0.75f;
 
 	private final EDetailLevel detailLevel;
 
@@ -130,13 +130,14 @@ public class BoxAndWhiskersElement extends ASingleTablePerspectiveElement {
 		g.color(0.2f, 0.2f, 0.2f).drawLine(median, y, median, y + hi);
 
 		// Whiskers
-		final float y_whiskers = y / 2;
+		final float center = h / 2;
 		g.color(0, 0, 0);
-		g.drawLine(min, y_whiskers, firstQuantrileBoundary, y_whiskers);
-		g.drawLine(max, y_whiskers, thirdQuantrileBoundary, y_whiskers);
+		g.drawLine(min, center, firstQuantrileBoundary, center);
+		g.drawLine(max, center, thirdQuantrileBoundary, center);
 
-		g.drawLine(min, y_whiskers - LINE_TAIL_HEIGHT, min, y_whiskers + LINE_TAIL_HEIGHT);
-		g.drawLine(max, y_whiskers - LINE_TAIL_HEIGHT, max, y_whiskers + LINE_TAIL_HEIGHT);
+		float h_whiskers = hi * LINE_TAIL_HEIGHT_PERCENTAGE;
+		g.drawLine(min, center - h_whiskers * 0.5f, min, center + h_whiskers * 0.5f);
+		g.drawLine(max, center - h_whiskers * 0.5f, max, center + h_whiskers * 0.5f);
 	}
 
 
