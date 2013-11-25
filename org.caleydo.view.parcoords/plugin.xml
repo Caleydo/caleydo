@@ -62,4 +62,12 @@
             class="org.caleydo.view.parcoords.preferences.MyPreferences">
       </initializer>
    </extension>
+   <extension
+         point="org.caleydo.ui.GLElementFactory">
+      <factory
+            factory="org.caleydo.view.parcoords.v2.internal.ParallelCoordinateElementFactory"
+            icon="resources/icons/parcoords.png"
+            name="Parallel Coordinates Plot">
+      </factory>
+   </extension>
 </plugin>

@@ -5,28 +5,16 @@
  ******************************************************************************/
 package org.caleydo.view.parcoords.toolbar;
 
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.gui.SimpleEventAction;
 import org.caleydo.view.parcoords.Activator;
 import org.caleydo.view.parcoords.listener.AngularBrushingEvent;
-import org.eclipse.jface.action.Action;
 
-public class AngularBrushingAction extends Action {
-
-	public static final String LABEL = "Set angular brush";
-	public static final String ICON = "resources/icons/angular_brush_16.png";
-
+public class AngularBrushingAction extends SimpleEventAction {
 	/**
 	 * Constructor.
 	 */
 	public AngularBrushingAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(Activator.getImageDescriptor(ICON));
-	}
-
-	@Override
-	public void run() {
-		super.run();
-		GeneralManager.get().getEventPublisher().triggerEvent(new AngularBrushingEvent());
+		super("Set angular brush", "resources/icons/angular_brush_16.png", Activator.getResourceLoader(),
+				new AngularBrushingEvent());
 	}
 }
