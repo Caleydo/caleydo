@@ -26,12 +26,25 @@ public class TableDoubleLists {
 	}
 
 	public static IDoubleList asRawList(TablePerspective t) {
-		assert DataSupportDefinitions.dataClass(EDataClass.REAL_NUMBER).apply(t);
+		assert DataSupportDefinitions.dataClass(EDataClass.REAL_NUMBER, EDataClass.NATURAL_NUMBER).apply(t);
+		final boolean isInteger = DataSupportDefinitions.dataClass(EDataClass.NATURAL_NUMBER).apply(t);
 		return new ATablePerspectiveDoubleList(t) {
 			@Override
 			protected double getValue(Integer dimensionID, Integer recordID) {
 				Number r = table.getRaw(dimensionID, recordID);
-				return r == null ? Double.NaN : r.doubleValue();
+				return isInvalid(r) ? Double.NaN : r.doubleValue();
+			}
+
+			private boolean isInvalid(Number r) {
+				if (r == null)
+					return true;
+				// handle corner case in which integer invalid values are treated as Integer.MIN_VALUE
+				if (isInteger && r instanceof Integer && r.intValue() == Integer.MIN_VALUE)
+					return true;
+				if ((r instanceof Double && Double.isNaN(r.doubleValue()))
+						|| (r instanceof Float && Float.isNaN(r.floatValue())))
+					return true;
+				return false;
 			}
 		};
 	}

@@ -5,6 +5,7 @@
  *******************************************************************************/
 package org.caleydo.view.histogram.v2.internal;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -28,7 +29,7 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory {
 	@Override
 	public boolean canCreate(GLElementFactoryContext context) {
 		TablePerspective data = context.getData();
-		return DataSupportDefinitions.numericalTables.apply(data);
+		return DataSupportDefinitions.dataClass(EDataClass.REAL_NUMBER, EDataClass.NATURAL_NUMBER).apply(data);
 	}
 
 	@Override

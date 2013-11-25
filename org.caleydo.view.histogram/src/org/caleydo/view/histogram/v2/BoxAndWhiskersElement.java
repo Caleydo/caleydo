@@ -7,7 +7,6 @@ package org.caleydo.view.histogram.v2;
 
 import gleem.linalg.Vec2f;
 
-import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TableDoubleLists;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
@@ -48,8 +47,6 @@ public class BoxAndWhiskersElement extends ASingleTablePerspectiveElement {
 
 	public BoxAndWhiskersElement(TablePerspective tablePerspective) {
 		this(tablePerspective, EDetailLevel.HIGH);
-		// is a numerical one
-		assert DataSupportDefinitions.numericalTables.apply(tablePerspective);
 	}
 
 	public BoxAndWhiskersElement(TablePerspective tablePerspective, EDetailLevel detailLevel) {
