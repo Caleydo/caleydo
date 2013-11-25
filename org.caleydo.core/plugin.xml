@@ -79,6 +79,15 @@
                name="aboutText"
                value="%aboutText">
          </property>
+         <property
+			    name="cssTheme"
+			    value="org.eclipse.e4.ui.css.theme.e4_default">
+			</property>
+		<property
+		    name="applicationCSSResources"
+		    value="platform:/plugin/org.eclipse.platform/images/">
+		</property>
+			         
       </product>
    </extension>
    <extension
@@ -439,6 +448,25 @@
                   id="org.caleydo.core.gui.preferences.views"
                   name="Views">
             </page>
+            <page
+	            name="Keys"
+	            class="org.eclipse.ui.ExtensionFactory:keysPreferencePage"
+	            id="org.eclipse.ui.preferencePages.Keys"
+	            category="org.caleydo.core.gui.preferences.GeneralPreferencePage">
+	      	</page>
+            <page
+	            name="Appearance"
+	            class="org.eclipse.ui.ExtensionFactory:appearancePreferencePage"
+	            id="org.eclipse.ui.preferencePages.Views"
+	            category="org.caleydo.core.gui.preferences.GeneralPreferencePage">
+	      	</page>
+            <page
+	            name="Colors and Fonts"
+	            class="org.eclipse.ui.ExtensionFactory:colorsAndFontsPreferencePage"
+	            id="org.eclipse.ui.preferencePages.ColorsAndFonts"
+	            category="org.caleydo.core.gui.preferences.GeneralPreferencePage">
+	      	</page>
+	      	
    </extension>
       <extension
             point="org.caleydo.datadomain.DataDomainActions">

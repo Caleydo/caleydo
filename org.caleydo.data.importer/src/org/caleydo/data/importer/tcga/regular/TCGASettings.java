@@ -27,4 +27,9 @@ public class TCGASettings extends Settings {
 	public boolean isSampleGenes() {
 		return Boolean.parseBoolean(sampleGenes) && !fullGenes;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString() + (isSampleGenes() ? "FULLGENES" : "SAMPLEGENES");
+	}
 }

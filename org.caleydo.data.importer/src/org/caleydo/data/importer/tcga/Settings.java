@@ -44,9 +44,6 @@ public class Settings {
 		NONE, AFFINITY, KMEANS, TREE;
 	}
 
-	private static String CALEYDO_JNLP_GENERATOR_URL = "http://data.icg.tugraz.at/caleydo/download/webstart_"
-			+ GeneralManager.VERSION + "/{0}_{1}.jnlp"; // jnlpgenerator.php?date={0}&tumor={1}";
-
 	private static final String BASE_URL = "http://gdac.broadinstitute.org/runs/";
 	/**
 	 * 0..run (a date), 1..tumor, 2..tumorSample (e.g. -TP), 3..pipelineName, 4..level
@@ -209,17 +206,6 @@ public class Settings {
 		return downloadOnly;
 	}
 
-	public String getJNLPOutputDirectory() {
-		if (this.flatOutput)
-			return ensureExistingDir(outputPath);
-		else
-			return ensureExistingDir(new File(outputPath, "jnlp" + GeneralManager.VERSION));
-	}
-
-	public String getJNLPURL(String declare, TumorType tumor) {
-		return MessageFormat.format(CALEYDO_JNLP_GENERATOR_URL, declare, tumor);
-	}
-
 	private static String ensureExistingDir(File f) {
 		if (f.exists())
 			return f.getAbsolutePath() + "/";
@@ -365,4 +351,50 @@ public class Settings {
 	public Gson getGson() {
 		return gson;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Settings [analysisRuns=");
+		builder.append(analysisRuns);
+		builder.append(", dataRuns=");
+		builder.append(dataRuns);
+		builder.append(", tumorTypes=");
+		builder.append(tumorTypes);
+		builder.append(", cluster=");
+		builder.append(cluster);
+		builder.append(", awgGroup=");
+		builder.append(awgGroup);
+		builder.append(", clinicalVariables=");
+		builder.append(clinicalVariables);
+		builder.append(", outputPath=");
+		builder.append(outputPath);
+		builder.append(", flatOutput=");
+		builder.append(flatOutput);
+		builder.append(", cleanCache=");
+		builder.append(cleanCache);
+		builder.append(", numThreads=");
+		builder.append(numThreads);
+		builder.append(", batchSize=");
+		builder.append(batchSize);
+		builder.append(", analysisPattern=");
+		builder.append(analysisPattern);
+		builder.append(", filePattern=");
+		builder.append(filePattern);
+		builder.append(", dataPattern=");
+		builder.append(dataPattern);
+		builder.append(", dataFilePattern=");
+		builder.append(dataFilePattern);
+		builder.append(", reportPattern=");
+		builder.append(reportPattern);
+		builder.append(", downloadOnly=");
+		builder.append(downloadOnly);
+		builder.append(", username=");
+		builder.append(username);
+		builder.append(", password=");
+		builder.append(password);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

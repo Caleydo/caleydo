@@ -6,12 +6,13 @@
 package org.caleydo.data.importer.tcga;
 
 import java.io.File;
+import java.net.URL;
 
 /**
  * Info of a downloaded TCGA file.
  *
  * @author Christian
- * 
+ *
  */
 public class TCGAFileInfo {
 
@@ -22,13 +23,13 @@ public class TCGAFileInfo {
 	/**
 	 * The url of the archive the file was extracted from.
 	 */
-	private final String archiveURL;
+	private final URL archiveURL;
 	/**
 	 * The source file name within the archive.
 	 */
 	private final String sourceFileName;
 
-	public TCGAFileInfo(File file, String archiveURL, String sourceFileName) {
+	public TCGAFileInfo(File file, URL archiveURL, String sourceFileName) {
 		this.file = file;
 		this.archiveURL = archiveURL;
 		this.sourceFileName = sourceFileName;
@@ -44,7 +45,7 @@ public class TCGAFileInfo {
 	/**
 	 * @return the archiveURL, see {@link #archiveURL}
 	 */
-	public String getArchiveURL() {
+	public URL getArchiveURL() {
 		return archiveURL;
 	}
 
@@ -53,6 +54,56 @@ public class TCGAFileInfo {
 	 */
 	public String getSourceFileName() {
 		return sourceFileName;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((archiveURL == null) ? 0 : archiveURL.hashCode());
+		result = prime * result + ((file == null) ? 0 : file.hashCode());
+		result = prime * result + ((sourceFileName == null) ? 0 : sourceFileName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TCGAFileInfo other = (TCGAFileInfo) obj;
+		if (archiveURL == null) {
+			if (other.archiveURL != null)
+				return false;
+		} else if (!archiveURL.equals(other.archiveURL))
+			return false;
+		if (file == null) {
+			if (other.file != null)
+				return false;
+		} else if (!file.equals(other.file))
+			return false;
+		if (sourceFileName == null) {
+			if (other.sourceFileName != null)
+				return false;
+		} else if (!sourceFileName.equals(other.sourceFileName))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("TCGAFileInfo [");
+		builder.append(archiveURL);
+		builder.append("!");
+		builder.append(sourceFileName);
+		builder.append(" => ");
+		builder.append(file);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

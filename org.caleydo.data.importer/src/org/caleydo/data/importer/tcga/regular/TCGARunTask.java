@@ -9,10 +9,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RecursiveAction;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.importer.tcga.EDataSetType;
@@ -26,6 +28,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class TCGARunTask extends RecursiveAction {
+	private static final Logger log = Logger.getLogger(TCGARunTask.class.getName());
 	private static final long serialVersionUID = 1903427073511950319L;
 
 	private final Date analysisRun;
@@ -40,30 +43,37 @@ public class TCGARunTask extends RecursiveAction {
 
 	@Override
 	protected void compute() {
-		Collection<TCGATask> tasks = new ArrayList<>();
-		for (TumorType tumorType : settings.getTumorTypes()) {
+		List<TCGATask> tasks = new ArrayList<>();
+		List<TumorType> tumorTypes = new ArrayList<>(settings.getTumorTypes());
+		String id = Settings.format(analysisRun);
+		log.info(id + " start tumor types: " + tumorTypes);
+		for (TumorType tumorType : tumorTypes) {
 			tasks.add(new TCGATask(tumorType, analysisRun, dataRun, settings));
 		}
 		invokeAll(tasks);
 
+		log.fine(id + " created");
 		JsonArray b = new JsonArray();
+		int i = -1;
 		for (TCGATask task : tasks) {
+			i++;
 			try {
 				JsonElement t = task.get();
-				if (t == null)
+				if (t == null) {
+					log.warning(id + " " + tumorTypes.get(i) + " delivered no result");
 					continue;
+				}
 				b.add(t);
 			} catch (InterruptedException | ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.log(Level.SEVERE, id + " " + tumorTypes.get(i) + " execution error: " + e.getMessage(), e);
 			}
 		}
 		try {
-			generateJSONReport(b, analysisRun, dataRun, settings.getDataDirectory(Settings.format(analysisRun)));
+			generateJSONReport(b, analysisRun, dataRun, settings.getDataDirectory(id));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.log(Level.SEVERE, id + " can't generate json report: " + e.getMessage(), e);
 		}
+		log.info(id + " done (" + b.size() + " tumor types)");
 	}
 
 	protected void generateJSONReport(JsonArray detailedReports, Date analysisRun, Date dataRun,

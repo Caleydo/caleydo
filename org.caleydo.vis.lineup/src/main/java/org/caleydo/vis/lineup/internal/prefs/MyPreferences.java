@@ -6,6 +6,7 @@
 package org.caleydo.vis.lineup.internal.prefs;
 
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.vis.lineup.internal.Activator;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -18,6 +19,9 @@ import org.eclipse.swt.graphics.RGB;
  */
 public class MyPreferences extends AbstractPreferenceInitializer {
 	private static IPreferenceStore prefs() {
+		if (Activator.getDefault() == null) {
+			return GLSandBox.prefs(MyPreferences.class);
+		}
 		return Activator.getDefault().getPreferenceStore();
 	}
 

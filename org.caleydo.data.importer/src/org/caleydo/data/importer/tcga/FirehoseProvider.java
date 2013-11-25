@@ -26,19 +26,22 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.lang.SystemUtils;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.data.importer.tcga.model.TumorType;
 
 import com.google.common.collect.Table;
 import com.google.common.collect.TreeBasedTable;
+import com.google.common.io.Closeables;
 
 public final class FirehoseProvider {
-	private static final Logger log = Logger.getLogger(FirehoseProvider.class.getSimpleName());
+	private static final Logger log = Logger.getLogger(FirehoseProvider.class.getName());
 	private static final int LEVEL = 4;
 
 	private final TumorType tumor;
@@ -99,8 +102,7 @@ public final class FirehoseProvider {
 		else {
 			runId = Settings.formatClean(run);
 		}
-		return new File(tmpOutputDirectory + runId + System.getProperty("file.separator")
-				+ tumor + System.getProperty("file.separator"));
+		return new File(tmpOutputDirectory + runId + SystemUtils.FILE_SEPARATOR + tumor + SystemUtils.FILE_SEPARATOR);
 	}
 
 	private Pair<TCGAFileInfo, Boolean> findStandardSampledClusteredFile(EDataSetType type) {
@@ -248,22 +250,26 @@ public final class FirehoseProvider {
 
 			return extractFileFromTarGzArchive(url, fileName, outputDir, hasTumor);
 		} catch (MalformedURLException e) {
-			throw new RuntimeException("can't extract " + fileName + " from " + label, e);
+			log.log(Level.SEVERE, "invalid url generated from: " + id + " " + tumor + " " + tumorSample + " "
+					+ pipelineName + " " + level);
+			return null;
 		}
 	}
 
 	private TCGAFileInfo extractFileFromTarGzArchive(URL inUrl, String fileToExtract, File outputDirectory,
 			boolean hasTumor) {
-		log.info("downloading: " + inUrl);
+		log.info(inUrl + " download and extract: " + fileToExtract);
 		File targetFile = new File(outputDirectory, fileToExtract);
 
 		// use cached
-		if (targetFile.exists() && !settings.isCleanCache())
-			return new TCGAFileInfo(targetFile, inUrl.toString(), fileToExtract);
+		if (targetFile.exists() && !settings.isCleanCache()) {
+			log.fine(inUrl+" cache hit");
+			return new TCGAFileInfo(targetFile, inUrl, fileToExtract);
+		}
 
 		File notFound = new File(outputDirectory, fileToExtract + "-notfound");
 		if (notFound.exists() && !settings.isCleanCache()) {
-			log.warning("file not found in a previous run: " + inUrl);
+			log.warning(inUrl+" marked as not found");
 			return null;
 		}
 
@@ -276,7 +282,6 @@ public final class FirehoseProvider {
 		TarArchiveInputStream tarIn = null;
 		OutputStream out = null;
 		try {
-			System.out.println("I: Extracting " + fileToExtract + " from " + inUrl + ".");
 			InputStream in = new BufferedInputStream(inUrl.openStream());
 
 			// ok we have the file
@@ -290,7 +295,6 @@ public final class FirehoseProvider {
 			if (act == null) // no entry found
 				throw new FileNotFoundException("no entry named: " + fileToExtract + " found");
 
-			log.info("extracting: " + fileToExtract + " from " + inUrl);
 			byte[] buf = new byte[4096];
 			int n;
 			targetFile.getParentFile().mkdirs();
@@ -301,35 +305,25 @@ public final class FirehoseProvider {
 				out.write(buf, 0, n);
 			out.close();
 			Files.move(new File(tmpFile).toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-			System.out.println("I: Extracted " + fileToExtract + " from " + inUrl + ".");
-			return new TCGAFileInfo(targetFile, inUrl.toString(), fileToExtract);
+
+			log.info(inUrl+" extracted "+fileToExtract);
+			return new TCGAFileInfo(targetFile, inUrl, fileToExtract);
 		} catch (FileNotFoundException e) {
-			log.warning("Unable to extract " + fileToExtract + " from " + inUrl + ". " + "file not found");
+			log.log(Level.WARNING, inUrl + " can't extract" + fileToExtract + ": file not found", e);
 			// file was not found, create a marker to remember this for quicker checks
 			notFound.getParentFile().mkdirs();
 			try {
 				notFound.createNewFile();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				log.log(Level.WARNING, inUrl + " can't create not-found marker", e);
 			}
 			return null;
 		} catch (Exception e) {
-			log.warning("Unable to extract " + fileToExtract + " from " + inUrl + ". " + e.getMessage());
+			log.log(Level.SEVERE, inUrl + " can't extract" + fileToExtract + ": " + e.getMessage(), e);
 			return null;
 		} finally {
-			if (tarIn != null)
-				try {
-					tarIn.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			if (out != null)
-				try {
-					out.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			Closeables.closeQuietly(tarIn);
+			Closeables.closeQuietly(out);
 		}
 	}
 
@@ -338,7 +332,7 @@ public final class FirehoseProvider {
 		File out = new File(maf.getParentFile(), "P" + maf.getName());
 		if (out.exists())
 			return out;
-		System.out.println("parsing maf file " + maf.getAbsolutePath());
+		log.fine(maf.getAbsolutePath() + " parsing maf file");
 		final String TAB = "\t";
 
 		try (BufferedReader reader = Files.newBufferedReader(maf.toPath(), Charset.forName("UTF-8"))) {
@@ -362,7 +356,6 @@ public final class FirehoseProvider {
 			}
 			w.println();
 			Set<String> rows = mutated.rowKeySet();
-			System.out.println(mutated.size() + " " + rows.size() + " " + cols.size());
 			for (String gene : rows) {
 				w.append(gene);
 				for (String sample : cols) {
@@ -372,11 +365,12 @@ public final class FirehoseProvider {
 			}
 			w.close();
 			Files.move(tmp.toPath(), out.toPath(), StandardCopyOption.REPLACE_EXISTING);
-			System.out.println("parsed " + maf.getAbsolutePath());
+
+			log.fine(maf.getAbsolutePath() + " parsed maf file stats: " + mutated.size() + " " + rows.size() + " "
+					+ cols.size());
 			return out;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.log(Level.SEVERE, maf.getAbsolutePath() + " maf parsing error: " + e.getMessage(), e);
 		}
 		return null;
 	}
@@ -386,6 +380,21 @@ public final class FirehoseProvider {
 				"/home/alexsb/Dropbox/Caleydo/data/ccle/CCLE_hybrid_capture1650_hg19_NoCommonSNPs_CDS_2012.05.07.maf");
 		file = parseMAF(file);
 
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("FirehoseProvider[");
+		builder.append(tumor);
+		builder.append("/");
+		builder.append(tumorSample);
+		builder.append("@");
+		builder.append(Settings.format(analysisRun));
+		builder.append(",");
+		builder.append(Settings.format(dataRun));
+		builder.append("]");
+		return builder.toString();
 	}
 
 }
