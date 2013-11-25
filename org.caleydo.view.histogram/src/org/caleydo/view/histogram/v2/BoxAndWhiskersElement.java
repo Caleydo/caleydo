@@ -16,6 +16,7 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.util.format.Formatter;
+import org.caleydo.core.util.function.ADoubleFunction;
 import org.caleydo.core.util.function.AdvancedDoubleStatistics;
 import org.caleydo.core.util.function.DoubleFunctions;
 import org.caleydo.core.util.function.IDoubleFunction;
@@ -191,26 +192,28 @@ public class BoxAndWhiskersElement extends ASingleTablePerspectiveElement {
 		final float v_delta = 1.f / ticks;
 
 		final Table table = t.getDataDomain().getTable();
-
+		IDoubleFunction f;
 		if (table instanceof NumericalTable) {
-			NumericalTable tab = (NumericalTable) table;
-			g.drawText(Formatter.formatNumber(tab.getRawForNormalized(Table.Transformation.LINEAR, 0)), 1, hi, delta,
-					10);
-			for (int i = 1; i < ticks; ++i) {
-				double raw = tab.getRawForNormalized(Table.Transformation.LINEAR, v_delta*i);
-				g.drawText(Formatter.formatNumber(raw), x - delta * 0.5f, hi, delta, 10, VAlign.CENTER);
-			}
-			g.drawText(Formatter.formatNumber(tab.getRawForNormalized(Table.Transformation.LINEAR, 1)), w - delta - 1,
-					hi, delta - 1, 10, VAlign.RIGHT);
+			// we can use the built in function
+			final NumericalTable tab = (NumericalTable) table;
+			f = new ADoubleFunction() {
+				@Override
+				public double apply(double v) {
+					return tab.getRawForNormalized(Table.Transformation.LINEAR, v);
+				}
+			};
 		} else {
-			g.drawText(Formatter.formatNumber(rawStats.getMin()), 1, hi, delta, 10);
-			IDoubleFunction f = DoubleFunctions.unnormalize(rawStats.getMin(), rawStats.getMax());
-			for (int i = 1; i < ticks; ++i) {
-				double raw = f.apply(v_delta * i);
-				g.drawText(Formatter.formatNumber(raw), x - delta * 0.5f, hi, delta, 10, VAlign.CENTER);
-			}
-			g.drawText(Formatter.formatNumber(rawStats.getMax()), w - delta - 1, hi, delta - 1, 10, VAlign.RIGHT);
+			// use the data from the min max stats
+			f = DoubleFunctions.unnormalize(rawStats.getMin(), rawStats.getMax());
 		}
+		final int textHeight = 10;
+
+		g.drawText(Formatter.formatNumber(f.apply(0)), 1, hi, delta, textHeight);
+		for (int i = 1; i < ticks; ++i) {
+			g.drawText(Formatter.formatNumber(f.apply(v_delta * i)), x - delta * 0.5f, hi, delta, textHeight,
+					VAlign.CENTER);
+		}
+		g.drawText(Formatter.formatNumber(f.apply(1)), w - delta - 1, hi, delta - 1, textHeight, VAlign.RIGHT);
 	}
 
 	/**
