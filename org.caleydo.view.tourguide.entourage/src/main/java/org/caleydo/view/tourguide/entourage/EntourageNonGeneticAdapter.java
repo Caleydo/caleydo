@@ -20,12 +20,14 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.view.entourage.datamapping.DataMappingState;
 import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.model.ASingleIDDataDomainQuery;
 import org.caleydo.view.tourguide.api.model.ITablePerspectiveScoreRow;
 import org.caleydo.view.tourguide.api.model.InhomogenousDataDomainQuery;
+import org.caleydo.view.tourguide.api.vis.ITourGuideView;
 import org.caleydo.view.tourguide.entourage.model.CheckColumnModel;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -55,6 +57,14 @@ public class EntourageNonGeneticAdapter extends AEntourageAdapter implements Pro
 	@Override
 	public String getPartName() {
 		return "Non-Genetic";
+	}
+
+	@Override
+	public void setup(ITourGuideView vis, GLElementContainer lineUp) {
+		super.setup(vis, lineUp);
+
+		if (isBound2View())
+			loadViewState();
 	}
 
 	@Override
@@ -95,7 +105,7 @@ public class EntourageNonGeneticAdapter extends AEntourageAdapter implements Pro
 
 	@Override
 	protected void loadViewState() {
-		if (entourage == null)
+		if (entourage == null || vis == null)
 			return;
 		List<TablePerspective> visible = entourage.getDataMappingState().getContextualTablePerspectives();
 		Set<IDataDomain> visibleDataDomains = new HashSet<>();

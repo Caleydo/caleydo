@@ -85,8 +85,10 @@ abstract class AEntourageAdapter implements ITourGuideAdapter {
 			this.entourage = ((RcpGLSubGraphView) part).getView();
 		} else
 			this.entourage = null;
-		if (vis != null)
+		if (vis != null) {
 			vis.updateBound2ViewState();
+			loadViewState();
+		}
 	}
 
 	@Override
