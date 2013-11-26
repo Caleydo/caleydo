@@ -829,6 +829,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	@Override
 	public void display(GL2 gl) {
+
 		clearWindowStubSets();
 		if (windowToSetActive != null) {
 			windowToSetActive.setActive(true);
@@ -865,18 +866,19 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			EnablePathSelectionEvent event = new EnablePathSelectionEvent(isPathSelectionMode);
 			event.setEventSpace(pathEventSpace);
 			eventPublisher.triggerEvent(event);
-			if (currentContextVertexRep != null) {
-				ShowNodeContextEvent e = new ShowNodeContextEvent(currentContextVertexRep);
-				e.setEventSpace(pathEventSpace);
-				e.setSender(this);
-				eventPublisher.triggerEvent(e);
-			}
+
 			PathwayMappingEvent pathwayMappingEvent = new PathwayMappingEvent(
 					dataMappingState.getPathwayMappedTablePerspective());
 			event.setEventSpace(pathEventSpace);
 			EventPublisher.trigger(pathwayMappingEvent);
 			EventPublisher.trigger(new SampleMappingModeEvent(sampleMappingMode));
 
+			if (currentContextVertexRep != null) {
+				ShowNodeContextEvent e = new ShowNodeContextEvent(currentContextVertexRep);
+				e.setEventSpace(pathEventSpace);
+				e.setSender(this);
+				eventPublisher.triggerEvent(e);
+			}
 			wasPathwayAdded = false;
 		}
 		// The augmentation has to be updated after the layout was updated in super; updating on relayout would be too
