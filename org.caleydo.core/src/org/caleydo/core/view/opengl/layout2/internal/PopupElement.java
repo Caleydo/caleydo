@@ -149,6 +149,8 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+		if (children.size() < 3) // something strange happened
+			return;
 		IGLLayoutElement body = children.get(0);
 		boolean hasHeader = isFlagSet(FLAG_HAS_HEADER);
 		float offset = 0; // isFlagSet(FLAG_BORDER) ? 1 : 0;

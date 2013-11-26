@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.col;
 
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -50,7 +51,7 @@ public class CategoricalPercentageRankColumnModel extends DoubleRankColumnModel 
 	}
 
 	public static CategoricalPercentageRankColumnModel create(final Object category, final CategoricalTable<?> table,
-			boolean isConsideredForCalculation) {
+			boolean isConsideredForCalculation, EDimension dim) {
 		final CategoryProperty<?> property = table.getCategoryDescriptions().getCategoryProperty(category);
 		String catName = property.getCategoryName();
 		IDoubleFunction<IRow> data = new ADoubleFunction<IRow>() {
@@ -73,7 +74,8 @@ public class CategoricalPercentageRankColumnModel extends DoubleRankColumnModel 
 			col = Color.NEUTRAL_GREY;
 		}
 		return new CategoricalPercentageRankColumnModel(data, catName, col, bgColor, table.getDataDomain(),
-				table.depth(), property);
+ dim.select(
+				table.depth(), table.size()), property);
 	}
 
 	public static boolean isConsideredForCalculation(CategoricalPercentageRankColumnModel model) {

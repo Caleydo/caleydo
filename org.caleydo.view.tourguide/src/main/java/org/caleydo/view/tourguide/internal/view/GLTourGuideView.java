@@ -559,22 +559,21 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	public void updateBound2ViewState() {
 		if (this.dataDomainQueryUI != null)
 			this.dataDomainQueryUI.updateSelections();
+
 		boolean act = this.adapter.isBound2View();
 		boolean prev = !this.noAttachedView;
-		if (act == prev)
-			return;
-		if (prev)
-			getPopupLayer().show(noAttachedViewLabel, null, 0);
-		else
-			getPopupLayer().hide(noAttachedViewLabel);
-		this.noAttachedView = !this.noAttachedView;
+		if (act != prev) {
+			if (prev)
+				getPopupLayer().show(noAttachedViewLabel, null, 0);
+			else
+				getPopupLayer().hide(noAttachedViewLabel);
+			this.noAttachedView = !this.noAttachedView;
+		}
 
 		if (this.adapter.isBound2View()) {
 			for (ADataDomainQuery query : queries)
 				query.setEnabled(this.adapter.filterBoundView(query));
-
 		}
-
 	}
 
 	@Override

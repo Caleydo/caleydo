@@ -19,6 +19,7 @@ import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.id.IDType;
 import org.caleydo.view.tourguide.api.prefs.MyPreferences;
 import org.caleydo.vis.lineup.model.RankTableModel;
 
@@ -203,6 +204,13 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 	public String getOppositeIDType() {
 		return dim.select(getDataDomain().getRecordIDCategory(), getDataDomain().getDimensionIDCategory())
 				.getCategoryName();
+	}
+
+	/**
+	 * @return
+	 */
+	public IDType getIDType() {
+		return dim.select(getDataDomain().getDimensionIDType(), getDataDomain().getRecordIDType());
 	}
 
 }

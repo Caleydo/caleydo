@@ -227,7 +227,7 @@ public class CategoricalDataDomainQuery extends ASingleIDDataDomainQuery {
 		GroupRankColumnModel group = new GroupRankColumnModel(d.getLabel() + " Metrics", color, color.brighter());
 		table.add(group);
 		for (CategoryProperty<?> p : ctable.getCategoryDescriptions().getCategoryProperties()) {
-			group.add(create(p.getCategory(), ctable, selected.contains(p)));
+			group.add(create(p.getCategory(), ctable, selected.contains(p), getDim()));
 		}
 		group = new GroupRankColumnModel(d.getLabel() + " Groupings", color, color.brighter());
 		for (String id : dim.isDimension() ? d.getDimensionPerspectiveIDs() : d.getRecordPerspectiveIDs()) {
@@ -263,7 +263,8 @@ public class CategoricalDataDomainQuery extends ASingleIDDataDomainQuery {
 			boolean wasActive = isConsideredForCalculation(c);
 
 			if (active != wasActive) {
-				final CategoricalPercentageRankColumnModel new_ = create(category.getCategory(), ctable, active);
+				final CategoricalPercentageRankColumnModel new_ = create(category.getCategory(), ctable, active,
+						getDim());
 				new_.setWidth(c.getWidth());
 				new_.setCollapsed(c.isCollapsed());
 				new_.setFilter(c.isFilterNotMappedEntries(), c.isFilterMissingEntries(), c.isGlobalFilter(),
