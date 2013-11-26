@@ -15,6 +15,8 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
@@ -48,10 +50,12 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 	private int pickingID;
 	private AGLView parentView;
 	private SelectionColorCalculator colorCalculator;
+	private ATableBasedDataDomain dataDomain;
 
 	public ColumnCaptionRenderer(AGLView parentView, MappedDataRenderer parent, Group group,
 			Perspective samplePerspective, ATableBasedDataDomain dataDomain, Button button) {
 		this.parentView = parentView;
+		this.dataDomain = dataDomain;
 		colorCalculator = new SelectionColorCalculator(dataDomain.getColor());
 		this.textRenderer = parentView.getTextRenderer();
 		this.pixelGLConverter = parentView.getPixelGLConverter();
@@ -125,6 +129,8 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 				parent.sampleSelectionManager.addToType(SelectionType.SELECTION, samplePerspective.getIdType(),
 						samplePerspective.getVirtualArray().getIDs());
 				parent.sampleSelectionManager.triggerSelectionUpdateEvent();
+
+				EventPublisher.trigger(new DataSetSelectedEvent(dataDomain));
 
 				parentView.setDisplayListDirty();
 
