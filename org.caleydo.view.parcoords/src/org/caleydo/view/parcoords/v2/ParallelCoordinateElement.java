@@ -314,7 +314,7 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 	}
 
 	@Override
-	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<T> default_) {
+	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
 		if (clazz.isAssignableFrom(Vec2f.class))
 			return clazz.cast(getMinSize());
 		if (clazz.isInstance(getTablePerspective()))
