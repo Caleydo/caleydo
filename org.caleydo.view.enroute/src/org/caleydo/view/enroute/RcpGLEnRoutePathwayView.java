@@ -53,6 +53,7 @@ public class RcpGLEnRoutePathwayView extends ARcpGLViewPart {
 
 		toolBarManager
 				.add(new FitToViewWidthAction(((SerializedEnRoutePathwayView) serializedView).isFitToViewWidth()));
-		toolBarManager.add(new OpenOnlineHelpAction(GeneralManager.HELP_URL + "/views/enroute.md", false));
+		toolBarManager.add(new OpenOnlineHelpAction(GeneralManager.HELP_URL
+				+ "views/pathway/pathway.md#enRoute_-_Experimental_Data_Analysis", false));
 	}
 }

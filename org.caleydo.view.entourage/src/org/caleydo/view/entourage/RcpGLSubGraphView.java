@@ -97,7 +97,7 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 		toolBarManager.add(new ClearWorkspaceAction(entourage));
 		// toolBarManager.add(highlightAllPortalsAction);
 
-		toolBarManager.add(new OpenOnlineHelpAction(GeneralManager.HELP_URL + "/views/enroute.md#Pathway_View", false));
+		toolBarManager.add(new OpenOnlineHelpAction(GeneralManager.HELP_URL + "views/pathway/pathway.md", false));
 
 	}
 

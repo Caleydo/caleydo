@@ -317,7 +317,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 
 	@Override
 	protected void helpPressed() {
-		BrowserUtils.openURL(GeneralManager.HELP_URL + "/data.md");
+		BrowserUtils.openURL(GeneralManager.HELP_URL + "data.md");
 	}
 
 	@Override
