@@ -44,7 +44,7 @@ public class RcpGLDVIView extends ARcpGLViewPart {
 		toolBarManager.add(new ToolBarWidgets("Graph Layout"));
 		toolBarManager
 				.add(new OpenOnlineHelpAction(
-GeneralManager.HELP_URL + "/basics.md#Data-View_Integrator",
+GeneralManager.HELP_URL + "basics.md#Data-View_Integrator",
 						true));
 	}
 }

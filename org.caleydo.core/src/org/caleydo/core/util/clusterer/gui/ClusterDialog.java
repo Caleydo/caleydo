@@ -365,7 +365,7 @@ public class ClusterDialog extends AHelpButtonDialog implements IDataOKListener 
 
 	@Override
 	protected void helpPressed() {
-		BrowserUtils.openURL(GeneralManager.HELP_URL + "/data.md#Data_Processing");
+		BrowserUtils.openURL(GeneralManager.HELP_URL + "data.md#Data_Processing");
 	}
 
 }

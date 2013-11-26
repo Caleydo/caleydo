@@ -60,7 +60,7 @@ public class GeneralManager {
 			+ "." + VERSION.getMinor() + "/";
 
 	public static final String HELP_URL = "http://help.caleydo.org/" + VERSION.getMajor() + "." + VERSION.getMinor()
-			+ "/";
+			+ "/index.html#!";
 
 	/**
 	 * General manager as a singleton
