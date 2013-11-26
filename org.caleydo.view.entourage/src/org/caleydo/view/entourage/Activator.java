@@ -3,6 +3,8 @@ package org.caleydo.view.entourage;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.data.loader.ResourceLocators;
+import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -25,7 +27,7 @@ public class Activator extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
 	 * )
@@ -40,7 +42,7 @@ public class Activator extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
 	 * )
@@ -53,7 +55,7 @@ public class Activator extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance
-	 * 
+	 *
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
@@ -71,6 +73,11 @@ public class Activator extends AbstractUIPlugin {
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLEntourage.VIEW_TYPE);
 
+	}
+
+	public static IResourceLocator getResourceLocator() {
+		return ResourceLocators.chain(ResourceLocators.classLoader(Activator.class.getClassLoader()),
+				ResourceLocators.DATA_CLASSLOADER, ResourceLocators.FILE);
 	}
 
 }

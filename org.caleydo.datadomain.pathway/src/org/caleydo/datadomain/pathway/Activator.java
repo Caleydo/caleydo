@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.datadomain.pathway;
 
+import org.caleydo.data.loader.ResourceLocators;
+import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -40,11 +42,16 @@ public class Activator
 
 	/**
 	 * Returns the shared instance
-	 * 
+	 *
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
 		return plugin;
+	}
+
+	public static IResourceLocator getResourceLocator() {
+		return ResourceLocators.chain(ResourceLocators.classLoader(Activator.class.getClassLoader()),
+				ResourceLocators.DATA_CLASSLOADER, ResourceLocators.FILE);
 	}
 
 }
