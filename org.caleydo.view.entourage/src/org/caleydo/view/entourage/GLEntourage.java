@@ -62,10 +62,12 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.ESampleMappingMode;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
+import org.caleydo.datadomain.pathway.listener.SampleMappingModeEvent;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -231,6 +233,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	private MultiLevelSlideInElement enrouteSlideInElement;
 
+	private ESampleMappingMode sampleMappingMode = ESampleMappingMode.ALL;
+
 	/**
 	 * Constructor.
 	 *
@@ -264,20 +268,18 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		// column.add(dataMappingWindow);
 		// column.add(nodeInfoContainer);
 		rankingWindow = new SideWindow("Pathways", this, SideWindow.SLIDE_LEFT_OUT);
-		rankingWindow.setSize(170, Float.NaN);
+
 		rankingElement = new RankingElement(this);
 		rankingWindow.setContent(rankingElement);
+		rankingWindow.setSize(rankingElement.getRequiredWidth(), Float.NaN);
 		SlideInElement slideInElement = new SlideInElement(rankingWindow, ESlideInElementPosition.RIGHT);
 		slideInElement.setCallBack(new ISelectionCallback() {
 			@Override
 			public void onSelectionChanged(GLButton button, boolean selected) {
 				AnimatedGLElementContainer anim = (AnimatedGLElementContainer) rankingWindow.getParent();
 				if (selected) {
-					if (rankingElement.hasScoreColumn()) {
-						anim.resizeChild(rankingWindow, 270, Float.NaN);
-					} else {
-						anim.resizeChild(rankingWindow, 220, Float.NaN);
-					}
+					anim.resizeChild(rankingWindow, rankingElement.getRequiredWidth(), Float.NaN);
+
 				} else {
 					anim.resizeChild(rankingWindow, 1, Float.NaN);
 				}
@@ -650,10 +652,6 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		}
 		lastUsedRenderer = info.multiFormRenderer;
 
-		PathwayMappingEvent event = new PathwayMappingEvent(dataMappingState.getPathwayMappedTablePerspective());
-		event.setEventSpace(pathEventSpace);
-		EventPublisher.trigger(event);
-
 		pathwayInfos.add(info);
 
 		wasPathwayAdded = true;
@@ -873,6 +871,12 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				e.setSender(this);
 				eventPublisher.triggerEvent(e);
 			}
+			PathwayMappingEvent pathwayMappingEvent = new PathwayMappingEvent(
+					dataMappingState.getPathwayMappedTablePerspective());
+			event.setEventSpace(pathEventSpace);
+			EventPublisher.trigger(pathwayMappingEvent);
+			EventPublisher.trigger(new SampleMappingModeEvent(sampleMappingMode));
+
 			wasPathwayAdded = false;
 		}
 		// The augmentation has to be updated after the layout was updated in super; updating on relayout would be too
@@ -1057,6 +1061,11 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			pathways = new HashSet<>();
 		rankingElement.setFilter(new PathwayFilters.PathwaySetFilter(pathways));
 
+	}
+
+	@ListenTo
+	public void onSampleMappingModeChanged(SampleMappingModeEvent event) {
+		this.sampleMappingMode = event.getSampleMappingMode();
 	}
 
 	private class PathEventSpaceHandler {
@@ -1587,6 +1596,13 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	 */
 	public boolean isShowPortals() {
 		return isShowPortals;
+	}
+
+	/**
+	 * @return the sampleMappingMode, see {@link #sampleMappingMode}
+	 */
+	public ESampleMappingMode getSampleMappingMode() {
+		return sampleMappingMode;
 	}
 
 }

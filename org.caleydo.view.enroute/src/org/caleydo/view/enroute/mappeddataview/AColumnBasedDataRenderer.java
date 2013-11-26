@@ -14,10 +14,13 @@ import javax.media.opengl.GL2GL3;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
@@ -152,6 +155,13 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 	}
 
 	protected void registerPickingListeners() {
+		contentRenderer.parentView.addTypePickingListener(new APickingListener() {
+			@Override
+			protected void clicked(Pick pick) {
+				EventPublisher.trigger(new DataSetSelectedEvent(contentRenderer.dataDomain));
+			}
+		}, EPickingType.SAMPLE.name() + hashCode());
+
 		contentRenderer.parentView.addTypePickingTooltipListener(new IPickingLabelProvider() {
 
 			@Override

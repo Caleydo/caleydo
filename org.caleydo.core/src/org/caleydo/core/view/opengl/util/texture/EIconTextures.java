@@ -63,7 +63,7 @@ public enum EIconTextures {
 	// MOVE_ICON("resources/icons/view/histogram/move_icon.png"),
 
 	/** Linearized Pathway */
-	ABSTRACT_BAR_ICON("resources/icons/view/enroute/abstract_mode.png"),
+	// ABSTRACT_BAR_ICON("resources/icons/view/enroute/abstract_mode.png"),
 
 	NAVIGATION_BACKGROUND("resources/icons/general/navigation.png"),
 	PIN("resources/icons/general/pin.png");

@@ -53,6 +53,8 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
@@ -180,6 +182,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public GLEnRoutePathway(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
 		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
+
+		textureManager = new TextureManager(new ResourceLoader(Activator.getResourceLocator()));
 
 		geneSelectionManager = new EventBasedSelectionManager(this, primaryRowIDType);
 

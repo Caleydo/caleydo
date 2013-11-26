@@ -275,10 +275,10 @@ public class MappedDataRenderer {
 		buttonRow.setPixelSizeY(50);
 
 		buttonRow.append(createButton(EPickingType.FIT_TO_VIEW_WIDTH_BUTTON.name(), 0,
-				"resources/icons/view/enroute/fit_to_width.png"));
+				"resources/icons/fit_to_width.png"));
 		buttonRow.append(xSpacing);
 		buttonRow.append(createButton(EPickingType.CENTER_LINE_ALIGNMENT_BUTTON.name(), 0,
-				"resources/icons/view/enroute/center_data_line.png"));
+				"resources/icons/center_data_line.png"));
 
 		captionColumn.append(buttonRow);
 		baseRow.append(captionColumn);

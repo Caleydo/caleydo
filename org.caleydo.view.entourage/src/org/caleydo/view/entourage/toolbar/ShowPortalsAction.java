@@ -21,6 +21,8 @@ package org.caleydo.view.entourage.toolbar;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SimpleAction;
+import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.view.entourage.Activator;
 import org.caleydo.view.entourage.event.ShowPortalsEvent;
 
 /**
@@ -31,7 +33,7 @@ import org.caleydo.view.entourage.event.ShowPortalsEvent;
  */
 public class ShowPortalsAction extends SimpleAction {
 	public static final String LABEL = "Show Node Occurrences across Pathways (P)";
-	public static final String ICON = "resources/icons/view/pathway/show_portals3.png";
+	public static final String ICON = "resources/icons/show_portals3.png";
 
 	private String eventSpace;
 
@@ -39,7 +41,7 @@ public class ShowPortalsAction extends SimpleAction {
 	 * Constructor.
 	 */
 	public ShowPortalsAction(String eventSpace, boolean showPortals) {
-		super(LABEL, ICON);
+		super(LABEL, ICON, new ResourceLoader(Activator.getResourceLocator()));
 		setChecked(showPortals);
 		this.eventSpace = eventSpace;
 	}

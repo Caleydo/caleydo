@@ -37,6 +37,9 @@ import org.eclipse.swt.widgets.Display;
  */
 public class DataMappingWizard extends GLElementContainer {
 
+	private static final String PATH_SELECTION_ICON = "resources/icons/icon_32.png";
+	private static final String DATA_MAPPING_ICON = "resources/icons/data_mapping.png";
+
 	private class TextLineRenderer extends GLElement {
 		private String text;
 
@@ -67,7 +70,7 @@ public class DataMappingWizard extends GLElementContainer {
 
 	private void setupPathAndDataLayer() {
 		pathAndDataLayer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
-		GLElementContainer selectPathButtonContainer = createButtonLayout("resources/icons/icon_32.png",
+		GLElementContainer selectPathButtonContainer = createButtonLayout(PATH_SELECTION_ICON,
 				new IPickingListener() {
 					@Override
 					public void pick(Pick pick) {
@@ -89,8 +92,8 @@ public class DataMappingWizard extends GLElementContainer {
 					}
 				});
 
-		GLElementContainer openDataMapperButtonContainer = createButtonLayout(
-				"resources/icons/view/pathway/data_mapping.png", new IPickingListener() {
+		GLElementContainer openDataMapperButtonContainer = createButtonLayout(DATA_MAPPING_ICON,
+				new IPickingListener() {
 					@Override
 					public void pick(Pick pick) {
 						if (pick.getPickingMode() == PickingMode.CLICKED) {
@@ -136,8 +139,8 @@ public class DataMappingWizard extends GLElementContainer {
 
 		GLElementContainer column = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
 
-		GLElementContainer openDataMapperButtonContainer = createButtonLayout(
-				"resources/icons/view/pathway/data_mapping.png", new IPickingListener() {
+		GLElementContainer openDataMapperButtonContainer = createButtonLayout(DATA_MAPPING_ICON,
+				new IPickingListener() {
 					@Override
 					public void pick(Pick pick) {
 						if (pick.getPickingMode() == PickingMode.CLICKED) {

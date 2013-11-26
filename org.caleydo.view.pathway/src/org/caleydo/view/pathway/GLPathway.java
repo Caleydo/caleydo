@@ -38,6 +38,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.id.IDType;
@@ -1664,6 +1665,13 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		event.setSender(this);
 		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
+
+		if (augmentationRenderer.getMappingPerspective() != null && selectionType == SelectionType.SELECTION) {
+			DataSetSelectedEvent dataSetSelectedEvent = new DataSetSelectedEvent(
+					augmentationRenderer.getMappingPerspective());
+			dataSetSelectedEvent.setSender(this);
+			eventPublisher.triggerEvent(dataSetSelectedEvent);
+		}
 
 	}
 

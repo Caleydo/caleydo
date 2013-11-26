@@ -13,7 +13,6 @@ import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.enroute.EPickingType;
 
 /**
@@ -21,6 +20,8 @@ import org.caleydo.view.enroute.EPickingType;
  *
  */
 public class ColumnCaptionLayout extends Column {
+
+	private final static String ABSTRACT_MODE_ICON = "resources/icons/abstract_mode.png";
 
 	AGLView parentView;
 	MappedDataRenderer parent;
@@ -45,12 +46,10 @@ public class ColumnCaptionLayout extends Column {
 		this.group = group;
 		ElementLayout caption = new ElementLayout();
 		this.append(caption);
-		Button button = new Button(EPickingType.SAMPLE_GROUP_VIEW_MODE.name(), group.getID(),
-				EIconTextures.ABSTRACT_BAR_ICON);
+		Button button = new Button(EPickingType.SAMPLE_GROUP_VIEW_MODE.name(), group.getID(), ABSTRACT_MODE_ICON);
 		ColumnCaptionRenderer renderer = new ColumnCaptionRenderer(parentView, parent, group, samplePerspective,
 				dataDomain, button);
 		caption.setRenderer(renderer);
-
 
 		// button.setVisible(false);
 		ButtonRenderer buttonRender = new ButtonRenderer.Builder(parentView, button).build();

@@ -20,6 +20,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -32,6 +33,8 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 	private ArrayList<CLabel> labels;
 	private Button changeColorButton;
 
+	private Composite colorMapperComposite;
+
 	/**
 	 *
 	 */
@@ -42,7 +45,13 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 	public void redrawView() {
 
 		/** The color scale below the histogram */
-		colorMappingPreview = new CLabel(histoComposite, SWT.SHADOW_IN);
+		colorMapperComposite = new Composite(histoComposite, SWT.NONE);
+		GridLayout baseLayout = new GridLayout(1, false);
+		baseLayout.verticalSpacing = 2;
+		colorMapperComposite.setLayout(baseLayout);
+		colorMapperComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+		colorMappingPreview = new CLabel(colorMapperComposite, SWT.SHADOW_IN);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.heightHint = 10;
 		gridData.grabExcessHorizontalSpace = true;
@@ -57,8 +66,8 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 		});
 
 		FillLayout fillLayout = new FillLayout();
-		Composite labelComposite = new Composite(histoComposite, SWT.NULL);
-		labelComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		Composite labelComposite = new Composite(colorMapperComposite, SWT.NULL);
+		labelComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		labelComposite.setLayout(fillLayout);
 
 		labels = new ArrayList<CLabel>(3);
@@ -75,9 +84,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 			}
 		}
 
-
-
-		changeColorButton = new Button(histoComposite, SWT.PUSH);
+		changeColorButton = new Button(colorMapperComposite, SWT.PUSH);
 		changeColorButton.setText("Colormap");
 		changeColorButton.setToolTipText("Choose a colormap for this dataset");
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -158,7 +165,13 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		super.setDataDomain(dataDomain);
-		updateColorMappingPreview();
+		if (colorMapperComposite != null) {
+			colorMapperComposite.dispose();
+			redrawView();
+			histoComposite.pack();
+			histoComposite.layout(true, true);
+		}
+		// updateColorMappingPreview();
 	}
 
 }

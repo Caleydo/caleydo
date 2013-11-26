@@ -12,6 +12,8 @@ import java.util.List;
 
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -139,6 +141,10 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 				vertexSelectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.SELECTION);
+
+				if (pathwayPathRenderer.getMappedPerspective() != null) {
+					EventPublisher.trigger(new DataSetSelectedEvent(pathwayPathRenderer.getMappedPerspective()));
+				}
 				// colorRenderer.setColor(SelectionType.MOUSE_OVER.getColor());
 				// pathwayPathRenderer.setHighlightDirty(true);
 				// view.setDisplayListDirty();
