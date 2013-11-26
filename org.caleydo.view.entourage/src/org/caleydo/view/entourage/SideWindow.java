@@ -24,6 +24,8 @@ import gleem.linalg.Vec4f;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions.IMoveTransition;
 
+import com.google.common.base.Supplier;
+
 /**
  * a special GLWindow that uses a special kind of animations that moves out of the view instead of changing the size
  *
@@ -88,7 +90,7 @@ public class SideWindow extends GLWindow {
 	}
 
 	@Override
-	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
 		if (clazz.isInstance(animation)) {
 			return clazz.cast(animation);
 		}

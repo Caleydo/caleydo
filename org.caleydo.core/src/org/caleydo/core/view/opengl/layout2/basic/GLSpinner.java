@@ -24,6 +24,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+import com.google.common.base.Supplier;
 import com.google.common.primitives.Ints;
 
 /**
@@ -203,7 +204,7 @@ public class GLSpinner<T> extends PickableGLElement {
 	}
 
 	@Override
-	public <U> U getLayoutDataAs(Class<U> clazz, U default_) {
+	public <U> U getLayoutDataAs(Class<U> clazz, Supplier<? extends U> default_) {
 		if (isRenderingValue && clazz.isInstance(value))
 			return clazz.cast(value);
 		return super.getLayoutDataAs(clazz, default_);

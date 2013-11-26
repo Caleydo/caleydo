@@ -17,6 +17,8 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
 
+import com.google.common.base.Supplier;
+
 /**
  * a simple basic widget for a combo box
  *
@@ -130,7 +132,7 @@ public class GLComboBox<T> extends AGLButton {
 	}
 
 	@Override
-	public <U> U getLayoutDataAs(Class<U> clazz, U default_) {
+	public <U> U getLayoutDataAs(Class<U> clazz, Supplier<? extends U> default_) {
 		// do we render currently a item of the model else return the currently selected item
 		T item = actRenderIndex >= 0 ? model.get(actRenderIndex) : getSelectedItem();
 		if (clazz.isInstance(item))

@@ -14,6 +14,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.base.Labels;
 import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.col.DataDomainRankColumnModel;
+import org.caleydo.view.tourguide.internal.view.col.GroupDistributionRankColumnModel;
 import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 import org.caleydo.vis.lineup.model.RankTableModel;
 
@@ -58,6 +59,10 @@ public abstract class ATourGuideDataMode implements ITourGuideDataMode {
 
 	protected static void addDataDomainRankColumn(RankTableModel table) {
 		table.add(new DataDomainRankColumnModel().setWidth(80).setCollapsed(true));
+	}
+
+	protected static void addGroupDistributionRankColumn(RankTableModel table) {
+		table.add(new GroupDistributionRankColumnModel());
 	}
 }
 

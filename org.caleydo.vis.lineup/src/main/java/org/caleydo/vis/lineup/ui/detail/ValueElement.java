@@ -9,6 +9,8 @@ import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.ui.IColumnRenderInfo;
 
+import com.google.common.base.Supplier;
+
 /**
  * special element for the columns with extra information
  *
@@ -32,7 +34,7 @@ public class ValueElement extends PickableGLElement {
 	}
 
 	@Override
-	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
 		if (clazz.isInstance(row))
 			return clazz.cast(row);
 		return super.getLayoutDataAs(clazz, default_);

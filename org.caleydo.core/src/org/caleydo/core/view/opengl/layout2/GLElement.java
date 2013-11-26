@@ -23,6 +23,8 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 
 /**
  * basic layouting element
@@ -169,7 +171,12 @@ public class GLElement implements IHasGLLayoutData {
 	}
 
 	@Override
-	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+	public final <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		return getLayoutDataAs(clazz, Suppliers.ofInstance(default_));
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
 		if (clazz.isInstance(this))
 			return clazz.cast(this);
 		return GLLayouts.resolveLayoutData(clazz, layoutData, default_);
@@ -435,7 +442,7 @@ public class GLElement implements IHasGLLayoutData {
 		relayoutParent();
 		return this;
 	}
-	
+
 	private static boolean equals(float a, float b) {
 		return Float.compare(a,b) == 0;
 	}
@@ -722,6 +729,11 @@ public class GLElement implements IHasGLLayoutData {
 
 		@Override
 		public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+			return GLElement.this.getLayoutDataAs(clazz, default_);
+		}
+
+		@Override
+		public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
 			return GLElement.this.getLayoutDataAs(clazz, default_);
 		}
 

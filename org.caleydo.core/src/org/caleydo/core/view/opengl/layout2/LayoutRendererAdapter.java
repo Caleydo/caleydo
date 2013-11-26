@@ -23,6 +23,9 @@ import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+
 /**
  * adapter between {@link ALayoutRenderer} and {@link GLElement}, such that {@link GLElement} can be as an
  * {@link ALayoutRenderer}
@@ -92,6 +95,11 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 
 	@Override
 	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		return getLayoutDataAs(clazz, Suppliers.ofInstance(default_));
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
 		return GLLayouts.resolveLayoutDatas(clazz, default_, view, this.local);
 	}
 

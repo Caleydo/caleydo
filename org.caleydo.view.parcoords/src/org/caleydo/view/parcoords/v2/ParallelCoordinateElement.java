@@ -55,6 +55,7 @@ import org.caleydo.view.parcoords.v2.internal.CategoricalAxisElement;
 import org.caleydo.view.parcoords.v2.internal.NumericalAxisElement;
 import org.caleydo.view.parcoords.v2.internal.SimpleAxisElement;
 
+import com.google.common.base.Supplier;
 import com.google.common.collect.Iterables;
 
 /**
@@ -313,7 +314,7 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 	}
 
 	@Override
-	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<T> default_) {
 		if (clazz.isAssignableFrom(Vec2f.class))
 			return clazz.cast(getMinSize());
 		if (clazz.isInstance(getTablePerspective()))

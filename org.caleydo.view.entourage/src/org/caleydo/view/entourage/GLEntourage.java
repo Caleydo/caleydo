@@ -1556,11 +1556,6 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		return isControlKeyPressed;
 	}
 
-	@Override
-	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
-		return default_;
-	}
-
 	/**
 	 * @return the dataMappingState, see {@link #dataMappingState}
 	 */

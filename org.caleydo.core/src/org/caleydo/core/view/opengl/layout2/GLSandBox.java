@@ -58,6 +58,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+
 /**
  * acts as a sandbox for elements, just use {@link GLSandBox#main(String[], GLElement)} and provide a element, and run the
  * application to open a window with the element shown, without the need of the whole caleydo / eclipse overhead
@@ -176,6 +179,11 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 	@Override
 	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		return getLayoutDataAs(clazz, Suppliers.ofInstance(default_));
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
 		return GLLayouts.resolveLayoutDatas(clazz, default_, canvas, this.local);
 	}
 
