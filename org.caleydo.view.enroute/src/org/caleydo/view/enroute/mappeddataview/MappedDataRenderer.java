@@ -859,6 +859,17 @@ public class MappedDataRenderer {
 
 			}
 
+			@Override
+			public void doubleClicked(Pick pick) {
+				for (TablePerspective tablePerspective : geneTablePerspectives) {
+					SortByDataEvent sortEvent = new SortByDataEvent(tablePerspective.getDataDomain().getDataDomainID(),
+							tablePerspective, sampleIDType, IDType.getIDType("DAVID"), pick.getObjectID());
+					sortEvent.setSender(this);
+					EventPublisher.trigger(sortEvent);
+				}
+
+			}
+
 		}, rowSelectionManager.getIDType().getTypeName());
 
 		parentView.addTypePickingListener(new APickingListener() {
@@ -1056,7 +1067,20 @@ public class MappedDataRenderer {
 						// }
 
 					}
+
+					@Override
+					public void doubleClicked(Pick pick) {
+						for (TablePerspective tablePerspective : resolvedContextualTablePerspectives) {
+							SortByDataEvent sortEvent = new SortByDataEvent(dataDomain.getDataDomainID(),
+									tablePerspective, sampleIDType, contextRowIDType, pick.getObjectID());
+							sortEvent.setSender(this);
+							EventPublisher.trigger(sortEvent);
+						}
+
+					}
+
 				}, contextRowIDType.getTypeName());
+
 
 				// }
 			}
