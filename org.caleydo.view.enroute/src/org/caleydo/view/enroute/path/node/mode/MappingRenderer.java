@@ -65,7 +65,7 @@ public class MappingRenderer extends ColorRenderer {
 			Average average = null;
 
 			if (pathRenderer.getSampleMappingMode() == ESampleMappingMode.ALL) {
-				average = mappedPerspective.getContainerStatistics().getAverage(idType, ids.get(0));
+				average = mappedPerspective.getContainerStatistics().getAverage(idType, ids);
 			} else {
 
 				Set<Integer> selectedSamples = pathRenderer.getSampleSelectionManager().getElements(
