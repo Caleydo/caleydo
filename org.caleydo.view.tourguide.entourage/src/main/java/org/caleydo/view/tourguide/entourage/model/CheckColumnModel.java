@@ -95,8 +95,10 @@ public class CheckColumnModel extends ARankColumnModel implements IGLRenderer {
 	private class Summary extends GLElement {
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
-			String icon = EButtonIcon.CHECKBOX.get(true);
-			g.fillImage(icon, 1, 1, h - 2, h - 2);
+			// String icon = EButtonIcon.CHECKBOX.get(true);
+			// g.fillImage(icon, 1, 1, h - 2, h - 2);
+			if (w > 40)
+				g.drawText("Active", 0, (h - 12) * 0.5f, w, 12);
 			super.renderImpl(g, w, h);
 		}
 	}
