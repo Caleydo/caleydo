@@ -433,7 +433,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 			// use my class for library loading
 			System.setProperty("jnlp.launcher.class", SandBoxLibraryLoader.class.getCanonicalName());
 			try {
-				Display display = new Display();
+				Display display = Display.getDefault();
 				final Shell splash = createSplash(display);
 				final Shell content = new Shell(display);
 				splash.open();

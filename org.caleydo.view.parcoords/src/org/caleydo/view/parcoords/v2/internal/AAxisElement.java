@@ -259,7 +259,7 @@ public abstract class AAxisElement extends GLElementContainer implements IPickin
 
 		private int hoveredSub = 0;
 		private boolean hovered = false;
-		private boolean armed;
+		private int armed = 0;
 
 		@Override
 		protected void init(IGLElementContext context) {
@@ -318,12 +318,14 @@ public abstract class AAxisElement extends GLElementContainer implements IPickin
 				repaint();
 				break;
 			case CLICKED:
-				armed = true;
+				armed = REMOVE;
 				repaint();
 				break;
 			case MOUSE_RELEASED:
-				if (hoveredSub == REMOVE)
+				if (armed == REMOVE) {
 					remove();
+				}
+				armed = 0;
 				break;
 			default:
 				break;
@@ -349,20 +351,19 @@ public abstract class AAxisElement extends GLElementContainer implements IPickin
 				if (pick.isAnyDragging())
 					return;
 				pick.setDoDragging(true);
-				armed = true;
+				armed = MOVE;
 				repaint();
 				break;
 			case DOUBLE_CLICKED:
 				resetAxis();
 				break;
 			case DRAGGED:
-				if (!armed)
+				if (armed != MOVE)
 					return;
 				move(pick.getDx(), pick.getDy());
 				break;
 			case MOUSE_RELEASED:
-				if (hoveredSub == MOVE)
-					armed = false;
+				armed = 0;
 				repaint();
 				break;
 			default:
@@ -386,12 +387,14 @@ public abstract class AAxisElement extends GLElementContainer implements IPickin
 				repaint();
 				break;
 			case CLICKED:
-				armed = true;
+				armed = DUPLICATE;
 				repaint();
 				break;
 			case MOUSE_RELEASED:
-				if (hoveredSub == DUPLICATE)
+				if (armed == DUPLICATE) {
 					duplicate();
+				}
+				armed = 0;
 				break;
 			default:
 				break;

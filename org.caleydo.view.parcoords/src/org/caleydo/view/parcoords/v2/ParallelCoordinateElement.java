@@ -6,9 +6,10 @@
 package org.caleydo.view.parcoords.v2;
 
 import gleem.linalg.Vec2f;
-import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -30,6 +31,7 @@ import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
@@ -46,6 +48,7 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.parcoords.Activator;
 import org.caleydo.view.parcoords.PCRenderStyle;
+import org.caleydo.view.parcoords.preferences.MyPreferences;
 import org.caleydo.view.parcoords.v2.internal.AAxisElement;
 import org.caleydo.view.parcoords.v2.internal.Brush;
 import org.caleydo.view.parcoords.v2.internal.CategoricalAxisElement;
@@ -75,7 +78,7 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 	};
 	@DeepScan
 	protected final TablePerspectiveSelectionMixin selections;
-	private int numberOfRandomElements;
+	private final int numberOfRandomElements;
 	private final EDetailLevel detailLevel;
 
 	// in percent
@@ -83,6 +86,8 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 
 	private PickingPool pool;
 	private Brush brush;
+	// current samples subset
+	private Collection<Integer> samples;
 
 	/**
 	 *
@@ -97,6 +102,7 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 				.getTable(), EDimension.DIMENSION);
 		setVisibility(EVisibility.PICKABLE);
 		onPick(this);
+		onVAUpdate(tablePerspective);
 	}
 
 	/**
@@ -163,17 +169,22 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 				return;
 			this.brush = new Brush(pick.getPickedPoint());
 			pick.setDoDragging(true);
+			selectByBrush();
 			repaint();
 			break;
-		case DRAGGED:
-
 		case MOUSE_RELEASED:
 			if (brush != null) {
 				brush = null;
 				repaint();
 			}
+			break;
+		default:
+			if (brush != null && pick.isDoDragging() && brush.pick(pick))
+				selectByBrush();
+				repaint();
 		}
 	}
+
 
 	public static boolean isBrushClick(Pick pick) {
 		return ((IMouseEvent) pick).isAltDown();
@@ -205,17 +216,63 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 	}
 
 	/**
+	 * selects elements via brush
+	 */
+	private void selectByBrush() {
+		assert brush != null;
+		// find the axis which determine the brush
+		Pair<AAxisElement, AAxisElement> r = findAxisPair(brush.isPointingLeft() ? brush.getEndX() : brush.getStartX());
+
+		SelectionManager record = selections.getRecordSelectionManager();
+		record.clearSelection(SelectionType.SELECTION);
+		if (r != null) {
+			List<AAxisElement> arr = Arrays.asList(r.getFirst(), r.getSecond());
+			final float h = getSize().y();
+			final float offset = padding.top * h;
+			final float yScale = axisHeight(h);
+			for (Integer recordID : samples) {
+				List<Vec2f> points = asPoints(recordID, arr);
+				if (points == null)
+					continue;
+				assert points.size() == 2;
+				Vec2f start = points.get(0);
+				Vec2f end = points.get(1);
+				start.setY(start.y() * yScale + offset);
+				end.setY(end.y() * yScale + offset);
+				if (brush.apply(start, end))
+					record.addToType(SelectionType.SELECTION, recordID);
+			}
+		}
+		selections.fireRecordSelectionDelta();
+		repaint();
+	}
+
+	private Pair<AAxisElement, AAxisElement> findAxisPair(final float x) {
+		AAxisElement prev = null;
+		for (AAxisElement axis : Iterables.filter(this, AAxisElement.class)) {
+			float ax = axis.getX();
+			if (ax > x) {
+				return Pair.make(prev, axis);
+			}
+			prev = axis;
+		}
+		return null;
+	}
+
+	/**
+	 * compute the number of samples from the detail level
+	 *
 	 * @param level
 	 * @return
 	 */
-	private int fromLevel(EDetailLevel level) {
+	private static int fromLevel(EDetailLevel level) {
 		switch (level) {
 		case LOW:
 			return 50;
 		case MEDIUM:
 			return 100;
 		case HIGH:
-			return 100; // FIXME MyPreferences.getNumRandomSamplePoint();
+			return MyPreferences.getNumRandomSamplePoint();
 		default:
 			return 20;
 		}
@@ -284,6 +341,18 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 	public void onVAUpdate(TablePerspective tablePerspective) {
 		repaint();
 		repaintChildren();
+		this.samples = sample(tablePerspective.getRecordPerspective().getVirtualArray().getIDs(),
+				numberOfRandomElements);
+	}
+
+	/**
+	 * samples the given dataset to contain at most size elements
+	 */
+	private static Collection<Integer> sample(List<Integer> data, int size) {
+		if (data.size() <= size)
+			return data;
+		// FIXME
+		return data.subList(0, size);
 	}
 
 	@Override
@@ -299,24 +368,12 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 		}
 	}
 
-	private static float getAngle(final Vec3f vecOne, final Vec3f vecTwo) {
-		Vec3f vecNewOne = vecOne.copy();
-		Vec3f vecNewTwo = vecTwo.copy();
-
-		vecNewOne.normalize();
-		vecNewTwo.normalize();
-		float fTmp = vecNewOne.dot(vecNewTwo);
-		return (float) Math.acos(fTmp);
-	}
 
 	private void renderPolylines(GLGraphics g, float h) {
-		final TablePerspective t = getTablePerspective();
-		final VirtualArray va = t.getRecordPerspective().getVirtualArray();
-		final int displayEveryNthPolyline = Math.max(va.size() / numberOfRandomElements, 1);
-		final SelectionManager record = selections.getRecordSelectionManager();
-
-		if (va.size() == 0)
+		if (samples.isEmpty())
 			return;
+
+		final SelectionManager record = selections.getRecordSelectionManager();
 
 		// this loop executes once per polyline
 		g.save();
@@ -324,10 +381,11 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 		if (g.isPickingPass()) {
 			g.lineWidth(2);
 		}
-		float alpha = (float) (6 / Math.sqrt(va.size() / displayEveryNthPolyline));
-		for (int i = 0; i < va.size(); i += displayEveryNthPolyline) {
-			int recordID = va.get(i);
-			List<Vec2f> points = asPoints(recordID);
+		float alpha = (float) (6 / Math.sqrt(samples.size()));
+		final Iterable<AAxisElement> axis = Iterables.filter(this, AAxisElement.class);
+
+		for (Integer recordID : samples) {
+			List<Vec2f> points = asPoints(recordID, axis);
 			if (points == null || points.isEmpty()) //skip empty
 				continue;
 			if (g.isPickingPass()) {
@@ -359,8 +417,11 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 		renderBackground(g, w, h);
 		renderPolylines(g, h);
 		super.renderImpl(g, w, h);
-		if (brush != null)
-			brush.render(g);
+		if (brush != null) {
+			g.incZ().incZ();
+			brush.render(g, w, h, this);
+			g.decZ().incZ();
+		}
 
 		g.popResourceLocator();
 	}
@@ -394,10 +455,10 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 		g.decZ();
 	}
 
-	private List<Vec2f> asPoints(Integer recordID) {
+	private List<Vec2f> asPoints(Integer recordID, Iterable<AAxisElement> it) {
 		final Table table = getTablePerspective().getDataDomain().getTable();
 		List<Vec2f> points = new ArrayList<>(this.size());
-		for (AAxisElement axis : Iterables.filter(this, AAxisElement.class)) {
+		for (AAxisElement axis : it) {
 			float raw = table.getNormalizedValue(axis.getId(), recordID);
 			if (!axis.apply(raw))
 				return Collections.emptyList();
