@@ -762,20 +762,29 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	}
 
-	public final void addIDPickingTooltipListener(String tooltip, String pickingType, int pickedObjectID) {
-		addIDPickingListener(this.getParentGLCanvas().createTooltip(tooltip), pickingType, pickedObjectID);
+	public final IPickingListener addIDPickingTooltipListener(String tooltip, String pickingType, int pickedObjectID) {
+		IPickingListener pickingListener = this.getParentGLCanvas().createTooltip(tooltip);
+		addIDPickingListener(pickingListener, pickingType, pickedObjectID);
+		return pickingListener;
 	}
 
-	public final void addIDPickingTooltipListener(ILabelProvider tooltip, String pickingType, int pickedObjectID) {
-		addIDPickingListener(this.getParentGLCanvas().createTooltip(tooltip), pickingType, pickedObjectID);
+	public final IPickingListener addIDPickingTooltipListener(ILabelProvider tooltip, String pickingType,
+			int pickedObjectID) {
+		IPickingListener pickingListener = this.getParentGLCanvas().createTooltip(tooltip);
+		addIDPickingListener(pickingListener, pickingType, pickedObjectID);
+		return pickingListener;
 	}
 
-	public final void addTypePickingTooltipListener(String tooltip, String pickingType) {
-		addTypePickingListener(this.getParentGLCanvas().createTooltip(tooltip), pickingType);
+	public final IPickingListener addTypePickingTooltipListener(String tooltip, String pickingType) {
+		IPickingListener pickingListener = this.getParentGLCanvas().createTooltip(tooltip);
+		addTypePickingListener(pickingListener, pickingType);
+		return pickingListener;
 	}
 
-	public final void addTypePickingTooltipListener(IPickingLabelProvider labelProvider, String pickingType) {
-		addTypePickingListener(this.getParentGLCanvas().createTooltip(labelProvider), pickingType);
+	public final IPickingListener addTypePickingTooltipListener(IPickingLabelProvider labelProvider, String pickingType) {
+		IPickingListener pickingListener = this.getParentGLCanvas().createTooltip(labelProvider);
+		addTypePickingListener(pickingListener, pickingType);
+		return pickingListener;
 	}
 
 	/**

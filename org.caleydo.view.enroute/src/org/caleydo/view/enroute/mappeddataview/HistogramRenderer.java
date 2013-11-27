@@ -138,7 +138,7 @@ public class HistogramRenderer extends ADataRenderer {
 
 		// for (int bucketCount = 0; bucketCount < histogram.size(); bucketCount++) {
 		// //FIXME: HACKY hashcode
-		contentRenderer.parentView.addTypePickingListener(new APickingListener() {
+		contentRenderer.parent.pickingListenerManager.addTypePickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {

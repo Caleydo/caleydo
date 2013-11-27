@@ -115,7 +115,6 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 	}
 
 	private void registerPickingListener() {
-		unregisterPickingListener();
 
 		groupPickingListener = new APickingListener() {
 
@@ -140,6 +139,7 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 			public void mouseOver(Pick pick) {
 				parent.sampleGroupSelectionManager.addToType(SelectionType.MOUSE_OVER, pick.getObjectID());
 				parent.sampleGroupSelectionManager.triggerSelectionUpdateEvent();
+				// button.setVisible(true);
 				parentView.setDisplayListDirty();
 
 			}
@@ -148,6 +148,7 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 			public void mouseOut(Pick pick) {
 				parent.sampleGroupSelectionManager.removeFromType(SelectionType.MOUSE_OVER, pick.getObjectID());
 				parent.sampleGroupSelectionManager.triggerSelectionUpdateEvent();
+				// button.setVisible(false);
 				parentView.setDisplayListDirty();
 
 			}
@@ -206,14 +207,13 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 			}
 		};
 
-		parentView.addIDPickingListener(groupPickingListener, EPickingType.SAMPLE_GROUP.name(), group.getID());
-		// parentView.addIDPickingListener(timedMouseOutListener, EPickingType.SAMPLE_GROUP.name(), group.getID());
-		parentView.addIDPickingTooltipListener(this, EPickingType.SAMPLE_GROUP.name(), group.getID());
+		parent.pickingListenerManager.addIDPickingListener(groupPickingListener, EPickingType.SAMPLE_GROUP.name(),
+				group.getID());
+		parent.pickingListenerManager.addIDPickingListener(timedMouseOutListener, EPickingType.SAMPLE_GROUP.name(),
+				group.getID());
+		parent.pickingListenerManager
+				.addIDPickingTooltipListener(this, EPickingType.SAMPLE_GROUP.name(), group.getID());
 
-	}
-
-	private void unregisterPickingListener() {
-		parentView.removeAllIDPickingListeners(EPickingType.SAMPLE_GROUP.name(), group.getID());
 	}
 
 	@Override

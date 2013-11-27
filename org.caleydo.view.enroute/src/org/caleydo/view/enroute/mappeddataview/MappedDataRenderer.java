@@ -152,11 +152,14 @@ public class MappedDataRenderer {
 
 	private boolean showCenteredDataLineInRowCenter = false;
 
+	PickingListenerManager pickingListenerManager;
+
 	/**
 	 * Constructor with parent view as parameter.
 	 */
 	public MappedDataRenderer(GLEnRoutePathway parentView) {
 		this.parentView = parentView;
+		pickingListenerManager = new PickingListenerManager(parentView);
 		rowSelectionManager = parentView.getGeneSelectionManager();
 
 		List<GeneticDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(GeneticDataDomain.class);
@@ -243,6 +246,7 @@ public class MappedDataRenderer {
 
 	/** Re-builds the layout from scratch */
 	private void reBuildLayout() {
+		pickingListenerManager.removePickingListeners();
 		createLayout(baseLayoutManger, false);
 		createLayout(highlightLayoutManger, true);
 	}
@@ -272,7 +276,7 @@ public class MappedDataRenderer {
 		captionColumn.setPixelSizeX(CAPTION_COLUMN_PIXEL_WIDTH);
 
 		Row buttonRow = new Row("buttonRow");
-		buttonRow.setPixelSizeY(50);
+		buttonRow.setPixelSizeY(25);
 
 		buttonRow.append(createButton(EPickingType.FIT_TO_VIEW_WIDTH_BUTTON.name(), 0,
 				"resources/icons/fit_to_width.png"));
@@ -549,14 +553,14 @@ public class MappedDataRenderer {
 
 		Row topCaptionRow = new Row("topCaptionRow");
 		// captionRow.setDebug(true);
-		topCaptionRow.setPixelSizeY(50);
+		topCaptionRow.setPixelSizeY(25);
 		// topCaptionRow.setDebug(true);
 		// dataSetColumn.add(0, captionRow);
 		dataSetColumn.add(0, topCaptionRow);
 
 		Row bottomCaptionRow = new Row("captionRow");
 		// captionRow.setDebug(true);
-		bottomCaptionRow.setPixelSizeY(50);
+		bottomCaptionRow.setPixelSizeY(25);
 		// dataSetColumn.add(0, captionRow);
 		dataSetColumn.append(bottomCaptionRow);
 
@@ -705,8 +709,9 @@ public class MappedDataRenderer {
 		}
 
 		if (isHighlightLayout && topCaptionLayout != null && bottomCaptionLayout != null) {
-			topCaptionLayout.init(group, columnPerspective, dataDomain);
+
 			bottomCaptionLayout.init(group, columnPerspective, dataDomain);
+			topCaptionLayout.init(group, columnPerspective, dataDomain);
 		}
 
 		IDType resolvedRowIDType;
@@ -994,9 +999,6 @@ public class MappedDataRenderer {
 
 		parentView.addTypePickingTooltipListener("Toggle fit to view width.",
 				EPickingType.FIT_TO_VIEW_WIDTH_BUTTON.name());
-	}
-
-	public void unregisterPickingListeners() {
 	}
 
 	/**

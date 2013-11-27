@@ -94,7 +94,7 @@ public abstract class AMedianBasedSummaryRenderer extends ADataRenderer {
 	}
 
 	protected void registerPickingListeners() {
-		contentRenderer.parentView.addIDPickingTooltipListener(new ILabelProvider() {
+		contentRenderer.parent.pickingListenerManager.addIDPickingTooltipListener(new ILabelProvider() {
 
 			@Override
 			public String getLabel() {
