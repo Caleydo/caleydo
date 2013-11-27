@@ -90,6 +90,8 @@ public class MappedDataRenderer {
 
 	public static final int SPACING_PIXEL_WIDTH = 1;
 
+	public static final int CAPTION_COLUMN_PIXEL_HEIGHT = 25;
+
 	GLEnRoutePathway parentView;
 
 	private ArrayList<RelationshipRenderer> relationShipRenderers;
@@ -276,7 +278,7 @@ public class MappedDataRenderer {
 		captionColumn.setPixelSizeX(CAPTION_COLUMN_PIXEL_WIDTH);
 
 		Row buttonRow = new Row("buttonRow");
-		buttonRow.setPixelSizeY(25);
+		buttonRow.setPixelSizeY(CAPTION_COLUMN_PIXEL_HEIGHT);
 
 		buttonRow.append(createButton(EPickingType.FIT_TO_VIEW_WIDTH_BUTTON.name(), 0,
 				"resources/icons/fit_to_width.png"));
@@ -289,7 +291,7 @@ public class MappedDataRenderer {
 
 		int nodeCount = 0;
 		float previousNodePosition = viewFrustum.getHeight() + yOffset
-				- parentView.getPixelGLConverter().getGLHeightForPixelHeight(50);
+				- parentView.getPixelGLConverter().getGLHeightForPixelHeight(CAPTION_COLUMN_PIXEL_HEIGHT);
 		int previousNrDavids = 0;
 
 		/**
@@ -553,14 +555,14 @@ public class MappedDataRenderer {
 
 		Row topCaptionRow = new Row("topCaptionRow");
 		// captionRow.setDebug(true);
-		topCaptionRow.setPixelSizeY(25);
+		topCaptionRow.setPixelSizeY(CAPTION_COLUMN_PIXEL_HEIGHT);
 		// topCaptionRow.setDebug(true);
 		// dataSetColumn.add(0, captionRow);
 		dataSetColumn.add(0, topCaptionRow);
 
 		Row bottomCaptionRow = new Row("captionRow");
 		// captionRow.setDebug(true);
-		bottomCaptionRow.setPixelSizeY(25);
+		bottomCaptionRow.setPixelSizeY(CAPTION_COLUMN_PIXEL_HEIGHT);
 		// dataSetColumn.add(0, captionRow);
 		dataSetColumn.append(bottomCaptionRow);
 
@@ -976,6 +978,9 @@ public class MappedDataRenderer {
 			}
 
 		}, EPickingType.SAMPLE_GROUP_VIEW_MODE.name());
+
+		parentView.addTypePickingTooltipListener("Toggle summary/detail view for this group",
+				EPickingType.SAMPLE_GROUP_VIEW_MODE.name());
 
 		parentView.addTypePickingListener(new APickingListener() {
 
