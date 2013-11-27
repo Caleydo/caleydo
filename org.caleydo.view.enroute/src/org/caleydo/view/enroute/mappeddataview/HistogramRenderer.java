@@ -28,7 +28,8 @@ import org.caleydo.view.enroute.EPickingType;
  */
 public class HistogramRenderer extends ADataRenderer {
 
-	protected static final int MAX_HISTOGRAM_BAR_WIDTH_PIXELS = 20;
+	// protected static final int MAX_HISTOGRAM_BAR_WIDTH_PIXELS = 20;
+	protected static final int SPACING_PIXELS = 2;
 
 	protected Histogram histogram;
 
@@ -49,14 +50,15 @@ public class HistogramRenderer extends ADataRenderer {
 		if (histogram == null)
 			return;
 		int bucketCount = 0;
-		float barWidth = y / histogram.size();
-		float maxBarWidth = contentRenderer.parentView.getPixelGLConverter().getGLHeightForPixelHeight(
-				MAX_HISTOGRAM_BAR_WIDTH_PIXELS);
-		float histogramStartY = 0;
-		if (barWidth > maxBarWidth) {
-			barWidth = maxBarWidth;
-			histogramStartY = (y - histogram.size() * barWidth) / 2.0f;
-		}
+		float spacing = contentRenderer.parentView.getPixelGLConverter().getGLHeightForPixelHeight(SPACING_PIXELS);
+		float barWidth = (y - 2f * spacing) / histogram.size();
+		// float maxBarWidth = contentRenderer.parentView.getPixelGLConverter().getGLHeightForPixelHeight(
+		// MAX_HISTOGRAM_BAR_WIDTH_PIXELS);
+		float histogramStartY = spacing;
+		// if (barWidth > maxBarWidth) {
+		// barWidth = maxBarWidth;
+		// histogramStartY = (y - histogram.size() * barWidth) / 2.0f + spacing;
+		// }
 		float renderWith = x - contentRenderer.parentView.getPixelGLConverter().getGLWidthForPixelWidth(20);
 
 		for (int bucketNumber = 0; bucketNumber < histogram.size(); bucketNumber++) {
