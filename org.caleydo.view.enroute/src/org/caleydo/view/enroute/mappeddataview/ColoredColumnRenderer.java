@@ -7,6 +7,7 @@ package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
@@ -59,6 +60,8 @@ public class ColoredColumnRenderer extends AColumnBasedDataRenderer {
 			color = getBarColorFromCategory(dataDescription.getCategoricalClassDescription(), columnID);
 		}
 
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		renderSingleBar(gl, 0, 0, y, x, selectionTypes, color, columnID, useShading);
 
 	}
@@ -68,7 +71,7 @@ public class ColoredColumnRenderer extends AColumnBasedDataRenderer {
 				contentRenderer.resolvedColumnIDType, columnID, contentRenderer.resolvedRowIDType,
 				contentRenderer.resolvedRowID));
 		if (property == null)
-			return new float[] { 1, 1, 1, 1 };
+			return new float[] { 1, 1, 1, 0f };
 		return property.getColor().getRGBA();
 	}
 
