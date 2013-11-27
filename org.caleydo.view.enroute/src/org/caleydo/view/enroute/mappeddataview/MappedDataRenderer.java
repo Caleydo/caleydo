@@ -363,10 +363,11 @@ public class MappedDataRenderer {
 					if (isHighlightLayout) {
 						if (va.size() == 1) {
 							rowCaption.setRenderer(new RowCaptionRenderer(contextRowIDType, rowID, parentView, this,
-									color, contextTPerspective.getPerspective(contextRowIDType).getLabel()));
+									contextTPerspective.getDataDomain().getColor().getRGBA(), contextTPerspective
+											.getPerspective(contextRowIDType).getLabel()));
 						} else {
 							rowCaption.setRenderer(new RowCaptionRenderer(contextRowIDType, rowID, parentView, this,
-									color));
+									contextTPerspective.getDataDomain().getColor().getRGBA()));
 						}
 					}
 
