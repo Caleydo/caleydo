@@ -11,6 +11,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2GL3;
 
+import org.caleydo.core.data.collection.CategoricalHistogram;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.selection.SelectionType;
@@ -75,8 +76,13 @@ public class HistogramRenderer extends ADataRenderer {
 				selectionTypes.remove(SelectionType.SELECTION);
 			}
 
-			float[] baseColor = contentRenderer.dataDomain.getTable().getColorMapper()
-					.getColor((float) bucketCount / (histogram.size() - 1));
+			float[] baseColor = null;
+			if (histogram instanceof CategoricalHistogram) {
+				baseColor = ((CategoricalHistogram) histogram).getColor(bucketNumber).getRGBA();
+			} else {
+				baseColor = contentRenderer.dataDomain.getTable().getColorMapper()
+						.getColor((float) bucketCount / (histogram.size() - 1));
+			}
 
 			colorCalculator.setBaseColor(new Color(baseColor[0], baseColor[1], baseColor[2]));
 
