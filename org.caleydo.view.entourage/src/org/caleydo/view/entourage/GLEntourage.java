@@ -4,6 +4,8 @@ import gleem.linalg.Vec2f;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -610,33 +612,10 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	public void addPathway(PathwayGraph pathway, EEmbeddingID level) {
 
-		// PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
-		// PathwayDataDomain.DATA_DOMAIN_TYPE);
-		// List<TablePerspective> tablePerspectives = new ArrayList<>(dataMappingState.getTablePerspectives());
-		//
-		// TablePerspective tablePerspective = tablePerspectives.get(0);
-		// Perspective recordPerspective = tablePerspective.getRecordPerspective();
-		// Perspective dimensionPerspective = tablePerspective.getDimensionPerspective();
-		//
-		// PathwayTablePerspective pathwayTablePerspective = new
-		// PathwayTablePerspective(tablePerspective.getDataDomain(),
-		// pathwayDataDomain, recordPerspective, dimensionPerspective, pathway);
-		// pathwayDataDomain.addTablePerspective(pathwayTablePerspective);
-		//
-		// List<TablePerspective> pathwayTablePerspectives = new ArrayList<>(1);
-		// pathwayTablePerspectives.add(pathwayTablePerspective);
-		// for (int i = 1; i < tablePerspectives.size(); i++) {
-		// pathwayTablePerspectives.add(tablePerspectives.get(i));
-		// }
-
 		PathwayMultiFormInfo info = new PathwayMultiFormInfo();
 		info.pathway = pathway;
 
 		info.age = currentPathwayAge--;
-		// pathwayColumn.setLayout(new GLSizeRestrictiveFlowLayout(false, 10, GLPadding.ZERO));
-		// createSelectedPathMultiformRenderer(pathwayTablePerspectives, EnumSet.of(EEmbeddingID.PATHWAY_LEVEL1,
-		// EEmbeddingID.PATHWAY_LEVEL2, EEmbeddingID.PATHWAY_LEVEL3, EEmbeddingID.PATHWAY_LEVEL4), pathwayRow,
-		// Float.NaN, info);
 		createPathwayMultiFormRenderer(pathway, EnumSet.of(EEmbeddingID.PATHWAY_LEVEL1, EEmbeddingID.PATHWAY_LEVEL2,
 				EEmbeddingID.PATHWAY_LEVEL3, EEmbeddingID.PATHWAY_LEVEL4), pathwayRow, Float.NaN, info);
 		pathwayLayout.addColumn((GLPathwayWindow) info.window);
@@ -655,6 +634,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		pathwayInfos.add(info);
 
 		wasPathwayAdded = true;
+		isLayoutDirty = true;
 	}
 
 	private void createPathwayMultiFormRenderer(PathwayGraph pathway, EnumSet<EEmbeddingID> embeddingIDs,
@@ -755,6 +735,30 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			activeWindow = null;
 			portalFocusWindow = null;
 		}
+		List<PathwayMultiFormInfo> lv1Infos = getPathwayInfosWithLevel(EEmbeddingID.PATHWAY_LEVEL1);
+		if (lv1Infos.isEmpty()) {
+			List<PathwayMultiFormInfo> infos = new ArrayList<>(pathwayInfos);
+			Collections.sort(infos, new Comparator<PathwayMultiFormInfo>() {
+				@Override
+				public int compare(PathwayMultiFormInfo info1, PathwayMultiFormInfo info2) {
+					return info1.age - info2.age;
+				}
+			});
+			for (PathwayMultiFormInfo info : infos) {
+				if (!pinnedWindows.contains(info.window)) {
+					int rendererID = info.embeddingIDToRendererIDs.get(EEmbeddingID.PATHWAY_LEVEL1).get(0);
+					if (info.multiFormRenderer.getActiveRendererID() != rendererID) {
+						info.multiFormRenderer.setActive(rendererID);
+					}
+
+					lastUsedLevel1Renderer = info.multiFormRenderer;
+					lastUsedRenderer = info.multiFormRenderer;
+					break;
+				}
+			}
+		}
+		updateAugmentation();
+		isLayoutDirty = true;
 	}
 
 	@Override
@@ -1188,6 +1192,16 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		return null;
 	}
 
+	private List<PathwayMultiFormInfo> getPathwayInfosWithLevel(EEmbeddingID level) {
+		List<PathwayMultiFormInfo> infos = new ArrayList<>();
+		for (PathwayMultiFormInfo info : pathwayInfos) {
+			if (info.getCurrentEmbeddingID() == level) {
+				infos.add(info);
+			}
+		}
+		return infos;
+	}
+
 	protected void updatePathwayPortals() {
 		PathwayMultiFormInfo info = null;
 		if (portalFocusWindow != null) {
@@ -1201,10 +1215,10 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		// i.window.setTitleBarColor(GLTitleBar.DEFAULT_COLOR);
 		// }
 
-		if (info == null)
-			return;
 		augmentation.clear();
 		clearWindowStubSets();
+		if (info == null)
+			return;
 		// textureSelectionListeners.clear();
 		PathwayVertexRep lastNodeOfPrevSegment = null;
 
