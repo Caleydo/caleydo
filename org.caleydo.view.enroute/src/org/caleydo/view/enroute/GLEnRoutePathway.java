@@ -416,7 +416,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 			// System.out.println("setting min width:" + minViewWidth);
 			if (fitToViewWidth) {
-				minWidth = pathRenderer.getMinWidthPixels() + DATA_COLUMN_WIDTH_PIXELS;
+				minWidth = pixelGLConverter.getPixelWidthForGLWidth((viewFrustum.getWidth()));
+				// minWidth = pathRenderer.getMinWidthPixels() + DATA_COLUMN_WIDTH_PIXELS;
 			} else {
 				minWidth = updateWidth ? minViewWidth + 3 : pathRenderer.getMinWidthPixels() + DATA_COLUMN_WIDTH_PIXELS;
 			}

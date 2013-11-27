@@ -311,9 +311,9 @@ public class MappedDataRenderer {
 				IDType contextRowIDType = contextTPerspective.getDataDomain().getOppositeIDType(sampleIDType);
 				VirtualArray va = contextTPerspective.getPerspective(contextRowIDType).getVirtualArray();
 
-				//Row ids are shared for all table perspectives in a "table perspective row"
+				// Row ids are shared for all table perspectives in a "table perspective row"
 				List<Integer> ids = new ArrayList<>();
-				for(TablePerspective tp : resolvedContextPerspectives) {
+				for (TablePerspective tp : resolvedContextPerspectives) {
 					contextRowIDs.put(tp, ids);
 				}
 
@@ -395,11 +395,29 @@ public class MappedDataRenderer {
 		ArrayList<ArrayList<ElementLayout>> rowListForTablePerspectives = new ArrayList<ArrayList<ElementLayout>>(
 				geneTablePerspectives.size());
 
+		IDType davidIDType = IDType.getIDType("DAVID");
+		int numSummaryColumns = 0;
+
 		for (int count = 0; count < geneTablePerspectives.size(); count++) {
 			rowListForTablePerspectives.add(new ArrayList<ElementLayout>(linearizedNodes.size() * 2));
-		}
+			TablePerspective geneTablePerspective = geneTablePerspectives.get(count);
 
-		IDType davidIDType = IDType.getIDType("DAVID");
+			Group group = geneTablePerspective.getGroup(geneTablePerspective.getDataDomain().getOppositeIDType(
+					davidIDType));
+			if (group == null) {
+				group = geneTablePerspective
+						.getPerspective(geneTablePerspective.getDataDomain().getOppositeIDType(davidIDType))
+						.getVirtualArray().getGroupList().get(0);
+			}
+			if (sampleGroupSelectionManager.checkStatus(abstractGroupType, group.getID())) {
+				numSummaryColumns++;
+			}
+		}
+		int availableWidth = parentView.getPixelGLConverter().getPixelWidthForGLWidth(viewFrustum.getRight());
+		int totalWidthForData = availableWidth
+				- ((geneTablePerspectives.size() - 1) * SPACING_PIXEL_WIDTH + CAPTION_COLUMN_PIXEL_WIDTH);
+		int summaryGroupWidth = !parentView.isFitWidthToScreen() ? ABSTRACT_GROUP_PIXEL_WIDTH : Math.min(
+				ABSTRACT_GROUP_PIXEL_WIDTH, (int) ((float) totalWidthForData / (float) geneTablePerspectives.size()));
 
 		ArrayList<Integer> davidIDs = new ArrayList<Integer>(linearizedNodes.size() * 2);
 
@@ -548,6 +566,8 @@ public class MappedDataRenderer {
 		//
 		// }
 		for (int tablePerspectiveCount = 0; tablePerspectiveCount < geneTablePerspectives.size(); tablePerspectiveCount++) {
+
+			TablePerspective geneTablePerspective = geneTablePerspectives.get(tablePerspectiveCount);
 			if (contextualTablePerspectives != null && contextualTablePerspectives.size() > 0) {
 				for (List<TablePerspective> resolvedContextTablePerspectives : contextualTablePerspectives) {
 					TablePerspective contextTablePerspective = resolvedContextTablePerspectives
@@ -555,8 +575,8 @@ public class MappedDataRenderer {
 					// VirtualArray va = contextTablePerspective.getOppositePerspective(sampleIDType).getVirtualArray();
 					prepareData(contextTablePerspective, rowsForContextTablePerspectives.get(contextTablePerspective),
 							null, null, contextTablePerspective.getDataDomain().getOppositeIDType(sampleIDType),
-							contextRowIDs.get(contextTablePerspective), isHighlightLayout,
-							geneTablePerspectives.get(tablePerspectiveCount));
+							contextRowIDs.get(contextTablePerspective), isHighlightLayout, geneTablePerspective,
+							summaryGroupWidth);
 
 				}
 			}
@@ -571,11 +591,26 @@ public class MappedDataRenderer {
 				topCaptionRow.append(xSpacing);
 			}
 
-			prepareData(geneTablePerspectives.get(tablePerspectiveCount),
-					rowListForTablePerspectives.get(tablePerspectiveCount), topCaptionLayout, bottomCaptionLayout,
-					davidIDType, davidIDs, isHighlightLayout, null);
+			prepareData(geneTablePerspective, rowListForTablePerspectives.get(tablePerspectiveCount), topCaptionLayout,
+					bottomCaptionLayout, davidIDType, davidIDs, isHighlightLayout, null, summaryGroupWidth);
+
+			// Group group = geneTablePerspective.getGroup(geneTablePerspective.getDataDomain().getOppositeIDType(
+			// davidIDType));
+			// if (group == null) {
+			// group = geneTablePerspective
+			// .getPerspective(geneTablePerspective.getDataDomain().getOppositeIDType(davidIDType))
+			// .getVirtualArray().getGroupList().get(0);
+			// }
+			// if (!sampleGroupSelectionManager.checkStatus(abstractGroupType, group.getID())) {
+			// allColumnsShowSummary = false;
+			// }
 		}
+
 		calcMinWidthPixels();
+		if (numSummaryColumns == geneTablePerspectives.size() && numSummaryColumns != 0) {
+			dataSetColumn.setPixelSizeX((numSummaryColumns * summaryGroupWidth)
+					+ ((numSummaryColumns - 1) * SPACING_PIXEL_WIDTH));
+		}
 
 		PixelGLConverter pixelGLConverter = parentView.getPixelGLConverter();
 		float minWidth = pixelGLConverter.getGLWidthForPixelWidth(minWidthPixels);
@@ -643,7 +678,8 @@ public class MappedDataRenderer {
 	 */
 	private void prepareData(TablePerspective tablePerspective, List<ElementLayout> rowLayouts,
 			ColumnCaptionLayout topCaptionLayout, ColumnCaptionLayout bottomCaptionLayout, IDType rowIDType,
-			List<Integer> rowIDs, boolean isHighlightLayout, TablePerspective foreignTablePerspective) {
+			List<Integer> rowIDs, boolean isHighlightLayout, TablePerspective foreignTablePerspective,
+			int summaryGroupWidth) {
 		ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
 		Perspective foreignColumnPerspective = foreignTablePerspective != null ? foreignTablePerspective
 				.getPerspective(sampleIDType) : null;
@@ -702,10 +738,10 @@ public class MappedDataRenderer {
 			ElementLayout tablePerspectiveLayout = rowLayouts.get(rowCount);
 
 			if (sampleGroupSelectionManager.checkStatus(abstractGroupType, group.getID())) {
-				tablePerspectiveLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_WIDTH);
+				tablePerspectiveLayout.setPixelSizeX(summaryGroupWidth);
 				if (topCaptionLayout != null && bottomCaptionLayout != null) {
-					bottomCaptionLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_WIDTH);
-					topCaptionLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_WIDTH);
+					bottomCaptionLayout.setPixelSizeX(summaryGroupWidth);
+					topCaptionLayout.setPixelSizeX(summaryGroupWidth);
 				}
 			} else {
 				// float width = 1.0f / usedTablePerspectives.size();
@@ -1080,7 +1116,6 @@ public class MappedDataRenderer {
 					}
 
 				}, contextRowIDType.getTypeName());
-
 
 				// }
 			}

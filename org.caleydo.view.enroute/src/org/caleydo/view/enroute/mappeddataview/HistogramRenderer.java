@@ -59,7 +59,7 @@ public class HistogramRenderer extends ADataRenderer {
 		// barWidth = maxBarWidth;
 		// histogramStartY = (y - histogram.size() * barWidth) / 2.0f + spacing;
 		// }
-		float renderWith = x - contentRenderer.parentView.getPixelGLConverter().getGLWidthForPixelWidth(20);
+		float renderWith = x - contentRenderer.parentView.getPixelGLConverter().getGLWidthForPixelWidth(5);
 
 		for (int bucketNumber = 0; bucketNumber < histogram.size(); bucketNumber++) {
 
