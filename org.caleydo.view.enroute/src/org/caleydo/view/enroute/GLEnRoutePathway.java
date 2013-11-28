@@ -172,6 +172,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	private int minHeight = 0;
 
+	private boolean useColorMapping = false;
+
 	/**
 	 * Constructor.
 	 *
@@ -984,6 +986,21 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public void setShowCenteredDataLineInRowCenter(boolean showCenteredDataLineInRowCenter) {
 		if (mappedDataRenderer != null)
 			mappedDataRenderer.setShowCenteredDataLineInRowCenter(showCenteredDataLineInRowCenter);
+	}
+
+	/**
+	 * @param useColorMapping
+	 *            setter, see {@link useColorMapping}
+	 */
+	public void setUseColorMapping(boolean useColorMapping) {
+		this.useColorMapping = useColorMapping;
+	}
+
+	/**
+	 * @return the useColorMapping, see {@link #useColorMapping}
+	 */
+	public boolean isUseColorMapping() {
+		return useColorMapping;
 	}
 
 }
