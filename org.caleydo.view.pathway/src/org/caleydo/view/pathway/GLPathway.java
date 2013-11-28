@@ -105,7 +105,6 @@ import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
 import org.caleydo.view.pathway.listener.ShowPortalNodesEventListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.widgets.Display;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultEdge;
@@ -411,17 +410,17 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		@Override
 		public void keyPressed(IKeyEvent e) {
 			// //comment_1/2:
-			if (e.isControlDown() && (e.isKey('o'))) { // ctrl +o
-				enablePathSelection(!isPathSelectionMode);
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						if (selectPathAction != null) {
-							selectPathAction.setChecked(isPathSelectionMode);
-						}
-					}
-				});
-			}// if (e.isControlDown() && (e.getKeyCode() == 79))
+			// if (e.isControlDown() && (e.isKey('o'))) { // ctrl +o
+			// enablePathSelection(!isPathSelectionMode);
+			// Display.getDefault().asyncExec(new Runnable() {
+			// @Override
+			// public void run() {
+			// if (selectPathAction != null) {
+			// selectPathAction.setChecked(isPathSelectionMode);
+			// }
+			// }
+			// });
+			// }// if (e.isControlDown() && (e.getKeyCode() == 79))
 			isControlKeyDown = e.isControlDown();
 			isShiftKeyDown = e.isShiftDown();
 			// isAltKeyDown = e.isAltDown();

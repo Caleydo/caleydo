@@ -92,6 +92,7 @@ import org.caleydo.view.entourage.ranking.PathwayFilters;
 import org.caleydo.view.entourage.ranking.PathwayRankings;
 import org.caleydo.view.entourage.ranking.RankingElement;
 import org.caleydo.view.entourage.toolbar.ShowPortalsAction;
+import org.eclipse.swt.widgets.Display;
 
 public class GLEntourage extends AGLElementGLView implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView,
 		IMultiFormChangeListener, IEventBasedSelectionManagerUser {
@@ -579,6 +580,22 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 						showSrcWindowLinks = false;
 					else
 						showSrcWindowLinks = true;
+				}
+
+				if (e.isKey('b')) { // ctrl +o
+					if (selectPathAction != null) {
+
+						Display.getDefault().asyncExec(new Runnable() {
+							@Override
+							public void run() {
+								boolean enable = !selectPathAction.isChecked();
+								EnablePathSelectionEvent event = new EnablePathSelectionEvent(enable);
+								event.setEventSpace(pathEventSpace);
+								GeneralManager.get().getEventPublisher().triggerEvent(event);
+								selectPathAction.setChecked(enable);
+							}
+						});
+					}
 				}
 			}
 		});
