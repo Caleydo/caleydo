@@ -158,7 +158,7 @@ public class DataMappingWizard extends GLElementContainer {
 		column.add(createSpacing(0.5f));
 
 		dataLayer.setVisibility(EVisibility.NONE);
-		dataLayer.add(createSpacing(0.4f));
+		// dataLayer.add(createSpacing(0.4f));
 		dataLayer.add(column);
 
 		add(dataLayer);
@@ -238,5 +238,6 @@ public class DataMappingWizard extends GLElementContainer {
 		} else {
 			dataLayer.setVisibility(EVisibility.NONE);
 		}
+		relayout();
 	}
 }
