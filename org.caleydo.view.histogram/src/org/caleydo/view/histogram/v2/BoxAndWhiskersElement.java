@@ -19,6 +19,7 @@ import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.ADoubleFunction;
 import org.caleydo.core.util.function.AdvancedDoubleStatistics;
 import org.caleydo.core.util.function.DoubleFunctions;
+import org.caleydo.core.util.function.DoubleStatistics;
 import org.caleydo.core.util.function.IDoubleFunction;
 import org.caleydo.core.util.function.IDoubleIterator;
 import org.caleydo.core.util.function.IDoubleList;
@@ -49,6 +50,7 @@ public class BoxAndWhiskersElement extends ASingleTablePerspectiveElement {
 	private boolean showScale = false;
 
 	private AdvancedDoubleStatistics rawStats;
+	private DoubleStatistics rootStats;
 	private AdvancedDoubleStatistics normalizedStats;
 	/**
 	 * normalized value which is just above the <code>25 quartile - iqr*1.5</code> margin
@@ -120,6 +122,13 @@ public class BoxAndWhiskersElement extends ASingleTablePerspectiveElement {
 				nearestIQRMin = v;
 			if (v < upperIQRBounds && v > nearestIQRMax)
 				nearestIQRMax = v;
+		}
+
+		if (tablePerspective.getParentTablePerspective() != null
+				&& !(tablePerspective.getDataDomain().getTable() instanceof NumericalTable)) {
+			rootStats = DoubleStatistics.of(TableDoubleLists.asRawList(tablePerspective.getParentTablePerspective()));
+		} else {
+			rootStats = rawStats;
 		}
 
 		super.onVAUpdate(tablePerspective);
@@ -204,7 +213,7 @@ public class BoxAndWhiskersElement extends ASingleTablePerspectiveElement {
 			};
 		} else {
 			// use the data from the min max stats
-			f = DoubleFunctions.unnormalize(rawStats.getMin(), rawStats.getMax());
+			f = DoubleFunctions.unnormalize(rootStats.getMin(), rootStats.getMax());
 		}
 		final int textHeight = 10;
 
