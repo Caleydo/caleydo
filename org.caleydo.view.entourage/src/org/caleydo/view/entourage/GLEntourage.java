@@ -86,6 +86,7 @@ import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.entourage.GLWindow.ICloseWindowListener;
 import org.caleydo.view.entourage.MultiLevelSlideInElement.IWindowState;
 import org.caleydo.view.entourage.SlideInElement.ESlideInElementPosition;
+import org.caleydo.view.entourage.datamapping.DataMappers;
 import org.caleydo.view.entourage.datamapping.DataMappingState;
 import org.caleydo.view.entourage.datamapping.DataMappingWizard;
 import org.caleydo.view.entourage.event.AddPathwayEvent;
@@ -238,6 +239,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	 */
 	protected final DataMappingState dataMappingState;
 
+	private boolean isEnRouteFirstTimeVisible = true;
+
 	private SelectPathAction selectPathAction;
 
 	private IWindowState pathOnlyState;
@@ -355,7 +358,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		super.init(gl);
 		pathInfo = new MultiFormInfo();
 		createSelectedPathMultiformRenderer(new ArrayList<>(dataMappingState.getTablePerspectives()),
-				EnumSet.of(EEmbeddingID.PATH_LEVEL1, EEmbeddingID.PATH_LEVEL2), baseContainer, 0.3f, pathInfo);
+				EnumSet.of(EEmbeddingID.PATH_LEVEL2, EEmbeddingID.PATH_LEVEL1), baseContainer, 0.3f, pathInfo);
 		enrouteSlideInElement = new MultiLevelSlideInElement(pathInfo.window, ESlideInElementPosition.LEFT);
 		enrouteSlideInElement.addWindowState(new IWindowState() {
 
@@ -512,8 +515,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		fitEnrouteToViewWidthButton.setRenderer(GLRenderers.fillImage(new ResourceLoader(enrouteResourceLocator)
 				.getTexture("resources/icons/fit_to_width.png")));
 		fitEnrouteToViewWidthButton.setSelectedRenderer(GLRenderers.pushedImage(new ResourceLoader(
-				enrouteResourceLocator)
-				.getTexture("resources/icons/fit_to_width.png")));
+				enrouteResourceLocator).getTexture("resources/icons/fit_to_width.png")));
 		fitEnrouteToViewWidthButton.setSelected(enRoute.isFitWidthToScreen());
 
 		fitEnrouteToViewWidthButton.onPick(new APickingListener() {
@@ -536,7 +538,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedSubGraphView serializedForm = new SerializedSubGraphView();
+		SerializedEntourageView serializedForm = new SerializedEntourageView();
 		return serializedForm;
 	}
 
@@ -1000,6 +1002,10 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			}
 			if (pathInfo.window != null) {
 				if (level == EEmbeddingID.PATH_LEVEL1) {
+					if (isEnRouteFirstTimeVisible) {
+						DataMappers.getDataMapper().show();
+						isEnRouteFirstTimeVisible = false;
+					}
 					pathInfo.window.titleBar.add(pathInfo.window.titleBar.size() - 1, fitEnrouteToViewWidthButton);
 					pathInfo.window.titleBar.add(pathInfo.window.titleBar.size() - 1, useCenterLineButton);
 				} else {

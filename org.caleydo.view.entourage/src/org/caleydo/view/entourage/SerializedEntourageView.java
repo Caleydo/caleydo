@@ -13,10 +13,10 @@ import org.caleydo.core.serialize.ASerializedMultiTablePerspectiveBasedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedSubGraphView extends
+public class SerializedEntourageView extends
 		ASerializedMultiTablePerspectiveBasedView {
 
-	public SerializedSubGraphView() {
+	public SerializedEntourageView() {
 
 	}
 
