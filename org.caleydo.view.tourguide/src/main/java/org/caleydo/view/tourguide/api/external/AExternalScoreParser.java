@@ -38,7 +38,7 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 	}
 
 	public AExternalScoreParser(T spec) {
-		super(spec.getDataSourcePath());
+		super(spec.getDataSourcePath(), spec);
 		this.spec = spec;
 	}
 

@@ -1020,6 +1020,26 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 				+ " not registered with this datadomain " + this.toString());
 	}
 
+	public Object getRaw(IDType idType1, Integer id1, IDType idType2, Integer id2) {
+		if (idType1.equals(recordIDType) && idType2.equals(dimensionIDType)) {
+			return table.getRaw(id2, id1);
+		} else if (idType2.equals(recordIDType) && idType1.equals(dimensionIDType)) {
+			return table.getRaw(id1, id2);
+		}
+		throw new IllegalStateException("At least one of the ID types " + idType1 + " " + idType2
+				+ " not registered with this datadomain " + this.toString());
+	}
+
+	public Object getDataClassSpecificDescription(IDType idType1, Integer id1, IDType idType2, Integer id2) {
+		if (idType1.equals(recordIDType) && idType2.equals(dimensionIDType)) {
+			return table.getDataClassSpecificDescription(id2, id1);
+		} else if (idType2.equals(recordIDType) && idType1.equals(dimensionIDType)) {
+			return table.getDataClassSpecificDescription(id1, id2);
+		}
+		throw new IllegalStateException("At least one of the ID types " + idType1 + " " + idType2
+				+ " not registered with this datadomain " + this.toString());
+	}
+
 	/**
 	 * Returns true if the type is identical with a primary IDType, i.e., either recordIDType or dimensionIDType.
 	 *

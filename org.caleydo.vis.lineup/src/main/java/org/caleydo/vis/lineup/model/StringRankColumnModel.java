@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -23,6 +24,7 @@ import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.lineup.internal.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.event.SearchEvent;
+import org.caleydo.vis.lineup.internal.event.SearchEvent.SearchResult;
 import org.caleydo.vis.lineup.internal.ui.StringFilterDialog;
 import org.caleydo.vis.lineup.internal.ui.StringSearchDialog;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
@@ -194,58 +196,59 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	 * @param search
 	 * @param isForward
 	 */
-	public void onSearch(String search, boolean wrapSearch, boolean isForward) {
+	public void onSearch(String search, boolean wrapSearch, boolean isForward, ICallback<SearchResult> callback) {
 		if (search == null || search.trim().isEmpty())
 			return;
-		String prepared = filterStrategy.prepare(search);
-		ColumnRanker ranker = getMyRanker();
+		final ColumnRanker ranker = getMyRanker();
+		final RankTableModel table = ranker.getTable();
+		final int[] order = ranker.getOrder();
+		final int size = ranker.size();
 		final int selected = ranker.getSelectedRank();
-		int[] order = ranker.getOrder();
-		RankTableModel table = ranker.getTable();
+		BitSet matching = searchAll(search, table, order);
 
+		int toSelect = -1;
 		if (isForward) {
-			int start = Math.min(selected < 0 ? 0 : selected + 1, order.length - 1);
+			int start = Math.min(selected < 0 ? 0 : selected + 1, size - 1);
 			// from start to end
-			for (int i = start; i < order.length; ++i) {
-				IRow row = table.getDataItem(order[i]);
-				if (filterStrategy.apply(prepared, this.data.apply(row))) {
-					table.setSelectedRow(row);
-					return;
-				}
-			}
-			if (wrapSearch) {
-				// from 0 to start-1
-				for (int i = 0; i < start - 1; ++i) {
-					IRow row = table.getDataItem(order[i]);
-					if (filterStrategy.apply(prepared, this.data.apply(row))) {
-						table.setSelectedRow(row);
-						return;
-					}
-				}
+			toSelect = matching.nextSetBit(start);
+			if (toSelect < 0 && wrapSearch) {
+				toSelect = matching.nextSetBit(0);
+				if (toSelect >= start)
+					toSelect = -1;
 			}
 		} else {
 			int start = Math.max(selected < 0 ? order.length - 1 : selected - 1, 0);
 			// from start to 0
-			for (int i = start; i >= 0; --i) {
-				IRow row = table.getDataItem(order[i]);
-				if (filterStrategy.apply(prepared, this.data.apply(row))) {
-					table.setSelectedRow(row);
-					return;
-				}
-			}
-			if (wrapSearch) {
-				// from end to start+1
-				for (int i = order.length - 1; i >= start + 1; --i) {
-					IRow row = table.getDataItem(order[i]);
-					if (filterStrategy.apply(prepared, this.data.apply(row))) {
-						table.setSelectedRow(row);
-						return;
-					}
-				}
+			toSelect = matching.previousSetBit(start - 1);
+			if (toSelect < 0 && wrapSearch) {
+				toSelect = matching.previousSetBit(matching.length());
+				if (toSelect <= start)
+					toSelect = -1;
 			}
 		}
-		// nothing found
-		table.setSelectedRow(null);
+		if (toSelect >= 0)
+			table.setSelectedRow(table.getDataItem(order[toSelect]));
+		else
+			table.setSelectedRow(null);
+		if (callback != null)
+			callback.on(new SearchResult(matching.cardinality()));
+	}
+
+	/**
+	 * @param order
+	 * @param table
+	 * @param preparedFilter
+	 * @return
+	 */
+	private BitSet searchAll(String search, final RankTableModel table, final int[] order) {
+		String preparedFilter = filterStrategy.prepare(search);
+
+		BitSet r = new BitSet(order.length);
+		for (int i = 0; i < order.length; ++i) {
+			IRow row = table.getDataItem(order[i]);
+			r.set(i, filterStrategy.apply(preparedFilter, this.data.apply(row)));
+		}
+		return r;
 	}
 
 	public void setFilter(String filter, boolean isFilterGlobally, boolean isRankIndependentFilter) {
@@ -321,7 +324,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 		@ListenTo(sendToMe = true)
 		private void onSetSearch(SearchEvent event) {
-			onSearch((String) event.getSearch(), event.isWrapSearch(), event.isForward());
+			onSearch((String) event.getSearch(), event.isWrapSearch(), event.isForward(), event.getCallback());
 		}
 
 	}

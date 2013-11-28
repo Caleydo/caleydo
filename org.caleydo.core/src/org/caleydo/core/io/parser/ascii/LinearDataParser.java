@@ -29,12 +29,12 @@ import com.google.common.primitives.Floats;
  * </p>
  * <p>
  * e.g.:
- * 
+ *
  * <pre>
  * Sample1 | Gene1 | 0.4
  * Sample1 | Gene2 | 0.6
  * </pre>
- * 
+ *
  * </p>
  * <p>
  * This is only implemented for homogeneous float at the moment!
@@ -57,7 +57,7 @@ public class LinearDataParser extends ATextParser {
 	 * Constructor.
 	 */
 	public LinearDataParser(ATableBasedDataDomain dataDomain, DataSetDescription dataSetDescription) {
-		super(dataSetDescription.getDataSourcePath());
+		super(dataSetDescription.getDataSourcePath(), dataSetDescription);
 
 		this.dataDomain = dataDomain;
 		this.dataSetDescription = dataSetDescription;

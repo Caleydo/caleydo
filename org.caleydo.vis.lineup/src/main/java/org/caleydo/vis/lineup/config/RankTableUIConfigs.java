@@ -7,6 +7,7 @@ package org.caleydo.vis.lineup.config;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
@@ -121,8 +122,9 @@ public class RankTableUIConfigs {
 		}
 
 		@Override
-		public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected) {
-			wrappee.onRowClick(table, pickingMode, row, isSelected);
+		public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected,
+				IGLElementContext context) {
+			wrappee.onRowClick(table, pickingMode, row, isSelected, context);
 		}
 	}
 

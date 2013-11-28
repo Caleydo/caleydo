@@ -10,6 +10,7 @@ import java.util.Collection;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.view.tourguide.spi.compute.IComputedGroupScore;
 import org.caleydo.view.tourguide.spi.compute.IComputedStratificationScore;
 
@@ -20,10 +21,15 @@ import org.caleydo.view.tourguide.spi.compute.IComputedStratificationScore;
  * @author Samuel Gratzl
  *
  */
-public interface IComputeElement extends Iterable<Integer> {
+public interface IComputeElement extends Iterable<Integer>, ILabeled {
+	/**
+	 * @return
+	 */
+	IDataDomain getDataDomain();
+
 	/**
 	 * unique id that identifiers this compute elements, which is used for caching
-	 *
+	 * 
 	 * @return
 	 */
 	String getPersistentID();
@@ -35,8 +41,18 @@ public interface IComputeElement extends Iterable<Integer> {
 	 */
 	IDType getIdType();
 
+	/**
+	 * return the opposite id type to {@link #getIdType()}
+	 *
+	 * @return
+	 */
 	IDType getDimensionIdType();
 
+	/**
+	 * return all groups of this elements
+	 *
+	 * @return
+	 */
 	Collection<Group> getGroups();
 
 	/**
@@ -55,12 +71,6 @@ public interface IComputeElement extends Iterable<Integer> {
 	 */
 	Collection<Integer> of(Group group);
 
-	/**
-	 * @return
-	 */
-	IDataDomain getDataDomain();
-
-	String getLabel();
 
 	/**
 	 * number of ids

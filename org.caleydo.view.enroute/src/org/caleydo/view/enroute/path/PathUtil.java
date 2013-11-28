@@ -6,7 +6,9 @@
 package org.caleydo.view.enroute.path;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -110,6 +112,31 @@ public final class PathUtil {
 		}
 
 		return numEqualVertices;
+	}
+
+	/**
+	 * Determines the set of vertices the specified paths have in common.
+	 *
+	 * @param sourcePathSegments
+	 * @param targetPathSegments
+	 * @return
+	 */
+	public static Set<PathwayVertexRep> getCommonVertices(List<List<PathwayVertexRep>> sourcePathSegments,
+			List<List<PathwayVertexRep>> targetPathSegments) {
+		List<PathwayVertexRep> sourceSegments = flattenSegments(sourcePathSegments);
+		List<PathwayVertexRep> targetSegments = flattenSegments(targetPathSegments);
+
+		Set<PathwayVertexRep> commonVertices = new LinkedHashSet<>();
+		for (PathwayVertexRep vTarget : targetSegments) {
+			for (PathwayVertexRep vSource : sourceSegments) {
+				if (vSource == vTarget) {
+					commonVertices.add(vSource);
+					break;
+				}
+			}
+		}
+
+		return commonVertices;
 	}
 
 }

@@ -24,6 +24,10 @@ public enum EDimension {
 		return !this.isRecord();
 	}
 
+	public EDimension opposite() {
+		return get(this != DIMENSION);
+	}
+
 	public static EDimension get(boolean dimension) {
 		return dimension ? DIMENSION : RECORD;
 	}

@@ -129,7 +129,7 @@ public class TablePerspectiveRenderer extends ADraggableColorRenderer {
 
 	@Override
 	protected Point2D getPosition() {
-		return node.getBottomObjectAnchorPoints(this).getFirst();
+		return node.getBottomObjectAnchorPoints(tablePerspective != null ? tablePerspective : this).getFirst();
 	}
 
 	public boolean isShowText() {

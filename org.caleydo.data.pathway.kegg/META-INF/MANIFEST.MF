@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KEGG Pathways
 Bundle-SymbolicName: org.caleydo.data.pathway.kegg;singleton:=true
-Bundle-Version: 3.1.0
+Bundle-Version: 3.1.1
 Bundle-Activator: org.caleydo.data.pathway.kegg.Activator
-Require-Bundle: org.caleydo.core;bundle-version="3.1.0",
- org.caleydo.datadomain.pathway;bundle-version="3.1.0"
+Require-Bundle: org.caleydo.core;bundle-version="3.1.1",
+ org.caleydo.datadomain.pathway;bundle-version="3.1.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: www.genome.jp/kegg

@@ -49,8 +49,8 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 
 	protected TablePerspective tablePerspective;
 
-	public ATableBasedDataConfigurer(TablePerspective dimensionGroupData) {
-		this.tablePerspective = dimensionGroupData;
+	public ATableBasedDataConfigurer(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 
 	protected ArrayList<ElementLayout> createHeaderBarElements(HeaderBrickLayoutTemplate layoutTemplate) {
@@ -73,8 +73,7 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 
 		ITextRenderer textRenderer = layoutTemplate.getBrick().getTextRenderer();
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup().getStratomexView(),
-				textRenderer,
-				layoutTemplate.getBrick(), pickingIDs);
+				textRenderer, layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -98,8 +97,7 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup().getStratomexView(),
-				layoutTemplate.getBrick().getTextRenderer(),
-				layoutTemplate.getBrick(), pickingIDs);
+				layoutTemplate.getBrick().getTextRenderer(), layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -151,8 +149,7 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 
 		ITextRenderer textRenderer = layoutTemplate.getBrick().getTextRenderer();
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup().getStratomexView(),
-				textRenderer,
-				layoutTemplate.getBrick(), pickingIDs);
+				textRenderer, layoutTemplate.getBrick(), pickingIDs);
 
 		captionLayout.setRenderer(captionRenderer);
 
@@ -254,4 +251,5 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 
 		return new NoSortingSortingStrategy();
 	}
+
 }

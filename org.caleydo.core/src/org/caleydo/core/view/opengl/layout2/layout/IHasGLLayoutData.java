@@ -5,11 +5,13 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.layout;
 
+import com.google.common.base.Supplier;
+
 /**
  * interface describing that the instance provides layout data, or e.g. is a layout data but wrappes another one
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public interface IHasGLLayoutData {
 	/**
@@ -22,4 +24,15 @@ public interface IHasGLLayoutData {
 	 * @return
 	 */
 	<T> T getLayoutDataAs(Class<T> clazz, T default_);
+
+	/**
+	 * returns the layout data of the element if it is of the specific class otherwise return the default value
+	 *
+	 * @param clazz
+	 *            the instance of expected layout data
+	 * @param default_
+	 *            default value as a supplier
+	 * @return
+	 */
+	<T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_);
 }

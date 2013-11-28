@@ -8,6 +8,8 @@ package org.caleydo.core.view.opengl.layout2.layout;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 
 import com.google.common.base.Function;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 
 /**
  * @author Samuel Gratzl
@@ -35,7 +37,7 @@ public class GLLayoutDatas {
 	 * @param default_
 	 * @return
 	 */
-	public static <T> Function<GLElement, T> toLayoutData(final Class<T> clazz, final T default_) {
+	public static <T> Function<GLElement, T> toLayoutData(final Class<T> clazz, final Supplier<T> default_) {
 		return new Function<GLElement, T>() {
 			@Override
 			public T apply(GLElement arg0) {
@@ -55,8 +57,25 @@ public class GLLayoutDatas {
 
 		@Override
 		public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+			return getLayoutDataAs(clazz, Suppliers.ofInstance(default_));
+		}
+
+		@Override
+		public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
 			return GLLayouts.resolveLayoutDatas(clazz, default_, elems);
 
 		}
+	}
+
+	/**
+	 * @return
+	 */
+	public static <T> Supplier<T> throwInvalidException() {
+		return new Supplier<T>() {
+			@Override
+			public T get() {
+				throw new IllegalStateException("never call this supplier");
+			}
+		};
 	}
 }

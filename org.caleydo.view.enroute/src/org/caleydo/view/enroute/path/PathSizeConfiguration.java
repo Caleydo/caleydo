@@ -34,11 +34,11 @@ public class PathSizeConfiguration {
 			.branchSummaryNodeBranchNodeSpacing(10).pathwayBorderWidth(6).edgeArrowSize(10).edgeArrwoBaseLineSize(6)
 			.edgeTextHeight(9).branchNodesShowDataPreview(false).build();
 
-	public static final PathSizeConfiguration ENROUTE_DEFAULT = new Builder(DEFAULT).pathStartSpacing(60)
-			.pathEndSpacing(60).minNodeSpacing(40).build();
+	public static final PathSizeConfiguration ENROUTE_DEFAULT = new Builder(DEFAULT).pathStartSpacing(35)
+			.pathEndSpacing(35).minNodeSpacing(40).build();
 
-	public static final PathSizeConfiguration ENROUTE_COMPACT = new Builder(COMPACT).pathStartSpacing(60)
-			.pathEndSpacing(60).minNodeSpacing(26).pathAreaWidth(80).build();
+	public static final PathSizeConfiguration ENROUTE_COMPACT = new Builder(COMPACT).pathStartSpacing(35)
+			.pathEndSpacing(35).minNodeSpacing(26).pathAreaWidth(80).build();
 
 	/**
 	 * Height of labels for edges.

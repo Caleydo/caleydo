@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.wizard;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import org.caleydo.core.data.collection.EDataType;
@@ -12,7 +13,8 @@ import org.caleydo.core.data.collection.column.container.CategoricalClassDescrip
 import org.caleydo.core.io.DataDescriptionUtil;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.gui.dataimport.widget.CategoricalDataPropertiesWidget;
-import org.caleydo.core.io.gui.dataimport.widget.NumericalDataPropertiesWidget;
+import org.caleydo.core.io.gui.dataimport.widget.numerical.NumericalDataPropertiesCollectionWidget;
+import org.caleydo.core.io.gui.dataimport.widget.numerical.NumericalDataPropertiesCollectionWidget.ENumericalDataProperties;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -46,7 +48,7 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 
 	private Button categoricalDataButton;
 
-	private NumericalDataPropertiesWidget numericalDataPropertiesWidget;
+	private NumericalDataPropertiesCollectionWidget numericalDataPropertiesWidget;
 
 	private CategoricalDataPropertiesWidget categoricalDataPropertiesWidget;
 
@@ -185,7 +187,9 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 
 		if (numericalDataPropertiesWidget == null) {
 			numericalDataButton.setSelection(true);
-			numericalDataPropertiesWidget = new NumericalDataPropertiesWidget(parentComposite, this);
+			numericalDataPropertiesWidget = new NumericalDataPropertiesCollectionWidget(parentComposite, this,
+					EnumSet.of(ENumericalDataProperties.CLIPPING, ENumericalDataProperties.DATA_CENTER,
+							ENumericalDataProperties.SCALING));
 			if (numericalProperties != null) {
 				numericalDataPropertiesWidget.updateNumericalProperties(numericalProperties);
 				numericalDataPropertiesWidget.setDataType(dataType);

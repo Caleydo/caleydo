@@ -5,12 +5,6 @@
  ******************************************************************************/
 package org.caleydo.view.dvi;
 
-public enum PickingType
-{
-	EMPTY_CELL,
-	COLLAPSE_BUTTON,
-	PERSPECTIVE,
-	PERSPECTIVE_PENETRATING,
- GROUP,
-	DATA_CONTAINER
+public enum PickingType {
+	EMPTY_CELL, COLLAPSE_BUTTON, PERSPECTIVE, PERSPECTIVE_PENETRATING, GROUP, DATA_CONTAINER, EDGE_BAND;
 }

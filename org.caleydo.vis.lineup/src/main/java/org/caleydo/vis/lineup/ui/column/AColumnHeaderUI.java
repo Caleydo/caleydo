@@ -243,7 +243,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	private GLButton findCollapseButton(ButtonBar buttons) {
 		for (GLButton b : Iterables.filter(buttons, GLButton.class)) {
-			if (b.getTooltip().startsWith("Toggle Collapse"))
+			if (b.getTooltip().startsWith("Toggle collapse"))
 				return b;
 		}
 		return null;

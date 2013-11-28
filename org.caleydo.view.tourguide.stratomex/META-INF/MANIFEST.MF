@@ -2,13 +2,15 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: TourGuide Stratomex Adapter
 Bundle-SymbolicName: org.caleydo.view.tourguide.stratomex;singleton:=true
-Bundle-Version: 3.1.0
-Require-Bundle: org.caleydo.view.tourguide;bundle-version="3.1.0",
- org.caleydo.view.stratomex;bundle-version="3.1.0",
- org.caleydo.core;bundle-version="3.1.0",
- org.caleydo.datadomain.pathway;bundle-version="3.1.0",
- org.caleydo.vis.lineup;bundle-version="3.1.0",
- org.caleydo.view.pathway
+Bundle-Version: 3.1.1
+Require-Bundle: org.caleydo.view.tourguide;bundle-version="3.1.1",
+ org.caleydo.view.stratomex;bundle-version="3.1.1",
+ org.caleydo.core;bundle-version="3.1.1",
+ org.caleydo.datadomain.pathway;bundle-version="3.1.1",
+ org.caleydo.vis.lineup;bundle-version="3.1.1",
+ org.caleydo.util.alg;bundle-version="3.1.1",
+ org.caleydo.view.pathway;bundle-version="3.1.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
+Export-Package: org.caleydo.view.tourguide.api.state

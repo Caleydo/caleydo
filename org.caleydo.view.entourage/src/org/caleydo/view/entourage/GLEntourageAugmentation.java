@@ -31,8 +31,6 @@ import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 
-import setvis.BubbleSetGLRenderer;
-
 /**
  * Renders all Elements on top of {@link GLEntourage} such as visual links.
  *
@@ -44,7 +42,8 @@ public class GLEntourageAugmentation extends GLElementContainer {
 	private ArrayList<Rectangle2D> bubbleSetItems = new ArrayList<>();
 	private ArrayList<Line2D> bubbleSetEdges = new ArrayList<>();
 	private Color bubbleSetColor = new Color(0.0f, 1.0f, 0.0f);
-	private BubbleSetGLRenderer bubbleSetRenderer = new BubbleSetGLRenderer();
+
+	// private BubbleSetGLRenderer bubbleSetRenderer = new BubbleSetGLRenderer();
 
 	/**
 	 *
@@ -54,7 +53,7 @@ public class GLEntourageAugmentation extends GLElementContainer {
 	}
 
 	public void init(final GL2 gl) {
-		bubbleSetRenderer.init(gl);
+		// bubbleSetRenderer.init(gl);
 	}
 
 	private int pxlWidth = 1280;

@@ -8,7 +8,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.core.views"
-            class="org.caleydo.view.entourage.RcpGLSubGraphView"
+            class="org.caleydo.view.entourage.RcpGLEntourageView"
             icon="resources/icons/icon.png"
             id="org.caleydo.view.entourage"
             name="Entourage">
@@ -99,6 +99,12 @@
             </rendererCreator>
          </pathway>
       </parent>
+   </extension>
+   <extension
+         point="org.caleydo.datadomain.pathway.PathwayAction">
+      <factory
+            class="org.caleydo.view.entourage.contextmenu.AddPathwayActionFactory">
+      </factory>
    </extension>
 
 </plugin>

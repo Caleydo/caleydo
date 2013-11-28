@@ -5,10 +5,7 @@
  ******************************************************************************/
 package org.caleydo.data.importer.tcga;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,31 +22,16 @@ import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.data.importer.tcga.model.TCGADataSet;
 import org.caleydo.data.importer.tcga.model.TCGADataSets;
-import org.caleydo.data.importer.tcga.utils.IOUtils;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.api.score.Scores;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import com.google.common.collect.Lists;
-import com.google.common.io.Files;
 import com.google.gson.JsonElement;
 
 public abstract class ATCGATask extends RecursiveTask<JsonElement> {
 	private static final long serialVersionUID = 6349085075502142673L;
-	private static final Logger log = Logger.getLogger(ATCGATask.class.getSimpleName());
-
-	protected static void generateJNLP(File jnlpFile, String projectRemoteOutputURL) {
-		log.info("generating jnlp file: " + jnlpFile.getAbsolutePath());
-		try {
-			// Generate jnlp file from jnlp template
-			String template = IOUtils.readAll(ATCGATask.class.getResourceAsStream("/resources/caleydo.jnlp"));
-			template = template.replaceAll("CALEYDO_PROJECT_URL", projectRemoteOutputURL);
-			template = template.replaceAll("JNLP_NAME", jnlpFile.getName());
-			Files.write(template, jnlpFile, Charset.forName("UTF-8"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	private static final Logger log = Logger.getLogger(ATCGATask.class.getName());
 
 	public static class AdditionalInfo {
 		private AdditionalPerspectiveInfo gene;

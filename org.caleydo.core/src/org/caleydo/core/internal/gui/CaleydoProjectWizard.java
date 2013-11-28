@@ -8,6 +8,7 @@ package org.caleydo.core.internal.gui;
 import java.util.Map;
 
 import org.caleydo.core.internal.MyPreferences;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.util.collection.Pair;
@@ -20,17 +21,17 @@ import org.eclipse.jface.wizard.Wizard;
  * @author Werner Puff
  * @author Alexander Lex
  */
-public class CaleydoProjectWizard
-	extends Wizard {
+public class CaleydoProjectWizard extends Wizard {
 
 	private IStartupProcedure result;
 	private final Map<String, IStartupAddon> addons;
+
 	/**
 	 * Constructor.
 	 */
 	public CaleydoProjectWizard(Map<String, IStartupAddon> addons) {
 
-		this.setWindowTitle("Caleydo - Choose Data Source");
+		this.setWindowTitle("Caleydo " + GeneralManager.VERSION + " - Project Wizard");
 		this.addons = addons;
 	}
 
@@ -52,11 +53,13 @@ public class CaleydoProjectWizard
 	public boolean performFinish() {
 		ChooseProjectTypePage page = getChosenProjectTypePage();
 		Pair<String, IStartupAddon> addon = page.getSelectedAddon();
-		if (page.isPageComplete() && addon.getSecond().validate()) {
+		if (page.isPageComplete()) {
 			MyPreferences.setLastChosenProjectMode(addon.getFirst());
 			MyPreferences.flush();
-
-			setResult(addon.getSecond().create());
+			IStartupProcedure startupProcedure = addon.getSecond().create();
+			if (startupProcedure == null)
+				return false;
+			setResult(startupProcedure);
 			return true;
 		}
 

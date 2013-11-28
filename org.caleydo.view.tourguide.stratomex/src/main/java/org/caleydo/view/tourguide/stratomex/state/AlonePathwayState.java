@@ -7,7 +7,6 @@ package org.caleydo.view.tourguide.stratomex.state;
 
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.state.ABrowseState;
 import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.PreviewRenderer;
@@ -20,8 +19,8 @@ import org.caleydo.view.tourguide.api.state.PreviewRenderer;
  */
 public class AlonePathwayState extends ABrowseState {
 
-	public AlonePathwayState() {
-		super(EDataDomainQueryMode.PATHWAYS, "Select a pathway in the LineUp.");
+	public AlonePathwayState(String adapter) {
+		super(adapter, "Select a pathway in the LineUp.");
 	}
 
 	@Override

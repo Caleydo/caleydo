@@ -33,5 +33,8 @@ public enum EPickingType {
 	/** Picking type for abstract bars */
 	SAMPLE_GROUP_RENDERER,
 	/** A bar in a histogram which can be resolved to samples */
-	HISTOGRAM_BAR
+	HISTOGRAM_BAR,
+	CENTER_LINE_ALIGNMENT_BUTTON,
+	SUMMARY_STATISTICS,
+	FIT_TO_VIEW_WIDTH_BUTTON
 }

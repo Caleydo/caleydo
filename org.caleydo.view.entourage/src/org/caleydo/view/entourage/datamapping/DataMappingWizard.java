@@ -8,6 +8,7 @@ package org.caleydo.view.entourage.datamapping;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
@@ -35,6 +36,9 @@ import org.eclipse.swt.widgets.Display;
  *
  */
 public class DataMappingWizard extends GLElementContainer {
+
+	private static final String PATH_SELECTION_ICON = "resources/icons/icon_32.png";
+	private static final String DATA_MAPPING_ICON = "resources/icons/data_mapping.png";
 
 	private class TextLineRenderer extends GLElement {
 		private String text;
@@ -66,7 +70,7 @@ public class DataMappingWizard extends GLElementContainer {
 
 	private void setupPathAndDataLayer() {
 		pathAndDataLayer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
-		GLElementContainer selectPathButtonContainer = createButtonLayout("resources/icons/icon_32.png",
+		GLElementContainer selectPathButtonContainer = createButtonLayout(PATH_SELECTION_ICON,
 				new IPickingListener() {
 					@Override
 					public void pick(Pick pick) {
@@ -88,8 +92,8 @@ public class DataMappingWizard extends GLElementContainer {
 					}
 				});
 
-		GLElementContainer openDataMapperButtonContainer = createButtonLayout(
-				"resources/icons/view/pathway/data_mapping.png", new IPickingListener() {
+		GLElementContainer openDataMapperButtonContainer = createButtonLayout(DATA_MAPPING_ICON,
+				new IPickingListener() {
 					@Override
 					public void pick(Pick pick) {
 						if (pick.getPickingMode() == PickingMode.CLICKED) {
@@ -97,6 +101,17 @@ public class DataMappingWizard extends GLElementContainer {
 						}
 					}
 				});
+		String enrouteIcon = ViewManager.get().getRemotePlugInViewIcon("org.caleydo.view.enroute",
+				GLEntourage.VIEW_TYPE, EEmbeddingID.PATH_LEVEL1.id());
+		GLElementContainer switchToEnrouteButtonContainer = createButtonLayout(enrouteIcon, new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				if (pick.getPickingMode() == PickingMode.CLICKED
+						&& entourage.getCurrentlyDisplayedPathLevel() != EEmbeddingID.PATH_LEVEL1) {
+					entourage.setPathLevel(EEmbeddingID.PATH_LEVEL1);
+				}
+			}
+		});
 
 		pathAndDataLayer.add(createSpacing(0.5f));
 		pathAndDataLayer.add(new TextLineRenderer("To visualize"));
@@ -104,7 +119,13 @@ public class DataMappingWizard extends GLElementContainer {
 		pathAndDataLayer.add(new TextLineRenderer("select a path"));
 		pathAndDataLayer.add(new TextLineRenderer("in a pathway"));
 		pathAndDataLayer.add(selectPathButtonContainer);
-		pathAndDataLayer.add(new TextLineRenderer("and use LineUp"));
+		pathAndDataLayer.add(new TextLineRenderer("and switch to"));
+		pathAndDataLayer.add(new TextLineRenderer("the expanded"));
+		pathAndDataLayer.add(new TextLineRenderer("enRoute"));
+		pathAndDataLayer.add(new TextLineRenderer("Visualization."));
+		pathAndDataLayer.add(switchToEnrouteButtonContainer);
+		pathAndDataLayer.add(new TextLineRenderer(""));
+		pathAndDataLayer.add(new TextLineRenderer("Use LineUp"));
 		pathAndDataLayer.add(openDataMapperButtonContainer);
 		pathAndDataLayer.add(new TextLineRenderer("to specify"));
 		pathAndDataLayer.add(new TextLineRenderer("which data to show."));
@@ -118,8 +139,8 @@ public class DataMappingWizard extends GLElementContainer {
 
 		GLElementContainer column = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
 
-		GLElementContainer openDataMapperButtonContainer = createButtonLayout(
-				"resources/icons/view/pathway/data_mapping.png", new IPickingListener() {
+		GLElementContainer openDataMapperButtonContainer = createButtonLayout(DATA_MAPPING_ICON,
+				new IPickingListener() {
 					@Override
 					public void pick(Pick pick) {
 						if (pick.getPickingMode() == PickingMode.CLICKED) {
@@ -137,7 +158,7 @@ public class DataMappingWizard extends GLElementContainer {
 		column.add(createSpacing(0.5f));
 
 		dataLayer.setVisibility(EVisibility.NONE);
-		dataLayer.add(createSpacing(0.4f));
+		// dataLayer.add(createSpacing(0.4f));
 		dataLayer.add(column);
 
 		add(dataLayer);
@@ -217,5 +238,6 @@ public class DataMappingWizard extends GLElementContainer {
 		} else {
 			dataLayer.setVisibility(EVisibility.NONE);
 		}
+		relayout();
 	}
 }

@@ -223,7 +223,7 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 	@Override
 	public void update() {
 
-		dataDomains = representedView.getDataDomains();
+		dataDomains = new HashSet<>(representedView.getDataDomains());
 		recalculateNodeSize();
 	}
 

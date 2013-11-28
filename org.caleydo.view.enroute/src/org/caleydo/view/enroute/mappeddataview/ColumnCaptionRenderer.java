@@ -15,6 +15,8 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
@@ -48,10 +50,12 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 	private int pickingID;
 	private AGLView parentView;
 	private SelectionColorCalculator colorCalculator;
+	private ATableBasedDataDomain dataDomain;
 
 	public ColumnCaptionRenderer(AGLView parentView, MappedDataRenderer parent, Group group,
 			Perspective samplePerspective, ATableBasedDataDomain dataDomain, Button button) {
 		this.parentView = parentView;
+		this.dataDomain = dataDomain;
 		colorCalculator = new SelectionColorCalculator(dataDomain.getColor());
 		this.textRenderer = parentView.getTextRenderer();
 		this.pixelGLConverter = parentView.getPixelGLConverter();
@@ -111,7 +115,6 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 	}
 
 	private void registerPickingListener() {
-		unregisterPickingListener();
 
 		groupPickingListener = new APickingListener() {
 
@@ -126,6 +129,8 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 						samplePerspective.getVirtualArray().getIDs());
 				parent.sampleSelectionManager.triggerSelectionUpdateEvent();
 
+				EventPublisher.trigger(new DataSetSelectedEvent(dataDomain));
+
 				parentView.setDisplayListDirty();
 
 			}
@@ -134,6 +139,7 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 			public void mouseOver(Pick pick) {
 				parent.sampleGroupSelectionManager.addToType(SelectionType.MOUSE_OVER, pick.getObjectID());
 				parent.sampleGroupSelectionManager.triggerSelectionUpdateEvent();
+				// button.setVisible(true);
 				parentView.setDisplayListDirty();
 
 			}
@@ -142,6 +148,7 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 			public void mouseOut(Pick pick) {
 				parent.sampleGroupSelectionManager.removeFromType(SelectionType.MOUSE_OVER, pick.getObjectID());
 				parent.sampleGroupSelectionManager.triggerSelectionUpdateEvent();
+				// button.setVisible(false);
 				parentView.setDisplayListDirty();
 
 			}
@@ -200,14 +207,13 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 			}
 		};
 
-		parentView.addIDPickingListener(groupPickingListener, EPickingType.SAMPLE_GROUP.name(), group.getID());
-		// parentView.addIDPickingListener(timedMouseOutListener, EPickingType.SAMPLE_GROUP.name(), group.getID());
-		parentView.addIDPickingTooltipListener(this, EPickingType.SAMPLE_GROUP.name(), group.getID());
+		parent.pickingListenerManager.addIDPickingListener(groupPickingListener, EPickingType.SAMPLE_GROUP.name(),
+				group.getID());
+		parent.pickingListenerManager.addIDPickingListener(timedMouseOutListener, EPickingType.SAMPLE_GROUP.name(),
+				group.getID());
+		parent.pickingListenerManager
+				.addIDPickingTooltipListener(this, EPickingType.SAMPLE_GROUP.name(), group.getID());
 
-	}
-
-	private void unregisterPickingListener() {
-		parentView.removeAllIDPickingListeners(EPickingType.SAMPLE_GROUP.name(), group.getID());
 	}
 
 	@Override

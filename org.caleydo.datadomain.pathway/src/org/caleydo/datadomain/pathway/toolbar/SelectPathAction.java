@@ -7,6 +7,8 @@ package org.caleydo.datadomain.pathway.toolbar;
 
 import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.datadomain.pathway.Activator;
 import org.caleydo.datadomain.pathway.listener.EnableFreePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 
@@ -17,14 +19,14 @@ import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
  *
  */
 public class SelectPathAction extends SimpleAction {
-	public static final String LABEL = "Toggle path selection (Ctrl + O)";
-	public static final String ICON = "resources/icons/view/pathway/path_selection.png";
+	public static final String LABEL = "Toggle path selection (B)";
+	public static final String ICON = "resources/icons/path_selection.png";
 	private String eventSpace;
 
 	// private SelectFreePathAction selectFreePathAction;
 
 	public SelectPathAction(boolean isChecked, String eventSpace) {
-		super(LABEL, ICON);
+		super(LABEL, ICON, new ResourceLoader(Activator.getResourceLocator()));
 		setChecked(isChecked);
 		this.eventSpace = eventSpace;
 	}

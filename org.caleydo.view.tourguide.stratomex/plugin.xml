@@ -2,16 +2,41 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.caleydo.view.tourguide.adapter">
-      <adapter
-            class="org.caleydo.view.tourguide.stratomex.t.StratomexAdapterFactory">
-      </adapter>
-   </extension>
-   <extension
          point="org.caleydo.view.stratomex.addin">
       <addin
             class="org.caleydo.view.tourguide.stratomex.s.TourGuideAddin">
       </addin>
+   </extension>
+   <extension
+         point="org.caleydo.tourguide.scorefactory">
+      <factory
+            class="org.caleydo.view.tourguide.impl.AdjustedRandScoreFactory"
+            name="Adjusted Rank Score">
+      </factory>
+      <factory
+            class="org.caleydo.view.tourguide.impl.SetSimilarityScoreFactory"
+            name="Jaccard Index Score">
+      </factory>
+      <factory
+            class="org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory"
+            name="Gene Set Enrichment Analysis">
+      </factory>
+      <factory
+            class="org.caleydo.view.tourguide.impl.LogRankMetricFactory"
+            name="Log Rank Score">
+      </factory>
+   </extension>
+   <extension
+         point="org.caleydo.view.tourguide.adapter">
+      <adapter
+            class="org.caleydo.view.tourguide.stratomex.t.StratomexStratificationAdapterFactory">
+      </adapter>
+      <adapter
+            class="org.caleydo.view.tourguide.stratomex.t.PathwayStratomexAdapterFactory">
+      </adapter>
+      <adapter
+            class="org.caleydo.view.tourguide.stratomex.t.VariableStratomexAdapterFactory">
+      </adapter>
    </extension>
    
 </plugin>

@@ -231,7 +231,7 @@ public abstract class AImportExternalScoreDialog<T extends AExternalScoreParseSp
 
 	@Override
 	protected void helpPressed() {
-		BrowserUtils.openURL(GeneralManager.HELP_URL + "/data.md");
+		BrowserUtils.openURL(GeneralManager.HELP_URL + "data.md");
 	}
 
 	@Override

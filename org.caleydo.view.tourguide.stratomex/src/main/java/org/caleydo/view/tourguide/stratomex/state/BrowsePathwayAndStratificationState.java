@@ -22,8 +22,8 @@ public class BrowsePathwayAndStratificationState extends BrowsePathwayState impl
 
 	private PathwayGraph pathway;
 
-	public BrowsePathwayAndStratificationState() {
-		super("Select a pathway in the LineUp and select a strafication to refer to.");
+	public BrowsePathwayAndStratificationState(String adapter) {
+		super(adapter, "Select a pathway in the LineUp and select a strafication to refer to.");
 	}
 
 	@Override

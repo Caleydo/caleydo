@@ -6,6 +6,7 @@
 package org.caleydo.vis.lineup.internal.event;
 
 import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.core.util.base.ICallback;
 
 /**
  * simple generic event for filtering changes
@@ -14,17 +15,26 @@ import org.caleydo.core.event.ADirectedEvent;
  *
  */
 public class SearchEvent extends ADirectedEvent {
-	private Object search;
-	private boolean isWrapSearch;
-	private boolean isForward;
+	private final Object search;
+	private final boolean isWrapSearch;
+	private final boolean isForward;
+	private final ICallback<SearchResult> callback;
 	/**
 	 * @param filter
 	 */
-	public SearchEvent(Object search, boolean isWrapSearch, boolean forward) {
+	public SearchEvent(Object search, boolean isWrapSearch, boolean forward, ICallback<SearchResult> callback) {
 		super();
 		this.search = search;
 		this.isWrapSearch = isWrapSearch;
 		this.isForward = forward;
+		this.callback = callback;
+	}
+
+	/**
+	 * @return the callback, see {@link #callback}
+	 */
+	public ICallback<SearchResult> getCallback() {
+		return callback;
 	}
 
 	/**
@@ -50,5 +60,20 @@ public class SearchEvent extends ADirectedEvent {
 	@Override
 	public boolean checkIntegrity() {
 		return true;
+	}
+
+	public final static class SearchResult {
+		private final int hits;
+
+		public SearchResult(int hits) {
+			this.hits = hits;
+		}
+
+		/**
+		 * @return the hits, see {@link #hits}
+		 */
+		public int getHits() {
+			return hits;
+		}
 	}
 }

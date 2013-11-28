@@ -15,6 +15,8 @@ import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 
+import com.google.common.base.Supplier;
+
 /**
  * @author Samuel Gratzl
  *
@@ -33,7 +35,7 @@ public abstract class ASingleTablePerspectiveElement extends PickableGLElement i
 	}
 
 	@Override
-	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
 		if (clazz.isAssignableFrom(Vec2f.class))
 			return clazz.cast(getMinSize());
 		if (clazz.isInstance(getTablePerspective()))

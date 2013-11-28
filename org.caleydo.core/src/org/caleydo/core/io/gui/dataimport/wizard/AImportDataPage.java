@@ -133,7 +133,7 @@ public abstract class AImportDataPage extends WizardPage implements IPageChanged
 	@Override
 	public void performHelp() {
 		// super.performHelp();
-		BrowserUtils.openURL(GeneralManager.HELP_URL + "/data.md");
+		BrowserUtils.openURL(GeneralManager.HELP_URL + "data.md");
 
 	}
 

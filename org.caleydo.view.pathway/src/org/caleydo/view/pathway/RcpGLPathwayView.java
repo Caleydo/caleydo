@@ -134,8 +134,7 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IPathwayHandler 
 		PathwaySearchBox pathwaySearchBox = new PathwaySearchBox((GLPathway) view);
 		toolBarManager.add(pathwaySearchBox);
 
-		toolBarManager.add(new OpenOnlineHelpAction(
-GeneralManager.HELP_URL + "/views/enroute.md#Pathway_View", false));
+		toolBarManager.add(new OpenOnlineHelpAction(GeneralManager.HELP_URL + "views/pathway/pathway.md", false));
 
 	}
 

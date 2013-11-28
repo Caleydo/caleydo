@@ -36,6 +36,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout2;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
+import com.google.common.base.Supplier;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 /**
@@ -558,6 +559,11 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 
 		@Override
 		public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+			return wrappee.getLayoutDataAs(clazz, default_);
+		}
+
+		@Override
+		public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
 			return wrappee.getLayoutDataAs(clazz, default_);
 		}
 

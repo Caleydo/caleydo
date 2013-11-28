@@ -8,8 +8,6 @@ package org.caleydo.view.tourguide.internal.view.ui.pool;
 import static org.caleydo.vis.lineup.ui.RenderStyle.LABEL_HEIGHT;
 import gleem.linalg.Vec2f;
 
-import org.caleydo.core.util.color.Color;
-
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -17,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -25,14 +24,11 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
 import org.caleydo.vis.lineup.config.IRankTableUIConfig;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.mixin.IHideableColumnMixin;
-
-import com.google.common.collect.Iterables;
 
 /**
  * simple visualization of the pool of hidden columns
@@ -74,6 +70,7 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 		this.add(new PaperBasket(table));
 
 		this.add(new SerialFactoryPoolElem(table));
+		this.add(new SeparatorFactoryPoolElem(table));
 
 		// final EDataDomainQueryMode mode = view.getMode();
 		// for(Map.Entry<String,IScoreFactory> factory : ScoreFactories.getFactories().entrySet()) {
@@ -202,10 +199,5 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 				}
 			}
 		}
-	}
-
-	public void updateMode(EDataDomainQueryMode mode) {
-		for (ScoreFactoryPoolElem elem : Iterables.filter(this, ScoreFactoryPoolElem.class))
-			elem.setMode(mode);
 	}
 }

@@ -964,8 +964,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			@Override
 			public void rightClicked(Pick pick) {
 
-				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getObjectID(), true));
-				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getObjectID(), false));
+				getContextMenuCreator().addContextMenuItem(new SplitBrickItem(pick.getObjectID(), true));
+				getContextMenuCreator().addContextMenuItem(new SplitBrickItem(pick.getObjectID(), false));
 			}
 
 		}, EPickingType.BRICK_CONNECTION_BAND.name());

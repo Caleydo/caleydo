@@ -57,8 +57,7 @@ public class RcpGLStratomexView extends ARcpGLViewPart {
 	public void addToolBarContent(IToolBarManager toolBarManager) {
 
 		toolBarManager.add(new ConnectionsModeGUI());
-		toolBarManager.add(new OpenOnlineHelpAction(
-GeneralManager.HELP_URL + "/views/stratomex.md", true));
+		toolBarManager.add(new OpenOnlineHelpAction(GeneralManager.HELP_URL + "views/stratomex/stratomex.md", true));
 
 		toolBarManager.update(true);
 	}

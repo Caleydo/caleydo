@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.pathway;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.awt.geom.Rectangle2D;
@@ -38,6 +39,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.id.IDType;
@@ -52,6 +54,7 @@ import org.caleydo.core.util.execution.SafeCallables;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ViewManager;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.AddTablePerspectivesListener;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
@@ -61,6 +64,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLContextLocal;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -103,7 +107,6 @@ import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
 import org.caleydo.view.pathway.listener.ShowPortalNodesEventListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.widgets.Display;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultEdge;
@@ -321,9 +324,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				selectedPathID--;
 
 			if (selectedPathID < 0)
-				selectedPathID = 0;
-			if (selectedPathID > paths.size() - 1)
 				selectedPathID = paths.size() - 1;
+			if (selectedPathID > paths.size() - 1)
+				selectedPathID = 0;
 
 			if (allPaths.size() > 0) {
 				selectedPath = paths.get(selectedPathID);
@@ -399,6 +402,15 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	}
 
 	protected void registerMouseListeners() {
+		registerMouseWheelListener(new IMouseWheelHandler() {
+
+			@Override
+			public void handleMouseWheel(int wheelAmount, Vec2f wheelPosition) {
+				if (!isControlKeyDown || !isShiftKeyDown)
+				selectNextPath(wheelAmount > 0);
+
+			}
+		});
 	}
 
 	public void setSelectPathAction(SelectPathAction aSelectPathAction) {
@@ -409,17 +421,17 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		@Override
 		public void keyPressed(IKeyEvent e) {
 			// //comment_1/2:
-			if (e.isControlDown() && (e.isKey('o'))) { // ctrl +o
-				enablePathSelection(!isPathSelectionMode);
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						if (selectPathAction != null) {
-							selectPathAction.setChecked(isPathSelectionMode);
-						}
-					}
-				});
-			}// if (e.isControlDown() && (e.getKeyCode() == 79))
+			// if (e.isControlDown() && (e.isKey('o'))) { // ctrl +o
+			// enablePathSelection(!isPathSelectionMode);
+			// Display.getDefault().asyncExec(new Runnable() {
+			// @Override
+			// public void run() {
+			// if (selectPathAction != null) {
+			// selectPathAction.setChecked(isPathSelectionMode);
+			// }
+			// }
+			// });
+			// }// if (e.isControlDown() && (e.getKeyCode() == 79))
 			isControlKeyDown = e.isControlDown();
 			isShiftKeyDown = e.isShiftDown();
 			// isAltKeyDown = e.isAltDown();
@@ -493,8 +505,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 						&& glRemoteRenderingView.getViewType().equals("org.caleydo.view.brick"))
 					return;
 
-				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
 				triggerNodeEvents(pick.getPickingMode(), pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
+				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
 				// triggerNodeEvents(PickingMode.MOUSE_OVER,
 				// pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
 			}
@@ -534,6 +546,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				}
 
 				PathwayVertexRep vertexRep = pathwayItemManager.getPathwayVertexRep(pick.getObjectID());
+				ContextMenuCreator contextMenuCreator = getContextMenuCreator();
 
 				if (vertexRep.getType() == EPathwayVertexType.map) {
 
@@ -998,7 +1011,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			// }
 			//
 			// System.out.println("overlayBubbleSets pathSegments.size"+pathSegments.size());
-			this.bubbleSet.addPathSegements(pathSegments);
+			// this.bubbleSet.addPathSegements(pathSegments);
 			this.bubbleSet.addPathSegements(pathSegments);
 
 			if (this.highlightVertices) {
@@ -1282,10 +1295,11 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 	@Override
 	public void addTablePerspective(TablePerspective tablePerspective) {
-		if (tablePerspective == null || !tablePerspective.getDataDomain().hasIDCategory(geneIDType)) {
-			throw new IllegalStateException("Perspective null or illegal for this view: " + tablePerspective);
-		}
-		if (tablePerspectives.contains(tablePerspective))
+		// if (tablePerspective == null || !tablePerspective.getDataDomain().hasIDCategory(geneIDType)) {
+		// throw new IllegalStateException("Perspective null or illegal for this view: " + tablePerspective);
+		// }
+		if (tablePerspective == null || !tablePerspective.getDataDomain().hasIDCategory(geneIDType)
+				|| tablePerspectives.contains(tablePerspective))
 			return;
 		tablePerspectives.add(tablePerspective);
 		if (tablePerspective instanceof PathwayTablePerspective)
@@ -1661,6 +1675,13 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		event.setSender(this);
 		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
+
+		if (augmentationRenderer.getMappingPerspective() != null && selectionType == SelectionType.SELECTION) {
+			DataSetSelectedEvent dataSetSelectedEvent = new DataSetSelectedEvent(
+					augmentationRenderer.getMappingPerspective());
+			dataSetSelectedEvent.setSender(this);
+			eventPublisher.triggerEvent(dataSetSelectedEvent);
+		}
 
 	}
 

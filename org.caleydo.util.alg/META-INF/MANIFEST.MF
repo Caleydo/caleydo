@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Algorithms
+Bundle-SymbolicName: org.caleydo.util.alg;singleton:=true
+Bundle-Version: 3.1.1
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Vendor: www.caleydo.org
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.caleydo.core;bundle-version="3.1.1",
+ org.apache.commons.math;bundle-version="2.1.0"
+Export-Package: org.caleydo.view.tourguide.api.compute,
+ org.caleydo.view.tourguide.impl,
+ org.caleydo.view.tourguide.spi.algorithm

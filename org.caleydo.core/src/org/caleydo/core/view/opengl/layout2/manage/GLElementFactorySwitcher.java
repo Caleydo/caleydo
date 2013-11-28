@@ -25,6 +25,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Predicates;
+import com.google.common.base.Supplier;
 import com.google.common.collect.Iterables;
 
 /**
@@ -261,7 +262,7 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 	}
 
 	@Override
-	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
 		GLElement s = getActiveElement();
 		if (s != null) {
 			T v = s.getLayoutDataAs(clazz, null);

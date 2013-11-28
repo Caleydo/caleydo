@@ -5,23 +5,26 @@
  ******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
+import java.util.List;
+
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
-import org.caleydo.view.enroute.SelectionColorCalculator;
+import org.caleydo.view.enroute.GLEnRoutePathway;
 
 /**
  * @author alexsb
  *
  */
-public abstract class ContentRenderer extends ALayoutRenderer {
+public class ContentRenderer extends ALayoutRenderer {
 
 	/** The primary mapping type of the id category for rows */
 	IDType rowIDType;
@@ -45,8 +48,6 @@ public abstract class ContentRenderer extends ALayoutRenderer {
 
 	APickingListener pickingListener;
 
-	SelectionColorCalculator colorCalculator;
-
 	/**
 	 * Determines whether the renderer should render in highlight mode.
 	 */
@@ -55,20 +56,17 @@ public abstract class ContentRenderer extends ALayoutRenderer {
 	MappedDataRenderer parent;
 
 	IDMappingManager columnIDMappingManager;
-	AGLView parentView;
+	GLEnRoutePathway parentView;
+
+	Perspective foreignColumnPerspective;
+
+	protected IDataRenderer overviewRenderer;
+	protected IDataRenderer detailRenderer;
 
 	public ContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType, Integer resolvedRowID,
-			ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
-			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
+			ATableBasedDataDomain dataDomain, Perspective columnPerspective, GLEnRoutePathway parentView,
+			MappedDataRenderer parent, Group group, boolean isHighlightMode, Perspective foreignColumnPerspective) {
 		this.parentView = parentView;
-		Color barColor;
-		// FIXME - bad hack
-		if (rowIDType.getIDCategory().getCategoryName().equals("GENE")) {
-			barColor = MappedDataRenderer.BAR_COLOR;
-		} else {
-			barColor = MappedDataRenderer.CONTEXT_BAR_COLOR;
-		}
-		colorCalculator = new SelectionColorCalculator(barColor);
 
 		this.parent = parent;
 
@@ -83,10 +81,10 @@ public abstract class ContentRenderer extends ALayoutRenderer {
 		this.columnPerspective = columnPerspective;
 		this.group = group;
 		this.isHighlightMode = isHighlightMode;
+		this.foreignColumnPerspective = foreignColumnPerspective;
 		columnIDType = columnPerspective.getIdType();
 		resolvedColumnIDType = dataDomain.getPrimaryIDType(columnIDType);
 		columnIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(columnIDType);
-		init();
 	}
 
 	@Override
@@ -95,10 +93,42 @@ public abstract class ContentRenderer extends ALayoutRenderer {
 		unRegisterPickingListener();
 	}
 
-	public abstract void init();
+	@Override
+	protected void renderContent(GL2 gl) {
+		// List<SelectionType> rowSelectionTypes;
+		//
+		// rowSelectionTypes = parent.getSelectionManager(rowIDType).getSelectionTypes(rowIDType, rowID);
+
+		List<SelectionType> selectionTypes = parent.sampleGroupSelectionManager.getSelectionTypes(group.getID());
+		if (selectionTypes.size() > 0 && selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
+			overviewRenderer.render(gl, x, y, selectionTypes);
+		} else {
+			detailRenderer.render(gl, x, y, selectionTypes);
+		}
+	}
 
 	private void unRegisterPickingListener() {
 		parentView.removePickingListener(pickingListener);
 	}
 
+	@Override
+	protected boolean permitsWrappingDisplayLists() {
+		return false;
+	}
+
+	/**
+	 * @param overviewRenderer
+	 *            setter, see {@link overviewRenderer}
+	 */
+	public void setOverviewRenderer(IDataRenderer overviewRenderer) {
+		this.overviewRenderer = overviewRenderer;
+	}
+
+	/**
+	 * @param detailRenderer
+	 *            setter, see {@link detailRenderer}
+	 */
+	public void setDetailRenderer(IDataRenderer detailRenderer) {
+		this.detailRenderer = detailRenderer;
+	}
 }

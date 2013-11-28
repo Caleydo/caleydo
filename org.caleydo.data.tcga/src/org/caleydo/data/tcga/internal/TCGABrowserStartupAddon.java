@@ -64,6 +64,7 @@ import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
@@ -134,12 +135,19 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 	}
 
 	@Override
-	public Composite create(Composite parent, final WizardPage page) {
+	public Composite create(Composite parent, final WizardPage page, Listener listener) {
 		parent = new Composite(parent, SWT.NONE);
 		parent.setLayout(new GridLayout(1, false));
+
+		Link sourceLabel = new Link(parent, SWT.NO_BACKGROUND);
+		sourceLabel.addSelectionListener(BrowserUtils.LINK_LISTENER);
+		sourceLabel
+				.setText("We provide direct access to comprehensive data packages based on semi-automated analyses of the TCGA data set by the Firehose system developed and maintained by the <a href=\"http://gdac.broadinstitute.org\">TCGA Genome Data Analysis Center at the Broad Institute</a>.");
+		sourceLabel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
 		Link label = new Link(parent, SWT.NO_BACKGROUND);
 		label.addSelectionListener(BrowserUtils.LINK_LISTENER);
-		label.setText("Please be advised that downloading \"The Cancer Genome Atlas\" data constitutes agreement to the <a href=\"http://cancergenome.nih.gov/abouttcga/policies/policiesguidelines\">policies and guidelines on data usage and publications</a>");
+		label.setText("Please be advised that downloading \"The Cancer Genome Atlas\" data constitutes agreement to the <a href=\"http://cancergenome.nih.gov/abouttcga/policies/policiesguidelines\">policies and guidelines on data usage and publications</a>.");
 		label.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		if (!loaded) {
@@ -160,7 +168,7 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 			form.setLayout(new FillLayout());
 			form.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-			tree = createSelectionTree(form, page);
+			tree = createSelectionTree(form, page, listener);
 			updateData();
 
 			Group g = new Group(form, SWT.BORDER_SOLID);
@@ -174,7 +182,6 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 			this.genomicViewer = createGenomicTableViewer(expandBar);
 			genomicInfos.setControl(this.genomicViewer.getTable().getParent());
 			genomicInfos.setExpanded(false);
-
 
 			this.nonGenomicInfos = new ExpandItem(expandBar, SWT.NONE);
 			nonGenomicInfos.setText("Other Data Types");
@@ -215,7 +222,7 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 		return t;
 	}
 
-	private TreeViewer createSelectionTree(final SashForm form, final WizardPage page) {
+	private TreeViewer createSelectionTree(final SashForm form, final WizardPage page, final Listener listener) {
 		final TreeViewer v = new TreeViewer(form, SWT.VIRTUAL | SWT.BORDER);
 		v.setLabelProvider(new LabelProvider());
 		v.setContentProvider(new MyContentProvider(v));
@@ -244,11 +251,12 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 					clearDetailInfo();
 					form.setMaximizedControl(v.getControl());
 				}
+				// This is a bit hacky, but there is no way to register a swt listener to a treeviewer.
+				listener.handleEvent(null);
 			}
 		});
 		return v;
 	}
-
 
 	private TableViewer createGenomicTableViewer(Composite parent) {
 		parent = new Composite(parent, SWT.NONE);
@@ -375,7 +383,6 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 		nonGenomicInfos.setExpanded(false);
 	}
 
-
 	private static final Styler INCOMPATIBLE_STYLE = new Styler() {
 
 		@Override
@@ -383,7 +390,6 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 			textStyle.foreground = Display.getCurrent().getSystemColor(SWT.COLOR_RED);
 		}
 	};
-
 
 	private static final class LabelProvider extends StyledCellLabelProvider {
 		@Override
@@ -433,7 +439,6 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 			this.elements = (RunOverview[]) newInput;
 		}
-
 
 		@Override
 		public Object getParent(Object element) {
@@ -496,9 +501,27 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 
 	@Override
 	public boolean validate() {
-		if (this.selectedChoice == null)
-			return false;
-		// Try to download the file with interruption
+		return selectedChoice != null;
+		// if (this.selectedChoice == null)
+		// return false;
+		// // Try to download the file with interruption
+		// RemoteFile file = RemoteFile.of(this.selectedChoice);
+		// if (!file.inCache(true)) {
+		// try {
+		// file.delete();
+		// new ProgressMonitorDialog(new Shell()).run(true, true, file);
+		// } catch (InvocationTargetException | InterruptedException e) {
+		// Status status = new Status(IStatus.ERROR, this.getClass().getSimpleName(), "Error during downloading: "
+		// + selectedChoice, e);
+		// ErrorDialog.openError(null, "Download Error", "Error during downloading: " + selectedChoice, status);
+		// Logger.log(status);
+		// }
+		// }
+		// return file.inCache(false);
+	}
+
+	@Override
+	public IStartupProcedure create() {
 		RemoteFile file = RemoteFile.of(this.selectedChoice);
 		if (!file.inCache(true)) {
 			try {
@@ -511,11 +534,8 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 				Logger.log(status);
 			}
 		}
-		return file.inCache(false);
-	}
-
-	@Override
-	public IStartupProcedure create() {
+		if (!file.inCache(false))
+			return null;
 		return new LoadProjectStartupProcedure(RemoteFile.of(selectedChoice).getFile().getAbsolutePath(), false);
 	}
 }

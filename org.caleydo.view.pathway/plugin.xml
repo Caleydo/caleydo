@@ -2,43 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.eclipse.ui.views">
-      <view
-            category="org.caleydo.core.views"
-            class="org.caleydo.view.pathway.RcpGLPathwayView"
-            icon="resources/icons/pathway.png"
-            id="org.caleydo.view.pathway"
-            name="Pathway">
-      </view>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            defaultHandler="org.caleydo.view.pathway.command.handler.OpenPathwayHandler"
-            id="org.caleydo.view.pathway.command.openpathway"
-            name="Pathway">
-      </command>
-   </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu">
-         <menu
-               id="org.caleydo.menu.view"
-               label="View">
-            <menu
-                  id="org.caleydo.menu.view.visualization"
-                  label="Visualizations">
-               <command
-                     commandId="org.caleydo.view.pathway.command.openpathway"
-                     icon="resources/icons/pathway.png"
-                     style="push">
-               </command>
-            </menu>
-         </menu>
-      </menuContribution>
-   </extension>
-   <extension
          point="org.caleydo.view.DataSupport">
       <DataSupport
             class="org.caleydo.datadomain.genetic.GeneticDataSupportDefinition"

@@ -23,6 +23,7 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
+import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.view.stratomex.EEmbeddingID;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
@@ -55,6 +56,12 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 
 	private IBrickSortingStrategy sortingStrategy = new NoSortingSortingStrategy();
 
+	/**
+	 *
+	 */
+	public ClinicalDataConfigurer() {
+	}
+
 	public static ClinicalDataConfigurer create(GLStratomex handler, TablePerspective underlying,
 			TablePerspective kaplan) {
 		ClinicalDataConfigurer dataConfigurer = null;
@@ -74,8 +81,10 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 
 	@Override
 	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {
-		layoutTemplate.setHeaderBarElements(createHeaderBarElements(layoutTemplate));
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate);
 
+		layoutTemplate.setHeaderBarElements(createHeaderBarElements(layoutTemplate));
+		layoutTemplate.setToolBarElements(toolBarElements);
 		layoutTemplate.showFooterBar(false);
 		layoutTemplate.showToolBar(true);
 
@@ -88,6 +97,7 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 
 	@Override
 	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate) {
+
 		layoutTemplate.setHeaderBarElements(createHeaderBarElements(layoutTemplate));
 
 		layoutTemplate.showFooterBar(true);
@@ -100,15 +110,15 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 
 	@Override
 	public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
-		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate);
 
 		List<Pair<String, Integer>> pickingIDs = new ArrayList<>();
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK.name(), layoutTemplate.getBrick().getID()));
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
-		toolBarElements.add(createCaptionLayout(layoutTemplate, pickingIDs, layoutTemplate.getBrick().getBrickColumn()
-				.getStratomexView()));
-		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
+//		toolBarElements.add(createCaptionLayout(layoutTemplate, pickingIDs, layoutTemplate.getBrick().getBrickColumn()
+//				.getStratomexView()));
+//		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setToolBarElements(toolBarElements);
 
@@ -117,15 +127,9 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 
 	@Override
 	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
-		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
-		ElementLayout leftPaddingLayout = new ElementLayout("padding");
-		leftPaddingLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-		toolBarElements.add(leftPaddingLayout);
-
-		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate);
 
 		layoutTemplate.setToolBarElements(toolBarElements);
-
 		layoutTemplate.showFooterBar(false);
 	}
 
@@ -223,6 +227,17 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 		// brick.setViewSwitchingBar(viewSwitchingBar);
 		// brick.setCompactRendererID(compactRendererID);
 		// multiFormRenderer.addChangeListener(brick);
+	}
+
+	protected ArrayList<ElementLayout> createToolBarElements(ABrickLayoutConfiguration layoutTemplate) {
+
+		final GLBrick brick = layoutTemplate.getBrick();
+		MultiFormViewSwitchingBar viewSwitchingBar = brick.getViewSwitchingBar();
+		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
+
+		toolBarElements.add(viewSwitchingBar);
+
+		return toolBarElements;
 	}
 
 	@Override

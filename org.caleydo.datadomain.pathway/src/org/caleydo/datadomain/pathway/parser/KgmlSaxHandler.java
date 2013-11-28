@@ -15,7 +15,6 @@ import java.util.StringTokenizer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayReactionEdgeType;
@@ -29,8 +28,6 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -69,12 +66,14 @@ public class KgmlSaxHandler extends DefaultHandler {
 
 	private final File image;
 
+	StringBuilder idMappingErrors;
+
 	/**
 	 * Constructor.
 	 */
-	public KgmlSaxHandler(File image) {
+	public KgmlSaxHandler(File image, StringBuilder idMappingErrors) {
 		super();
-
+		this.idMappingErrors = idMappingErrors;
 		pathwayItemManager = PathwayItemManager.get();
 		pathwayManager = PathwayManager.get();
 
@@ -104,29 +103,21 @@ public class KgmlSaxHandler extends DefaultHandler {
 		if (attributes != null) {
 			if (elementName.equals("pathway")) {
 				handlePathwayTag();
-			}
-			else if (elementName.equals("entry")) {
+			} else if (elementName.equals("entry")) {
 				handleEntryTag();
-			}
-			else if (elementName.equals("graphics")) {
+			} else if (elementName.equals("graphics")) {
 				handleGraphicsTag();
-			}
-			else if (elementName.equals("relation")) {
+			} else if (elementName.equals("relation")) {
 				handleRelationTag();
-			}
-			else if (elementName.equals("reaction")) {
+			} else if (elementName.equals("reaction")) {
 				handleReactionTag();
-			}
-			else if (elementName.equals("product")) {
+			} else if (elementName.equals("product")) {
 				handleReactionProductTag();
-			}
-			else if (elementName.equals("substrate")) {
+			} else if (elementName.equals("substrate")) {
 				handleReactionSubstrateTag();
-			}
-			else if (elementName.equals("subtype")) {
+			} else if (elementName.equals("subtype")) {
 				handleSubtypeTag();
-			}
-			else if (elementName.equals("component")) {
+			} else if (elementName.equals("component")) {
 				handleComponentTag();
 			}
 		}
@@ -138,10 +129,8 @@ public class KgmlSaxHandler extends DefaultHandler {
 	}
 
 	/**
-	 * Reacts on the elements of the pathway tag. An example pathway tag looks
-	 * like this: <pathway name="path:map00271" org="map" number="00271"
-	 * title="Methionine metabolism"
-	 * image="http://www.genome.jp/kegg/pathway/map/map00271.gif"
+	 * Reacts on the elements of the pathway tag. An example pathway tag looks like this: <pathway name="path:map00271"
+	 * org="map" number="00271" title="Methionine metabolism" image="http://www.genome.jp/kegg/pathway/map/map00271.gif"
 	 * link="http://www.genome.jp/dbget-bin/show_pathway?map00271">
 	 */
 	protected void handlePathwayTag() {
@@ -160,14 +149,11 @@ public class KgmlSaxHandler extends DefaultHandler {
 
 			if (attributeName.equals("name")) {
 				name = attributes.getValue(attributeIndex);
-			}
-			else if (attributeName.equals("title")) {
+			} else if (attributeName.equals("title")) {
 				title = attributes.getValue(attributeIndex);
-			}
-			else if (attributeName.equals("image")) {
+			} else if (attributeName.equals("image")) {
 				sImageLink = attributes.getValue(attributeIndex);
-			}
-			else if (attributeName.equals("link")) {
+			} else if (attributeName.equals("link")) {
 				externalLink = attributes.getValue(attributeIndex);
 			}
 		}
@@ -176,8 +162,7 @@ public class KgmlSaxHandler extends DefaultHandler {
 			title = "unknown title";
 		}
 
-		currentPathway = pathwayManager.createPathway(EPathwayDatabaseType.KEGG, name, title, image,
-				externalLink);
+		currentPathway = pathwayManager.createPathway(EPathwayDatabaseType.KEGG, name, title, image, externalLink);
 
 		hashKgmlEntryIdToVertexRep.clear();
 		hashKgmlReactionNameToVertexRep.clear();
@@ -212,17 +197,13 @@ public class KgmlSaxHandler extends DefaultHandler {
 
 			if (attributeName.equals("id")) {
 				entryId = Integer.valueOf(attributes.getValue(attributeIndex)).intValue();
-			}
-			else if (attributeName.equals("name")) {
+			} else if (attributeName.equals("name")) {
 				name = attributes.getValue(attributeIndex);
-			}
-			else if (attributeName.equals("type")) {
+			} else if (attributeName.equals("type")) {
 				type = attributes.getValue(attributeIndex);
-			}
-			else if (attributeName.equals("link")) {
+			} else if (attributeName.equals("link")) {
 				externalLink = attributes.getValue(attributeIndex);
-			}
-			else if (attributeName.equals("reaction")) {
+			} else if (attributeName.equals("reaction")) {
 				currentReactionName = attributes.getValue(attributeIndex);
 			}
 		}
@@ -247,25 +228,24 @@ public class KgmlSaxHandler extends DefaultHandler {
 				IDMappingManager genomeIdManager = ((PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 						PathwayDataDomain.DATA_DOMAIN_TYPE)).getGeneIDMappingManager();
 				try {
-				davidIDs = genomeIdManager.getIDAsSet(IDType.getIDType("ENTREZ_GENE_ID"), IDType.getIDType("DAVID"),
-						Integer.valueOf(entrezID));
+					davidIDs = genomeIdManager.getIDAsSet(IDType.getIDType("ENTREZ_GENE_ID"),
+							IDType.getIDType("DAVID"), Integer.valueOf(entrezID));
 				} catch (NumberFormatException e) {
-					Logger.log(new Status(IStatus.INFO, this.toString(), "Invalid Entrez ID: " + entrezID));
+					idMappingErrors.append(entrezID + "; ");
 					continue;
 				}
 
 				if (davidIDs == null) {
-					Logger.log(new Status(IStatus.INFO, this.toString(), "No david mapping for Entrez ID: " + entrezID));
+					idMappingErrors.append(entrezID + "; ");
 					continue;
 				}
 
 				mappingDavidIDs.addAll(davidIDs);
 			}
 
-			currentVertices.addAll(pathwayItemManager.createGeneVertex(vertexName, type, externalLink,
-					mappingDavidIDs));
-		}
-		else {
+			currentVertices
+					.addAll(pathwayItemManager.createGeneVertex(vertexName, type, externalLink, mappingDavidIDs));
+		} else {
 			PathwayVertex currentVertex = pathwayItemManager.createVertex(name, type, externalLink);
 
 			currentVertices.add(currentVertex);
@@ -288,9 +268,8 @@ public class KgmlSaxHandler extends DefaultHandler {
 	}
 
 	/**
-	 * Reacts on the elements of the graphics tag. An example graphics tag looks
-	 * like this: <graphics name="1.8.4.1" fgcolor="#000000" bgcolor="#FFFFFF"
-	 * type="rectangle" x="142" y="304" width="45" height="17"/>
+	 * Reacts on the elements of the graphics tag. An example graphics tag looks like this: <graphics name="1.8.4.1"
+	 * fgcolor="#000000" bgcolor="#FFFFFF" type="rectangle" x="142" y="304" width="45" height="17"/>
 	 */
 	protected void handleGraphicsTag() {
 
@@ -311,24 +290,18 @@ public class KgmlSaxHandler extends DefaultHandler {
 
 				if (attributeName.equals("name")) {
 					name = attributes.getValue(attributeIndex);
-				}
-				else if (attributeName.equals("height")) {
+				} else if (attributeName.equals("height")) {
 					height = new Short(attributes.getValue(attributeIndex));
-				}
-				else if (attributeName.equals("width")) {
+				} else if (attributeName.equals("width")) {
 					width = new Short(attributes.getValue(attributeIndex));
-				}
-				else if (attributeName.equals("x")) {
+				} else if (attributeName.equals("x")) {
 					x = new Short(attributes.getValue(attributeIndex));
-				}
-				else if (attributeName.equals("y")) {
+				} else if (attributeName.equals("y")) {
 					y = new Short(attributes.getValue(attributeIndex));
-				}
-				else if (attributeName.equals("type")) {
+				} else if (attributeName.equals("type")) {
 					shapeType = attributes.getValue(attributeIndex);
 				}
-			}
-			catch (NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
 		}
@@ -346,8 +319,7 @@ public class KgmlSaxHandler extends DefaultHandler {
 			currentVertexGroupRep = pathwayItemManager.createVertexGroupRep(currentPathway);
 
 			hashKgmlEntryIdToVertexRep.put(currentEntryId, currentVertexGroupRep);
-		}
-		else {
+		} else {
 			PathwayVertexRep vertexRep = pathwayItemManager.createVertexRep(currentPathway, currentVertices, name,
 					shapeType, x, y, width, height);
 
@@ -364,16 +336,14 @@ public class KgmlSaxHandler extends DefaultHandler {
 
 					if (alreadyPresentReactionNode instanceof PathwayVertexGroupRep) {
 						((PathwayVertexGroupRep) alreadyPresentReactionNode).addVertexRep(vertexRep);
-					}
-					else {
+					} else {
 						PathwayVertexGroupRep vertexGroupRep = pathwayItemManager.createVertexGroupRep(currentPathway);
 						vertexGroupRep.addVertexRep(alreadyPresentReactionNode);
 						vertexGroupRep.addVertexRep(vertexRep);
 						hashKgmlReactionNameToVertexRep.remove(alreadyPresentReactionNode);
 						hashKgmlReactionNameToVertexRep.put(currentReactionName, vertexGroupRep);
 					}
-				}
-				else {
+				} else {
 					hashKgmlReactionNameToVertexRep.put(currentReactionName, vertexRep);
 				}
 			}
@@ -381,8 +351,8 @@ public class KgmlSaxHandler extends DefaultHandler {
 	}
 
 	/**
-	 * Reacts on the elements of the relation tag. An example relation tag looks
-	 * like this: <relation entry1="28" entry2="32" type="ECrel">
+	 * Reacts on the elements of the relation tag. An example relation tag looks like this: <relation entry1="28"
+	 * entry2="32" type="ECrel">
 	 */
 	protected void handleRelationTag() {
 
@@ -399,11 +369,9 @@ public class KgmlSaxHandler extends DefaultHandler {
 
 			if (attributeName.equals("type")) {
 				type = attributes.getValue(attributeIndex);
-			}
-			else if (attributeName.equals("entry1")) {
+			} else if (attributeName.equals("entry1")) {
 				sourceVertexId = Integer.valueOf(attributes.getValue(attributeIndex)).intValue();
-			}
-			else if (attributeName.equals("entry2")) {
+			} else if (attributeName.equals("entry2")) {
 				targetVertexId = Integer.valueOf(attributes.getValue(attributeIndex)).intValue();
 			}
 		}
@@ -490,8 +458,7 @@ public class KgmlSaxHandler extends DefaultHandler {
 					// else {
 					// pathwayRelationEdgeRep.addRelationSubType(subType);
 					// }
-				}
-				else {
+				} else {
 					// all other cases except "compound"
 
 					// TODO check why this can happen
@@ -518,8 +485,8 @@ public class KgmlSaxHandler extends DefaultHandler {
 	}
 
 	/**
-	 * Reacts on the elements of the reaction tag. An example reaction tag looks
-	 * like this: <reaction name="rn:R01001" type="irreversible">
+	 * Reacts on the elements of the reaction tag. An example reaction tag looks like this: <reaction name="rn:R01001"
+	 * type="irreversible">
 	 */
 	protected void handleReactionTag() {
 
@@ -535,8 +502,7 @@ public class KgmlSaxHandler extends DefaultHandler {
 
 			if (attributeName.equals("type")) {
 				reactionType = attributes.getValue(attributeIndex);
-			}
-			else if (attributeName.equals("name")) {
+			} else if (attributeName.equals("name")) {
 				reactionName = attributes.getValue(attributeIndex);
 			}
 		}
@@ -546,8 +512,8 @@ public class KgmlSaxHandler extends DefaultHandler {
 	}
 
 	/**
-	 * Reacts on the elements of the reaction substrate tag. An example reaction
-	 * substrate tag looks like this: <substrate name="cpd:C01118"/>
+	 * Reacts on the elements of the reaction substrate tag. An example reaction substrate tag looks like this:
+	 * <substrate name="cpd:C01118"/>
 	 */
 	protected void handleReactionSubstrateTag() {
 
@@ -580,8 +546,7 @@ public class KgmlSaxHandler extends DefaultHandler {
 				pathwayReactionEdgeRep = new PathwayReactionEdgeRep(currentReactionType);
 				currentPathway.addEdge(targetVertexRep, sourceVertexRep, pathwayReactionEdgeRep);
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// Logger.log(new Status(
 			// IStatus.INFO,
 			// GeneralManager.PLUGIN_ID,
@@ -590,8 +555,8 @@ public class KgmlSaxHandler extends DefaultHandler {
 	}
 
 	/**
-	 * Reacts on the elements of the reaction product tag. An example reaction
-	 * product tag looks like this: <product name="cpd:C02291"/>
+	 * Reacts on the elements of the reaction product tag. An example reaction product tag looks like this: <product
+	 * name="cpd:C02291"/>
 	 */
 	protected void handleReactionProductTag() {
 
@@ -624,8 +589,7 @@ public class KgmlSaxHandler extends DefaultHandler {
 				pathwayReactionEdgeRep = new PathwayReactionEdgeRep(currentReactionType);
 				currentPathway.addEdge(targetVertexRep, sourceVertexRep, pathwayReactionEdgeRep);
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// Logger.log(new Status(
 			// IStatus.INFO,
 			// GeneralManager.PLUGIN_ID,

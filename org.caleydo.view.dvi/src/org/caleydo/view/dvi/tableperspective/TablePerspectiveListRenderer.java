@@ -114,9 +114,8 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 			Point2D topPosition2 = new Point2D.Float(currentPosX + dimensionGroupWidth, y);
 			bottomObjectPositions.put(tablePerspectiveRenderer.getTablePerspective(), new Pair<Point2D, Point2D>(
 					bottomPosition1, bottomPosition2));
-			topObjectPositions.put(tablePerspectiveRenderer.getTablePerspective(),
-
-			new Pair<Point2D, Point2D>(topPosition1, topPosition2));
+			topObjectPositions.put(tablePerspectiveRenderer.getTablePerspective(), new Pair<Point2D, Point2D>(
+					topPosition1, topPosition2));
 
 			currentPosX += step;
 		}

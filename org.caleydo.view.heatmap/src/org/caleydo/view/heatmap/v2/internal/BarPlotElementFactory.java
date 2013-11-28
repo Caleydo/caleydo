@@ -13,6 +13,7 @@ import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
 import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
 import org.caleydo.view.heatmap.v2.BarPlotElement;
 import org.caleydo.view.heatmap.v2.BasicBlockColorer;
+import org.caleydo.view.heatmap.v2.EScalingMode;
 import org.caleydo.view.heatmap.v2.EShowLabels;
 import org.caleydo.view.heatmap.v2.IBlockColorer;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy;
@@ -42,13 +43,14 @@ public class BarPlotElementFactory implements IGLElementFactory {
 		IBlockColorer blockColorer = context.get(IBlockColorer.class, BasicBlockColorer.INSTANCE);
 		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
 
-		BarPlotElement elem = new BarPlotElement(data, blockColorer, detailLevel,
-				context.is("scaleLocally"));
+		BarPlotElement elem = new BarPlotElement(data, blockColorer, detailLevel, context.get(EScalingMode.class,
+				EScalingMode.GLOBAL));
 
 		EShowLabels default_ = context.get(EShowLabels.class, EShowLabels.NONE);
 		elem.setDimensionLabels(context.get("dimensionLabels", EShowLabels.class, default_));
 		elem.setRecordLabels(context.get("recordLabels", EShowLabels.class, default_));
 		elem.setTextWidth(context.getInt("textWidth", elem.getTextWidth()));
+		elem.setMinimumItemHeightFactor(context.getInt("minimumItemHeightFactor", elem.getMinimumItemHeightFactor()));
 
 		ISpacingStrategy defaults_ = context.get(ISpacingStrategy.class, SpacingStrategies.UNIFORM);
 		elem.setDimensionSpacingStrategy(context.get("dimensionSpacingStrategy", ISpacingStrategy.class, defaults_));

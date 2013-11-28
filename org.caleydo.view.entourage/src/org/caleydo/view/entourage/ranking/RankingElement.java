@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.entourage.ranking;
 
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBarCompatibility;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
@@ -56,6 +56,7 @@ import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.StringRankColumnModel;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.lineup.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.lineup.ui.RenderStyle;
 import org.caleydo.vis.lineup.ui.TableUI;
 
@@ -66,12 +67,17 @@ import com.google.common.base.Function;
  *
  */
 public class RankingElement extends GLElementContainer {
+	private final static int PATHWAY_NAME_COLUMN_WIDTH = 140;
+	private final static int PATHWAY_DATABASE_COLUMN_WIDTH = 70;
+	private final static int RANK_COLUMN_WIDTH = 50;
+
 	private final RankTableModel table;
 	private final GLEntourage view;
 	private IPathwayFilter filter = PathwayFilters.NONE;
 	// private IPathwayRanking ranking = PathwayRankings.SIZE;
 	private ARankColumnModel currentRankColumnModel;
-	private StringRankColumnModel textColumn;
+	private StringRankColumnModel pathwayNameColumn;
+	private CategoricalRankColumnModel<?> pathwayDataBaseColumn;
 	private GLWindow window;
 	private final PropertyChangeListener onSelectRow = new PropertyChangeListener() {
 
@@ -87,16 +93,29 @@ public class RankingElement extends GLElementContainer {
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (window == null || window.getSize().x() < 2)
 				return;
-			if (hasScoreColumn()) {
-				if (window.getSize().x() != 220)
-					window.setSize(220, Float.NaN);
-			} else {
-				if (window.getSize().y() != 170)
-					window.setSize(170, Float.NaN);
+			((AnimatedGLElementContainer) window.getParent()).resizeChild(window, getRequiredWidth(), Float.NaN);
+			if (!hasScoreColumn())
 				setFilter(PathwayFilters.NONE);
-			}
 		}
 	};
+
+	private final PropertyChangeListener onCollapseColumn = new PropertyChangeListener() {
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			((AnimatedGLElementContainer) window.getParent()).resizeChild(window, getRequiredWidth(), Float.NaN);
+			// window.setSize(getRequiredWidth(), Float.NaN);
+		}
+	};
+
+	public float getRequiredWidth() {
+		float width = pathwayNameColumn.getWidth() + pathwayDataBaseColumn.getWidth()
+				+ (hasScoreColumn() ? currentRankColumnModel.getWidth() : 0) + 10;
+		// + (pathwayDataBaseColumn.isCollapsed() ? COLLAPSED_COLUMN_WIDTH : PATHWAY_DATABASE_COLUMN_WIDTH)
+		// + ( (currentRankColumnModel.isCollapsed() ? COLLAPSED_COLUMN_WIDTH
+		// : RANK_COLUMN_WIDTH) : 0);
+		return width;
+	}
 
 	public boolean hasScoreColumn() {
 		return table.getColumns().size() > 2;
@@ -234,24 +253,29 @@ public class RankingElement extends GLElementContainer {
 	 */
 	private void initTable(RankTableModel table) {
 		// add columns
-		textColumn = new StringRankColumnModel(GLRenderers.drawText("Pathway", VAlign.CENTER),
+		pathwayNameColumn = new StringRankColumnModel(GLRenderers.drawText("Pathway", VAlign.CENTER),
 				StringRankColumnModel.DEFAULT, Color.GRAY, new Color(.95f, .95f, .95f),
 				StringRankColumnModel.FilterStrategy.SUBSTRING);
-		textColumn.setWidth(140);
-		table.add(textColumn);
+		pathwayNameColumn.setWidth(PATHWAY_NAME_COLUMN_WIDTH);
+		pathwayNameColumn.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, onCollapseColumn);
+		table.add(pathwayNameColumn);
 
 		Collection<String> dbtypes = new ArrayList<>(2);
-		for(EPathwayDatabaseType type : EPathwayDatabaseType.values()) {
+		for (EPathwayDatabaseType type : EPathwayDatabaseType.values()) {
 			dbtypes.add(type.getName());
 		}
-		table.add(CategoricalRankColumnModel.createSimple(GLRenderers.drawText("Pathway Type", VAlign.CENTER),
-				new Function<IRow, String>() {
+		pathwayDataBaseColumn = CategoricalRankColumnModel.createSimple(
+				GLRenderers.drawText("Pathway Type", VAlign.CENTER), new Function<IRow, String>() {
 					@Override
 					public String apply(IRow in) {
 						PathwayRow r = (PathwayRow) in;
 						return r.getPathway().getType().getName();
 					}
-				}, dbtypes).setCollapsed(true));
+				}, dbtypes);
+		pathwayDataBaseColumn.setWidth(PATHWAY_DATABASE_COLUMN_WIDTH);
+		pathwayDataBaseColumn.setCollapsed(true);
+		pathwayDataBaseColumn.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, onCollapseColumn);
+		table.add(pathwayDataBaseColumn);
 
 		// IFloatFunction<IRow> pathwaySize = new AFloatFunction<IRow>() {
 		// @Override
@@ -287,8 +311,8 @@ public class RankingElement extends GLElementContainer {
 	 */
 	public void setFilter(IPathwayFilter filter) {
 		this.filter = filter;
-		if (textColumn.isFiltered())
-			textColumn.setFilter(null, false, false);
+		if (pathwayNameColumn.isFiltered())
+			pathwayNameColumn.setFilter(null, false, false);
 		applyFilter();
 	}
 
@@ -298,14 +322,16 @@ public class RankingElement extends GLElementContainer {
 	 */
 	public void setRanking(IPathwayRanking ranking) {
 		// this.ranking = ranking;
-		DoubleRankColumnModel newRankModel = createDefaultFloatRankColumnModel(ranking);
+		ARankColumnModel prevRankModel = currentRankColumnModel;
+		currentRankColumnModel = createDefaultFloatRankColumnModel(ranking);
+		currentRankColumnModel.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, onCollapseColumn);
+		currentRankColumnModel.setWidth(RANK_COLUMN_WIDTH);
 		if (table.getColumns().size() > 2) {
-			table.replace(currentRankColumnModel, newRankModel);
+			table.replace(prevRankModel, currentRankColumnModel);
 		} else {
-			table.add(newRankModel);
+			table.add(currentRankColumnModel);
 		}
-		newRankModel.orderByMe();
-		currentRankColumnModel = newRankModel;
+		((DoubleRankColumnModel) currentRankColumnModel).orderByMe();
 	}
 
 	/**

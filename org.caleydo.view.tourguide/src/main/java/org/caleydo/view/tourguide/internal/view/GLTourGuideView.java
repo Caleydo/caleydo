@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Caleydo - Visualization for Molecular Biology - http://caleydo.org
  * Copyright (c) The Caleydo Team. All rights reserved.
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
 package org.caleydo.view.tourguide.internal.view;
@@ -40,7 +40,7 @@ import org.caleydo.core.view.opengl.layout2.AGLElementView;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.IPopupLayer;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
 import org.caleydo.core.view.opengl.layout2.basic.WaitingElement;
@@ -51,10 +51,8 @@ import org.caleydo.view.tourguide.api.external.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.model.CategoricalDataDomainQuery;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
-import org.caleydo.view.tourguide.api.score.ScoreFactories;
 import org.caleydo.view.tourguide.api.score.Scores;
 import org.caleydo.view.tourguide.api.vis.ITourGuideView;
 import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
@@ -62,7 +60,6 @@ import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.compute.ComputeAllOfJob;
 import org.caleydo.view.tourguide.internal.compute.ComputeExtrasJob;
 import org.caleydo.view.tourguide.internal.compute.ComputeForScoreJob;
-import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
 import org.caleydo.view.tourguide.internal.event.ExtraInitialScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
 import org.caleydo.view.tourguide.internal.event.InitialScoreQueryReadyEvent;
@@ -75,13 +72,11 @@ import org.caleydo.view.tourguide.internal.view.col.IScoreMixin;
 import org.caleydo.view.tourguide.internal.view.col.ScoreIntegerRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.ScoreRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
-import org.caleydo.view.tourguide.internal.view.specific.DataDomainModeSpecifics;
-import org.caleydo.view.tourguide.internal.view.specific.IDataDomainQueryModeSpecfics;
 import org.caleydo.view.tourguide.internal.view.ui.ADataDomainElement;
 import org.caleydo.view.tourguide.internal.view.ui.DataDomainQueryUI;
 import org.caleydo.view.tourguide.internal.view.ui.pool.ScorePoolUI;
-import org.caleydo.view.tourguide.spi.IScoreFactory;
-import org.caleydo.view.tourguide.spi.adapter.IViewAdapter;
+import org.caleydo.view.tourguide.spi.adapter.ITourGuideAdapter;
+import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
@@ -111,7 +106,6 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.collect.Lists;
 
@@ -151,12 +145,11 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	/**
 	 * mode of this tour guide
 	 */
-	private final EDataDomainQueryMode mode;
-	private final IDataDomainQueryModeSpecfics modeSpecifics;
+	private final ITourGuideAdapter adapter;
+	private final ITourGuideDataMode mode;
 
 	private final WaitingElement waiting = new WaitingElement();
 
-	private IViewAdapter adapter;
 	private boolean noAttachedView = false;
 	private final GLElement noAttachedViewLabel = new GLElement(new IGLRenderer() {
 		@Override
@@ -191,11 +184,11 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	 */
 	private final Deque<WeakReference<IScore>> scoreHistory = new LinkedList<>();
 
-	public GLTourGuideView(IGLCanvas glCanvas, EDataDomainQueryMode mode) {
+	public GLTourGuideView(IGLCanvas glCanvas, ITourGuideAdapter adapter) {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
 
-		this.mode = mode;
-		this.modeSpecifics = DataDomainModeSpecifics.of(mode);
+		this.adapter = adapter;
+		this.mode = adapter.asMode();
 		this.table = new RankTableModel(new RankTableConfigBase());
 		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, new PropertyChangeListener() {
 			@Override
@@ -218,11 +211,11 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 			}
 		});
 		this.table.add(new RankRankColumnModel().setWidth(30));
-		modeSpecifics.addDefaultColumns(this.table);
+		this.adapter.addDefaultColumns(this.table);
 
 		addAllExternalScore(this.table);
 
-		for (ADataDomainQuery q : modeSpecifics.createDataDomainQueries()) {
+		for (ADataDomainQuery q : mode.createDataDomainQueries()) {
 			q.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
 			q.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
 			q.addPropertyChangeListener(CategoricalDataDomainQuery.PROP_GROUP_SELECTION, listener);
@@ -240,19 +233,6 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	@Override
 	public List<ADataDomainQuery> getQueries() {
 		return Collections.unmodifiableList(queries);
-	}
-
-	@Override
-	public void updateQueryUIStates() {
-		if (this.dataDomainQueryUI != null)
-			this.dataDomainQueryUI.updateSelections();
-	}
-
-	/**
-	 * @return the mode, see {@link #mode}
-	 */
-	public EDataDomainQueryMode getMode() {
-		return mode;
 	}
 
 	/**
@@ -287,7 +267,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		if (!mode.apply(dd))
 			return;
 
-		for (ADataDomainQuery query : modeSpecifics.createDataDomainQuery(dd)) {
+		for (ADataDomainQuery query : mode.createDataDomainQuery(dd)) {
 			queries.add(query);
 			query.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
 			query.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
@@ -361,7 +341,8 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		q.updateSpecificColumns(table);
 	}
 
-	private void removeAllSimpleFilter() {
+	@Override
+	public void removeAllSimpleFilter() {
 		// reset all string and integer filters
 		for (ARankColumnModel model : table.getFlatColumns()) {
 			if (model instanceof StringRankColumnModel)
@@ -562,36 +543,42 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		this.canvas.addKeyListener(eventListeners.register(this.tableKeyListener2));
 		this.canvas.addMouseListener(eventListeners.register(this.tableMouseListener));
 
-		this.noAttachedView = this.adapter != null; // artifically set to the wrong value to ensure an update
-		updateAdapterState();
+		this.noAttachedView = this.adapter.isBound2View(); // artifically set to the wrong value to ensure an update
+		updateBound2ViewState();
 
 		// select first data domain element by default
 		if (!queries.isEmpty()) {
 			((ADataDomainElement) getDataDomainQueryUI().get(0)).setSelected(true);
 		}
 
-		if (this.adapter != null) {
-			eventListeners.register(adapter);
-			this.adapter.setup(getVis());
-		}
+		eventListeners.register(adapter);
+		this.adapter.setup(this, getVis());
 	}
 
-	private void updateAdapterState() {
-		boolean act = this.adapter != null;
+	@Override
+	public void updateBound2ViewState() {
+		if (this.dataDomainQueryUI != null)
+			this.dataDomainQueryUI.updateSelections();
+
+		boolean act = this.adapter.isBound2View();
 		boolean prev = !this.noAttachedView;
-		if (act == prev)
-			return;
-		if (prev)
-			getPopupLayer().show(noAttachedViewLabel, null, 0);
-		else
-			getPopupLayer().hide(noAttachedViewLabel);
-		this.noAttachedView = !this.noAttachedView;
+		if (act != prev) {
+			if (prev)
+				getPopupLayer().show(noAttachedViewLabel, null, 0);
+			else
+				getPopupLayer().hide(noAttachedViewLabel);
+			this.noAttachedView = !this.noAttachedView;
+		}
+
+		if (this.adapter.isBound2View()) {
+			for (ADataDomainQuery query : queries)
+				query.setEnabled(this.adapter.filterBoundView(query));
+		}
 	}
 
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
-		if (this.adapter != null)
-			this.adapter.cleanup(getVis());
+		this.adapter.cleanup();
 		canvas.removeKeyListener(tableKeyListener);
 		canvas.removeKeyListener(tableKeyListener2);
 		canvas.removeMouseListener(tableMouseListener);
@@ -601,19 +588,19 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	@Override
 	protected GLElement createRoot() {
 		GLElementContainer vis = new GLElementContainer(new ReactiveFlowLayout(10));
-		this.dataDomainQueryUI = new DataDomainQueryUI(queries, modeSpecifics);
+		this.dataDomainQueryUI = new DataDomainQueryUI(queries, mode);
 		vis.add(dataDomainQueryUI);
 		this.tableUI = new TableUI(table, new RankTableUIConfig(), RowHeightLayouts.UNIFORM);
 		ScrollingDecorator sc = new ScrollingDecorator(tableUI, new ScrollBar(true), null, RenderStyle.SCROLLBAR_WIDTH);
 		vis.add(sc);
+
 		vis.add(new ScorePoolUI(table, new RankTableUIConfig(), GLTourGuideView.this));
 		return vis;
 	}
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
-		if (adapter != null)
-			adapter.preDisplay();
+		adapter.preDisplay();
 		super.display(drawable);
 	}
 
@@ -623,14 +610,14 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	}
 
 	protected void onSelectRow(AScoreRow old, AScoreRow new_) {
-		if (adapter != null && adapter.canShowPreviews())
+		if (adapter.canShowPreviews())
 			updatePreview(old, new_);
 	}
 
 	private void updatePreview(AScoreRow old, AScoreRow new_) {
 		if (adapter == null)
 			return;
-		adapter.update(old, new_, getVisibleScores(new_, true), mode, getSortedByScore());
+		adapter.update(old, new_, getVisibleScores(new_, true), getSortedByScore());
 	}
 
 	private IScore getSortedByScore() {
@@ -718,7 +705,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		Collection<IScore> toCompute = new ArrayList<>();
 
 		for (IScore s : scores) {
-			if (!s.supports(this.mode))
+			if (!s.supports(mode))
 				continue;
 			if (s instanceof IRegisteredScore)
 				((IRegisteredScore) s).onRegistered();
@@ -791,17 +778,6 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		return false;
 	}
 
-	@ListenTo(sendToMe = true)
-	private void onCreateScore(final CreateScoreEvent event) {
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				IScoreFactory f = ScoreFactories.get(event.getScore());
-				f.createCreateDialog(new Shell(), GLTourGuideView.this).open();
-			}
-		});
-	}
-
 	@ListenTo
 	private void onImportExternalScore(ImportExternalScoreEvent event) {
 		if (event.getSender() != this)
@@ -811,47 +787,6 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 						this));
 	}
 
-	public void attachToView() {
-		if (this.adapter != null)
-			this.adapter.attach();
-	}
-
-	public void detachFromView() {
-		if (this.adapter != null)
-			this.adapter.detach();
-	}
-
-	/**
-	 * @param adapter
-	 */
-	public void switchTo(IViewAdapter adapter) {
-		if (Objects.equals(adapter, this.adapter))
-			return;
-
-		final GLElementContainer root = getVis();
-		if (this.adapter != null && root != null) {
-			this.adapter.cleanup(root);
-			eventListeners.unregister(this.adapter);
-		}
-		this.adapter = null;
-
-		resetAdapter();
-
-		this.adapter = adapter;
-
-
-		if (this.adapter != null && root != null) {
-			eventListeners.register(this.adapter);
-			this.adapter.setup(root);
-		}
-		repaint();
-		IPopupLayer popupLayer = getPopupLayer();
-		if (popupLayer == null)
-			return;
-		updateAdapterState();
-	}
-
-
 	private void resetAdapter() {
 		this.table.setSelectedRow(null); // reset selection
 		removeAllSimpleFilter();
@@ -860,7 +795,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	/**
 	 * @return the adapter, see {@link #adapter}
 	 */
-	public IViewAdapter getAdapter() {
+	public ITourGuideAdapter getAdapter() {
 		return adapter;
 	}
 
@@ -947,14 +882,17 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		}
 
 		@Override
-		public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected) {
+		public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected,
+				IGLElementContext context) {
 			if (!isSelected && pickingMode == PickingMode.CLICKED) {
 				table.setSelectedRow(row);
 			} else if ((isSelected && pickingMode == PickingMode.CLICKED && adapter != null && adapter
 					.canShowPreviews())
 					|| (pickingMode == PickingMode.DOUBLE_CLICKED && (adapter == null || !adapter.canShowPreviews()))) {
 				updatePreview(null, (AScoreRow) row);
-			}
+			} else if (adapter != null)
+				adapter.onRowClick(table, pickingMode, (AScoreRow) row, isSelected, context);
+
 		}
 
 		@Override

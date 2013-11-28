@@ -22,6 +22,7 @@ import org.caleydo.core.util.color.mapping.IColorMappingUpdateListener;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingListener;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -241,6 +242,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		}
 
 		SelectionType selectionType;
+		ContextMenuCreator contextMenuCreator = getContextMenuCreator();
 
 		switch (pickingType) {
 		case HEAT_MAP_RECORD_SELECTION:
@@ -258,11 +260,13 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
+
 				if (dataDomain instanceof GeneticDataDomain && dataDomain.isColumnDimension()) {
 
 					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
 					contexMenuItemContainer.setDataDomain(dataDomain);
 					contexMenuItemContainer.setData(recordIDType, pickingID);
+
 					contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
 					contextMenuCreator.addSeparator();
 				} else {

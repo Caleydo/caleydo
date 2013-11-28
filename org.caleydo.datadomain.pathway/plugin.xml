@@ -3,6 +3,7 @@
 <plugin>
    <extension-point id="org.caleydo.data.pathway.PathwayParser" name="PathwayParser" schema="schema/org.caleydo.data.pathway.PathwayParser.exsd"/>
    <extension-point id="org.caleydo.datadomain.pathway.embeddedPathway" name="Embedded Pathway" schema="schema/org.caleydo.datadomain.pathway.embeddedPathway.exsd"/>
+   <extension-point id="org.caleydo.datadomain.pathway.PathwayAction" name="Pathway Action" schema="schema/org.caleydo.datadomain.pathway.PathwayAction.exsd"/>
    <extension
         id="org.caleydo.datadomain.pathway"
         name="PathwayDataDomain"

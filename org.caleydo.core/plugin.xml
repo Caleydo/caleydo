@@ -80,6 +80,15 @@
                name="aboutText"
                value="%aboutText">
          </property>
+         <property
+			    name="cssTheme"
+			    value="org.eclipse.e4.ui.css.theme.e4_default">
+			</property>
+		<property
+		    name="applicationCSSResources"
+		    value="platform:/plugin/org.eclipse.platform/images/">
+		</property>
+			         
       </product>
    </extension>
    <extension
@@ -125,6 +134,11 @@
             defaultHandler="org.caleydo.core.gui.command.SaveProjectHandler"
             id="org.caleydo.core.io.gui.save_project"
             name="Save Project">
+         <commandParameter
+               id="onlyData"
+               name="Only Data"
+               optional="true">
+         </commandParameter>
       </command>
       <command
             defaultHandler="org.caleydo.core.gui.menu.HelpContentsHandler"
@@ -189,6 +203,12 @@
                id="org.caleydo.menu.file"
                label="File">
             <command
+                  commandId="org.caleydo.core.startup.restart"
+                  icon="resources/icons/general/new.gif"
+                  label="&amp;NewProject"
+                  style="push">
+            </command>
+            <command
                   commandId="org.caleydo.core.startup.open"
                   icon="resources/icons/general/open.png"
                   label="Open Project"
@@ -199,6 +219,16 @@
                   icon="resources/icons/general/save.png"
                   label="Save Project"
                   style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.core.io.gui.save_project"
+                  icon="resources/icons/general/save.png"
+                  label="Save Project (Data Only)"
+                  style="push">
+               <parameter
+                     name="onlyData"
+                     value="true">
+               </parameter>
             </command>
             <command
                   commandId="org.caleydo.core.io.gui.import_data"
@@ -220,15 +250,6 @@
                   commandId="org.eclipse.ui.window.preferences"
                   label="Preferences"
                   mnemonic="P"
-                  style="push">
-            </command>
-            <separator
-                  name="org.caleydo.core.separator2"
-                  visible="true">
-            </separator>
-            <command
-                  commandId="org.caleydo.core.startup.restart"
-                  label="Restart"
                   style="push">
             </command>
             <command
@@ -428,6 +449,25 @@
                   id="org.caleydo.core.gui.preferences.views"
                   name="Views">
             </page>
+            <page
+	            name="Keys"
+	            class="org.eclipse.ui.ExtensionFactory:keysPreferencePage"
+	            id="org.eclipse.ui.preferencePages.Keys"
+	            category="org.caleydo.core.gui.preferences.GeneralPreferencePage">
+	      	</page>
+            <page
+	            name="Appearance"
+	            class="org.eclipse.ui.ExtensionFactory:appearancePreferencePage"
+	            id="org.eclipse.ui.preferencePages.Views"
+	            category="org.caleydo.core.gui.preferences.GeneralPreferencePage">
+	      	</page>
+            <page
+	            name="Colors and Fonts"
+	            class="org.eclipse.ui.ExtensionFactory:colorsAndFontsPreferencePage"
+	            id="org.eclipse.ui.preferencePages.ColorsAndFonts"
+	            category="org.caleydo.core.gui.preferences.GeneralPreferencePage">
+	      	</page>
+	      	
    </extension>
       <extension
             point="org.caleydo.datadomain.DataDomainActions">

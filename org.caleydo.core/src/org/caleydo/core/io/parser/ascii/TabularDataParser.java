@@ -62,14 +62,14 @@ public class TabularDataParser extends ATextParser {
 	/** The {@link ATableBasedDataDomain} for which the file is loaded */
 	private ATableBasedDataDomain dataDomain;
 
-	/** The {@link DataSetDescription} on which the loading of the file is based */
+	/** The metadata about the file to parse */
 	private DataSetDescription dataSetDescription;
 
 	/**
 	 * Constructor.
 	 */
 	public TabularDataParser(ATableBasedDataDomain dataDomain, DataSetDescription dataSetDescription) {
-		super(dataSetDescription.getDataSourcePath());
+		super(dataSetDescription.getDataSourcePath(), dataSetDescription);
 
 		this.dataDomain = dataDomain;
 		this.dataSetDescription = dataSetDescription;
@@ -291,7 +291,7 @@ public class TabularDataParser extends ATextParser {
 		while ((line = reader.readLine()) != null) {
 			// && lineInFile <= stopParsingAtLine) {
 
-			String splitLine[] = line.split(dataSetDescription.getDelimiter());
+			String splitLine[] = line.split(dataSetDescription.getDelimiter(), -1);
 
 			// id mapping
 			String id = splitLine[columnOfRowIDs];
@@ -304,7 +304,15 @@ public class TabularDataParser extends ATextParser {
 				if (columnDescription.getDataDescription() != null) {
 					dataDescription = columnDescription.getDataDescription();
 				}
-				String cellContent = splitLine[columnDescription.getColumn()];
+				int columnIndex = columnDescription.getColumn();
+				String cellContent = null;
+				if (columnIndex >= splitLine.length) {
+					cellContent = "NA";
+					Logger.log(new Status(IStatus.WARNING, this.toString(), "Not enough cells specified in line: "
+							+ lineCounter + ". Adding NA."));
+				} else {
+					cellContent = splitLine[columnIndex];
+				}
 
 				try {
 					switch (dataDescription.getRawDataType())

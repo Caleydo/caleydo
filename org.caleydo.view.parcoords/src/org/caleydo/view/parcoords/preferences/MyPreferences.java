@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.parcoords.preferences;
 
+import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.view.parcoords.Activator;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -21,6 +22,8 @@ public class MyPreferences extends AbstractPreferenceInitializer {
 	}
 
 	private static IPreferenceStore prefs() {
+		if (Activator.getDefault() == null)
+			return GLSandBox.prefs(MyPreferences.class);
 		return Activator.getDefault().getPreferenceStore();
 	}
 

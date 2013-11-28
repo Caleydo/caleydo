@@ -397,14 +397,17 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 
 	private void renderCaption(GL2 gl, float normalizedValue) {
 
-		if (detailLevel != EDetailLevel.HIGH || !(dataDomain.getTable() instanceof NumericalTable))
+		if (detailLevel != EDetailLevel.HIGH)
 			return;
-
-		double correspondingValue = ((NumericalTable) dataDomain.getTable()).getRawForNormalized(dataDomain.getTable()
-				.getDefaultDataTransformation(), normalizedValue);
+		String text = "";
+		if (dataDomain.getTable() instanceof NumericalTable) {
+			double correspondingValue = ((NumericalTable) dataDomain.getTable()).getRawForNormalized(dataDomain
+					.getTable().getDefaultDataTransformation(), normalizedValue);
+			text = Formatter.formatNumber(correspondingValue);
+		}
 
 		textRenderer.setColor(Color.BLACK);
-		String text = Formatter.formatNumber(correspondingValue);
+
 		float x = sideSpacing + normalizedValue * fRenderWidth;
 		boolean alignRight = true;
 		if (normalizedValue > 0.5) {
