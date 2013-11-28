@@ -136,7 +136,7 @@ public class CenteredDataRenderer extends AColumnBasedDataRenderer {
 
 		float[] color = isCategorical ? getMappingColorForItem(columnID) : (contentRenderer.parentView
 				.isUseColorMapping() ? getMappingColorForItem(columnID) : contentRenderer.dataDomain.getColor()
-				.getRGBA());
+				.darker().darker().getRGBA());
 		renderSingleBar(gl, 0, (normalizedCenter * range) + spacing, (value - normalizedCenter) * range, x,
 				selectionTypes, color, columnID, useShading);
 

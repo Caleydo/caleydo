@@ -31,7 +31,7 @@ public class ContinuousDataRenderer extends AColumnBasedDataRenderer {
 		Float value = contentRenderer.dataDomain.getNormalizedValue(contentRenderer.resolvedRowIDType,
 				contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, columnID);
 		float[] color = contentRenderer.parentView.isUseColorMapping() ? getMappingColorForItem(columnID)
-				: contentRenderer.dataDomain.getColor().getRGBA();
+				: contentRenderer.dataDomain.getColor().darker().darker().getRGBA();
 		renderSingleBar(gl, 0, 0, y * value, x, selectionTypes, color, columnID, useShading);
 
 	}

@@ -8,6 +8,7 @@ package org.caleydo.view.enroute.mappeddataview;
 import java.util.List;
 import java.util.Set;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2GL3;
 
@@ -83,9 +84,11 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 	}
 
 	protected void renderMissingValue(GL2 gl, float x, float y) {
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glBegin(GL2GL3.GL_QUADS);
 
-		gl.glColor4f(1f, 1f, 1f, 1f);
+		gl.glColor4f(1f, 1f, 1f, 0.3f);
 		gl.glVertex3f(0, 0, z);
 		gl.glVertex3f(x, 0, z);
 		gl.glVertex3f(x, y, z);
@@ -189,7 +192,7 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 				contentRenderer.resolvedColumnIDType, columnID, contentRenderer.resolvedRowIDType,
 				contentRenderer.resolvedRowID));
 		if (property == null)
-			return new float[] { 1, 1, 1, 0f };
+			return new float[] { 1, 1, 1, 0.3f };
 		return property.getColor().getRGBA();
 	}
 
