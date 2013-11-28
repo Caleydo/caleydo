@@ -114,11 +114,13 @@ public class EntourageNonGeneticAdapter extends AEntourageAdapter implements Pro
 
 		check.removePropertyChangeListener(CheckColumnModel.PROP_CHECKED, this);
 		check.set(false);
+		boolean hasOne = false;
 		for(ADataDomainQuery query : vis.getQueries()) {
 			if (!query.isEnabled())
 				continue;
 			if (visibleDataDomains.contains(query.getDataDomain())) {
 				query.setActive(true);
+				hasOne = true;
 				for (AScoreRow r : query.getOrCreate()) {
 					for(TablePerspective p : visible)
 						if (r.is(p)) {
@@ -129,6 +131,15 @@ public class EntourageNonGeneticAdapter extends AEntourageAdapter implements Pro
 				}
 			} else
 				query.setActive(false);
+		}
+		if (!hasOne) {
+			// just select the first one
+			for (ADataDomainQuery query : vis.getQueries()) {
+				if (!query.isEnabled())
+					continue;
+				query.setActive(true);
+				break;
+			}
 		}
 		check.addPropertyChangeListener(CheckColumnModel.PROP_CHECKED, this);
 	}

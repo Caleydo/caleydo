@@ -295,7 +295,8 @@ public class MappedDataRenderer {
 		// ArrayList<ArrayList<ElementLayout>>();
 		Map<TablePerspective, List<Integer>> contextRowIDs = new HashMap<>();
 
-		if (contextualTablePerspectives != null && !contextualTablePerspectives.isEmpty()) {
+		if (contextualTablePerspectives != null && !contextualTablePerspectives.isEmpty()
+				&& geneTablePerspectives != null && !geneTablePerspectives.isEmpty()) {
 
 			int bottomYSpacing = 10;
 			// for (int count = 0; count < contextualTablePerspectives.get(0).size(); count++) {

@@ -997,6 +997,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 		if (multiFormRenderer == pathInfo.multiFormRenderer) {
 			EEmbeddingID level = pathInfo.getEmbeddingIDFromRendererID(rendererID);
+			if (dataMappingWizard != null)
+				dataMappingWizard.onPathLevelChanged();
 			if (wasTriggeredByUser) {
 				setPathLevel(level);
 			}

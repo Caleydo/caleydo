@@ -27,12 +27,13 @@ public class BoxAndWhiskersMultiElement extends GLElementContainer implements IH
 	 */
 	private final EDimension split;
 
-	public BoxAndWhiskersMultiElement(TablePerspective tablePerspective, EDetailLevel detailLevel, EDimension split) {
+	public BoxAndWhiskersMultiElement(TablePerspective tablePerspective, EDetailLevel detailLevel, EDimension split,
+			boolean showOutliers) {
 		this.split = split;
 		setLayout(split.isVertical() ? GLLayouts.flowVertical(0) : GLLayouts.flowHorizontal(0));
 		for (TablePerspective t : (split.isVertical() ? tablePerspective.getRecordSubTablePerspectives()
 				: tablePerspective.getDimensionSubTablePerspectives())) {
-			this.add(new BoxAndWhiskersElement(t, detailLevel, split));
+			this.add(new BoxAndWhiskersElement(t, detailLevel, split, showOutliers));
 		}
 	}
 
