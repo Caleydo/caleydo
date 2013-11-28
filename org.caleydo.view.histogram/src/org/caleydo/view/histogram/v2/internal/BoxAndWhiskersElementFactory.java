@@ -40,15 +40,16 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory {
 		TablePerspective data = context.getData();
 		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
 
+		boolean showOutliers = context.is("showOutliers");
 		EDimension split = context.get("splitGroups", EDimension.class, null);
 		EDimension direction = context.get("direction", EDimension.class, EDimension.RECORD);
 		if ((split == EDimension.DIMENSION && getGroupsSize(data.getDimensionPerspective()) > 1)
 				|| (split == EDimension.RECORD && getGroupsSize(data.getRecordPerspective()) > 1)) {
-			BoxAndWhiskersMultiElement b = new BoxAndWhiskersMultiElement(data, detailLevel, split);
+			BoxAndWhiskersMultiElement b = new BoxAndWhiskersMultiElement(data, detailLevel, split, showOutliers);
 			b.setShowScale(context.is("showScale"));
 			return b;
 		} else {
-			BoxAndWhiskersElement b = new BoxAndWhiskersElement(data, detailLevel, direction);
+			BoxAndWhiskersElement b = new BoxAndWhiskersElement(data, detailLevel, direction, showOutliers);
 			b.setShowScale(context.is("showScale"));
 			return b;
 		}

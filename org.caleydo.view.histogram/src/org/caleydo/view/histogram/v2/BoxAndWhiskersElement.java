@@ -7,6 +7,9 @@ package org.caleydo.view.histogram.v2;
 
 import gleem.linalg.Vec2f;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
@@ -18,7 +21,9 @@ import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.ADoubleFunction;
 import org.caleydo.core.util.function.AdvancedDoubleStatistics;
+import org.caleydo.core.util.function.ArrayDoubleList;
 import org.caleydo.core.util.function.DoubleFunctions;
+import org.caleydo.core.util.function.DoubleStatistics;
 import org.caleydo.core.util.function.IDoubleFunction;
 import org.caleydo.core.util.function.IDoubleIterator;
 import org.caleydo.core.util.function.IDoubleList;
@@ -27,6 +32,8 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.view.ASingleTablePerspectiveElement;
+
+import com.google.common.primitives.Doubles;
 
 /**
  * renders an box and whiskers plot for numerical data domains
@@ -43,12 +50,15 @@ public class BoxAndWhiskersElement extends ASingleTablePerspectiveElement {
 	 */
 	private static final float BOX_HEIGHT_PERCENTAGE = 1 / 3.f;
 	private static final float LINE_TAIL_HEIGHT_PERCENTAGE = 0.75f;
+	private static final float OUTLIER_HEIGHT_PERCENTAGE = 0.5f;
 
 	private final EDetailLevel detailLevel;
 	private final EDimension direction;
+	private final boolean showOutlier;
 	private boolean showScale = false;
 
 	private AdvancedDoubleStatistics rawStats;
+	private DoubleStatistics rootStats;
 	private AdvancedDoubleStatistics normalizedStats;
 	/**
 	 * normalized value which is just above the <code>25 quartile - iqr*1.5</code> margin
@@ -59,14 +69,18 @@ public class BoxAndWhiskersElement extends ASingleTablePerspectiveElement {
 	 */
 	private double nearestIQRMax;
 
+	private IDoubleList outliers;
+
 	public BoxAndWhiskersElement(TablePerspective tablePerspective) {
-		this(tablePerspective, EDetailLevel.HIGH, EDimension.RECORD);
+		this(tablePerspective, EDetailLevel.HIGH, EDimension.RECORD, false);
 	}
 
-	public BoxAndWhiskersElement(TablePerspective tablePerspective, EDetailLevel detailLevel, EDimension direction) {
+	public BoxAndWhiskersElement(TablePerspective tablePerspective, EDetailLevel detailLevel, EDimension direction,
+			boolean showOutlier) {
 		super(tablePerspective);
 		this.detailLevel = detailLevel;
 		this.direction = direction;
+		this.showOutlier = showOutlier;
 		onVAUpdate(tablePerspective);
 	}
 
@@ -105,13 +119,23 @@ public class BoxAndWhiskersElement extends ASingleTablePerspectiveElement {
 		IDoubleList l = TableDoubleLists.asNormalizedList(tablePerspective);
 		this.normalizedStats = AdvancedDoubleStatistics.of(l);
 
+		updateIQRMatches(l);
+		updateRootState(tablePerspective);
+
+		super.onVAUpdate(tablePerspective);
+	}
+
+	private void updateIQRMatches(IDoubleList l) {
 		final double lowerIQRBounds = normalizedStats.getQuartile25() - normalizedStats.getIQR() * 1.5;
 		final double upperIQRBounds = normalizedStats.getQuartile75() + normalizedStats.getIQR() * 1.5;
 
 		nearestIQRMin = upperIQRBounds;
 		nearestIQRMax = lowerIQRBounds;
 
-		// find the values which are at the within iqr borders
+		// values which are out of the iqr bounds
+		List<Double> outliers = new ArrayList<>();
+
+		// find the values which are at the within iqr bounds
 		for (IDoubleIterator it = l.iterator(); it.hasNext();) {
 			double v = it.nextPrimitive();
 			if (Double.isNaN(v))
@@ -120,9 +144,20 @@ public class BoxAndWhiskersElement extends ASingleTablePerspectiveElement {
 				nearestIQRMin = v;
 			if (v < upperIQRBounds && v > nearestIQRMax)
 				nearestIQRMax = v;
+			// optionally compute the outliers
+			if (showOutlier && (v < lowerIQRBounds || v > upperIQRBounds))
+				outliers.add(v);
 		}
+		this.outliers = new ArrayDoubleList(Doubles.toArray(outliers));
+	}
 
-		super.onVAUpdate(tablePerspective);
+	private void updateRootState(TablePerspective tablePerspective) {
+		if (tablePerspective.getParentTablePerspective() != null
+				&& !(tablePerspective.getDataDomain().getTable() instanceof NumericalTable)) {
+			rootStats = DoubleStatistics.of(TableDoubleLists.asRawList(tablePerspective.getParentTablePerspective()));
+		} else {
+			rootStats = rawStats;
+		}
 	}
 	/**
 	 * @param renderBackground
@@ -177,6 +212,21 @@ public class BoxAndWhiskersElement extends ASingleTablePerspectiveElement {
 		float h_whiskers = hi * LINE_TAIL_HEIGHT_PERCENTAGE;
 		g.drawLine(min, center - h_whiskers * 0.5f, min, center + h_whiskers * 0.5f);
 		g.drawLine(max, center - h_whiskers * 0.5f, max, center + h_whiskers * 0.5f);
+
+		renderOutliers(g, w, hi, center);
+	}
+
+	private void renderOutliers(GLGraphics g, float w, final float hi, final float center) {
+		if (!showOutlier || outliers == null)
+			return;
+
+		g.color(0.2f);
+		float h_outlier = hi * OUTLIER_HEIGHT_PERCENTAGE * 0.5f;
+
+		for (IDoubleIterator it = outliers.iterator(); it.hasNext();) {
+			float v = (float) it.nextPrimitive() * w;
+			g.drawLine(v, center - h_outlier, v, center + h_outlier);
+		}
 	}
 
 
@@ -204,7 +254,7 @@ public class BoxAndWhiskersElement extends ASingleTablePerspectiveElement {
 			};
 		} else {
 			// use the data from the min max stats
-			f = DoubleFunctions.unnormalize(rawStats.getMin(), rawStats.getMax());
+			f = DoubleFunctions.unnormalize(rootStats.getMin(), rootStats.getMax());
 		}
 		final int textHeight = 10;
 
