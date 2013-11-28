@@ -975,4 +975,15 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	}
 
+	public boolean isShowCenteredDataLineInRowCenter() {
+		if (mappedDataRenderer == null)
+			return false;
+		return mappedDataRenderer.isShowCenteredDataLineInRowCenter();
+	}
+
+	public void setShowCenteredDataLineInRowCenter(boolean showCenteredDataLineInRowCenter) {
+		if (mappedDataRenderer != null)
+			mappedDataRenderer.setShowCenteredDataLineInRowCenter(showCenteredDataLineInRowCenter);
+	}
+
 }

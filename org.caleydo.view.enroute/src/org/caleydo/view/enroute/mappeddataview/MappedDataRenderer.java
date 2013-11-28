@@ -48,8 +48,6 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.button.Button;
-import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.GLEnRoutePathway;
@@ -277,16 +275,10 @@ public class MappedDataRenderer {
 
 		captionColumn.setPixelSizeX(CAPTION_COLUMN_PIXEL_WIDTH);
 
-		Row buttonRow = new Row("buttonRow");
-		buttonRow.setPixelSizeY(CAPTION_COLUMN_PIXEL_HEIGHT);
+		ElementLayout captionColumnSpacing = new ElementLayout("spacing");
+		captionColumnSpacing.setPixelSizeY(CAPTION_COLUMN_PIXEL_HEIGHT);
 
-		buttonRow.append(createButton(EPickingType.FIT_TO_VIEW_WIDTH_BUTTON.name(), 0,
-				"resources/icons/fit_to_width.png"));
-		buttonRow.append(xSpacing);
-		buttonRow.append(createButton(EPickingType.CENTER_LINE_ALIGNMENT_BUTTON.name(), 0,
-				"resources/icons/center_data_line.png"));
-
-		captionColumn.append(buttonRow);
+		captionColumn.append(captionColumnSpacing);
 		baseRow.append(captionColumn);
 
 		int nodeCount = 0;
@@ -624,18 +616,6 @@ public class MappedDataRenderer {
 		if (!parentView.isFitWidthToScreen() && viewFrustum.getWidth() < minWidth) {
 			viewFrustum.setRight(minWidth);
 		}
-	}
-
-	private ElementLayout createButton(String pickingType, int pickingID, String icon) {
-		Button button = new Button(pickingType, pickingID, icon);
-		ButtonRenderer buttonRender = new ButtonRenderer.Builder(parentView, button).build();
-
-		ElementLayout buttonLayout = new ElementLayout();
-		buttonLayout.setPixelSizeX(20);
-		buttonLayout.setPixelSizeY(20);
-		buttonLayout.setRenderer(buttonRender);
-
-		return buttonLayout;
 	}
 
 	private void calcMinWidthPixels() {
@@ -1176,6 +1156,13 @@ public class MappedDataRenderer {
 	 */
 	public void setShowCenteredDataLineInRowCenter(boolean showCenteredDataLineInRowCenter) {
 		this.showCenteredDataLineInRowCenter = showCenteredDataLineInRowCenter;
+	}
+
+	/**
+	 * @return the showCenteredDataLineInRowCenter, see {@link #showCenteredDataLineInRowCenter}
+	 */
+	public boolean isShowCenteredDataLineInRowCenter() {
+		return showCenteredDataLineInRowCenter;
 	}
 
 	/**
