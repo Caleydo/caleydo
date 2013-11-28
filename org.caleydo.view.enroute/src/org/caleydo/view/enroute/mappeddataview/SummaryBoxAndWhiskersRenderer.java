@@ -28,7 +28,7 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 
 	@Override
 	public void render(GL2 gl, float x, float y, List<SelectionType> selectionTypes) {
-		if (contentRenderer.resolvedRowID == null || contentRenderer.isHighlightMode)
+		if (contentRenderer.resolvedRowID == null || contentRenderer.isHighlightMode || normalizedStats == null)
 			return;
 
 		float[] color = MappedDataRenderer.SUMMARY_BAR_COLOR.getRGBA();

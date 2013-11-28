@@ -82,7 +82,7 @@ public class RowCaptionRenderer extends ALayoutRenderer {
 		textRenderer = parentView.getTextRenderer();
 		pixelGLConverter = parentView.getPixelGLConverter();
 
-		parent.parentView.addIDPickingTooltipListener(rowCaption, rowIDType.getTypeName(), rowID);
+		parent.pickingListenerManager.addIDPickingTooltipListener(rowCaption, rowIDType.getTypeName(), rowID);
 
 	}
 

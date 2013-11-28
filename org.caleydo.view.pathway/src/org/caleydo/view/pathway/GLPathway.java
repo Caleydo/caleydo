@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.pathway;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.awt.geom.Rectangle2D;
@@ -63,6 +64,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLContextLocal;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -105,7 +107,6 @@ import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
 import org.caleydo.view.pathway.listener.ShowPortalNodesEventListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.widgets.Display;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultEdge;
@@ -401,6 +402,15 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	}
 
 	protected void registerMouseListeners() {
+		registerMouseWheelListener(new IMouseWheelHandler() {
+
+			@Override
+			public void handleMouseWheel(int wheelAmount, Vec2f wheelPosition) {
+				if (!isControlKeyDown || !isShiftKeyDown)
+				selectNextPath(wheelAmount > 0);
+
+			}
+		});
 	}
 
 	public void setSelectPathAction(SelectPathAction aSelectPathAction) {
@@ -411,17 +421,17 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		@Override
 		public void keyPressed(IKeyEvent e) {
 			// //comment_1/2:
-			if (e.isControlDown() && (e.isKey('o'))) { // ctrl +o
-				enablePathSelection(!isPathSelectionMode);
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						if (selectPathAction != null) {
-							selectPathAction.setChecked(isPathSelectionMode);
-						}
-					}
-				});
-			}// if (e.isControlDown() && (e.getKeyCode() == 79))
+			// if (e.isControlDown() && (e.isKey('o'))) { // ctrl +o
+			// enablePathSelection(!isPathSelectionMode);
+			// Display.getDefault().asyncExec(new Runnable() {
+			// @Override
+			// public void run() {
+			// if (selectPathAction != null) {
+			// selectPathAction.setChecked(isPathSelectionMode);
+			// }
+			// }
+			// });
+			// }// if (e.isControlDown() && (e.getKeyCode() == 79))
 			isControlKeyDown = e.isControlDown();
 			isShiftKeyDown = e.isShiftDown();
 			// isAltKeyDown = e.isAltDown();

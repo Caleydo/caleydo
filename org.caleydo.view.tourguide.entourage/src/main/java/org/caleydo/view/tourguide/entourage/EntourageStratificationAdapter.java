@@ -7,7 +7,9 @@ package org.caleydo.view.tourguide.entourage;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -35,7 +37,9 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
-import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneEvent;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.listener.LoadPathwaysEvent;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.entourage.datamapping.DataMappingState;
 import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
@@ -121,15 +125,12 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 		c.add(filterStratifications);
 		filterStratifications.add(lineUp.get(2)); // move data domain selector
 		c.add(lineUp.get(2)); // move table
-		lineUp.add(
-				lineUp.size() - 1,
-				wrap("Groups", "Select the groups to show", this.groups, 250,
- this.groups.createSelectAllNone()));
+		lineUp.add(lineUp.size() - 1,
+				wrap("Groups", "Select the groups to show", this.groups, 250, this.groups.createSelectAllNone()));
 
 		if (isBound2View())
 			loadViewState();
 	}
-
 
 	@Override
 	public void addDefaultColumns(RankTableModel table) {
@@ -142,6 +143,7 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 	public ITourGuideDataMode asMode() {
 		return TourGuideDataModes.STRATIFICATIONS;
 	}
+
 	/**
 	 *
 	 */
@@ -280,8 +282,8 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 	 *
 	 */
 	private void loadGroupState() {
-		 groups.set(new Predicate<Group>() {
-			 @Override
+		groups.set(new Predicate<Group>() {
+			@Override
 			public boolean apply(Group input) {
 				return input != null && isGroupVisible(input);
 			}
@@ -401,7 +403,6 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 		switch (pickingMode) {
 		case RIGHT_CLICKED:
 			ContextMenuCreator creator = new ContextMenuCreator();
-			LoadPathwaysByGeneEvent event = new LoadPathwaysByGeneEvent();
 
 			if (row instanceof ITablePerspectiveScoreRow) {
 				TablePerspective tablePerspective = ((ITablePerspectiveScoreRow) row).asTablePerspective();
@@ -415,9 +416,14 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 				}
 				VirtualArray va = perspective.getVirtualArray();
 				if (va.size() == 1) {
-					event.setTableIDType(perspective.getIdType());
-					event.setGeneID(va.get(0));
-					creator.addContextMenuItem(new GenericContextMenuItem("Show Pathways with " + row.getLabel(), event));
+
+					Set<PathwayGraph> pathways = PathwayManager.get().getPathwayGraphsByGeneID(perspective.getIdType(),
+							va.get(0));
+					int numPathways = pathways == null ? 0 : pathways.size();
+					LoadPathwaysEvent event = new LoadPathwaysEvent(pathways == null ? new HashSet<PathwayGraph>()
+							: pathways);
+					creator.addContextMenuItem(new GenericContextMenuItem("Show Pathways with " + row.getLabel() + " ("
+							+ numPathways + " pathways available)", event));
 					context.getSWTLayer().showContextMenu(creator);
 				}
 			}

@@ -41,7 +41,7 @@ public abstract class AAverageBasedSummaryRenderer extends ADataRenderer {
 
 	protected void registerPickingListeners() {
 
-		contentRenderer.parentView.addIDPickingListener(new APickingListener() {
+		contentRenderer.parent.pickingListenerManager.addIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {

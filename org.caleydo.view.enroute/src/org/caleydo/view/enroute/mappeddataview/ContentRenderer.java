@@ -8,7 +8,6 @@ package org.caleydo.view.enroute.mappeddataview;
 import java.util.List;
 
 import javax.media.opengl.GL2;
-import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -110,18 +109,6 @@ public class ContentRenderer extends ALayoutRenderer {
 
 	private void unRegisterPickingListener() {
 		parentView.removePickingListener(pickingListener);
-	}
-
-	protected void renderMissingValue(GL2 gl, float xPosition, float width) {
-		gl.glBegin(GL2GL3.GL_QUADS);
-
-		gl.glColor4f(1f, 1f, 1f, 1f);
-		gl.glVertex3f(xPosition, 0, z);
-		gl.glVertex3f(xPosition + width, 0, z);
-		gl.glVertex3f(xPosition + width, y, z);
-		gl.glVertex3f(xPosition, y, z);
-
-		gl.glEnd();
 	}
 
 	@Override

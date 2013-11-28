@@ -416,7 +416,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 			// System.out.println("setting min width:" + minViewWidth);
 			if (fitToViewWidth) {
-				minWidth = pathRenderer.getMinWidthPixels() + DATA_COLUMN_WIDTH_PIXELS;
+				minWidth = pixelGLConverter.getPixelWidthForGLWidth((viewFrustum.getWidth()));
+				// minWidth = pathRenderer.getMinWidthPixels() + DATA_COLUMN_WIDTH_PIXELS;
 			} else {
 				minWidth = updateWidth ? minViewWidth + 3 : pathRenderer.getMinWidthPixels() + DATA_COLUMN_WIDTH_PIXELS;
 			}
@@ -972,6 +973,17 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		mappedDataRenderer.setGeneTablePerspectives(resolvedTablePerspectives);
 		setLayoutDirty();
 
+	}
+
+	public boolean isShowCenteredDataLineInRowCenter() {
+		if (mappedDataRenderer == null)
+			return false;
+		return mappedDataRenderer.isShowCenteredDataLineInRowCenter();
+	}
+
+	public void setShowCenteredDataLineInRowCenter(boolean showCenteredDataLineInRowCenter) {
+		if (mappedDataRenderer != null)
+			mappedDataRenderer.setShowCenteredDataLineInRowCenter(showCenteredDataLineInRowCenter);
 	}
 
 }

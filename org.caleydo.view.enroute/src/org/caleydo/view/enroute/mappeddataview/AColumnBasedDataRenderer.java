@@ -155,14 +155,14 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 	}
 
 	protected void registerPickingListeners() {
-		contentRenderer.parentView.addTypePickingListener(new APickingListener() {
+		contentRenderer.parent.pickingListenerManager.addTypePickingListener(new APickingListener() {
 			@Override
 			protected void clicked(Pick pick) {
 				EventPublisher.trigger(new DataSetSelectedEvent(contentRenderer.dataDomain));
 			}
 		}, EPickingType.SAMPLE.name() + hashCode());
 
-		contentRenderer.parentView.addTypePickingTooltipListener(new IPickingLabelProvider() {
+		contentRenderer.parent.pickingListenerManager.addTypePickingTooltipListener(new IPickingLabelProvider() {
 
 			@Override
 			public String getLabel(Pick pick) {

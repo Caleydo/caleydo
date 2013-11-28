@@ -11,7 +11,7 @@ import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.entourage.GLEntourage;
-import org.caleydo.view.entourage.RcpGLSubGraphView;
+import org.caleydo.view.entourage.RcpGLEntourageView;
 import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.vis.ITourGuideView;
@@ -74,15 +74,15 @@ abstract class AEntourageAdapter implements ITourGuideAdapter {
 
 	@Override
 	public final boolean isRepresenting(IWorkbenchPart part, boolean isBoundTo) {
-		if (part instanceof RcpGLSubGraphView)
-			return !isBoundTo || ((RcpGLSubGraphView) part).getView() == entourage;
+		if (part instanceof RcpGLEntourageView)
+			return !isBoundTo || ((RcpGLEntourageView) part).getView() == entourage;
 		return false;
 	}
 
 	@Override
 	public final void bindTo(IViewPart part) {
-		if (part instanceof RcpGLSubGraphView) {
-			this.entourage = ((RcpGLSubGraphView) part).getView();
+		if (part instanceof RcpGLEntourageView) {
+			this.entourage = ((RcpGLEntourageView) part).getView();
 		} else
 			this.entourage = null;
 		if (vis != null) {

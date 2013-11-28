@@ -25,7 +25,6 @@ import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.datadomain.pathway.toolbar.ClearPathAction;
 import org.caleydo.datadomain.pathway.toolbar.SampleSelectionMode;
 import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
-import org.caleydo.view.entourage.datamapping.DataMappers;
 import org.caleydo.view.entourage.toolbar.ClearWorkspaceAction;
 import org.caleydo.view.entourage.toolbar.ShowDataMapperAction;
 import org.caleydo.view.entourage.toolbar.ShowPortalsAction;
@@ -37,13 +36,13 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @author <Alexander Lex
  */
-public class RcpGLSubGraphView extends ARcpGLViewPart {
+public class RcpGLEntourageView extends ARcpGLViewPart {
 
 	/**
 	 * Constructor.
 	 */
-	public RcpGLSubGraphView() {
-		super(SerializedSubGraphView.class);
+	public RcpGLEntourageView() {
+		super(SerializedEntourageView.class);
 
 		// try {
 		// viewContext = JAXBContext.newInstance(SerializedSubGraphView.class);
@@ -62,7 +61,7 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 
 		createPartControlGL();
 
-		DataMappers.getDataMapper().show();
+		// DataMappers.getDataMapper().show();
 	}
 
 	@Override
@@ -103,7 +102,7 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 
 	@Override
 	public void createDefaultSerializedView() {
-		serializedView = new SerializedSubGraphView();
+		serializedView = new SerializedEntourageView();
 		determineDataConfiguration(serializedView);
 	}
 

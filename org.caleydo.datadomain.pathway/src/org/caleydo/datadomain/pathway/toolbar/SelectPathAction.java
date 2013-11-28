@@ -19,7 +19,7 @@ import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
  *
  */
 public class SelectPathAction extends SimpleAction {
-	public static final String LABEL = "Toggle path selection (Ctrl + O)";
+	public static final String LABEL = "Toggle path selection (B)";
 	public static final String ICON = "resources/icons/path_selection.png";
 	private String eventSpace;
 

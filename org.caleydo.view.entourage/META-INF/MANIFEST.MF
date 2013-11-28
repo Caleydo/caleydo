@@ -9,9 +9,8 @@ Require-Bundle: org.eclipse.ui,
  org.caleydo.core;bundle-version="3.1.1.qualifier",
  org.caleydo.datadomain.genetic;bundle-version="3.1.1.qualifier",
  org.caleydo.datadomain.pathway;bundle-version="3.1.1.qualifier",
- org.caleydo.util.bubblesets;bundle-version="3.1.1.qualifier",
  org.caleydo.vis.lineup;bundle-version="3.1.1.qualifier",
- org.caleydo.view.tourguide;bundle-version="3.1.1.qualifier"
+ org.caleydo.view.enroute;bundle-version="3.1.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.caleydo.view.entourage,

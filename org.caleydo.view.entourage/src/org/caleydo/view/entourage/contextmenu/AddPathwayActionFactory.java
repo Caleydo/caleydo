@@ -12,7 +12,7 @@ import org.caleydo.datadomain.pathway.PathwayActions.IPathwayActionFactory;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.entourage.EEmbeddingID;
 import org.caleydo.view.entourage.GLEntourage;
-import org.caleydo.view.entourage.RcpGLSubGraphView;
+import org.caleydo.view.entourage.RcpGLEntourageView;
 import org.caleydo.view.entourage.event.AddPathwayEvent;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -49,7 +49,7 @@ public class AddPathwayActionFactory implements IPathwayActionFactory {
 						IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 								.getActivePage();
 						try {
-							RcpGLSubGraphView entourage = (RcpGLSubGraphView) activePage
+							RcpGLEntourageView entourage = (RcpGLEntourageView) activePage
 									.showView(GLEntourage.VIEW_TYPE);
 							String eventSpace = entourage.getView().getPathEventSpace();
 							event.setEventSpace(eventSpace);

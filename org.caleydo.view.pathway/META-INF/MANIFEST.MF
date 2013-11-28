@@ -15,7 +15,6 @@ Export-Package: org.caleydo.view.pathway,
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.pathway.Activator
-Import-Package: org.caleydo.view.entourage,
- setvis,
+Import-Package: setvis,
  setvis.bubbleset,
  setvis.gui

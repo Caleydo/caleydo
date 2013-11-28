@@ -56,6 +56,9 @@ public abstract class AMedianBasedSummaryRenderer extends ADataRenderer {
 			}
 		}
 
+		if (rawValues.length == 0 || normalizedValues.length == 0)
+			return;
+
 		rawStats = AdvancedDoubleStatistics.of(rawValues);
 		normalizedStats = AdvancedDoubleStatistics.of(normalizedValues);
 		double lowerIQRBounds = normalizedStats.getQuartile25() - normalizedStats.getIQR() * 1.5;
@@ -94,7 +97,7 @@ public abstract class AMedianBasedSummaryRenderer extends ADataRenderer {
 	}
 
 	protected void registerPickingListeners() {
-		contentRenderer.parentView.addIDPickingTooltipListener(new ILabelProvider() {
+		contentRenderer.parent.pickingListenerManager.addIDPickingTooltipListener(new ILabelProvider() {
 
 			@Override
 			public String getLabel() {

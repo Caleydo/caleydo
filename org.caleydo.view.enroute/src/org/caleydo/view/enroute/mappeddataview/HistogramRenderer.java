@@ -11,6 +11,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2GL3;
 
+import org.caleydo.core.data.collection.CategoricalHistogram;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.selection.SelectionType;
@@ -27,7 +28,8 @@ import org.caleydo.view.enroute.EPickingType;
  */
 public class HistogramRenderer extends ADataRenderer {
 
-	protected static final int MAX_HISTOGRAM_BAR_WIDTH_PIXELS = 20;
+	// protected static final int MAX_HISTOGRAM_BAR_WIDTH_PIXELS = 20;
+	protected static final int SPACING_PIXELS = 2;
 
 	protected Histogram histogram;
 
@@ -48,15 +50,16 @@ public class HistogramRenderer extends ADataRenderer {
 		if (histogram == null)
 			return;
 		int bucketCount = 0;
-		float barWidth = y / histogram.size();
-		float maxBarWidth = contentRenderer.parentView.getPixelGLConverter().getGLHeightForPixelHeight(
-				MAX_HISTOGRAM_BAR_WIDTH_PIXELS);
-		float histogramStartY = 0;
-		if (barWidth > maxBarWidth) {
-			barWidth = maxBarWidth;
-			histogramStartY = (y - histogram.size() * barWidth) / 2.0f;
-		}
-		float renderWith = x - contentRenderer.parentView.getPixelGLConverter().getGLWidthForPixelWidth(20);
+		float spacing = contentRenderer.parentView.getPixelGLConverter().getGLHeightForPixelHeight(SPACING_PIXELS);
+		float barWidth = (y - 2f * spacing) / histogram.size();
+		// float maxBarWidth = contentRenderer.parentView.getPixelGLConverter().getGLHeightForPixelHeight(
+		// MAX_HISTOGRAM_BAR_WIDTH_PIXELS);
+		float histogramStartY = spacing;
+		// if (barWidth > maxBarWidth) {
+		// barWidth = maxBarWidth;
+		// histogramStartY = (y - histogram.size() * barWidth) / 2.0f + spacing;
+		// }
+		float renderWith = x - contentRenderer.parentView.getPixelGLConverter().getGLWidthForPixelWidth(5);
 
 		for (int bucketNumber = 0; bucketNumber < histogram.size(); bucketNumber++) {
 
@@ -75,8 +78,13 @@ public class HistogramRenderer extends ADataRenderer {
 				selectionTypes.remove(SelectionType.SELECTION);
 			}
 
-			float[] baseColor = contentRenderer.dataDomain.getTable().getColorMapper()
-					.getColor((float) bucketCount / (histogram.size() - 1));
+			float[] baseColor = null;
+			if (histogram instanceof CategoricalHistogram) {
+				baseColor = ((CategoricalHistogram) histogram).getColor(bucketNumber).getRGBA();
+			} else {
+				baseColor = contentRenderer.dataDomain.getTable().getColorMapper()
+						.getColor((float) bucketCount / (histogram.size() - 1));
+			}
 
 			colorCalculator.setBaseColor(new Color(baseColor[0], baseColor[1], baseColor[2]));
 
@@ -130,7 +138,7 @@ public class HistogramRenderer extends ADataRenderer {
 
 		// for (int bucketCount = 0; bucketCount < histogram.size(); bucketCount++) {
 		// //FIXME: HACKY hashcode
-		contentRenderer.parentView.addTypePickingListener(new APickingListener() {
+		contentRenderer.parent.pickingListenerManager.addTypePickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {

@@ -107,11 +107,19 @@ public class GLWindow extends GLElementContainer {
 		if (active) {
 			view.setActiveWindow(this);
 			repaint();
-			if (showCloseButton)
-				titleBar.closeButton.setVisibility(EVisibility.PICKABLE);
+
+			for (int i = 1; i < titleBar.size(); i++) {
+				titleBar.get(i).setVisibility(EVisibility.PICKABLE);
+			}
 			titleBar.setHighlight(true);
+			if (!showCloseButton)
+				titleBar.closeButton.setVisibility(EVisibility.NONE);
 		} else {
-			titleBar.closeButton.setVisibility(EVisibility.NONE);
+			// titleBar.closeButton.setVisibility(EVisibility.NONE);
+
+			for (int i = 1; i < titleBar.size(); i++) {
+				titleBar.get(i).setVisibility(EVisibility.NONE);
+			}
 			titleBar.setHighlight(false);
 		}
 		// background.setHovered(active);
