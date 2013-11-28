@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.pathway;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.awt.geom.Rectangle2D;
@@ -63,6 +64,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLContextLocal;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -400,6 +402,15 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	}
 
 	protected void registerMouseListeners() {
+		registerMouseWheelListener(new IMouseWheelHandler() {
+
+			@Override
+			public void handleMouseWheel(int wheelAmount, Vec2f wheelPosition) {
+				if (!isControlKeyDown || !isShiftKeyDown)
+				selectNextPath(wheelAmount > 0);
+
+			}
+		});
 	}
 
 	public void setSelectPathAction(SelectPathAction aSelectPathAction) {
