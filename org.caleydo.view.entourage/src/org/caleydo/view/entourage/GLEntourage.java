@@ -531,9 +531,9 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 		useColorMappingButton.setSize(16, 16);
 		useColorMappingButton.setRenderer(GLRenderers.fillImage(new ResourceLoader(enrouteResourceLocator)
-				.getTexture("resources/icons/fit_to_width.png")));
+				.getTexture("resources/icons/toggle_color.png")));
 		useColorMappingButton.setSelectedRenderer(GLRenderers.pushedImage(new ResourceLoader(enrouteResourceLocator)
-				.getTexture("resources/icons/fit_to_width.png")));
+				.getTexture("resources/icons/toggle_color.png")));
 		useColorMappingButton.setSelected(enRoute.isUseColorMapping());
 
 		useColorMappingButton.onPick(new APickingListener() {
