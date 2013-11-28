@@ -67,6 +67,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.ESampleMappingMode;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneEvent;
+import org.caleydo.datadomain.pathway.listener.LoadPathwaysEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.SampleMappingModeEvent;
@@ -1063,6 +1064,15 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	public void onShowPathwaysWithGene(LoadPathwaysByGeneEvent event) {
 		Set<PathwayGraph> pathways = PathwayManager.get()
 				.getPathwayGraphsByGeneID(event.getIdType(), event.getGeneID());
+		if (pathways == null)
+			pathways = new HashSet<>();
+		rankingElement.setFilter(new PathwayFilters.PathwaySetFilter(pathways));
+
+	}
+
+	@ListenTo
+	public void onShowPathwaysWithGene(LoadPathwaysEvent event) {
+		Set<PathwayGraph> pathways = event.getPathways();
 		if (pathways == null)
 			pathways = new HashSet<>();
 		rankingElement.setFilter(new PathwayFilters.PathwaySetFilter(pathways));
