@@ -67,8 +67,8 @@ public class MappedDataRenderer {
 
 	public static float[] FRAME_COLOR = { 1, 1, 1, 1 };
 
-	public static float[] ODD_BACKGROUND_COLOR = { 220f / 255f, 220f / 255, 220f / 255, 1f };
-	public static float[] EVEN_BACKGROUND_COLOR = { 180f / 255f, 180f / 255, 180f / 255, 1f };
+	public final static float[] ODD_BACKGROUND_COLOR = { 220f / 255f, 220f / 255, 220f / 255, 1f };
+	public final static float[] EVEN_BACKGROUND_COLOR = { 200f / 255f, 200f / 255, 200f / 255, 1f };
 
 	public static float[] CAPTION_BACKGROUND_COLOR = { 220f / 255f, 220f / 255, 220f / 255, 1f };
 

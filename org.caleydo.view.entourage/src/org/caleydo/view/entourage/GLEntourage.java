@@ -252,6 +252,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	private GLButton useCenterLineButton = new GLButton(EButtonMode.CHECKBOX);
 	private GLButton fitEnrouteToViewWidthButton = new GLButton(EButtonMode.CHECKBOX);
+	private GLButton useColorMappingButton = new GLButton(EButtonMode.CHECKBOX);
 
 	/**
 	 * Constructor.
@@ -527,6 +528,24 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			}
 		});
 		fitEnrouteToViewWidthButton.setTooltip("Toggle fit to view width.");
+
+		useColorMappingButton.setSize(16, 16);
+		useColorMappingButton.setRenderer(GLRenderers.fillImage(new ResourceLoader(enrouteResourceLocator)
+				.getTexture("resources/icons/toggle_color.png")));
+		useColorMappingButton.setSelectedRenderer(GLRenderers.pushedImage(new ResourceLoader(enrouteResourceLocator)
+				.getTexture("resources/icons/toggle_color.png")));
+		useColorMappingButton.setSelected(enRoute.isUseColorMapping());
+
+		useColorMappingButton.onPick(new APickingListener() {
+			@Override
+			protected void clicked(Pick pick) {
+				boolean useColorMapping = enRoute.isUseColorMapping();
+				useColorMappingButton.setSelected(!useColorMapping);
+				enRoute.setUseColorMapping(!useColorMapping);
+				enRoute.setLayoutDirty();
+			}
+		});
+		useColorMappingButton.setTooltip("Toggle color mapping for numerical bars.");
 	}
 
 	/**
@@ -1009,9 +1028,11 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 						isEnRouteFirstTimeVisible = false;
 					}
 					pathInfo.window.titleBar.add(pathInfo.window.titleBar.size() - 1, fitEnrouteToViewWidthButton);
+					pathInfo.window.titleBar.add(pathInfo.window.titleBar.size() - 1, useColorMappingButton);
 					pathInfo.window.titleBar.add(pathInfo.window.titleBar.size() - 1, useCenterLineButton);
 				} else {
 					pathInfo.window.titleBar.remove(fitEnrouteToViewWidthButton);
+					pathInfo.window.titleBar.remove(useColorMappingButton);
 					pathInfo.window.titleBar.remove(useCenterLineButton);
 				}
 			}

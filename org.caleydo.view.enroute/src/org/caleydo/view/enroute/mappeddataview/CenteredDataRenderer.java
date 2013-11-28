@@ -11,6 +11,8 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.io.DataDescription;
+import org.caleydo.core.io.NumericalProperties;
 
 /**
  * @author Christian
@@ -107,12 +109,36 @@ public class CenteredDataRenderer extends AColumnBasedDataRenderer {
 		if (value < normalizedCenter + 0.0001 && value > normalizedCenter - 0.0001) {
 			return;
 		}
+		DataDescription dataDescription = contentRenderer.dataDomain.getDataSetDescription().getDataDescription();
+		// CategoricalClassDescription<?> categoryDescription = null;
+		boolean isCategorical = false;
+		// inhomogeneous
+		if (dataDescription == null) {
+			Object dataClassDesc = null;
+			if (contentRenderer.columnIDType.getIDCategory() == contentRenderer.dataDomain.getColumnIDCategory()) {
+				dataClassDesc = contentRenderer.dataDomain.getTable().getDataClassSpecificDescription(columnID,
+						contentRenderer.rowID);
+			} else {
+				dataClassDesc = contentRenderer.dataDomain.getTable().getDataClassSpecificDescription(
+						contentRenderer.rowID, columnID);
+			}
 
+			if (dataClassDesc instanceof NumericalProperties) {
+				isCategorical = false;
+			} else {
+				isCategorical = true;
+			}
+		} else if (dataDescription.getNumericalProperties() != null) {
+			isCategorical = false;
+		} else {
+			isCategorical = true;
+		}
+
+		float[] color = isCategorical ? getMappingColorForItem(columnID) : (contentRenderer.parentView
+				.isUseColorMapping() ? getMappingColorForItem(columnID) : contentRenderer.dataDomain.getColor()
+				.darker().darker().getRGBA());
 		renderSingleBar(gl, 0, (normalizedCenter * range) + spacing, (value - normalizedCenter) * range, x,
-				selectionTypes, contentRenderer.dataDomain.getTable().getColorMapper().getColor(value), columnID,
-				useShading);
+				selectionTypes, color, columnID, useShading);
 
 	}
-
-
 }

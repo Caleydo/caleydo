@@ -8,16 +8,19 @@ package org.caleydo.view.enroute.mappeddataview;
 import java.util.List;
 import java.util.Set;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
+import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.io.DataDescription;
+import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -81,9 +84,11 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 	}
 
 	protected void renderMissingValue(GL2 gl, float x, float y) {
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glBegin(GL2GL3.GL_QUADS);
 
-		gl.glColor4f(1f, 1f, 1f, 1f);
+		gl.glColor4f(1f, 1f, 1f, 0.3f);
 		gl.glVertex3f(0, 0, z);
 		gl.glVertex3f(x, 0, z);
 		gl.glVertex3f(x, y, z);
@@ -154,6 +159,58 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 		gl.glPopName();
 	}
 
+	protected float[] getMappingColorForItem(int columnID) {
+		DataDescription dataDescription = contentRenderer.dataDomain.getDataSetDescription().getDataDescription();
+		// CategoricalClassDescription<?> categoryDescription = null;
+
+		// inhomogeneous
+		if (dataDescription == null) {
+			Object dataClassDesc = null;
+			if (contentRenderer.columnIDType.getIDCategory() == contentRenderer.dataDomain.getColumnIDCategory()) {
+				dataClassDesc = contentRenderer.dataDomain.getTable().getDataClassSpecificDescription(columnID,
+						contentRenderer.rowID);
+			} else {
+				dataClassDesc = contentRenderer.dataDomain.getTable().getDataClassSpecificDescription(
+						contentRenderer.rowID, columnID);
+			}
+
+			if (dataClassDesc == null || dataClassDesc instanceof NumericalProperties) {
+				return getBarColorFromNumericValue(columnID);
+			} else {
+				return getBarColorFromCategory((CategoricalClassDescription<?>) dataClassDesc, columnID);
+			}
+		} else if (dataDescription.getNumericalProperties() != null) {
+			return getBarColorFromNumericValue(columnID);
+		} else {
+			return getBarColorFromCategory(dataDescription.getCategoricalClassDescription(), columnID);
+		}
+
+	}
+
+	protected float[] getBarColorFromCategory(CategoricalClassDescription<?> categoryDescription, int columnID) {
+		CategoryProperty<?> property = categoryDescription.getCategoryProperty(contentRenderer.dataDomain.getRaw(
+				contentRenderer.resolvedColumnIDType, columnID, contentRenderer.resolvedRowIDType,
+				contentRenderer.resolvedRowID));
+		if (property == null)
+			return new float[] { 1, 1, 1, 0.3f };
+		return property.getColor().getRGBA();
+	}
+
+	protected float[] getBarColorFromNumericValue(int columnID) {
+		Float value = contentRenderer.dataDomain.getNormalizedValue(contentRenderer.resolvedRowIDType,
+				contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, columnID);
+
+		float[] mappedColor = contentRenderer.dataDomain.getTable().getColorMapper().getColor(value);
+		// if (mappedColor[0] < 0 || mappedColor[0] > 1 || mappedColor[1] < 0 || mappedColor[1] > 1 || mappedColor[2] <
+		// 0
+		// || mappedColor[2] > 1) {
+		// int x = 5;
+		// x++;
+		// }
+		return new float[] { mappedColor[0], mappedColor[1], mappedColor[2], 1f };
+		// return new float[] { 0, 0, 0, 1f };
+	}
+
 	protected void registerPickingListeners() {
 		contentRenderer.parent.pickingListenerManager.addTypePickingListener(new APickingListener() {
 			@Override
@@ -172,23 +229,6 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 					return getCategoryName(contentRenderer.dataDomain.getDataSetDescription().getDataDescription()
 							.getCategoricalClassDescription(), pick.getObjectID());
 				}
-				// Integer resolvedSampleID = contentRenderer.columnIDMappingManager.getID(
-				// contentRenderer.resolvedColumnIDType, contentRenderer.parent.sampleIDType, pick.getObjectID());
-				// Object categoryDescription = null;
-				//
-				// if (contentRenderer.columnIDType.getIDCategory() == contentRenderer.dataDomain.getColumnIDCategory())
-				// {
-				// categoryDescription = contentRenderer.dataDomain.getTable().getDataClassSpecificDescription(
-				// contentRenderer.resolvedRowID, resolvedSampleID);
-				// } else {
-				//
-				// categoryDescription = contentRenderer.dataDomain.getTable().getDataClassSpecificDescription(
-				// resolvedSampleID, contentRenderer.resolvedRowID);
-				// }
-
-				// if (categoryDescription != null && !(categoryDescription instanceof NumericalProperties))
-				// return getCategoryName((CategoricalClassDescription<?>) categoryDescription, pick.getObjectID());
-
 				return ""
 						+ contentRenderer.dataDomain.getRawAsString(contentRenderer.resolvedRowIDType,
 								contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, pick.getObjectID());

@@ -16,9 +16,9 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.view.enroute.GLEnRoutePathway;
 
 /**
  * @author alexsb
@@ -56,7 +56,7 @@ public class ContentRenderer extends ALayoutRenderer {
 	MappedDataRenderer parent;
 
 	IDMappingManager columnIDMappingManager;
-	AGLView parentView;
+	GLEnRoutePathway parentView;
 
 	Perspective foreignColumnPerspective;
 
@@ -64,7 +64,7 @@ public class ContentRenderer extends ALayoutRenderer {
 	protected IDataRenderer detailRenderer;
 
 	public ContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType, Integer resolvedRowID,
-			ATableBasedDataDomain dataDomain, Perspective columnPerspective, AGLView parentView,
+			ATableBasedDataDomain dataDomain, Perspective columnPerspective, GLEnRoutePathway parentView,
 			MappedDataRenderer parent, Group group, boolean isHighlightMode, Perspective foreignColumnPerspective) {
 		this.parentView = parentView;
 
