@@ -195,7 +195,10 @@ public class StackedColumnHeaderUI extends SimpleColumnHeaderUI {
 	}
 
 	public static class AlignmentDragInfo implements IDragInfo {
-
+		@Override
+		public String getLabel() {
+			return "AlignmentMarker";
+		}
 	}
 }
 

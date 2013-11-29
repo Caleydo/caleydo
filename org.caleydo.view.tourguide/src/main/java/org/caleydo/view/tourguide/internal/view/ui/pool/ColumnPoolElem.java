@@ -13,6 +13,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
+import org.caleydo.vis.lineup.model.ColumnDragInfo;
 
 /**
  * @author Samuel Gratzl
@@ -20,7 +21,6 @@ import org.caleydo.vis.lineup.model.ARankColumnModel;
  */
 public class ColumnPoolElem extends APoolElem {
 	private final ARankColumnModel model;
-	private boolean isDragging;
 
 	public ColumnPoolElem(ARankColumnModel model) {
 		this.model = model;
@@ -55,32 +55,13 @@ public class ColumnPoolElem extends APoolElem {
 		// TODO: add back to tour guide
 	}
 
-	@Override
-	protected void onMouseReleased(Pick pick) {
-		if (pick.isDoDragging())
-			onDropColumn(pick);
-	}
-
-	private void onDropColumn(Pick pick) {
-		IMouseLayer l = context.getMouseLayer();
-		if (this.isDragging) {
-			if (!l.isDropable(this.model)) {
-				l.removeDraggable(this.model);
-			}
-			this.isDragging = false;
-			context.getSWTLayer().setCursor(-1);
-			return;
-		}
-	}
-
 	private void onDragColumn(Pick pick) {
 		IMouseLayer l = context.getMouseLayer();
 		GLElement elem = new DraggedScoreHeaderItem();
 		elem.setSize(getSize().x(), getSize().y());
 		Vec2f loc = toRelative(pick.getPickedPoint());
 		elem.setLocation(-loc.x(), -loc.y());
-		isDragging = true;
-		l.addDraggable(elem, this.model);
+		l.startDragging(new ColumnDragInfo(this.model), elem, null);
 	}
 
 	class DraggedScoreHeaderItem extends GLElement {

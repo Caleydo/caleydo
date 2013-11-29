@@ -12,7 +12,6 @@ import java.util.Collection;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.lineup.model.mixin.ICollapseableColumnMixin;
@@ -23,7 +22,7 @@ import org.caleydo.vis.lineup.ui.detail.ValueElement;
  * @author Samuel Gratzl
  *
  */
-public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
+public abstract class ARankColumnModel implements IRankColumnModel {
 	public static final String PROP_WIDTH = "width";
 
 	protected final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);

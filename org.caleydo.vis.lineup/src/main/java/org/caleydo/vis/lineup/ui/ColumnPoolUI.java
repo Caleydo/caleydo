@@ -14,12 +14,14 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Objects;
 
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.TransferInfo;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
@@ -30,6 +32,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.config.IRankTableUIConfig;
 import org.caleydo.vis.lineup.config.RankTableUIConfigs;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
+import org.caleydo.vis.lineup.model.ColumnDragInfo;
 import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.lineup.ui.column.ColumnHeaderUI;
@@ -67,6 +70,35 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 	private boolean isSmallHeader;
 
 	private final IRankTableUIConfig config;
+
+	private IDropGLTarget dropTarget = new IDropGLTarget() {
+
+		@Override
+		public boolean canDrop(TransferInfo input) {
+			IDragInfo info = input.getInfo();
+			if (!(info instanceof ColumnDragInfo))
+				return false;
+			ARankColumnModel model = ((ColumnDragInfo) info).getModel();
+			if (!(model instanceof IHideableColumnMixin) || model.isHidden())
+				return false;
+			armed = true;
+			repaint();
+			return true;
+		}
+
+		@Override
+		public void onDropMoved(TransferInfo input) {
+
+		}
+
+		@Override
+		public void onDrop(TransferInfo info) {
+			ARankColumnModel model = ((ColumnDragInfo) info.getInfo()).getModel();
+			model.hide();
+			armed = false;
+			repaint();
+		}
+	};
 
 	public ColumnPoolUI(RankTableModel table, IRankTableUIConfig config) {
 		this.table = table;
@@ -170,33 +202,16 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 	}
 
 	protected void onDropPick(Pick pick) {
-		if (!pick.isAnyDragging() || !context.getMouseLayer().hasDraggable(IHideableColumnMixin.class))
-			return;
-		Pair<GLElement, IHideableColumnMixin> pair = context.getMouseLayer().getFirstDraggable(
-					IHideableColumnMixin.class);
-		if (pair.getSecond().isHidden())
-			return;
 		switch(pick.getPickingMode()) {
 		case MOUSE_OVER:
-			if (!pair.getSecond().isHideAble())
-				return;
 			this.armed = true;
-			context.getMouseLayer().setDropable(IHideableColumnMixin.class, true);
+			context.getMouseLayer().addDropTarget(dropTarget);
 			repaint();
 			break;
 		case MOUSE_OUT:
+			context.getMouseLayer().removeDropTarget(dropTarget);
 			if (this.armed) {
-				context.getMouseLayer().setDropable(IHideableColumnMixin.class, true);
 				this.armed = false;
-				repaint();
-			}
-			break;
-		case MOUSE_RELEASED:
-			if (armed) {
-				context.getMouseLayer().removeDraggable(pair.getFirst());
-				pair.getSecond().hide();
-				context.getSWTLayer().setCursor(-1);
-				armed = false;
 				repaint();
 			}
 			break;
@@ -246,7 +261,7 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 		}
 	}
 
-	private static class PaperBasket extends PickableGLElement {
+	private static class PaperBasket extends PickableGLElement implements IDropGLTarget {
 		private boolean armed = false;
 		private final RankTableModel table;
 
@@ -255,35 +270,42 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 		}
 
 		@Override
-		protected void onMouseOver(Pick pick) {
-			if (!pick.isAnyDragging() || !context.getMouseLayer().hasDraggable(IHideableColumnMixin.class))
-				return;
-			Pair<GLElement, IHideableColumnMixin> pair = context.getMouseLayer().getFirstDraggable(
-					IHideableColumnMixin.class);
-			if (!pair.getSecond().isDestroyAble())
-				return;
+		public boolean canDrop(TransferInfo input) {
+			if (!(input.getInfo() instanceof ColumnDragInfo))
+				return false;
+			ColumnDragInfo info = (ColumnDragInfo)input.getInfo();
+			if (!(info.getModel() instanceof IHideableColumnMixin))
+				return false;
+			IHideableColumnMixin model = (IHideableColumnMixin) info.getModel();
+			if (!model.isDestroyAble())
+				return false;
 			this.armed = true;
-			context.getMouseLayer().setDropable(IHideableColumnMixin.class, true);
 			repaint();
+			return true;
+		}
+
+		@Override
+		public void onDropMoved(TransferInfo input) {
+
+		}
+
+		@Override
+		public void onDrop(TransferInfo info) {
+			table.removeFromPool(((ColumnDragInfo) info.getInfo()).getModel());
+			armed = false;
+			repaint();
+		}
+
+
+		@Override
+		protected void onMouseOver(Pick pick) {
+			context.getMouseLayer().addDropTarget(this);
 		}
 
 		@Override
 		protected void onMouseOut(Pick pick) {
+			context.getMouseLayer().removeDropTarget(this);
 			if (armed) {
-				context.getMouseLayer().setDropable(IHideableColumnMixin.class, false);
-				armed = false;
-				repaint();
-			}
-		}
-
-		@Override
-		protected void onMouseReleased(Pick pick) {
-			if (armed) {
-				Pair<GLElement, ARankColumnModel> draggable = context.getMouseLayer().getFirstDraggable(
-						ARankColumnModel.class);
-				context.getMouseLayer().removeDraggable(draggable.getFirst());
-				table.removeFromPool(draggable.getSecond());
-				context.getSWTLayer().setCursor(-1);
 				armed = false;
 				repaint();
 			}

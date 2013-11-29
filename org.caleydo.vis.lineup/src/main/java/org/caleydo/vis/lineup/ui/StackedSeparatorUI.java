@@ -7,14 +7,15 @@ package org.caleydo.vis.lineup.ui;
 
 import gleem.linalg.Vec2f;
 
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.TransferInfo;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.ui.column.StackedColumnHeaderUI;
 import org.caleydo.vis.lineup.ui.column.StackedColumnHeaderUI.AlignmentDragInfo;
 
@@ -25,7 +26,7 @@ import org.caleydo.vis.lineup.ui.column.StackedColumnHeaderUI.AlignmentDragInfo;
  * @author Samuel Gratzl
  *
  */
-public class StackedSeparatorUI extends SeparatorUI {
+public class StackedSeparatorUI extends SeparatorUI implements IDropGLTarget {
 	private boolean isAlignment = false;
 
 	public StackedSeparatorUI(IMoveHereChecker model, int index) {
@@ -99,19 +100,17 @@ public class StackedSeparatorUI extends SeparatorUI {
 		super.onMouseOver(pick);
 		if (armed)
 			return;
-		if (!pick.isAnyDragging())
-			return;
-		if (pick.isDoDragging())
-			return;
-		IMouseLayer m = context.getMouseLayer();
-		if (!m.hasDraggable(AlignmentDragInfo.class))
-			return;
-		Pair<GLElement, AlignmentDragInfo> info = m.getFirstDraggable(AlignmentDragInfo.class);
-		if (info.getSecond() != getStacked().align)
-			return;
-		m.setDropable(ARankColumnModel.class, true);
+		context.getMouseLayer().addDropTarget(this);
+	}
+
+	@Override
+	public boolean canDrop(TransferInfo input) {
+		IDragInfo info = input.getInfo();
+		if (info != getStacked().align)
+			return false;
 		armed = true;
 		repaint();
+		return true;
 	}
 
 	@Override
@@ -127,7 +126,7 @@ public class StackedSeparatorUI extends SeparatorUI {
 			}
 		});
 		e.setSize(getSize().x(), getSize().y());
-		m.addDraggable(e, getStacked().align);
+		m.startDragging(getStacked().align, e, null);
 	}
 
 	private StackedColumnHeaderUI getStacked() {
@@ -135,29 +134,21 @@ public class StackedSeparatorUI extends SeparatorUI {
 	}
 
 	@Override
-	protected void onMouseReleased(Pick pick) {
-		IMouseLayer m = context.getMouseLayer();
-		if (isAlignment && pick.isDoDragging()) {
-			if (!m.isDropable(getStacked().align))
-				m.removeDraggable(getStacked().align);
-			//drop me
-		} else if (armed) {
-			m.setDropable(AlignmentDragInfo.class, false);
-			Pair<GLElement, AlignmentDragInfo> info = m.getFirstDraggable(AlignmentDragInfo.class);
-			if (info != null) {
-				m.removeDraggable(info.getFirst());
-				context.getSWTLayer().setCursor(-1);
-				armed = false;
-				getStacked().setAlignment(index);
-			}
-		}
-		super.onMouseReleased(pick);
+	public void onDrop(TransferInfo info) {
+		armed = false;
+		getStacked().setAlignment(index);
+	}
+
+	@Override
+	public void onDropMoved(TransferInfo input) {
+
 	}
 
 	@Override
 	protected void onMouseOut(Pick pick) {
+		context.getMouseLayer().removeDropTarget(this);
 		if (armed) {
-			context.getMouseLayer().setDropable(AlignmentDragInfo.class, false);
+			armed = false;
 		}
 		super.onMouseOut(pick);
 	}

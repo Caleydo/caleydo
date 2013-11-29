@@ -10,8 +10,7 @@ package org.caleydo.vis.lineup.ui;
 import java.net.URL;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.opengl.picking.AdvancedPick;
-import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.TransferInfo;
 
 
 /**
@@ -172,13 +171,11 @@ public class RenderStyle {
 
 	/**
 	 * are we dragging for cloning
-	 *
-	 * @param pick
+	 * 
+	 * @param input
 	 * @return
 	 */
-	public static boolean isCloneDragging(Pick pick) {
-		if (pick instanceof AdvancedPick)
-			return ((AdvancedPick) pick).isCtrlDown();
-		return false;
+	public static boolean isCloneDragging(TransferInfo input) {
+		return input.isCtrlDown();
 	}
 }

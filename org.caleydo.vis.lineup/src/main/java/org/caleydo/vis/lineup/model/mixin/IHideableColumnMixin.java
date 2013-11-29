@@ -5,7 +5,6 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.model.mixin;
 
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 
 /**
  * contract that the column can be hidden
@@ -13,7 +12,7 @@ import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
  * @author Samuel Gratzl
  *
  */
-public interface IHideableColumnMixin extends IDragInfo, IRankColumnModel {
+public interface IHideableColumnMixin extends IRankColumnModel {
 	/**
 	 * currently hide able in its state
 	 *

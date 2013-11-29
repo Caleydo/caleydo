@@ -8,8 +8,7 @@ package org.caleydo.vis.lineup.config;
 import java.util.Collections;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.opengl.picking.AdvancedPick;
-import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.TransferInfo;
 import org.caleydo.vis.lineup.model.ACompositeRankColumnModel;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.GroupRankColumnModel;
@@ -45,14 +44,11 @@ public class RankTableConfigBase implements IRankTableConfig {
 	}
 
 	@Override
-	public int getCombineMode(ARankColumnModel model, Pick pick) {
+	public int getCombineMode(ARankColumnModel model, TransferInfo info) {
 		int default_ = defaultMode(model);
-		if (!(pick instanceof AdvancedPick))
-			return default_;
-		AdvancedPick apick = (AdvancedPick) pick;
-		if (apick.isAltDown())
+		if (info.isAltDown())
 			return SUM_MODE; // opposite one
-		if (apick.isShiftDown())
+		if (info.isShiftDown())
 			return NESTED_MODE;
 		return default_;
 	}
