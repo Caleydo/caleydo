@@ -612,8 +612,9 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	 * @param pick
 	 */
 	protected void onDragPick(Pick pick) {
+		System.out.println(pick);
 		switch (pick.getPickingMode()) {
-		case CLICKED:
+		case DRAG_DETECTED:
 			if (pick.isAnyDragging())
 				return;
 			pick.setDoDragging(true);
@@ -819,7 +820,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 
 		@Override
-		protected void onClicked(Pick pick) {
+		protected void onDragDetected(Pick pick) {
 			if (pick.isAnyDragging())
 				return;
 			pick.setDoDragging(true);

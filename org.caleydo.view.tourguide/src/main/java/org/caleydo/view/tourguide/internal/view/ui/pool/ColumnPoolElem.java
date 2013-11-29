@@ -43,7 +43,7 @@ public class ColumnPoolElem extends APoolElem {
 	}
 
 	@Override
-	protected void onClicked(Pick pick) {
+	protected void onDragDetected(Pick pick) {
 		if (armed && !pick.isAnyDragging()) {
 			pick.setDoDragging(true);
 			onDragColumn(pick);

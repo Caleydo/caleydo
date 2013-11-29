@@ -78,7 +78,7 @@ public class ScoreFilter extends PickableGLElement implements IPickingListener {
 				maxHovered = true;
 			repaint();
 			break;
-		case CLICKED:
+		case DRAG_DETECTED:
 			pick.setDoDragging(true);
 			break;
 		case DRAGGED:

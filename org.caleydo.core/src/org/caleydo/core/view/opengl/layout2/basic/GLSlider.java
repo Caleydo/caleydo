@@ -326,7 +326,7 @@ public class GLSlider extends PickableGLElement {
 	}
 
 	@Override
-	protected void onClicked(Pick pick) {
+	protected void onDragDetected(Pick pick) {
 		if (pick.isAnyDragging())
 			return;
 		pick.setDoDragging(true);

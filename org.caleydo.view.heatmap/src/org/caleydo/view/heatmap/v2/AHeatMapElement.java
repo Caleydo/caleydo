@@ -431,6 +431,10 @@ public abstract class AHeatMapElement extends ASingleTablePerspectiveElement {
 		}
 		if (repaint)
 			repaint();
+	}
+
+	@Override
+	protected void onDragDetected(Pick pick) {
 		if (!pick.isAnyDragging())
 			pick.setDoDragging(true);
 	}

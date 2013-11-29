@@ -115,7 +115,7 @@ public class GateElement extends GLElementContainer implements IDoublePredicate,
 		}
 
 		@Override
-		protected void onClicked(Pick pick) {
+		protected void onDragDetected(Pick pick) {
 			if (pick.isAnyDragging())
 				return;
 			pick.setDoDragging(true);

@@ -115,7 +115,7 @@ public class StackedSeparatorUI extends SeparatorUI {
 	}
 
 	@Override
-	protected void onClicked(Pick pick) {
+	protected void onDragDetected(Pick pick) {
 		if (pick.isAnyDragging() || !isAlignment)
 			return;
 		pick.setDoDragging(true);
