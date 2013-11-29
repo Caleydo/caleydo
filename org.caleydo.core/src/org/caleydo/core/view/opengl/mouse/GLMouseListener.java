@@ -283,6 +283,11 @@ public class GLMouseListener implements IGLMouseListener {
 		return pickedPointDragStart;
 	}
 
+	@Override
+	public void mouseDragDetected(IMouseEvent mouseEvent) {
+
+	}
+
 	public void setNavigationModes(boolean bEnablePan, boolean bEnableRotate, boolean bEnableZoom) {
 		this.enablePan = bEnablePan;
 		this.enableRotate = bEnableRotate;

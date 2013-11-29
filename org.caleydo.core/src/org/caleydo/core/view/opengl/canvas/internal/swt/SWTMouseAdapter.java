@@ -16,6 +16,8 @@ import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.canvas.Units;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DragDetectEvent;
+import org.eclipse.swt.events.DragDetectListener;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -30,7 +32,7 @@ import org.eclipse.swt.widgets.Control;
  *
  */
 final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWheelListener, MouseTrackListener,
-		MenuDetectListener {
+		MenuDetectListener, DragDetectListener {
 
 	private final IGLMouseListener listener;
 	private final AGLCanvas canvas;
@@ -60,6 +62,11 @@ final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWh
 	@Override
 	public void mouseDown(MouseEvent e) {
 		listener.mousePressed(wrap(e));
+	}
+
+	@Override
+	public void dragDetected(DragDetectEvent e) {
+		listener.mouseDragDetected(wrap(e));
 	}
 
 	@Override

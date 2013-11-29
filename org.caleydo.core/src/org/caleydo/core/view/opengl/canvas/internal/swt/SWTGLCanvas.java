@@ -77,6 +77,7 @@ final class SWTGLCanvas extends AGLCanvas {
 				canvas.addMouseWheelListener(a);
 				canvas.addMouseTrackListener(a);
 				canvas.addMenuDetectListener(a);
+				canvas.addDragDetectListener(a);
 
 			}
 		});
@@ -97,6 +98,7 @@ final class SWTGLCanvas extends AGLCanvas {
 				canvas.removeMouseWheelListener(a);
 				canvas.removeMouseTrackListener(a);
 				canvas.removeMenuDetectListener(a);
+				canvas.removeDragDetectListener(a);
 			}
 		});
 	}

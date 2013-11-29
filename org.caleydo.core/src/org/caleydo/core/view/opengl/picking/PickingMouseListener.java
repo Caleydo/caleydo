@@ -67,6 +67,12 @@ final class PickingMouseListener implements IGLMouseListener {
 	}
 
 	@Override
+	public void mouseDragDetected(IMouseEvent mouseEvent) {
+		isMouseIn = true;
+		add(mouseEvent, PickingMode.DRAG_DETECTED);
+	}
+
+	@Override
 	public void mouseReleased(IMouseEvent mouseEvent) {
 		isMouseIn = true;
 		add(mouseEvent, PickingMode.MOUSE_RELEASED);
@@ -95,5 +101,6 @@ final class PickingMouseListener implements IGLMouseListener {
 		isMouseIn = false;
 		add(mouseEvent, PickingMode.MOUSE_OUT);
 	}
+
 
 }

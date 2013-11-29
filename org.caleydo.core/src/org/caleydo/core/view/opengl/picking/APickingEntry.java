@@ -64,7 +64,7 @@ abstract class APickingEntry {
 		pick.setDoDragging(dragging);
 
 		fire(pick);
-		if (mode == PickingMode.CLICKED)
+		if (mode == PickingMode.CLICKED || mode == PickingMode.DRAG_DETECTED)
 			dragging = pick.isDoDragging();
 		else if (mode == PickingMode.MOUSE_RELEASED) {
 			dragStart = null;
