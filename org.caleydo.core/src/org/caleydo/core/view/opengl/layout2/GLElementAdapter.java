@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
+import gleem.linalg.Vec2f;
+
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -131,9 +133,13 @@ public class GLElementAdapter extends GLElementContainer {
 	}
 
 	protected void renderAdapter(GLGraphics g, float w, float h) {
-		if (viewFrustum.getRight() != w || viewFrustum.getTop() != h) {
-			viewFrustum.setRight(w);
-			viewFrustum.setTop(h);
+		float windowHeight = view.getViewFrustum().getHeight();
+		Vec2f loc = getAbsoluteLocation();
+		if (viewFrustum.getRight() != w || viewFrustum.getTop() != (windowHeight - loc.y())) {
+			viewFrustum.setLeft(loc.x());
+			viewFrustum.setBottom(windowHeight - loc.y() - h);
+			viewFrustum.setRight(loc.x() + w);
+			viewFrustum.setTop(windowHeight - loc.y());
 			layout.updateLayout();
 
 		}

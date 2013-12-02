@@ -105,7 +105,7 @@ public class LayoutManager {
 		// should we do this here? we could integrate this with another
 		// traversal
 		baseElementLayout.setLayoutManager(this);
-		calculateScales(viewFrustum.getLeft(), viewFrustum.getBottom(), totalWidth, totalHeight);
+		calculateScales(0, 0, totalWidth, totalHeight);
 
 		baseElementLayout.updateSpacings();
 		// recordPostTranslationState();
@@ -250,6 +250,13 @@ public class LayoutManager {
 	 */
 	void unRegisterTransitionSpecification(TransitionSpecification tSpec) {
 		mapLayoutIDToTransitionSpecification.remove(tSpec.getID());
+	}
+
+	/**
+	 * @return the viewFrustum, see {@link #viewFrustum}
+	 */
+	public ViewFrustum getViewFrustum() {
+		return viewFrustum;
 	}
 
 }

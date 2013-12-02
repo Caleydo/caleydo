@@ -735,6 +735,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			final AnimatedGLElementContainer parent, Object layoutData, MultiFormInfo info) {
 		MultiFormRenderer renderer = new MultiFormRenderer(this, false);
 		renderer.addChangeListener(this);
+		// renderer.setUseScreenCoordinateViewFrustum(true);
 		info.multiFormRenderer = renderer;
 
 		for (EEmbeddingID embedding : embeddingIDs) {
@@ -774,6 +775,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		// Different renderers should receive path updates from the beginning on, therefore no lazy creation.
 		MultiFormRenderer renderer = new MultiFormRenderer(this, false);
 		renderer.addChangeListener(this);
+		// renderer.setUseScreenCoordinateViewFrustum(true);
 		info.multiFormRenderer = renderer;
 
 		for (EEmbeddingID embedding : embeddingIDs) {
