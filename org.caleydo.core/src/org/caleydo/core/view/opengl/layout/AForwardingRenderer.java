@@ -34,7 +34,7 @@ public class AForwardingRenderer extends ALayoutRenderer {
 	}
 
 	@Override
-	protected void setElementLayout(ElementLayout elementLayout) {
+	public void setElementLayout(ElementLayout elementLayout) {
 		super.setElementLayout(elementLayout);
 		currentRenderer.setElementLayout(elementLayout);
 	}

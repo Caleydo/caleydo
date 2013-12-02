@@ -64,6 +64,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLContextLocal;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import org.caleydo.core.view.opengl.canvas.Units;
 import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -407,7 +408,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			@Override
 			public void handleMouseWheel(int wheelAmount, Vec2f wheelPosition) {
 				if (!isControlKeyDown || !isShiftKeyDown)
-				selectNextPath(wheelAmount > 0);
+					selectNextPath(wheelAmount > 0);
 
 			}
 		});
@@ -648,22 +649,24 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 						/ (float) pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());
 
 				if (useBubbleSets) {
-					pickX = (int) ((pickX - pixelGLConverter.getPixelWidthForGLWidth(vecTranslation.x())) * pathwayTextureScaling);
-					pickY = (int) ((pickY - pixelGLConverter.getPixelHeightForGLHeight(vecTranslation.y())) * pathwayTextureScaling);
+					pickX = (int) ((pickX - pixelGLConverter.getPixelWidthForGLWidth(vecTranslation.x()) - pixelGLConverter.getPixelWidthForGLWidth(viewFrustum
+							.getLeft())) / vecScaling.x());
+					float totalHeight = parentGLCanvas.getHeight(Units.DIP);
+					pickY = (int) ((pickY - pixelGLConverter.getPixelHeightForGLHeight(vecTranslation.y()) - (totalHeight - pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
+							.getTop()))) / vecScaling.y());
+					System.out.println("x: " + pickX + ", y: " + pickY + "w: " + iImageWidth);
 
 					// code adapted from documentation at
 					// http://docs.oracle.com/javase/6/docs/api/java/awt/image/PixelGrabber.html
-					int[] pixels = bubbleSet.getBubbleSetGLRenderer().getPxl(pickX, pickX);
-					int alpha = (pixels[0] >> 24) & 0xff;
+					int[] pixels = alternativeBubbleSet.getBubbleSetGLRenderer().getPxl(pickX, pickY);
+					// int alpha = (pixels[0] >> 24) & 0xff;
 					int red = (pixels[0] >> 16) & 0xff;
-					int green = (pixels[0] >> 8) & 0xff;
-					int blue = (pixels[0]) & 0xff;
-					// System.out.println("DENIS_DEBUG:: pickedRed:" + red +
-					// " pickedGreen:" + green + " pickedBlue:" + blue
-					// + " pickedAlpha:" + alpha);
+					// int green = (pixels[0] >> 8) & 0xff;
+					// int blue = (pixels[0]) & 0xff;
+					// System.out.println("DENIS_DEBUG:: pickedRed:" + red + "  pickedGreen:" + green + " pickedBlue:"
+					// + blue + " pickedAlpha:" + alpha);
 					// look up color
-					List<org.caleydo.core.util.color.Color> colorTable = (ColorManager.get())
-							.getColorList("qualitativeColors");
+					List<org.caleydo.core.util.color.Color> colorTable = (ColorManager.get()).getColorList("qualitativeColors");
 					float[] cComponents = new float[4];
 					for (int i = 0; i < colorTable.size() - 2; i++) {
 						org.caleydo.core.util.color.Color c = colorTable.get(i);
@@ -677,11 +680,41 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 							selectedPathID = i;
 							if (selectedPathID > allPaths.size() - 1)
 								selectedPathID = allPaths.size() - 1;
-							selectedPath = allPaths.get(selectedPathID);
+							// selectedPath = allPaths.get(selectedPathID);
+							// isBubbleTextureDirty = true;
+							// setDisplayListDirty();
+							// triggerPathUpdate();
+							// i = colorTable.size();
+
+							if (allPathsList.size() < 1)
+								return;
+							List<GraphPath<PathwayVertexRep, DefaultEdge>> paths = allPathsList.get(
+									allPathsList.size() - 1).getFirst();
+							if (paths.size() > 1) {
+								// System.out.println("allPaths.size() > 1");
+
+								if (allPaths.size() > 0) {
+									selectedPath = paths.get(selectedPathID);
+									// System.out.println("selectedPathID"+selectedPathID);
+									if (selectedPath.getEdgeList().size() > 0 && !isShiftKeyDown) {
+										PathwayVertexRep startPrevVertex = selectedPath.getStartVertex();
+										PathwayVertexRep endPrevVertex = selectedPath.getEndVertex();
+										List<DefaultEdge> edgePrevList = selectedPath.getEdgeList();
+										previousSelectedPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
+												pathway, startPrevVertex, endPrevVertex, edgePrevList, 0);
+									}
+								}
+							} else {
+								selectedPathID = 0;
+							}
+
+							// System.out.println("selectedPathID="+selectedPathID);
+							allPathsList.get(allPathsList.size() - 1).setSecond(selectedPathID);
 							isBubbleTextureDirty = true;
 							setDisplayListDirty();
 							triggerPathUpdate();
-							i = colorTable.size();
+							break;
+
 						}
 					}
 				}

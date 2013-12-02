@@ -80,6 +80,12 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 	 */
 	private Set<IMultiFormChangeListener> changeListeners = new HashSet<>();
 
+	// /**
+	// * Determines whether to use a view frustum for view renderers that has its origin (left, bottom) at screen
+	// * coordinates (obtained from the {@link LayoutManager}), or at (0,0)
+	// */
+	// private boolean useScreenCoordinateViewFrustum = false;
+
 	/**
 	 * Abstract base class for renderer information that is used by {@link MultiFormRenderer}.
 	 *
@@ -200,6 +206,8 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 			currentRenderer = viewRenderer;
 			if (!isInitialized)
 				init();
+			if (elementLayout != null)
+				currentRenderer.setElementLayout(elementLayout);
 			currentRenderer.setLimits(x, y);
 			isActive = true;
 			MultiFormRenderer.super.setDisplayListDirty(true);
@@ -711,7 +719,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 	}
 
 	@Override
-	protected void setElementLayout(ElementLayout elementLayout) {
+	public void setElementLayout(ElementLayout elementLayout) {
 		if (!ensureValidRenderer())
 			return;
 		super.setElementLayout(elementLayout);
@@ -841,4 +849,20 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 			return null;
 		return currentRendererInfo.visInfo.getLabel();
 	}
+
+	// /**
+	// * @param useScreenCoordinateViewFrustum
+	// * setter, see {@link useScreenCoordinateViewFrustum}
+	// */
+	// public void setUseScreenCoordinateViewFrustum(boolean useScreenCoordinateViewFrustum) {
+	// this.useScreenCoordinateViewFrustum = useScreenCoordinateViewFrustum;
+	// // viewRenderer.setUseAbsoluteScreenCoordinateViewFrustum(useScreenCoordinateViewFrustum);
+	// }
+
+	// /**
+	// * @return the useScreenCoordinateViewFrustum, see {@link #useScreenCoordinateViewFrustum}
+	// */
+	// public boolean isUseScreenCoordinateViewFrustum() {
+	// return useScreenCoordinateViewFrustum;
+	// }
 }

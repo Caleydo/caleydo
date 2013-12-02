@@ -153,7 +153,7 @@ public abstract class ALayoutRenderer {
 
 	}
 
-	protected void setElementLayout(ElementLayout elementLayout) {
+	public void setElementLayout(ElementLayout elementLayout) {
 		this.elementLayout = elementLayout;
 		layoutManager = elementLayout.getLayoutManager();
 		// pixelGLConverter = layoutManger.getPixelGLConverter();
