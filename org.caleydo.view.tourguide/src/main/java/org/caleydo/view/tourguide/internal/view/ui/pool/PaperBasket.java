@@ -7,9 +7,9 @@ package org.caleydo.view.tourguide.internal.view.ui.pool;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.TransferInfo;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
@@ -35,7 +35,7 @@ public class PaperBasket extends APoolElem implements IDropGLTarget {
 	}
 
 	@Override
-	public boolean canDrop(TransferInfo input) {
+	public boolean canDrop(IDnDItem input) {
 		IDragInfo info = input.getInfo();
 		if (!(info instanceof ColumnDragInfo))
 			return false;
@@ -48,12 +48,12 @@ public class PaperBasket extends APoolElem implements IDropGLTarget {
 	}
 
 	@Override
-	public void onDropMoved(TransferInfo input) {
+	public void onItemChanged(IDnDItem input) {
 
 	}
 
 	@Override
-	public void onDrop(TransferInfo info) {
+	public void onDrop(IDnDItem info) {
 		ARankColumnModel model = ((ColumnDragInfo) info.getInfo()).getModel();
 		table.removeFromPool(model);
 		context.getSWTLayer().setCursor(-1);

@@ -159,7 +159,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	}
 
 	protected void initScene() {
-		this.root = new WindowGLElement(createRoot());
+		this.root = new WindowGLElement(createRoot(), canvas);
 		this.root.setParent(this);
 		this.root.init(this);
 	}

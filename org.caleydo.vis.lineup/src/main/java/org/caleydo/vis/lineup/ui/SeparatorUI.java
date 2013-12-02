@@ -9,7 +9,7 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.TransferInfo;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
@@ -28,7 +28,7 @@ public class SeparatorUI extends PickableGLElement {
 	private IDropGLTarget dropTarget = new IDropGLTarget() {
 
 		@Override
-		public boolean canDrop(TransferInfo input) {
+		public boolean canDrop(IDnDItem input) {
 			if (!(input.getInfo() instanceof ColumnDragInfo))
 				return false;
 			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();
@@ -40,12 +40,12 @@ public class SeparatorUI extends PickableGLElement {
 		}
 
 		@Override
-		public void onDropMoved(TransferInfo input) {
+		public void onItemChanged(IDnDItem input) {
 
 		}
 
 		@Override
-		public void onDrop(TransferInfo input) {
+		public void onDrop(IDnDItem input) {
 			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();
 			context.getSWTLayer().setCursor(-1);
 			armed = false;
@@ -111,7 +111,7 @@ public class SeparatorUI extends PickableGLElement {
 
 	protected boolean isDraggingAColumn() {
 		IMouseLayer m = context.getMouseLayer();
-		return m.hasDraggable(ColumnDragInfo.class);
+		return m.isDragging(ColumnDragInfo.class);
 	}
 
 	@Override

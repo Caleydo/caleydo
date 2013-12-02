@@ -19,9 +19,9 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.TransferInfo;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
@@ -74,7 +74,7 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 	private IDropGLTarget dropTarget = new IDropGLTarget() {
 
 		@Override
-		public boolean canDrop(TransferInfo input) {
+		public boolean canDrop(IDnDItem input) {
 			IDragInfo info = input.getInfo();
 			if (!(info instanceof ColumnDragInfo))
 				return false;
@@ -87,12 +87,12 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 		}
 
 		@Override
-		public void onDropMoved(TransferInfo input) {
+		public void onItemChanged(IDnDItem input) {
 
 		}
 
 		@Override
-		public void onDrop(TransferInfo info) {
+		public void onDrop(IDnDItem info) {
 			ARankColumnModel model = ((ColumnDragInfo) info.getInfo()).getModel();
 			model.hide();
 			armed = false;
@@ -270,7 +270,7 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 		}
 
 		@Override
-		public boolean canDrop(TransferInfo input) {
+		public boolean canDrop(IDnDItem input) {
 			if (!(input.getInfo() instanceof ColumnDragInfo))
 				return false;
 			ColumnDragInfo info = (ColumnDragInfo)input.getInfo();
@@ -285,12 +285,12 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 		}
 
 		@Override
-		public void onDropMoved(TransferInfo input) {
+		public void onItemChanged(IDnDItem input) {
 
 		}
 
 		@Override
-		public void onDrop(TransferInfo info) {
+		public void onDrop(IDnDItem info) {
 			table.removeFromPool(((ColumnDragInfo) info.getInfo()).getModel());
 			armed = false;
 			repaint();

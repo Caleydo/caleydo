@@ -10,10 +10,11 @@ import gleem.linalg.Vec2f;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragEvent;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragGLSource;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.TransferInfo;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.ui.column.StackedColumnHeaderUI;
@@ -26,7 +27,7 @@ import org.caleydo.vis.lineup.ui.column.StackedColumnHeaderUI.AlignmentDragInfo;
  * @author Samuel Gratzl
  *
  */
-public class StackedSeparatorUI extends SeparatorUI implements IDropGLTarget {
+public class StackedSeparatorUI extends SeparatorUI implements IDropGLTarget, IDragGLSource {
 	private boolean isAlignment = false;
 
 	public StackedSeparatorUI(IMoveHereChecker model, int index) {
@@ -92,7 +93,7 @@ public class StackedSeparatorUI extends SeparatorUI implements IDropGLTarget {
 
 	@Override
 	protected boolean isDraggingAColumn() {
-		return super.isDraggingAColumn() || context.getMouseLayer().hasDraggable(AlignmentDragInfo.class);
+		return super.isDraggingAColumn() || context.getMouseLayer().isDragging(AlignmentDragInfo.class);
 	}
 
 	@Override
@@ -101,10 +102,13 @@ public class StackedSeparatorUI extends SeparatorUI implements IDropGLTarget {
 		if (armed)
 			return;
 		context.getMouseLayer().addDropTarget(this);
+		if (pick.isAnyDragging() || !isAlignment)
+			return;
+		context.getMouseLayer().addDragSource(this);
 	}
 
 	@Override
-	public boolean canDrop(TransferInfo input) {
+	public boolean canDrop(IDnDItem input) {
 		IDragInfo info = input.getInfo();
 		if (info != getStacked().align)
 			return false;
@@ -113,12 +117,33 @@ public class StackedSeparatorUI extends SeparatorUI implements IDropGLTarget {
 		return true;
 	}
 
+	private StackedColumnHeaderUI getStacked() {
+		return ((StackedColumnHeaderUI) getParent());
+	}
+
 	@Override
-	protected void onDragDetected(Pick pick) {
-		if (pick.isAnyDragging() || !isAlignment)
-			return;
-		pick.setDoDragging(true);
-		IMouseLayer m = context.getMouseLayer();
+	public void onDrop(IDnDItem info) {
+		armed = false;
+		getStacked().setAlignment(index);
+	}
+
+	@Override
+	public void onItemChanged(IDnDItem input) {
+
+	}
+
+	@Override
+	protected void onMouseOut(Pick pick) {
+		context.getMouseLayer().removeDropTarget(this);
+		context.getMouseLayer().removeDragSource(this);
+		if (armed) {
+			armed = false;
+		}
+		super.onMouseOut(pick);
+	}
+
+	@Override
+	public GLElement createUI(IDragInfo info) {
 		GLElement e = new GLElement(new IGLRenderer() {
 			@Override
 			public void render(GLGraphics g, float w, float h, GLElement parent) {
@@ -126,30 +151,17 @@ public class StackedSeparatorUI extends SeparatorUI implements IDropGLTarget {
 			}
 		});
 		e.setSize(getSize().x(), getSize().y());
-		m.startDragging(getStacked().align, e, null);
-	}
-
-	private StackedColumnHeaderUI getStacked() {
-		return ((StackedColumnHeaderUI) getParent());
+		return e;
 	}
 
 	@Override
-	public void onDrop(TransferInfo info) {
-		armed = false;
-		getStacked().setAlignment(index);
-	}
-
-	@Override
-	public void onDropMoved(TransferInfo input) {
+	public void onDropped(IDnDItem info) {
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void onMouseOut(Pick pick) {
-		context.getMouseLayer().removeDropTarget(this);
-		if (armed) {
-			armed = false;
-		}
-		super.onMouseOut(pick);
+	public IDragInfo startDrag(IDragEvent event) {
+		return getStacked().align;
 	}
 }

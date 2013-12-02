@@ -186,5 +186,18 @@ final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWh
 			return new Dimension(1, 1); // TODO log
 		}
 
+		@Override
+		public String toString() {
+			StringBuilder builder = new StringBuilder();
+			builder.append("SWTMouseEventAdapter [point=");
+			builder.append(point);
+			builder.append(", getPoint()=");
+			builder.append(getPoint());
+			builder.append(", getButton()=");
+			builder.append(getButton());
+			builder.append("]");
+			return builder.toString();
+		}
+
 	}
 }

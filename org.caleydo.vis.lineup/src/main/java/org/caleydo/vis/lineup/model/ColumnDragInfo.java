@@ -5,6 +5,8 @@
  *******************************************************************************/
 package org.caleydo.vis.lineup.model;
 
+import gleem.linalg.Vec2f;
+
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 
 /**
@@ -13,9 +15,18 @@ import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
  */
 public class ColumnDragInfo implements IDragInfo {
 	private final ARankColumnModel model;
+	private final Vec2f shift;
 
-	public ColumnDragInfo(ARankColumnModel model) {
+	public ColumnDragInfo(ARankColumnModel model, Vec2f shift) {
 		this.model = model;
+		this.shift = shift;
+	}
+
+	/**
+	 * @return the shift, see {@link #shift}
+	 */
+	public Vec2f getShift() {
+		return shift;
 	}
 
 	/**

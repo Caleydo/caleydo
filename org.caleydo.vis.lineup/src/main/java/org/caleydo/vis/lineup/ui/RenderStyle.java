@@ -10,7 +10,8 @@ package org.caleydo.vis.lineup.ui;
 import java.net.URL;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.TransferInfo;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.EDnDType;
 
 
 /**
@@ -171,11 +172,11 @@ public class RenderStyle {
 
 	/**
 	 * are we dragging for cloning
-	 * 
+	 *
 	 * @param input
 	 * @return
 	 */
-	public static boolean isCloneDragging(TransferInfo input) {
-		return input.isCtrlDown();
+	public static boolean isCloneDragging(IDnDItem input) {
+		return input.getType() == EDnDType.COPY;
 	}
 }

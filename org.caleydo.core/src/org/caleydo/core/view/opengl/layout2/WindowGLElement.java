@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout2.internal.MouseLayer;
 import org.caleydo.core.view.opengl.layout2.internal.PopupLayer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
@@ -20,13 +21,13 @@ public final class WindowGLElement extends GLElementContainer {
 	private final PopupLayer popupLayer;
 	private final MouseLayer mouseLayer;
 
-	public WindowGLElement(GLElement root) {
+	public WindowGLElement(GLElement root, IGLCanvas canvas) {
 		super(GLLayouts.LAYERS);
 		this.root = root;
 		this.add(root);
 		this.popupLayer = new PopupLayer();
 		this.add(popupLayer.setzDelta(3.f));
-		this.mouseLayer = new MouseLayer();
+		this.mouseLayer = new MouseLayer(canvas);
 		this.add(mouseLayer.setzDelta(6.f));
 	}
 

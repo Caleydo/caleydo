@@ -142,6 +142,7 @@ public abstract class AGLCanvas implements IGLCanvas {
 		return dip(value_px);
 	}
 
+	@Override
 	public final Vec2f toDIP(Point point) {
 		return new Vec2f(dip(point.x), dip(point.y));
 	}

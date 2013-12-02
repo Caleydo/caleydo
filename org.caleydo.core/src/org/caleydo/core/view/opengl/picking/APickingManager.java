@@ -156,9 +156,12 @@ public abstract class APickingManager<T extends APickingEntry> {
 			return PickingMode.CLICKED;
 		if (type == PickingMode.CLICKED && event.getButton() == RIGHT_MOUSE_BUTTON)
 			return PickingMode.RIGHT_CLICKED;
+		if (type == PickingMode.MOUSE_OVER)
+			return PickingMode.MOUSE_MOVED;
 		if (EnumSet.of(PickingMode.MOUSE_MOVED, PickingMode.MOUSE_RELEASED, PickingMode.MOUSE_WHEEL,
 				PickingMode.DRAG_DETECTED).contains(type))
 			return type;
+
 		return null;
 	}
 
@@ -176,13 +179,23 @@ public abstract class APickingManager<T extends APickingEntry> {
 
 		EnumSet<PickingMode> has = EnumSet.noneOf(PickingMode.class); // type already seen
 
+		PickingMode prev = null;
 		// back to front
 		for (Iterator<Pair<IMouseEvent, PickingMode>> it = events.descendingIterator(); it.hasNext();) {
 			Pair<IMouseEvent, PickingMode> elem = it.next();
 			// just the last one of every type
-			if (has.contains(elem.getSecond()))
+			PickingMode mode = elem.getSecond();
+			if (has.contains(mode))
 				continue;
-			has.add(elem.getSecond());
+			// annhiliate out - over
+			if (prev == PickingMode.MOUSE_OVER && mode == PickingMode.MOUSE_OUT) {
+				has.remove(PickingMode.MOUSE_MOVED);
+				result.removeFirst();
+				prev = null;
+				continue;
+			}
+			has.add(mode);
+			prev = mode;
 			// add to first to keep order of events
 			result.addFirst(elem);
 		}

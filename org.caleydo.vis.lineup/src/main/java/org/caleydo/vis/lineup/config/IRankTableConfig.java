@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.config;
 
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.TransferInfo;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.model.ACompositeRankColumnModel;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
@@ -97,7 +97,7 @@ public interface IRankTableConfig {
 	 * @param input
 	 * @return
 	 */
-	int getCombineMode(ARankColumnModel model, TransferInfo input);
+	int getCombineMode(ARankColumnModel model, IDnDItem input);
 
 	/**
 	 * which columns should be automatically created during a new snapshot

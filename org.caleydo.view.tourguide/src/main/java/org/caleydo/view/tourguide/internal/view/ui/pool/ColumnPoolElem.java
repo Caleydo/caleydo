@@ -10,7 +10,10 @@ import gleem.linalg.Vec2f;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragEvent;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragGLSource;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.ColumnDragInfo;
@@ -19,7 +22,7 @@ import org.caleydo.vis.lineup.model.ColumnDragInfo;
  * @author Samuel Gratzl
  *
  */
-public class ColumnPoolElem extends APoolElem {
+public class ColumnPoolElem extends APoolElem implements IDragGLSource {
 	private final ARankColumnModel model;
 
 	public ColumnPoolElem(ARankColumnModel model) {
@@ -43,11 +46,16 @@ public class ColumnPoolElem extends APoolElem {
 	}
 
 	@Override
-	protected void onDragDetected(Pick pick) {
-		if (armed && !pick.isAnyDragging()) {
-			pick.setDoDragging(true);
-			onDragColumn(pick);
-		}
+	protected void onMouseOver(Pick pick) {
+		super.onMouseOver(pick);
+		if (armed && !pick.isAnyDragging())
+			context.getMouseLayer().addDragSource(this);
+	}
+
+	@Override
+	protected void onMouseOut(Pick pick) {
+		context.getMouseLayer().removeDragSource(this);
+		super.onMouseOut(pick);
 	}
 
 	@Override
@@ -55,13 +63,25 @@ public class ColumnPoolElem extends APoolElem {
 		// TODO: add back to tour guide
 	}
 
-	private void onDragColumn(Pick pick) {
-		IMouseLayer l = context.getMouseLayer();
+	@Override
+	public GLElement createUI(IDragInfo info) {
+		assert info instanceof ColumnDragInfo;
 		GLElement elem = new DraggedScoreHeaderItem();
 		elem.setSize(getSize().x(), getSize().y());
-		Vec2f loc = toRelative(pick.getPickedPoint());
+		Vec2f loc = ((ColumnDragInfo) info).getShift();
 		elem.setLocation(-loc.x(), -loc.y());
-		l.startDragging(new ColumnDragInfo(this.model), elem, null);
+		return elem;
+	}
+
+	@Override
+	public void onDropped(IDnDItem info) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public IDragInfo startDrag(IDragEvent event) {
+		return new ColumnDragInfo(this.model, event.getOffset());
 	}
 
 	class DraggedScoreHeaderItem extends GLElement {

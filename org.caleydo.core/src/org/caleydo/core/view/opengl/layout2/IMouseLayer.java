@@ -5,9 +5,9 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
-import java.util.List;
+import gleem.linalg.Vec2f;
 
-import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.base.ILabeled;
 
 /**
  * a abstract form of the mouse layer, i.e. the canvas that moves with the mouse
@@ -17,126 +17,27 @@ import org.caleydo.core.util.collection.Pair;
  */
 public interface IMouseLayer {
 	/**
-	 * adds a draggable element to this mouse layer
-	 *
-	 * @param element
-	 */
-	void addDraggable(GLElement element);
-
-	/**
-	 * see {@link #addDraggable(GLElement)} with dedicated meta data information
-	 *
-	 * @param element
-	 * @param info
-	 */
-	void addDraggable(GLElement element, IDragInfo info);
-
-	/**
-	 * see {@link #hasDraggable(Class)} with {@link IDragInfo} as parameter
-	 *
-	 * @return if any draggable elements exists
-	 */
-	boolean hasDraggables();
-
-	/**
-	 * checks if any draggable element exists, which has {@link IDragInfo} of the given type
+	 * checks if any draggable element exists, which has {@link IMultiViewDragInfo} of the given type
 	 *
 	 * @param type
 	 *            the type to check
-	 * @return if any draggable element exists, fullfilling the criteria
+	 * @return if any draggable element exists, fulfilling the criteria
 	 */
-	boolean hasDraggable(Class<? extends IDragInfo> type);
+	boolean isDragging(Class<? extends IDragInfo> type);
+
+	void addDragSource(IDragGLSource dragSource);
+
+	void removeDragSource(IDragGLSource dragSource);
 
 	/**
-	 * see {@link #hasDraggable(Class)} for a concrete {@link IDragInfo} instance
-	 *
-	 * @param info
-	 * @return
+	 * @param dropTarget
 	 */
-	boolean hasDraggable(IDragInfo info);
+	void addDropTarget(IDropGLTarget dropTarget);
 
 	/**
-	 * returns the first element pair that has a {@link IDragInfo} of the given type
-	 *
-	 * @param type
-	 * @return the first matching pair or null if no was found
+	 * @param dropTarget
 	 */
-	<T extends IDragInfo> Pair<GLElement, T> getFirstDraggable(Class<T> type);
-
-	/**
-	 * see {@link #getFirstDraggable(Class)} for a specific {@link IDragInfo} instance
-	 *
-	 * @param info
-	 * @return
-	 */
-	<T extends IDragInfo> Pair<GLElement, T> getFirstDraggable(T info);
-
-	/**
-	 * returns all element pairs that have a {@link IDragInfo} of the given type
-	 *
-	 * @param type
-	 * @return a list of matching pairs or an empty list
-	 */
-	<T extends IDragInfo> List<Pair<GLElement, T>> getDraggables(Class<T> type);
-
-	/**
-	 * removes a draggable element
-	 *
-	 * @param element
-	 * @return if it was successfully removed
-	 */
-	boolean removeDraggable(GLElement element);
-
-	/**
-	 * removes a draggable element identified by its {@link IDragInfo}
-	 *
-	 * @param info
-	 * @return
-	 */
-	boolean removeDraggable(IDragInfo info);
-
-
-
-	/**
-	 * marks whether the identified object can be dropped here or not
-	 *
-	 * @param info
-	 * @param dropAble
-	 */
-	void setDropable(IDragInfo info, boolean dropAble);
-
-	/**
-	 * see {@link #setDropable(IDragInfo, boolean)} for a generic {@link IDragInfo} type
-	 */
-	void setDropable(Class<? extends IDragInfo> type, boolean dropAble);
-
-	/**
-	 *
-	 * @param info
-	 * @return
-	 */
-	boolean isDropable(IDragInfo info);
-
-	/**
-	 * sets the tooltip component of the mouse with a specific element
-	 *
-	 * @param element
-	 */
-	void setToolTip(GLElement element);
-
-	/**
-	 * sets the tooltip with a text a default gl element will be created
-	 *
-	 * @param text
-	 */
-	void setToolTip(String text);
-
-	/**
-	 * removes the current tooltip
-	 *
-	 * @return
-	 */
-	boolean clearToolTip();
+	void removeDropTarget(IDropGLTarget dropTarget);
 
 	/**
 	 * marker interface for dragging meta data
@@ -144,8 +45,46 @@ public interface IMouseLayer {
 	 * @author Samuel Gratzl
 	 *
 	 */
-	public interface IDragInfo {
+	public interface IDragInfo extends ILabeled {
 
+	}
+
+	public interface IMultiViewDragInfo extends IDragInfo {
+
+	}
+
+	public interface IDropGLTarget {
+		boolean canDrop(IDnDItem input);
+
+		void onDrop(IDnDItem input);
+
+		/**
+		 * @param input
+		 */
+		void onItemChanged(IDnDItem input);
+	}
+
+
+	public interface IDnDItem {
+		IDragInfo getInfo();
+
+		EDnDType getType();
+	}
+
+	public interface IDragGLSource {
+		IDragInfo startDrag(IDragEvent event);
+
+		void onDropped(IDnDItem info);
+
+		GLElement createUI(IDragInfo info);
+	}
+
+	public enum EDnDType {
+		NONE, MOVE, COPY, LINK
+	}
+
+	public interface IDragEvent {
+		Vec2f getOffset();
 	}
 }
 

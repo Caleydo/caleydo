@@ -5,6 +5,9 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas;
 
+import gleem.linalg.Vec2f;
+
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
@@ -79,9 +82,11 @@ public interface IGLCanvas {
 	 */
 	Rectangle toRawPixel(Rectangle2D.Float viewArea_dip);
 
+	Vec2f toDIP(Point point);
+	
 	/**
 	 * converts the given {@link Rectangle} in raw pixel into DIP units
-	 *
+	 * 
 	 * @param viewArea_raw
 	 * @return
 	 */

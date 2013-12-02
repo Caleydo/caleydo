@@ -19,9 +19,9 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.TransferInfo;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -67,12 +67,12 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 	private IDropGLTarget dropTarget = new IDropGLTarget() {
 
 		@Override
-		public void onDropMoved(TransferInfo input) {
+		public void onItemChanged(IDnDItem input) {
 
 		}
 
 		@Override
-		public void onDrop(TransferInfo input) {
+		public void onDrop(IDnDItem input) {
 			ARankColumnModel model = ((ColumnDragInfo) input.getInfo()).getModel();
 			model.hide();
 			armed = false;
@@ -80,7 +80,7 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 		}
 
 		@Override
-		public boolean canDrop(TransferInfo input) {
+		public boolean canDrop(IDnDItem input) {
 			IDragInfo info = input.getInfo();
 			if (!(info instanceof ColumnDragInfo))
 				return false;

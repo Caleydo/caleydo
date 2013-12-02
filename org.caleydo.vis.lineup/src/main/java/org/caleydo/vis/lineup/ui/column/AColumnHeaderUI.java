@@ -25,8 +25,11 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragEvent;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragGLSource;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.TransferInfo;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
@@ -109,7 +112,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	private final IDropGLTarget dropTarget = new IDropGLTarget() {
 		@Override
-		public boolean canDrop(TransferInfo input) {
+		public boolean canDrop(IDnDItem input) {
 			if (!(input.getInfo() instanceof ColumnDragInfo))
 				return false;
 			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();
@@ -125,7 +128,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		}
 
 		@Override
-		public void onDropMoved(TransferInfo input) {
+		public void onItemChanged(IDnDItem input) {
 			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();
 			final IRankTableConfig tableConfig = model.getTable().getConfig();
 			int mode = tableConfig.getCombineMode(model, input);
@@ -137,7 +140,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		}
 
 		@Override
-		public void onDrop(TransferInfo input) {
+		public void onDrop(IDnDItem input) {
 			assert input.getInfo() instanceof ColumnDragInfo;
 			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();
 			final IRankTableConfig tableConfig = model.getTable().getConfig();
@@ -149,6 +152,28 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		}
 	};
 
+	private final IDragGLSource dragSource = new IDragGLSource() {
+		@Override
+		public GLElement createUI(IDragInfo info) {
+			assert info instanceof ColumnDragInfo;
+			final Vec2f size = getSize();
+			DraggedScoreHeaderItem elem = new DraggedScoreHeaderItem();
+			elem.setSize(size.x(), size.y());
+			final Vec2f loc = ((ColumnDragInfo) info).getShift();
+			elem.setLocation(-loc.x(), -loc.y());
+			return elem;
+		}
+
+		@Override
+		public void onDropped(IDnDItem info) {
+			// nothing to do
+		}
+
+		@Override
+		public IDragInfo startDrag(IDragEvent event) {
+			return new ColumnDragInfo(model, event.getOffset());
+		}
+	};
 
 	public AColumnHeaderUI(final ARankColumnModel model, IRankTableUIConfig config, boolean hasTitle, boolean hasHist) {
 		this.model = model;
@@ -349,10 +374,10 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	private boolean isDraggingAColumn() {
 		IMouseLayer m = context.getMouseLayer();
-		if (m.hasDraggable(ColumnDragInfo.class))
+		if (m.isDragging(ColumnDragInfo.class))
 			return true;
 		if (getParent() instanceof StackedColumnHeaderUI) {
-			return m.hasDraggable(AlignmentDragInfo.class);
+			return m.isDragging(AlignmentDragInfo.class);
 		}
 		return false;
 	}
@@ -656,22 +681,18 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	 */
 	protected void onDragPick(Pick pick) {
 		switch (pick.getPickingMode()) {
-		case DRAG_DETECTED:
-			if (pick.isAnyDragging())
-				return;
-			pick.setDoDragging(true);
-			onDragColumn(pick);
-			break;
 		case MOUSE_OVER:
 			if (pick.isAnyDragging())
 				return;
 			this.headerHovered = true;
 			context.getSWTLayer().setCursor(SWT.CURSOR_HAND);
+			context.getMouseLayer().addDragSource(dragSource);
 			relayout();
 			break;
 		case MOUSE_OUT:
 			if (this.headerHovered) {
 				this.headerHovered = false;
+				context.getMouseLayer().removeDragSource(dragSource);
 				context.getSWTLayer().setCursor(-1);
 				relayout();
 			}
@@ -685,7 +706,6 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		if (context == null)
 			return;
 		IMouseLayer m = context.getMouseLayer();
-		final IRankTableConfig tableConfig = model.getTable().getConfig();
 		switch (pick.getPickingMode()) {
 		case MOUSE_OVER:
 			if (config.isMoveAble()) {
@@ -759,16 +779,6 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			return;
 		// float delta = (dx / getSize().x())*;
 		model.setWidth(Math.max(model.getWidth() + dx, 0));
-	}
-
-	private void onDragColumn(Pick pick) {
-		IMouseLayer l = context.getMouseLayer();
-		final Vec2f size = getSize();
-		final Vec2f loc = toRelative(pick.getPickedPoint());
-		DraggedScoreHeaderItem elem = new DraggedScoreHeaderItem();
-		elem.setSize(size.x(), size.y());
-		elem.setLocation(-loc.x(), -loc.y());
-		l.startDragging(new ColumnDragInfo(model), elem, null);
 	}
 
 	class DraggedScoreHeaderItem extends GLElement {

@@ -42,6 +42,7 @@ final class PickingMouseListener implements IGLMouseListener {
 	public synchronized Deque<Pair<IMouseEvent, PickingMode>> fetchEvents() {
 		Deque<Pair<IMouseEvent, PickingMode>> tmp = new ArrayDeque<>(event);
 		event.clear();
+		System.out.println(tmp);
 		return tmp;
 	}
 
@@ -93,6 +94,7 @@ final class PickingMouseListener implements IGLMouseListener {
 	@Override
 	public void mouseEntered(IMouseEvent mouseEvent) {
 		isMouseIn = true;
+		System.out.println("mouse over");
 		add(mouseEvent, PickingMode.MOUSE_OVER);
 	}
 
