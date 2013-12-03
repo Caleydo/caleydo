@@ -84,7 +84,7 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 		if (this.target != null)
 			return;
 		target = new DropTarget(canvas.asComposite(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK | DND.DROP_DEFAULT);
-		target.setTransfer(new Transfer[] { CaleydoJAXBTransfer.getInstance(), FileTransfer.getInstance(),
+		target.setTransfer(new Transfer[] { CaleydoTransfer.getInstance(), FileTransfer.getInstance(),
 				URLTransfer.getInstance(), TextTransfer.getInstance() });
 		target.addDropListener(this);
 	}
@@ -110,7 +110,7 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 		if (this.source != null)
 			return;
 		source = new DragSource(canvas.asComposite(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK);
-		source.setTransfer(new Transfer[] { CaleydoJAXBTransfer.getInstance(), FileTransfer.getInstance(),
+		source.setTransfer(new Transfer[] { CaleydoTransfer.getInstance(), FileTransfer.getInstance(),
 				URLTransfer.getInstance(), TextTransfer.getInstance() });
 		source.addDragListener(this);
 	}

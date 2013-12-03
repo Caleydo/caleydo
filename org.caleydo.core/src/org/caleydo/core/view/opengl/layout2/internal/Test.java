@@ -5,9 +5,8 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.internal;
 
+import java.io.Serializable;
 import java.util.Random;
-
-import javax.xml.bind.annotation.XmlRootElement;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorBrewer;
@@ -21,6 +20,7 @@ import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.dnd.IDragGLSource;
 import org.caleydo.core.view.opengl.layout2.dnd.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.dnd.IDropGLTarget;
+import org.caleydo.core.view.opengl.layout2.dnd.IUIDragInfo;
 import org.caleydo.core.view.opengl.layout2.dnd.TextDragInfo;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -40,26 +40,24 @@ public class Test extends PickableGLElement implements IDragGLSource {
 
 	@Override
 	protected void onMouseOver(Pick pick) {
-		System.out.println("mouse in");
 		context.getMouseLayer().addDragSource(this);
 		super.onMouseOver(pick);
 	}
 
 	@Override
 	protected void onMouseOut(Pick pick) {
-		System.out.println("mouse out");
 		context.getMouseLayer().removeDragSource(this);
 		super.onMouseOut(pick);
 	}
 
 	@Override
 	public GLElement createUI(IDragInfo info) {
-		return new GLElement(GLRenderers.fillRect(Color.RED)).setSize(20, 20);
+		return ((TransferAbleData) info).createUI();
 	}
 
 	@Override
 	public void onDropped(IDnDItem info) {
-		if (info.getType() == EDnDType.COPY)
+		if (info.getType() == EDnDType.COPY || info.getType() == EDnDType.NONE)
 			return;
 		ColorBrewer s = ColorBrewer.Set3;
 		Integer max = s.getSizes().last();
@@ -127,8 +125,9 @@ public class Test extends PickableGLElement implements IDragGLSource {
 		}
 
 	}
-	@XmlRootElement
-	public static class TransferAbleData implements IDragInfo {
+
+	public static class TransferAbleData implements IUIDragInfo, Serializable {
+		private static final long serialVersionUID = 231153137513449700L;
 		private Color color;
 
 		public TransferAbleData() {
@@ -155,9 +154,13 @@ public class Test extends PickableGLElement implements IDragGLSource {
 
 		@Override
 		public String getLabel() {
-			return "Test";
+			return color.getHEX();
 		}
 
+		@Override
+		public GLElement createUI() {
+			return new GLElement(GLRenderers.fillRect(color.darker())).setSize(20, 20);
+		}
 	}
 
 }
