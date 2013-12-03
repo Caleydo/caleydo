@@ -14,6 +14,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.logging.Logger;
@@ -76,7 +78,7 @@ public class CaleydoJAXBTransfer extends ByteArrayTransfer {
 	 */
 	@Override
 	protected void javaToNative(Object data, TransferData transferData) {
-		if (data == null || !(data instanceof IDnDSerializeable)) {
+		if (invalid(data)) {
 			return;
 		}
 		try {
@@ -90,17 +92,30 @@ public class CaleydoJAXBTransfer extends ByteArrayTransfer {
 		}
 	}
 
+	/**
+	 * @param data
+	 * @return
+	 */
+	private static boolean invalid(Object data) {
+		if (data == null)
+			return true;
+		Class<? extends Object> c = data.getClass();
+		if (!c.isAnnotationPresent(XmlRootElement.class) || !c.isAnnotationPresent(XmlType.class))
+			return true;
+		return false;
+	}
+
 	/*
 	 * (non-Javadoc) Method declared on Transfer.
 	 */
 	@Override
-	protected IDnDSerializeable nativeToJava(TransferData transferData) {
+	protected Object nativeToJava(TransferData transferData) {
 		byte[] data = ((byte[]) super.nativeToJava(transferData));
 		if (data.length == 0)
 			return null;
 		try (ByteArrayInputStream in = new ByteArrayInputStream(data)) {
 			Unmarshaller unmarshaller = context().createUnmarshaller();
-			return (IDnDSerializeable) unmarshaller.unmarshal(in);
+			return unmarshaller.unmarshal(in);
 		} catch (IOException | JAXBException e) {
 			log.error("can't deserialize: " + Arrays.toString(data), e);
 			// can't get here
@@ -111,9 +126,4 @@ public class CaleydoJAXBTransfer extends ByteArrayTransfer {
 	private static JAXBContext context() {
 		return SerializationManager.get().getProjectContext();
 	}
-
-	public interface IDnDSerializeable {
-
-	}
-
 }

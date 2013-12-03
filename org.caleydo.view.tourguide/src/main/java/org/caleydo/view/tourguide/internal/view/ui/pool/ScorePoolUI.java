@@ -80,7 +80,7 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 		}
 
 		@Override
-		public boolean canDrop(IDnDItem input) {
+		public boolean canSWTDrop(IDnDItem input) {
 			IDragInfo info = input.getInfo();
 			if (!(info instanceof ColumnDragInfo))
 				return false;

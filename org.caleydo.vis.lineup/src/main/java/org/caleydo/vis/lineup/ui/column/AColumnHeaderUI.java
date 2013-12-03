@@ -112,7 +112,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	private final IDropGLTarget dropTarget = new IDropGLTarget() {
 		@Override
-		public boolean canDrop(IDnDItem input) {
+		public boolean canSWTDrop(IDnDItem input) {
 			if (!(input.getInfo() instanceof ColumnDragInfo))
 				return false;
 			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();
@@ -170,7 +170,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		}
 
 		@Override
-		public IDragInfo startDrag(IDragEvent event) {
+		public IDragInfo startSWTDrag(IDragEvent event) {
 			return new ColumnDragInfo(model, event.getOffset());
 		}
 	};

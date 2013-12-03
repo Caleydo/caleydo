@@ -28,7 +28,7 @@ public class SeparatorUI extends PickableGLElement {
 	private IDropGLTarget dropTarget = new IDropGLTarget() {
 
 		@Override
-		public boolean canDrop(IDnDItem input) {
+		public boolean canSWTDrop(IDnDItem input) {
 			if (!(input.getInfo() instanceof ColumnDragInfo))
 				return false;
 			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();

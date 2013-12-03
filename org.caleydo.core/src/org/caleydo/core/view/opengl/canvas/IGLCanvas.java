@@ -18,6 +18,8 @@ import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.base.Function;
@@ -46,6 +48,14 @@ public interface IGLCanvas {
 	void addGLEventListener(GLEventListener listener);
 
 	void removeGLEventListener(GLEventListener listener);
+
+	void addDragListener(DragSourceListener listener);
+
+	boolean removeDragListener(DragSourceListener listener);
+
+	void addDropListener(DropTargetListener listener);
+
+	boolean removeDropListener(DropTargetListener listener);
 
 	/**
 	 * @return the width of this canvas in DIP units
@@ -83,10 +93,10 @@ public interface IGLCanvas {
 	Rectangle toRawPixel(Rectangle2D.Float viewArea_dip);
 
 	Vec2f toDIP(Point point);
-	
+
 	/**
 	 * converts the given {@link Rectangle} in raw pixel into DIP units
-	 * 
+	 *
 	 * @param viewArea_raw
 	 * @return
 	 */

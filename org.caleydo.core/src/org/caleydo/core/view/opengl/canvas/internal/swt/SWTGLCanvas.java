@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas.internal.swt;
 
+import java.util.Iterator;
+
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
@@ -21,7 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Table;
 import com.jogamp.opengl.swt.GLCanvas;
 
@@ -34,13 +36,11 @@ final class SWTGLCanvas extends AGLCanvas {
 
 	private final Table<Integer, Object, Object> listenerMapping = HashBasedTable.create();
 
-	private final DnDAdapter dnd;
 
 	SWTGLCanvas(final GLCanvas canvas) {
 		super(canvas);
 		this.canvas = canvas;
 		init(canvas);
-		this.dnd = new DnDAdapter(this);
 	}
 
 	@Override
@@ -65,11 +65,9 @@ final class SWTGLCanvas extends AGLCanvas {
 		return canvas;
 	}
 
-	/**
-	 * @return
-	 */
-	Iterable<IGLMouseListener> getMouseListeners() {
-		return Iterables.filter(listenerMapping.columnKeySet(), IGLMouseListener.class);
+	@Override
+	protected Iterator<IGLMouseListener> mouseListeners() {
+		return Iterators.filter(listenerMapping.columnKeySet().iterator(), IGLMouseListener.class);
 	}
 
 	@Override

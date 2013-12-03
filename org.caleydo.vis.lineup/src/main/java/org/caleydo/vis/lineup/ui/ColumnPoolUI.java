@@ -74,7 +74,7 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 	private IDropGLTarget dropTarget = new IDropGLTarget() {
 
 		@Override
-		public boolean canDrop(IDnDItem input) {
+		public boolean canSWTDrop(IDnDItem input) {
 			IDragInfo info = input.getInfo();
 			if (!(info instanceof ColumnDragInfo))
 				return false;
@@ -270,7 +270,7 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 		}
 
 		@Override
-		public boolean canDrop(IDnDItem input) {
+		public boolean canSWTDrop(IDnDItem input) {
 			if (!(input.getInfo() instanceof ColumnDragInfo))
 				return false;
 			ColumnDragInfo info = (ColumnDragInfo)input.getInfo();

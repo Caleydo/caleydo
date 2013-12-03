@@ -5,13 +5,17 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.internal;
 
+import java.util.Random;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.ColorBrewer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.EDnDType;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragEvent;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragGLSource;
@@ -28,10 +32,10 @@ import org.caleydo.core.view.opengl.picking.Pick;
  *
  */
 public class Test extends PickableGLElement implements IDragGLSource {
-
+	private Color color = Color.BLUE;
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		g.color(Color.BLUE).fillRect(0, 0, w, h);
+		g.color(color).fillRect(0, 0, w, h);
 		super.renderImpl(g, w, h);
 	}
 
@@ -56,12 +60,18 @@ public class Test extends PickableGLElement implements IDragGLSource {
 
 	@Override
 	public void onDropped(IDnDItem info) {
-		//
+		if (info.getType() == EDnDType.COPY)
+			return;
+		ColorBrewer s = ColorBrewer.Set3;
+		Integer max = s.getSizes().last();
+
+		color = s.get(max, new Random().nextInt(max));
+		repaint();
 	}
 
 	@Override
-	public IDragInfo startDrag(IDragEvent event) {
-		return new TransferAbleData();
+	public IDragInfo startSWTDrag(IDragEvent event) {
+		return new TransferAbleData(color);
 	}
 
 	public static void main(String[] args) {
@@ -72,9 +82,11 @@ public class Test extends PickableGLElement implements IDragGLSource {
 	}
 
 	private static class TestDrop extends PickableGLElement implements IDropGLTarget {
+		private Color color = Color.RED;
+
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
-			g.color(Color.RED).fillRect(0, 0, w, h);
+			g.color(color).fillRect(0, 0, w, h);
 			super.renderImpl(g, w, h);
 		}
 
@@ -91,24 +103,46 @@ public class Test extends PickableGLElement implements IDragGLSource {
 		}
 
 		@Override
-		public boolean canDrop(IDnDItem input) {
-			return true;
+		public boolean canSWTDrop(IDnDItem input) {
+			return input.getInfo() instanceof TransferAbleData;
 		}
 
 		@Override
 		public void onDrop(IDnDItem input) {
-			// TODO Auto-generated method stub
-
+			color = ((TransferAbleData) input.getInfo()).getColor();
+			repaint();
 		}
 
 		@Override
 		public void onItemChanged(IDnDItem input) {
-			System.out.println(input.getType());
 		}
 
 	}
 	@XmlRootElement
 	public static class TransferAbleData implements IMultiViewDragInfo {
+		private Color color;
+
+		public TransferAbleData() {
+		}
+
+		/**
+		 * @return the color, see {@link #color}
+		 */
+		public Color getColor() {
+			return color;
+		}
+
+		/**
+		 * @param color
+		 *            setter, see {@link color}
+		 */
+		public void setColor(Color color) {
+			this.color = color;
+		}
+
+		public TransferAbleData(Color color) {
+			this.color = color;
+		}
 
 		@Override
 		public String getLabel() {

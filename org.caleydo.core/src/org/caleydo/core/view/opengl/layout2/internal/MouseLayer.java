@@ -17,6 +17,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.internal.CaleydoJAXBTransfer;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout2;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
@@ -28,7 +29,6 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.collect.Sets;
 
@@ -55,48 +55,28 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		super();
 		this.canvas = canvas;
 		setLayout(this);
-
-		initSWTDnD(canvas);
 	}
 
-	private void initSWTDnD(IGLCanvas canvas) {
-		final Composite c = canvas.asComposite();
-
-		// c.setDragDetect(dragDetect);
-		// c.getDisplay().asyncExec(new Runnable() {
-		// @Override
-		// public void run() {
-		// source = new DragSource(c, DND.DROP_MOVE | DND.DROP_COPY);
-		// source.setTransfer(new Transfer[] { TextTransfer.getInstance(), CaleydoJAXBTransfer.getInstance() });
-		// source.addDragListener(drag);
-		//
-		// target = new DropTarget(c, DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_DEFAULT);
-		// target.setTransfer(new Transfer[] { CaleydoJAXBTransfer.getInstance(), TextTransfer.getInstance() });
-		// target.addDropListener(drop);
-		// }
-		// });
+	@Override
+	protected void init(IGLElementContext context) {
+		canvas.addDragListener(drag);
+		canvas.addDropListener(drop);
+		super.init(context);
 	}
+
 	@Override
 	protected void takeDown() {
-		canvas.asComposite().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				source.dispose();
-				source = null;
-				target.dispose();
-				target = null;
-			}
-		});
+		canvas.removeDragListener(drag);
+		canvas.removeDropListener(drop);
 		super.takeDown();
 	}
 
 	private final DragSourceListener drag = new DragSourceListener() {
 		@Override
 		public void dragStart(DragSourceEvent event) {
-			System.out.println("drag start");
 			DragEvent e = new DragEvent(canvas.toDIP(new Point(event.x, event.y)));
 			for(IDragGLSource source : dragSources) {
-				IDragInfo info = source.startDrag(e);
+				IDragInfo info = source.startSWTDrag(e);
 				if (info != null) {
 					active = new DNDItem(info, source);
 					return;
@@ -108,7 +88,6 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 		@Override
 		public void dragSetData(DragSourceEvent event) {
-			System.out.println("dragSetData");
 			if (active == null) {
 				event.doit = false;
 				return;
@@ -122,12 +101,11 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 		@Override
 		public void dragFinished(DragSourceEvent event) {
-			System.out.println("dragFinished");
 			if (active == null)
 				return;
 			active.setType(event.detail);
 			// thread switch
-			EventPublisher.trigger(new DragFinishedEvent(active, active.source).to(MouseLayer.class));
+			EventPublisher.trigger(new DragFinishedEvent(active, active.source).to(MouseLayer.this));
 			active = null;
 		}
 	};
@@ -135,31 +113,27 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 		@Override
 		public void dragEnter(DropTargetEvent event) {
-			System.out.println("dragEnter");
 			IDnDItem item = toItem(event);
 			validateDropTarget(event, item);
 		}
 
 		@Override
 		public void dropAccept(DropTargetEvent event) {
-			System.out.println("dropAccept");
+
 		}
 
 		@Override
 		public void drop(DropTargetEvent event) {
-			System.out.println("drop");
 			IDnDItem item = toItem(event);
 			if (validateDropTarget(event, item)) {
 				// thread switch
-				EventPublisher.trigger(new DropItemEvent(item, activeDropTarget, true).to(MouseLayer.class));
+				EventPublisher.trigger(new DropItemEvent(item, activeDropTarget, true).to(MouseLayer.this));
 				activeDropTarget = null;
 			}
 		}
 
 		@Override
 		public void dragOver(DropTargetEvent event) {
-			boolean focusControl = canvas.asComposite().isFocusControl();
-			System.out.println("dragOver " + focusControl + canvas.toDIP(new Point(event.x, event.y)));
 			itemChanged(event);
 
 		}
@@ -168,12 +142,11 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 			IDnDItem item = toItem(event);
 			if (validateDropTarget(event, item))
 				// thread switch
-				EventPublisher.trigger(new DropItemEvent(item, activeDropTarget, false).to(MouseLayer.class));
+				EventPublisher.trigger(new DropItemEvent(item, activeDropTarget, false).to(MouseLayer.this));
 		}
 
 		@Override
 		public void dragOperationChanged(DropTargetEvent event) {
-			System.out.println("dragOperationChanged");
 			itemChanged(event);
 		}
 
@@ -185,7 +158,6 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 			if (activeDropTarget == null) {
 				activeDropTarget = findDropTarget(item);
 				if (activeDropTarget != null) {
-					System.out.println("found drop target");
 					event.detail = DND.DROP_DEFAULT;
 				}
 			}
@@ -198,7 +170,6 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 		@Override
 		public void dragLeave(DropTargetEvent event) {
-			System.out.println("dragLeave");
 			activeDropTarget = null;
 		}
 	};
@@ -223,7 +194,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	 */
 	protected IDropGLTarget findDropTarget(IDnDItem item) {
 		for (IDropGLTarget target : dropTargets) {
-			if (target.canDrop(item))
+			if (target.canSWTDrop(item))
 				return target;
 		}
 		return null;
@@ -234,12 +205,11 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	 * @return
 	 */
 	protected IDnDItem toItem(DropTargetEvent event) {
-		// TODO Auto-generated method stub
 		DNDItem item = null;
 		if (active != null)
 			item = active;
 		else {
-			// extract the item from the drop target in case of multi view manipulation
+			// FIXME extract the item from the drop target in case of multi view manipulation
 		}
 		if (item != null)
 			item.setType(event.detail);

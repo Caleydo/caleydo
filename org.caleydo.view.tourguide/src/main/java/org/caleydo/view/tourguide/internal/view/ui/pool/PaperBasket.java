@@ -35,7 +35,7 @@ public class PaperBasket extends APoolElem implements IDropGLTarget {
 	}
 
 	@Override
-	public boolean canDrop(IDnDItem input) {
+	public boolean canSWTDrop(IDnDItem input) {
 		IDragInfo info = input.getInfo();
 		if (!(info instanceof ColumnDragInfo))
 			return false;

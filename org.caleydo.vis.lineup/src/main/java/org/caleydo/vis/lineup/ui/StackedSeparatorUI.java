@@ -108,7 +108,7 @@ public class StackedSeparatorUI extends SeparatorUI implements IDropGLTarget, ID
 	}
 
 	@Override
-	public boolean canDrop(IDnDItem input) {
+	public boolean canSWTDrop(IDnDItem input) {
 		IDragInfo info = input.getInfo();
 		if (info != getStacked().align)
 			return false;
@@ -161,7 +161,7 @@ public class StackedSeparatorUI extends SeparatorUI implements IDropGLTarget, ID
 	}
 
 	@Override
-	public IDragInfo startDrag(IDragEvent event) {
+	public IDragInfo startSWTDrag(IDragEvent event) {
 		return getStacked().align;
 	}
 }

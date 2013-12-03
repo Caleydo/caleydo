@@ -44,6 +44,7 @@ public abstract class APickingListener
 			break;
 		case MOUSE_WHEEL:
 			mouseWheel(pick);
+			break;
 		case DRAG_DETECTED:
 			dragDetected(pick);
 			break;
@@ -133,7 +134,7 @@ public abstract class APickingListener
 
 	/**
 	 * Called, when a drag operation is detected
-	 * 
+	 *
 	 * @param pick
 	 */
 	protected void dragDetected(Pick pick) {

@@ -54,7 +54,7 @@ public interface IMouseLayer {
 	}
 
 	public interface IDropGLTarget {
-		boolean canDrop(IDnDItem input);
+		boolean canSWTDrop(IDnDItem input);
 
 		void onDrop(IDnDItem input);
 
@@ -72,7 +72,7 @@ public interface IMouseLayer {
 	}
 
 	public interface IDragGLSource {
-		IDragInfo startDrag(IDragEvent event);
+		IDragInfo startSWTDrag(IDragEvent event);
 
 		void onDropped(IDnDItem info);
 
