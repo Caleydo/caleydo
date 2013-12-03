@@ -5,9 +5,9 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
-import gleem.linalg.Vec2f;
-
-import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.core.view.opengl.layout2.dnd.IDragGLSource;
+import org.caleydo.core.view.opengl.layout2.dnd.IDragInfo;
+import org.caleydo.core.view.opengl.layout2.dnd.IDropGLTarget;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 
 /**
@@ -57,97 +57,5 @@ public interface IMouseLayer {
 	 * @param dropTarget
 	 */
 	void removeDropTarget(IDropGLTarget dropTarget);
-
-	/**
-	 * marker interface for dragging meta data
-	 *
-	 * @author Samuel Gratzl
-	 *
-	 */
-	public interface IDragInfo extends ILabeled {
-
-	}
-
-	public interface IDnDItem {
-		IDragInfo getInfo();
-
-		EDnDType getType();
-	}
-	/**
-	 * a drop target is a place where to drop something. Note: method names containing SWT will be called witin the SWT
-	 * dispatcher thread
-	 *
-	 * @author Samuel Gratzl
-	 *
-	 */
-	public interface IDropGLTarget {
-		/**
-		 * called within SWT thread: can the given item be dropped here
-		 *
-		 * @param input
-		 * @return
-		 */
-		boolean canSWTDrop(IDnDItem item);
-
-		/**
-		 * drop the given item
-		 *
-		 * @param item
-		 */
-		void onDrop(IDnDItem item);
-
-		/**
-		 * when the item changed (moved, drop type changed) this method will be called
-		 *
-		 * @param item
-		 */
-		void onItemChanged(IDnDItem item);
-
-		/**
-		 * @param item
-		 * @return
-		 */
-		EDnDType defaultSWTDnDType(IDnDItem item);
-	}
-
-	/**
-	 * a drag source is a place where the user can start drag something. Note: method names containing SWT will be
-	 * called witin the SWT dispatcher thread
-	 *
-	 * @author Samuel Gratzl
-	 *
-	 */
-	public interface IDragGLSource {
-		/**
-		 * create a drag info
-		 *
-		 * @param event
-		 * @return the element to drag or nothing if nothing draggable
-		 */
-		IDragInfo startSWTDrag(IDragEvent event);
-
-		/**
-		 * when the item was dropped this method wil be called
-		 *
-		 * @param info
-		 */
-		void onDropped(IDnDItem info);
-
-		/**
-		 * create a graphical representation of this element
-		 *
-		 * @param info
-		 * @return
-		 */
-		GLElement createUI(IDragInfo info);
-	}
-
-	public enum EDnDType {
-		NONE, MOVE, COPY, LINK
-	}
-
-	public interface IDragEvent {
-		Vec2f getOffset();
-	}
 }
 

@@ -7,7 +7,7 @@ package org.caleydo.vis.lineup.model;
 
 import gleem.linalg.Vec2f;
 
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
+import org.caleydo.core.view.opengl.layout2.dnd.IDragInfo;
 
 /**
  * @author Samuel Gratzl

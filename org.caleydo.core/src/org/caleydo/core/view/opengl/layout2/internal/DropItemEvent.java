@@ -6,8 +6,8 @@
 package org.caleydo.core.view.opengl.layout2.internal;
 
 import org.caleydo.core.event.ADirectedEvent;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
+import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
+import org.caleydo.core.view.opengl.layout2.dnd.IDropGLTarget;
 
 /**
  * @author Samuel Gratzl

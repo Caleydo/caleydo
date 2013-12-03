@@ -15,13 +15,13 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.EDnDType;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragEvent;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragGLSource;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.layout2.dnd.EDnDType;
+import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
+import org.caleydo.core.view.opengl.layout2.dnd.IDragGLSource;
+import org.caleydo.core.view.opengl.layout2.dnd.IDragInfo;
+import org.caleydo.core.view.opengl.layout2.dnd.IDropGLTarget;
+import org.caleydo.core.view.opengl.layout2.dnd.TextDragInfo;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -103,12 +103,17 @@ public class Test extends PickableGLElement implements IDragGLSource {
 
 		@Override
 		public boolean canSWTDrop(IDnDItem input) {
-			return input.getInfo() instanceof TransferAbleData;
+			return input.getInfo() instanceof TransferAbleData || input.getInfo() instanceof TextDragInfo;
 		}
 
 		@Override
 		public void onDrop(IDnDItem input) {
-			color = ((TransferAbleData) input.getInfo()).getColor();
+			IDragInfo info = input.getInfo();
+			if (info instanceof TextDragInfo) {
+				System.out.println(((TextDragInfo) info).getText());
+				color = Color.WHITE;
+			} else if (info instanceof TransferAbleData)
+				color = ((TransferAbleData) info).getColor();
 			repaint();
 		}
 

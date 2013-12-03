@@ -21,6 +21,15 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
+import org.caleydo.core.view.opengl.layout2.dnd.EDnDType;
+import org.caleydo.core.view.opengl.layout2.dnd.FileDragInfo;
+import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
+import org.caleydo.core.view.opengl.layout2.dnd.IDragGLSource;
+import org.caleydo.core.view.opengl.layout2.dnd.IDragGLSource.IDragEvent;
+import org.caleydo.core.view.opengl.layout2.dnd.IDragInfo;
+import org.caleydo.core.view.opengl.layout2.dnd.IDropGLTarget;
+import org.caleydo.core.view.opengl.layout2.dnd.TextDragInfo;
+import org.caleydo.core.view.opengl.layout2.dnd.URLDragInfo;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout2;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.eclipse.swt.dnd.DND;
@@ -30,7 +39,10 @@ import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
+import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.TransferData;
+import org.eclipse.swt.dnd.URLTransfer;
 
 /**
  * implementation of {@link IMouseLayer} using a {@link GLElementContainer} by using the layout data for meta data about
@@ -95,10 +107,18 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 				event.doit = false;
 				return;
 			}
-			if (TextTransfer.getInstance().isSupportedType(event.dataType)) {
-				event.data = active.getInfo().getLabel();
-			} else if (CaleydoJAXBTransfer.getInstance().isSupportedType(event.dataType)) {
-				event.data = active.getInfo();
+			IDragInfo info = active.getInfo();
+			if (CaleydoJAXBTransfer.getInstance().isSupportedType(event.dataType) && CaleydoJAXBTransfer.isValid(info)) {
+				event.data = info;
+			} else if (FileTransfer.getInstance().isSupportedType(event.dataType) && info instanceof FileDragInfo) {
+				event.data = ((FileDragInfo) info).getFileNames();
+			} else if (URLTransfer.getInstance().isSupportedType(event.dataType) && info instanceof URLDragInfo) {
+				event.data = ((URLDragInfo) info).getUrl();
+			} else if (TextTransfer.getInstance().isSupportedType(event.dataType)) {
+				event.data = info instanceof TextDragInfo ? ((TextDragInfo) info).getText() : info.getLabel();
+			} else {
+				event.doit = false; // invalid type
+				return;
 			}
 		}
 
@@ -122,7 +142,8 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 			if (validateDropTarget(event, item) && event.detail == DND.DROP_DEFAULT)
 				event.detail = fromType(activeDropTarget.defaultSWTDnDType(item));
 
-			EventPublisher.trigger(new DropEnterLeaveItemEvent(readOnly(item), activeDropTarget, true)
+			if (item != null)
+				EventPublisher.trigger(new DropEnterLeaveItemEvent(readOnly(item), activeDropTarget, true)
 					.to(MouseLayer.this));
 		}
 
@@ -173,7 +194,8 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 				if (event.detail == DND.DROP_DEFAULT)
 					event.detail = fromType(activeDropTarget.defaultSWTDnDType(item));
 				// thread switch
-			EventPublisher.trigger(new DropItemEvent(readOnly(item), activeDropTarget, false).to(MouseLayer.this));
+			if (item != null)
+				EventPublisher.trigger(new DropItemEvent(readOnly(item), activeDropTarget, false).to(MouseLayer.this));
 		}
 
 		@Override
@@ -202,8 +224,9 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		@Override
 		public void dragLeave(DropTargetEvent event) {
 			IDnDItem item = toItem(event);
-			EventPublisher.trigger(new DropEnterLeaveItemEvent(readOnly(item), activeDropTarget, false)
-					.to(MouseLayer.this));
+			if (item != null)
+				EventPublisher.trigger(new DropEnterLeaveItemEvent(readOnly(item), activeDropTarget, false)
+						.to(MouseLayer.this));
 			activeDropTarget = null;
 		}
 	};
@@ -223,8 +246,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		final IDnDItem item = event.getItem();
 
 		if (event.isFinished()) {
-			if (dragSources.contains(s))
-				s.onDropped(item);
+			s.onDropped(item);
 			removeInfo(item.getInfo());
 		} else {
 			addInfo(s, item);
@@ -287,11 +309,31 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		if (active != null)
 			item = active;
 		else {
-			// FIXME extract the item from the drop target in case of multi view manipulation
+			IDragInfo info = extract(event);
+			if (info != null)
+				item = active = new DNDItem(info, null);
 		}
 		if (item != null)
 			item.setType(event.detail);
 		return item;
+	}
+
+	private static IDragInfo extract(DropTargetEvent event) {
+		final TransferData d = event.currentDataType;
+		Object obj;
+		if (CaleydoJAXBTransfer.getInstance().isSupportedType(d) && (obj = CaleydoJAXBTransfer.getInstance().nativeToJava(d)) instanceof IDragInfo) {
+			return (IDragInfo) obj;
+		} else if (FileTransfer.getInstance().isSupportedType(d)
+				&& (obj = FileTransfer.getInstance().nativeToJava(d)) instanceof String[]) {
+			return new FileDragInfo((String[])obj);
+		} else if (URLTransfer.getInstance().isSupportedType(d)
+				&& (obj = URLTransfer.getInstance().nativeToJava(d)) instanceof String) {
+			return new URLDragInfo((String)obj);
+		} else if (TextTransfer.getInstance().isSupportedType(d)
+				&& (obj = TextTransfer.getInstance().nativeToJava(d)) instanceof String) {
+			return new TextDragInfo((String)obj);
+		}
+		return null;
 	}
 
 	@Override

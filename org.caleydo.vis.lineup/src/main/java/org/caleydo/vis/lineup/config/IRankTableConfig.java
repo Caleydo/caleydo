@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.config;
 
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
+import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.model.ACompositeRankColumnModel;
 import org.caleydo.vis.lineup.model.ARankColumnModel;

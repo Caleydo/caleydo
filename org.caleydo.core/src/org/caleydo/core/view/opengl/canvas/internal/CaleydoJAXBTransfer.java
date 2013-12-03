@@ -77,7 +77,7 @@ public class CaleydoJAXBTransfer extends ByteArrayTransfer {
 	 * (non-Javadoc) Method declared on Transfer.
 	 */
 	@Override
-	protected void javaToNative(Object data, TransferData transferData) {
+	public void javaToNative(Object data, TransferData transferData) {
 		if (invalid(data)) {
 			return;
 		}
@@ -109,7 +109,7 @@ public class CaleydoJAXBTransfer extends ByteArrayTransfer {
 	 * (non-Javadoc) Method declared on Transfer.
 	 */
 	@Override
-	protected Object nativeToJava(TransferData transferData) {
+	public Object nativeToJava(TransferData transferData) {
 		byte[] data = ((byte[]) super.nativeToJava(transferData));
 		if (data.length == 0)
 			return null;
@@ -125,5 +125,13 @@ public class CaleydoJAXBTransfer extends ByteArrayTransfer {
 
 	private static JAXBContext context() {
 		return SerializationManager.get().getProjectContext();
+	}
+
+	/**
+	 * @param info
+	 * @return
+	 */
+	public static boolean isValid(Object data) {
+		return !invalid(data);
 	}
 }

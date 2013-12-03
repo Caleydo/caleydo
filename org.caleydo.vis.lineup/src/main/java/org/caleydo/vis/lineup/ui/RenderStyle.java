@@ -10,8 +10,8 @@ package org.caleydo.vis.lineup.ui;
 import java.net.URL;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.EDnDType;
+import org.caleydo.core.view.opengl.layout2.dnd.EDnDType;
+import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
 
 
 /**

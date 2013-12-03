@@ -24,8 +24,10 @@ import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
+import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.dnd.URLTransfer;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Point;
@@ -82,7 +84,8 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 		if (this.target != null)
 			return;
 		target = new DropTarget(canvas.asComposite(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK | DND.DROP_DEFAULT);
-		target.setTransfer(new Transfer[] { CaleydoJAXBTransfer.getInstance(), TextTransfer.getInstance() });
+		target.setTransfer(new Transfer[] { CaleydoJAXBTransfer.getInstance(), FileTransfer.getInstance(),
+				URLTransfer.getInstance(), TextTransfer.getInstance() });
 		target.addDropListener(this);
 	}
 
@@ -107,7 +110,8 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 		if (this.source != null)
 			return;
 		source = new DragSource(canvas.asComposite(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK);
-		source.setTransfer(new Transfer[] { TextTransfer.getInstance(), CaleydoJAXBTransfer.getInstance() });
+		source.setTransfer(new Transfer[] { CaleydoJAXBTransfer.getInstance(), FileTransfer.getInstance(),
+				URLTransfer.getInstance(), TextTransfer.getInstance() });
 		source.addDragListener(this);
 	}
 
@@ -258,6 +262,8 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 	public void dragSetData(DragSourceEvent event) {
 		for (DragSourceListener l : sourceListeners)
 			l.dragSetData(event);
+		if (event.data == null)
+			event.doit = false; // invalid type
 	}
 
 	@Override

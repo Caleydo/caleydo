@@ -7,10 +7,10 @@ package org.caleydo.view.tourguide.internal.view.ui.pool;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.EDnDType;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
+import org.caleydo.core.view.opengl.layout2.dnd.EDnDType;
+import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
+import org.caleydo.core.view.opengl.layout2.dnd.IDragInfo;
+import org.caleydo.core.view.opengl.layout2.dnd.IDropGLTarget;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
