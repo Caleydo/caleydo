@@ -9,13 +9,15 @@ import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue
 import gleem.linalg.Vec2f;
 
 import java.awt.Point;
+import java.util.Deque;
 import java.util.List;
-import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.internal.CaleydoJAXBTransfer;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
@@ -30,8 +32,6 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.TextTransfer;
 
-import com.google.common.collect.Sets;
-
 /**
  * implementation of {@link IMouseLayer} using a {@link GLElementContainer} by using the layout data for meta data about
  * elements
@@ -42,8 +42,8 @@ import com.google.common.collect.Sets;
 public final class MouseLayer extends GLElementContainer implements IMouseLayer, IGLLayout2 {
 	private final IGLCanvas canvas;
 
-	private final Set<IDropGLTarget> dropTargets = Sets.newCopyOnWriteArraySet();
-	private final Set<IDragGLSource> dragSources = Sets.newCopyOnWriteArraySet();
+	private final Deque<IDropGLTarget> dropTargets = new ConcurrentLinkedDeque<>();
+	private final Deque<IDragGLSource> dragSources = new ConcurrentLinkedDeque<>();
 
 	volatile IDropGLTarget activeDropTarget;
 	volatile DNDItem active;
@@ -78,7 +78,10 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 			for(IDragGLSource source : dragSources) {
 				IDragInfo info = source.startSWTDrag(e);
 				if (info != null) {
+					System.out.println("drag start using " + source + " " + dragSources);
 					active = new DNDItem(info, source);
+					EventPublisher.trigger(new DragItemEvent(readOnly(active), active.source, false)
+							.to(MouseLayer.this));
 					return;
 				}
 			}
@@ -103,9 +106,11 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		public void dragFinished(DragSourceEvent event) {
 			if (active == null)
 				return;
-			active.setType(event.detail);
+			System.out.println("finished: " + active.getType());
+			active.setType(event.doit ? event.detail : DND.DROP_NONE);
+			System.out.println("finished: " + active.getType() + " " + event.detail + " " + event.doit);
 			// thread switch
-			EventPublisher.trigger(new DragFinishedEvent(active, active.source).to(MouseLayer.this));
+			EventPublisher.trigger(new DragItemEvent(readOnly(active), active.source, true).to(MouseLayer.this));
 			active = null;
 		}
 	};
@@ -114,7 +119,11 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		@Override
 		public void dragEnter(DropTargetEvent event) {
 			IDnDItem item = toItem(event);
-			validateDropTarget(event, item);
+			if (validateDropTarget(event, item) && event.detail == DND.DROP_DEFAULT)
+				event.detail = fromType(activeDropTarget.defaultSWTDnDType(item));
+
+			EventPublisher.trigger(new DropEnterLeaveItemEvent(readOnly(item), activeDropTarget, true)
+					.to(MouseLayer.this));
 		}
 
 		@Override
@@ -126,10 +135,30 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		public void drop(DropTargetEvent event) {
 			IDnDItem item = toItem(event);
 			if (validateDropTarget(event, item)) {
+				System.out.println(event.detail);
+				if (event.detail == DND.DROP_DEFAULT)
+					event.detail = fromType(activeDropTarget.defaultSWTDnDType(item));
+				System.out.println(event.detail);
 				// thread switch
-				EventPublisher.trigger(new DropItemEvent(item, activeDropTarget, true).to(MouseLayer.this));
+				EventPublisher.trigger(new DropItemEvent(readOnly(item), activeDropTarget, true).to(MouseLayer.this));
 				activeDropTarget = null;
 			}
+		}
+
+		private int fromType(EDnDType type) {
+			if (type == null)
+				return DND.DROP_MOVE;
+			switch (type) {
+			case COPY:
+				return DND.DROP_COPY;
+			case LINK:
+				return DND.DROP_LINK;
+			case MOVE:
+				return DND.DROP_MOVE;
+			case NONE:
+				return DND.DROP_NONE;
+			}
+			return 0;
 		}
 
 		@Override
@@ -141,8 +170,10 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		private void itemChanged(DropTargetEvent event) {
 			IDnDItem item = toItem(event);
 			if (validateDropTarget(event, item))
+				if (event.detail == DND.DROP_DEFAULT)
+					event.detail = fromType(activeDropTarget.defaultSWTDnDType(item));
 				// thread switch
-				EventPublisher.trigger(new DropItemEvent(item, activeDropTarget, false).to(MouseLayer.this));
+			EventPublisher.trigger(new DropItemEvent(readOnly(item), activeDropTarget, false).to(MouseLayer.this));
 		}
 
 		@Override
@@ -170,21 +201,68 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 		@Override
 		public void dragLeave(DropTargetEvent event) {
+			IDnDItem item = toItem(event);
+			EventPublisher.trigger(new DropEnterLeaveItemEvent(readOnly(item), activeDropTarget, false)
+					.to(MouseLayer.this));
 			activeDropTarget = null;
 		}
 	};
 
+	static IDnDItem readOnly(IDnDItem item) {
+		return new DNDTransferItem(item.getInfo(), item.getType());
+	}
+
+	@ListenTo
+	private void onDropEnterLeaveItemEvent(DropEnterLeaveItemEvent event) {
+		showhideInfo(event.getItem().getInfo(), event.isEntering() ? EVisibility.VISIBLE : EVisibility.NONE);
+	}
+
 	@ListenTo(sendToMe = true)
-	private void onDragFinishedEvent(DragFinishedEvent event) {
-		event.getSource().onDropped(event.getItem());
+	private void onDragItemEvent(DragItemEvent event) {
+		final IDragGLSource s = event.getSource();
+		final IDnDItem item = event.getItem();
+
+		if (event.isFinished()) {
+			if (dragSources.contains(s))
+				s.onDropped(item);
+			removeInfo(item.getInfo());
+		} else {
+			addInfo(s, item);
+		}
+	}
+
+	private void addInfo(final IDragGLSource s, final IDnDItem item) {
+		GLElement ui = s.createUI(item.getInfo());
+		ui.setLayoutData(item.getInfo());
+		if (ui != null)
+			this.add(ui);
+	}
+
+	private void removeInfo(final IDragInfo item) {
+		for (GLElement elem : this)
+			if (elem.getLayoutDataAs(IDragInfo.class, null) == item) {
+				remove(elem);
+				break;
+			}
+	}
+
+	private void showhideInfo(final IDragInfo item, EVisibility vis) {
+		for (GLElement elem : this)
+			if (elem.getLayoutDataAs(IDragInfo.class, null) == item) {
+				elem.setVisibility(vis);
+				break;
+			}
 	}
 
 	@ListenTo(sendToMe = true)
 	private void onDropItemEvent(DropItemEvent event) {
 		IDropGLTarget t = event.getTarget();
-		if (event.isDropping())
+		if (!dropTargets.contains(t))
+			return;
+		if (event.isDropping()) {
+			System.out.println("drop: " + t);
 			t.onDrop(event.getItem());
-		else
+		} else
 			t.onItemChanged(event.getItem());
 	}
 
@@ -233,32 +311,28 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 	@Override
 	public void addDragSource(IDragGLSource dragSource) {
-		System.out.println("add drag source");
 		this.dragSources.add(dragSource);
 	}
 
 	@Override
 	public void removeDragSource(IDragGLSource dragSource) {
-		System.out.println("remove drag source");
 		this.dragSources.remove(dragSource);
 	}
 
 	@Override
 	public void addDropTarget(IDropGLTarget dropTarget) {
-		System.out.println("add drop target");
 		this.dropTargets.add(dropTarget);
 	}
 
 	@Override
 	public void removeDropTarget(IDropGLTarget dropTarget) {
-		System.out.println("remove drop target");
 		this.dropTargets.remove(dropTarget);
 		if (activeDropTarget == dropTarget) {
 			activeDropTarget = null;
 		}
 	}
 
-	private class DNDItem implements IDnDItem {
+	private static class DNDItem implements IDnDItem {
 		private final IDragGLSource source;
 		private final IDragInfo info;
 		private EDnDType type = EDnDType.MOVE;
@@ -272,14 +346,38 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		 * @param detail
 		 */
 		public void setType(int detail) {
-			if ((detail & DND.DROP_MOVE) != 0)
+			EDnDType type;
+			if ((detail & (DND.DROP_MOVE | DND.DROP_TARGET_MOVE)) != 0)
 				type = EDnDType.MOVE;
 			else if ((detail & DND.DROP_COPY) != 0)
 				type = EDnDType.COPY;
 			else if ((detail & DND.DROP_LINK) != 0)
 				type = EDnDType.LINK;
+			else if ((detail & DND.DROP_DEFAULT) != 0)
+				type = EDnDType.MOVE;
 			else
 				type = EDnDType.NONE;
+			this.type = type;
+		}
+
+		@Override
+		public IDragInfo getInfo() {
+			return info;
+		}
+
+		@Override
+		public EDnDType getType() {
+			return type;
+		}
+	}
+
+	private static class DNDTransferItem implements IDnDItem {
+		private final IDragInfo info;
+		private final EDnDType type;
+
+		public DNDTransferItem(IDragInfo info, EDnDType type) {
+			this.info = info;
+			this.type = type;
 		}
 
 		@Override

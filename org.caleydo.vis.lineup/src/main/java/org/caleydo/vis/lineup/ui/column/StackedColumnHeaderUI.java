@@ -17,7 +17,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IMultiViewDragInfo;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -194,7 +194,7 @@ public class StackedColumnHeaderUI extends SimpleColumnHeaderUI {
 		relayout();
 	}
 
-	public static class AlignmentDragInfo implements IMultiViewDragInfo {
+	public static class AlignmentDragInfo implements IDragInfo {
 		@Override
 		public String getLabel() {
 			return "AlignmentMarker";

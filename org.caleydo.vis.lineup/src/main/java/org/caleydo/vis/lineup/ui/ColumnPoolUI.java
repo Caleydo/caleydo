@@ -19,6 +19,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.EDnDType;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
@@ -97,6 +98,11 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 			model.hide();
 			armed = false;
 			repaint();
+		}
+
+		@Override
+		public EDnDType defaultSWTDnDType(IDnDItem item) {
+			return EDnDType.MOVE;
 		}
 	};
 
@@ -296,6 +302,16 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 			repaint();
 		}
 
+		@Override
+		public EDnDType defaultSWTDnDType(IDnDItem item) {
+			return EDnDType.MOVE;
+		}
+
+		@Override
+		protected void takeDown() {
+			context.getMouseLayer().removeDropTarget(this);
+			super.takeDown();
+		}
 
 		@Override
 		protected void onMouseOver(Pick pick) {

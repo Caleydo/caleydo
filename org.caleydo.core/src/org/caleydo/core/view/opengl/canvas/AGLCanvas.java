@@ -129,8 +129,7 @@ public abstract class AGLCanvas implements IGLCanvas {
 		// add a listener to the whole chain to the top as setVisible doesn't propagate down
 		c.addListener(SWT.Show, showHide);
 		c.addListener(SWT.Hide, showHide);
-
-
+		dnd.init();
 	}
 
 	/**

@@ -25,6 +25,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.EDnDType;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragEvent;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragGLSource;
@@ -87,6 +88,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 
 	protected final IRankTableUIConfig config;
+	final IRankTableConfig tableConfig;
 	private boolean isHovered;
 	private boolean armDropColum;
 	private String armDropHint;
@@ -116,7 +118,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			if (!(input.getInfo() instanceof ColumnDragInfo))
 				return false;
 			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();
-			final IRankTableConfig tableConfig = model.getTable().getConfig();
+			if (info.getModel() == model)
+				return false;
 			int mode = tableConfig.getCombineMode(model, input);
 			if (model.isCombineAble(info.getModel(), RenderStyle.isCloneDragging(input), mode)) {
 				armDropColum = true;
@@ -130,7 +133,6 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		@Override
 		public void onItemChanged(IDnDItem input) {
 			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();
-			final IRankTableConfig tableConfig = model.getTable().getConfig();
 			int mode = tableConfig.getCombineMode(model, input);
 			String hint = tableConfig.getCombineStringHint(model, info.getModel(), mode);
 			if (!Objects.equals(hint, armDropHint)) {
@@ -143,12 +145,21 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		public void onDrop(IDnDItem input) {
 			assert input.getInfo() instanceof ColumnDragInfo;
 			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();
-			final IRankTableConfig tableConfig = model.getTable().getConfig();
 			if (armDropColum) {
 				context.getSWTLayer().setCursor(-1);
 				model.combine(info.getModel(), RenderStyle.isCloneDragging(input),
 						tableConfig.getCombineMode(model, input));
 			}
+		}
+
+		@Override
+		public String toString() {
+			return model.getTitle();
+		}
+
+		@Override
+		public EDnDType defaultSWTDnDType(IDnDItem item) {
+			return EDnDType.MOVE;
 		}
 	};
 
@@ -166,12 +177,18 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 		@Override
 		public void onDropped(IDnDItem info) {
-			// nothing to do
+			if (info.getType() != EDnDType.NONE)
+				context.getMouseLayer().removeDragSource(this);
 		}
 
 		@Override
 		public IDragInfo startSWTDrag(IDragEvent event) {
 			return new ColumnDragInfo(model, event.getOffset());
+		}
+
+		@Override
+		public String toString() {
+			return model.getTitle();
 		}
 	};
 
@@ -179,6 +196,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		this.model = model;
 		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, collapsedChanged);
 		this.config = config;
+		this.tableConfig = model.getTable().getConfig();
 		this.hasTitle = hasTitle;
 
 		setLayout(this);
@@ -323,6 +341,10 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		dragPickingId = -1;
 		model.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, filterChangedListener);
 		model.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, collapsedChanged);
+
+		context.getMouseLayer().removeDragSource(dragSource);
+		context.getMouseLayer().removeDropTarget(dropTarget);
+
 		super.takeDown();
 	}
 
@@ -710,7 +732,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		case MOUSE_OVER:
 			if (config.isMoveAble()) {
 				m.addDropTarget(dropTarget);
-			} else if (!pick.isAnyDragging()) {
+			}
+			if (!pick.isAnyDragging()) {
 				this.isHovered = true;
 				this.relayout();
 			}

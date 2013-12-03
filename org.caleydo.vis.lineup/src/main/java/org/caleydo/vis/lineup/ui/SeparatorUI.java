@@ -8,8 +8,9 @@ package org.caleydo.vis.lineup.ui;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.EDnDType;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
@@ -50,6 +51,11 @@ public class SeparatorUI extends PickableGLElement {
 			context.getSWTLayer().setCursor(-1);
 			armed = false;
 			model.moveHere(index, info.getModel(), RenderStyle.isCloneDragging(input));
+		}
+
+		@Override
+		public EDnDType defaultSWTDnDType(IDnDItem item) {
+			return EDnDType.MOVE;
 		}
 	};
 

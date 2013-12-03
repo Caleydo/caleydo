@@ -8,8 +8,8 @@ package org.caleydo.vis.lineup.config;
 import java.util.Collections;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.EDnDType;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
 import org.caleydo.vis.lineup.model.ACompositeRankColumnModel;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.GroupRankColumnModel;
@@ -47,10 +47,8 @@ public class RankTableConfigBase implements IRankTableConfig {
 	@Override
 	public int getCombineMode(ARankColumnModel model, IDnDItem info) {
 		int default_ = defaultMode(model);
-		if (info.getType() == EDnDType.COPY)
-			return SUM_MODE; // opposite one
 		if (info.getType() == EDnDType.LINK)
-			return NESTED_MODE;
+			return SUM_MODE;
 		return default_;
 	}
 

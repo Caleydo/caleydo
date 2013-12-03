@@ -21,7 +21,6 @@ import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragEvent;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragGLSource;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IMultiViewDragInfo;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -114,12 +113,17 @@ public class Test extends PickableGLElement implements IDragGLSource {
 		}
 
 		@Override
+		public EDnDType defaultSWTDnDType(IDnDItem item) {
+			return EDnDType.MOVE;
+		}
+
+		@Override
 		public void onItemChanged(IDnDItem input) {
 		}
 
 	}
 	@XmlRootElement
-	public static class TransferAbleData implements IMultiViewDragInfo {
+	public static class TransferAbleData implements IDragInfo {
 		private Color color;
 
 		public TransferAbleData() {

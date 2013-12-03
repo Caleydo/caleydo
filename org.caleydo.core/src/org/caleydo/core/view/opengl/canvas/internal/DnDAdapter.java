@@ -26,31 +26,58 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
 
 /**
+ * adapter between a {@link IGLCanvas} and {@link DragSource} and {@link DropTarget}
+ *
+ * at least on windows if a dragging operation is performed the mouse events are eaten up, therefore simulate them
+ *
  * @author Samuel Gratzl
  *
  */
-public class DnDAdapter implements DragSourceListener, DropTargetListener {
+public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyListener {
 	private final IGLCanvas canvas;
 	private final Iterable<IGLMouseListener> mouseListeners;
+
+	/**
+	 * wrapped {@link DragSourceListener}s
+	 */
 	private final Collection<DragSourceListener> sourceListeners = new CopyOnWriteArrayList<>();
+	/**
+	 * wrapped {@link DropTargetListener}s
+	 */
 	private final Collection<DropTargetListener> targetListeners = new CopyOnWriteArrayList<>();
 
 	private DragSource source;
 	private DropTarget target;
 
+	/**
+	 * on windows the {@link #dragOver(DropTargetEvent)} method will be called all the time, so a backup to just send if
+	 * the position changed
+	 */
 	private Point old;
+	private boolean isControlDown;
+	private boolean isShiftDown;
+	private boolean isAltDown;
 
 	public DnDAdapter(IGLCanvas canvas, Iterable<IGLMouseListener> mouseListeners) {
 		this.canvas = canvas;
 		this.mouseListeners = mouseListeners;
 	}
 
+	public void init() {
+		canvas.asComposite().addKeyListener(this);
+	}
+
+	/**
+	 * lazy creation of target
+	 */
 	private void ensureTarget() {
 		if (this.target != null)
 			return;
@@ -59,6 +86,9 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener {
 		target.addDropListener(this);
 	}
 
+	/**
+	 * lazy dipose of target
+	 */
 	private void freeTarget() {
 		if (targetListeners.isEmpty() && target != null) {
 			target.dispose();
@@ -104,7 +134,9 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener {
 	public boolean removeDragListener(DragSourceListener l) {
 		boolean r = sourceListeners.remove(l);
 		if (r && sourceListeners.isEmpty())
-			display().asyncExec(new Runnable() {
+			// sync exec here to avoid that the drag source will be disposed during canvas disposal, which will raise an
+			// error
+			display().syncExec(new Runnable() {
 				@Override
 				public void run() {
 					freeSource();
@@ -116,7 +148,7 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener {
 	public boolean removeDropListener(DropTargetListener l) {
 		boolean r = targetListeners.remove(l);
 		if (r && targetListeners.isEmpty())
-			display().asyncExec(new Runnable() {
+			display().syncExec(new Runnable() {
 				@Override
 				public void run() {
 					freeTarget();
@@ -130,13 +162,28 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener {
 	}
 
 	@Override
+	public void keyPressed(KeyEvent event) {
+		isControlDown = (event.stateMask & SWT.CONTROL) != 0 || event.keyCode == SWT.CONTROL;
+		isShiftDown = (event.stateMask & SWT.SHIFT) != 0 || event.keyCode == SWT.SHIFT;
+		isAltDown = (event.stateMask & SWT.ALT) != 0 || event.keyCode == SWT.ALT;
+	}
+
+	@Override
+	public void keyReleased(KeyEvent event) {
+		isControlDown = (event.stateMask & SWT.CONTROL) != 0 && event.keyCode != SWT.CONTROL;
+		isShiftDown = (event.stateMask & SWT.SHIFT) != 0 && event.keyCode != SWT.SHIFT;
+		isAltDown = (event.stateMask & SWT.ALT) != 0 && event.keyCode != SWT.ALT;
+	}
+
+	@Override
 	public void dragEnter(DropTargetEvent event) {
 		IMouseEvent mouseEvent = asEvent(event, getPoint(event));
+		// simulate entered
 		for (IGLMouseListener l : mouseListeners) {
 			l.mouseEntered(mouseEvent);
 		}
 
-		if (targetListeners.isEmpty())
+		if (targetListeners.isEmpty()) // no one listening -> aborting dnd operation
 			event.detail = DND.DROP_NONE;
 		else
 			for (DropTargetListener l : targetListeners)
@@ -170,7 +217,6 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener {
 		Point p = getPoint(event);
 		if (Objects.equals(p, old)) //ignore duplicate events
 			return;
-		System.out.println("fire drag over mouse move event");
 		old = p;
 		IMouseEvent mouseEvent = asEvent(event, p);
 		for (IGLMouseListener l : mouseListeners) {
@@ -182,7 +228,8 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener {
 	}
 
 	private IMouseEvent asEvent(DropTargetEvent event, Point p) {
-		return new SWTDnDMouseEventAdapter(event, p, canvas.toDIP(new java.awt.Point(p.x, p.y)));
+		return new SWTDnDMouseEventAdapter(event, p, canvas.toDIP(new java.awt.Point(p.x, p.y)), isControlDown,
+				isShiftDown, isAltDown);
 	}
 
 	@Override
@@ -199,7 +246,7 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener {
 
 	@Override
 	public void dragStart(DragSourceEvent event) {
-		if (sourceListeners.isEmpty())
+		if (sourceListeners.isEmpty()) // no one listening -> aborting dnd operation
 			event.doit = false;
 		else
 			for (DragSourceListener l : sourceListeners)
@@ -223,11 +270,18 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener {
 		private final DropTargetEvent event;
 		private final Vec2f point;
 		private final Point raw;
+		private boolean isControlDown;
+		private boolean isShiftDown;
+		private boolean isAltDown;
 
-		SWTDnDMouseEventAdapter(DropTargetEvent event, Point p, Vec2f point) {
+		SWTDnDMouseEventAdapter(DropTargetEvent event, Point p, Vec2f point, boolean isControlDown,
+				boolean isShiftDown, boolean isAltDown) {
 			this.event = event;
 			this.raw = p;
 			this.point = point;
+			this.isControlDown = isControlDown;
+			this.isShiftDown = isShiftDown;
+			this.isAltDown = isAltDown;
 		}
 
 		@Override
@@ -270,19 +324,28 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener {
 			}
 		}
 
+		/**
+		 * @return the isAltDown, see {@link #isAltDown}
+		 */
 		@Override
 		public boolean isAltDown() {
-			return (event.detail & DND.DROP_LINK) != 0;
+			return isAltDown;
 		}
 
-		@Override
-		public boolean isCtrlDown() {
-			return (event.detail & DND.DROP_COPY) != 0;
-		}
-
+		/**
+		 * @return the isShiftDown, see {@link #isShiftDown}
+		 */
 		@Override
 		public boolean isShiftDown() {
-			return false;
+			return isShiftDown;
+		}
+
+		/**
+		 * @return the isControlDown, see {@link #isControlDown}
+		 */
+		@Override
+		public boolean isCtrlDown() {
+			return isControlDown;
 		}
 
 		@Override

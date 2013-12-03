@@ -10,6 +10,7 @@ import gleem.linalg.Vec2f;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.EDnDType;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragEvent;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragGLSource;
@@ -163,5 +164,10 @@ public class StackedSeparatorUI extends SeparatorUI implements IDropGLTarget, ID
 	@Override
 	public IDragInfo startSWTDrag(IDragEvent event) {
 		return getStacked().align;
+	}
+
+	@Override
+	public EDnDType defaultSWTDnDType(IDnDItem item) {
+		return EDnDType.MOVE;
 	}
 }

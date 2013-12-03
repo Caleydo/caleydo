@@ -7,6 +7,7 @@ package org.caleydo.view.tourguide.internal.view.ui.pool;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.EDnDType;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDropGLTarget;
@@ -68,6 +69,11 @@ public class PaperBasket extends APoolElem implements IDropGLTarget {
 			armed = false;
 			repaint();
 		}
+	}
+
+	@Override
+	public EDnDType defaultSWTDnDType(IDnDItem item) {
+		return EDnDType.MOVE;
 	}
 
 	@Override

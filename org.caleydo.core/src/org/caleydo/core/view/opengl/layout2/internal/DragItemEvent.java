@@ -13,16 +13,25 @@ import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragGLSource;
  * @author Samuel Gratzl
  *
  */
-public class DragFinishedEvent extends ADirectedEvent {
+public class DragItemEvent extends ADirectedEvent {
 
 	private final IDnDItem item;
 	private final IDragGLSource source;
+	private final boolean finished;
 	/**
 	 * @param active
 	 */
-	public DragFinishedEvent(IDnDItem item, IDragGLSource source) {
+	public DragItemEvent(IDnDItem item, IDragGLSource source, boolean finished) {
 		this.item = item;
 		this.source = source;
+		this.finished = finished;
+	}
+
+	/**
+	 * @return the finished, see {@link #finished}
+	 */
+	public boolean isFinished() {
+		return finished;
 	}
 
 	/**
