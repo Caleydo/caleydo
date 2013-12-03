@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.core.id;
 
+import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Function;
@@ -35,4 +36,6 @@ public interface IIDTypeMapper<K, V> extends Function<K, Set<V>> {
 	 * @return
 	 */
 	boolean isMapAble(K sourceId);
+
+	List<Set<V>> applyList(List<K> sourceIDs);
 }

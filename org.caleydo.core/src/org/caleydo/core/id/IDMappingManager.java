@@ -26,6 +26,7 @@ import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 
 
@@ -762,6 +763,18 @@ public class IDMappingManager {
 				pong.clear();
 			}
 			return (Set<V>) ping;
+		}
+
+		@Override
+		public List<Set<V>> applyList(List<K> sourceIDs) {
+			List<Set<V>> r = new ArrayList<>(sourceIDs.size());
+			for (K sourceID : sourceIDs) {
+				Set<V> ri = apply(sourceID);
+				if (ri == null)
+					ri = Collections.emptySet();
+				r.add(ri);
+			}
+			return ImmutableList.copyOf(r);
 		}
 
 		@Override
