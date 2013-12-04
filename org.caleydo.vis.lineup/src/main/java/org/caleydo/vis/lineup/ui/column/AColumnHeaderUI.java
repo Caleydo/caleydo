@@ -169,8 +169,6 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			final Vec2f size = getSize();
 			DraggedScoreHeaderItem elem = new DraggedScoreHeaderItem();
 			elem.setSize(size.x(), size.y());
-			final Vec2f loc = ((ColumnDragInfo) info).getShift();
-			elem.setLocation(-loc.x(), -loc.y());
 			return elem;
 		}
 

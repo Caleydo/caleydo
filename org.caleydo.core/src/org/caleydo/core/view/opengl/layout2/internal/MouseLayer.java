@@ -47,6 +47,7 @@ import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.dnd.URLTransfer;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * implementation of {@link IMouseLayer} using a {@link GLElementContainer} by using the layout data for meta data about
@@ -58,7 +59,13 @@ import org.eclipse.swt.dnd.URLTransfer;
 public final class MouseLayer extends GLElementContainer implements IMouseLayer, IGLLayout2 {
 	private final IGLCanvas canvas;
 
+	/**
+	 * current possible drop targets
+	 */
 	private final Deque<IDropGLTarget> dropTargets = new ConcurrentLinkedDeque<>();
+	/**
+	 * current possible drag sources
+	 */
 	private final Deque<IDragGLSource> dragSources = new ConcurrentLinkedDeque<>();
 	private final Collection<IRemoteDragInfoUICreator> creators = new ArrayList<>(1);
 
@@ -137,7 +144,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		}
 	};
 	private final DropTargetListener drop = new DropTargetListener() {
-
+		private int acceptDetail;
 		@Override
 		public void dragEnter(DropTargetEvent event) {
 			IDnDItem item = toItem(event);
@@ -151,11 +158,13 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 		@Override
 		public void dropAccept(DropTargetEvent event) {
-
+			// I don't know why but I need to transfer the method from the accept to the drop
+			acceptDetail = event.detail;
 		}
 
 		@Override
 		public void drop(DropTargetEvent event) {
+			event.detail = acceptDetail;
 			IDnDItem item = toItem(event);
 			if (validateDropTarget(event, item)) {
 				if (event.detail == DND.DROP_DEFAULT)
@@ -190,12 +199,11 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 		private void itemChanged(DropTargetEvent event) {
 			IDnDItem item = toItem(event);
-			if (validateDropTarget(event, item))
+			if (validateDropTarget(event, item)) {
 				if (event.detail == DND.DROP_DEFAULT)
 					event.detail = fromType(activeDropTarget.defaultSWTDnDType(item));
-				// thread switch
-			if (item != null)
 				EventPublisher.trigger(new DropItemEvent(readOnly(item), activeDropTarget, false).to(MouseLayer.this));
+			}
 		}
 
 		@Override
@@ -222,12 +230,20 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		}
 
 		@Override
-		public void dragLeave(DropTargetEvent event) {
-			IDnDItem item = toItem(event);
-			if (item != null)
-				EventPublisher.trigger(new DropEnterLeaveItemEvent(readOnly(item), activeDropTarget, false)
-						.to(MouseLayer.this));
-			activeDropTarget = null;
+		public void dragLeave(final DropTargetEvent event) {
+			// later to be after the optional drop event
+			Display.getCurrent().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					if (activeDropTarget != null) {
+						IDnDItem item = toItem(event);
+						if (item != null)
+							EventPublisher.trigger(new DropEnterLeaveItemEvent(readOnly(item), activeDropTarget, false)
+									.to(MouseLayer.this));
+						activeDropTarget = null;
+					}
+				}
+			});
 		}
 	};
 
@@ -310,8 +326,6 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	@ListenTo(sendToMe = true)
 	private void onDropItemEvent(DropItemEvent event) {
 		IDropGLTarget t = event.getTarget();
-		if (!dropTargets.contains(t))
-			return;
 		if (event.isDropping()) {
 			t.onDrop(event.getItem());
 			removeInfo(event.getItem().getInfo());
@@ -325,8 +339,9 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	 */
 	protected IDropGLTarget findDropTarget(IDnDItem item) {
 		for (IDropGLTarget target : dropTargets) {
-			if (target.canSWTDrop(item))
+			if (target.canSWTDrop(item)) {
 				return target;
+			}
 		}
 		return null;
 	}
@@ -395,6 +410,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	@Override
 	public void addDropTarget(IDropGLTarget dropTarget) {
 		this.dropTargets.add(dropTarget);
+
 	}
 
 	@Override

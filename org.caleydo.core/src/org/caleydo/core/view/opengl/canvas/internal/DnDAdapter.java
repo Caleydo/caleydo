@@ -63,10 +63,12 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 	 * on windows the {@link #dragOver(DropTargetEvent)} method will be called all the time, so a backup to just send if
 	 * the position changed
 	 */
-	private Point old;
 	private boolean isControlDown;
 	private boolean isShiftDown;
 	private boolean isAltDown;
+
+	private Point old, prev;
+	private boolean gotAccept;
 
 	public DnDAdapter(IGLCanvas canvas, Iterable<IGLMouseListener> mouseListeners) {
 		this.canvas = canvas;
@@ -196,18 +198,31 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 
 	@Override
 	public void dragLeave(DropTargetEvent event) {
-		IMouseEvent mouseEvent = asEvent(event, getPoint(event));
-		for (IGLMouseListener l : mouseListeners) {
-			l.mouseExited(mouseEvent);
-		}
-
 		for (DropTargetListener l : targetListeners)
 			l.dragLeave(event);
+		final IMouseEvent mouseEvent = asEvent(event, getPoint(event));
+		gotAccept = false;
+		// since we also get the drag leave if we are going to drop delay it and wait for the accept
+		Display.getCurrent().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				if (gotAccept)
+					return;
+				for (IGLMouseListener l : mouseListeners) {
+					l.mouseExited(mouseEvent);
+				}
+			}
+		});
 
 	}
 
 	private Point getPoint(DropTargetEvent event) {
-		return canvas.asComposite().toControl(event.x, event.y);
+		if (event.x == 0 && event.y == 0 && prev != null)
+			return prev;
+		Point p = canvas.asComposite().toControl(event.x, event.y);
+		prev = p;
+		return p;
 	}
 
 	@Override
