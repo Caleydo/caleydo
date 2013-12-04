@@ -101,15 +101,28 @@ public class Test extends PickableGLElement implements IDragGLSource {
 
 		@Override
 		public boolean canSWTDrop(IDnDItem input) {
-			return input.getInfo() instanceof TransferAbleData || input.getInfo() instanceof TextDragInfo;
+			return input.getInfo() instanceof TransferAbleData || (input.getInfo() instanceof TextDragInfo && canDecode(((TextDragInfo) input.getInfo()).getText()));
+		}
+
+		/**
+		 * @param text
+		 * @return
+		 */
+		private static boolean canDecode(String text) {
+			try {
+				Integer.decode(text);
+				return true;
+			} catch (NumberFormatException e) {
+				return false;
+			}
 		}
 
 		@Override
 		public void onDrop(IDnDItem input) {
 			IDragInfo info = input.getInfo();
 			if (info instanceof TextDragInfo) {
-				System.out.println(((TextDragInfo) info).getText());
-				color = Color.WHITE;
+				String t = ((TextDragInfo) info).getText();
+				color = new Color(t);
 			} else if (info instanceof TransferAbleData)
 				color = ((TransferAbleData) info).getColor();
 			repaint();
@@ -154,7 +167,7 @@ public class Test extends PickableGLElement implements IDragGLSource {
 
 		@Override
 		public String getLabel() {
-			return color.getHEX();
+			return "#" + color.getHEX();
 		}
 
 		@Override
