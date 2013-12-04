@@ -8,6 +8,7 @@ package org.caleydo.core.view.opengl.layout2;
 import org.caleydo.core.view.opengl.layout2.dnd.IDragGLSource;
 import org.caleydo.core.view.opengl.layout2.dnd.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.dnd.IDropGLTarget;
+import org.caleydo.core.view.opengl.layout2.dnd.IRemoteDragInfoUICreator;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 
 /**
@@ -57,5 +58,12 @@ public interface IMouseLayer {
 	 * @param dropTarget
 	 */
 	void removeDropTarget(IDropGLTarget dropTarget);
+
+	/**
+	 * register a {@link IRemoteDragInfoUICreator} for creating a visual representation, for external {@link IDragInfo}s
+	 * 
+	 * @param creator
+	 */
+	void addRemoteDragInfoUICreator(IRemoteDragInfoUICreator creator);
 }
 

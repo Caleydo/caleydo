@@ -18,6 +18,7 @@
    <extension-point id="org.caleydo.core.SampleProject" name="Sample Project Description" schema="schema/org.caleydo.core.SampleProject.exsd"/>
    <extension-point id="org.caleydo.core.CacheInitializer" name="CacheInitializer" schema="schema/org.caleydo.core.CacheInitializer.exsd"/>
    <extension-point id="org.caleydo.ui.GLElementFactory" name="GLElementFactory" schema="schema/org.caleydo.ui.GLElementFactory.exsd"/>
+   <extension-point id="org.caleydo.core.view.dnd.TransferSerializer" name="TransferSerializer" schema="schema/org.caleydo.core.view.dnd.TransferSerializer.exsd"/>
 
    <extension
          id="application"

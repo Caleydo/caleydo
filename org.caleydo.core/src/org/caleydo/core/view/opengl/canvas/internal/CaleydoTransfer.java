@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -21,7 +22,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.SerializationManager;
+import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.view.opengl.canvas.ITransferSerializer;
 import org.eclipse.swt.dnd.ByteArrayTransfer;
 import org.eclipse.swt.dnd.TransferData;
 
@@ -36,6 +39,10 @@ public class CaleydoTransfer extends ByteArrayTransfer {
 	private static final String TYPE_NAME = "caleydo-transfer-format";//$NON-NLS-1$
 
 	private static final int TYPEID = registerType(TYPE_NAME);
+	private static final String EXTENSION_POINT = "org.caleydo.core.view.dnd.TransferSerializer";
+
+	private static Collection<ITransferSerializer> serializers = ExtensionUtils.findImplementation(EXTENSION_POINT,
+			"class", ITransferSerializer.class);
 
 	/**
 	 * Singleton instance.
@@ -87,13 +94,26 @@ public class CaleydoTransfer extends ByteArrayTransfer {
 		try {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			ObjectOutputStream o = new ObjectOutputStream(out);
-			if (mode == EMode.XML) {
+			switch (mode) {
+			case XML:
 				o.writeChar('X');
 				Marshaller m = context().createMarshaller();
 				m.marshal(data, o);
-			} else {
+				break;
+			case SERIALIZABLE:
 				o.writeChar('S');
 				o.writeObject(data);
+				break;
+			case CUSTOM:
+				o.writeChar('C');
+				ITransferSerializer s = findSerializer(data.getClass());
+				assert s != null;
+				o.writeInt(s.getId().length());
+				o.writeChars(s.getId());
+				s.write(data, o);
+				break;
+			default:
+				break;
 			}
 			o.close();
 			super.javaToNative(out.toByteArray(), transferData);
@@ -102,8 +122,9 @@ public class CaleydoTransfer extends ByteArrayTransfer {
 		}
 	}
 
+
 	private enum EMode {
-		INVALID, XML, SERIALIZABLE
+		INVALID, XML, SERIALIZABLE, CUSTOM
 	}
 
 	/**
@@ -114,6 +135,8 @@ public class CaleydoTransfer extends ByteArrayTransfer {
 		if (data == null)
 			return EMode.INVALID;
 		Class<? extends Object> c = data.getClass();
+		if (findSerializer(c) != null)
+			return EMode.CUSTOM;
 		if (c.isAnnotationPresent(XmlRootElement.class) || c.isAnnotationPresent(XmlType.class))
 			return EMode.XML;
 		if (data instanceof Serializable)
@@ -131,17 +154,62 @@ public class CaleydoTransfer extends ByteArrayTransfer {
 			return null;
 		try (ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(data))) {
 			char c = in.readChar();
-			if (c == 'X') {
+			switch (c) {
+			case 'X':
 				Unmarshaller unmarshaller = context().createUnmarshaller();
 				return unmarshaller.unmarshal(in);
-			} else if (c == 'S')
+			case 'S':
 				return in.readObject();
-			throw new IOException("invalid encoding type: " + c);
+			case 'C':
+				int l = in.readInt();
+				String id = readChars(in, l);
+				ITransferSerializer s = findSerializer(id);
+				if (s == null)
+					throw new ClassNotFoundException("can't find serializer with id: " + s);
+				return s.read(in);
+			default:
+				throw new IOException("invalid encoding type: " + c);
+			}
 		} catch (IOException | JAXBException | ClassNotFoundException e) {
 			log.error("can't deserialize: " + Arrays.toString(data), e);
 			// can't get here
 			return null;
 		}
+	}
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	private static ITransferSerializer findSerializer(String id) {
+		for (ITransferSerializer s : serializers)
+			if (s.getId().equals(id))
+				return s;
+		return null;
+	}
+
+	/**
+	 * @param class1
+	 * @return
+	 */
+	private static ITransferSerializer findSerializer(Class<?> clazz) {
+		for (ITransferSerializer s : serializers)
+			if (s.apply(clazz))
+				return s;
+		return null;
+	}
+
+	/**
+	 * @param in
+	 * @param l
+	 * @return
+	 * @throws IOException
+	 */
+	private static String readChars(ObjectInputStream in, int l) throws IOException {
+		char[] r = new char[l];
+		for (int i = 0; i < l; ++l)
+			r[i] = in.readChar();
+		return new String(r);
 	}
 
 	private static JAXBContext context() {

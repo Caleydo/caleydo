@@ -93,7 +93,6 @@ final class PickingMouseListener implements IGLMouseListener {
 	@Override
 	public void mouseEntered(IMouseEvent mouseEvent) {
 		isMouseIn = true;
-		System.out.println("mouse over");
 		add(mouseEvent, PickingMode.MOUSE_OVER);
 	}
 

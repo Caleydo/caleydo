@@ -9,6 +9,8 @@ import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue
 import gleem.linalg.Vec2f;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -28,6 +30,7 @@ import org.caleydo.core.view.opengl.layout2.dnd.IDragGLSource;
 import org.caleydo.core.view.opengl.layout2.dnd.IDragGLSource.IDragEvent;
 import org.caleydo.core.view.opengl.layout2.dnd.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.dnd.IDropGLTarget;
+import org.caleydo.core.view.opengl.layout2.dnd.IRemoteDragInfoUICreator;
 import org.caleydo.core.view.opengl.layout2.dnd.IUIDragInfo;
 import org.caleydo.core.view.opengl.layout2.dnd.TextDragInfo;
 import org.caleydo.core.view.opengl.layout2.dnd.URLDragInfo;
@@ -57,6 +60,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 	private final Deque<IDropGLTarget> dropTargets = new ConcurrentLinkedDeque<>();
 	private final Deque<IDragGLSource> dragSources = new ConcurrentLinkedDeque<>();
+	private final Collection<IRemoteDragInfoUICreator> creators = new ArrayList<>(1);
 
 	volatile IDropGLTarget activeDropTarget;
 	volatile DNDItem active;
@@ -227,6 +231,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		}
 	};
 
+
 	static IDnDItem readOnly(IDnDItem item) {
 		return new DNDTransferItem(item.getInfo(), item.getType());
 	}
@@ -258,23 +263,39 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	}
 
 	private void addInfo(final IDragGLSource s, final IDnDItem item) {
+		final IDragInfo info = item.getInfo();
+		if (isAlreadyThere(info))
+			return;
+
 		GLElement ui = null;
-		if (s != null)
-			ui = s.createUI(item.getInfo());
-		else if (item.getInfo() instanceof IUIDragInfo)
-			ui = ((IUIDragInfo) item.getInfo()).createUI();
+		for (IRemoteDragInfoUICreator creator : creators)
+			if ((ui = creator.createUI(info)) != null)
+				break;
+		if (ui == null && s != null)
+			ui = s.createUI(info);
+		if (ui == null && info instanceof IUIDragInfo)
+			ui = ((IUIDragInfo) info).createUI();
 		if (ui == null)
 			return;
-		ui.setLayoutData(item.getInfo());
+		ui.setLayoutData(info);
 		this.add(ui);
 	}
 
-	private void removeInfo(final IDragInfo item) {
+	private boolean isAlreadyThere(final IDragInfo info) {
 		for (GLElement elem : this)
-			if (elem.getLayoutDataAs(IDragInfo.class, null) == item) {
+			if (elem.getLayoutDataAs(IDragInfo.class, null) == info)
+				return true; // already there
+		return false;
+	}
+
+	private void removeInfo(final IDragInfo info) {
+		for (GLElement elem : this) {
+			IDragInfo d = elem.getLayoutDataAs(IDragInfo.class, null);
+			if (d == info) {
 				remove(elem);
 				break;
 			}
+		}
 	}
 
 	private boolean showhideInfo(final IDragInfo item, EVisibility vis) {
@@ -293,6 +314,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 			return;
 		if (event.isDropping()) {
 			t.onDrop(event.getItem());
+			removeInfo(event.getItem().getInfo());
 		} else
 			t.onItemChanged(event.getItem());
 	}
@@ -381,6 +403,11 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		if (activeDropTarget == dropTarget) {
 			activeDropTarget = null;
 		}
+	}
+
+	@Override
+	public void addRemoteDragInfoUICreator(IRemoteDragInfoUICreator creator) {
+		this.creators.add(creator);
 	}
 
 	/**
