@@ -207,7 +207,7 @@ public class CaleydoTransfer extends ByteArrayTransfer {
 	 */
 	private static String readChars(ObjectInputStream in, int l) throws IOException {
 		char[] r = new char[l];
-		for (int i = 0; i < l; ++l)
+		for (int i = 0; i < l; ++i)
 			r[i] = in.readChar();
 		return new String(r);
 	}

@@ -136,7 +136,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		@Override
 		public void dragFinished(DragSourceEvent event) {
 			if (active == null)
-				return;
+				return; // strange shouldn't happen
 			active.setType(event.doit ? event.detail : DND.DROP_NONE);
 			// thread switch
 			EventPublisher.trigger(new DragItemEvent(readOnly(active), active.source, true).to(MouseLayer.this));
@@ -173,6 +173,8 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 				EventPublisher.trigger(new DropItemEvent(readOnly(item), activeDropTarget, true).to(MouseLayer.this));
 				activeDropTarget = null;
 			}
+			if (active != null && active.source == null) // cleanup remote
+				active = null;
 		}
 
 		private int fromType(EDnDType type) {
@@ -252,7 +254,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		return new DNDTransferItem(item.getInfo(), item.getType());
 	}
 
-	@ListenTo
+	@ListenTo(sendToMe = true)
 	private void onDropEnterLeaveItemEvent(DropEnterLeaveItemEvent event) {
 		IDnDItem item = event.getItem();
 		if (event.isEntering()) {
