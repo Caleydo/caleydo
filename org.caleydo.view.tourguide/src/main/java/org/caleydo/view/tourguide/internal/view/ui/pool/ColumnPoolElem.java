@@ -80,7 +80,7 @@ public class ColumnPoolElem extends APoolElem implements IDragGLSource {
 
 	@Override
 	public IDragInfo startSWTDrag(IDragEvent event) {
-		return new ColumnDragInfo(this.model, event.getOffset());
+		return new ColumnDragInfo(this.model, event.getMousePos());
 	}
 
 	class DraggedScoreHeaderItem extends GLElement {

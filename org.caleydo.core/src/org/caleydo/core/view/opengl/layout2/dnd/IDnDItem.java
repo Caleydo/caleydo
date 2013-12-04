@@ -5,8 +5,17 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.dnd;
 
+import gleem.linalg.Vec2f;
+
 public interface IDnDItem {
 	IDragInfo getInfo();
 
 	EDnDType getType();
+
+	/**
+	 * just in drop
+	 * 
+	 * @return
+	 */
+	Vec2f getMousePos();
 }

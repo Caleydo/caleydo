@@ -41,6 +41,6 @@ public interface IDragGLSource {
 	GLElement createUI(IDragInfo info);
 
 	public interface IDragEvent {
-		Vec2f getOffset();
+		Vec2f getMousePos();
 	}
 }

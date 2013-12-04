@@ -180,7 +180,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 		@Override
 		public IDragInfo startSWTDrag(IDragEvent event) {
-			return new ColumnDragInfo(model, event.getOffset());
+			return new ColumnDragInfo(model, event.getMousePos());
 		}
 
 		@Override

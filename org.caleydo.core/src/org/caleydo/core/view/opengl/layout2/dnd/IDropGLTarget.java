@@ -6,6 +6,7 @@
 package org.caleydo.core.view.opengl.layout2.dnd;
 
 
+
 /**
  * a drop target is a place where to drop something. Note: method names containing SWT will be called witin the SWT
  * dispatcher thread
@@ -26,6 +27,7 @@ public interface IDropGLTarget {
 	 * drop the given item
 	 *
 	 * @param item
+	 * @param vec2f
 	 */
 	void onDrop(IDnDItem item);
 

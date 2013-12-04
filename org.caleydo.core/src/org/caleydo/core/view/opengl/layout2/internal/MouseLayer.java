@@ -8,7 +8,6 @@ package org.caleydo.core.view.opengl.layout2.internal;
 import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue;
 import gleem.linalg.Vec2f;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
@@ -47,6 +46,7 @@ import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.dnd.URLTransfer;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -70,7 +70,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	private final Collection<IRemoteDragInfoUICreator> creators = new ArrayList<>(1);
 
 	volatile IDropGLTarget activeDropTarget;
-	volatile DNDItem active;
+	volatile DnDItem active;
 
 	DragSource source;
 	DropTarget target;
@@ -98,11 +98,12 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	private final DragSourceListener drag = new DragSourceListener() {
 		@Override
 		public void dragStart(DragSourceEvent event) {
-			DragEvent e = new DragEvent(canvas.toDIP(new Point(event.x, event.y)));
+			DragEvent e = new DragEvent(toPoint(event.x, event.y, false));
 			for(IDragGLSource source : dragSources) {
 				IDragInfo info = source.startSWTDrag(e);
 				if (info != null) {
-					active = new DNDItem(info, source);
+					active = new DnDItem(info, source);
+					active.setMousePos(e.getMousePos());
 					EventPublisher.trigger(new DragItemEvent(readOnly(active), active.source, false)
 							.to(MouseLayer.this));
 					return;
@@ -145,6 +146,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	};
 	private final DropTargetListener drop = new DropTargetListener() {
 		private int acceptDetail;
+		private Vec2f acceptPoint;
 		@Override
 		public void dragEnter(DropTargetEvent event) {
 			IDnDItem item = toItem(event);
@@ -160,17 +162,20 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		public void dropAccept(DropTargetEvent event) {
 			// I don't know why but I need to transfer the method from the accept to the drop
 			acceptDetail = event.detail;
+			acceptPoint = toPoint(event.x, event.y, true);
 		}
 
 		@Override
 		public void drop(DropTargetEvent event) {
 			event.detail = acceptDetail;
-			IDnDItem item = toItem(event);
+			DnDItem item = toItem(event);
 			if (validateDropTarget(event, item)) {
 				if (event.detail == DND.DROP_DEFAULT)
 					event.detail = fromType(activeDropTarget.defaultSWTDnDType(item));
 				// thread switch
-				EventPublisher.trigger(new DropItemEvent(readOnly(item), activeDropTarget, true).to(MouseLayer.this));
+				item.setMousePos(acceptPoint);
+				EventPublisher.trigger(new DropItemEvent(readOnly(item), activeDropTarget, true)
+						.to(MouseLayer.this));
 				activeDropTarget = null;
 			}
 			if (active != null && active.source == null) // cleanup remote
@@ -200,10 +205,11 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		}
 
 		private void itemChanged(DropTargetEvent event) {
-			IDnDItem item = toItem(event);
+			DnDItem item = toItem(event);
 			if (validateDropTarget(event, item)) {
 				if (event.detail == DND.DROP_DEFAULT)
 					event.detail = fromType(activeDropTarget.defaultSWTDnDType(item));
+				item.setMousePos(toPoint(event.x, event.y, true));
 				EventPublisher.trigger(new DropItemEvent(readOnly(item), activeDropTarget, false).to(MouseLayer.this));
 			}
 		}
@@ -251,7 +257,21 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 
 	static IDnDItem readOnly(IDnDItem item) {
-		return new DNDTransferItem(item.getInfo(), item.getType());
+		return new DNDTransferItem(item.getInfo(), item.getType(), item.getMousePos());
+	}
+
+	/**
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	protected Vec2f toPoint(int x, int y, boolean absolute) {
+		if (absolute) {
+			Point p = canvas.asComposite().toControl(x, y);
+			x = p.x;
+			y = p.y;
+		}
+		return canvas.toDIP(new java.awt.Point(x, y));
 	}
 
 	@ListenTo(sendToMe = true)
@@ -259,7 +279,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		IDnDItem item = event.getItem();
 		if (event.isEntering()) {
 			if (!showhideInfo(item.getInfo(), EVisibility.VISIBLE)) {
-				addInfo(item instanceof DNDItem ? ((DNDItem) item).source : null, item);
+				addInfo(item instanceof DnDItem ? ((DnDItem) item).source : null, item);
 			}
 		} else {
 			removeInfo(item.getInfo());
@@ -352,14 +372,14 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	 * @param event
 	 * @return
 	 */
-	protected IDnDItem toItem(DropTargetEvent event) {
-		DNDItem item = null;
+	protected DnDItem toItem(DropTargetEvent event) {
+		DnDItem item = null;
 		if (active != null)
 			item = active;
 		else {
 			IDragInfo info = extract(event);
 			if (info != null)
-				item = active = new DNDItem(info, null);
+				item = active = new DnDItem(info, null);
 		}
 		if (item != null)
 			item.setType(event.detail);
@@ -448,14 +468,31 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		}
 	}
 
-	private static class DNDItem implements IDnDItem {
+	private static class DnDItem implements IDnDItem {
 		private final IDragGLSource source;
 		private final IDragInfo info;
 		private EDnDType type = EDnDType.MOVE;
+		private Vec2f mousePos;
 
-		public DNDItem(IDragInfo info, IDragGLSource source) {
+		public DnDItem(IDragInfo info, IDragGLSource source) {
 			this.info = info;
 			this.source = source;
+		}
+
+		/**
+		 * @param mousePos
+		 *            setter, see {@link mousePos}
+		 */
+		public void setMousePos(Vec2f mousePos) {
+			this.mousePos = mousePos;
+		}
+
+		/**
+		 * @return the mousePos, see {@link #mousePos}
+		 */
+		@Override
+		public Vec2f getMousePos() {
+			return mousePos;
 		}
 
 		/**
@@ -479,10 +516,20 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	private static class DNDTransferItem implements IDnDItem {
 		private final IDragInfo info;
 		private final EDnDType type;
+		private final Vec2f mousePos;
 
-		public DNDTransferItem(IDragInfo info, EDnDType type) {
+		public DNDTransferItem(IDragInfo info, EDnDType type, Vec2f mousePos) {
 			this.info = info;
 			this.type = type;
+			this.mousePos = mousePos;
+		}
+
+		/**
+		 * @return the mousePos, see {@link #mousePos}
+		 */
+		@Override
+		public Vec2f getMousePos() {
+			return mousePos;
 		}
 
 		@Override
@@ -507,7 +554,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		 * @return the offset, see {@link #offset}
 		 */
 		@Override
-		public Vec2f getOffset() {
+		public Vec2f getMousePos() {
 			return offset;
 		}
 	}

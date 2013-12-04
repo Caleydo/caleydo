@@ -20,6 +20,7 @@ public class DropItemEvent extends ADirectedEvent {
 	private final boolean dropping;
 
 	/**
+	 * @param mousePos
 	 * @param active
 	 */
 	public DropItemEvent(IDnDItem item, IDropGLTarget target, boolean dropping) {
