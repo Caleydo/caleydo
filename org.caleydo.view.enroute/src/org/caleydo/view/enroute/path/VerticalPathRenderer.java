@@ -14,12 +14,14 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineEndArrowRenderer;
@@ -265,10 +267,10 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 				bubbleSetEdges.clear();
 				i = 0;
 				for (PathwayVertexRep node : segment){
-					Rectangle2D nodeRect = getVertexRepBounds(node);
+					Rect nodeRect = getVertexRepBounds(node);
 					if (nodeRect != null) {
-						float posx = (float) nodeRect.getCenterX();
-						float posy = -(float) nodeRect.getCenterY() + this.y;
+						float posx = nodeRect.x() + nodeRect.width() / 2f;
+						float posy = -nodeRect.y() - nodeRect.height() / 2f + this.y;
 						// to debug output center as point
 //						 gl.glColor4f(1,0,0,1);
 //						 gl.glPointSize(5);
@@ -276,11 +278,11 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 //						 gl.glVertex3f(posx,posy,5.0f);
 //						 gl.glEnd();
 //						 gl.glPointSize(1);
-						bubbleSetItems.add(new Rectangle2D.Double(posx, posy, nodeRect.getWidth(), nodeRect.getHeight()));
+						bubbleSetItems.add(new Rectangle2D.Double(posx, posy, nodeRect.width(), nodeRect.height()));
 						if (i > 0) {
 							bubbleSetEdges.add(new Line2D.Double(posx, posy, prevRect.getCenterX(), prevRect.getCenterY()));
 						}
-						prevRect.setRect(posx, posy, nodeRect.getWidth(), nodeRect.getHeight());
+						prevRect.setRect(posx, posy, nodeRect.width(), nodeRect.height());
 						i++;
 					}// if
 				} // for(PathwayVertexRep node : segment){
@@ -387,7 +389,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 				float nodePositionY = node.getPosition().y();
 
 				gl.glColor3f(0.95f, 0.95f, 0.95f);
-				gl.glBegin(GL2.GL_QUADS);
+				gl.glBegin(GL2GL3.GL_QUADS);
 
 				gl.glVertex3f(0, nodePositionY - halfBorderWidth, 0);
 				gl.glVertex3f(x, nodePositionY - halfBorderWidth, 0);

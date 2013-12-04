@@ -5,13 +5,14 @@
  ******************************************************************************/
 package org.caleydo.view.pathway.v2.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
-import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.pathway.Activator;
 
 /**
@@ -22,26 +23,80 @@ import org.caleydo.view.pathway.Activator;
  */
 public class PathwayElement extends GLElementContainer {
 
-	protected PathwayGraph pathway;
+	protected APathwayElementRepresentation pathwayRepresentation;
+	protected List<GLElement> backgroundAugmentations = new ArrayList<>();
+	protected List<GLElement> foregroundAugmentations = new ArrayList<>();
 
-	public PathwayElement(PathwayGraph pathway) {
+	public PathwayElement() {
 		super(GLLayouts.LAYERS);
-		setRenderer(GLRenderers.fillRect(new Color(255, 0, 0)));
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		g.pushResourceLocator(Activator.getResourceLocator());
-		super.renderImpl(g, w, h);
+		g.decZ();
+		for (GLElement element : backgroundAugmentations) {
+			element.render(g);
+		}
+		g.incZ();
+		pathwayRepresentation.render(g);
+		g.incZ();
+		for (GLElement element : foregroundAugmentations) {
+			element.render(g);
+		}
+		g.decZ();
+
 		g.popResourceLocator();
 	}
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		g.pushResourceLocator(Activator.getResourceLocator());
-		super.renderPickImpl(g, w, h);
+		g.decZ();
+		for (GLElement element : backgroundAugmentations) {
+			element.renderPick(g);
+		}
+		g.incZ();
+		pathwayRepresentation.renderPick(g);
+		g.incZ();
+		for (GLElement element : foregroundAugmentations) {
+			element.renderPick(g);
+		}
+		g.decZ();
 		g.popResourceLocator();
 	}
 
+	@Override
+	public void layout(int deltaTimeMs) {
+		super.layout(deltaTimeMs);
+	}
+
+	/**
+	 * @param pathwayRepresentation
+	 *            setter, see {@link pathwayRepresentation}
+	 */
+	public void setPathwayRepresentation(APathwayElementRepresentation pathwayRepresentation) {
+		// This should ensure that layout() is called first on the pathway representation so that augmentations always
+		// make use of the correctly laid out pathway representation
+		add(0, pathwayRepresentation);
+		this.pathwayRepresentation = pathwayRepresentation;
+	}
+
+	/**
+	 * @return the pathwayRepresentation, see {@link #pathwayRepresentation}
+	 */
+	public APathwayElementRepresentation getPathwayRepresentation() {
+		return pathwayRepresentation;
+	}
+
+	public void addBackgroundAugmentation(GLElement element) {
+		add(element);
+		backgroundAugmentations.add(element);
+	}
+
+	public void addForegroundAugmentation(GLElement element) {
+		add(element);
+		foregroundAugmentations.add(element);
+	}
 
 }

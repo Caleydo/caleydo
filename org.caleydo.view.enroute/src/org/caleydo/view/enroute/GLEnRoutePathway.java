@@ -5,7 +5,6 @@
  ******************************************************************************/
 package org.caleydo.view.enroute;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -48,6 +47,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -883,14 +883,14 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	@Override
-	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
+	public Rect getVertexRepBounds(PathwayVertexRep vertexRep) {
 		if (pathRenderer != null)
 			return pathRenderer.getVertexRepBounds(vertexRep);
 		return null;
 	}
 
 	@Override
-	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
+	public List<Rect> getVertexRepsBounds(PathwayVertexRep vertexRep) {
 		if (pathRenderer != null)
 			return pathRenderer.getVertexRepsBounds(vertexRep);
 		return null;

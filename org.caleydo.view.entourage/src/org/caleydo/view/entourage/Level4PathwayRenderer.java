@@ -19,13 +19,13 @@
  *******************************************************************************/
 package org.caleydo.view.entourage;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
@@ -79,17 +79,17 @@ public class Level4PathwayRenderer extends ALayoutRenderer implements IPathwayRe
 	}
 
 	@Override
-	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
+	public Rect getVertexRepBounds(PathwayVertexRep vertexRep) {
 		if (pathway.containsVertex(vertexRep))
-			return new Rectangle2D.Float();
+			return new Rect();
 		return null;
 	}
 
 	@Override
-	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
+	public List<Rect> getVertexRepsBounds(PathwayVertexRep vertexRep) {
 		if (pathway.containsVertex(vertexRep)) {
-			List<Rectangle2D> list = new ArrayList<>(1);
-			list.add(new Rectangle2D.Float());
+			List<Rect> list = new ArrayList<>(1);
+			list.add(new Rect());
 			return list;
 		}
 		return null;
