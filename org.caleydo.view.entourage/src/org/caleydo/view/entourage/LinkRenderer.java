@@ -34,6 +34,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -65,14 +66,14 @@ public class LinkRenderer extends PickableGLElement {
 	protected final PathwayVertexRep vertexRep2;
 	protected final GLEntourage view;
 
-	public LinkRenderer(GLEntourage view, boolean drawLink, Rectangle2D loc1, Rectangle2D loc2,
+	public LinkRenderer(GLEntourage view, boolean drawLink, Rect loc1, Rect loc2,
 			PathwayMultiFormInfo info1, PathwayMultiFormInfo info2, float stubSize, boolean isLocation1Window,
 			boolean isLocation2Window, boolean isContextLink, boolean isPathLink, PathwayVertexRep vertexRep1,
 			PathwayVertexRep vertexRep2, ColoredConnectionBandRenderer newBandRenderer) {
 		if (loc1 == null || loc2 == null)
 			throw new InvalidParameterException("One of the specified link locations was null");
-		this.loc1 = loc1;
-		this.loc2 = loc2;
+		this.loc1 = loc1.asRectangle2D();
+		this.loc2 = loc2.asRectangle2D();
 		this.drawLink = drawLink;
 		this.info1 = info1;
 		this.info2 = info2;

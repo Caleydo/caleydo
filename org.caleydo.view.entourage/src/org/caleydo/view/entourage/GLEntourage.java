@@ -53,6 +53,7 @@ import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
@@ -902,15 +903,14 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		return pathwayRepresentation;
 	}
 
-	protected Rectangle2D getAbsoluteVertexLocation(IPathwayRepresentation pathwayRepresentation,
+	protected Rect getAbsoluteVertexLocation(IPathwayRepresentation pathwayRepresentation,
 			PathwayVertexRep vertexRep, GLElement element) {
 
 		Vec2f elementPosition = element.getAbsoluteLocation();
-		Rectangle2D location = pathwayRepresentation.getVertexRepBounds(vertexRep);
+		Rect location = pathwayRepresentation.getVertexRepBounds(vertexRep);
 		if (location != null) {
-			return new Rectangle2D.Float((float) (location.getX() + elementPosition.x()),
-					(float) (location.getY() + elementPosition.y()), (float) location.getWidth(),
-					(float) location.getHeight());
+			return new Rect(location.x() + elementPosition.x(), location.y() + elementPosition.y(), location.width(),
+					location.height());
 			// return new Rectangle2D.Float((elementPosition.x()), (elementPosition.y()), (float) location.getWidth(),
 			// (float) location.getHeight());
 
@@ -1352,11 +1352,11 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 					PathwayMultiFormInfo info2 = getInfo(nodes.get(0));
 					if (pathwayRow.getVisibility() == EVisibility.NONE || info1 == null || info2 == null)
 						continue;
-					Rectangle2D loc1 = getAbsoluteVertexLocation(
+					Rect loc1 = getAbsoluteVertexLocation(
 							getPathwayRepresentation(info1.multiFormRenderer,
 									info1.multiFormRenderer.getActiveRendererID()), lastNodeOfPrevSegment,
 							info1.container);
-					Rectangle2D loc2 = getAbsoluteVertexLocation(
+					Rect loc2 = getAbsoluteVertexLocation(
 							getPathwayRepresentation(info2.multiFormRenderer,
 									info2.multiFormRenderer.getActiveRendererID()), nodes.get(0), info2.container);
 					augmentation.add(new LinkRenderer(this, true, loc1, loc2, info1, info2, 1, false, false, false,
@@ -1382,7 +1382,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			// // addPortalHighlightRenderer(vertexRep, info);
 			// continue;
 			// }
-			Pair<Rectangle2D, Boolean> sourcePair = getPortalLocation(vertexRep, info);
+			Pair<Rect, Boolean> sourcePair = getPortalLocation(vertexRep, info);
 			for (PathwayMultiFormInfo i : pathwayInfos) {
 				if (info != i) {
 					// boolean wasLinkAdded = false;
@@ -1465,7 +1465,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	}
 
 	private boolean addLinkRenderers(PathwayVertexRep vertexRep, PathwayMultiFormInfo sourceInfo,
-			PathwayMultiFormInfo targetInfo, Pair<Rectangle2D, Boolean> sourcePair) {
+			PathwayMultiFormInfo targetInfo, Pair<Rect, Boolean> sourcePair) {
 		boolean isContextPortal = PathwayManager.get().areVerticesEquivalent(vertexRep, currentContextVertexRep);
 		if (!isShowPortals && !isContextPortal)
 			return false;
@@ -1478,7 +1478,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			if (isPathLink(vertexRep, v) || pathwayRow.getVisibility() == EVisibility.NONE)
 				continue;
 
-			Pair<Rectangle2D, Boolean> targetPair = getPortalLocation(v, targetInfo);
+			Pair<Rect, Boolean> targetPair = getPortalLocation(v, targetInfo);
 
 			// System.out.println("Add link from: " + vertexRep.getShortName() + " to " + v.getShortName() + "("
 			// + sourceLocation + " to " + targetLocation + ")");
@@ -1522,8 +1522,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		return false;
 	}
 
-	protected Pair<Rectangle2D, Boolean> getPortalLocation(PathwayVertexRep vertexRep, PathwayMultiFormInfo info) {
-		Rectangle2D rect = null;
+	protected Pair<Rect, Boolean> getPortalLocation(PathwayVertexRep vertexRep, PathwayMultiFormInfo info) {
+		Rect rect = null;
 		boolean isLocationWindow = false;
 		IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
 				info.multiFormRenderer.getActiveRendererID());
@@ -1531,11 +1531,11 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			rect = getAbsoluteVertexLocation(pathwayRepresentation, vertexRep, info.container);
 
 		if (rect == null || info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL4) {
-			rect = new Rectangle2D.Float(info.window.getAbsoluteLocation().x(), info.window.getAbsoluteLocation().y(),
+			rect = new Rect(info.window.getAbsoluteLocation().x(), info.window.getAbsoluteLocation().y(),
 					info.window.getSize().x(), 20);
 			isLocationWindow = true;
 		}
-		return new Pair<Rectangle2D, Boolean>(rect, isLocationWindow);
+		return new Pair<Rect, Boolean>(rect, isLocationWindow);
 	}
 
 	@Override

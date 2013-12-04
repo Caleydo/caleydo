@@ -143,4 +143,11 @@ public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEd
 		}
 	}
 
+	/**
+	 * @return the image, see {@link #image}
+	 */
+	public File getImage() {
+		return image;
+	}
+
 }

@@ -5,9 +5,9 @@
  ******************************************************************************/
 package org.caleydo.datadomain.pathway;
 
-import java.awt.geom.Rectangle2D;
 import java.util.List;
 
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -44,7 +44,7 @@ public interface IPathwayRepresentation {
 	 * @param vertexRep
 	 * @return The location of the specified vertexRep or null, if the vertexRep does not exist.
 	 */
-	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep);
+	public Rect getVertexRepBounds(PathwayVertexRep vertexRep);
 
 	/**
 	 * Gets all locations of the specified vertexRep as rectangles. The coordinates are specified in pixels with the
@@ -53,7 +53,7 @@ public interface IPathwayRepresentation {
 	 * @param vertexRep
 	 * @return The locations of the specified vertexRep or null, if the vertexRep does not exist.
 	 */
-	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep);
+	public List<Rect> getVertexRepsBounds(PathwayVertexRep vertexRep);
 
 	/**
 	 * Adds the specified context menu item to the context menu of all vertexReps in this pathway. The selected

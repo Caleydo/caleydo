@@ -7,7 +7,6 @@ package org.caleydo.view.enroute.path;
 
 import gleem.linalg.Vec3f;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,6 +29,7 @@ import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -913,11 +913,11 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	}
 
 	@Override
-	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
+	public Rect getVertexRepBounds(PathwayVertexRep vertexRep) {
 		for (ALinearizableNode node : pathNodes) {
 			for (PathwayVertexRep vertexRepOfNode : node.getVertexReps()) {
 				if (vertexRepOfNode == vertexRep) {
-					Rectangle2D bounds = getLeftTopAlignedNodeBounds(node);
+					Rect bounds = getLeftTopAlignedNodeBounds(node);
 					if (bounds != null)
 						return bounds;
 				}
@@ -926,7 +926,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		return null;
 	}
 
-	protected Rectangle2D getLeftTopAlignedNodeBounds(ALinearizableNode node) {
+	protected Rect getLeftTopAlignedNodeBounds(ALinearizableNode node) {
 		Vec3f glNodePosition = node.getPosition();
 		if (glNodePosition == null)
 			return null;
@@ -935,17 +935,17 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		int posY = pixelGLConverter.getPixelHeightForGLHeight(y - glNodePosition.y())
 				- (int) (node.getHeightPixels() / 2.0f);
 
-		return new Rectangle2D.Float(posX, posY, node.getWidthPixels(), node.getHeightPixels());
+		return new Rect(posX, posY, node.getWidthPixels(), node.getHeightPixels());
 	}
 
 	@Override
-	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
-		List<Rectangle2D> boundsList = new ArrayList<>();
+	public List<Rect> getVertexRepsBounds(PathwayVertexRep vertexRep) {
+		List<Rect> boundsList = new ArrayList<>();
 
 		for (ALinearizableNode node : pathNodes) {
 			for (PathwayVertexRep vertexRepOfNode : node.getVertexReps()) {
 				if (vertexRepOfNode == vertexRep) {
-					Rectangle2D bounds = getLeftTopAlignedNodeBounds(node);
+					Rect bounds = getLeftTopAlignedNodeBounds(node);
 					if (bounds != null)
 						boundsList.add(bounds);
 				}

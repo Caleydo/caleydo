@@ -19,11 +19,10 @@
  *******************************************************************************/
 package org.caleydo.view.entourage;
 
-import java.awt.geom.Rectangle2D;
-
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
@@ -32,13 +31,13 @@ import org.caleydo.core.view.opengl.picking.Pick;
  */
 public class PortalHighlightRenderer extends PickableGLElement {
 
-	private final Rectangle2D location;
+	private final Rect location;
 	private final GLPathwayWindow window;
 
 	/**
 	 *
 	 */
-	public PortalHighlightRenderer(Rectangle2D location, GLPathwayWindow window) {
+	public PortalHighlightRenderer(Rect location, GLPathwayWindow window) {
 		this.location = location;
 		this.window = window;
 	}
@@ -48,9 +47,8 @@ public class PortalHighlightRenderer extends PickableGLElement {
 		g.incZ(0.5f);
 		g.color(PortalRenderStyle.CONTEXT_PORTAL_COLOR)
 				.lineWidth(2)
-				.drawRoundedRect((float) location.getX() + 1, (float) location.getY() + 1,
-						(float) location.getWidth() + 1, (float) location.getHeight() + 1,
-						(float) location.getHeight() / 5.0f);
+				.drawRoundedRect(location.x() + 1, location.y() + 1, location.width() + 1, location.height() + 1,
+						location.height() / 5.0f);
 		g.lineWidth(1);
 		g.incZ(-0.5f);
 	}
@@ -58,8 +56,7 @@ public class PortalHighlightRenderer extends PickableGLElement {
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		g.incZ(0.5f);
-		g.fillRect((float) location.getX() + 1, (float) location.getY() + 1, (float) location.getWidth() + 1,
-				(float) location.getHeight() + 1);
+		g.fillRect(location.x() + 1, location.y() + 1, location.width() + 1, location.height() + 1);
 		g.lineWidth(1);
 		g.incZ(-0.5f);
 	}

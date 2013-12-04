@@ -5,7 +5,6 @@
  ******************************************************************************/
 package org.caleydo.view.enroute.path;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -42,6 +41,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
@@ -177,9 +177,9 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	}
 
 	@Override
-	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
+	public Rect getVertexRepBounds(PathwayVertexRep vertexRep) {
 		if (selectedPathRenderer != null) {
-			Rectangle2D bounds = getAbsolutePosition(selectedPathRenderer.getVertexRepBounds(vertexRep),
+			Rect bounds = getAbsolutePosition(selectedPathRenderer.getVertexRepBounds(vertexRep),
 					renderers.get(selectedPathRenderer));
 			if (bounds != null)
 				return bounds;
@@ -187,29 +187,29 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		for (Entry<APathwayPathRenderer, ElementLayout> entry : renderers.entrySet()) {
 			APathwayPathRenderer renderer = entry.getKey();
 			ElementLayout layout = entry.getValue();
-			Rectangle2D bounds = getAbsolutePosition(renderer.getVertexRepBounds(vertexRep), layout);
+			Rect bounds = getAbsolutePosition(renderer.getVertexRepBounds(vertexRep), layout);
 			if (bounds != null)
 				return bounds;
 		}
 		return null;
 	}
 
-	protected Rectangle2D getAbsolutePosition(Rectangle2D rect, ElementLayout layout) {
+	protected Rect getAbsolutePosition(Rect rect, ElementLayout layout) {
 		if (rect == null || layout == null)
 			return null;
-		return new Rectangle2D.Float(layout.getTranslateX() + (float) rect.getMinX(), y - layout.getTranslateY()
-				- layout.getSizeScaledY() + (float) rect.getMinY(), (float) rect.getWidth(), (float) rect.getHeight());
+		return new Rect(layout.getTranslateX() + rect.x(), y - layout.getTranslateY() - layout.getSizeScaledY()
+				+ rect.y(), rect.width(), rect.height());
 	}
 
 	@Override
-	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
-		List<Rectangle2D> allBounds = new ArrayList<>();
+	public List<Rect> getVertexRepsBounds(PathwayVertexRep vertexRep) {
+		List<Rect> allBounds = new ArrayList<>();
 
 		for (Entry<APathwayPathRenderer, ElementLayout> entry : renderers.entrySet()) {
 			APathwayPathRenderer renderer = entry.getKey();
 			ElementLayout layout = entry.getValue();
-			for (Rectangle2D bounds : renderer.getVertexRepsBounds(vertexRep)) {
-				Rectangle2D absoluteBounds = getAbsolutePosition(bounds, layout);
+			for (Rect bounds : renderer.getVertexRepsBounds(vertexRep)) {
+				Rect absoluteBounds = getAbsolutePosition(bounds, layout);
 				if (absoluteBounds != null)
 					allBounds.add(absoluteBounds);
 			}

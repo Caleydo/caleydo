@@ -5,7 +5,6 @@
  ******************************************************************************/
 package org.caleydo.view.enroute.path;
 
-import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -15,6 +14,7 @@ import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -213,17 +213,17 @@ public abstract class APathwayPathRendererDecorator extends APathwayPathRenderer
 	}
 
 	@Override
-	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
+	public Rect getVertexRepBounds(PathwayVertexRep vertexRep) {
 		return decoratee.getVertexRepBounds(vertexRep);
 	}
 
 	@Override
-	protected Rectangle2D getLeftTopAlignedNodeBounds(ALinearizableNode node) {
+	protected Rect getLeftTopAlignedNodeBounds(ALinearizableNode node) {
 		return decoratee.getLeftTopAlignedNodeBounds(node);
 	}
 
 	@Override
-	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
+	public List<Rect> getVertexRepsBounds(PathwayVertexRep vertexRep) {
 		return decoratee.getVertexRepsBounds(vertexRep);
 	}
 

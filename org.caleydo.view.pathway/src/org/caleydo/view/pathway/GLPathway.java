@@ -8,7 +8,6 @@ package org.caleydo.view.pathway;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
-import java.awt.geom.Rectangle2D;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -67,6 +66,7 @@ import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.Units;
 import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
@@ -1150,7 +1150,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		}
 
 		// Center pathway in y direction
-		if (pathwayHeight < viewFrustumWidth) {
+		if (pathwayHeight < viewFrustumHeight) {
 			vecTranslation.setY((viewFrustumHeight - pathwayHeight) / 2.0f);
 		}
 	}
@@ -1905,7 +1905,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	}
 
 	@Override
-	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
+	public Rect getVertexRepBounds(PathwayVertexRep vertexRep) {
 		if (vecTranslation == null || vecScaling == null || vertexRep.getPathway() != getPathway())
 			return null;
 		int x = pixelGLConverter.getPixelWidthForGLWidth(vecTranslation.x() + vecScaling.x()
@@ -1918,13 +1918,13 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				* pixelGLConverter.getGLWidthForPixelWidth(vertexRep.getWidth()));
 		int height = pixelGLConverter.getPixelHeightForGLHeight(vecScaling.y()
 				* pixelGLConverter.getGLHeightForPixelHeight(vertexRep.getHeight()));
-		return new Rectangle2D.Float(x, y, width, height);
+		return new Rect(x, y, width, height);
 	}
 
 	@Override
-	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
-		List<Rectangle2D> pathways = new ArrayList<>(1);
-		Rectangle2D location = getVertexRepBounds(vertexRep);
+	public List<Rect> getVertexRepsBounds(PathwayVertexRep vertexRep) {
+		List<Rect> pathways = new ArrayList<>(1);
+		Rect location = getVertexRepBounds(vertexRep);
 		if (location != null)
 			pathways.add(location);
 		return null;
