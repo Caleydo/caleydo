@@ -110,7 +110,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 				// check if possible
 				IDragInfo info = source.startSWTDrag(e);
 				if (info != null) { // if so
-					active = new DnDItem(info, source);
+					active = new DnDItem(info, source, true);
 					active.setMousePos(e.getMousePos());
 					EventPublisher.trigger(new DragItemEvent(readOnly(active), active.source, false)
 							.to(MouseLayer.this));
@@ -268,7 +268,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 
 	static IDnDItem readOnly(IDnDItem item) {
-		return new DNDReadOnlyItem(item.getInfo(), item.getType(), item.getMousePos());
+		return new DNDReadOnlyItem(item);
 	}
 
 	/**
@@ -392,7 +392,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 			// really extract the data
 			IDragInfo info = extract(event);
 			if (info != null)
-				item = active = new DnDItem(info, null);
+				item = active = new DnDItem(info, null, false);
 		}
 		if (item != null) // update type
 			item.setType(event.detail);
@@ -401,7 +401,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 	/**
 	 * extract really from the event data a {@link IDragInfo}
-	 * 
+	 *
 	 * @param event
 	 * @return
 	 */
@@ -490,12 +490,22 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	private static class DnDItem implements IDnDItem {
 		private final IDragGLSource source;
 		private final IDragInfo info;
+		private final boolean isInternal;
 		private EDnDType type = EDnDType.MOVE;
 		private Vec2f mousePos;
 
-		public DnDItem(IDragInfo info, IDragGLSource source) {
+		public DnDItem(IDragInfo info, IDragGLSource source, boolean isInternal) {
 			this.info = info;
 			this.source = source;
+			this.isInternal = isInternal;
+		}
+
+		/**
+		 * @return the isInternal, see {@link #isInternal}
+		 */
+		@Override
+		public boolean isInternal() {
+			return isInternal;
 		}
 
 		/**
@@ -536,11 +546,21 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		private final IDragInfo info;
 		private final EDnDType type;
 		private final Vec2f mousePos;
+		private final boolean isInternal;
 
-		public DNDReadOnlyItem(IDragInfo info, EDnDType type, Vec2f mousePos) {
-			this.info = info;
-			this.type = type;
-			this.mousePos = mousePos;
+		public DNDReadOnlyItem(IDnDItem clone) {
+			this.info = clone.getInfo();
+			this.type = clone.getType();
+			this.mousePos = clone.getMousePos();
+			this.isInternal = clone.isInternal();
+		}
+
+		/**
+		 * @return the isInternal, see {@link #isInternal}
+		 */
+		@Override
+		public boolean isInternal() {
+			return isInternal;
 		}
 
 		/**
