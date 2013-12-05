@@ -5,17 +5,21 @@
  *******************************************************************************/
 package org.caleydo.view.histogram.v2.internal;
 
+
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
 import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
 import org.caleydo.view.histogram.v2.BoxAndWhiskersElement;
 import org.caleydo.view.histogram.v2.BoxAndWhiskersMultiElement;
+import org.caleydo.view.histogram.v2.ListBoxAndWhiskersElement;
 
 /**
  * element factory for creating average bars
@@ -31,27 +35,44 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory {
 
 	@Override
 	public boolean apply(GLElementFactoryContext context) {
-		TablePerspective data = context.getData();
-		return DataSupportDefinitions.dataClass(EDataClass.REAL_NUMBER, EDataClass.NATURAL_NUMBER).apply(data);
+		// 1. table perspective data
+		if (DataSupportDefinitions.dataClass(EDataClass.REAL_NUMBER, EDataClass.NATURAL_NUMBER)
+				.apply(context.getData()))
+			return true;
+		// 2. double list
+		if (context.get(IDoubleList.class, null) != null)
+			return true;
+		return false;
 	}
 
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
-		TablePerspective data = context.getData();
 		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
 
 		boolean showOutliers = context.is("showOutliers");
 		EDimension split = context.get("splitGroups", EDimension.class, null);
 		EDimension direction = context.get("direction", EDimension.class, EDimension.RECORD);
-		if ((split == EDimension.DIMENSION && getGroupsSize(data.getDimensionPerspective()) > 1)
-				|| (split == EDimension.RECORD && getGroupsSize(data.getRecordPerspective()) > 1)) {
-			BoxAndWhiskersMultiElement b = new BoxAndWhiskersMultiElement(data, detailLevel, split, showOutliers);
-			b.setShowScale(context.is("showScale"));
-			return b;
+
+		boolean showScale = context.is("showScale");
+
+		if (context.getData() != null) {
+			TablePerspective data = context.getData();
+			if ((split == EDimension.DIMENSION && getGroupsSize(data.getDimensionPerspective()) > 1)
+					|| (split == EDimension.RECORD && getGroupsSize(data.getRecordPerspective()) > 1)) {
+				BoxAndWhiskersMultiElement b = new BoxAndWhiskersMultiElement(data, detailLevel, split, showOutliers);
+				b.setShowScale(showScale);
+				return b;
+			} else {
+				BoxAndWhiskersElement b = new BoxAndWhiskersElement(data, detailLevel, direction, showOutliers);
+				b.setShowScale(showScale);
+				return b;
+			}
 		} else {
-			BoxAndWhiskersElement b = new BoxAndWhiskersElement(data, detailLevel, direction, showOutliers);
-			b.setShowScale(context.is("showScale"));
-			return b;
+			IDoubleList list = context.get(IDoubleList.class, null);
+			assert list != null;
+
+			return new ListBoxAndWhiskersElement(list, detailLevel, direction, showOutliers, context.get("label",
+					String.class, "<Unnamed>"), context.get("color", Color.class, Color.LIGHT_GRAY));
 		}
 	}
 
