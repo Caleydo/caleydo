@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -27,8 +28,15 @@ public class PathwayElement extends GLElementContainer {
 	protected List<GLElement> backgroundAugmentations = new ArrayList<>();
 	protected List<GLElement> foregroundAugmentations = new ArrayList<>();
 
-	public PathwayElement() {
+	@DeepScan
+	protected PathwayMappingHandler mappingHandler;
+	protected String eventSpace;
+
+	public PathwayElement(String eventSpace) {
 		super(GLLayouts.LAYERS);
+		this.eventSpace = eventSpace;
+		mappingHandler = new PathwayMappingHandler();
+		mappingHandler.setEventSpace(eventSpace);
 	}
 
 	@Override
@@ -80,6 +88,7 @@ public class PathwayElement extends GLElementContainer {
 		// make use of the correctly laid out pathway representation
 		add(0, pathwayRepresentation);
 		this.pathwayRepresentation = pathwayRepresentation;
+		mappingHandler.setPathwayRepersentation(pathwayRepresentation);
 	}
 
 	/**
@@ -97,6 +106,19 @@ public class PathwayElement extends GLElementContainer {
 	public void addForegroundAugmentation(GLElement element) {
 		add(element);
 		foregroundAugmentations.add(element);
+	}
+
+	/**
+	 * @return the mappingHandler, see {@link #mappingHandler}
+	 */
+	public PathwayMappingHandler getMappingHandler() {
+		return mappingHandler;
+	}
+
+	@Override
+	protected void takeDown() {
+		mappingHandler.takeDown();
+		super.takeDown();
 	}
 
 }

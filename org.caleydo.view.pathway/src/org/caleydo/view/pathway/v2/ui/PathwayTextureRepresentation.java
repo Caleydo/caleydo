@@ -34,7 +34,7 @@ import com.jogamp.opengl.util.glsl.ShaderUtil;
  * @author Christian
  *
  */
-public class PathwayTextureRenderer extends APathwayElementRepresentation {
+public class PathwayTextureRepresentation extends APathwayElementRepresentation {
 
 	protected PathwayGraph pathway;
 
@@ -45,10 +45,10 @@ public class PathwayTextureRenderer extends APathwayElementRepresentation {
 	protected Vec2f origin = new Vec2f();
 	protected Vec2f scaling = new Vec2f();
 
-	public PathwayTextureRenderer() {
+	public PathwayTextureRepresentation() {
 	}
 
-	public PathwayTextureRenderer(PathwayGraph pathway) {
+	public PathwayTextureRepresentation(PathwayGraph pathway) {
 		this.pathway = pathway;
 	}
 

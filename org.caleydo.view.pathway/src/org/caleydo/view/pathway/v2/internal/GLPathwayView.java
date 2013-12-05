@@ -22,7 +22,9 @@ import org.caleydo.view.pathway.v2.internal.serial.SerializedPathwayView;
 import org.caleydo.view.pathway.v2.ui.AverageColorMappingAugmentation;
 import org.caleydo.view.pathway.v2.ui.MultiMappingIndicatorAugmentation;
 import org.caleydo.view.pathway.v2.ui.PathwayElement;
-import org.caleydo.view.pathway.v2.ui.PathwayTextureRenderer;
+import org.caleydo.view.pathway.v2.ui.PathwayMappingHandler;
+import org.caleydo.view.pathway.v2.ui.PathwayTextureRepresentation;
+import org.caleydo.view.pathway.v2.ui.StdDevBarAugmentation;
 
 /**
  *
@@ -35,20 +37,25 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 
 	public static final Logger log = Logger.create(GLPathwayView.class);
 
-	private PathwayElement pathwayElement = new PathwayElement();
+	private PathwayElement pathwayElement;
 
 	private String eventSpace = EventPublisher.INSTANCE.createUniqueEventSpace();
 
 	public GLPathwayView(IGLCanvas glCanvas) {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
-		pathwayElement.setPathwayRepresentation(new PathwayTextureRenderer(PathwayManager.get().getPathwayByTitle(
-				"Glioma", EPathwayDatabaseType.KEGG)));
+		pathwayElement = new PathwayElement(eventSpace);
+		pathwayElement.setPathwayRepresentation(new PathwayTextureRepresentation(PathwayManager.get()
+				.getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG)));
+		PathwayMappingHandler pathwayMappingHandler = new PathwayMappingHandler();
+		pathwayMappingHandler.setEventSpace(eventSpace);
+
 		AverageColorMappingAugmentation colorMappingAugmentation = new AverageColorMappingAugmentation(
-				pathwayElement.getPathwayRepresentation());
-		colorMappingAugmentation.setEventSpace(eventSpace);
+				pathwayElement.getPathwayRepresentation(), pathwayElement.getMappingHandler());
 		pathwayElement.addBackgroundAugmentation(colorMappingAugmentation);
 		pathwayElement.addBackgroundAugmentation(new MultiMappingIndicatorAugmentation(pathwayElement
 				.getPathwayRepresentation()));
+		pathwayElement.addForegroundAugmentation(new StdDevBarAugmentation(pathwayElement.getPathwayRepresentation(),
+				pathwayElement.getMappingHandler()));
 	}
 
 	@Override
