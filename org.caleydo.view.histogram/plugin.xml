@@ -239,11 +239,6 @@
             name="Histogram">
       </factory>
       <factory
-            factory="org.caleydo.view.histogram.v2.internal.AverageBarElementFactory"
-            icon="resources/icons/chart_averagebar.png"
-            name="Average Bar">
-      </factory>
-      <factory
             factory="org.caleydo.view.histogram.v2.internal.DistributionBarElementFactory"
             icon="resources/icons/chart_distribution.png"
             name="Distribution (Bar)">
