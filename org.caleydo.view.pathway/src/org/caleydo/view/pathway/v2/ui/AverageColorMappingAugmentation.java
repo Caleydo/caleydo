@@ -23,11 +23,9 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.ESampleMappingMode;
@@ -38,57 +36,38 @@ import org.caleydo.datadomain.pathway.listener.SampleMappingModeEvent;
  * @author Christian
  *
  */
-public class AverageColorMappingAugmentation extends GLElement implements IEventBasedSelectionManagerUser {
+public class AverageColorMappingAugmentation extends APerVertexAugmentation implements IEventBasedSelectionManagerUser {
 
-	protected static final int NO_MAPPING_ICON_SIZE = 8;
 	protected static final Color NO_MAPPING_ICON_COLOR = new Color(0.3f, 0.3f, 0.3f, 0.7f);
 
-	protected APathwayElementRepresentation pathwayRepresentation;
 	protected TablePerspective mappingPerspective;
 	protected ESampleMappingMode sampleMappingMode = ESampleMappingMode.ALL;
 	protected String eventSpace;
 	protected EventBasedSelectionManager sampleSelectionManager;
 
 	public AverageColorMappingAugmentation(APathwayElementRepresentation pathwayRepresentation) {
-		this.pathwayRepresentation = pathwayRepresentation;
+		super(pathwayRepresentation);
 	}
 
 	@Override
-	protected void renderImpl(GLGraphics g, float w, float h) {
-		if (mappingPerspective == null)
+	protected void renderVertexAugmentation(GLGraphics g, float w, float h, PathwayVertexRep vertexRep, Rect bounds) {
+		if (mappingPerspective == null || vertexRep.getType() != EPathwayVertexType.gene)
 			return;
 
-		List<PathwayGraph> pathways = pathwayRepresentation.getPathways();
-		for (PathwayGraph pathway : pathways) {
-			for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
-				if (vertexRep.getType() == EPathwayVertexType.gene) {
-					List<Rect> boundsList = pathwayRepresentation.getVertexRepsBounds(vertexRep);
-					for (Rect bounds : boundsList) {
-						Average avg = getAverageMapping(vertexRep);
+		Average avg = getAverageMapping(vertexRep);
 
-						// g.color(1f, 0f, 0f).fillRect(bounds.x(), bounds.y(), bounds.width(), bounds.height());
-						if (avg != null) {
-							g.color(mappingPerspective.getDataDomain().getTable().getColorMapper()
-									.getColor((float) avg.getArithmeticMean()));
-							g.fillRect(bounds.x(), bounds.y(), bounds.width(), bounds.height());
-						} else {
-							float size = bounds.height() * 0.5f;
-							g.color(NO_MAPPING_ICON_COLOR).fillRect(bounds.x() + bounds.width() - size,
-									bounds.y() + bounds.height() - size, size, size);
-						}
-					}
-				}
-			}
+		// g.color(1f, 0f, 0f).fillRect(bounds.x(), bounds.y(), bounds.width(), bounds.height());
+		if (avg != null) {
+			g.color(mappingPerspective.getDataDomain().getTable().getColorMapper()
+					.getColor((float) avg.getArithmeticMean()));
+			g.fillRect(bounds.x(), bounds.y(), bounds.width(), bounds.height());
+		} else {
+			float size = bounds.height() * 0.5f;
+			g.color(NO_MAPPING_ICON_COLOR).fillRect(bounds.x() + bounds.width() - size,
+					bounds.y() + bounds.height() - size, size, size);
 		}
 	}
 
-	/**
-	 * Calculates the average value of the selected samples (taken from {@link #selectedSamplesVA}) selectedSamplesVA.
-	 *
-	 *
-	 * @param vertexRep
-	 * @return
-	 */
 	private Average getAverageMapping(PathwayVertexRep vertexRep) {
 
 		if (mappingPerspective == null)
@@ -125,7 +104,7 @@ public class AverageColorMappingAugmentation extends GLElement implements IEvent
 
 	@ListenTo
 	public void onMapTablePerspective(PathwayMappingEvent event) {
-		if (event.getEventSpace().equals(eventSpace)) {
+		if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
 			setMappingPerspective(event.getTablePerspective());
 		}
 	}
@@ -207,8 +186,10 @@ public class AverageColorMappingAugmentation extends GLElement implements IEvent
 
 	@Override
 	protected void takeDown() {
-		sampleSelectionManager.unregisterEventListeners();
-		sampleSelectionManager = null;
+		if (sampleSelectionManager != null) {
+			sampleSelectionManager.unregisterEventListeners();
+			sampleSelectionManager = null;
+		}
 		super.takeDown();
 	}
 
