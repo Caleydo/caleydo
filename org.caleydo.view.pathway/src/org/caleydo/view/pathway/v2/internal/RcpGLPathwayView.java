@@ -9,6 +9,8 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.view.ARcpGLElementViewPart;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout2.AGLElementView;
+import org.caleydo.datadomain.pathway.listener.ESampleMappingMode;
+import org.caleydo.datadomain.pathway.toolbar.SampleSelectionMode;
 import org.caleydo.view.pathway.toolbar.DatasetSelectionBox;
 import org.caleydo.view.pathway.v2.internal.serial.SerializedPathwayView;
 import org.eclipse.jface.action.IToolBarManager;
@@ -31,6 +33,8 @@ public class RcpGLPathwayView extends ARcpGLElementViewPart {
 
 	@Override
 	protected void addToolBarContent(IToolBarManager toolBarManager) {
+		SampleSelectionMode sampleSelectionMode = new SampleSelectionMode(ESampleMappingMode.ALL);
+		toolBarManager.add(sampleSelectionMode);
 		DatasetSelectionBox dataSelectionBox = new DatasetSelectionBox(DataDomainManager.get().getDataDomainByID(
 				((SerializedPathwayView) serializedView).getDataDomainID()), ((GLPathwayView) view).getEventSpace());
 		toolBarManager.add(dataSelectionBox);

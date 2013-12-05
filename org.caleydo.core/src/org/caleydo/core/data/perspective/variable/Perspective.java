@@ -394,19 +394,7 @@ public class Perspective implements IDefaultLabelHolder {
 		// virtualArray.setGroupList(null);
 	}
 
-	/**
-	 * <p>
-	 * {@link Perspective}s are initialized by providing a {@link PerspectiveInitializationData} object, which can
-	 * contain a number of different combinations of information to initialize the perspective.
-	 * </p>
-	 * <p>
-	 * If null is passed, an empty perspective is created.
-	 * </p>
-	 *
-	 * @param data
-	 */
-	public void init(PerspectiveInitializationData data) {
-
+	public void init(PerspectiveInitializationData data, boolean createDefaultTree) {
 		if (data != null && data.getLabel() != null) {
 			setLabel(data.getLabel(), false);
 		}
@@ -435,11 +423,27 @@ public class Perspective implements IDefaultLabelHolder {
 		else if (data.getVirtualArray() != null) {
 			virtualArray = data.getVirtualArray();
 			virtualArray.setIdType(idType);
-			createDefaultTreeFromGroupList();
+			if (createDefaultTree)
+				createDefaultTreeFromGroupList();
 		} else {
 			throw new IllegalStateException("Cannot initialize from " + data
 					+ " either redundant or to little information.");
 		}
+	}
+
+	/**
+	 * <p>
+	 * {@link Perspective}s are initialized by providing a {@link PerspectiveInitializationData} object, which can
+	 * contain a number of different combinations of information to initialize the perspective.
+	 * </p>
+	 * <p>
+	 * If null is passed, an empty perspective is created.
+	 * </p>
+	 *
+	 * @param data
+	 */
+	public void init(PerspectiveInitializationData data) {
+		init(data, true);
 	}
 
 	public void setVADelta(VirtualArrayDelta delta) {
