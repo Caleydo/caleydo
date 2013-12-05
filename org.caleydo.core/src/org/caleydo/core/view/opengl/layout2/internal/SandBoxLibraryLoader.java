@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.net.URL;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.SystemUtils;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
@@ -21,6 +22,8 @@ public final class SandBoxLibraryLoader {
 	public static File toTemporaryFile(String libName) throws IOException {
 		// convert to native library name
 		libName = System.mapLibraryName(libName);
+		if (SystemUtils.IS_OS_MAC_OSX)
+			StringUtils.replace(libName, ".dylib", ".jnilib");
 
 		// create
 		String extension = Files.getFileExtension(libName);
