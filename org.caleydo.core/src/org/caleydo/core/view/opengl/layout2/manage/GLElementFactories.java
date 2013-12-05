@@ -212,7 +212,7 @@ public final class GLElementFactories {
 			// not explicitly included by myself
 			if (!includes.isEmpty() && !includes.contains(callerId))
 				return false;
-			return factory.canCreate(context.sub(id));
+			return factory.apply(context.sub(id));
 		}
 
 		public GLElement create(GLElementFactoryContext context) {

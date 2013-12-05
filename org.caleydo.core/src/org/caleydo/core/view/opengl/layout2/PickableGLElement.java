@@ -131,6 +131,9 @@ public class PickableGLElement extends GLElement {
 		case MOUSE_WHEEL:
 			onMouseWheel(pick);
 			break;
+		case DRAG_DETECTED:
+			onDragDetected(pick);
+			break;
 		}
 
 	}
@@ -166,6 +169,10 @@ public class PickableGLElement extends GLElement {
 	}
 
 	protected void onMouseWheel(Pick pick) {
+
+	}
+
+	protected void onDragDetected(Pick pick) {
 
 	}
 }

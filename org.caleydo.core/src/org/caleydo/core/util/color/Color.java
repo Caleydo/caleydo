@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.util.color;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -18,7 +20,8 @@ import org.eclipse.swt.graphics.RGB;
  * @author Christian Partl
  */
 @XmlType
-public class Color implements Cloneable {
+public class Color implements Cloneable, Serializable {
+	private static final long serialVersionUID = -7784055361430776024L;
 
 	public static final Color TRANSPARENT = new Color(1f, 1, 1, 0);
 	public static final Color RED = new Color(1f, 0, 0, 1);
@@ -58,7 +61,7 @@ public class Color implements Cloneable {
 	@XmlElement
 	public float a;
 
-	private int[] intColor = null;
+	private transient int[] intColor = null;
 
 	private static final float colorDepth = 255;
 
@@ -327,7 +330,7 @@ public class Color implements Cloneable {
 
 	/**
 	 * convert this color to SWT {@link RGB}
-	 * 
+	 *
 	 * @return
 	 */
 	public RGB asRGB() {

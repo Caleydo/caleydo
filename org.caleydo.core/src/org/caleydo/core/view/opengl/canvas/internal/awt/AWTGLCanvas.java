@@ -12,6 +12,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.media.opengl.GLAutoDrawable;
@@ -81,6 +84,16 @@ final class AWTGLCanvas extends AGLCanvas {
 		canvas.addMouseWheelListener(adapter);
 	}
 
+	@Override
+	protected Iterator<IGLMouseListener> mouseListeners() {
+		Collection<IGLMouseListener> r = new ArrayList<>();
+		for (MouseListener l : canvas.getMouseListeners()) {
+			if (l instanceof AWTMouseAdapter) {
+				r.add(((AWTMouseAdapter) l).getListener());
+			}
+		}
+		return r.iterator();
+	}
 
 	@Override
 	public void removeMouseListener(IGLMouseListener listener) {

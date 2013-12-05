@@ -92,7 +92,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 		IResourceLocator locator = createLocator();
 		this.local = new GLContextLocal(this.getTextRenderer(), this.getTextureManager(), locator);
 
-		this.root = new WindowGLElement(createRoot());
+		this.root = new WindowGLElement(createRoot(), getParentGLCanvas());
 
 		this.root.setParent(this);
 		this.root.init(this);

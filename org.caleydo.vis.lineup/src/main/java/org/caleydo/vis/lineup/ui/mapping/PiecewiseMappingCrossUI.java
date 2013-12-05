@@ -353,7 +353,7 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 		}
 
 		@Override
-		protected void onClicked(Pick pick) {
+		protected void onDragDetected(Pick pick) {
 			pick.setDoDragging(true);
 		}
 

@@ -124,7 +124,7 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 				toggleCollapsed();
 			}
 			break;
-		case CLICKED:
+		case DRAG_DETECTED:
 			pick.setDoDragging(true);
 			break;
 		case MOUSE_OUT:
@@ -249,7 +249,7 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		}
 
 		@Override
-		protected void onClicked(Pick pick) {
+		protected void onDragDetected(Pick pick) {
 			if (pick.isAnyDragging())
 				return;
 			pick.setDoDragging(true);

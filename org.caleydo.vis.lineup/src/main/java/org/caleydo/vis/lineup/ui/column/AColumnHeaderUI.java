@@ -17,7 +17,6 @@ import java.util.Objects;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.base.ILabeled;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
@@ -33,6 +32,11 @@ import org.caleydo.core.view.opengl.layout2.animation.Transitions;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
+import org.caleydo.core.view.opengl.layout2.dnd.EDnDType;
+import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
+import org.caleydo.core.view.opengl.layout2.dnd.IDragGLSource;
+import org.caleydo.core.view.opengl.layout2.dnd.IDragInfo;
+import org.caleydo.core.view.opengl.layout2.dnd.IDropGLTarget;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -48,6 +52,7 @@ import org.caleydo.vis.lineup.config.IRankTableUIConfig.EButtonBarPositionMode;
 import org.caleydo.vis.lineup.internal.event.OrderByMeEvent;
 import org.caleydo.vis.lineup.internal.ui.ButtonBar;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
+import org.caleydo.vis.lineup.model.ColumnDragInfo;
 import org.caleydo.vis.lineup.model.DoubleRankColumnModel;
 import org.caleydo.vis.lineup.model.IRankColumnParent;
 import org.caleydo.vis.lineup.model.RankRankColumnModel;
@@ -82,13 +87,13 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 
 	protected final IRankTableUIConfig config;
+	final IRankTableConfig tableConfig;
 	private boolean isHovered;
 	private boolean armDropColum;
 	private String armDropHint;
 
 	private boolean isCollapsed;
 
-	private boolean isDragging;
 	protected boolean headerHovered;
 
 	protected final ARankColumnModel model;
@@ -106,11 +111,89 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	private boolean wasColumnDragging = false;
 
+	private final IDropGLTarget dropTarget = new IDropGLTarget() {
+		@Override
+		public boolean canSWTDrop(IDnDItem input) {
+			if (!(input.getInfo() instanceof ColumnDragInfo))
+				return false;
+			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();
+			if (info.getModel() == model)
+				return false;
+			int mode = tableConfig.getCombineMode(model, input);
+			if (model.isCombineAble(info.getModel(), RenderStyle.isCloneDragging(input), mode)) {
+				armDropColum = true;
+				armDropHint = tableConfig.getCombineStringHint(model, info.getModel(), mode);
+				repaint();
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public void onItemChanged(IDnDItem input) {
+			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();
+			int mode = tableConfig.getCombineMode(model, input);
+			String hint = tableConfig.getCombineStringHint(model, info.getModel(), mode);
+			if (!Objects.equals(hint, armDropHint)) {
+				armDropHint = hint;
+				repaint();
+			}
+		}
+
+		@Override
+		public void onDrop(IDnDItem input) {
+			assert input.getInfo() instanceof ColumnDragInfo;
+			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();
+			if (armDropColum) {
+				context.getSWTLayer().setCursor(-1);
+				model.combine(info.getModel(), RenderStyle.isCloneDragging(input),
+						tableConfig.getCombineMode(model, input));
+			}
+		}
+
+		@Override
+		public String toString() {
+			return model.getTitle();
+		}
+
+		@Override
+		public EDnDType defaultSWTDnDType(IDnDItem item) {
+			return EDnDType.MOVE;
+		}
+	};
+
+	private final IDragGLSource dragSource = new IDragGLSource() {
+		@Override
+		public GLElement createUI(IDragInfo info) {
+			assert info instanceof ColumnDragInfo;
+			final Vec2f size = getSize();
+			DraggedScoreHeaderItem elem = new DraggedScoreHeaderItem();
+			elem.setSize(size.x(), size.y());
+			return elem;
+		}
+
+		@Override
+		public void onDropped(IDnDItem info) {
+			if (info.getType() != EDnDType.NONE)
+				context.getMouseLayer().removeDragSource(this);
+		}
+
+		@Override
+		public IDragInfo startSWTDrag(IDragEvent event) {
+			return new ColumnDragInfo(model, event.getMousePos());
+		}
+
+		@Override
+		public String toString() {
+			return model.getTitle();
+		}
+	};
 
 	public AColumnHeaderUI(final ARankColumnModel model, IRankTableUIConfig config, boolean hasTitle, boolean hasHist) {
 		this.model = model;
 		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, collapsedChanged);
 		this.config = config;
+		this.tableConfig = model.getTable().getConfig();
 		this.hasTitle = hasTitle;
 
 		setLayout(this);
@@ -255,6 +338,10 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		dragPickingId = -1;
 		model.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, filterChangedListener);
 		model.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, collapsedChanged);
+
+		context.getMouseLayer().removeDragSource(dragSource);
+		context.getMouseLayer().removeDropTarget(dropTarget);
+
 		super.takeDown();
 	}
 
@@ -306,10 +393,10 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 	private boolean isDraggingAColumn() {
 		IMouseLayer m = context.getMouseLayer();
-		if (m.hasDraggable(ARankColumnModel.class))
+		if (m.isDragging(ColumnDragInfo.class))
 			return true;
 		if (getParent() instanceof StackedColumnHeaderUI) {
-			return m.hasDraggable(AlignmentDragInfo.class);
+			return m.isDragging(AlignmentDragInfo.class);
 		}
 		return false;
 	}
@@ -613,26 +700,18 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 	 */
 	protected void onDragPick(Pick pick) {
 		switch (pick.getPickingMode()) {
-		case CLICKED:
-			if (pick.isAnyDragging())
-				return;
-			pick.setDoDragging(true);
-			onDragColumn(pick);
-			break;
-		case MOUSE_RELEASED:
-			if (pick.isDoDragging())
-				onDropColumn(pick);
-			break;
 		case MOUSE_OVER:
 			if (pick.isAnyDragging())
 				return;
 			this.headerHovered = true;
 			context.getSWTLayer().setCursor(SWT.CURSOR_HAND);
+			context.getMouseLayer().addDragSource(dragSource);
 			relayout();
 			break;
 		case MOUSE_OUT:
 			if (this.headerHovered) {
 				this.headerHovered = false;
+				context.getMouseLayer().removeDragSource(dragSource);
 				context.getSWTLayer().setCursor(-1);
 				relayout();
 			}
@@ -646,57 +725,25 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		if (context == null)
 			return;
 		IMouseLayer m = context.getMouseLayer();
-		final IRankTableConfig tableConfig = model.getTable().getConfig();
 		switch (pick.getPickingMode()) {
 		case MOUSE_OVER:
-			if (config.isMoveAble() && !pick.isDoDragging() && m.hasDraggable(ARankColumnModel.class)) {
-				Pair<GLElement, ARankColumnModel> pair = m.getFirstDraggable(ARankColumnModel.class);
-				int mode = tableConfig.getCombineMode(model, pick);
-				if (model.isCombineAble(pair.getSecond(), RenderStyle.isCloneDragging(pick), mode)) {
-					m.setDropable(ARankColumnModel.class, true);
-					this.armDropColum = true;
-					armDropHint = tableConfig.getCombineStringHint(model, pair.getSecond(), mode);
-					repaint();
-				}
-			} else if (!pick.isAnyDragging()) {
+			if (config.isMoveAble()) {
+				m.addDropTarget(dropTarget);
+			}
+			if (!pick.isAnyDragging()) {
 				this.isHovered = true;
 				this.relayout();
 			}
 			break;
-		case DRAGGED:
-			if (this.armDropColum) {
-				Pair<GLElement, ARankColumnModel> pair = m.getFirstDraggable(ARankColumnModel.class);
-				if (pair != null) {
-					int mode = tableConfig.getCombineMode(model, pick);
-					String hint = tableConfig.getCombineStringHint(model, pair.getSecond(), mode);
-					if (!Objects.equals(hint, armDropHint)) {
-						this.armDropHint = hint;
-						repaint();
-					}
-				}
-			}
-			break;
 		case MOUSE_OUT:
+			m.removeDropTarget(dropTarget);
 			if (armDropColum) {
 				this.armDropColum = false;
-				m.setDropable(ARankColumnModel.class, false);
 				repaint();
 			}
 			if (this.isHovered) {
 				this.isHovered = false;
 				this.relayout();
-			}
-			break;
-		case MOUSE_RELEASED:
-			if (this.armDropColum) {
-				Pair<GLElement, ARankColumnModel> info = m.getFirstDraggable(ARankColumnModel.class);
-				if (info != null)
-					m.removeDraggable(info.getFirst());
-				m.setDropable(ARankColumnModel.class, false);
-				context.getSWTLayer().setCursor(-1);
-				if (info != null)
-					model.combine(info.getSecond(), RenderStyle.isCloneDragging(pick),
-							tableConfig.getCombineMode(model, pick));
 			}
 			break;
 		case DOUBLE_CLICKED:
@@ -754,33 +801,6 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		model.setWidth(Math.max(model.getWidth() + dx, 0));
 	}
 
-	/**
-	 * drop drag column again
-	 *
-	 * @param pick
-	 */
-	private void onDropColumn(Pick pick) {
-		IMouseLayer l = context.getMouseLayer();
-		if (this.isDragging) {
-			if (!l.isDropable(this.model)) {
-				l.removeDraggable(this.model);
-			}
-			this.isDragging = false;
-			context.getSWTLayer().setCursor(-1);
-			return;
-		}
-	}
-
-	private void onDragColumn(Pick pick) {
-		IMouseLayer l = context.getMouseLayer();
-		GLElement elem = new DraggedScoreHeaderItem();
-		elem.setSize(getSize().x(), getSize().y());
-		Vec2f loc = toRelative(pick.getPickedPoint());
-		elem.setLocation(-loc.x(), -loc.y());
-		isDragging = true;
-		l.addDraggable(elem, this.model);
-	}
-
 	class DraggedScoreHeaderItem extends GLElement {
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
@@ -819,7 +839,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 
 		@Override
-		protected void onClicked(Pick pick) {
+		protected void onDragDetected(Pick pick) {
 			if (pick.isAnyDragging())
 				return;
 			pick.setDoDragging(true);

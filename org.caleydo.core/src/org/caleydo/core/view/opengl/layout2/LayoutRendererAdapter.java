@@ -63,7 +63,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 
 	public LayoutRendererAdapter(AGLView view, IResourceLocator locator, GLElement root, String eventSpace) {
 		this.view = view;
-		this.root = new WindowGLElement(root);
+		this.root = new WindowGLElement(root, view.getParentGLCanvas());
 		this.eventListeners = EventListenerManagers.createQueued();
 		this.eventSpace = eventSpace;
 

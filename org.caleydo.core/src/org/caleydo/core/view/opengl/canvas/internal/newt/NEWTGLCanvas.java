@@ -5,6 +5,10 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas.internal.newt;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
@@ -45,6 +49,17 @@ final class NEWTGLCanvas extends AGLCanvas {
 	 */
 	GLWindow getCanvas() {
 		return canvas;
+	}
+
+	@Override
+	protected Iterator<IGLMouseListener> mouseListeners() {
+		Collection<IGLMouseListener> r = new ArrayList<>();
+		for (MouseListener l : canvas.getMouseListeners()) {
+			if (l instanceof NEWTMouseAdapter) {
+				r.add(((NEWTMouseAdapter) l).getListener());
+			}
+		}
+		return r.iterator();
 	}
 
 	@Override

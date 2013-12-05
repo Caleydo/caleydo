@@ -345,7 +345,7 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 		}
 
 		@Override
-		protected void onClicked(Pick pick) {
+		protected void onDragDetected(Pick pick) {
 			pick.setDoDragging(true);
 		}
 

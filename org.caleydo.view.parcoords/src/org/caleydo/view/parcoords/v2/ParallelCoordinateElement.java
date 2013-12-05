@@ -165,7 +165,7 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 	@Override
 	public void pick(Pick pick) {
 		switch(pick.getPickingMode()) {
-		case CLICKED:
+		case DRAG_DETECTED:
 			if (!isBrushClick(pick)) // start brushing
 				return;
 			this.brush = new Brush(pick.getPickedPoint());

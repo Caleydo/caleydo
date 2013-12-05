@@ -10,8 +10,8 @@ import java.util.Map;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.vis.lineup.model.SimpleHistogram;
 import org.caleydo.vis.lineup.model.CategoricalRankRankColumnModel.CategoryInfo;
+import org.caleydo.vis.lineup.model.SimpleHistogram;
 
 /**
  * @author Samuel Gratzl

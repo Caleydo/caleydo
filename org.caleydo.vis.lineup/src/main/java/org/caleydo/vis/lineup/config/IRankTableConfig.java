@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.config;
 
+import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.model.ACompositeRankColumnModel;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
@@ -89,18 +90,18 @@ public interface IRankTableConfig {
 
 	/**
 	 * determines the mode as used by the other combine methods depending on the current pick state,
-	 *
+	 * 
 	 * e.g. to trigger a different kind of combination if a special key is pressed during dragging
-	 *
+	 * 
 	 * @param model
-	 * @param pick
+	 * @param input
 	 * @return
 	 */
-	int getCombineMode(ARankColumnModel model, Pick pick);
+	int getCombineMode(ARankColumnModel model, IDnDItem input);
 
 	/**
 	 * which columns should be automatically created during a new snapshot
-	 * 
+	 *
 	 * @return
 	 */
 	Iterable<? extends ARankColumnModel> createAutoSnapshotColumns(RankTableModel table, ARankColumnModel model);

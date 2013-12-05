@@ -30,7 +30,7 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory {
 	}
 
 	@Override
-	public boolean canCreate(GLElementFactoryContext context) {
+	public boolean apply(GLElementFactoryContext context) {
 		TablePerspective data = context.getData();
 		return DataSupportDefinitions.dataClass(EDataClass.REAL_NUMBER, EDataClass.NATURAL_NUMBER).apply(data);
 	}

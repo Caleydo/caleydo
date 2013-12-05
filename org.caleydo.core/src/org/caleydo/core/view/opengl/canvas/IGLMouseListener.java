@@ -31,6 +31,8 @@ public interface IGLMouseListener {
 
 	void mouseExited(IMouseEvent mouseEvent);
 
+	void mouseDragDetected(IMouseEvent mouseEvent);
+
 	public interface IMouseEvent {
 		Vec2f getPoint(Units unit);
 
