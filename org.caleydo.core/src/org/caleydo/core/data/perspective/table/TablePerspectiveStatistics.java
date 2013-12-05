@@ -395,7 +395,7 @@ public class TablePerspectiveStatistics {
 				PerspectiveInitializationData data = new PerspectiveInitializationData();
 				data.setData(virtualArray);
 				Perspective tempPerspective = new Perspective(dataDomain, virtualArrayIDType);
-				tempPerspective.init(data);
+				tempPerspective.init(data, false);
 				virtualArray = dataDomain.convertForeignPerspective(tempPerspective).getVirtualArray();
 			}
 		}

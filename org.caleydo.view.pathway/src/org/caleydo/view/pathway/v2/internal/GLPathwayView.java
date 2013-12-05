@@ -20,6 +20,7 @@ import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.v2.internal.serial.SerializedPathwayView;
 import org.caleydo.view.pathway.v2.ui.AverageColorMappingAugmentation;
+import org.caleydo.view.pathway.v2.ui.MultiMappingIndicatorAugmentation;
 import org.caleydo.view.pathway.v2.ui.PathwayElement;
 import org.caleydo.view.pathway.v2.ui.PathwayTextureRenderer;
 
@@ -46,6 +47,8 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 				pathwayElement.getPathwayRepresentation());
 		colorMappingAugmentation.setEventSpace(eventSpace);
 		pathwayElement.addBackgroundAugmentation(colorMappingAugmentation);
+		pathwayElement.addBackgroundAugmentation(new MultiMappingIndicatorAugmentation(pathwayElement
+				.getPathwayRepresentation()));
 	}
 
 	@Override
