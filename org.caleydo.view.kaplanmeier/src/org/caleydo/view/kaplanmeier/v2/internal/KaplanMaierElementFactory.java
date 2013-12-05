@@ -26,7 +26,7 @@ public class KaplanMaierElementFactory implements IGLElementFactory {
 	}
 
 	@Override
-	public boolean canCreate(GLElementFactoryContext context) {
+	public boolean apply(GLElementFactoryContext context) {
 		TablePerspective data = context.getData();
 		// exact one column
 		if (data.getDimensionPerspective().getVirtualArray().size() != 1)

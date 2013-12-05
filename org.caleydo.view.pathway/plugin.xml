@@ -83,4 +83,12 @@
             name="OpenPathway">
       </command>
    </extension>
+   <extension
+         point="org.caleydo.ui.GLElementFactory">
+      <factory
+            factory="org.caleydo.view.pathway.v2.internal.PathwayElementFactory"
+            icon="resources/icons/pathway.png"
+            name="Pathway">
+      </factory>
+   </extension>
 </plugin>

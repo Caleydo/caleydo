@@ -36,7 +36,7 @@ public class BoxAndWhiskersRemoteViewCreator extends ARemoteGLElementCreator {
 		GLElementFactoryContext context = createContext(tablePerspectives);
 
 		BoxAndWhiskersElementFactory f = new BoxAndWhiskersElementFactory();
-		if (!f.canCreate(context))
+		if (!f.apply(context))
 			return new GLElement();
 		return f.create(context);
 	}

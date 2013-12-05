@@ -32,7 +32,7 @@ public class BarPlotElementFactory implements IGLElementFactory {
 	}
 
 	@Override
-	public boolean canCreate(GLElementFactoryContext context) {
+	public boolean apply(GLElementFactoryContext context) {
 		TablePerspective data = context.getData();
 		return DataSupportDefinitions.numericalTables.apply(data);
 	}
