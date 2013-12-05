@@ -5,13 +5,9 @@
  *******************************************************************************/
 package org.caleydo.view.histogram.v2.internal;
 
-import org.caleydo.core.data.datadomain.DataSupportDefinitions;
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
-import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
-import org.caleydo.view.histogram.v2.DistributionElement;
-import org.caleydo.view.histogram.v2.DistributionElement.EDistributionMode;
+import org.caleydo.view.histogram.v2.ADistributionElement.EDistributionMode;
 
 /**
  * element factory for creating distribution elements
@@ -19,23 +15,16 @@ import org.caleydo.view.histogram.v2.DistributionElement.EDistributionMode;
  * @author Samuel Gratzl
  *
  */
-public class DistributionHistogramElementFactory implements IGLElementFactory {
+public class DistributionHistogramElementFactory extends ADistributionBarElementFactory {
 	@Override
 	public String getId() {
 		return "distribution.hist";
 	}
 
-	@Override
-	public boolean apply(GLElementFactoryContext context) {
-		TablePerspective data = context.getData();
-		return DataSupportDefinitions.categoricalColumns.apply(data);
-	}
 
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
-		TablePerspective data = context.getData();
-		DistributionElement elem = new DistributionElement(data, EDistributionMode.HISTOGRAM);
-		return elem;
+		return create(context, EDistributionMode.HISTOGRAM);
 	}
 
 }

@@ -5,13 +5,10 @@
  *******************************************************************************/
 package org.caleydo.view.histogram.v2.internal;
 
-import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
-import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
-import org.caleydo.view.histogram.v2.DistributionElement;
-import org.caleydo.view.histogram.v2.DistributionElement.EDistributionMode;
+import org.caleydo.view.histogram.v2.ADistributionElement.EDistributionMode;
 
 /**
  * element factory for creating distribution elements
@@ -19,26 +16,21 @@ import org.caleydo.view.histogram.v2.DistributionElement.EDistributionMode;
  * @author Samuel Gratzl
  *
  */
-public class DistributionBarElementFactory implements IGLElementFactory {
+public class DistributionBarElementFactory extends ADistributionBarElementFactory {
 	@Override
 	public String getId() {
 		return "distribution.bar";
 	}
 
 	@Override
-	public boolean apply(GLElementFactoryContext context) {
-		TablePerspective data = context.getData();
-		return DataSupportDefinitions.categoricalColumns.apply(data);
-	}
-
-	@Override
 	public GLElement create(GLElementFactoryContext context) {
-		TablePerspective data = context.getData();
-		boolean vertical = data.getDimensionPerspective().getVirtualArray().size() == 1;
+		boolean vertical = true;
+		if (context.getData() != null) {
+			TablePerspective data = context.getData();
+			vertical = data.getDimensionPerspective().getVirtualArray().size() == 1;
+		}
 		vertical = context.is("vertical", vertical);
-		DistributionElement elem = new DistributionElement(data, vertical ? EDistributionMode.VERTICAL_BAR
-				: EDistributionMode.HORIZONTAL_BAR);
-		return elem;
+		return create(context, vertical ? EDistributionMode.VERTICAL_BAR : EDistributionMode.HORIZONTAL_BAR);
 	}
 
 }

@@ -18,7 +18,8 @@ import org.caleydo.core.id.IDType;
  * @author Samuel Gratzl
  *
  */
-public final class StratificationPerspectiveRow extends AVirtualArrayScoreRow implements ITablePerspectiveScoreRow {
+public final class StratificationPerspectiveRow extends AVirtualArrayScoreRow implements ITablePerspectiveScoreRow,
+		IPerspectiveScoreRow {
 	private final StratificationDataDomainQuery query;
 	private final Perspective stratification;
 	private final EDimension dim;
@@ -35,9 +36,17 @@ public final class StratificationPerspectiveRow extends AVirtualArrayScoreRow im
 	}
 
 	/**
+	 * @return the dim, see {@link #dim}
+	 */
+	@Override
+	public EDimension getDimension() {
+		return dim;
+	}
+	/**
 	 * @return the stratification, see {@link #stratification}
 	 */
-	public Perspective getStratification() {
+	@Override
+	public Perspective asPerspective() {
 		return stratification;
 	}
 

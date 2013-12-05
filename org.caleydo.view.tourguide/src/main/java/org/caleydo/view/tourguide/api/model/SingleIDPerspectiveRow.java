@@ -8,6 +8,7 @@ package org.caleydo.view.tourguide.api.model;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -20,7 +21,8 @@ import org.caleydo.core.id.IDType;
  * @author Samuel Gratzl
  *
  */
-public final class SingleIDPerspectiveRow extends AVirtualArrayScoreRow implements ITablePerspectiveScoreRow {
+public final class SingleIDPerspectiveRow extends AVirtualArrayScoreRow implements ITablePerspectiveScoreRow,
+		IPerspectiveScoreRow {
 	private final ASingleIDDataDomainQuery query;
 	private final String label;
 	private final Integer id;
@@ -37,6 +39,11 @@ public final class SingleIDPerspectiveRow extends AVirtualArrayScoreRow implemen
 	@Override
 	public SingleIDPerspectiveRow clone() {
 		return (SingleIDPerspectiveRow) super.clone();
+	}
+
+	@Override
+	public EDimension getDimension() {
+		return query.getDim().opposite();
 	}
 
 	@Override
@@ -66,6 +73,12 @@ public final class SingleIDPerspectiveRow extends AVirtualArrayScoreRow implemen
 			va = query.createVirtualArray(label, id);
 		}
 		return va;
+	}
+
+	@Override
+	public Perspective asPerspective() {
+		TablePerspective t = asTablePerspective();
+		return getDimension().select(t.getDimensionPerspective(), t.getRecordPerspective());
 	}
 
 	public IDType getSingleIDType() {
