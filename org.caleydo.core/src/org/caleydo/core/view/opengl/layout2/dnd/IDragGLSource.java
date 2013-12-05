@@ -41,6 +41,11 @@ public interface IDragGLSource {
 	GLElement createUI(IDragInfo info);
 
 	public interface IDragEvent {
+		/**
+		 * return the absolute mouse position
+		 * 
+		 * @return
+		 */
 		Vec2f getMousePos();
 	}
 }

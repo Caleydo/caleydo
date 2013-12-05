@@ -39,6 +39,8 @@ public interface IDropGLTarget {
 	void onItemChanged(IDnDItem item);
 
 	/**
+	 * determine the default {@link EDnDType} for a given {@link IDnDItem} item
+	 * 
 	 * @param item
 	 * @return
 	 */

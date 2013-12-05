@@ -12,18 +12,17 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 import org.caleydo.core.view.opengl.layout2.IPopupLayer;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
- * implementation of {@link IMouseLayer} using a {@link GLElementContainer} by using the layout data for meta data about
+ * implementation of {@link IPopupLayer} using a {@link GLElementContainer} by using the layout data for meta data about
  * elements
- *
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public final class PopupLayer extends GLElementContainer implements IPopupLayer, IGLLayout {
 

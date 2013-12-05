@@ -5,7 +5,6 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.dnd;
 
-
 /**
  * a special {@link IDragInfo} for transferring a url
  * 

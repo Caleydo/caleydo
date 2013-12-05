@@ -10,8 +10,10 @@ import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.dnd.IDropGLTarget;
 
 /**
- * @author Samuel Gratzl
+ * helper for thread switching
  *
+ * @author Samuel Gratzl
+ * 
  */
 public class DropItemEvent extends ADirectedEvent {
 

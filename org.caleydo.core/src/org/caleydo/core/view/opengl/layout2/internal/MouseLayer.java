@@ -36,10 +36,8 @@ import org.caleydo.core.view.opengl.layout2.dnd.URLDragInfo;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout2;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
-import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.FileTransfer;
@@ -67,13 +65,20 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	 * current possible drag sources
 	 */
 	private final Deque<IDragGLSource> dragSources = new ConcurrentLinkedDeque<>();
+
+	/**
+	 * registered remote creator factories, can't use extension point since it is instance specific
+	 */
 	private final Collection<IRemoteDragInfoUICreator> creators = new ArrayList<>(1);
 
+	/**
+	 * active drop target
+	 */
 	volatile IDropGLTarget activeDropTarget;
+	/**
+	 * currently dragged element
+	 */
 	volatile DnDItem active;
-
-	DragSource source;
-	DropTarget target;
 
 	public MouseLayer(IGLCanvas canvas) {
 		super();
@@ -98,10 +103,13 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	private final DragSourceListener drag = new DragSourceListener() {
 		@Override
 		public void dragStart(DragSourceEvent event) {
+			// convert to event
 			DragEvent e = new DragEvent(toPoint(event.x, event.y, false));
+
 			for(IDragGLSource source : dragSources) {
+				// check if possible
 				IDragInfo info = source.startSWTDrag(e);
-				if (info != null) {
+				if (info != null) { // if so
 					active = new DnDItem(info, source);
 					active.setMousePos(e.getMousePos());
 					EventPublisher.trigger(new DragItemEvent(readOnly(active), active.source, false)
@@ -109,16 +117,16 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 					return;
 				}
 			}
-			// drag drag sources if there check if it one can be created
-			event.doit = false; // abort
+			event.doit = false; // abort dragging no drag source there
 		}
 
 		@Override
 		public void dragSetData(DragSourceEvent event) {
-			if (active == null) {
+			if (active == null) { // nothing to transfer
 				event.doit = false;
 				return;
 			}
+			// set data according to requested type
 			IDragInfo info = active.getInfo();
 			if (CaleydoTransfer.getInstance().isSupportedType(event.dataType) && CaleydoTransfer.isValid(info)) {
 				event.data = info;
@@ -149,8 +157,11 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		private Vec2f acceptPoint;
 		@Override
 		public void dragEnter(DropTargetEvent event) {
+			// find dragged item
 			IDnDItem item = toItem(event);
+			// have valid drop target
 			if (validateDropTarget(event, item) && event.detail == DND.DROP_DEFAULT)
+				// determine default type
 				event.detail = fromType(activeDropTarget.defaultSWTDnDType(item));
 
 			if (item != null)
@@ -257,7 +268,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 
 	static IDnDItem readOnly(IDnDItem item) {
-		return new DNDTransferItem(item.getInfo(), item.getType(), item.getMousePos());
+		return new DNDReadOnlyItem(item.getInfo(), item.getType(), item.getMousePos());
 	}
 
 	/**
@@ -278,7 +289,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	private void onDropEnterLeaveItemEvent(DropEnterLeaveItemEvent event) {
 		IDnDItem item = event.getItem();
 		if (event.isEntering()) {
-			if (!showhideInfo(item.getInfo(), EVisibility.VISIBLE)) {
+			if (!isAlreadyThere(item.getInfo())) {
 				addInfo(item instanceof DnDItem ? ((DnDItem) item).source : null, item);
 			}
 		} else {
@@ -300,6 +311,12 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		}
 	}
 
+	/**
+	 * add a visual representation of the given item using various creator methods
+	 *
+	 * @param s
+	 * @param item
+	 */
 	private void addInfo(final IDragGLSource s, final IDnDItem item) {
 		final IDragInfo info = item.getInfo();
 		if (isAlreadyThere(info))
@@ -307,11 +324,12 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 		GLElement ui = null;
 		for (IRemoteDragInfoUICreator creator : creators)
+			// via creator
 			if ((ui = creator.createUI(info)) != null)
 				break;
-		if (ui == null && s != null)
+		if (ui == null && s != null) // via source
 			ui = s.createUI(info);
-		if (ui == null && info instanceof IUIDragInfo)
+		if (ui == null && info instanceof IUIDragInfo) // via itself
 			ui = ((IUIDragInfo) info).createUI();
 		if (ui == null)
 			return;
@@ -336,15 +354,6 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		}
 	}
 
-	private boolean showhideInfo(final IDragInfo item, EVisibility vis) {
-		for (GLElement elem : this)
-			if (elem.getLayoutDataAs(IDragInfo.class, null) == item) {
-				elem.setVisibility(vis);
-				return true;
-			}
-		return false;
-	}
-
 	@ListenTo(sendToMe = true)
 	private void onDropItemEvent(DropItemEvent event) {
 		IDropGLTarget t = event.getTarget();
@@ -356,7 +365,8 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	}
 
 	/**
-	 * @param item
+	 * tries to find a valid drop target, which accepts the given item
+	 *
 	 * @return
 	 */
 	protected IDropGLTarget findDropTarget(IDnDItem item) {
@@ -369,23 +379,32 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	}
 
 	/**
+	 * extract from the given event the {@link DnDItem}
+	 *
 	 * @param event
 	 * @return
 	 */
 	protected DnDItem toItem(DropTargetEvent event) {
 		DnDItem item = null;
-		if (active != null)
+		if (active != null) // cached one e.g local drag
 			item = active;
 		else {
+			// really extract the data
 			IDragInfo info = extract(event);
 			if (info != null)
 				item = active = new DnDItem(info, null);
 		}
-		if (item != null)
+		if (item != null) // update type
 			item.setType(event.detail);
 		return item;
 	}
 
+	/**
+	 * extract really from the event data a {@link IDragInfo}
+	 * 
+	 * @param event
+	 * @return
+	 */
 	private static IDragInfo extract(DropTargetEvent event) {
 		final TransferData d = event.currentDataType;
 		Object obj;
@@ -513,12 +532,12 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		}
 	}
 
-	private static class DNDTransferItem implements IDnDItem {
+	private static class DNDReadOnlyItem implements IDnDItem {
 		private final IDragInfo info;
 		private final EDnDType type;
 		private final Vec2f mousePos;
 
-		public DNDTransferItem(IDragInfo info, EDnDType type, Vec2f mousePos) {
+		public DNDReadOnlyItem(IDragInfo info, EDnDType type, Vec2f mousePos) {
 			this.info = info;
 			this.type = type;
 			this.mousePos = mousePos;

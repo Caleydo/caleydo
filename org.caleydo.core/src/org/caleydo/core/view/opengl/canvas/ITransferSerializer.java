@@ -12,7 +12,7 @@ import java.io.ObjectOutputStream;
 import com.google.common.base.Predicate;
 
 /**
- * a transfer serialized is reponsible for serializing and deserializing a dnd transfered object
+ * a transfer serialized is responsible for serializing and deserializing a dnd transfered object
  *
  * @author Samuel Gratzl
  *
@@ -27,6 +27,8 @@ public interface ITransferSerializer extends Predicate<Class<?>> {
 	String getId();
 
 	/**
+	 * serialize the given object
+	 *
 	 * @param data
 	 * @param o
 	 * @throws IOException
@@ -34,6 +36,8 @@ public interface ITransferSerializer extends Predicate<Class<?>> {
 	void write(Object data, ObjectOutputStream o) throws IOException;
 
 	/**
+	 * reads the given object back
+	 * 
 	 * @param in
 	 * @return
 	 * @throws IOException

@@ -9,10 +9,15 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 
 /**
  * a {@link IDragInfo} which can create a representation by its own
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public interface IUIDragInfo extends IDragInfo {
+	/**
+	 * create a new representation
+	 * 
+	 * @return
+	 */
 	GLElement createUI();
 }

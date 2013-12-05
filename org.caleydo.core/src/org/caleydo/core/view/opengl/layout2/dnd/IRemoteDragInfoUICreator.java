@@ -9,11 +9,16 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 
 /**
  * factory for creating {@link GLElement} for a given {@link IDragInfo} elem
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public interface IRemoteDragInfoUICreator {
-
+	/**
+	 * create a visual representation for a {@link IDragInfo}
+	 *
+	 * @param info
+	 * @return
+	 */
 	GLElement createUI(IDragInfo info);
 }

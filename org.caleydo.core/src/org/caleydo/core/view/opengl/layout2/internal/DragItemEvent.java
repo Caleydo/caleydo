@@ -10,8 +10,10 @@ import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.dnd.IDragGLSource;
 
 /**
+ * helper for thread switching
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class DragItemEvent extends ADirectedEvent {
 
