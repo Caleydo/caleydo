@@ -71,18 +71,18 @@ public class PathwayMappingHandler implements IEventBasedSelectionManagerUser {
 
 	@ListenTo
 	public void onAddTablePerspective(AddTablePerspectivesEvent event) {
-		// if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
-		for (TablePerspective tp : event.getTablePerspectives()) {
-			addTablePerspective(tp);
+		if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
+			for (TablePerspective tp : event.getTablePerspectives()) {
+				addTablePerspective(tp);
+			}
 		}
-		// }
 	}
 
 	@ListenTo
 	public void onRemoveTablePerspective(RemoveTablePerspectiveEvent event) {
-		// if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
-		removeTablePerspective(event.getTablePerspective());
-		// }
+		if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
+			removeTablePerspective(event.getTablePerspective());
+		}
 	}
 
 	public void addTablePerspective(TablePerspective tablePerspective) {
