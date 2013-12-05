@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.Average;
@@ -24,6 +25,8 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
+import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
+import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -43,6 +46,7 @@ public class PathwayMappingHandler implements IEventBasedSelectionManagerUser {
 	protected EventBasedSelectionManager sampleSelectionManager;
 	protected APathwayElementRepresentation pathwayRepresentation;
 	protected Map<PathwayVertexRep, Average> mappingPerspectiveAverages = new HashMap<>();
+	protected Map<TablePerspective, Map<PathwayVertexRep, Average>> addedTablePerspectiveAverages = new HashMap<>();
 
 	protected List<IPathwayMappingListener> listeners = new ArrayList<>();
 
@@ -65,13 +69,50 @@ public class PathwayMappingHandler implements IEventBasedSelectionManagerUser {
 		// }
 	}
 
+	@ListenTo
+	public void onAddTablePerspective(AddTablePerspectivesEvent event) {
+		// if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
+		for (TablePerspective tp : event.getTablePerspectives()) {
+			addTablePerspective(tp);
+		}
+		// }
+	}
+
+	@ListenTo
+	public void onRemoveTablePerspective(RemoveTablePerspectiveEvent event) {
+		// if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
+		removeTablePerspective(event.getTablePerspective());
+		// }
+	}
+
+	public void addTablePerspective(TablePerspective tablePerspective) {
+		if (addedTablePerspectiveAverages.keySet().contains(tablePerspective))
+			return;
+		Map<PathwayVertexRep, Average> averages = new HashMap<>();
+		addedTablePerspectiveAverages.put(tablePerspective, averages);
+		updatePerspectiveAverages(tablePerspective, averages);
+		notifyListeners();
+	}
+
+	public void removeTablePerspective(TablePerspective tablePerspective) {
+		if (addedTablePerspectiveAverages.remove(tablePerspective) != null)
+			notifyListeners();
+	}
+
+	protected void updateAllAverages() {
+		updatePerspectiveAverages(mappingPerspective, mappingPerspectiveAverages);
+		for (Entry<TablePerspective, Map<PathwayVertexRep, Average>> entry : addedTablePerspectiveAverages.entrySet()) {
+			updatePerspectiveAverages(entry.getKey(), entry.getValue());
+		}
+	}
+
 	/**
 	 * @param sampleMappingMode
 	 *            setter, see {@link sampleMappingMode}
 	 */
 	public void setSampleMappingMode(ESampleMappingMode sampleMappingMode) {
 		this.sampleMappingMode = sampleMappingMode;
-		updateMappingPerspectiveAverages();
+		updateAllAverages();
 		notifyListeners();
 	}
 
@@ -103,7 +144,7 @@ public class PathwayMappingHandler implements IEventBasedSelectionManagerUser {
 		}
 
 		this.mappingPerspective = mappingPerspective;
-		updateMappingPerspectiveAverages();
+		updatePerspectiveAverages(mappingPerspective, mappingPerspectiveAverages);
 		notifyListeners();
 	}
 
@@ -125,7 +166,7 @@ public class PathwayMappingHandler implements IEventBasedSelectionManagerUser {
 	@Override
 	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
 		if (selectionManager == sampleSelectionManager && sampleMappingMode == ESampleMappingMode.SELECTED) {
-			updateMappingPerspectiveAverages();
+			updateAllAverages();
 			notifyListeners();
 		}
 	}
@@ -136,10 +177,6 @@ public class PathwayMappingHandler implements IEventBasedSelectionManagerUser {
 
 	public void removeListener(IPathwayMappingListener listener) {
 		listeners.remove(listener);
-		// if (listeners.isEmpty() && sampleSelectionManager != null) {
-		// sampleSelectionManager.unregisterEventListeners();
-		// sampleSelectionManager = null;
-		// }
 	}
 
 	protected void notifyListeners() {
@@ -176,13 +213,13 @@ public class PathwayMappingHandler implements IEventBasedSelectionManagerUser {
 		}
 	}
 
-	protected void updateMappingPerspectiveAverages() {
-		mappingPerspectiveAverages.clear();
+	protected void updatePerspectiveAverages(TablePerspective tablePerspective, Map<PathwayVertexRep, Average> averages) {
+		averages.clear();
 		if (pathwayRepresentation == null)
 			return;
 		for (PathwayGraph pathway : pathwayRepresentation.getPathways()) {
 			for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
-				mappingPerspectiveAverages.put(vertexRep, calcAverageMapping(vertexRep, mappingPerspective));
+				averages.put(vertexRep, calcAverageMapping(vertexRep, tablePerspective));
 			}
 		}
 	}
@@ -225,13 +262,24 @@ public class PathwayMappingHandler implements IEventBasedSelectionManagerUser {
 		return mappingPerspectiveAverages.get(vertexRep);
 	}
 
+	public Average getAverage(TablePerspective tablePerspective, PathwayVertexRep vertexRep) {
+		Map<PathwayVertexRep, Average> averages = addedTablePerspectiveAverages.get(tablePerspective);
+		if (averages == null)
+			return null;
+		return averages.get(vertexRep);
+	}
+
 	/**
 	 * @param pathwayRepresentation
 	 *            setter, see {@link pathwayRepersentation}
 	 */
 	public void setPathwayRepersentation(APathwayElementRepresentation pathwayRepresentation) {
 		this.pathwayRepresentation = pathwayRepresentation;
-		updateMappingPerspectiveAverages();
+		updateAllAverages();
 		notifyListeners();
+	}
+
+	public Set<TablePerspective> getTablePerspectives() {
+		return addedTablePerspectiveAverages.keySet();
 	}
 }
