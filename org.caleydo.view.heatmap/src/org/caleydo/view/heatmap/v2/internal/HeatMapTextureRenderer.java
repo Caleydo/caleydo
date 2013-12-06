@@ -18,13 +18,10 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLContext;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.function.Function2;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.view.heatmap.v2.IBlockColorer;
 
 import com.jogamp.opengl.GLExtensions;
 import com.jogamp.opengl.util.texture.Texture;
@@ -40,8 +37,6 @@ import com.jogamp.opengl.util.texture.TextureIO;
 public class HeatMapTextureRenderer {
 	private final static int MAX_SAMPLES_PER_TEXTURE = 2048;
 
-	private final IBlockColorer blockColorer;
-
 	private Dimension dimension = null;
 	private final List<Tile> tiles = new ArrayList<>();
 
@@ -49,8 +44,7 @@ public class HeatMapTextureRenderer {
 	 * @param tablePerspective
 	 * @param blockColorer
 	 */
-	public HeatMapTextureRenderer(IBlockColorer blockColorer) {
-		this.blockColorer = blockColorer;
+	public HeatMapTextureRenderer() {
 	}
 
 	public void takeDown() {
@@ -65,11 +59,12 @@ public class HeatMapTextureRenderer {
 	/**
 	 * @param context
 	 */
-	public void create(IGLElementContext context, TablePerspective tablePerspective) {
+	public void create(IGLElementContext context, List<Integer> dimensions, List<Integer> records,
+			Function2<Integer, Integer, Color> blockColorer) {
 		final GL gl = GLContext.getCurrentGL();
 
-		final int numberOfRecords = tablePerspective.getRecordPerspective().getVirtualArray().size();
-		final int numberOfDimensions = tablePerspective.getDimensionPerspective().getVirtualArray().size();
+		final int numberOfRecords = records.size();
+		final int numberOfDimensions = dimensions.size();
 		dimension = new Dimension(numberOfDimensions, numberOfRecords);
 
 		if (numberOfDimensions <= 0 || numberOfRecords <= 0) {
@@ -89,11 +84,13 @@ public class HeatMapTextureRenderer {
 		}
 		tiles.clear();
 
+		TileFactory f = new TileFactory(gl, pool, dimensions, records, blockColorer);
+
 		if (!needXTiling && !needYTiling) {
 			//single tile
 			FloatBuffer buffer = FloatBuffer.allocate(numberOfDimensions * numberOfRecords * 4); //w*h*rgba
 			Rectangle tile = new Rectangle(0,0,numberOfDimensions,numberOfRecords);
-			tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
+			tiles.add(f.create(buffer, tile));
 		} else if (needXTiling && !needYTiling){
 			//tile in x direction only
 			FloatBuffer buffer = FloatBuffer.allocate(maxSize * numberOfRecords * 4); //w*h*rgba
@@ -101,12 +98,12 @@ public class HeatMapTextureRenderer {
 			int lastTile = numberOfDimensions - maxSize;
 			for (int i = 0; i < lastTile; i += maxSize) {
 				Rectangle tile = new Rectangle(i,0,maxSize,numberOfRecords);
-				tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
+				tiles.add(f.create(buffer, tile));
 			}
 			{//create rest
 				int remaining = numberOfDimensions % maxSize;
 				Rectangle tile = new Rectangle(numberOfDimensions-remaining,0,remaining,numberOfRecords);
-				tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
+				tiles.add(f.create(buffer, tile));
 			}
 		} else if (!needXTiling && needYTiling) {
 			//tile in y direction only
@@ -115,12 +112,12 @@ public class HeatMapTextureRenderer {
 			int lastTile = numberOfRecords - maxSize;
 			for (int i = 0; i < lastTile; i += maxSize) {
 				Rectangle tile = new Rectangle(0,i,numberOfDimensions,maxSize);
-				tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
+				tiles.add(f.create(buffer, tile));
 			}
 			{//create rest
 				int remaining = numberOfRecords % maxSize;
 				Rectangle tile = new Rectangle(0,numberOfRecords-remaining,numberOfDimensions,remaining);
-				tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
+				tiles.add(f.create(buffer, tile));
 			}
 		} else {
 			//tile in both directions
@@ -132,12 +129,12 @@ public class HeatMapTextureRenderer {
 			for (int i = 0; i < lastTileR; i += maxSize) {
 				for (int j = 0; j < lastTileD; j += maxSize) {
 					Rectangle tile = new Rectangle(j,i,maxSize,maxSize);
-					tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
+					tiles.add(f.create(buffer, tile));
 				}
 				{//create rest
 					int remaining = numberOfDimensions % maxSize;
 					Rectangle tile = new Rectangle(numberOfDimensions-remaining,i,remaining,maxSize);
-					tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
+					tiles.add(f.create(buffer, tile));
 				}
 			}
 			{//last line
@@ -145,12 +142,12 @@ public class HeatMapTextureRenderer {
 				int i = numberOfRecords - iremaining;
 				for (int j = 0; j < lastTileD; j += maxSize) {
 					Rectangle tile = new Rectangle(j,i,maxSize,iremaining);
-					tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
+					tiles.add(f.create(buffer, tile));
 				}
 				{//create rest
 					int remaining = numberOfDimensions % maxSize;
 					Rectangle tile = new Rectangle(numberOfDimensions-remaining,i,remaining,iremaining);
-					tiles.add(createTile(buffer, tile, gl, pool, tablePerspective));
+					tiles.add(f.create(buffer, tile));
 				}
 			}
 		}
@@ -161,47 +158,7 @@ public class HeatMapTextureRenderer {
 		pool.clear();
 	}
 
-	/**
-	 * @param buffer
-	 * @param tile
-	 * @param pool
-	 * @return
-	 */
-	private Tile createTile(FloatBuffer buffer, Rectangle tile, GL gl, Deque<Texture> pool,
-			TablePerspective tablePerspective) {
-		final VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
-		final VirtualArray dimVA = tablePerspective.getDimensionPerspective().getVirtualArray();
-		final ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
-		final int ilast = tile.y+tile.height;
-		final int jlast = tile.x+tile.width;
 
-
-		//fill buffer
-		buffer.rewind();
-		for(int i = tile.y; i < ilast; ++i) {
-			int recordID = recordVA.get(i);
-			for(int j = tile.x; j < jlast; ++j) {
-				int dimensionID = dimVA.get(j);
-				Color color = blockColorer.apply(recordID, dimensionID, dataDomain, false);
-				buffer.put(color.getRGBA());
-			}
-		}
-
-		//load to texture
-		buffer.rewind();
-		Texture texture;
-		if (!pool.isEmpty())
-			texture = pool.poll();
-		else
-			texture = TextureIO.newTexture(GL.GL_TEXTURE_2D);
-
-		TextureData texData = asTextureData(buffer, tile.width, tile.height);
-		texture.updateImage(gl, texData);
-		gl.glFlush();
-		texData.destroy();
-
-		return new Tile(tile, texture);
-	}
 
 	/**
 	 * compute the max texture size to use
@@ -216,7 +173,7 @@ public class HeatMapTextureRenderer {
 		return Math.min(maxTexSize, MAX_SAMPLES_PER_TEXTURE);
 	}
 
-	protected TextureData asTextureData(FloatBuffer buffer, int width, int height) {
+	protected static TextureData asTextureData(FloatBuffer buffer, int width, int height) {
 		TextureData texData = new TextureData(GLProfile.getDefault(), GL.GL_RGBA /* internalFormat */, width, height,
 				0 /* border */,
 				GL.GL_RGBA /* pixelFormat */, GL.GL_FLOAT /* pixelType */, false /* mipmap */,
@@ -262,6 +219,54 @@ public class HeatMapTextureRenderer {
 
 			// flipped in y-direction
 			g.fillImage(texture, tile.x, tile.y + tile.height, tile.width, -tile.height);
+		}
+	}
+
+	private static class TileFactory {
+		private final GL gl;
+		private final Deque<Texture> pool;
+		private final List<Integer> dimensions;
+		private final List<Integer> records;
+		private final Function2<Integer, Integer, Color> blockColorer;
+
+		public TileFactory(GL gl, Deque<Texture> pool, List<Integer> dimensions, List<Integer> records,
+				Function2<Integer, Integer, Color> blockColorer) {
+			this.gl = gl;
+			this.pool = pool;
+			this.dimensions = dimensions;
+			this.records = records;
+			this.blockColorer = blockColorer;
+		}
+
+		public Tile create(FloatBuffer buffer, Rectangle tile) {
+			final int ilast = tile.y + tile.height;
+			final int jlast = tile.x + tile.width;
+
+			// fill buffer
+			buffer.rewind();
+			for (int i = tile.y; i < ilast; ++i) {
+				int recordID = records.get(i);
+				for (int j = tile.x; j < jlast; ++j) {
+					int dimensionID = dimensions.get(j);
+					Color color = blockColorer.apply(recordID, dimensionID);
+					buffer.put(color.getRGBA());
+				}
+			}
+
+			// load to texture
+			buffer.rewind();
+			Texture texture;
+			if (!pool.isEmpty())
+				texture = pool.poll();
+			else
+				texture = TextureIO.newTexture(GL.GL_TEXTURE_2D);
+
+			TextureData texData = asTextureData(buffer, tile.width, tile.height);
+			texture.updateImage(gl, texData);
+			gl.glFlush();
+			texData.destroy();
+
+			return new Tile(tile, texture);
 		}
 	}
 

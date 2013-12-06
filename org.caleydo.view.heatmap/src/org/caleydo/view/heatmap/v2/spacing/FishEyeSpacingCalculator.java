@@ -6,11 +6,10 @@
 package org.caleydo.view.heatmap.v2.spacing;
 
 import java.util.BitSet;
+import java.util.List;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy;
 import org.caleydo.view.heatmap.v2.spacing.UniformSpacingCalculator.UniformSpacingImpl;
@@ -33,20 +32,14 @@ public class FishEyeSpacingCalculator implements ISpacingStrategy {
 	}
 
 	@Override
-	public ISpacingLayout apply(Perspective perspective, SelectionManager selectionManager, boolean hideHidden,
-			float size) {
-		final VirtualArray va = perspective.getVirtualArray();
-		int nrRecordElements = perspective.getVirtualArray().size();
-		if (hideHidden) { // remove hidden
-			nrRecordElements -= selectionManager.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
-		}
-
+	public ISpacingLayout apply(List<Integer> ids, SelectionManager selectionManager, float size) {
+		int nrRecordElements = ids.size();
 		float fieldSize = size / nrRecordElements;
 
 		if (fieldSize >= minSelectionSize) { // we have at least the min selection size can use uniform
 			return new UniformSpacingImpl(fieldSize);
 		}
-		final BitSet selectedIndices = getSelectedIndices(selectionManager, va);
+		final BitSet selectedIndices = getSelectedIndices(selectionManager, ids);
 		final int selected = selectedIndices.cardinality();
 
 		if (selectedIndices.isEmpty()) //nothing selected
@@ -162,7 +155,7 @@ public class FishEyeSpacingCalculator implements ISpacingStrategy {
 	 * @param va
 	 * @return
 	 */
-	private BitSet getSelectedIndices(SelectionManager selectionManager, VirtualArray va) {
+	private BitSet getSelectedIndices(SelectionManager selectionManager, List<Integer> va) {
 		BitSet selectedIndices = new BitSet();
 		for (Integer selected : selectionManager.getElements(SelectionType.SELECTION)) {
 			if (selectionManager.checkStatus(GLHeatMap.SELECTION_HIDDEN, selected))

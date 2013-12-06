@@ -5,11 +5,15 @@
  ******************************************************************************/
 package org.caleydo.core.util.function;
 
-
 /**
+ * basic implementation of a {@link IDoubleFunction}
+ *
  * @author Samuel Gratzl
  *
  */
-public interface IDoubleReduction {
-	double reduce(double a, double b);
+public abstract class ADoubleFunction2 implements IDoubleFunction2 {
+	@Override
+	public final Double apply(Double v1, Double v2) {
+		return Double.valueOf(apply(v1.doubleValue(), v2.doubleValue()));
+	}
 }

@@ -5,8 +5,11 @@
  *******************************************************************************/
 package org.caleydo.view.heatmap.v2.internal;
 
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.function.Function2;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
@@ -15,7 +18,7 @@ import org.caleydo.view.heatmap.v2.BarPlotElement;
 import org.caleydo.view.heatmap.v2.BasicBlockColorer;
 import org.caleydo.view.heatmap.v2.EScalingMode;
 import org.caleydo.view.heatmap.v2.EShowLabels;
-import org.caleydo.view.heatmap.v2.IBlockColorer;
+import org.caleydo.view.heatmap.v2.HeatMapElementBase;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy;
 import org.caleydo.view.heatmap.v2.SpacingStrategies;
 
@@ -33,32 +36,39 @@ public class BarPlotElementFactory implements IGLElementFactory {
 
 	@Override
 	public boolean apply(GLElementFactoryContext context) {
-		TablePerspective data = context.getData();
-		return DataSupportDefinitions.numericalTables.apply(data);
+		return DataSupportDefinitions.numericalTables.apply(context.getData());
 	}
 
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
 		TablePerspective data = context.getData();
-		IBlockColorer blockColorer = context.get(IBlockColorer.class, BasicBlockColorer.INSTANCE);
+		@SuppressWarnings("unchecked")
+		Function2<Integer, Integer, Color> blockColorer = context.get(Function2.class,
+				new BasicBlockColorer(data.getDataDomain()));
 		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
 
 		BarPlotElement elem = new BarPlotElement(data, blockColorer, detailLevel, context.get(EScalingMode.class,
 				EScalingMode.GLOBAL));
 
-		EShowLabels default_ = context.get(EShowLabels.class, EShowLabels.NONE);
-		elem.setDimensionLabels(context.get("dimensionLabels", EShowLabels.class, default_));
-		elem.setRecordLabels(context.get("recordLabels", EShowLabels.class, default_));
-		elem.setTextWidth(context.getInt("textWidth", elem.getTextWidth()));
 		elem.setMinimumItemHeightFactor(context.getInt("minimumItemHeightFactor", elem.getMinimumItemHeightFactor()));
-
-		ISpacingStrategy defaults_ = context.get(ISpacingStrategy.class, SpacingStrategies.UNIFORM);
-		elem.setDimensionSpacingStrategy(context.get("dimensionSpacingStrategy", ISpacingStrategy.class, defaults_));
-		elem.setRecordSpacingStrategy(context.get("recordSpacingStrategy", ISpacingStrategy.class, defaults_));
-
-		elem.setRenderGroupHints(context.is("renderGroupHints", true));
+		setCommon(context, elem);
 
 		return elem;
+	}
+
+	static void setCommon(GLElementFactoryContext context, HeatMapElementBase elem) {
+		EShowLabels default_ = context.get(EShowLabels.class, EShowLabels.NONE);
+		elem.setLabel(EDimension.DIMENSION, context.get("dimensionLabels", EShowLabels.class, default_));
+		elem.setLabel(EDimension.RECORD, context.get("recordLabels", EShowLabels.class, default_));
+		elem.setTextWidth(context.getInt("textWidth", elem.getTextWidth()));
+
+		ISpacingStrategy defaults_ = context.get(ISpacingStrategy.class, SpacingStrategies.UNIFORM);
+		elem.setSpacingStrategy(EDimension.DIMENSION,
+				context.get("dimensionSpacingStrategy", ISpacingStrategy.class, defaults_));
+		elem.setSpacingStrategy(EDimension.RECORD,
+				context.get("recordSpacingStrategy", ISpacingStrategy.class, defaults_));
+
+		elem.setRenderGroupHints(context.is("renderGroupHints", false));
 	}
 
 }

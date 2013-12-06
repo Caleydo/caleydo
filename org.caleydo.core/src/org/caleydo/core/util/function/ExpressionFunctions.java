@@ -107,7 +107,7 @@ public class ExpressionFunctions {
 			public double apply(double in) {
 				double av = a.apply(in);
 				double bv = b.apply(in);
-				return op.reduce(av, bv);
+				return op.apply(av, bv);
 			}
 
 			@Override

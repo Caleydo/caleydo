@@ -5,16 +5,11 @@
  ******************************************************************************/
 package org.caleydo.view.heatmap.v2;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
+import org.caleydo.core.util.function.Function2;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.view.heatmap.v2.internal.HeatMapTextureRenderer;
+import org.caleydo.view.heatmap.v2.internal.HeatMapRenderer;
 
 /**
  * a generic heat map implemenation
@@ -22,101 +17,21 @@ import org.caleydo.view.heatmap.v2.internal.HeatMapTextureRenderer;
  * @author Samuel Gratzl
  *
  */
-public class HeatMapElement extends AHeatMapElement {
-	private final HeatMapTextureRenderer textureRenderer;
-
+public class HeatMapElement extends HeatMapElementBase {
 	public HeatMapElement(TablePerspective tablePerspective) {
-		this(tablePerspective, BasicBlockColorer.INSTANCE, EDetailLevel.HIGH, false);
+		this(tablePerspective, new BasicBlockColorer(tablePerspective.getDataDomain()), EDetailLevel.HIGH, false);
 	}
 
-	public HeatMapElement(TablePerspective tablePerspective, IBlockColorer blockColorer, EDetailLevel detailLevel,
+	public HeatMapElement(TablePerspective tablePerspective, Function2<Integer, Integer, Color> blockColorer,
+			EDetailLevel detailLevel,
 			boolean forceTextures) {
-		super(tablePerspective, blockColorer, detailLevel);
-
-		// force texture or low details
-		if (forceTextures || EDetailLevel.MEDIUM.compareTo(detailLevel) >= 0) {
-			this.textureRenderer = new HeatMapTextureRenderer(blockColorer);
-		} else {
-			this.textureRenderer = null;
-		}
-	}
-
-	@Override
-	protected void takeDown() {
-		if (textureRenderer != null)
-			textureRenderer.takeDown();
-		super.takeDown();
-	}
-
-	@Override
-	protected void init(IGLElementContext context) {
-		super.init(context);
-		if (textureRenderer != null) {
-			textureRenderer.create(context, this.getTablePerspective());
-		}
-	}
-
-
-
-	@Override
-	public void onVAUpdate(TablePerspective tablePerspective) {
-		if (textureRenderer != null) {
-			textureRenderer.create(context, tablePerspective);
-		}
-		super.onVAUpdate(tablePerspective);
-	}
-
-	/**
-	 * render the heatmap as blocks
-	 *
-	 * @param g
-	 * @param w
-	 * @param h
-	 */
-	@Override
-	protected void render(GLGraphics g, float w, float h) {
-		if (isUniform() && textureRenderer != null && textureRenderer.render(g, w, h)) {
-			return;
-		}
-
-		final TablePerspective tablePerspective = selections.getTablePerspective();
-		final VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
-		final VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
-		final ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
-
-		for (int i = 0; i < recordVA.size(); ++i) {
-			Integer recordID = recordVA.get(i);
-			if (isHidden(recordID)) {
-				continue;
-			}
-			float y = recordSpacing.getPosition(i);
-			float fieldHeight = recordSpacing.getSize(i);
-
-			if (fieldHeight <= 0)
-				continue;
-
-			for (int j = 0; j < dimensionVA.size(); ++j) {
-				Integer dimensionID = dimensionVA.get(j);
-				float x = dimensionSpacing.getPosition(j);
-				float fieldWidth = dimensionSpacing.getSize(j);
-				if (fieldWidth <= 0)
-					continue;
-				boolean deSelected = isDeselected(recordID);
-				Color color = blockColorer.apply(recordID, dimensionID, dataDomain, deSelected);
-				g.color(color).fillRect(x, y, fieldWidth, fieldHeight);
-			}
-		}
-	}
-
-	@ListenTo
-	private void onColorMappingUpdate(UpdateColorMappingEvent event) {
-		if (textureRenderer != null && context != null)
-			textureRenderer.create(context, getTablePerspective());
+		super(new TablePerspectiveDataProvider(tablePerspective), new HeatMapRenderer(detailLevel, forceTextures,
+				blockColorer), detailLevel);
 	}
 
 	@Override
 	public String toString() {
-		return "Heat map for " + selections;
+		return "Heat map";
 	}
 
 }

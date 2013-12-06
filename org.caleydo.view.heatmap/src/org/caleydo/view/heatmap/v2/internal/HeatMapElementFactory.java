@@ -5,18 +5,27 @@
  *******************************************************************************/
 package org.caleydo.view.heatmap.v2.internal;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.function.Function2;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
 import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
 import org.caleydo.view.heatmap.v2.BasicBlockColorer;
-import org.caleydo.view.heatmap.v2.EShowLabels;
 import org.caleydo.view.heatmap.v2.HeatMapElement;
-import org.caleydo.view.heatmap.v2.IBlockColorer;
-import org.caleydo.view.heatmap.v2.ISpacingStrategy;
-import org.caleydo.view.heatmap.v2.SpacingStrategies;
+import org.caleydo.view.heatmap.v2.HeatMapElementBase;
+import org.caleydo.view.heatmap.v2.ListDataProvider;
+import org.caleydo.view.heatmap.v2.ListDataProvider.DimensionData;
+
+import com.google.common.base.Function;
 
 /**
  * element factory for creating heatmaps
@@ -32,30 +41,57 @@ public class HeatMapElementFactory implements IGLElementFactory {
 
 	@Override
 	public boolean apply(GLElementFactoryContext context) {
-		TablePerspective data = context.getData();
-		return DataSupportDefinitions.homogenousTables.apply(data);
+		if (DataSupportDefinitions.homogenousTables.apply(context.getData()))
+			return true;
+
+		boolean hasColorer = context.get(Function2.class, null) != null;
+		boolean hasRecords = context.get("records", List.class, null) != null;
+		boolean hasDimension = context.get("dimensions", List.class, null) != null;
+		return hasColorer && hasRecords && hasDimension;
 	}
 
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
-		TablePerspective data = context.getData();
-		IBlockColorer blockColorer = context.get(IBlockColorer.class, BasicBlockColorer.INSTANCE);
 		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
+		boolean forceTextures = context.is("forceTextures");
+		@SuppressWarnings("unchecked")
+		Function2<Integer, Integer, Color> colorer = context.get(Function2.class, null);
 
-		HeatMapElement elem = new HeatMapElement(data, blockColorer, detailLevel, context.is("forceTextures"));
+		HeatMapElementBase elem;
+		TablePerspective data = context.getData();
+		if (data != null) {
+			if (colorer == null)
+				colorer = new BasicBlockColorer(data.getDataDomain());
+			elem = new HeatMapElement(data, colorer, detailLevel, forceTextures);
+		} else {
+			IHeatMapDataProvider datap = new ListDataProvider(toData(context, "records"), toData(context, "dimensions"));
+			IHeatMapRenderer renderer = new HeatMapRenderer(detailLevel, forceTextures, colorer);
+			elem = new HeatMapElementBase(datap, renderer, detailLevel);
+		}
 
-		EShowLabels default_ = context.get(EShowLabels.class, EShowLabels.NONE);
-		elem.setDimensionLabels(context.get("dimensionLabels", EShowLabels.class, default_));
-		elem.setRecordLabels(context.get("recordLabels", EShowLabels.class, default_));
-		elem.setTextWidth(context.getInt("textWidth", elem.getTextWidth()));
-
-		ISpacingStrategy defaults_ = context.get(ISpacingStrategy.class, SpacingStrategies.UNIFORM);
-		elem.setDimensionSpacingStrategy(context.get("dimensionSpacingStrategy", ISpacingStrategy.class, defaults_));
-		elem.setRecordSpacingStrategy(context.get("recordSpacingStrategy", ISpacingStrategy.class, defaults_));
-
-		elem.setRenderGroupHints(context.is("renderGroupHints", false));
+		BarPlotElementFactory.setCommon(context, elem);
 
 		return elem;
+	}
+
+
+	private static DimensionData toData(GLElementFactoryContext context, String key) {
+		@SuppressWarnings("unchecked")
+		List<Integer> data = context.get(key, List.class, null);
+		IDType idType = context.get(key + ".idType", IDType.class, null);
+		@SuppressWarnings("unchecked")
+		Function<Integer, String> labels = context.get(key + ".labels", Function.class, null);
+		if (labels == null)
+			labels = new Function<Integer, String>() {
+				@Override
+				public String apply(Integer input) {
+					return Objects.toString(input);
+				}
+			};
+		@SuppressWarnings("unchecked")
+		List<Group> groups = context.get(key + ".groups", List.class, Collections.emptyList());
+
+		return new DimensionData(data, labels, groups, idType);
 	}
 
 }
