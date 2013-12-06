@@ -26,6 +26,7 @@ import org.caleydo.view.pathway.v2.ui.PathwayElement;
 import org.caleydo.view.pathway.v2.ui.PathwayMappingHandler;
 import org.caleydo.view.pathway.v2.ui.PathwayTextureRepresentation;
 import org.caleydo.view.pathway.v2.ui.StdDevBarAugmentation;
+import org.caleydo.view.pathway.v2.ui.VertexSelectionAugmentation;
 
 /**
  *
@@ -59,6 +60,8 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 				pathwayElement.getMappingHandler()));
 		pathwayElement.addForegroundAugmentation(new HighVarianceIndicatorAugmentation(pathwayElement
 				.getPathwayRepresentation(), pathwayElement.getMappingHandler()));
+		pathwayElement.addForegroundAugmentation(new VertexSelectionAugmentation(pathwayElement
+				.getPathwayRepresentation()));
 	}
 
 	@Override

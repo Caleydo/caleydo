@@ -26,8 +26,7 @@ import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
-import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
+import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -53,6 +52,8 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 	protected Vec2f scaling = new Vec2f();
 
 	protected PickingPool pool;
+
+	protected List<IVertexRepSelectionListener> vertexListeners = new ArrayList<>();
 
 	public PathwayTextureRepresentation() {
 	}
@@ -91,8 +92,10 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 	}
 
 	private void onVertexPick(Pick pick) {
-		// PathwayItemManager.get().getPathwayVertexRep(pick.getObjectID());
-
+		PathwayVertexRep vertexRep = PathwayItemManager.get().getPathwayVertexRep(pick.getObjectID());
+		for (IVertexRepSelectionListener listener : vertexListeners) {
+			listener.onSelect(vertexRep, pick);
+		}
 	}
 
 	private void initShaders(GL2 gl) throws IOException {
@@ -275,9 +278,8 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 	}
 
 	@Override
-	public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
-		// TODO Auto-generated method stub
-
+	public void addVertexRepSelectionListener(IVertexRepSelectionListener listener) {
+		vertexListeners.add(listener);
 	}
 
 }

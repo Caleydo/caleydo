@@ -51,13 +51,12 @@ import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
-import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
+import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -961,11 +960,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		});
 	}
 
-	@Override
-	public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
-		if (pathRenderer != null)
-			pathRenderer.addVertexRepBasedSelectionEvent(eventFactory, pickingMode);
-	}
+	// @Override
+	// public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
+	// if (pathRenderer != null)
+	// pathRenderer.addVertexRepBasedSelectionEvent(eventFactory, pickingMode);
+	// }
 
 	@ListenTo
 	public void clearGroupSelection(ClearGroupSelectionEvent event) {
@@ -1001,6 +1000,13 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	public boolean isUseColorMapping() {
 		return useColorMapping;
+	}
+
+	@Override
+	public void addVertexRepSelectionListener(IVertexRepSelectionListener listener) {
+		if (pathRenderer != null)
+			pathRenderer.addVertexRepSelectionListener(listener);
+
 	}
 
 }

@@ -13,11 +13,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -75,7 +73,7 @@ import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataSupportDefinition;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
-import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
+import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.VertexRepBasedEventFactory;
@@ -260,7 +258,9 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	 * Events that should be triggered when selecting a node. Added via
 	 * {@link #addVertexRepBasedSelectionEvent(VertexRepBasedEventFactory, PickingMode)}.
 	 */
-	protected Map<PickingMode, List<IVertexRepBasedEventFactory>> nodeEvents = new HashMap<>();
+	// protected Map<PickingMode, List<IVertexRepBasedEventFactory>> nodeEvents = new HashMap<>();
+
+	protected List<IVertexRepSelectionListener> vertexListeners = new ArrayList<>();
 
 	private EventListenerManager listeners = EventListenerManagers.wrap(this);
 
@@ -477,7 +477,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				}
 
 				handlePathwayElementSelection(SelectionType.MOUSE_OVER, pick.getObjectID());
-				triggerNodeEvents(pick.getPickingMode(), pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
+				notifyVertexListeners(pathwayItemManager.getPathwayVertexRep(pick.getObjectID()), pick);
+				// triggerNodeEvents(pick.getPickingMode(), pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
 			}
 
 			@Override
@@ -490,7 +491,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				event.setSender(this);
 				event.setSelectionDelta(selectionDelta);
 				eventPublisher.triggerEvent(event);
-				triggerNodeEvents(pick.getPickingMode(), pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
+				notifyVertexListeners(pathwayItemManager.getPathwayVertexRep(pick.getObjectID()), pick);
+				// triggerNodeEvents(pick.getPickingMode(), pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
 			}
 
 			@Override
@@ -505,7 +507,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 						&& glRemoteRenderingView.getViewType().equals("org.caleydo.view.brick"))
 					return;
 
-				triggerNodeEvents(pick.getPickingMode(), pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
+				notifyVertexListeners(pathwayItemManager.getPathwayVertexRep(pick.getObjectID()), pick);
+				// triggerNodeEvents(pick.getPickingMode(), pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
 				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
 				// triggerNodeEvents(PickingMode.MOUSE_OVER,
 				// pathwayItemManager.getPathwayVertexRep(pick.getObjectID()));
@@ -534,8 +537,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				}
 
 				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
-
-				triggerNodeEvents(pick.getPickingMode(), vertexRep);
+				notifyVertexListeners(pathwayItemManager.getPathwayVertexRep(pick.getObjectID()), pick);
+				// triggerNodeEvents(pick.getPickingMode(), vertexRep);
 			}
 
 			@Override
@@ -572,7 +575,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					}
 				}
 
-				triggerNodeEvents(pick.getPickingMode(), vertexRep);
+				notifyVertexListeners(pathwayItemManager.getPathwayVertexRep(pick.getObjectID()), pick);
+				// triggerNodeEvents(pick.getPickingMode(), vertexRep);
 
 				// handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
 			}
@@ -1967,23 +1971,27 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		return highlightVertices;
 	}
 
-	@Override
-	public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
-		List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
-		if (factories == null) {
-			factories = new ArrayList<>();
-			nodeEvents.put(pickingMode, factories);
-		}
-		factories.add(eventFactory);
-	}
+	// @Override
+	// public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
+	// List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
+	// if (factories == null) {
+	// factories = new ArrayList<>();
+	// nodeEvents.put(pickingMode, factories);
+	// }
+	// factories.add(eventFactory);
+	// }
 
-	private void triggerNodeEvents(PickingMode pickingMode, PathwayVertexRep vertexRep) {
-		List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
-		if (factories != null) {
-			for (IVertexRepBasedEventFactory factory : factories) {
-				factory.triggerEvent(vertexRep);
-			}
+	private void notifyVertexListeners(PathwayVertexRep vertexRep, Pick pick) {
+
+		for (IVertexRepSelectionListener listener : vertexListeners) {
+			listener.onSelect(vertexRep, pick);
 		}
+		// List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
+		// if (factories != null) {
+		// for (IVertexRepBasedEventFactory factory : factories) {
+		// factory.triggerEvent(vertexRep);
+		// }
+		// }
 	}
 
 	/**
@@ -2017,6 +2025,12 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	 */
 	public void setShowStdDevBars(boolean showStdDevBars) {
 		this.showStdDevBars = showStdDevBars;
+	}
+
+	@Override
+	public void addVertexRepSelectionListener(IVertexRepSelectionListener listener) {
+		vertexListeners.add(listener);
+
 	}
 
 }

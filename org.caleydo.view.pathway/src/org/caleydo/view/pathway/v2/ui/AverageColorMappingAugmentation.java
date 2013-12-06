@@ -6,9 +6,15 @@
 package org.caleydo.view.pathway.v2.ui;
 
 import org.caleydo.core.data.perspective.table.Average;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 
@@ -16,7 +22,8 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
  * @author Christian
  *
  */
-public class AverageColorMappingAugmentation extends APerVertexAugmentation implements IPathwayMappingListener {
+public class AverageColorMappingAugmentation extends APerVertexAugmentation implements IPathwayMappingListener,
+		IVertexRepSelectionListener {
 
 	protected static final Color NO_MAPPING_ICON_COLOR = new Color(0.3f, 0.3f, 0.3f, 0.7f);
 	protected PathwayMappingHandler handler;
@@ -25,6 +32,7 @@ public class AverageColorMappingAugmentation extends APerVertexAugmentation impl
 			PathwayMappingHandler handler) {
 		super(pathwayRepresentation);
 		this.handler = handler;
+		pathwayRepresentation.addVertexRepSelectionListener(this);
 		handler.addListener(this);
 	}
 
@@ -56,6 +64,17 @@ public class AverageColorMappingAugmentation extends APerVertexAugmentation impl
 	@Override
 	public void update(PathwayMappingHandler handler) {
 		repaint();
+	}
+
+	@Override
+	public void onSelect(PathwayVertexRep vertexRep, Pick pick) {
+		TablePerspective mappingPerspective = handler.getMappingPerspective();
+		if (vertexRep.getType() == EPathwayVertexType.gene && mappingPerspective != null
+				&& pick.getPickingMode() == PickingMode.CLICKED) {
+			DataSetSelectedEvent dataSetSelectedEvent = new DataSetSelectedEvent(mappingPerspective);
+			dataSetSelectedEvent.setSender(this);
+			EventPublisher.trigger(dataSetSelectedEvent);
+		}
 	}
 
 }

@@ -8,7 +8,6 @@ package org.caleydo.datadomain.pathway;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
-import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 
@@ -64,11 +63,20 @@ public interface IPathwayRepresentation {
 	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item);
 
 	/**
-	 * Adds a vertex rep based event that should be triggered when picking a vertex rep in the specified mode.
+	 * Adds a {@link IVertexRepSelectionListener} to the representation. The representation then calls
+	 * {@link IVertexRepSelectionListener#onSelect(PathwayVertexRep, org.caleydo.core.view.opengl.picking.Pick)} when a
+	 * {@link PathwayVertexRep} was picked.
 	 *
-	 * @param eventFactory
-	 * @param pickingMode
+	 * @param listener
 	 */
-	public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode);
+	public void addVertexRepSelectionListener(IVertexRepSelectionListener listener);
+
+	// /**
+	// * Adds a vertex rep based event that should be triggered when picking a vertex rep in the specified mode.
+	// *
+	// * @param eventFactory
+	// * @param pickingMode
+	// */
+	// public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode);
 
 }
