@@ -29,13 +29,13 @@ public class PathwayElement extends GLElementContainer {
 	protected List<GLElement> foregroundAugmentations = new ArrayList<>();
 
 	@DeepScan
-	protected PathwayMappingHandler mappingHandler;
+	protected PathwayDataMappingHandler mappingHandler;
 	protected String eventSpace;
 
 	public PathwayElement(String eventSpace) {
 		super(GLLayouts.LAYERS);
 		this.eventSpace = eventSpace;
-		mappingHandler = new PathwayMappingHandler();
+		mappingHandler = new PathwayDataMappingHandler();
 		mappingHandler.setEventSpace(eventSpace);
 	}
 
@@ -111,7 +111,7 @@ public class PathwayElement extends GLElementContainer {
 	/**
 	 * @return the mappingHandler, see {@link #mappingHandler}
 	 */
-	public PathwayMappingHandler getMappingHandler() {
+	public PathwayDataMappingHandler getMappingHandler() {
 		return mappingHandler;
 	}
 

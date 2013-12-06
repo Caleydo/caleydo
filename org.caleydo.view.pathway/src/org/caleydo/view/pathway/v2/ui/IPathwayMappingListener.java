@@ -11,6 +11,6 @@ package org.caleydo.view.pathway.v2.ui;
  */
 public interface IPathwayMappingListener {
 
-	public void update(PathwayMappingHandler handler);
+	public void update(PathwayDataMappingHandler handler);
 
 }

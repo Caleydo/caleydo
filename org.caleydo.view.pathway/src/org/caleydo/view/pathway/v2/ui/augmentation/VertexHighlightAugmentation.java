@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.view.pathway.v2.ui;
+package org.caleydo.view.pathway.v2.ui.augmentation;
 
 import java.util.List;
 
@@ -20,12 +20,13 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.view.pathway.v2.ui.APathwayElementRepresentation;
 
 /**
  * @author Christian
  *
  */
-public class VertexSelectionAugmentation extends APerVertexAugmentation implements IVertexRepSelectionListener,
+public class VertexHighlightAugmentation extends APerVertexAugmentation implements IVertexRepSelectionListener,
 		IEventBasedSelectionManagerUser {
 
 	protected EventBasedSelectionManager vertexSelectionManager;
@@ -34,7 +35,7 @@ public class VertexSelectionAugmentation extends APerVertexAugmentation implemen
 	/**
 	 * @param pathwayRepresentation
 	 */
-	public VertexSelectionAugmentation(APathwayElementRepresentation pathwayRepresentation) {
+	public VertexHighlightAugmentation(APathwayElementRepresentation pathwayRepresentation) {
 		super(pathwayRepresentation);
 		vertexSelectionManager = new EventBasedSelectionManager(this, PathwayVertexRep.getIdType());
 		geneSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("DAVID"));

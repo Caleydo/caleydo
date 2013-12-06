@@ -11,10 +11,10 @@ import org.caleydo.core.view.opengl.layout2.layout.GLLayoutDatas;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
 import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.pathway.v2.ui.AverageColorMappingAugmentation;
 import org.caleydo.view.pathway.v2.ui.PathwayElement;
-import org.caleydo.view.pathway.v2.ui.PathwayMappingHandler;
+import org.caleydo.view.pathway.v2.ui.PathwayDataMappingHandler;
 import org.caleydo.view.pathway.v2.ui.PathwayTextureRepresentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.AverageColorMappingAugmentation;
 
 import com.google.common.base.Supplier;
 
@@ -45,7 +45,7 @@ public class PathwayElementFactory implements IGLElementFactory {
 
 		// TODO
 		elem.setPathwayRepresentation(new PathwayTextureRepresentation(pathway));
-		PathwayMappingHandler pathwayMappingHandler = new PathwayMappingHandler();
+		PathwayDataMappingHandler pathwayMappingHandler = new PathwayDataMappingHandler();
 		pathwayMappingHandler.setEventSpace(context.get("eventSpace", String.class, supp));
 		AverageColorMappingAugmentation colorMappingAugmentation = new AverageColorMappingAugmentation(
 				elem.getPathwayRepresentation(), pathwayMappingHandler);

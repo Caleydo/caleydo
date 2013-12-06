@@ -19,14 +19,14 @@ import org.caleydo.core.view.opengl.layout2.view.AMultiTablePerspectiveElementVi
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.v2.internal.serial.SerializedPathwayView;
-import org.caleydo.view.pathway.v2.ui.AverageColorMappingAugmentation;
-import org.caleydo.view.pathway.v2.ui.HighVarianceIndicatorAugmentation;
-import org.caleydo.view.pathway.v2.ui.MultiMappingIndicatorAugmentation;
 import org.caleydo.view.pathway.v2.ui.PathwayElement;
-import org.caleydo.view.pathway.v2.ui.PathwayMappingHandler;
+import org.caleydo.view.pathway.v2.ui.PathwayDataMappingHandler;
 import org.caleydo.view.pathway.v2.ui.PathwayTextureRepresentation;
-import org.caleydo.view.pathway.v2.ui.StdDevBarAugmentation;
-import org.caleydo.view.pathway.v2.ui.VertexSelectionAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.AverageColorMappingAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.HighVarianceIndicatorAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.MultiMappingIndicatorAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.StdDevBarAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.StdDevBarConsideringVertexHighlightAugmentation;
 
 /**
  *
@@ -48,7 +48,7 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		pathwayElement = new PathwayElement(eventSpace);
 		pathwayElement.setPathwayRepresentation(new PathwayTextureRepresentation(PathwayManager.get()
 				.getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG)));
-		PathwayMappingHandler pathwayMappingHandler = new PathwayMappingHandler();
+		PathwayDataMappingHandler pathwayMappingHandler = new PathwayDataMappingHandler();
 		pathwayMappingHandler.setEventSpace(eventSpace);
 
 		AverageColorMappingAugmentation colorMappingAugmentation = new AverageColorMappingAugmentation(
@@ -60,8 +60,7 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 				pathwayElement.getMappingHandler()));
 		pathwayElement.addForegroundAugmentation(new HighVarianceIndicatorAugmentation(pathwayElement
 				.getPathwayRepresentation(), pathwayElement.getMappingHandler()));
-		pathwayElement.addForegroundAugmentation(new VertexSelectionAugmentation(pathwayElement
-				.getPathwayRepresentation()));
+		pathwayElement.addForegroundAugmentation(new StdDevBarConsideringVertexHighlightAugmentation(pathwayElement));
 	}
 
 	@Override
