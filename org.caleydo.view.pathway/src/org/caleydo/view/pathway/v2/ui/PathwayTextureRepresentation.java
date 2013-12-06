@@ -13,18 +13,27 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES2;
 
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
+import org.caleydo.core.view.opengl.layout2.util.PickingPool;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.view.pathway.v2.internal.GLPathwayView;
 
 import com.google.common.io.CharStreams;
@@ -34,7 +43,7 @@ import com.jogamp.opengl.util.glsl.ShaderUtil;
  * @author Christian
  *
  */
-public class PathwayTextureRenderer extends APathwayElementRepresentation {
+public class PathwayTextureRepresentation extends APathwayElementRepresentation {
 
 	protected PathwayGraph pathway;
 
@@ -45,14 +54,65 @@ public class PathwayTextureRenderer extends APathwayElementRepresentation {
 	protected Vec2f origin = new Vec2f();
 	protected Vec2f scaling = new Vec2f();
 
-	public PathwayTextureRenderer() {
+	protected PickingPool pool;
+
+	public PathwayTextureRepresentation() {
 	}
 
-	public PathwayTextureRenderer(PathwayGraph pathway) {
+	public PathwayTextureRepresentation(PathwayGraph pathway) {
 		this.pathway = pathway;
 	}
 
-	public void initShaders(GL2 gl) throws IOException {
+	@Override
+	protected void init(IGLElementContext context) {
+		setVisibility(EVisibility.PICKABLE);
+
+		pool = new PickingPool(context, new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				onVertexPick(pick);
+			}
+		});
+		pool.addPickingListener(context.getSWTLayer().createTooltip(new IPickingLabelProvider() {
+
+			@Override
+			public String getLabel(Pick pick) {
+				PathwayVertexRep vertexRep = PathwayItemManager.get().getPathwayVertexRep(pick.getObjectID());
+				if (vertexRep.getType() == EPathwayVertexType.gene) {
+					StringBuilder builder = new StringBuilder();
+					List<PathwayVertex> vertices = vertexRep.getPathwayVertices();
+					List<String> names = new ArrayList<>(vertices.size());
+					for (PathwayVertex v : vertices) {
+						names.add(v.getHumanReadableName());
+					}
+					Collections.sort(names);
+					for (int i = 0; i < names.size(); i++) {
+						builder.append(names.get(i));
+						if (i < names.size() - 1)
+							builder.append(", ");
+					}
+					return builder.toString();
+				}
+				return vertexRep.getShortName();
+			}
+		}));
+
+		super.init(context);
+	}
+
+	@Override
+	protected void takeDown() {
+		pool.clear();
+		pool = null;
+		super.takeDown();
+	}
+
+	private void onVertexPick(Pick pick) {
+		// PathwayItemManager.get().getPathwayVertexRep(pick.getObjectID());
+
+	}
+
+	private void initShaders(GL2 gl) throws IOException {
 		isShaderInitialized = true;
 		shaderProgramTextOverlay = -1;
 		if (!ShaderUtil.isShaderCompilerAvailable(gl)) {
@@ -138,9 +198,19 @@ public class PathwayTextureRenderer extends APathwayElementRepresentation {
 		if (shaderProgramTextOverlay > 0)
 			gl.glUseProgram(0);
 
-		g.color(0f, 0f, 0f, 0f);
+		// g.color(0f, 0f, 0f, 0f);
+		// for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
+		// g.fillRect(getVertexRepBounds(vertexRep));
+		// }
+
+	}
+
+	@Override
+	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
+			g.pushName(pool.get(vertexRep.getID()));
 			g.fillRect(getVertexRepBounds(vertexRep));
+			g.popName();
 		}
 
 	}

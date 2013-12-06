@@ -13,7 +13,8 @@ import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.pathway.v2.ui.AverageColorMappingAugmentation;
 import org.caleydo.view.pathway.v2.ui.PathwayElement;
-import org.caleydo.view.pathway.v2.ui.PathwayTextureRenderer;
+import org.caleydo.view.pathway.v2.ui.PathwayMappingHandler;
+import org.caleydo.view.pathway.v2.ui.PathwayTextureRepresentation;
 
 import com.google.common.base.Supplier;
 
@@ -33,18 +34,21 @@ public class PathwayElementFactory implements IGLElementFactory {
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
 		PathwayGraph pathway = context.get(PathwayGraph.class, GLLayoutDatas.<PathwayGraph> throwInvalidException());
-		PathwayElement elem = new PathwayElement();
-
-		// TODO
-		elem.setPathwayRepresentation(new PathwayTextureRenderer(pathway));
-		AverageColorMappingAugmentation colorMappingAugmentation = new AverageColorMappingAugmentation(
-				elem.getPathwayRepresentation());
-		colorMappingAugmentation.setEventSpace(context.get("eventSpace", String.class, new Supplier<String>() {
+		Supplier<String> supp = new Supplier<String>() {
 			@Override
 			public String get() {
 				return EventPublisher.INSTANCE.createUniqueEventSpace();
 			}
-		}));
+		};
+
+		PathwayElement elem = new PathwayElement(context.get("eventSpace", String.class, supp));
+
+		// TODO
+		elem.setPathwayRepresentation(new PathwayTextureRepresentation(pathway));
+		PathwayMappingHandler pathwayMappingHandler = new PathwayMappingHandler();
+		pathwayMappingHandler.setEventSpace(context.get("eventSpace", String.class, supp));
+		AverageColorMappingAugmentation colorMappingAugmentation = new AverageColorMappingAugmentation(
+				elem.getPathwayRepresentation(), pathwayMappingHandler);
 		elem.addBackgroundAugmentation(colorMappingAugmentation);
 
 		return elem;

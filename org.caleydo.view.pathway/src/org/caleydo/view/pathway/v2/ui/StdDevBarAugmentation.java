@@ -16,16 +16,24 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
  * @author Christian
  *
  */
-public class AverageColorMappingAugmentation extends APerVertexAugmentation implements IPathwayMappingListener {
+public class StdDevBarAugmentation extends APerVertexAugmentation implements IPathwayMappingListener {
 
-	protected static final Color NO_MAPPING_ICON_COLOR = new Color(0.3f, 0.3f, 0.3f, 0.7f);
+	protected static final Color BORDER_COLOR = new Color(0f, 0f, 0f, 1f);
+	protected static final Color BACKGROUND_COLOR = new Color(1f, 1f, 1f, 1f);
 	protected PathwayMappingHandler handler;
 
-	public AverageColorMappingAugmentation(APathwayElementRepresentation pathwayRepresentation,
-			PathwayMappingHandler handler) {
+	/**
+	 * @param pathwayRepresentation
+	 */
+	public StdDevBarAugmentation(APathwayElementRepresentation pathwayRepresentation, PathwayMappingHandler handler) {
 		super(pathwayRepresentation);
 		this.handler = handler;
 		handler.addListener(this);
+	}
+
+	@Override
+	public void update(PathwayMappingHandler handler) {
+		repaint();
 	}
 
 	@Override
@@ -35,27 +43,18 @@ public class AverageColorMappingAugmentation extends APerVertexAugmentation impl
 
 		Average avg = handler.getMappingAverage(vertexRep);
 
-		// g.color(1f, 0f, 0f).fillRect(bounds.x(), bounds.y(), bounds.width(), bounds.height());
 		if (avg != null) {
-			g.color(handler.getMappingPerspective().getDataDomain().getTable().getColorMapper()
-					.getColor((float) avg.getArithmeticMean()));
-			g.fillRect(bounds.x(), bounds.y(), bounds.width(), bounds.height());
-		} else {
-			float size = bounds.height() * 0.5f;
-			g.color(NO_MAPPING_ICON_COLOR).fillRect(bounds.x() + bounds.width() - size,
-					bounds.y() + bounds.height() - size, size, size);
+			float stdDevWidth = bounds.width() * (float) avg.getStandardDeviation() * 2;
+			float height = bounds.height() * 0.4f;
+			float top = bounds.y() + bounds.height() - 0.3f * height;
+			g.gl.glLineWidth(1);
+			g.color(BACKGROUND_COLOR).fillRect(bounds.x(), top, bounds.width(), height);
+			g.color(handler.getMappingPerspective().getDataDomain().getColor().darker()).fillRect(bounds.x(), top,
+					stdDevWidth, height);
+			g.color(BORDER_COLOR).renderRect(false, bounds.x(), top, bounds.width(), height);
+
+
 		}
-	}
 
-	@Override
-	protected void takeDown() {
-		handler.removeListener(this);
-		super.takeDown();
 	}
-
-	@Override
-	public void update(PathwayMappingHandler handler) {
-		repaint();
-	}
-
 }
