@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -584,22 +583,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			@Override
 			public String getLabel(Pick pick) {
 				PathwayVertexRep vertexRep = pathwayItemManager.getPathwayVertexRep(pick.getObjectID());
-				if (vertexRep.getType() == EPathwayVertexType.gene) {
-					StringBuilder builder = new StringBuilder();
-					List<PathwayVertex> vertices = vertexRep.getPathwayVertices();
-					List<String> names = new ArrayList<>(vertices.size());
-					for (PathwayVertex v : vertices) {
-						names.add(v.getHumanReadableName());
-					}
-					Collections.sort(names);
-					for (int i = 0; i < names.size(); i++) {
-						builder.append(names.get(i));
-						if (i < names.size() - 1)
-							builder.append(", ");
-					}
-					return builder.toString();
-				}
-				return vertexRep.getShortName();
+				return vertexRep.getLabel();
 			}
 		}, EPickingType.PATHWAY_ELEMENT_SELECTION.name());
 

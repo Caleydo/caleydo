@@ -7,6 +7,7 @@ package org.caleydo.datadomain.pathway.graph.item.vertex;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.base.IUniqueObject;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
@@ -37,7 +39,7 @@ import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class PathwayVertexRep implements Serializable, IUniqueObject {
+public class PathwayVertexRep implements Serializable, IUniqueObject, ILabeled {
 
 	private static final long serialVersionUID = 1L;
 
@@ -312,6 +314,26 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 		average.setArithmeticMean(sumAverage / numIDs);
 		average.setStandardDeviation(sumStandardDeviation / numIDs);
 		return average;
+	}
+
+	@Override
+	public String getLabel() {
+		if (getType() == EPathwayVertexType.gene) {
+			StringBuilder builder = new StringBuilder();
+			List<PathwayVertex> vertices = getPathwayVertices();
+			List<String> names = new ArrayList<>(vertices.size());
+			for (PathwayVertex v : vertices) {
+				names.add(v.getHumanReadableName());
+			}
+			Collections.sort(names);
+			for (int i = 0; i < names.size(); i++) {
+				builder.append(names.get(i));
+				if (i < names.size() - 1)
+					builder.append(", ");
+			}
+			return builder.toString();
+		}
+		return getShortName();
 	}
 
 	/**
