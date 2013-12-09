@@ -32,12 +32,11 @@ import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
-import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
+import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
@@ -168,7 +167,9 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	/**
 	 * Events that should be triggered when selecting a node.
 	 */
-	protected Map<PickingMode, List<IVertexRepBasedEventFactory>> nodeEvents = new HashMap<>();
+	// protected Map<PickingMode, List<IVertexRepBasedEventFactory>> nodeEvents = new HashMap<>();
+
+	protected List<IVertexRepSelectionListener> vertexListeners = new ArrayList<>();
 
 	protected TablePerspective mappedPerspective;
 
@@ -990,28 +991,28 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		protected void clicked(Pick pick) {
 			if (!node.isPickable() || branchNodesToLinearizedNodesMap.keySet().contains(node))
 				return;
-			triggerEvents(pick.getPickingMode());
+			notifyVertexListeners(pick);
 		}
 
 		@Override
 		protected void mouseOver(Pick pick) {
 			if (!node.isPickable())
 				return;
-			triggerEvents(pick.getPickingMode());
+			notifyVertexListeners(pick);
 		}
 
 		@Override
 		protected void mouseOut(Pick pick) {
 			if (!node.isPickable())
 				return;
-			triggerEvents(pick.getPickingMode());
+			notifyVertexListeners(pick);
 		}
 
 		@Override
 		protected void rightClicked(Pick pick) {
 			if (!node.isPickable())
 				return;
-			triggerEvents(pick.getPickingMode());
+			notifyVertexListeners(pick);
 			addContextMenuItems(nodeContextMenuItems);
 			if (allowBranchPathExtraction && branchNodesToLinearizedNodesMap.keySet().contains(node)) {
 				ShowPathEvent event = new ShowPathEvent(getBranchPath(node));
@@ -1020,13 +1021,16 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			}
 		}
 
-		private void triggerEvents(PickingMode pickingMode) {
-			List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
-			if (factories != null) {
-				for (IVertexRepBasedEventFactory factory : factories) {
-					factory.triggerEvent(node.getPrimaryPathwayVertexRep());
-				}
+		private void notifyVertexListeners(Pick pick) {
+			for (IVertexRepSelectionListener listener : vertexListeners) {
+				listener.onSelect(node.getPrimaryPathwayVertexRep(), pick);
 			}
+			// List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
+			// if (factories != null) {
+			// for (IVertexRepBasedEventFactory factory : factories) {
+			// factory.triggerEvent(node.getPrimaryPathwayVertexRep());
+			// }
+			// }
 		}
 
 		private void addContextMenuItems(List<VertexRepBasedContextMenuItem> items) {
@@ -1038,14 +1042,19 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		}
 	}
 
+	// @Override
+	// public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
+	// List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
+	// if (factories == null) {
+	// factories = new ArrayList<>();
+	// nodeEvents.put(pickingMode, factories);
+	// }
+	// factories.add(eventFactory);
+	// }
+
 	@Override
-	public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
-		List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
-		if (factories == null) {
-			factories = new ArrayList<>();
-			nodeEvents.put(pickingMode, factories);
-		}
-		factories.add(eventFactory);
+	public void addVertexRepSelectionListener(IVertexRepSelectionListener listener) {
+		vertexListeners.add(listener);
 	}
 
 	/**

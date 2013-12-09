@@ -38,10 +38,14 @@ public class HistogramRenderer extends ADataRenderer {
 		if (contentRenderer.resolvedRowID == null)
 			return;
 
-		VirtualArray dimensionVirtualArray = new VirtualArray(contentRenderer.resolvedRowIDType);
-		dimensionVirtualArray.append(contentRenderer.resolvedRowID);
-		histogram = TablePerspectiveStatistics.calculateHistogram(contentRenderer.dataDomain.getTable(),
-				contentRenderer.columnPerspective.getVirtualArray(), dimensionVirtualArray);
+		VirtualArray rowVirtualArray = new VirtualArray(contentRenderer.resolvedRowIDType);
+		rowVirtualArray.append(contentRenderer.resolvedRowID);
+		VirtualArray columnVirtualArray = contentRenderer.columnPerspective.getVirtualArray();
+		if (rowVirtualArray.size() <= 0 || columnVirtualArray.size() <= 0)
+			histogram = null;
+		else
+			histogram = TablePerspectiveStatistics.calculateHistogram(contentRenderer.dataDomain.getTable(),
+					columnVirtualArray, rowVirtualArray);
 	}
 
 	@SuppressWarnings("unchecked")

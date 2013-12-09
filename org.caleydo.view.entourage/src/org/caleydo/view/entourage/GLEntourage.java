@@ -60,12 +60,12 @@ import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
+import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
@@ -812,12 +812,34 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			// ShowCommonNodePathwaysEvent.class, pathEventSpace));
 			pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem("Show Context",
 					ShowNodeContextEvent.class, pathEventSpace));
-			pathwayRepresentation.addVertexRepBasedSelectionEvent(
-					new ShowNodeContextEventFactory(pathEventSpace, this), PickingMode.CLICKED);
-			pathwayRepresentation.addVertexRepBasedSelectionEvent(new AddPathwayEventFactory(pathEventSpace),
-					PickingMode.DOUBLE_CLICKED);
-			pathwayRepresentation.addVertexRepBasedSelectionEvent(new SelectPathwayEventFactory(pathEventSpace),
-					PickingMode.MOUSE_OVER);
+
+			pathwayRepresentation.addVertexRepSelectionListener(new IVertexRepSelectionListener() {
+
+				@Override
+				public void onSelect(PathwayVertexRep vertexRep, Pick pick) {
+					switch (pick.getPickingMode()) {
+					case CLICKED:
+						new ShowNodeContextEventFactory(pathEventSpace, GLEntourage.this).triggerEvent(vertexRep);
+						break;
+					case MOUSE_OVER:
+						new SelectPathwayEventFactory(pathEventSpace).triggerEvent(vertexRep);
+						break;
+					case DOUBLE_CLICKED:
+						new AddPathwayEventFactory(pathEventSpace).triggerEvent(vertexRep);
+						break;
+					default:
+						break;
+					}
+
+				}
+			});
+
+			// pathwayRepresentation.addVertexRepBasedSelectionEvent(
+			// new ShowNodeContextEventFactory(pathEventSpace, this), PickingMode.CLICKED);
+			// pathwayRepresentation.addVertexRepBasedSelectionEvent(new AddPathwayEventFactory(pathEventSpace),
+			// PickingMode.DOUBLE_CLICKED);
+			// pathwayRepresentation.addVertexRepBasedSelectionEvent(new SelectPathwayEventFactory(pathEventSpace),
+			// PickingMode.MOUSE_OVER);
 		}
 	}
 
@@ -903,8 +925,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		return pathwayRepresentation;
 	}
 
-	protected Rect getAbsoluteVertexLocation(IPathwayRepresentation pathwayRepresentation,
-			PathwayVertexRep vertexRep, GLElement element) {
+	protected Rect getAbsoluteVertexLocation(IPathwayRepresentation pathwayRepresentation, PathwayVertexRep vertexRep,
+			GLElement element) {
 
 		Vec2f elementPosition = element.getAbsoluteLocation();
 		Rect location = pathwayRepresentation.getVertexRepBounds(vertexRep);
@@ -1531,8 +1553,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			rect = getAbsoluteVertexLocation(pathwayRepresentation, vertexRep, info.container);
 
 		if (rect == null || info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL4) {
-			rect = new Rect(info.window.getAbsoluteLocation().x(), info.window.getAbsoluteLocation().y(),
-					info.window.getSize().x(), 20);
+			rect = new Rect(info.window.getAbsoluteLocation().x(), info.window.getAbsoluteLocation().y(), info.window
+					.getSize().x(), 20);
 			isLocationWindow = true;
 		}
 		return new Pair<Rect, Boolean>(rect, isLocationWindow);

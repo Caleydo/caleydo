@@ -38,7 +38,7 @@ import org.caleydo.datadomain.pathway.listener.SampleMappingModeEvent;
  * @author Christian
  *
  */
-public class PathwayMappingHandler implements IEventBasedSelectionManagerUser {
+public class PathwayDataMappingHandler implements IEventBasedSelectionManagerUser {
 
 	protected TablePerspective mappingPerspective;
 	protected ESampleMappingMode sampleMappingMode = ESampleMappingMode.ALL;

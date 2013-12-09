@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.view.pathway.v2.ui;
+package org.caleydo.view.pathway.v2.ui.augmentation;
 
 import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -12,6 +12,9 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.view.pathway.v2.ui.APathwayElementRepresentation;
+import org.caleydo.view.pathway.v2.ui.IPathwayMappingListener;
+import org.caleydo.view.pathway.v2.ui.PathwayDataMappingHandler;
 
 /**
  * @author Christian
@@ -19,13 +22,13 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
  */
 public class HighVarianceIndicatorAugmentation extends APerVertexAugmentation implements IPathwayMappingListener {
 
-	protected PathwayMappingHandler handler;
+	protected PathwayDataMappingHandler handler;
 
 	/**
 	 * @param pathwayRepresentation
 	 */
 	public HighVarianceIndicatorAugmentation(APathwayElementRepresentation pathwayRepresentation,
-			PathwayMappingHandler handler) {
+			PathwayDataMappingHandler handler) {
 		super(pathwayRepresentation);
 		this.handler = handler;
 		handler.addListener(this);
@@ -77,7 +80,7 @@ public class HighVarianceIndicatorAugmentation extends APerVertexAugmentation im
 	}
 
 	@Override
-	public void update(PathwayMappingHandler handler) {
+	public void update(PathwayDataMappingHandler handler) {
 		repaint();
 	}
 
