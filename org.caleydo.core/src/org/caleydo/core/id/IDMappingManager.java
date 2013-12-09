@@ -648,6 +648,10 @@ public class IDMappingManager {
 	}
 
 	protected List<MappingType> findPath(IDType source, IDType destination) {
+		MappingType r = mappingGraph.getEdge(source, destination);
+		if (r != null) { // direct edge
+			return Collections.singletonList(r);
+		}
 		try {
 			return DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
 		} catch (IllegalArgumentException e) {
@@ -766,7 +770,7 @@ public class IDMappingManager {
 		}
 
 		@Override
-		public List<Set<V>> applyList(List<K> sourceIDs) {
+		public Collection<Set<V>> applySeq(Collection<K> sourceIDs) {
 			List<Set<V>> r = new ArrayList<>(sourceIDs.size());
 			for (K sourceID : sourceIDs) {
 				Set<V> ri = apply(sourceID);

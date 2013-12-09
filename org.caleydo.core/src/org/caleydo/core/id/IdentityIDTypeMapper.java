@@ -5,11 +5,11 @@
  ******************************************************************************/
 package org.caleydo.core.id;
 
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 
 /**
@@ -50,8 +50,8 @@ final class IdentityIDTypeMapper<K, V> implements IIDTypeMapper<K, V> {
 	}
 
 	@Override
-	public List<Set<V>> applyList(List<K> sourceIDs) {
-		return Lists.transform(sourceIDs, this);
+	public Collection<Set<V>> applySeq(Collection<K> sourceIDs) {
+		return Collections2.transform(sourceIDs, this);
 	}
 
 	@Override
