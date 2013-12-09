@@ -108,6 +108,9 @@ public class AdvancedDoubleStatistics extends DoubleStatistics {
 	 * assumes sorted data
 	 */
 	private static double median(double[] data, int n) {
+		if (n == 0)
+			return Double.NaN;
+
 		int middle = n / 2;
 
 		double median;
@@ -124,6 +127,9 @@ public class AdvancedDoubleStatistics extends DoubleStatistics {
 	 * assumes sorted data
 	 */
 	private static double percentile(double[] data, int n, double percentile) {
+		if (n == 0)
+			return Double.NaN;
+
 		double k = (n - 1) * percentile;
 		int f = (int) Math.floor(k);
 		int c = (int) Math.ceil(k);

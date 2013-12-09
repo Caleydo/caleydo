@@ -128,10 +128,16 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 	}
 
 	public void setData(AdvancedDoubleStatistics stats) {
+		setData(stats, Double.NaN, Double.NaN);
+	}
+
+	public void setData(AdvancedDoubleStatistics stats, double min, double max) {
 		this.stats = stats;
-		updateIQRMatches(null);
-		this.min = stats.getMin();
-		this.max = stats.getMax();
+		if (stats != null) {
+			updateIQRMatches(null);
+			this.min = Double.isNaN(min) ? stats.getMin() : min;
+			this.max = Double.isNaN(max) ? stats.getMax() : max;
+		}
 		repaint();
 	}
 
