@@ -151,7 +151,15 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 	@Override
 	public int compare(IRow o1, IRow o2) {
-		return String.CASE_INSENSITIVE_ORDER.compare(data.apply(o1), data.apply(o2));
+		String s1 = data.apply(o1);
+		String s2 = data.apply(o2);
+		if (Objects.equals(s1, s2))
+			return 0;
+		if (s1 == null)
+			return 1;
+		if (s2 == null)
+			return -1;
+		return String.CASE_INSENSITIVE_ORDER.compare(s1, s2);
 	}
 
 	@Override
