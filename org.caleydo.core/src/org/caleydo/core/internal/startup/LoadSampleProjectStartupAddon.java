@@ -59,7 +59,7 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectedChoice = (URL) ((Button) e.getSource()).getData();
-				page.setPageComplete(true);
+				// page.setPageComplete(true);
 			}
 		};
 

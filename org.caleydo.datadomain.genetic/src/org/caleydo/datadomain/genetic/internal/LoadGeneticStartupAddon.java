@@ -54,7 +54,7 @@ public class LoadGeneticStartupAddon implements IStartupAddon {
 
 	@Override
 	public Composite create(Composite parent, final WizardPage page, Listener listener) {
-		page.setPageComplete(true);
+		// page.setPageComplete(true);
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(1, false));
@@ -135,7 +135,7 @@ public class LoadGeneticStartupAddon implements IStartupAddon {
 		btnSampleData.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				page.setPageComplete(true);
+				// page.setPageComplete(true);
 				loadSampleGeneData = btnSampleData.getSelection();
 			}
 		});

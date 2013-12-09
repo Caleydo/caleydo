@@ -157,7 +157,7 @@ public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentL
 			public void widgetSelected(SelectionEvent e) {
 				chooseProjectFile.setEnabled(false);
 				projectLocationUI.setEnabled(false);
-				page.setPageComplete(true);
+				// page.setPageComplete(true);
 			}
 		});
 		recentProject.addListener(SWT.Selection, listener);
@@ -167,11 +167,11 @@ public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentL
 			public void widgetSelected(SelectionEvent e) {
 				projectLocationUI.setEnabled(true);
 				chooseProjectFile.setEnabled(true);
-				if (projectLocationUI.getText() != null && !projectLocationUI.getText().isEmpty()) {
-					page.setPageComplete(true);
-				} else {
-					page.setPageComplete(false);
-				}
+				// if (projectLocationUI.getText() != null && !projectLocationUI.getText().isEmpty()) {
+				// page.setPageComplete(true);
+				// } else {
+				// page.setPageComplete(false);
+				// }
 			}
 		});
 		recentProject.addListener(SWT.Selection, listener);
@@ -192,11 +192,11 @@ public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentL
 			loadProject.setSelection(true);
 			projectLocationUI.setEnabled(true);
 			chooseProjectFile.setEnabled(true);
-			if (projectLocationUI.getText() != null && !projectLocationUI.getText().isEmpty()) {
-				page.setPageComplete(true);
-			} else {
-				page.setPageComplete(false);
-			}
+			// if (projectLocationUI.getText() != null && !projectLocationUI.getText().isEmpty()) {
+			// page.setPageComplete(true);
+			// } else {
+			// page.setPageComplete(false);
+			// }
 		}
 
 		chooseProjectFile.addSelectionListener(new SelectionAdapter() {
@@ -210,15 +210,17 @@ public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentL
 				String fileName = fileDialog.open();
 				if (fileName != null) {
 					projectLocationUI.setText(fileName);
-					page.setPageComplete(true);
+					// page.setPageComplete(true);
 				}
 			}
 		});
+		chooseProjectFile.addListener(SWT.Selection, listener);
+
 		projectLocationUI.addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (projectLocationUI.getText().length() > 0 && validatePath(projectLocationUI.getText()))
-					page.setPageComplete(true);
+				// if (projectLocationUI.getText().length() > 0 && validatePath(projectLocationUI.getText()))
+				// page.setPageComplete(true);
 			}
 
 			@Override
