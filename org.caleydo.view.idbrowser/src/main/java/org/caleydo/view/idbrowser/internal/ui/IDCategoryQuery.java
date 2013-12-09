@@ -160,7 +160,7 @@ public class IDCategoryQuery extends GLButton implements Comparable<IDCategoryQu
 			if (d.getRecordIDCategory() != category)
 				continue;
 			final Table data = d.getTable();
-			final IDType idType = d.getDimensionIDType();
+			final IDType idType = d.getRecordIDType();
 			Color color = d.getColor();
 			Color bgColor = d.getColor().brighter().brighter();
 			for (TablePerspective t : d.getAllTablePerspectives()) {
@@ -224,11 +224,15 @@ public class IDCategoryQuery extends GLButton implements Comparable<IDCategoryQu
 							if (r == null || r.isEmpty())
 								return Collections.emptySet();
 							Set<String> s = new TreeSet<>();
-							for (Object ri : r)
+							for (Object ri : r) {
+								if (!(ri instanceof Integer))
+									continue;
+								ri = data.getRaw(dimId, (Integer) ri);
 								s.add(ri.toString());
+							}
 							return s;
 						}
-					}, catMeta, ""));
+					}, catMeta, color, bgColor, ""));
 					break;
 				default:
 					break;
@@ -236,7 +240,7 @@ public class IDCategoryQuery extends GLButton implements Comparable<IDCategoryQu
 			}
 		}
 
-		Collections.sort(new_, Labels.BY_LABEL);
+		// Collections.sort(new_, Labels.BY_LABEL);
 		for (ARankColumnModel r : new_)
 			table.add(r);
 	}

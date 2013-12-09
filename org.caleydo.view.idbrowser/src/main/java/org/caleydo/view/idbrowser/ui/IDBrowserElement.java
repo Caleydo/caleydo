@@ -19,6 +19,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.basic.RadioController;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -30,6 +31,7 @@ import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.RankRankColumnModel;
 import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.StringRankColumnModel;
+import org.caleydo.vis.lineup.ui.RenderStyle;
 import org.caleydo.vis.lineup.ui.TableUI;
 
 import com.google.common.collect.Lists;
@@ -113,7 +115,8 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 				return EButtonBarPositionMode.OVER_LABEL;
 			}
 		});
-		this.add(ui);
+		ScrollingDecorator sc = new ScrollingDecorator(ui, new ScrollBar(true), null, RenderStyle.SCROLLBAR_WIDTH);
+		this.add(sc);
 	}
 
 	private void initQueries() {
@@ -136,7 +139,7 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 		GLElementContainer c = new GLElementContainer(GLLayouts.flowVertical(2));
 		c.asList().addAll(queries);
 		c.setSize(-1, queries.size()*(20+2));
-		this.add(ScrollingDecorator.wrap(c, 8).setSize(200, -1));
+		this.add(ScrollingDecorator.wrap(c, RenderStyle.SCROLLBAR_WIDTH).setSize(200, -1));
 	}
 
 	@Override

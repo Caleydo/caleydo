@@ -5,9 +5,12 @@
  *******************************************************************************/
 package org.caleydo.view.idbrowser.internal.ui;
 
+import java.util.Set;
+
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -58,6 +61,17 @@ public class BoxPlotRankTableModel extends ARankColumnModel {
 		return null;
 	}
 
+	public IDType getIDType() {
+		return dim.select(d.getDimensionIDType(), d.getRecordIDType());
+	}
+
+	public boolean has(IRow row) {
+		Set<Object> ids = ((PrimaryIDRow) row).get(getIDType());
+		if (ids == null || ids.isEmpty())
+			return false;
+		return true;
+	}
+
 	@Override
 	public GLElement createSummary(boolean interactive) {
 		return new GLElement();
@@ -68,45 +82,15 @@ public class BoxPlotRankTableModel extends ARankColumnModel {
 		return new MyValueElement();
 	}
 
-	private static class MyValueElement extends ValueElement {
+	private class MyValueElement extends ValueElement {
 
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			if (h < 1)
 				return;
 			PrimaryIDRow row = (PrimaryIDRow) getRow();
-			// AScoreRow r = this.getLayoutDataAs(AScoreRow.class, null);
-			// Collection<GroupInfo> infos = r.getGroupInfos();
-			// int sum = 0;
-			// for (GroupInfo info : infos)
-			// sum += info.getSize();
-			// if (sum == 0)
-			// return;
-			// float factor = w / sum;
-			//
-			// Color ping = new Color(0.85f, 0.85f, 0.85f);
-			// Color pong = Color.LIGHT_GRAY;
-			// Color tmp;
-			// float xi = 0;
-			// for (GroupInfo info : infos) {
-			// float wi = info.getSize() * factor;
-			// if (wi <= 0)
-			// continue;
-			// if (info.getColor() != null)
-			// g.color(info.getColor());
-			// else {
-			// g.color(ping);
-			// tmp = ping;
-			// ping = pong;
-			// pong = tmp;
-			// }
-			// g.fillRect(xi, 1, wi, h - 2);
-			// xi += wi;
-			// }
-			// if (getRenderInfo().getBarOutlineColor() != null) {
-			// // outline
-			// g.color(getRenderInfo().getBarOutlineColor()).drawRect(0, 1, w, h - 2);
-			// }
+			g.drawText(has(row) ? "Found" : "Not Found", 2, 1, w, h - 3);
+
 		}
 	}
 

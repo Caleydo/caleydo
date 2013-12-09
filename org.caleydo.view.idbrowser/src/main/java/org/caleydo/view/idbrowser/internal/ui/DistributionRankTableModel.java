@@ -5,9 +5,16 @@
  *******************************************************************************/
 package org.caleydo.view.idbrowser.internal.ui;
 
+import java.util.Set;
+
+import org.caleydo.core.data.collection.CategoricalHistogram;
 import org.caleydo.core.data.collection.EDimension;
+import org.caleydo.core.data.collection.table.CategoricalTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
+import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -59,6 +66,48 @@ public class DistributionRankTableModel extends ARankColumnModel {
 		return null;
 	}
 
+	public IDType getIDType() {
+		return dim.select(d.getDimensionIDType(), d.getRecordIDType());
+	}
+
+	CategoricalHistogram getHist(IRow row) {
+		if (cache.containsKey(row.getIndex()))
+			return (CategoricalHistogram) cache.get(row.getIndex());
+		CategoricalHistogram c = computeHist((PrimaryIDRow) row);
+		cache.put(row.getIndex(), c);
+		return c;
+	}
+
+	/**
+	 * @param row
+	 * @return
+	 */
+	private CategoricalHistogram computeHist(PrimaryIDRow row) {
+		Set<Object> ids = row.get(getIDType());
+		if (ids == null || ids.isEmpty())
+			return null;
+		final Table table = d.getTable();
+		CategoricalHistogram h = new CategoricalHistogram(((CategoricalTable<?>) table).getCategoryDescriptions());
+		VirtualArray others = dim.opposite()
+				.select(table.getDefaultDimensionPerspective(false), table.getDefaultRecordPerspective(false))
+				.getVirtualArray();
+		for (Object id : ids) {
+			if (!(id instanceof Integer))
+				continue;
+			Integer id_i = (Integer) id;
+			if (dim.isHorizontal()) {
+				for (Integer other : others) {
+					h.add(table.getRaw(id_i, other), other);
+				}
+			} else {
+				for (Integer other : others) {
+					h.add(table.getRaw(other, id_i), other);
+				}
+			}
+		}
+		return h;
+	}
+
 	@Override
 	public GLElement createSummary(boolean interactive) {
 		return new GLElement();
@@ -69,45 +118,36 @@ public class DistributionRankTableModel extends ARankColumnModel {
 		return new MyValueElement();
 	}
 
-	private static class MyValueElement extends ValueElement {
+	private class MyValueElement extends ValueElement {
 
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			if (h < 1)
 				return;
-			PrimaryIDRow row = (PrimaryIDRow) getRow();
-			// AScoreRow r = this.getLayoutDataAs(AScoreRow.class, null);
-			// Collection<GroupInfo> infos = r.getGroupInfos();
-			// int sum = 0;
-			// for (GroupInfo info : infos)
-			// sum += info.getSize();
-			// if (sum == 0)
-			// return;
-			// float factor = w / sum;
-			//
-			// Color ping = new Color(0.85f, 0.85f, 0.85f);
-			// Color pong = Color.LIGHT_GRAY;
-			// Color tmp;
-			// float xi = 0;
-			// for (GroupInfo info : infos) {
-			// float wi = info.getSize() * factor;
-			// if (wi <= 0)
-			// continue;
-			// if (info.getColor() != null)
-			// g.color(info.getColor());
-			// else {
-			// g.color(ping);
-			// tmp = ping;
-			// ping = pong;
-			// pong = tmp;
-			// }
-			// g.fillRect(xi, 1, wi, h - 2);
-			// xi += wi;
-			// }
-			// if (getRenderInfo().getBarOutlineColor() != null) {
-			// // outline
-			// g.color(getRenderInfo().getBarOutlineColor()).drawRect(0, 1, w, h - 2);
-			// }
+			CategoricalHistogram hist = getHist(getRow());
+			if (hist == null)
+				return;
+
+			int sum = 0;
+			for (int i = 0; i < hist.size(); ++i)
+				sum += hist.get(i);
+			if (sum == 0)
+				return;
+			float factor = w / sum;
+
+			float xi = 0;
+			for (int i = 0; i < hist.size(); ++i) {
+				float wi = hist.get(i) * factor;
+				if (wi <= 0)
+					continue;
+				g.color(hist.getColor(i));
+				g.fillRect(xi, 1, wi, h - 2);
+				xi += wi;
+			}
+			if (getRenderInfo().getBarOutlineColor() != null) {
+				// outline
+				g.color(getRenderInfo().getBarOutlineColor()).drawRect(0, 1, w, h - 2);
+			}
 		}
 	}
 
