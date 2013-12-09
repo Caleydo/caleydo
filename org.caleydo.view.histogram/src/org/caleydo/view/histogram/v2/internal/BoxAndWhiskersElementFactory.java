@@ -54,16 +54,19 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory {
 		EDimension direction = context.get("direction", EDimension.class, EDimension.RECORD);
 
 		boolean showScale = context.is("showScale");
+		boolean showMinMax = context.is("showMinMax");
 
 		if (context.getData() != null) {
 			TablePerspective data = context.getData();
 			if ((split == EDimension.DIMENSION && getGroupsSize(data.getDimensionPerspective()) > 1)
 					|| (split == EDimension.RECORD && getGroupsSize(data.getRecordPerspective()) > 1)) {
-				BoxAndWhiskersMultiElement b = new BoxAndWhiskersMultiElement(data, detailLevel, split, showOutliers);
+				BoxAndWhiskersMultiElement b = new BoxAndWhiskersMultiElement(data, detailLevel, split, showOutliers,
+						showMinMax);
 				b.setShowScale(showScale);
 				return b;
 			} else {
-				BoxAndWhiskersElement b = new BoxAndWhiskersElement(data, detailLevel, direction, showOutliers);
+				BoxAndWhiskersElement b = new BoxAndWhiskersElement(data, detailLevel, direction, showOutliers,
+						showMinMax);
 				b.setShowScale(showScale);
 				return b;
 			}
@@ -71,7 +74,8 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory {
 			IDoubleList list = context.get(IDoubleList.class, null);
 			assert list != null;
 
-			return new ListBoxAndWhiskersElement(list, detailLevel, direction, showOutliers, context.get("label",
+			return new ListBoxAndWhiskersElement(list, detailLevel, direction, showOutliers, showMinMax, context.get(
+					"label",
 					String.class, "<Unnamed>"), context.get("color", Color.class, Color.LIGHT_GRAY));
 		}
 	}

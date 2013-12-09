@@ -43,11 +43,13 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 	 */
 	private static final float BOX_HEIGHT_PERCENTAGE = 1 / 3.f;
 	private static final float LINE_TAIL_HEIGHT_PERCENTAGE = 0.75f;
+	private static final float MIN_MAX_HEIGHT_PERCENTAGE = 0.9f;
 	private static final float OUTLIER_HEIGHT_PERCENTAGE = 0.5f;
 
 	private final EDetailLevel detailLevel;
 	private final EDimension direction;
 	private final boolean showOutlier;
+	private final boolean showMinMax;
 	private boolean showScale = false;
 
 	private AdvancedDoubleStatistics stats;
@@ -60,11 +62,11 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 	 */
 	private double max;
 	/**
-	 * normalized value which is just above the <code>25 quartile - iqr*1.5</code> margin
+	 * value which is just above the <code>25 quartile - iqr*1.5</code> margin
 	 */
 	private double nearestIQRMin;
 	/**
-	 * normalized value which is just below the <code>75 quartile + iqr*1.5</code> margin
+	 * value which is just below the <code>75 quartile + iqr*1.5</code> margin
 	 */
 	private double nearestIQRMax;
 
@@ -72,10 +74,12 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 
 
 	public ABoxAndWhiskersElement(EDetailLevel detailLevel, EDimension direction,
-			boolean showOutlier) {
+ boolean showOutlier,
+			boolean showMinMax) {
 		this.detailLevel = detailLevel;
 		this.direction = direction;
 		this.showOutlier = showOutlier;
+		this.showMinMax = showMinMax;
 	}
 
 	/**
@@ -180,49 +184,73 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 	private void renderBoxAndWhiskers(GLGraphics g, float w, float h) {
 		final float hi = h * BOX_HEIGHT_PERCENTAGE;
 		final float y = (h - hi) * 0.5f;
+		final float center = h / 2;
 
 		IDoubleFunction normalize = DoubleFunctions.normalize(min, max);
 
-		final float firstQuantrileBoundary = (float) (normalize.apply(stats.getQuartile25())) * w;
-		final float thirdQuantrileBoundary = (float) (normalize.apply(stats.getQuartile75())) * w;
+		{
+			final float firstQuantrileBoundary = (float) (normalize.apply(stats.getQuartile25())) * w;
+			final float thirdQuantrileBoundary = (float) (normalize.apply(stats.getQuartile75())) * w;
 
-		g.color(getColor()).fillRect(firstQuantrileBoundary, y,
-				thirdQuantrileBoundary - firstQuantrileBoundary, hi);
-		g.color(Color.BLACK).drawRect(firstQuantrileBoundary,y,thirdQuantrileBoundary-firstQuantrileBoundary, hi);
+			g.color(getColor())
+					.fillRect(firstQuantrileBoundary, y, thirdQuantrileBoundary - firstQuantrileBoundary, hi);
+			g.color(Color.BLACK).drawRect(firstQuantrileBoundary, y, thirdQuantrileBoundary - firstQuantrileBoundary,
+					hi);
 
-		final float min = (float) nearestIQRMin * w;
-		final float max = (float) nearestIQRMax * w;
+			final float iqrMin = (float) normalize.apply(nearestIQRMin) * w;
+			final float iqrMax = (float) normalize.apply(nearestIQRMax) * w;
 
-		// Median
-		float median = (float) normalize.apply(stats.getMedian()) * w;
-		g.color(0.2f, 0.2f, 0.2f).drawLine(median, y, median, y + hi);
+			// Median
+			float median = (float) normalize.apply(stats.getMedian()) * w;
+			g.color(0.2f, 0.2f, 0.2f).drawLine(median, y, median, y + hi);
 
-		// Whiskers
-		final float center = h / 2;
-		g.color(0, 0, 0);
-		g.drawLine(min, center, firstQuantrileBoundary, center);
-		g.drawLine(max, center, thirdQuantrileBoundary, center);
+			// Whiskers
+			g.color(0, 0, 0);
+			// line to whiskers
+			g.drawLine(iqrMin, center, firstQuantrileBoundary, center);
+			g.drawLine(iqrMax, center, thirdQuantrileBoundary, center);
 
-		float h_whiskers = hi * LINE_TAIL_HEIGHT_PERCENTAGE;
-		g.drawLine(min, center - h_whiskers * 0.5f, min, center + h_whiskers * 0.5f);
-		g.drawLine(max, center - h_whiskers * 0.5f, max, center + h_whiskers * 0.5f);
+			float h_whiskers = hi * LINE_TAIL_HEIGHT_PERCENTAGE;
+			g.drawLine(iqrMin, center - h_whiskers * 0.5f, iqrMin, center + h_whiskers * 0.5f);
+			g.drawLine(iqrMax, center - h_whiskers * 0.5f, iqrMax, center + h_whiskers * 0.5f);
+		}
 
-		renderOutliers(g, w, hi, center);
+		renderOutliers(g, w, hi, center, normalize);
+
+		if (showMinMax) {
+			g.color(0, 0, 0);
+			float h_minMax = hi * MIN_MAX_HEIGHT_PERCENTAGE;
+			float min = (float) normalize.apply(stats.getMin()) * w;
+			float max = (float) normalize.apply(stats.getMax()) * w;
+			g.drawLine(min, center - h_minMax * 0.5f, min, center + h_minMax * 0.5f);
+			g.drawLine(max, center - h_minMax * 0.5f, max, center + h_minMax * 0.5f);
+		}
+
 	}
 
-	private void renderOutliers(GLGraphics g, float w, final float hi, final float center) {
+	private void renderOutliers(GLGraphics g, float w, final float hi, final float center, IDoubleFunction normalize) {
 		if (!showOutlier || outliers == null)
 			return;
 
-		g.color(0.2f);
+		g.color(0.2f, 0.2f, 0.2f, outlierAlhpa(outliers.size()));
 		float h_outlier = hi * OUTLIER_HEIGHT_PERCENTAGE * 0.5f;
 
 		for (IDoubleIterator it = outliers.iterator(); it.hasNext();) {
-			float v = (float) it.nextPrimitive() * w;
+			float v = (float) normalize.apply(it.nextPrimitive()) * w;
 			g.drawLine(v, center - h_outlier, v, center + h_outlier);
 		}
 	}
 
+	private float outlierAlhpa(int size) {
+		if (size < 10)
+			return 1.0f;
+		float v = 5.0f / size;
+		if (v < 0.05f)
+			return 0.05f;
+		if (v > 1)
+			return 1;
+		return v;
+	}
 
 	private void renderScale(GLGraphics g, float w, float h) {
 		float hi = h * 0.85f;

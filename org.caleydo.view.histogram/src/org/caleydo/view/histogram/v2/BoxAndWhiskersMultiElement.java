@@ -39,19 +39,19 @@ public class BoxAndWhiskersMultiElement extends GLElementContainer implements IH
 	}
 
 	public BoxAndWhiskersMultiElement(TablePerspective tablePerspective, EDetailLevel detailLevel, EDimension split,
-			boolean showOutliers) {
+			boolean showOutliers, boolean showMinMax) {
 		this(split);
 		for (TablePerspective t : (split.isVertical() ? tablePerspective.getRecordSubTablePerspectives()
 				: tablePerspective.getDimensionSubTablePerspectives())) {
-			this.add(new BoxAndWhiskersElement(t, detailLevel, split, showOutliers));
+			this.add(new BoxAndWhiskersElement(t, detailLevel, split, showOutliers, showMinMax));
 		}
 	}
 
 	public BoxAndWhiskersMultiElement(List<IDoubleList> lists, EDetailLevel detailLevel, EDimension split,
-			boolean showOutliers) {
+			boolean showOutliers, boolean showMinMax) {
 		this(split);
 		for (IDoubleList list : lists) {
-			this.add(new ListBoxAndWhiskersElement(list, detailLevel, split, showOutliers, null, null));
+			this.add(new ListBoxAndWhiskersElement(list, detailLevel, split, showOutliers, showMinMax, null, null));
 		}
 	}
 

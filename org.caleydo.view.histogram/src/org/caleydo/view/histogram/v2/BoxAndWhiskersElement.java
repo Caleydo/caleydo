@@ -34,12 +34,12 @@ public class BoxAndWhiskersElement extends ABoxAndWhiskersElement implements
 	protected final TablePerspectiveSelectionMixin selections;
 
 	public BoxAndWhiskersElement(TablePerspective tablePerspective) {
-		this(tablePerspective, EDetailLevel.HIGH, EDimension.RECORD, false);
+		this(tablePerspective, EDetailLevel.HIGH, EDimension.RECORD, false, false);
 	}
 
 	public BoxAndWhiskersElement(TablePerspective tablePerspective, EDetailLevel detailLevel, EDimension direction,
-			boolean showOutlier) {
-		super(detailLevel, direction, showOutlier);
+			boolean showOutlier, boolean showMinMax) {
+		super(detailLevel, direction, showOutlier, showMinMax);
 		this.selections = new TablePerspectiveSelectionMixin(tablePerspective, this);
 
 		onVAUpdate(tablePerspective);

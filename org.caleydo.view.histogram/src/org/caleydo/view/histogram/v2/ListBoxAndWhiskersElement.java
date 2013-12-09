@@ -14,17 +14,17 @@ import com.google.common.base.Preconditions;
 
 /**
  * a {@link BoxAndWhiskersElement} based on a simple {@link IDoubleList}
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class ListBoxAndWhiskersElement extends ABoxAndWhiskersElement {
 	private final Color color;
 	private final String label;
 
 	public ListBoxAndWhiskersElement(IDoubleList data, EDetailLevel detailLevel, EDimension direction,
-			boolean showOutlier, String label, Color color) {
-		super(detailLevel, direction, showOutlier);
+			boolean showOutlier, boolean showMinMax, String label, Color color) {
+		super(detailLevel, direction, showOutlier, showMinMax);
 		this.color = Preconditions.checkNotNull(color);
 		this.label = Preconditions.checkNotNull(label);
 		setData(data);
