@@ -47,6 +47,7 @@
 		<module>org.caleydo.view.selectionbrowser</module>
 		<module>org.caleydo.view.stratomex</module>
 		<module>org.caleydo.view.search</module>
+		<module>org.caleydo.view.idbrowser</module>
 		<module>org.caleydo.view.table</module>
 		<module>org.caleydo.view.treemap</module>
 		
