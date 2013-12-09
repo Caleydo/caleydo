@@ -47,7 +47,8 @@ public class BoxAndWhiskersRemoteViewCreator extends ARemoteGLElementCreator {
 		b.withData(tablePerspectives).put(EDetailLevel.class, EDetailLevel.HIGH);
 		b.put("splitGroups", EDimension.RECORD);
 		b.set("showScale");
-		// b.set("showOutliers");
+		b.set("showOutliers");
+		b.set("showMinMax");
 		GLElementFactoryContext context = b.build();
 		return context;
 	}
