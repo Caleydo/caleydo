@@ -5,6 +5,7 @@
  *******************************************************************************/
 package org.caleydo.view.idbrowser.internal.ui;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
@@ -13,33 +14,52 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
+import org.caleydo.core.data.collection.EDataClass;
+import org.caleydo.core.data.collection.EDimension;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
+import org.caleydo.core.data.collection.column.container.CategoryProperty;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.datadomain.DataSupportDefinitions;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.base.Labels;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.view.idbrowser.internal.model.PrimaryIDRow;
+import org.caleydo.vis.lineup.data.ADoubleFunction;
+import org.caleydo.vis.lineup.data.DoubleInferrers;
+import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.ARow;
-import org.caleydo.vis.lineup.model.CategoricalRankColumnModel;
+import org.caleydo.vis.lineup.model.DoubleRankColumnModel;
 import org.caleydo.vis.lineup.model.IRow;
+import org.caleydo.vis.lineup.model.IntegerRankColumnModel;
+import org.caleydo.vis.lineup.model.MultiCategoricalRankColumnModel;
 import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.StringRankColumnModel;
+import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Iterables;
 
 /**
  * @author Samuel Gratzl
@@ -115,8 +135,113 @@ public class IDCategoryQuery extends GLButton implements Comparable<IDCategoryQu
 		});
 	}
 
-
 	public void addColumns(RankTableModel table) {
+		addIDTypeColumns(table);
+		addDataDomainColumns(table);
+	}
+
+	private void addDataDomainColumns(RankTableModel table) {
+		List<ATableBasedDataDomain> dataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(
+				ATableBasedDataDomain.class));
+		List<ARankColumnModel> new_ = new ArrayList<>();
+		for (ATableBasedDataDomain d : Iterables.filter(dataDomains, DataSupportDefinitions.categoricalTables)) {
+			EDimension dim = select(d);
+			if (dim == null)
+				continue;
+			new_.add(new DistributionRankTableModel(d, dim));
+		}
+		for (ATableBasedDataDomain d : Iterables.filter(dataDomains, DataSupportDefinitions.numericalTables)) {
+			EDimension dim = select(d);
+			if (dim == null)
+				continue;
+			new_.add(new BoxPlotRankTableModel(d, dim));
+		}
+		for (ATableBasedDataDomain d : Iterables.filter(dataDomains, DataSupportDefinitions.inhomogenousTables)) {
+			if (d.getRecordIDCategory() != category)
+				continue;
+			final Table data = d.getTable();
+			final IDType idType = d.getDimensionIDType();
+			Color color = d.getColor();
+			Color bgColor = d.getColor().brighter().brighter();
+			for (TablePerspective t : d.getAllTablePerspectives()) {
+				VirtualArray dims = t.getDimensionPerspective().getVirtualArray();
+				if (dims.size() != 1)
+					continue;
+				IGLRenderer header = GLRenderers.drawText(t.getLabel(), VAlign.CENTER);
+				final Integer dimId = dims.get(0);
+				EDataClass clazz = data.getDataClass(dimId, 0);
+				switch (clazz) {
+				case NATURAL_NUMBER:
+					new_.add(new IntegerRankColumnModel(header, new Function<IRow, Integer>() {
+						@Override
+						public Integer apply(IRow input) {
+							assert input instanceof PrimaryIDRow;
+							Set<Object> r = ((PrimaryIDRow) input).get(idType);
+							if (r == null || r.isEmpty())
+								return null;
+							Object ri = r.iterator().next();
+							if (!(ri instanceof Integer))
+								return null;
+							Integer id = (Integer)ri;
+							ri = data.getRaw(dimId, id);
+							if (ri instanceof Integer)
+								return (Integer)ri;
+							return null;
+						}
+					}, color, bgColor, NumberFormat.getInstance(Locale.ENGLISH)));
+					break;
+				case REAL_NUMBER:
+					new_.add(new DoubleRankColumnModel(new ADoubleFunction<IRow>() {
+						@Override
+						public double applyPrimitive(IRow input) {
+							assert input instanceof PrimaryIDRow;
+							Set<Object> r = ((PrimaryIDRow) input).get(idType);
+							if (r == null || r.isEmpty())
+								return Double.NaN;
+							Object ri = r.iterator().next();
+							if (!(ri instanceof Integer))
+								return Double.NaN;
+							Integer id = (Integer)ri;
+							ri = data.getRaw(dimId, id);
+							if (ri instanceof Number)
+								return ((Number)ri).doubleValue();
+							return Double.NaN;
+						}
+					}, header, color, bgColor, new PiecewiseMapping(Float.NaN, Float.NaN), DoubleInferrers
+							.fix(Double.NaN)));
+					break;
+				case CATEGORICAL:
+					List<CategoryProperty<?>> categories = resolveCategories(dimId, d, EDimension.DIMENSION);
+					Map<String, String> catMeta = new HashMap<>();
+					for (CategoryProperty<?> p : categories) {
+						catMeta.put(p.getCategory().toString(), p.getCategoryName());
+					}
+					new_.add(new MultiCategoricalRankColumnModel<String>(header, new Function<IRow, Set<String>>() {
+						@Override
+						public Set<String> apply(IRow input) {
+							assert input instanceof PrimaryIDRow;
+							Set<Object> r = ((PrimaryIDRow) input).get(idType);
+							if (r == null || r.isEmpty())
+								return Collections.emptySet();
+							Set<String> s = new TreeSet<>();
+							for (Object ri : r)
+								s.add(ri.toString());
+							return s;
+						}
+					}, catMeta, ""));
+					break;
+				default:
+					break;
+				}
+			}
+		}
+
+		Collections.sort(new_, Labels.BY_LABEL);
+		for (ARankColumnModel r : new_)
+			table.add(r);
+	}
+
+	private void addIDTypeColumns(RankTableModel table) {
 		for (final IDType idType : this.idTypes) {
 			if (idType == category.getHumanReadableIDType() || idType == category.getPrimaryMappingType()
 					|| idType.isInternalType())
@@ -130,24 +255,32 @@ public class IDCategoryQuery extends GLButton implements Comparable<IDCategoryQu
 				}
 			}));
 		}
-		// List<ATableBasedDataDomain> dataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(
-		// ATableBasedDataDomain.class));
-		// for(ATableBasedDataDomain d : Iterables.filter(dataDomains, DataSupportDefinitions.categoricalTables)) {
-		//
-		// }
-		List<Perspective> perspectives = findRelevantPerspectives();
-		Map<Boolean,String> metaData = ImmutableMap.of(Boolean.TRUE, "Found",Boolean.FALSE,"Not Found");
+	}
 
-		for (final Perspective perspective : perspectives) {
-			IGLRenderer header = GLRenderers.drawText(perspective.getDataDomain().getLabel(), VAlign.CENTER);
-			table.add(new CategoricalRankColumnModel<Boolean>(header, new Function<IRow, Boolean>() {
-				@Override
-				public Boolean apply(IRow input) {
-					assert input instanceof PrimaryIDRow;
-					return ((PrimaryIDRow) input).get(perspective.getIdType()) != null;
-				}
-			}, metaData));
+	/**
+	 * @param d
+	 * @return
+	 */
+	private EDimension select(ATableBasedDataDomain d) {
+		if (d.getRecordIDCategory() == category)
+			return EDimension.RECORD;
+		if (d.getDimensionIDCategory() == category)
+			return EDimension.DIMENSION;
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	static List<CategoryProperty<?>> resolveCategories(Integer singleID, ATableBasedDataDomain dataDomain,
+			EDimension dim) {
+		final Table table = dataDomain.getTable();
+
+		Object spec = table.getDataClassSpecificDescription(dim.select(singleID.intValue(), 0),
+				dim.select(0, singleID.intValue()));
+		if (spec instanceof CategoricalClassDescription<?>) {
+			List<?> tmp = ((CategoricalClassDescription<?>) spec).getCategoryProperties();
+			return ImmutableList.copyOf((List<CategoryProperty<?>>) tmp);
 		}
+		return Collections.emptyList();
 	}
 
 	/**
