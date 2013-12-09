@@ -316,15 +316,15 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 
 	@Override
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
-		g.drawText(getTitle(), 0, 0, w, h, VAlign.CENTER);
+		g.drawText(getLabel(), 0, 0, w, h, VAlign.CENTER);
 	}
 
 	@Override
-	public String getTitle() {
+	public String getLabel() {
 		if (title == null || title.isEmpty()) {
 			StringBuilder b = new StringBuilder(prefix).append(" (");
 			for (ARankColumnModel r : this) {
-				b.append(r.getTitle()).append(", ");
+				b.append(r.getLabel()).append(", ");
 			}
 			if (size() > 0)
 				b.setLength(b.length() - 2);
@@ -339,7 +339,7 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				String tori = getTitle();
+				String tori = getLabel();
 				TitleDescriptionDialog d = new TitleDescriptionDialog(null, "Edit Label of: " + tori, tori, description);
 				if (d.open() == Window.OK) {
 					String t = d.getTitle().trim();

@@ -131,7 +131,7 @@ public final class DateRankColumnModel extends ABasicFilterableRankColumnModel i
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				DateFilterDialog dialog = new DateFilterDialog(canvas.getShell(), getTitle(), summary, from, to,
+				DateFilterDialog dialog = new DateFilterDialog(canvas.getShell(), getLabel(), summary, from, to,
 						DateRankColumnModel.this, getTable().hasSnapshots(), loc, mode);
 				dialog.open();
 			}

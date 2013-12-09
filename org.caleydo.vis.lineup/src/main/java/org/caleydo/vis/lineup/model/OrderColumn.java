@@ -103,7 +103,7 @@ public final class OrderColumn extends ARankColumnModel implements IAnnotatedCol
 	}
 
 	@Override
-	public String getTitle() {
+	public String getLabel() {
 		return title;
 	}
 
@@ -117,7 +117,7 @@ public final class OrderColumn extends ARankColumnModel implements IAnnotatedCol
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				String tori = getTitle();
+				String tori = getLabel();
 				TitleDescriptionDialog d = new TitleDescriptionDialog(null, "Edit Label of: " + tori, tori, description);
 				if (d.open() == Window.OK) {
 					String t = d.getTitle().trim();

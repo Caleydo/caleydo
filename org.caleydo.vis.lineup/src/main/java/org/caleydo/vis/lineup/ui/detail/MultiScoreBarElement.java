@@ -38,7 +38,7 @@ public class MultiScoreBarElement extends ScoreBarElement {
 		StringBuilder b = new StringBuilder();
 
 		for (ARankColumnModel child : mmodel) {
-			b.append(child.getTitle()).append(": ").append(getText(r, child, v.values[i], inferreds[i]));
+			b.append(child.getLabel()).append(": ").append(getText(r, child, v.values[i], inferreds[i]));
 			if (i == v.repr)
 				b.append(" MAX");
 			b.append("\n");

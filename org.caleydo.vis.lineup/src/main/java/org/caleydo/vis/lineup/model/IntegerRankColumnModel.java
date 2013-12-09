@@ -89,7 +89,7 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				IntegerFilterDialog dialog = new IntegerFilterDialog(canvas.getShell(), getTitle(), summary, min, max,
+				IntegerFilterDialog dialog = new IntegerFilterDialog(canvas.getShell(), getLabel(), summary, min, max,
 						IntegerRankColumnModel.this, getTable().hasSnapshots(), loc);
 				dialog.open();
 			}

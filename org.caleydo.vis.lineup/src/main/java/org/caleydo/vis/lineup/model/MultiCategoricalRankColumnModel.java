@@ -129,7 +129,7 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				CatFilterDalog<CATEGORY_TYPE> dialog = new CatFilterDalog<>(canvas.getShell(), getTitle(), summary,
+				CatFilterDalog<CATEGORY_TYPE> dialog = new CatFilterDalog<>(canvas.getShell(), getLabel(), summary,
 						metaData, selection, MultiCategoricalRankColumnModel.this, getTable().hasSnapshots(), loc,
 						filterNA, labelNA);
 				dialog.open();

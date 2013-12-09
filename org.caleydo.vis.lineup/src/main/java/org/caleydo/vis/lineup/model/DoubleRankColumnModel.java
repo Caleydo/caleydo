@@ -339,7 +339,7 @@ public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel imple
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				FloatFilterDialog dialog = new FloatFilterDialog(canvas.getShell(), getTitle(), summary,
+				FloatFilterDialog dialog = new FloatFilterDialog(canvas.getShell(), getLabel(), summary,
 						filterNotMappedEntries, filterMissingEntries, DoubleRankColumnModel.this, getTable()
 								.hasSnapshots(), loc);
 				dialog.open();

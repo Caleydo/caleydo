@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.model.mixin;
 
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.vis.lineup.model.IRankColumnParent;
 import org.caleydo.vis.lineup.model.RankTableModel;
 
@@ -12,7 +13,7 @@ import org.caleydo.vis.lineup.model.RankTableModel;
  * @author Samuel Gratzl
  *
  */
-public interface IRankColumnModel {
+public interface IRankColumnModel extends ILabeled {
 
 	/**
 	 * @return
@@ -22,6 +23,4 @@ public interface IRankColumnModel {
 	IRankColumnParent getParent();
 
 	IRankColumnModel clone();
-
-	String getTitle();
 }

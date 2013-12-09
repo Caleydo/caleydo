@@ -21,7 +21,7 @@ public interface IAnnotatedColumnMixin {
 
 	String getDescription();
 
-	String getTitle();
+	String getLabel();
 
 	/**
 	 * @param title

@@ -153,7 +153,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 		@Override
 		public String toString() {
-			return model.getTitle();
+			return model.getLabel();
 		}
 
 		@Override
@@ -185,7 +185,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 		@Override
 		public String toString() {
-			return model.getTitle();
+			return model.getLabel();
 		}
 	};
 
@@ -298,8 +298,8 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 				: null);
 		ann = ann == null ? "" : ann.trim();
 		if (ann.trim().isEmpty())
-			return model.getTitle();
-		return model.getTitle() + "\n" + ann;
+			return model.getLabel();
+		return model.getLabel() + "\n" + ann;
 	}
 
 	protected void onCollapsedChanged(boolean isCollapsed) {

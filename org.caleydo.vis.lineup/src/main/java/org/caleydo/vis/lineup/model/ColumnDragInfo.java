@@ -38,7 +38,7 @@ public class ColumnDragInfo implements IDragInfo {
 
 	@Override
 	public String getLabel() {
-		return model.getTitle();
+		return model.getLabel();
 	}
 
 }

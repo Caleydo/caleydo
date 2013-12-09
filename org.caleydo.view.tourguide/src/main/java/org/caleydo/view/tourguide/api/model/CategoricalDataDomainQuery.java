@@ -302,7 +302,7 @@ public class CategoricalDataDomainQuery extends ASingleIDDataDomainQuery {
 		while (cols.hasNext()) {
 			ARankColumnModel col = cols.next();
 			if (col instanceof GroupRankColumnModel
-					&& ((GroupRankColumnModel) col).getTitle().startsWith(getDataDomain().getLabel() + " ")) {
+					&& ((GroupRankColumnModel) col).getLabel().startsWith(getDataDomain().getLabel() + " ")) {
 				toDestroy.add(col);
 			} else if (col instanceof ACompositeRankColumnModel) {
 				flat(((ACompositeRankColumnModel) col).iterator(), toDestroy);

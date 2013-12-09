@@ -120,7 +120,7 @@ public abstract class ARankColumnModel implements IRankColumnModel {
 	}
 
 	@Override
-	public String getTitle() {
+	public String getLabel() {
 		return header.toString();
 	}
 

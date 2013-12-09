@@ -27,7 +27,7 @@ public class ColumnPoolElem extends APoolElem implements IDragGLSource {
 	public ColumnPoolElem(ARankColumnModel model) {
 		this.model = model;
 		setLayoutData(model);
-		setTooltip(model.getTitle());
+		setTooltip(model.getLabel());
 	}
 
 	@Override

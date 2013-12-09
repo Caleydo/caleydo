@@ -179,7 +179,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				StringFilterDialog dialog = new StringFilterDialog(canvas.getShell(), getTitle(), filterStrategy
+				StringFilterDialog dialog = new StringFilterDialog(canvas.getShell(), getLabel(), filterStrategy
 						.getHint(), summary, filter, StringRankColumnModel.this, getTable().hasSnapshots(), loc);
 				dialog.open();
 			}
@@ -193,7 +193,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				StringSearchDialog dialog = new StringSearchDialog(canvas.getShell(), getTitle(), filterStrategy
+				StringSearchDialog dialog = new StringSearchDialog(canvas.getShell(), getLabel(), filterStrategy
 						.getHint(), summary, filter, loc);
 				dialog.open();
 			}
