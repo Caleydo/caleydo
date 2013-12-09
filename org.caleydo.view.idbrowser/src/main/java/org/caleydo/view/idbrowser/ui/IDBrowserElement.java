@@ -12,21 +12,21 @@ import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
+import org.caleydo.core.view.opengl.layout2.basic.RadioController;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.idbrowser.internal.Activator;
-import org.caleydo.view.idbrowser.internal.ui.IDTypeQuery;
+import org.caleydo.view.idbrowser.internal.ui.IDCategoryQuery;
 import org.caleydo.vis.lineup.config.RankTableConfigBase;
 import org.caleydo.vis.lineup.config.RankTableUIConfigBase;
+import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.RankRankColumnModel;
 import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.StringRankColumnModel;
@@ -42,7 +42,12 @@ import com.google.common.collect.Lists;
  */
 public class IDBrowserElement extends GLElementContainer implements ISelectionCallback {
 
-	private final RankTableModel table = new RankTableModel(new RankTableConfigBase());
+	private final RankTableModel table = new RankTableModel(new RankTableConfigBase() {
+		@Override
+		public boolean isDestroyOnHide(ARankColumnModel model) {
+			return true;
+		}
+	});
 
 	public IDBrowserElement() {
 		setLayout(GLLayouts.flowHorizontal(10));
@@ -60,8 +65,10 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 
 	@Override
 	public void onSelectionChanged(GLButton button, boolean selected) {
-		assert button instanceof IDTypeQuery;
-		IDTypeQuery q = (IDTypeQuery) button;
+		if (button == null)
+			return;
+		assert button instanceof IDCategoryQuery;
+		IDCategoryQuery q = (IDCategoryQuery) button;
 
 		BitSet mask = table.getDataMask();
 		if (mask == null)
@@ -75,7 +82,13 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 				q.init(size, table.getDataSize());
 			}
 			// show elems
-			mask.or(q.getMask());
+			mask = q.getMask();
+
+			List<ARankColumnModel> columns = new ArrayList<>(table.getColumns());
+			for (ARankColumnModel c : columns.subList(2, columns.size())) {
+				table.remove(c);
+			}
+			q.addColumns(table);
 		} else
 			// hide elems
 			mask.andNot(q.getMask());
@@ -104,20 +117,19 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 	}
 
 	private void initQueries() {
-		List<IDTypeQuery> queries = new ArrayList<>();
+		RadioController controller = new RadioController(this);
+		controller.setSelected(-1);
+		List<IDCategoryQuery> queries = new ArrayList<>();
 		for (IDCategory cat : IDCategory.getAllRegisteredIDCategories()) {
-			List<IDType> publics = cat.getPublicIdTypes();
-			IDMappingManager m = IDMappingManagerRegistry.get().getIDMappingManager(cat);
-			if (publics.isEmpty())
+			if (cat.getPublicIdTypes().isEmpty())
 				continue;
-			for (IDType public_ : publics) {
-				if (m.getAllMappedIDs(public_).isEmpty())
-					continue;
-				IDTypeQuery q = new IDTypeQuery(public_);
-				q.setCallback(this);
-				q.setSize(-1, 20);
-				queries.add(q);
-			}
+			if (IDMappingManagerRegistry.get().getIDMappingManager(cat).getAllMappedIDs(cat.getPrimaryMappingType())
+					.isEmpty())
+				continue;
+			IDCategoryQuery q = new IDCategoryQuery(cat);
+			controller.add(q);
+			q.setSize(-1, 20);
+			queries.add(q);
 		}
 		Collections.sort(queries);
 
