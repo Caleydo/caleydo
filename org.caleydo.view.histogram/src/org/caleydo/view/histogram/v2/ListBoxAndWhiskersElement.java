@@ -7,6 +7,7 @@ package org.caleydo.view.histogram.v2;
 
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.function.AdvancedDoubleStatistics;
 import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 
@@ -28,6 +29,14 @@ public class ListBoxAndWhiskersElement extends ABoxAndWhiskersElement {
 		this.color = Preconditions.checkNotNull(color);
 		this.label = Preconditions.checkNotNull(label);
 		setData(data);
+	}
+
+	public ListBoxAndWhiskersElement(AdvancedDoubleStatistics stats, EDetailLevel detailLevel, EDimension direction,
+			boolean showMinMax, String label, Color color) {
+		super(detailLevel, direction, false, showMinMax);
+		this.color = Preconditions.checkNotNull(color);
+		this.label = Preconditions.checkNotNull(label);
+		setData(stats);
 	}
 
 	/**

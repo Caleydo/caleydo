@@ -127,9 +127,24 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 		repaint();
 	}
 
+	public void setData(AdvancedDoubleStatistics stats) {
+		this.stats = stats;
+		updateIQRMatches(null);
+		this.min = stats.getMin();
+		this.max = stats.getMax();
+		repaint();
+	}
+
 	private void updateIQRMatches(IDoubleList l) {
 		final double lowerIQRBounds = stats.getQuartile25() - stats.getIQR() * 1.5;
 		final double upperIQRBounds = stats.getQuartile75() + stats.getIQR() * 1.5;
+
+		if (l == null) { // invalid raw data
+			nearestIQRMin = lowerIQRBounds;
+			nearestIQRMax = upperIQRBounds;
+			outliers = null;
+			return;
+		}
 
 		nearestIQRMin = upperIQRBounds;
 		nearestIQRMax = lowerIQRBounds;
