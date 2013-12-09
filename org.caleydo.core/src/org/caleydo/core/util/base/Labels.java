@@ -21,9 +21,9 @@ public class Labels {
 	/**
 	 * comparator by case insensitivve label
 	 */
-	public static final Comparator<ILabelProvider> BY_LABEL = new Comparator<ILabelProvider>() {
+	public static final Comparator<ILabeled> BY_LABEL = new Comparator<ILabeled>() {
 		@Override
-		public int compare(ILabelProvider dd1, ILabelProvider dd2) {
+		public int compare(ILabeled dd1, ILabeled dd2) {
 			return String.CASE_INSENSITIVE_ORDER.compare(dd1.getLabel(), dd2.getLabel());
 		}
 	};
@@ -31,9 +31,9 @@ public class Labels {
 	/**
 	 * function to map to label
 	 */
-	public static final Function<ILabelProvider, String> TO_LABEL = new Function<ILabelProvider, String>() {
+	public static final Function<ILabeled, String> TO_LABEL = new Function<ILabeled, String>() {
 		@Override
-		public String apply(ILabelProvider arg0) {
+		public String apply(ILabeled arg0) {
 			return arg0 == null ? null : arg0.getLabel();
 		}
 	};
