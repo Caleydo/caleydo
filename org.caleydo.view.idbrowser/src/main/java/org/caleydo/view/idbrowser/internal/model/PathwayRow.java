@@ -42,6 +42,10 @@ public class PathwayRow extends ARow implements IIDRow {
 	 */
 	@Override
 	public String getLabel() {
+		return pathway.getTitle();
+	}
+
+	public String getName() {
 		return pathway.getName();
 	}
 

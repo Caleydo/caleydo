@@ -29,6 +29,7 @@ import org.caleydo.vis.lineup.model.ARow;
 import org.caleydo.vis.lineup.model.CategoricalRankColumnModel;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.RankTableModel;
+import org.caleydo.vis.lineup.model.StringRankColumnModel;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -76,6 +77,12 @@ public class PathwayCategoryQuery extends ACategoryQuery {
 
 	@Override
 	public void addColumns(RankTableModel table) {
+		table.add(new StringRankColumnModel(GLRenderers.drawText("Name", VAlign.CENTER),new Function<IRow, String>() {
+			@Override
+			public String apply(IRow input) {
+				return ((PathwayRow)input).getName();
+			}
+		}));
 		table.add(CategoricalRankColumnModel.createSimple(GLRenderers.drawText("Database", VAlign.CENTER),
 				new Function<IRow, String>() {
 					@Override
