@@ -38,7 +38,7 @@ public class AddPathwayActionFactory implements IPathwayActionFactory {
 		final AddPathwayEvent event = new AddPathwayEvent(pathway, EEmbeddingID.PATHWAY_LEVEL1);
 		event.setSender(sender);
 		List<Pair<String, ? extends IAction>> actions = new ArrayList<>();
-		actions.add(Pair.make("Show " + pathway.getTitle() + "in Entourage", new IAction() {
+		actions.add(Pair.make("Show " + pathway.getTitle() + " in Entourage", new IAction() {
 
 			@Override
 			public void perform() {
