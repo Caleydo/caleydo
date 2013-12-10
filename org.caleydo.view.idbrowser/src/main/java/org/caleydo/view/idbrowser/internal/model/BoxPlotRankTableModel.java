@@ -116,6 +116,7 @@ public class BoxPlotRankTableModel extends ADataDomainRankTableModel implements 
 		getParent().orderBy(this);
 	}
 
+
 	/**
 	 * @param row
 	 * @return
@@ -238,5 +239,4 @@ public class BoxPlotRankTableModel extends ADataDomainRankTableModel implements 
 			return false;
 		}
 	}
-
 }

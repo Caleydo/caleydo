@@ -14,9 +14,10 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.vis.lineup.internal.event.FilterEvent;
+import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.model.CategoricalRankRankColumnModel.CategoryInfo;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
+import org.caleydo.vis.lineup.ui.AFilterDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;

@@ -32,6 +32,18 @@ public class ShowAndAddToViewAction implements Runnable {
 	private final TablePerspective[] tablePerspective;
 	private String secondaryId;
 
+	public static ShowAndAddToViewAction show(String viewType, TablePerspective... tablePerspective) {
+		return new ShowAndAddToViewAction(viewType, tablePerspective);
+	}
+
+	public static ShowAndAddToViewAction showMultiple(String viewType, TablePerspective... tablePerspective) {
+		return new ShowAndAddToViewAction(viewType, Integer.toString(UUID.randomUUID().hashCode()), tablePerspective);
+	}
+
+	public static ShowAndAddToViewAction showMultiple(String viewType, String secondaryId,
+			TablePerspective... tablePerspective) {
+		return new ShowAndAddToViewAction(viewType, secondaryId, tablePerspective);
+	}
 	/**
 	 * @param viewType
 	 * @param tablePerspective
@@ -39,7 +51,6 @@ public class ShowAndAddToViewAction implements Runnable {
 	public ShowAndAddToViewAction(String viewType, TablePerspective... tablePerspective) {
 		this(viewType, null, tablePerspective);
 	}
-
 	/**
 	 * @param viewType
 	 * @param object
@@ -60,12 +71,14 @@ public class ShowAndAddToViewAction implements Runnable {
 				part = activePage.showView(view, Integer.toString(UUID.randomUUID().hashCode(), Character.MAX_RADIX),
 						IWorkbenchPage.VIEW_ACTIVATE);
 			} else { // single one
-				part = activePage.showView(view);
+				part = activePage.showView(view, null, IWorkbenchPage.VIEW_ACTIVATE);
 			}
 			if (tablePerspective.length > 0 && part instanceof CaleydoRCPViewPart) {
 				CaleydoRCPViewPart rcp = (CaleydoRCPViewPart)part;
 				IView v = rcp.getView();
-				if (v instanceof ISingleTablePerspectiveBasedView || v instanceof IMultiTablePerspectiveBasedView)
+				if (v instanceof ISingleTablePerspectiveBasedView) {
+					((ISingleTablePerspectiveBasedView) v).setTablePerspective(tablePerspective[0]);
+				} else if (v instanceof IMultiTablePerspectiveBasedView)
 					EventPublisher.trigger(new AddTablePerspectivesEvent(Arrays.asList(tablePerspective)).to(v));
 			}
 		} catch (PartInitException e) {

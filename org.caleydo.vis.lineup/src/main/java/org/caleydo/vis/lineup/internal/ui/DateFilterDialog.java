@@ -9,9 +9,10 @@ import java.util.Calendar;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.vis.lineup.internal.event.FilterEvent;
+import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.model.DateRankColumnModel.DateMode;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
+import org.caleydo.vis.lineup.ui.AFilterDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;

@@ -8,6 +8,7 @@ package org.caleydo.vis.lineup.internal.ui;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.vis.lineup.internal.event.IntegerFilterEvent;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
+import org.caleydo.vis.lineup.ui.AFilterDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;

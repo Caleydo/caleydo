@@ -27,7 +27,7 @@ import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.lineup.config.IRankTableUIConfig;
-import org.caleydo.vis.lineup.internal.event.FilterEvent;
+import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.ui.CatFilterDalog;
 import org.caleydo.vis.lineup.model.mapping.ICategoricalMappingFunction;
 import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
