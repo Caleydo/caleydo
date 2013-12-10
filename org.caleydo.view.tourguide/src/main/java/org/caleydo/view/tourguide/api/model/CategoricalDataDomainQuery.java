@@ -275,7 +275,7 @@ public class CategoricalDataDomainQuery extends ASingleIDDataDomainQuery {
 	}
 
 	private static ARankColumnModel createCategoricalFromGroupList(String label, final VirtualArray va) {
-		Collection<String> items = new ArrayList<>();
+		Set<String> items = new HashSet<>();
 		for (Group g : va.getGroupList()) {
 			items.add(g.getLabel());
 		}

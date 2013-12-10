@@ -12,6 +12,7 @@ import java.io.Serializable;
 import javax.media.opengl.GLException;
 
 import org.caleydo.core.id.IDCreator;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.base.IUniqueObject;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -27,7 +28,8 @@ import com.jogamp.opengl.util.texture.TextureIO;
  * @author Marc Streit
  */
 public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEdge>
-		implements IUniqueObject, Serializable, Comparable<PathwayGraph> {
+ implements IUniqueObject,
+		Serializable, Comparable<PathwayGraph>, ILabeled {
 
 	private static final long serialVersionUID = 1L;
 
@@ -69,6 +71,11 @@ public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEd
 
 	public final String getName() {
 		return name;
+	}
+
+	@Override
+	public String getLabel() {
+		return getTitle() + " (" + getType().getLabel() + ")";
 	}
 
 	public final String getTitle() {

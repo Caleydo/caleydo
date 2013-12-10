@@ -35,6 +35,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
+
 /**
  *
  *
@@ -42,7 +45,8 @@ import org.eclipse.swt.widgets.Tree;
  *
  */
 public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
-	private final Map<CATEGORY_TYPE, ?> metaData;
+	private final Set<CATEGORY_TYPE> categories;
+	private final Function<? super CATEGORY_TYPE, ? extends Object> cat2label;
 	private final Set<CATEGORY_TYPE> selection;
 	private final boolean filterNA;
 	private final String labelNA;
@@ -51,11 +55,20 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 
 	private CheckboxTreeViewer fViewer;
 
-	public CatFilterDalog(Shell parentShell, String title, Object receiver, Map<CATEGORY_TYPE, ?> metaData,
+	public CatFilterDalog(Shell parentShell, String title, Object receiver, Map<CATEGORY_TYPE,?> categories,
+			Set<CATEGORY_TYPE> selection, IFilterColumnMixin model, boolean hasSnapshots, Point loc, boolean filterNA,
+			String labelNA) {
+		this(parentShell, title, receiver, categories.keySet(), Functions.forMap(categories), selection, model,
+				hasSnapshots, loc, filterNA, labelNA);
+	}
+
+	public CatFilterDalog(Shell parentShell, String title, Object receiver, Set<CATEGORY_TYPE> categories,
+			Function<? super CATEGORY_TYPE, ?> cat2label,
 			Set<CATEGORY_TYPE> selection, IFilterColumnMixin model, boolean hasSnapshots, Point loc, boolean filterNA,
 			String labelNA) {
 		super(parentShell, "Filter " + title, receiver, model, hasSnapshots, loc);
-		this.metaData = metaData;
+		this.categories = categories;
+		this.cat2label = cat2label;
 		this.selection = new LinkedHashSet<>(selection);
 		this.filterNA = filterNA;
 		this.labelNA = labelNA == null || labelNA.isEmpty() ? "<None>" : labelNA;
@@ -86,7 +99,7 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 			SelectionListener listener = new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					Object[] viewerElements = ArrayContentProvider.getInstance().getElements(metaData.keySet());
+					Object[] viewerElements = ArrayContentProvider.getInstance().getElements(categories);
 					fViewer.setCheckedElements(viewerElements);
 				}
 			};
@@ -157,7 +170,7 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 					return labelNA;
 				@SuppressWarnings("unchecked")
 				CATEGORY_TYPE k = (CATEGORY_TYPE) element;
-				Object r = metaData.get(k);
+				Object r = cat2label.apply(k);
 				return Objects.toString(r, "");
 			}
 
@@ -167,7 +180,7 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 					return null;
 				@SuppressWarnings("unchecked")
 				CATEGORY_TYPE k = (CATEGORY_TYPE) element;
-				Object r = metaData.get(k);
+				Object r = cat2label.apply(k);
 				if (r instanceof CategoryInfo) {
 					return ((CategoryInfo) r).getColor().getSWTColor(parent.getDisplay());
 				}
@@ -181,7 +194,7 @@ public class CatFilterDalog<CATEGORY_TYPE> extends AFilterDialog {
 		};
 		fViewer.setLabelProvider(label);
 		fViewer.setComparator(new ViewerComparator());
-		Object[] data = metaData.keySet().toArray();
+		Object[] data = categories.toArray();
 		// hack in the NA
 		data = Arrays.copyOf(data, data.length + 1);
 		data[data.length - 1] = NA;
