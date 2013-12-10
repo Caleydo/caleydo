@@ -8,8 +8,10 @@ package org.caleydo.view.stratomex.brick.configurer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.data.datadomain.TablePerspectiveActions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
@@ -250,6 +252,11 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 	public IBrickSortingStrategy getBrickSortingStrategy() {
 
 		return new NoSortingSortingStrategy();
+	}
+
+	@Override
+	public void addDataSpecificContextMenuEntries(ContextMenuCreator creator, GLBrick brick) {
+		TablePerspectiveActions.add(creator, brick.getTablePerspective(), this, true);
 	}
 
 }

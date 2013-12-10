@@ -8,9 +8,9 @@ package org.caleydo.core.data.datadomain;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.caleydo.core.event.AEvent;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.contextmenu.ActionBasedContextMenuItem;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 
 /**
@@ -25,8 +25,8 @@ public class DataDomainActions {
 			EXTENSION_POINT, "class", IDataDomainActionFactory.class);
 
 
-	public static Collection<Pair<String, ? extends AEvent>> create(IDataDomain dataDomain, Object sender) {
-		Collection<Pair<String, ? extends AEvent>> events = new ArrayList<>();
+	public static Collection<Pair<String, Runnable>> create(IDataDomain dataDomain, Object sender) {
+		Collection<Pair<String, Runnable>> events = new ArrayList<>();
 		for (IDataDomainActionFactory factory : factories) {
 			events.addAll(factory.create(dataDomain, sender));
 		}
@@ -37,7 +37,7 @@ public class DataDomainActions {
 		boolean first = separate;
 		boolean added = false;
 		for (IDataDomainActionFactory factory : factories) {
-			Collection<Pair<String, ? extends AEvent>> create = factory.create(dataDomain, sender);
+			Collection<Pair<String, Runnable>> create = factory.create(dataDomain, sender);
 			if (create.isEmpty())
 				continue;
 			if (!first) {
@@ -45,13 +45,14 @@ public class DataDomainActions {
 			}
 			first = false;
 			added = true;
-			creator.addAll(create);
+			for (Pair<String, Runnable> p : create)
+				creator.add(new ActionBasedContextMenuItem(p.getFirst(), p.getSecond()));
 		}
 		return added;
 	}
 
 	public interface IDataDomainActionFactory {
-		public Collection<Pair<String, ? extends AEvent>> create(IDataDomain dataDomain, Object sender);
+		public Collection<Pair<String, Runnable>> create(IDataDomain dataDomain, Object sender);
 	}
 
 }
