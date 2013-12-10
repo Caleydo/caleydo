@@ -13,9 +13,11 @@ import java.util.List;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.basic.RadioController;
@@ -23,11 +25,18 @@ import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.datadomain.pathway.PathwayActions;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.idbrowser.internal.Activator;
+import org.caleydo.view.idbrowser.internal.model.PathwayRow;
+import org.caleydo.view.idbrowser.internal.ui.ACategoryQuery;
 import org.caleydo.view.idbrowser.internal.ui.IDCategoryQuery;
+import org.caleydo.view.idbrowser.internal.ui.PathwayCategoryQuery;
 import org.caleydo.vis.lineup.config.RankTableConfigBase;
 import org.caleydo.vis.lineup.config.RankTableUIConfigBase;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
+import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.RankRankColumnModel;
 import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.StringRankColumnModel;
@@ -69,8 +78,8 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 	public void onSelectionChanged(GLButton button, boolean selected) {
 		if (button == null)
 			return;
-		assert button instanceof IDCategoryQuery;
-		IDCategoryQuery q = (IDCategoryQuery) button;
+		assert button instanceof ACategoryQuery;
+		ACategoryQuery q = (ACategoryQuery) button;
 
 		BitSet mask = table.getDataMask();
 		if (mask == null)
@@ -114,6 +123,22 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 			public EButtonBarPositionMode getButtonBarPosition() {
 				return EButtonBarPositionMode.OVER_LABEL;
 			}
+
+			@Override
+			public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected,
+					IGLElementContext context) {
+				if (pickingMode == PickingMode.RIGHT_CLICKED) {
+					ContextMenuCreator c = new ContextMenuCreator();
+					if (row instanceof PathwayRow) {
+						PathwayGraph pathway = ((PathwayRow) row).getPathway();
+						PathwayActions.addToContextMenu(c, pathway, this, true);
+					}
+					if (c.hasMenuItems()) {
+						context.getSWTLayer().showContextMenu(c);
+					}
+				}
+				super.onRowClick(table, pickingMode, row, isSelected, context);
+			}
 		});
 		ScrollingDecorator sc = new ScrollingDecorator(ui, new ScrollBar(true), null, RenderStyle.SCROLLBAR_WIDTH);
 		this.add(sc);
@@ -122,7 +147,7 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 	private void initQueries() {
 		RadioController controller = new RadioController(this);
 		controller.setSelected(-1);
-		List<IDCategoryQuery> queries = new ArrayList<>();
+		List<ACategoryQuery> queries = new ArrayList<>();
 		for (IDCategory cat : IDCategory.getAllRegisteredIDCategories()) {
 			if (cat.getPublicIdTypes().isEmpty())
 				continue;
@@ -135,6 +160,12 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 			queries.add(q);
 		}
 		Collections.sort(queries);
+		{
+			final PathwayCategoryQuery p = new PathwayCategoryQuery();
+			controller.add(p);
+			p.setSize(-1, 20);
+			queries.add(p);
+		}
 
 		GLElementContainer c = new GLElementContainer(GLLayouts.flowVertical(2));
 		c.asList().addAll(queries);

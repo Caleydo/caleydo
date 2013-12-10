@@ -9,8 +9,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.vis.lineup.model.ARow;
 import org.caleydo.vis.lineup.model.IRow;
 
@@ -20,15 +21,20 @@ import org.caleydo.vis.lineup.model.IRow;
  * @author Samuel Gratzl
  *
  */
-public class PrimaryIDRow extends ARow implements IIDRow {
-	private final IDCategory category;
-	private final Object primary;
+public class PathwayRow extends ARow implements IIDRow {
+	private final PathwayGraph pathway;
 	private final Map<IDType, Set<Object>> mappings;
 
-	public PrimaryIDRow(IDCategory category, Object primary, Map<IDType,Set<Object>> mappings) {
-		this.category = category;
-		this.primary = primary;
+	public PathwayRow(PathwayGraph pathway, Map<IDType, Set<Object>> mappings) {
+		this.pathway = pathway;
 		this.mappings = mappings;
+	}
+
+	/**
+	 * @return the pathway, see {@link #pathway}
+	 */
+	public PathwayGraph getPathway() {
+		return pathway;
 	}
 
 	/**
@@ -36,24 +42,16 @@ public class PrimaryIDRow extends ARow implements IIDRow {
 	 */
 	@Override
 	public String getLabel() {
-		return getAsString(category.getHumanReadableIDType(), primary.toString());
+		return pathway.getName();
 	}
 
-	/**
-	 * @return the category, see {@link #category}
-	 */
-	public IDCategory getCategory() {
-		return category;
+	public EPathwayDatabaseType getDatabase() {
+		return pathway.getType();
 	}
 
-
-	/**
-	 * @return the primary, see {@link #primary}
-	 */
-	public Object getPrimary() {
-		return primary;
+	public int size() {
+		return pathway.vertexSet().size();
 	}
-
 	/**
 	 * @param idType
 	 * @return

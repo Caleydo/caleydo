@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.view.idbrowser.internal.ui;
+package org.caleydo.view.idbrowser.internal.model;
 
 import java.util.Set;
 
@@ -13,36 +13,25 @@ import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
-import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.id.IDType;
-import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
-import org.caleydo.view.idbrowser.internal.model.PrimaryIDRow;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.ui.detail.ValueElement;
-
-import com.jogamp.common.util.IntObjectHashMap;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class DistributionRankTableModel extends ARankColumnModel {
-	private final ATableBasedDataDomain d;
-	private final EDimension dim;
-
-	private IntObjectHashMap cache = new IntObjectHashMap();
-
+public class DistributionRankTableModel extends ADataDomainRankTableModel {
 	public DistributionRankTableModel(ATableBasedDataDomain d, EDimension dim) {
-		super(Color.GRAY, new Color(0.95f, .95f, .95f));
-		this.d = d;
+		super(d, dim);
 		assert DataSupportDefinitions.categoricalTables.apply(d);
-		setHeaderRenderer(GLRenderers.drawText(d.getLabel(), VAlign.CENTER));
-		this.dim = dim;
+	}
+
+	public DistributionRankTableModel(TablePerspective t, EDimension dim) {
+		super(t, dim);
 	}
 
 	/**
@@ -50,9 +39,6 @@ public class DistributionRankTableModel extends ARankColumnModel {
 	 */
 	public DistributionRankTableModel(DistributionRankTableModel clone) {
 		super(clone);
-		this.d = clone.d;
-		this.dim = clone.dim;
-		setHeaderRenderer(GLRenderers.drawText(d.getLabel(), VAlign.CENTER));
 	}
 
 	@Override
@@ -62,18 +48,21 @@ public class DistributionRankTableModel extends ARankColumnModel {
 
 	@Override
 	public String getValue(IRow row) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public IDType getIDType() {
-		return dim.select(d.getDimensionIDType(), d.getRecordIDType());
+		CategoricalHistogram h = getHist(row);
+		if (h == null)
+			return "";
+		StringBuilder b = new StringBuilder();
+		for (int i = 0; i < h.size(); ++i) {
+			b.append(h.getName(i)).append(":\t").append(h.get(i)).append('\n');
+		}
+		b.setLength(b.length() - 1); // remove last \n
+		return b.toString();
 	}
 
 	CategoricalHistogram getHist(IRow row) {
 		if (cache.containsKey(row.getIndex()))
 			return (CategoricalHistogram) cache.get(row.getIndex());
-		CategoricalHistogram c = computeHist((PrimaryIDRow) row);
+		CategoricalHistogram c = computeHist((IIDRow) row);
 		cache.put(row.getIndex(), c);
 		return c;
 	}
@@ -82,15 +71,12 @@ public class DistributionRankTableModel extends ARankColumnModel {
 	 * @param row
 	 * @return
 	 */
-	private CategoricalHistogram computeHist(PrimaryIDRow row) {
+	private CategoricalHistogram computeHist(IIDRow row) {
 		Set<Object> ids = row.get(getIDType());
 		if (ids == null || ids.isEmpty())
 			return null;
 		final Table table = d.getTable();
 		CategoricalHistogram h = new CategoricalHistogram(((CategoricalTable<?>) table).getCategoryDescriptions());
-		VirtualArray others = dim.opposite()
-				.select(table.getDefaultDimensionPerspective(false), table.getDefaultRecordPerspective(false))
-				.getVirtualArray();
 		for (Object id : ids) {
 			if (!(id instanceof Integer))
 				continue;

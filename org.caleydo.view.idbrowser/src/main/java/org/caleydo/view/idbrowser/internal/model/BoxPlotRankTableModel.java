@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.view.idbrowser.internal.ui;
+package org.caleydo.view.idbrowser.internal.model;
 
 import gleem.linalg.Vec2f;
 
@@ -15,39 +15,32 @@ import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
-import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.id.IDType;
+import org.caleydo.core.data.perspective.table.TableDoubleLists;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.ADoubleList;
 import org.caleydo.core.util.function.AdvancedDoubleStatistics;
 import org.caleydo.core.util.function.ArrayDoubleList;
+import org.caleydo.core.util.function.DoubleStatistics;
 import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementAccessor;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IGLElementParent;
-import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.histogram.v2.ListBoxAndWhiskersElement;
-import org.caleydo.view.idbrowser.internal.model.PrimaryIDRow;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.ui.detail.ValueElement;
 
 import com.google.common.collect.Lists;
-import com.jogamp.common.util.IntObjectHashMap;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class BoxPlotRankTableModel extends ARankColumnModel {
-	private final ATableBasedDataDomain d;
-	private final EDimension dim;
-
-	private final IntObjectHashMap cache = new IntObjectHashMap();
+public class BoxPlotRankTableModel extends ADataDomainRankTableModel {
 	private double min;
 	private double max;
 
@@ -56,14 +49,18 @@ public class BoxPlotRankTableModel extends ARankColumnModel {
 	 * @param dim
 	 */
 	public BoxPlotRankTableModel(ATableBasedDataDomain d, EDimension dim) {
-		super(Color.GRAY, new Color(0.95f, .95f, .95f));
-		this.d = d;
+		super(d, dim);
 		assert DataSupportDefinitions.numericalTables.apply(d);
-		setHeaderRenderer(GLRenderers.drawText(d.getLabel(), VAlign.CENTER));
-		this.dim = dim;
 		final NumericalTable table = (NumericalTable) d.getTable();
 		this.min = table.getMin();
 		this.max = table.getMax();
+	}
+
+	public BoxPlotRankTableModel(TablePerspective t, EDimension dim) {
+		super(t, dim);
+		DoubleStatistics stats = DoubleStatistics.of(TableDoubleLists.asRawList(t));
+		this.min = stats.getMin();
+		this.max = stats.getMax();
 	}
 
 	/**
@@ -71,12 +68,8 @@ public class BoxPlotRankTableModel extends ARankColumnModel {
 	 */
 	public BoxPlotRankTableModel(BoxPlotRankTableModel clone) {
 		super(clone);
-		this.d = clone.d;
-		this.dim = clone.dim;
 		this.min = clone.min;
 		this.max = clone.max;
-		this.cache.putAll(clone.cache);
-		setHeaderRenderer(GLRenderers.drawText(d.getLabel(), VAlign.CENTER));
 	}
 
 	@Override
@@ -86,24 +79,18 @@ public class BoxPlotRankTableModel extends ARankColumnModel {
 
 	@Override
 	public String getValue(IRow row) {
-		return null;
-	}
-
-	public IDType getIDType() {
-		return dim.select(d.getDimensionIDType(), d.getRecordIDType());
-	}
-
-	public boolean has(IRow row) {
-		Set<Object> ids = ((PrimaryIDRow) row).get(getIDType());
-		if (ids == null || ids.isEmpty())
-			return false;
-		return true;
+		AdvancedDoubleStatistics stats = getStats(row);
+		if (stats == null)
+			return "";
+		StringBuilder b = new StringBuilder();
+		b.append("min: ").append(stats.getMin()).append(" max: ").append(stats.getMax());
+		return b.toString();
 	}
 
 	AdvancedDoubleStatistics getStats(IRow row) {
 		if (cache.containsKey(row.getIndex()))
 			return (AdvancedDoubleStatistics) cache.get(row.getIndex());
-		AdvancedDoubleStatistics c = computeStats((PrimaryIDRow) row);
+		AdvancedDoubleStatistics c = computeStats((IIDRow) row);
 		cache.put(row.getIndex(), c);
 		return c;
 	}
@@ -112,14 +99,11 @@ public class BoxPlotRankTableModel extends ARankColumnModel {
 	 * @param row
 	 * @return
 	 */
-	private AdvancedDoubleStatistics computeStats(PrimaryIDRow row) {
+	private AdvancedDoubleStatistics computeStats(IIDRow row) {
 		Set<Object> ids = row.get(getIDType());
 		if (ids == null || ids.isEmpty())
 			return null;
 		final Table table = d.getTable();
-		final VirtualArray others = dim.opposite()
-				.select(table.getDefaultDimensionPerspective(false), table.getDefaultRecordPerspective(false))
-				.getVirtualArray();
 		final int size = others.size() * ids.size();
 		final List<Object> ids_l = Lists.newArrayList(ids);
 		return AdvancedDoubleStatistics.of(new ADoubleList() {
@@ -144,11 +128,6 @@ public class BoxPlotRankTableModel extends ARankColumnModel {
 				return size;
 			}
 		});
-	}
-
-	@Override
-	public GLElement createSummary(boolean interactive) {
-		return new GLElement();
 	}
 
 	@Override
@@ -188,8 +167,7 @@ public class BoxPlotRankTableModel extends ARankColumnModel {
 		}
 
 		private AdvancedDoubleStatistics updateStats() {
-			PrimaryIDRow row = (PrimaryIDRow) getRow();
-			AdvancedDoubleStatistics stats = getStats(row);
+			AdvancedDoubleStatistics stats = getStats(getRow());
 			if (stats != old) {
 				content.setData(stats, min, max);
 				this.old = stats;
