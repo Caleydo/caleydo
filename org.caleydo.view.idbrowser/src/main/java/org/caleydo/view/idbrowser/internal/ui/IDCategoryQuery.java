@@ -28,14 +28,12 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
-import org.caleydo.core.util.base.Labels;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
@@ -247,10 +245,12 @@ public class IDCategoryQuery extends GLButton implements Comparable<IDCategoryQu
 
 	private void addIDTypeColumns(RankTableModel table) {
 		for (final IDType idType : this.idTypes) {
+			// not interesting to show
 			if (idType == category.getHumanReadableIDType() || idType == category.getPrimaryMappingType()
 					|| idType.isInternalType())
 				continue;
 			IGLRenderer header = GLRenderers.drawText(idType.getTypeName(), VAlign.CENTER);
+			// render as string
 			table.add(new StringRankColumnModel(header, new Function<IRow, String>() {
 				@Override
 				public String apply(IRow input) {
@@ -301,28 +301,6 @@ public class IDCategoryQuery extends GLButton implements Comparable<IDCategoryQu
 				r.add(d.getRecordIDType());
 		}
 		return r;
-	}
-
-	/**
-	 * find the relevant perspectives that have an {@link IDType} of the given {@link IDCategory}
-	 *
-	 * @param category
-	 * @return
-	 */
-	private List<Perspective> findRelevantPerspectives() {
-		List<ATableBasedDataDomain> dataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(
-				ATableBasedDataDomain.class));
-
-		List<Perspective> dataDomainPerspectives = new ArrayList<>(dataDomains.size());
-		for (ATableBasedDataDomain dd : dataDomains) {
-			if (dd.getRecordIDCategory() == category)
-				dataDomainPerspectives.add(dd.getTable().getDefaultRecordPerspective(false));
-
-			if (dd.getDimensionIDCategory() == category)
-				dataDomainPerspectives.add(dd.getTable().getDefaultDimensionPerspective(false));
-		}
-		Collections.sort(dataDomainPerspectives, Labels.BY_LABEL);
-		return dataDomainPerspectives;
 	}
 
 	@Override
