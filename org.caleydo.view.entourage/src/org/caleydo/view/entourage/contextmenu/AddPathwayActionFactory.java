@@ -37,7 +37,7 @@ public class AddPathwayActionFactory implements IPathwayActionFactory {
 		final AddPathwayEvent event = new AddPathwayEvent(pathway, EEmbeddingID.PATHWAY_LEVEL1);
 		event.setSender(sender);
 		List<Pair<String, ? extends Runnable>> actions = new ArrayList<>();
-		actions.add(Pair.make("Show " + pathway.getTitle() + "in Entourage", Runnables.withinSWTThread(new Runnable() {
+		actions.add(Pair.make("Show " + pathway.getTitle() + " in Entourage", Runnables.withinSWTThread(new Runnable() {
 
 			@Override
 			public void run() {
