@@ -54,7 +54,7 @@ public class IDBrowserView extends AGLElementView {
 
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
-		canvas.removeKeyListener(tableKeyListener);
+		canvas.removeKeyListener(eventListeners.unregister(tableKeyListener));
 		super.dispose(drawable);
 	}
 }

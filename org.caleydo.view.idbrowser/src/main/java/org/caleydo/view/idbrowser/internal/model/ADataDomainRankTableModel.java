@@ -52,6 +52,9 @@ public abstract class ADataDomainRankTableModel extends ABasicFilterableRankColu
 
 	protected final IntObjectHashMap cache = new IntObjectHashMap();
 
+	/**
+	 * virtual array to use for the other dimension than {@link #dim}
+	 */
 	protected final VirtualArray others;
 
 	private boolean filterMissingEntries = false;
@@ -168,7 +171,7 @@ public abstract class ADataDomainRankTableModel extends ABasicFilterableRankColu
 		@Override
 		public void create() {
 			super.create();
-			getShell().setText("Edit Filter of size");
+			getShell().setText("Edit Filter");
 		}
 
 		@Override

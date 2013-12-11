@@ -8,6 +8,7 @@ package org.caleydo.view.idbrowser.internal.model;
 import java.util.Collections;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.caleydo.core.util.base.Labels;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -21,9 +22,14 @@ import org.caleydo.vis.lineup.ui.detail.ValueElement;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterators;
 import com.jogamp.common.util.IntObjectHashMap;
 
 /**
+ * for a gene compute in how many pathways the gene is part of
+ *
+ * handle it as a special kind of a {@link MultiCategoricalRankColumnModel}
+ *
  * @author Samuel Gratzl
  *
  */
@@ -92,6 +98,7 @@ public class PartOfPathwayRankTableModel extends MultiCategoricalRankColumnModel
 			Set<PathwayGraph> v = getCatValue(getRow());
 			int size = v == null ? 0 : v.size();
 			float hi = Math.min(h, 18);
+			// render just the number of matches
 			if (!(((IColumnRenderInfo) getParent()).isCollapsed())) {
 				g.drawText("" + size, 1, 1 + (h - hi) * 0.5f, w - 2, hi - 5);
 			}
@@ -99,7 +106,10 @@ public class PartOfPathwayRankTableModel extends MultiCategoricalRankColumnModel
 
 		@Override
 		public String getTooltip() {
-			return getValue(getRow());
+			Set<PathwayGraph> value = getCatValue(getRow());
+			if (value == null || value.isEmpty())
+				return "<None";
+			return StringUtils.join(Iterators.transform(value.iterator(), Labels.TO_LABEL), '\n');
 		}
 	}
 }

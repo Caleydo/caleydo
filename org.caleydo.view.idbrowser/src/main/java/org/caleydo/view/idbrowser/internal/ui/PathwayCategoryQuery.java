@@ -56,15 +56,18 @@ public class PathwayCategoryQuery extends ACategoryQuery {
 	@Override
 	protected Collection<ARow> createEntries(final IDMappingManager mappingManager,
 			final Map<IDType, IIDTypeMapper<Object, Object>> mappings) {
+		// for all pathways
 		return Collections2.transform(PathwayManager.get().getAllItems(), new Function<PathwayGraph, ARow>() {
 			@Override
 			public PathwayRow apply(PathwayGraph input) {
 				assert input != null;
 				ImmutableMap.Builder<IDType, Set<Object>> b = ImmutableMap.builder();
 				Set<Object> vs = new HashSet<>();
+				// for all vertex reps
 				for (PathwayVertexRep r : input.vertexSet()) {
 					vs.add(r.getID());
 				}
+				// map to others
 				for (Map.Entry<IDType, IIDTypeMapper<Object, Object>> entry : mappings.entrySet()) {
 					Set<Object> m = entry.getValue().apply(vs);
 					if (m != null)
@@ -96,6 +99,6 @@ public class PathwayCategoryQuery extends ACategoryQuery {
 
 	@Override
 	protected boolean expectMultiMapping(ATableBasedDataDomain d) {
-		return true;
+		return true; // each gene will be mapped multiple times
 	}
 }

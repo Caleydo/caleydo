@@ -12,10 +12,10 @@ import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.vis.lineup.model.IRow;
 
 /**
- * a {@link IRow} for an idtype entry
- *
+ * a {@link IRow} for multiple id types
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public interface IIDRow extends IRow, ILabeled {
 	/**

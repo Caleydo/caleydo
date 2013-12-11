@@ -9,9 +9,9 @@ import org.caleydo.core.gui.command.AOpenViewHandler;
 
 /**
  * simple command handler for opening this view
- *
- * @author AUTHOR
- *
+ * 
+ * @author Samuel Gratzl
+ * 
  */
 public class OpenViewHandler extends AOpenViewHandler {
 	public OpenViewHandler() {
