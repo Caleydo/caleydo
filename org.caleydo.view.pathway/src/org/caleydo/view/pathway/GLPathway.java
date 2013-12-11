@@ -224,6 +224,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 	private boolean isControlKeyDown = false;
 	private boolean isShiftKeyDown = false;
+	private boolean isAltKeyDown = false;
 
 	/**
 	 * Determines whether the paths should be selectable via mouse click.
@@ -406,7 +407,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 			@Override
 			public void handleMouseWheel(int wheelAmount, Vec2f wheelPosition) {
-				if (!isControlKeyDown || !isShiftKeyDown)
+				if (isAltKeyDown)
 					selectNextPath(wheelAmount > 0);
 
 			}
@@ -434,6 +435,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			// }// if (e.isControlDown() && (e.getKeyCode() == 79))
 			isControlKeyDown = e.isControlDown();
 			isShiftKeyDown = e.isShiftDown();
+			isAltKeyDown = e.isAltDown();
 			// isAltKeyDown = e.isAltDown();
 
 			if (e.isDownDown()) {
@@ -454,6 +456,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		public void keyReleased(IKeyEvent e) {
 			isControlKeyDown = e.isControlDown();
 			isShiftKeyDown = e.isShiftDown();
+			isAltKeyDown = e.isAltDown();
 			// isAltKeyDown = e.isAltDown();
 		}
 	};
