@@ -49,10 +49,12 @@ public class IDCategoryQuery extends ACategoryQuery {
 	protected Collection<ARow> createEntries(IDMappingManager mappingManager,
 			final Map<IDType, IIDTypeMapper<Object, Object>> mappings) {
 		Set<?> ids = mappingManager.getAllMappedIDs(primary);
+		// for each id of the primary type
 		return Collections2.transform(ids, new Function<Object, ARow>() {
 			@Override
 			public ARow apply(Object input) {
 				assert input != null;
+				// map all
 				ImmutableMap.Builder<IDType, Set<Object>> b = ImmutableMap.builder();
 				for (Map.Entry<IDType, IIDTypeMapper<Object, Object>> entry : mappings.entrySet()) {
 					Set<Object> m = entry.getValue().apply(input);

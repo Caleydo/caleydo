@@ -23,6 +23,9 @@ import org.caleydo.vis.lineup.model.IRow;
 public class PrimaryIDRow extends ARow implements IIDRow {
 	private final IDCategory category;
 	private final Object primary;
+	/**
+	 * mapping result
+	 */
 	private final Map<IDType, Set<Object>> mappings;
 
 	public PrimaryIDRow(IDCategory category, Object primary, Map<IDType,Set<Object>> mappings) {

@@ -227,7 +227,7 @@ public class EventListenerManager implements DisposeListener {
 	 *
 	 * @param listener
 	 */
-	public final void unregister(Object listener) {
+	public final <T> T unregister(T listener) {
 		for (Iterator<AEventListener<?>> it = listeners.iterator(); it.hasNext();) {
 			AEventListener<?> e = it.next();
 			if (e instanceof AnnotationBasedEventListener) {
@@ -239,6 +239,7 @@ public class EventListenerManager implements DisposeListener {
 				}
 			}
 		}
+		return listener;
 	}
 
 	/**

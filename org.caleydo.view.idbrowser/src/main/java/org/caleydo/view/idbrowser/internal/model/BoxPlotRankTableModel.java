@@ -59,6 +59,7 @@ public class BoxPlotRankTableModel extends ADataDomainRankTableModel implements 
 
 	public BoxPlotRankTableModel(TablePerspective t, EDimension dim) {
 		super(t, dim);
+		// compute local stats if we just have a table perspective
 		DoubleStatistics stats = DoubleStatistics.of(TableDoubleLists.asRawList(t));
 		this.min = stats.getMin();
 		this.max = stats.getMax();
@@ -158,6 +159,7 @@ public class BoxPlotRankTableModel extends ADataDomainRankTableModel implements 
 	}
 
 	private class MyValueElement extends ValueElement implements IGLElementParent {
+		// render as box and whiskers element
 		private final ListBoxAndWhiskersElement content;
 		private AdvancedDoubleStatistics old = null;
 

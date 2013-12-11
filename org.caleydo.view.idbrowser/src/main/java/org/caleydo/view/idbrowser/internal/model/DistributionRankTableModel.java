@@ -20,8 +20,10 @@ import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.ui.detail.ValueElement;
 
 /**
+ * a {@link ARankColumnModel} for a categorical datadomain, which shows a horizontal mosiac plot
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class DistributionRankTableModel extends ADataDomainRankTableModel {
 	public DistributionRankTableModel(ATableBasedDataDomain d, EDimension dim) {

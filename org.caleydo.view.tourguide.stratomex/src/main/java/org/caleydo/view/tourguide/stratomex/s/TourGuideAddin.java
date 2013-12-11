@@ -799,7 +799,7 @@ public class TourGuideAddin implements IStratomeXAddIn {
 
 	@Override
 	public boolean canShowDetailBrick() {
-		return isEmpty();
+		return isEmpty() && (wizard == null);
 	}
 
 	public void replaceTemplate(TablePerspective with, IBrickConfigurer config, boolean extra, Color highlight) {

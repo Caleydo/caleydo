@@ -53,6 +53,9 @@ import com.google.common.collect.Iterables;
  */
 public abstract class ACategoryQuery extends GLButton implements Comparable<ACategoryQuery> {
 
+	/**
+	 * mask of the rank table data which are created by myself
+	 */
 	private BitSet mask;
 
 	protected final IDCategory category;
@@ -68,6 +71,7 @@ public abstract class ACategoryQuery extends GLButton implements Comparable<ACat
 		setLayoutData(category);
 
 		Set<IDType> idTypes = findIDTypes(category);
+		// sort by name
 		this.idTypes = ImmutableSortedSet.orderedBy(new Comparator<IDType>() {
 			@Override
 			public int compare(IDType o1, IDType o2) {
@@ -118,8 +122,9 @@ public abstract class ACategoryQuery extends GLButton implements Comparable<ACat
 	}
 
 	private void addDataDomainColumns(RankTableModel table) {
-		List<ATableBasedDataDomain> dataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(
+		final List<ATableBasedDataDomain> dataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(
 				ATableBasedDataDomain.class));
+
 		List<ARankColumnModel> new_ = new ArrayList<>();
 		for (ATableBasedDataDomain d : Iterables.filter(dataDomains, DataSupportDefinitions.categoricalTables)) {
 			EDimension dim = select(d);
@@ -140,7 +145,7 @@ public abstract class ACategoryQuery extends GLButton implements Comparable<ACat
 			final Table data = d.getTable();
 			for (TablePerspective t : d.getAllTablePerspectives()) {
 				VirtualArray dims = t.getDimensionPerspective().getVirtualArray();
-				if (dims.size() != 1)
+				if (dims.size() != 1) // strange single dim
 					continue;
 
 				final Integer dimId = dims.get(0);
