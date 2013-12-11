@@ -41,6 +41,7 @@ import org.caleydo.vis.lineup.model.RankRankColumnModel;
 import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.StringRankColumnModel;
 import org.caleydo.vis.lineup.ui.RenderStyle;
+import org.caleydo.vis.lineup.ui.TableBodyUI;
 import org.caleydo.vis.lineup.ui.TableUI;
 
 import com.google.common.collect.Lists;
@@ -59,6 +60,7 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 			return true;
 		}
 	});
+	private TableUI tableUI;
 
 	public IDBrowserElement() {
 		setLayout(GLLayouts.flowHorizontal(10));
@@ -67,11 +69,25 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 	}
 
 	/**
+	 * @return the table, see {@link #table}
+	 */
+	public RankTableModel getTable() {
+		return table;
+	}
+
+	/**
 	 *
 	 */
 	private void initData() {
 		initQueries();
 		initTable();
+	}
+
+	/**
+	 * @return
+	 */
+	public TableBodyUI getBody() {
+		return tableUI.getBody();
 	}
 
 	@Override
@@ -113,7 +129,7 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 		table.add(new RankRankColumnModel());
 		table.add(new StringRankColumnModel(GLRenderers.drawText("ID", VAlign.CENTER), StringRankColumnModel.DEFAULT));
 
-		TableUI ui = new TableUI(table, new RankTableUIConfigBase(true, true, true) {
+		this.tableUI = new TableUI(table, new RankTableUIConfigBase(true, true, true) {
 			@Override
 			public boolean canEditValues() {
 				return false;
@@ -140,7 +156,9 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 				super.onRowClick(table, pickingMode, row, isSelected, context);
 			}
 		});
-		ScrollingDecorator sc = new ScrollingDecorator(ui, new ScrollBar(true), null, RenderStyle.SCROLLBAR_WIDTH);
+
+		ScrollingDecorator sc = new ScrollingDecorator(this.tableUI, new ScrollBar(true), null,
+				RenderStyle.SCROLLBAR_WIDTH);
 		this.add(sc);
 	}
 
