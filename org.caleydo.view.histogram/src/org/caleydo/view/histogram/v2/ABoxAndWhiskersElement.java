@@ -10,6 +10,9 @@ import gleem.linalg.Vec2f;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.base.ILabeled;
@@ -43,8 +46,6 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 	 */
 	private static final float BOX_HEIGHT_PERCENTAGE = 1 / 3.f;
 	private static final float LINE_TAIL_HEIGHT_PERCENTAGE = 0.75f;
-	private static final float MIN_MAX_HEIGHT_PERCENTAGE = 0.9f;
-	private static final float OUTLIER_HEIGHT_PERCENTAGE = 0.5f;
 
 	private final EDetailLevel detailLevel;
 	private final EDimension direction;
@@ -238,28 +239,34 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 
 		renderOutliers(g, w, hi, center, normalize);
 
-		if (showMinMax) {
-			g.color(0, 0, 0);
-			float h_minMax = hi * MIN_MAX_HEIGHT_PERCENTAGE;
-			float min = (float) normalize.apply(stats.getMin()) * w;
-			float max = (float) normalize.apply(stats.getMax()) * w;
-			g.drawLine(min, center - h_minMax * 0.5f, min, center + h_minMax * 0.5f);
-			g.drawLine(max, center - h_minMax * 0.5f, max, center + h_minMax * 0.5f);
-		}
-
 	}
 
 	private void renderOutliers(GLGraphics g, float w, final float hi, final float center, IDoubleFunction normalize) {
-		if (!showOutlier || outliers == null)
+		if ((!showOutlier || outliers == null) && !showMinMax)
 			return;
 
-		g.color(0.2f, 0.2f, 0.2f, outlierAlhpa(outliers.size()));
-		float h_outlier = hi * OUTLIER_HEIGHT_PERCENTAGE * 0.5f;
+		GL2 gl = g.gl;
+		gl.glPushAttrib(GL2.GL_POINT_BIT);
+		gl.glPointSize(2f);
+		gl.glBegin(GL.GL_POINTS);
 
-		for (IDoubleIterator it = outliers.iterator(); it.hasNext();) {
-			float v = (float) normalize.apply(it.nextPrimitive()) * w;
-			g.drawLine(v, center - h_outlier, v, center + h_outlier);
+		if (showMinMax) {
+			g.color(0, 0, 0);
+			float min = (float) normalize.apply(stats.getMin()) * w;
+			float max = (float) normalize.apply(stats.getMax()) * w;
+			gl.glVertex3f(min, center, g.z());
+			gl.glVertex3f(max, center, g.z());
 		}
+
+		if (showOutlier && outliers != null) {
+			g.color(0.2f, 0.2f, 0.2f, outlierAlhpa(outliers.size()));
+			for (IDoubleIterator it = outliers.iterator(); it.hasNext();) {
+				float v = (float) normalize.apply(it.nextPrimitive()) * w;
+				gl.glVertex3f(v, center, g.z());
+			}
+		}
+		gl.glEnd();
+		gl.glPopAttrib();
 	}
 
 	private float outlierAlhpa(int size) {
