@@ -21,12 +21,9 @@ import com.google.common.base.Function;
  */
 public class Runnables {
 	public static Runnable withinSWTThread(final Runnable run) {
-		return new Runnable() {
-			@Override
-			public void run() {
-				Display.getDefault().asyncExec(run);
-			}
-		};
+		if (run instanceof WithinSWT) // already wrapped
+			return run;
+		return new WithinSWT(run);
 	}
 
 	public static Runnable sendEvent(final AEvent event) {
@@ -65,5 +62,18 @@ public class Runnables {
 			return Pair.make(input.getFirst(), sendEvent(input.getSecond()));
 		}
 	};
+
+	private static class WithinSWT implements Runnable {
+		private final Runnable wrappee;
+
+		public WithinSWT(Runnable wrappee) {
+			this.wrappee = wrappee;
+		}
+
+		@Override
+		public void run() {
+			Display.getDefault().asyncExec(wrappee);
+		}
+	}
 
 }
