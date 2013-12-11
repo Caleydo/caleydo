@@ -9,10 +9,16 @@ import gleem.linalg.Vec2f;
 
 import java.util.List;
 
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.vis.lineup.config.IRankTableUIConfig;
 import org.caleydo.vis.lineup.layout.IRowHeightLayout;
@@ -25,11 +31,19 @@ import org.caleydo.vis.lineup.model.RankTableModel;
  * @author Samuel Gratzl
  *
  */
-public class TableUI extends GLElementContainer implements IGLLayout {
+public class TableUI extends GLElementContainer implements IGLLayout, IPickingListener {
 	public TableUI(RankTableModel table, IRankTableUIConfig config, IRowHeightLayout... layouts) {
 		setLayout(this);
 		this.add(new TableHeaderUI(table, config));
 		this.add(new TableBodyUI(table, layouts.length == 0 ? RowHeightLayouts.UNIFORM : layouts[0], config));
+		setVisibility(EVisibility.PICKABLE);
+		onPick(this);
+		setPicker(new IGLRenderer() {
+			@Override
+			public void render(GLGraphics g, float w, float h, GLElement parent) {
+				g.decZ().decZ().fillRect(0, 0, w, h).incZ().incZ();
+			}
+		});
 	}
 
 	public TableBodyUI getBody() {
@@ -52,6 +66,16 @@ public class TableUI extends GLElementContainer implements IGLLayout {
 		if (!old.equals(new_)) {
 			setLayoutData(new_.copy());
 			relayoutParent();
+		}
+	}
+
+	@Override
+	public void pick(Pick pick) {
+		if (pick.getPickingMode() == PickingMode.MOUSE_WHEEL) {
+			int r = ((IMouseEvent) pick).getWheelRotation();
+			if (r == 0)
+				return;
+			getBody().scroll(-r);
 		}
 	}
 

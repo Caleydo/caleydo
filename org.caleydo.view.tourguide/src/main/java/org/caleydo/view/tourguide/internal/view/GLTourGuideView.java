@@ -22,7 +22,6 @@ import java.util.Set;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
@@ -34,7 +33,6 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.GLThreadListenerWrapper;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
-import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AGLElementView;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -97,7 +95,6 @@ import org.caleydo.vis.lineup.model.mixin.IAnnotatedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankColumnModel;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.lineup.ui.RankTableKeyListener;
-import org.caleydo.vis.lineup.ui.RankTableUIMouseKeyListener;
 import org.caleydo.vis.lineup.ui.RenderStyle;
 import org.caleydo.vis.lineup.ui.TableBodyUI;
 import org.caleydo.vis.lineup.ui.TableUI;
@@ -170,10 +167,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 			onJobStarted();
 		}
 	};
-	@DeepScan
-	private final IGLKeyListener tableKeyListener;
-	private IGLKeyListener tableKeyListener2; // lazy and manually scanned
-	private IGLMouseListener tableMouseListener; // lazy
+	private IGLKeyListener tableKeyListener; // lazy and manually scanned
 
 	private DataDomainQueryUI dataDomainQueryUI;
 	private TableUI tableUI;
@@ -222,9 +216,6 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 			q.addPropertyChangeListener(ADataDomainQuery.PROP_MIN_CLUSTER_SIZE_FILTER, listener);
 			queries.add(q);
 		}
-
-		// wrap for having the right thread
-		this.tableKeyListener = GLThreadListenerWrapper.wrap(new RankTableKeyListener(table));
 	}
 
 	/**
@@ -536,12 +527,10 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	@Override
 	public void init(GLAutoDrawable drawable) {
 		super.init(drawable);
-		this.canvas.addKeyListener(tableKeyListener);
-		RankTableUIMouseKeyListener tableUIListener = new RankTableUIMouseKeyListener(getTableBodyUI());
-		this.tableKeyListener2 = GLThreadListenerWrapper.wrap((IGLKeyListener) tableUIListener);
-		this.tableMouseListener = GLThreadListenerWrapper.wrap((IGLMouseListener) tableUIListener);
-		this.canvas.addKeyListener(eventListeners.register(this.tableKeyListener2));
-		this.canvas.addMouseListener(eventListeners.register(this.tableMouseListener));
+
+		// wrap for having the right thread
+		this.tableKeyListener = GLThreadListenerWrapper.wrap(new RankTableKeyListener(table, getTableBodyUI()));
+		this.canvas.addKeyListener(eventListeners.register(tableKeyListener));
 
 		this.noAttachedView = this.adapter.isBound2View(); // artifically set to the wrong value to ensure an update
 		updateBound2ViewState();
@@ -580,8 +569,6 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	public void dispose(GLAutoDrawable drawable) {
 		this.adapter.cleanup();
 		canvas.removeKeyListener(tableKeyListener);
-		canvas.removeKeyListener(tableKeyListener2);
-		canvas.removeMouseListener(tableMouseListener);
 		super.dispose(drawable);
 	}
 
