@@ -82,7 +82,9 @@ public class SingleCategorical extends MultiCategoricalRankColumnModel<String> {
 				dim.select(0, singleID.intValue()));
 		if (spec instanceof CategoricalClassDescription<?>) {
 			List<?> tmp = ((CategoricalClassDescription<?>) spec).getCategoryProperties();
-			return ImmutableList.copyOf((List<CategoryProperty<?>>) tmp);
+			CategoryProperty<?> unknown = ((CategoricalClassDescription<?>) spec).getUnknownCategory();
+			return ImmutableList.<CategoryProperty<?>> builder().add(unknown).addAll((List<CategoryProperty<?>>) tmp)
+					.build();
 		}
 		return Collections.emptyList();
 	}

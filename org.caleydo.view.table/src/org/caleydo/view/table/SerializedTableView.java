@@ -8,6 +8,7 @@ package org.caleydo.view.table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 
@@ -28,6 +29,14 @@ public class SerializedTableView extends ASerializedSingleTablePerspectiveBasedV
 
 	public SerializedTableView(ISingleTablePerspectiveBasedView view) {
 		super(view);
+	}
+
+	/**
+	 * @param tablePerspective
+	 */
+	public SerializedTableView(TablePerspective tablePerspective) {
+		setDataDomainID(tablePerspective.getDataDomain().getDataDomainID());
+		setTablePerspectiveKey(tablePerspective.getTablePerspectiveKey());
 	}
 
 	@Override

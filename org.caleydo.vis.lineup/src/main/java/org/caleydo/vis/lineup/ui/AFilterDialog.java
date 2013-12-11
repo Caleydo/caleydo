@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.vis.lineup.internal.ui;
+package org.caleydo.vis.lineup.ui;
 
 
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;

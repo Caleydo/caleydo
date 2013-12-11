@@ -14,8 +14,11 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
+import org.caleydo.view.idbrowser.internal.model.PartOfPathwayRankTableModel;
 import org.caleydo.view.idbrowser.internal.model.PrimaryIDRow;
 import org.caleydo.vis.lineup.model.ARow;
+import org.caleydo.vis.lineup.model.RankTableModel;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -59,5 +62,15 @@ public class IDCategoryQuery extends ACategoryQuery {
 				return new PrimaryIDRow(category, input, b.build());
 			}
 		});
+	}
+
+	@Override
+	public void addColumns(RankTableModel table) {
+		// FIXME hack
+		if (category.getCategoryName().equals(EGeneIDTypes.GENE.name())) {
+			table.add(new PartOfPathwayRankTableModel());
+		}
+
+		super.addColumns(table);
 	}
 }

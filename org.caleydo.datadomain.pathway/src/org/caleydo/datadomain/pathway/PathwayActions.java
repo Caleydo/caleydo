@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.caleydo.core.util.ExtensionUtils;
-import org.caleydo.core.util.base.IAction;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.ActionBasedContextMenuItem;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
@@ -29,8 +28,8 @@ public final class PathwayActions {
 	private PathwayActions() {
 	}
 
-	public static Collection<Pair<String, ? extends IAction>> getPathwayActions(PathwayGraph pathway, Object sender) {
-		Collection<Pair<String, ? extends IAction>> events = new ArrayList<>();
+	public static Collection<Pair<String, ? extends Runnable>> getPathwayActions(PathwayGraph pathway, Object sender) {
+		Collection<Pair<String, ? extends Runnable>> events = new ArrayList<>();
 		for (IPathwayActionFactory factory : factories) {
 			events.addAll(factory.create(pathway, sender));
 		}
@@ -42,7 +41,7 @@ public final class PathwayActions {
 		boolean first = separate;
 		boolean added = false;
 		for (IPathwayActionFactory factory : factories) {
-			Collection<Pair<String, ? extends IAction>> actions = factory.create(pathway, sender);
+			Collection<Pair<String, ? extends Runnable>> actions = factory.create(pathway, sender);
 			if (actions.isEmpty())
 				continue;
 			if (!first) {
@@ -50,7 +49,7 @@ public final class PathwayActions {
 			}
 			first = false;
 			added = true;
-			for (Pair<String, ? extends IAction> action : actions) {
+			for (Pair<String, ? extends Runnable> action : actions) {
 				creator.add(new ActionBasedContextMenuItem(action.getFirst(), action.getSecond()));
 			}
 		}
@@ -67,6 +66,6 @@ public final class PathwayActions {
 		 * @param sender
 		 * @return
 		 */
-		public Collection<Pair<String, ? extends IAction>> create(PathwayGraph pathway, Object sender);
+		public Collection<Pair<String, ? extends Runnable>> create(PathwayGraph pathway, Object sender);
 	}
 }

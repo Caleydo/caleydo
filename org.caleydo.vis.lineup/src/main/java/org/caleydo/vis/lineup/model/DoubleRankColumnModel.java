@@ -29,7 +29,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.lineup.config.IRankTableUIConfig;
 import org.caleydo.vis.lineup.data.IDoubleFunction;
 import org.caleydo.vis.lineup.data.IDoubleInferrer;
-import org.caleydo.vis.lineup.internal.event.FilterEvent;
+import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.ui.FloatFilterDialog;
 import org.caleydo.vis.lineup.internal.ui.FloatFilterDialog.FilterChecked;
 import org.caleydo.vis.lineup.model.mapping.IMappingFunction;

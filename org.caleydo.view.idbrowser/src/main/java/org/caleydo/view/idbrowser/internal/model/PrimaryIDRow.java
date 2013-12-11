@@ -54,6 +54,10 @@ public class PrimaryIDRow extends ARow implements IIDRow {
 		return primary;
 	}
 
+	public IDType getPrimaryIDType() {
+		return category.getPrimaryMappingType();
+	}
+
 	/**
 	 * @param idType
 	 * @return

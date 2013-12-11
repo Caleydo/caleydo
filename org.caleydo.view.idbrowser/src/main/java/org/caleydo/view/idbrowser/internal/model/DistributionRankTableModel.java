@@ -14,7 +14,6 @@ import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.IRow;
@@ -94,10 +93,6 @@ public class DistributionRankTableModel extends ADataDomainRankTableModel {
 		return h;
 	}
 
-	@Override
-	public GLElement createSummary(boolean interactive) {
-		return new GLElement();
-	}
 
 	@Override
 	public ValueElement createValue() {

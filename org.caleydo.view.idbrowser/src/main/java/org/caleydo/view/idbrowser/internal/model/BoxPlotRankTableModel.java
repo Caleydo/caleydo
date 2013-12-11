@@ -32,6 +32,7 @@ import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.view.histogram.v2.ListBoxAndWhiskersElement;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.IRow;
+import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.lineup.ui.detail.ValueElement;
 
 import com.google.common.collect.Lists;
@@ -40,7 +41,7 @@ import com.google.common.collect.Lists;
  * @author Samuel Gratzl
  *
  */
-public class BoxPlotRankTableModel extends ADataDomainRankTableModel {
+public class BoxPlotRankTableModel extends ADataDomainRankTableModel implements IRankableColumnMixin {
 	private double min;
 	private double max;
 
@@ -94,6 +95,27 @@ public class BoxPlotRankTableModel extends ADataDomainRankTableModel {
 		cache.put(row.getIndex(), c);
 		return c;
 	}
+
+	@Override
+	public int compare(IRow o1, IRow o2) {
+		AdvancedDoubleStatistics s1 = getStats(o1);
+		AdvancedDoubleStatistics s2 = getStats(o2);
+		if (s1 == s2)
+			return 0;
+		if (s1 == null)
+			return 1;
+		if (s2 == null)
+			return -1;
+		double sd1 = Math.abs(s1.getSd());
+		double sd2 = Math.abs(s2.getSd());
+		return Double.compare(sd1, sd2);
+	}
+
+	@Override
+	public void orderByMe() {
+		getParent().orderBy(this);
+	}
+
 
 	/**
 	 * @param row
@@ -217,6 +239,4 @@ public class BoxPlotRankTableModel extends ADataDomainRankTableModel {
 			return false;
 		}
 	}
-
-
 }

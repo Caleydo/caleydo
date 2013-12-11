@@ -171,6 +171,24 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		return selectedRowListener;
 	}
 
+	public ARankColumnModel toModelByAbs(float x_abs) {
+		return toModel(toRelative(new Vec2f(x_abs, 0)).x());
+	}
+
+	public ARankColumnModel toModel(float x) {
+		GLElement r = null;
+		for (GLElement g : this) {
+			Vec2f loc = g.getLocation();
+			if (loc.x() > x) // last one is the correct one
+				break;
+			r = g;
+		}
+		if (r instanceof ITableColumnUI) {
+			return ((ITableColumnUI) r).getModel();
+		}
+		return null;
+	}
+
 	/**
 	 * @param pick
 	 */

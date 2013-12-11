@@ -22,7 +22,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.vis.lineup.internal.event.FilterEvent;
+import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.event.SearchEvent;
 import org.caleydo.vis.lineup.internal.event.SearchEvent.SearchResult;
 import org.caleydo.vis.lineup.internal.ui.StringFilterDialog;
