@@ -22,6 +22,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
@@ -204,6 +205,18 @@ public abstract class ADataDomainRankTableModel extends ABasicFilterableRankColu
 		@ListenTo(sendToMe = true)
 		private void onFilterEvent(FilterEvent event) {
 			setFilter(event.isFilterNA(), event.isFilterGlobally(), event.isFilterRankIndendent());
+		}
+
+		@Override
+		protected void renderImpl(GLGraphics g, float w, float h) {
+			super.renderImpl(g, w, h);
+			if (w < 20)
+				return;
+			if (isFiltered()) {
+				g.drawText("Filter:", 4, 2, w - 4, 12);
+				String t = "Missing";
+				g.drawText(t, 4, 18, w - 4, 12);
+			}
 		}
 	}
 }
