@@ -10,8 +10,8 @@ import java.util.Collections;
 
 import org.caleydo.core.data.datadomain.TablePerspectiveActions.ITablePerspectiveFactory;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.gui.command.AOpenViewHandler;
 import org.caleydo.core.util.base.Runnables;
-import org.caleydo.core.util.base.ShowAndAddToViewAction;
 import org.caleydo.core.util.collection.Pair;
 
 /**
@@ -22,8 +22,8 @@ public class TablePerspectiveAction implements ITablePerspectiveFactory {
 
 	@Override
 	public Collection<Pair<String, Runnable>> create(TablePerspective tablePerspective, Object sender) {
-		final Pair<String, Runnable> p = Pair.make("Show As Table",
-				Runnables.withinSWTThread(new ShowAndAddToViewAction(TableView.VIEW_TYPE, tablePerspective)));
+		final Pair<String, Runnable> p = Pair.make("Show in Table",
+				Runnables.show(TableView.VIEW_TYPE, AOpenViewHandler.createSecondaryID() + "_lazy", tablePerspective));
 		return Collections.singleton(p);
 	}
 

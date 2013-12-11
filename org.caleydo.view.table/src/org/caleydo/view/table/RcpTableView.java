@@ -56,6 +56,9 @@ public class RcpTableView extends CaleydoRCPViewPart {
 	@Override
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedTableView();
+		// TODO workaround that want to externally set the single table but maybe after the view was show
+		if (getViewSite().getSecondaryId().endsWith("_lazy"))
+			return;
 		determineDataConfiguration(serializedView);
 	}
 }

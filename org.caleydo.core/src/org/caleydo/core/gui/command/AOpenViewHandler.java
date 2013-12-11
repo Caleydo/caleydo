@@ -40,7 +40,7 @@ public abstract class AOpenViewHandler extends AbstractHandler implements IHandl
 		try {
 			IWorkbenchPage activePage = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
 			if (allowMultiple) { // multipe ones
-				activePage.showView(view, Integer.toString(UUID.randomUUID().hashCode(), Character.MAX_RADIX),
+				activePage.showView(view, createSecondaryID(),
 						IWorkbenchPage.VIEW_ACTIVATE);
 			} else { // single one
 				activePage.showView(view);
@@ -51,5 +51,9 @@ public abstract class AOpenViewHandler extends AbstractHandler implements IHandl
 		}
 
 		return null;
+	}
+
+	public static String createSecondaryID() {
+		return Integer.toString(UUID.randomUUID().hashCode(), Character.MAX_RADIX);
 	}
 }

@@ -6,10 +6,10 @@
 package org.caleydo.core.util.base;
 
 import java.util.Arrays;
-import java.util.UUID;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
@@ -25,54 +25,36 @@ import org.eclipse.ui.PlatformUI;
  * @author Samuel Gratzl
  *
  */
-public class ShowAndAddToViewAction implements Runnable {
+class ShowAndAddToViewAction implements Runnable {
 	private static final Logger log = Logger.create(ShowAndAddToViewAction.class);
 
 	private final String view;
 	private final TablePerspective[] tablePerspective;
+	private final ASerializedView init;
 	private String secondaryId;
 
-	public static ShowAndAddToViewAction show(String viewType, TablePerspective... tablePerspective) {
-		return new ShowAndAddToViewAction(viewType, tablePerspective);
-	}
-
-	public static ShowAndAddToViewAction showMultiple(String viewType, TablePerspective... tablePerspective) {
-		return new ShowAndAddToViewAction(viewType, Integer.toString(UUID.randomUUID().hashCode()), tablePerspective);
-	}
-
-	public static ShowAndAddToViewAction showMultiple(String viewType, String secondaryId,
-			TablePerspective... tablePerspective) {
-		return new ShowAndAddToViewAction(viewType, secondaryId, tablePerspective);
-	}
-	/**
-	 * @param viewType
-	 * @param tablePerspective
-	 */
-	public ShowAndAddToViewAction(String viewType, TablePerspective... tablePerspective) {
-		this(viewType, null, tablePerspective);
-	}
-	/**
-	 * @param viewType
-	 * @param object
-	 * @param tablePerspective2
-	 */
-	public ShowAndAddToViewAction(String viewType, String secondardyId, TablePerspective... tablePerspective) {
+	public ShowAndAddToViewAction(String viewType, String secondaryId, TablePerspective... tablePerspective) {
 		this.view = viewType;
 		this.tablePerspective = tablePerspective;
-		this.secondaryId = secondardyId;
+		this.secondaryId = secondaryId;
+		this.init = null;
+	}
+
+	public ShowAndAddToViewAction(String viewType, String secondaryId, ASerializedView init) {
+		this.view = viewType;
+		this.tablePerspective = null;
+		this.secondaryId = secondaryId;
+		this.init = null;
 	}
 
 	@Override
 	public void run() {
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		try {
-			IViewPart part;
-			if (secondaryId != null) { // multipe ones
-				part = activePage.showView(view, Integer.toString(UUID.randomUUID().hashCode(), Character.MAX_RADIX),
-						IWorkbenchPage.VIEW_ACTIVATE);
-			} else { // single one
-				part = activePage.showView(view, null, IWorkbenchPage.VIEW_ACTIVATE);
-			}
+			int action = init != null ? IWorkbenchPage.VIEW_CREATE : IWorkbenchPage.VIEW_ACTIVATE;
+
+			IViewPart part = activePage.showView(view, secondaryId, action);
+
 			if (tablePerspective.length > 0 && part instanceof CaleydoRCPViewPart) {
 				CaleydoRCPViewPart rcp = (CaleydoRCPViewPart)part;
 				IView v = rcp.getView();
@@ -80,6 +62,10 @@ public class ShowAndAddToViewAction implements Runnable {
 					((ISingleTablePerspectiveBasedView) v).setTablePerspective(tablePerspective[0]);
 				} else if (v instanceof IMultiTablePerspectiveBasedView)
 					EventPublisher.trigger(new AddTablePerspectivesEvent(Arrays.asList(tablePerspective)).to(v));
+			} else if (init != null && part instanceof CaleydoRCPViewPart) {
+				// init before create
+				((CaleydoRCPViewPart) part).setExternalSerializedView(init);
+				activePage.showView(view, part.getViewSite().getSecondaryId(), IWorkbenchPage.VIEW_ACTIVATE);
 			}
 		} catch (PartInitException e) {
 			log.error("can't show " + view, e);
