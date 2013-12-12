@@ -104,6 +104,11 @@ public class Level4PathwayRenderer extends ALayoutRenderer implements IPathwayRe
 
 	}
 
+	@Override
+	public Rect getPathwayBounds() {
+		return new Rect(0, 0, 0, 0);
+	}
+
 	// @Override
 	// public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
 	//

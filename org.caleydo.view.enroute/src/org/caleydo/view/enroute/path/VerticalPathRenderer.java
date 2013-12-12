@@ -462,4 +462,10 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 				+ (pathway == null ? this.sizeConfig.pathwayTitleAreaWidth : 0));
 	}
 
+	@Override
+	public Rect getPathwayBounds() {
+		return new Rect(0, 0, view.getPixelGLConverter().getPixelWidthForGLWidth(elementLayout.getSizeScaledX()), view
+				.getPixelGLConverter().getPixelHeightForGLHeight(elementLayout.getSizeScaledY()));
+	}
+
 }

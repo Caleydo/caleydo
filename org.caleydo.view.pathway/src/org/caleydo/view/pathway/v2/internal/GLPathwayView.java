@@ -19,14 +19,15 @@ import org.caleydo.core.view.opengl.layout2.view.AMultiTablePerspectiveElementVi
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.v2.internal.serial.SerializedPathwayView;
-import org.caleydo.view.pathway.v2.ui.PathwayElement;
 import org.caleydo.view.pathway.v2.ui.PathwayDataMappingHandler;
+import org.caleydo.view.pathway.v2.ui.PathwayElement;
 import org.caleydo.view.pathway.v2.ui.PathwayTextureRepresentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.AverageColorMappingAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.HighVarianceIndicatorAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.MultiMappingIndicatorAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.StdDevBarAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.StdDevBarConsideringVertexHighlightAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.path.BubbleSetPathAugmentation;
 
 /**
  *
@@ -61,6 +62,8 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		pathwayElement.addForegroundAugmentation(new HighVarianceIndicatorAugmentation(pathwayElement
 				.getPathwayRepresentation(), pathwayElement.getMappingHandler()));
 		pathwayElement.addForegroundAugmentation(new StdDevBarConsideringVertexHighlightAugmentation(pathwayElement));
+		pathwayElement.addForegroundAugmentation(new BubbleSetPathAugmentation(pathwayElement
+				.getPathwayRepresentation()));
 	}
 
 	@Override

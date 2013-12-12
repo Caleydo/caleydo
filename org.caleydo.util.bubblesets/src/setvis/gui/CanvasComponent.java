@@ -3,6 +3,8 @@
  */
 package setvis.gui;
 
+import gleem.linalg.Vec2f;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,6 +26,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.media.opengl.glu.GLUtessellator;
 import javax.swing.JComponent;
 
 import org.caleydo.core.data.selection.SelectionType;
@@ -93,6 +96,8 @@ public class CanvasComponent extends JComponent implements Canvas {
 	private final List<Color> colorList;
 	private final List<Integer> outlineThickness;
 	private final List<Boolean> isVisibleList;
+
+	protected GLUtessellator tobj;
 
 	/**
 	 * The mouse and mouse motion listener for the interaction.
@@ -513,6 +518,15 @@ public class CanvasComponent extends JComponent implements Canvas {
 		--curItemGroup;
 	}
 
+	public void removeAllGroups() {
+		int numberOfGroups = getGroupCount() - 1;
+		while (getGroupCount() > 0) {
+			setCurrentGroup(numberOfGroups);
+			removeCurrentGroup();
+			numberOfGroups--;
+		}
+	}
+
 	@Override
 	public void setCurrentGroup(final int curItemGroup) {
 		this.curItemGroup = curItemGroup;
@@ -871,6 +885,31 @@ public class CanvasComponent extends JComponent implements Canvas {
 		// if (textChanged) {
 		// notifyCanvasListeners(CanvasListener.TEXT);
 		// }
+	}
+
+	public List<Vec2f> getShapePoints(final Graphics gfx) {
+		if (groupShapes == null) {
+			// the cache needs to be recreated
+			final AbstractShapeGenerator shaping = new ShapeSimplifier(shaper, simplifyTolerance);
+			groupShapes = shaping.createShapesForLists(items, edges);
+		}
+
+		final Shape gs = groupShapes[selectionID];
+		AffineTransform tf = new AffineTransform();
+		PathIterator pi = gs.getPathIterator(tf);
+		float[] position = new float[6];
+		int type = -1;
+		List<Vec2f> points = new ArrayList<>();
+
+		if (gs != null) {
+			while (!pi.isDone() && type != PathIterator.SEG_CLOSE) {
+				pi.next();
+				type = pi.currentSegment(position);
+				points.add(new Vec2f(position[0], position[1]));
+			}
+		}
+
+		return points;
 	}
 
 	// whether to draw points
