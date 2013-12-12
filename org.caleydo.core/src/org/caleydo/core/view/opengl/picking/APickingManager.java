@@ -131,11 +131,13 @@ public abstract class APickingManager<T extends APickingEntry> {
 			List<PickHit> data = cache.get(key);
 
 			if (event.getSecond() == PickingMode.MOUSE_OUT && !mouseIn.isEmpty()) {
+				// clean up by finally sending a mouse out
 				if (data == null) {
 					data = doPickingImpl(key.x, key.y, gl, toRender);
 					cache.put(key, data);
 				}
 				fireListeners(data, PickingMode.MOUSE_OUT, mouseEvent);
+				mouseIn.clear(); // no no one is in anymore -> clean up for the next time
 			} else if (converted != null) {
 				if (data == null) {
 					data = doPickingImpl(key.x, key.y, gl, toRender);
@@ -189,7 +191,7 @@ public abstract class APickingManager<T extends APickingEntry> {
 				continue;
 			// annhiliate out - over
 			if (prev == PickingMode.MOUSE_OVER && mode == PickingMode.MOUSE_OUT) {
-				has.remove(PickingMode.MOUSE_MOVED);
+				has.remove(PickingMode.MOUSE_OVER);
 				result.removeFirst();
 				prev = null;
 				continue;
