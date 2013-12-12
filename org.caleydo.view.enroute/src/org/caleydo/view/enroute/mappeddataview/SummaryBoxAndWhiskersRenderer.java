@@ -54,12 +54,8 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 
 		float iqrMin = normalizedIQRMin * x;
 		float iqrMax = normalizedIQRMax * x;
-		float min = (float) normalizedStats.getMin() * x;
-		float max = (float) normalizedStats.getMax() * x;
 
-		float outlierLineHeight = contentRenderer.parentView.getPixelGLConverter().getGLHeightForPixelHeight(3);
 		float iqrLineTailHeight = contentRenderer.parentView.getPixelGLConverter().getGLHeightForPixelHeight(5);
-		float lineTailHeight = contentRenderer.parentView.getPixelGLConverter().getGLHeightForPixelHeight(7);
 
 		// gl.glPushAttrib(GL2.GL_LINE_BIT);
 		// gl.glLineWidth(2);
@@ -84,12 +80,6 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 
 		gl.glVertex3f(iqrMax, y / 2 - iqrLineTailHeight, z);
 		gl.glVertex3f(iqrMax, y / 2 + iqrLineTailHeight, z);
-
-		gl.glVertex3f(min, y / 2 - lineTailHeight, 2f);
-		gl.glVertex3f(min, y / 2 + lineTailHeight, 2f);
-
-		gl.glVertex3f(max, y / 2 - lineTailHeight, 2f);
-		gl.glVertex3f(max, y / 2 + lineTailHeight, 2f);
 		gl.glEnd();
 
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -107,8 +97,6 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		gl.glColor4f(0f, 0f, 0f, outlierAlhpa(outliers.size()));
-		// gl.glColor4f(0f, 0f, 0f, 1f);
-		// gl.glColor4f(0f, 0f, 0f, 0f);
 
 		gl.glPushAttrib(GL2.GL_POINT_BIT);
 		gl.glPointSize(2f);
@@ -116,8 +104,6 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 		gl.glBegin(GL.GL_POINTS);
 
 		for (float outlier : outliers) {
-			// gl.glVertex3f(outlier * x, y / 2 - 4, z);
-			// gl.glVertex3f(outlier * x, y / 2 + 4, z);
 			gl.glVertex3f(outlier * x, y / 2, z);
 		}
 

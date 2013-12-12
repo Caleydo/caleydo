@@ -249,7 +249,7 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 
 	@Override
 	public Rect getVertexRepBounds(PathwayVertexRep vertexRep) {
-		if (!pathway.containsVertex(vertexRep))
+		if (pathway == null || !pathway.containsVertex(vertexRep))
 			return null;
 		int coordsX = vertexRep.getCoords().get(0).getFirst();
 		int coordsY = vertexRep.getCoords().get(0).getSecond();
@@ -280,6 +280,13 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 	@Override
 	public void addVertexRepSelectionListener(IVertexRepSelectionListener listener) {
 		vertexListeners.add(listener);
+	}
+
+	@Override
+	public Rect getPathwayBounds() {
+		if (pathway == null)
+			return null;
+		return new Rect(origin.x(), origin.y(), renderSize.x(), renderSize.y());
 	}
 
 }

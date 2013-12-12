@@ -2036,4 +2036,16 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 	}
 
+	@Override
+	public Rect getPathwayBounds() {
+		if (vecTranslation == null || vecScaling == null || pathway == null)
+			return null;
+		float x = pixelGLConverter.getPixelWidthForGLWidth(vecTranslation.x());
+		float width = pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()) * vecScaling.x();
+		float height = pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()) * vecScaling.y();
+		float y = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight() - vecTranslation.y()) - height;
+
+		return new Rect(x, y, width, height);
+	}
+
 }
