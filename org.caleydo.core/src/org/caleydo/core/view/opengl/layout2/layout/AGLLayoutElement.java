@@ -8,6 +8,9 @@ package org.caleydo.core.view.opengl.layout2.layout;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
+import org.caleydo.core.view.opengl.layout2.GLElement;
+
+import com.google.common.base.Function;
 
 /**
  * basic implementation of a {@link IGLLayoutElement}
@@ -84,4 +87,12 @@ public abstract class AGLLayoutElement implements IGLLayoutElement {
 		Vec4f t = getSetBounds();
 		return new Vec2f(t.z(), t.w());
 	}
+
+	public static final Function<IGLLayoutElement, GLElement> TO_GL_ELEMENT = new Function<IGLLayoutElement, GLElement>() {
+
+		@Override
+		public GLElement apply(IGLLayoutElement input) {
+			return input == null ? null : input.asElement();
+		}
+	};
 }

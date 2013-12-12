@@ -450,6 +450,8 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
+
+		updateRenderer();
 	}
 
 	/**
