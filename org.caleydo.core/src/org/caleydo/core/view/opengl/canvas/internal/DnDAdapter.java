@@ -28,9 +28,12 @@ import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.URLTransfer;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
@@ -77,6 +80,14 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 
 	public void init() {
 		canvas.asComposite().addKeyListener(this);
+		canvas.asComposite().getParent().addDisposeListener(new DisposeListener() {
+
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				freeSource(true);
+				freeTarget(true);
+			}
+		});
 	}
 
 	/**
@@ -85,24 +96,28 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 	private void ensureTarget() {
 		if (this.target != null)
 			return;
-		target = new DropTarget(canvas.asComposite(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK | DND.DROP_DEFAULT);
+		target = new DropTarget(getComposite(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK | DND.DROP_DEFAULT);
 		target.setTransfer(new Transfer[] { CaleydoTransfer.getInstance(), FileTransfer.getInstance(),
 				URLTransfer.getInstance(), TextTransfer.getInstance() });
 		target.addDropListener(this);
 	}
 
+	private Composite getComposite() {
+		return canvas.asComposite();
+	}
+
 	/**
 	 * lazy dipose of target
 	 */
-	private void freeTarget() {
-		if (targetListeners.isEmpty() && target != null) {
+	private void freeTarget(boolean force) {
+		if ((targetListeners.isEmpty() || force) && target != null) {
 			target.dispose();
 			target = null;
 		}
 	}
 
-	private void freeSource() {
-		if (sourceListeners.isEmpty() && source != null) {
+	private void freeSource(boolean force) {
+		if ((sourceListeners.isEmpty() || force) && source != null) {
 			source.dispose();
 			source = null;
 		}
@@ -111,7 +126,7 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 	private void ensureSource() {
 		if (this.source != null)
 			return;
-		source = new DragSource(canvas.asComposite(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK);
+		source = new DragSource(getComposite(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK);
 		source.setTransfer(new Transfer[] { CaleydoTransfer.getInstance(), FileTransfer.getInstance(),
 				URLTransfer.getInstance(), TextTransfer.getInstance() });
 		source.addDragListener(this);
@@ -126,6 +141,8 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 			}
 		});
 	}
+
+
 
 	public void addDropListener(DropTargetListener l) {
 		targetListeners.add(l);
@@ -145,7 +162,7 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 			display().syncExec(new Runnable() {
 				@Override
 				public void run() {
-					freeSource();
+					freeSource(false);
 				}
 			});
 		return r;
@@ -157,7 +174,7 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 			display().syncExec(new Runnable() {
 				@Override
 				public void run() {
-					freeTarget();
+					freeTarget(false);
 				}
 			});
 		return r;
@@ -220,7 +237,7 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 	private Point getPoint(DropTargetEvent event) {
 		if (event.x == 0 && event.y == 0 && prev != null)
 			return prev;
-		Point p = canvas.asComposite().toControl(event.x, event.y);
+		Point p = getComposite().toControl(event.x, event.y);
 		prev = p;
 		return p;
 	}
