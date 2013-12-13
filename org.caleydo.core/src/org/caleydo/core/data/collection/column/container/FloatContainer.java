@@ -78,7 +78,7 @@ public class FloatContainer implements INumericalContainer<Float> {
 
 	/** Equivalent to {@link IContainer#get(int)} using the primitive data type avoiding the boxing */
 	public float getPrimitive(final int index) {
-		if (index < 0 || index >= container[index])
+		if (index < 0 || index >= container.length)
 			return UNKNOWN_VALUE;
 		return container[index];
 	}

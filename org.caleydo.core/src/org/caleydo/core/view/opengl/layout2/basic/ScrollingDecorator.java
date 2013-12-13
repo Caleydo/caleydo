@@ -10,6 +10,7 @@ import gleem.linalg.Vec2f;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.view.opengl.layout2.AGLElementDecorator;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -17,6 +18,9 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar.IScrollBarCallback;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 
 /**
  * wrapper element that enables the use of scrollbars.
@@ -29,6 +33,11 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 public final class ScrollingDecorator extends AGLElementDecorator implements IScrollBarCallback {
 	private final ScrollBarImpl vertical;
 	private final ScrollBarImpl horizontal;
+	/**
+	 * in which direction a mouse wheel changes a scrollbar
+	 */
+	private final EDimension mouseWheelScrolls;
+	private int mouseWheelsScrollsPickingId = -1;
 
 	private final float scrollBarWidth;
 
@@ -43,8 +52,14 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	private IHasMinSize minSizeProvider = null;
 
 	public ScrollingDecorator(GLElement content, IScrollBar horizontal, IScrollBar vertical, float scrollBarWidth) {
+		this(content, horizontal, vertical, scrollBarWidth, null);
+	}
+
+	public ScrollingDecorator(GLElement content, IScrollBar horizontal, IScrollBar vertical, float scrollBarWidth,
+			EDimension mouseWheelsScrolls) {
 		super(content);
 		this.scrollBarWidth = scrollBarWidth;
+		mouseWheelScrolls = mouseWheelsScrolls;
 		this.horizontal = horizontal != null ? new ScrollBarImpl(horizontal) : null;
 		if (horizontal != null) {
 			horizontal.setCallback(this);
@@ -57,8 +72,12 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 		}
 	}
 
+	public static ScrollingDecorator wrap(GLElement content, float scrollBarWidth, EDimension mouseWheelsScrolls) {
+		return new ScrollingDecorator(content, new ScrollBar(true), new ScrollBar(false), scrollBarWidth,
+				mouseWheelsScrolls);
+	}
 	public static ScrollingDecorator wrap(GLElement content, float scrollBarWidth) {
-		return new ScrollingDecorator(content, new ScrollBar(true), new ScrollBar(false), scrollBarWidth);
+		return wrap(content, scrollBarWidth, null);
 	}
 
 	@Override
@@ -68,6 +87,14 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 			horizontal.pickingId = context.registerPickingListener(horizontal.scrollBar);
 		if (vertical != null)
 			vertical.pickingId = context.registerPickingListener(vertical.scrollBar);
+		if (mouseWheelScrolls != null && mouseWheelScrolls.select(horizontal, vertical) != null)
+			mouseWheelsScrollsPickingId = context.registerPickingListener(new IPickingListener() {
+				@Override
+				public void pick(Pick pick) {
+					if (pick.getPickingMode() == PickingMode.MOUSE_WHEEL)
+						mouseWheelScrolls.select(horizontal, vertical).scrollBar.pick(pick);
+				}
+			});
 	}
 
 	@Override
@@ -76,6 +103,10 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 			context.unregisterPickingListener(horizontal.pickingId);
 		if (vertical != null)
 			context.unregisterPickingListener(vertical.pickingId);
+		if (mouseWheelsScrollsPickingId != -1) {
+			context.unregisterPickingListener(mouseWheelsScrollsPickingId);
+			mouseWheelsScrollsPickingId = -1;
+		}
 		super.takeDown();
 	}
 
@@ -205,7 +236,7 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	protected void doRender(GLGraphics g, float w, float h, boolean pick) {
 		if (!enabled) {
 			if (pick)
-				content.renderPick(g);
+				renderPickContent(g, w, h);
 			else
 				content.render(g);
 			return;
@@ -255,13 +286,21 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 			gl.glEnable(GL2ES1.GL_CLIP_PLANE3);
 		}
 		if (pick)
-			content.renderPick(g);
+			renderPickContent(g, w, h);
 		else
 			content.render(g);
 
 		if (doVer || doHor) {
 			gl.glPopAttrib();
 		}
+	}
+
+	private void renderPickContent(GLGraphics g, float w, float h) {
+		if (mouseWheelsScrollsPickingId >= 0)
+			g.pushName(mouseWheelsScrollsPickingId).fillRect(0, 0, w, h);
+		content.renderPick(g);
+		if (mouseWheelsScrollsPickingId >= 0)
+			g.popName();
 	}
 
 	/**
