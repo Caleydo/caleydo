@@ -21,6 +21,8 @@ public class SWTGLCanvasFactory extends ASWTBasedCanvasFactory {
 
 	@Override
 	public SWTGLCanvas create(GLCapabilitiesImmutable caps, Composite parent) {
+		// parent = new Composite(parent, SWT.NO_BACKGROUND);
+		// parent.setLayout(new FillLayout());
 		GLCanvas canvas = new GLCanvas(parent, SWT.NO_BACKGROUND, caps, null, null);
 		return new SWTGLCanvas(canvas);
 	}
