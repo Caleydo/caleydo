@@ -271,6 +271,8 @@ public class Table {
 			rowID = dimensionID;
 		}
 
+		if (columnID < 0 || columnID >= columns.size())
+			return null;
 		return (RAW_DATA_TYPE) columns.get(columnID).getRaw(rowID);
 	}
 

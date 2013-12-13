@@ -10,7 +10,6 @@ import java.awt.Image;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.PixelGrabber;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -68,11 +67,11 @@ public class BubbleSetGLRenderer {
 			outlineThicknessSelection=thickness;
 	}
 
-	public void addToLastGroup(ArrayList<Rectangle2D> items, ArrayList<Line2D> edges){
+	public void addToLastGroup(List<Rectangle2D> items, List<Line2D> edges) {
 		addToGroup(items, edges, numberOfGroups);
 	}
 
-	public void addToGroup(ArrayList<Rectangle2D> items, ArrayList<Line2D> edges, int groupID){
+	public void addToGroup(List<Rectangle2D> items, List<Line2D> edges, int groupID) {
 		// add items
 		for(Rectangle2D node : items){
 			bubblesetCanvas.addItem(numberOfGroups, node.getMinX(), node.getMinY(), node.getWidth(), node.getHeight());
@@ -85,7 +84,7 @@ public class BubbleSetGLRenderer {
 		}
 	}
 
-	public int addGroup(ArrayList<Rectangle2D> items, ArrayList<Line2D> edges, Color colorValue){
+	public int addGroup(List<Rectangle2D> items, List<Line2D> edges, Color colorValue) {
 		if(items==null)
 			return -1;
 
@@ -137,32 +136,32 @@ public class BubbleSetGLRenderer {
 		texRenderer.setSize(width,height);
 	}
 
-	public void renderPxl(GL2 gl, float pxlWidth, float pxlHeight, float opacity)
-	{
-		texRenderer.setColor(1.0f, 1.0f, 1.0f, opacity);
-		bubbleSetsTexture = texRenderer.getTexture();
-
-		gl.glEnable(GL2.GL_BLEND);
-		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
-
-		bubbleSetsTexture.enable(gl);
-		bubbleSetsTexture.bind(gl);
-		gl.glBegin(GL2.GL_QUADS);
-			gl.glTexCoord2f(0, 0);
-			gl.glVertex3f(0.0f, 0.0f, 0.0f);
-
-			gl.glTexCoord2f(1, 0);
-			gl.glVertex3f(pxlWidth, 0.0f, 0.0f);
-
-			gl.glTexCoord2f(1, 1);
-			gl.glVertex3f(pxlWidth, pxlHeight, 0.0f);
-
-			gl.glTexCoord2f(0, 1);
-			gl.glVertex3f(0.0f, pxlHeight, 0.0f);
-		gl.glEnd();
-		bubbleSetsTexture.disable(gl);
-		//gl.glDisable(GL2.GL_BLEND);
-	}
+	// public void renderPxl(GL2 gl, float pxlWidth, float pxlHeight, float opacity)
+	// {
+	// texRenderer.setColor(1.0f, 1.0f, 1.0f, opacity);
+	// bubbleSetsTexture = texRenderer.getTexture();
+	//
+	// gl.glEnable(GL2.GL_BLEND);
+	// gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+	//
+	// bubbleSetsTexture.enable(gl);
+	// bubbleSetsTexture.bind(gl);
+	// gl.glBegin(GL2.GL_QUADS);
+	// gl.glTexCoord2f(0, 0);
+	// gl.glVertex3f(0.0f, 0.0f, 0.0f);
+	//
+	// gl.glTexCoord2f(1, 0);
+	// gl.glVertex3f(pxlWidth, 0.0f, 0.0f);
+	//
+	// gl.glTexCoord2f(1, 1);
+	// gl.glVertex3f(pxlWidth, pxlHeight, 0.0f);
+	//
+	// gl.glTexCoord2f(0, 1);
+	// gl.glVertex3f(0.0f, pxlHeight, 0.0f);
+	// gl.glEnd();
+	// bubbleSetsTexture.disable(gl);
+	// //gl.glDisable(GL2.GL_BLEND);
+	// }
 
 	public void renderPxl(GL2 gl, float pxlWidth, float pxlHeight)
 	{

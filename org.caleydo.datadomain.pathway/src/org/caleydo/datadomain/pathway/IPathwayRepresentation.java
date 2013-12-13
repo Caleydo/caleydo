@@ -55,6 +55,14 @@ public interface IPathwayRepresentation {
 	public List<Rect> getVertexRepsBounds(PathwayVertexRep vertexRep);
 
 	/**
+	 * Gets the bounds of the whole pathway representation as rectangle. The coordinates are specified in pixels with
+	 * the origin of the coordinate system at the left top.
+	 *
+	 * @return The bounds of the pathway representation.
+	 */
+	public Rect getPathwayBounds();
+
+	/**
 	 * Adds the specified context menu item to the context menu of all vertexReps in this pathway. The selected
 	 * vertexRep is set in the item using {@link VertexRepBasedContextMenuItem#setVertexRep(PathwayVertexRep)}.
 	 *

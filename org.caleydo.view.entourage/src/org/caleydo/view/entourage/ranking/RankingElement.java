@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.entourage.ranking;
 
+import gleem.linalg.Vec2f;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -28,6 +30,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
+import org.caleydo.core.view.opengl.canvas.GLThreadListenerWrapper;
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -79,6 +84,9 @@ public class RankingElement extends GLElementContainer {
 	private StringRankColumnModel pathwayNameColumn;
 	private CategoricalRankColumnModel<?> pathwayDataBaseColumn;
 	private GLWindow window;
+	private TableUI tableUI;
+	private IGLMouseListener mouseListener;
+
 	private final PropertyChangeListener onSelectRow = new PropertyChangeListener() {
 
 		@Override
@@ -123,6 +131,24 @@ public class RankingElement extends GLElementContainer {
 
 	public RankingElement(final GLEntourage view) {
 		this.view = view;
+		mouseListener = GLThreadListenerWrapper.wrap(new GLMouseAdapter() {
+
+			@Override
+			public void mouseWheelMoved(IMouseEvent mouseEvent) {
+				Vec2f location = getAbsoluteLocation();
+				Vec2f size = getSize();
+				Vec2f wheelPosition = mouseEvent.getPoint();
+				if (wheelPosition.x() >= location.x() && wheelPosition.x() <= location.x() + size.x()
+						&& wheelPosition.y() >= location.y() && wheelPosition.y() <= location.y() + size.y()) {
+					tableUI.getBody().scroll(-mouseEvent.getWheelRotation());
+				}
+
+			}
+
+		});
+		view.getParentGLCanvas().addMouseListener(mouseListener);
+		view.getEventListenerManager().register(mouseListener);
+
 		this.table = new RankTableModel(new RankTableConfigBase());
 		table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, onSelectRow);
 		table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, onModifyColumn);
@@ -163,7 +189,7 @@ public class RankingElement extends GLElementContainer {
 			}
 		};
 
-		TableUI tableUI = new TableUI(table, config, RowHeightLayouts.UNIFORM);
+		tableUI = new TableUI(table, config, RowHeightLayouts.UNIFORM);
 		this.add(tableUI);
 		tableUI.getBody().addOnRowPick(new IPickingListener() {
 			@Override

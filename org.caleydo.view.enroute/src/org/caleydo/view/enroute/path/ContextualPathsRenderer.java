@@ -693,4 +693,10 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		vertexListeners.add(listener);
 	}
 
+	@Override
+	public Rect getPathwayBounds() {
+		return new Rect(0, 0, view.getPixelGLConverter().getPixelWidthForGLWidth(elementLayout.getSizeScaledX()), view
+				.getPixelGLConverter().getPixelHeightForGLHeight(elementLayout.getSizeScaledY()));
+	}
+
 }

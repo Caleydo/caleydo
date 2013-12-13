@@ -242,7 +242,6 @@ public class GLGraphics {
 			return color(rgba[0], rgba[1], rgba[2], rgba[3]);
 	}
 
-
 	public GLGraphics textColor(Color color) {
 		text.setColor(color);
 		local.getText_bold().setColor(color);
@@ -323,6 +322,15 @@ public class GLGraphics {
 		gl.glVertex3f(x + w, y, z);
 		gl.glVertex3f(x + w, y + h, z);
 		gl.glVertex3f(x, y + h, z);
+		gl.glEnd();
+		return this;
+	}
+
+	public GLGraphics drawPoint(float x, float y) {
+		if (isInvalid(x) || isInvalid(y))
+			return this;
+		gl.glBegin(GL.GL_POINTS);
+		gl.glVertex3f(x, y, z);
 		gl.glEnd();
 		return this;
 	}
@@ -726,7 +734,6 @@ public class GLGraphics {
 
 	/**
 	 * shortcut to {@link GL2#glTranslatef(float, float, float)
-
 	 */
 	public GLGraphics move(float x, float y) {
 		if (x != 0 || y != 0)

@@ -1009,4 +1009,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	}
 
+	@Override
+	public Rect getPathwayBounds() {
+
+		return new Rect(0, 0, pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()),
+				pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight()));
+	}
+
 }
