@@ -9,14 +9,13 @@ import gleem.linalg.Vec2f;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -25,9 +24,9 @@ import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.util.spline.ITesselatedPolygon;
 import org.caleydo.core.view.opengl.util.spline.TesselatedPolygons;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.view.pathway.v2.ui.augmentation.path.PathwayPathHandler.IPathUpdateListener;
 
 import setvis.SetOutline;
 import setvis.bubbleset.BubbleSet;
@@ -41,7 +40,7 @@ import com.jogamp.opengl.util.awt.TextureRenderer;
  * @author Christian
  *
  */
-public class BubbleSetPathAugmentation extends GLElement {
+public class BubbleSetPathAugmentation extends GLElement implements IPathUpdateListener {
 
 	protected IPathwayRepresentation pathwayRepresentation;
 	protected boolean initialized = false;
@@ -51,15 +50,23 @@ public class BubbleSetPathAugmentation extends GLElement {
 	protected AbstractShapeGenerator shaper;
 	protected CanvasComponent bubblesetCanvas;
 
+	@DeepScan
+	protected PathwayPathHandler pathHandler;
+
 	public BubbleSetPathAugmentation(IPathwayRepresentation pathwayRepresentation) {
 		this.pathwayRepresentation = pathwayRepresentation;
+		this.pathHandler = new PathwayPathHandler(pathwayRepresentation);
+
+		pathHandler.addPathUpdateListener(this);
+
 		setOutline = new BubbleSet(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
 		((BubbleSet) setOutline).useVirtualEdges(false);
 		shaper = new BSplineShapeGenerator(setOutline);
 		bubblesetCanvas = new CanvasComponent(shaper);
 		bubblesetCanvas.setDefaultView();
 
-		setVisibility(EVisibility.PICKABLE);
+		// setVisibility(EVisibility.PICKABLE);
+
 	}
 
 	@Override
@@ -69,14 +76,6 @@ public class BubbleSetPathAugmentation extends GLElement {
 			initialized = true;
 		}
 		texRenderer.setSize((int) w, (int) h);
-		PathwayGraph pathway = pathwayRepresentation.getPathway();
-		Set<PathwayVertexRep> vertexReps = pathway.vertexSet();
-		PathwayVertexRep v = null;
-		for (PathwayVertexRep vertex : vertexReps) {
-			if (vertex.getType() == EPathwayVertexType.map) {
-				v = vertex;
-			}
-		}
 		GL2 gl = g.gl;
 
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
@@ -90,7 +89,7 @@ public class BubbleSetPathAugmentation extends GLElement {
 		gl.glStencilMask(0xFF);
 		gl.glClear(GL.GL_STENCIL_BUFFER_BIT); // needs mask=0xFF
 
-		for (PathwayVertexRep vertex : vertexReps) {
+		for (PathwayVertexRep vertex : pathwayRepresentation.getPathway().vertexSet()) {
 			g.fillRect(pathwayRepresentation.getVertexRepBounds(vertex));
 		}
 
@@ -99,22 +98,40 @@ public class BubbleSetPathAugmentation extends GLElement {
 		gl.glStencilMask(0x00);
 		// draw where stencil's value is 0
 		gl.glStencilFunc(GL.GL_EQUAL, 0, 0xFF);
-		Rect vertexBounds = pathwayRepresentation.getVertexRepBounds(v);
 
-		Rect bounds = new Rect(vertexBounds.x() + vertexBounds.width() / 2.0f, vertexBounds.y() + vertexBounds.height()
-				/ 2.0f, vertexBounds.width(), vertexBounds.height());
 		Color selColor = SelectionType.SELECTION.getColor();
 		Color color = new Color(selColor.r, selColor.g, selColor.b, 0.5f);
 
-		setGroup(Arrays.asList(bounds), null, SelectionType.SELECTION.getColor());
+		List<Vec2f> points = calcBubbleSet();
 
-		List<Vec2f> points = getOutlinePoints();
 		ITesselatedPolygon polygon = TesselatedPolygons.polygon2(points);
+		g.incZ();
 		g.color(color).fillPolygon(polygon);
+		g.decZ();
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
 		// repaint();
 
+	}
+
+	protected List<Vec2f> calcBubbleSet() {
+		Rect previousBounds = null;
+		List<Rect> positions = new ArrayList<>();
+		List<Line> edges = new ArrayList<>();
+
+		for (PathwayVertexRep v : PathwayPath.flattenSegments(pathHandler.getSelectedPath())) {
+			Rect vertexBounds = pathwayRepresentation.getVertexRepBounds(v);
+			Rect bounds = new Rect(vertexBounds.x() + vertexBounds.width() / 2.0f, vertexBounds.y()
+					+ vertexBounds.height() / 2.0f, vertexBounds.width(), vertexBounds.height());
+			positions.add(bounds);
+
+			if (previousBounds != null) {
+				edges.add(new Line(previousBounds.x(), previousBounds.y(), bounds.x(), bounds.y()));
+			}
+			previousBounds = bounds;
+		}
+		setGroup(positions, edges, SelectionType.SELECTION.getColor());
+		return getOutlinePoints();
 	}
 
 	@Override
@@ -122,15 +139,15 @@ public class BubbleSetPathAugmentation extends GLElement {
 		renderImpl(g, w, h);
 	}
 
-	protected void setGroup(List<Rect> items, List<Line> edges, Color color) {
-		if (items == null)
+	protected void setGroup(List<Rect> positions, List<Line> edges, Color color) {
+		if (positions == null || positions.isEmpty())
 			return;
 
 		bubblesetCanvas.removeAllGroups();
 		// new group
 		bubblesetCanvas.addGroup(color.getAWTColor(), 2, true);
 
-		for (Rect item : items) {
+		for (Rect item : positions) {
 			bubblesetCanvas.addItem(0, item.x(), item.y(), item.width(), item.height());
 		}
 		if (edges != null) {
@@ -146,6 +163,12 @@ public class BubbleSetPathAugmentation extends GLElement {
 		points = bubblesetCanvas.getShapePoints(g2d);
 		g2d.dispose();
 		return points;
+	}
+
+	@Override
+	public void onPathsChanged(PathwayPathHandler handler) {
+		repaintAll();
+
 	}
 
 }
