@@ -46,6 +46,7 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
+import org.caleydo.datadomain.pathway.graph.PathSegment;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
@@ -86,7 +87,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	protected APathwayPathRenderer selectedPathRenderer;
 	private BranchPathEventSpaceListener branchPathEventSpaceListener = new BranchPathEventSpaceListener();
 	private VertexRepComparator comparator = new VertexRepComparator();
-	private List<List<PathwayVertexRep>> selectedPathSegments = new ArrayList<>();
+	private PathwayPath selectedPath = new PathwayPath();
 	private ESampleMappingMode sampleMappingMode;
 	private TablePerspective mappedPerspective;
 	protected final boolean showThumbnail;
@@ -233,11 +234,11 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		registerEventListeners();
 	}
 
-	private APathwayPathRenderer addPath(List<List<PathwayVertexRep>> pathSegments) {
+	private APathwayPathRenderer addPath(PathwayPath pathSegments) {
 		VerticalPathRenderer renderer = new VerticalPathRenderer(view, tablePerspectives);
 
 		renderer.setUpdateStrategy(new FixedPathUpdateStrategy(renderer, eventSpace, isPathSelectionMode,
-				isFreePathSelectionMode, this, selectedPathSegments));
+				isFreePathSelectionMode, this, selectedPath));
 		renderer.pathwayPathEventSpace = eventSpace;
 		// renderer.setTablePerspectives(tablePerspectives);
 		renderer.setPathway(pathway);
@@ -341,9 +342,9 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		}
 
 		Set<APathwayPathRenderer> renderersToRemove = new HashSet<>(renderers.keySet());
-		for (PathwayVertexRep vertexRep : PathUtil.flattenSegments(selectedPathSegments)) {
+		for (PathwayVertexRep vertexRep : PathwayPath.flattenSegments(selectedPath)) {
 			for (APathwayPathRenderer renderer : renderers.keySet()) {
-				if (PathUtil.containsVertexRep(renderer.pathSegments, vertexRep)) {
+				if (PathwayPath.containsVertexRep(renderer.pathSegments, vertexRep)) {
 					renderersToRemove.remove(renderer);
 				}
 			}
@@ -352,7 +353,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		for (PathwayVertexRep vertexRep : vertexReps) {
 			boolean createNewPath = true;
 			for (APathwayPathRenderer renderer : renderers.keySet()) {
-				if (PathUtil.containsVertexRep(renderer.pathSegments, vertexRep)) {
+				if (PathwayPath.containsVertexRep(renderer.pathSegments, vertexRep)) {
 					renderersToRemove.remove(renderer);
 					createNewPath = false;
 					break;
@@ -360,13 +361,13 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 			}
 			if (createNewPath) {
 				// List<PathwayVertexRep> segment = PathwayManager.get().determineDirectionalPath(vertexRep, false, 5);
-				List<PathwayVertexRep> segment = PathwayManager.get().determineDirectionalPath(vertexRep, false, 4,
-						comparator);
+				PathSegment segment = new PathSegment(PathwayManager.get().determineDirectionalPath(vertexRep, false,
+						4, comparator));
 				segment.remove(0);
 				Collections.reverse(segment);
 				segment.addAll(PathwayManager.get().determineDirectionalPath(vertexRep, true, 4, comparator));
 				// segment.addAll(PathwayManager.get().determineDirectionalPath(vertexRep, true, 5));
-				List<List<PathwayVertexRep>> pathSegments = new ArrayList<>(1);
+				PathwayPath pathSegments = new PathwayPath(1);
 				pathSegments.add(segment);
 				addPath(pathSegments);
 			}
@@ -419,22 +420,22 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onSelectedPathChanged(PathwayPathSelectionEvent event) {
-		selectedPathSegments = event.getPathSegmentsAsVertexList();
-		if (!isPathFromPathway(event.getPathSegments(), pathway)) {
+		selectedPath = event.getPath();
+		if (!selectedPath.hasPathway(pathway)) {
 			selectedPathRenderer = null;
 			return;
 		}
 
-		List<List<PathwayVertexRep>> selectedPathSegments = event.getPathSegmentsAsVertexList();
+		PathwayPath selectedPathSegments = event.getPath();
 
 		// if (isFreePathSelectionMode) {
-		List<PathwayVertexRep> selectedPathVertexReps = PathUtil.flattenSegments(selectedPathSegments);
+		List<PathwayVertexRep> selectedPathVertexReps = PathwayPath.flattenSegments(selectedPathSegments);
 		boolean allVerticesShown = true;
 		for (PathwayVertexRep vertexRep : selectedPathVertexReps) {
 			if (vertexRep.getPathway() == pathway) {
 				boolean vertexShown = false;
 				for (APathwayPathRenderer renderer : renderers.keySet()) {
-					List<PathwayVertexRep> currentPathVertexReps = PathUtil.flattenSegments(renderer.pathSegments);
+					List<PathwayVertexRep> currentPathVertexReps = PathwayPath.flattenSegments(renderer.pathSegments);
 					if (currentPathVertexReps.contains(vertexRep)) {
 						vertexShown = true;
 						break;
@@ -470,7 +471,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		int maxEqualVertices = 0;
 		int selectedPathRendererEqualVertices = 0;
 		for (APathwayPathRenderer renderer : renderers.keySet()) {
-			int numEqualVertices = PathUtil.getNumEqualVertices(renderer.pathSegments, selectedPathSegments);
+			int numEqualVertices = PathwayPath.getNumEqualVertices(renderer.pathSegments, selectedPathSegments);
 			if (maxEqualVertices < numEqualVertices) {
 				pathRendererWithMostEqualNodes = renderer;
 				maxEqualVertices = numEqualVertices;
@@ -516,15 +517,6 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		MinSizeUpdateEvent e = new MinSizeUpdateEvent(this, getMinWidthPixels(), getMinHeightPixels());
 		e.setEventSpace(eventSpace);
 		EventPublisher.INSTANCE.triggerEvent(e);
-	}
-
-	private boolean isPathFromPathway(List<PathwayPath> pathSegments, PathwayGraph pathway) {
-		for (PathwayPath path : pathSegments) {
-			if (path.getPathway() == pathway) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	@Override
@@ -577,7 +569,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		protected void onShowBranchPath(ShowPathEvent event) {
 			boolean isPathShown = false;
 			for (APathwayPathRenderer renderer : renderers.keySet()) {
-				isPathShown = PathUtil.isPathShown(renderer.pathSegments, event.getPathSegments(), pathway);
+				isPathShown = PathwayPath.isPathShown(renderer.pathSegments, event.getPathSegments(), pathway);
 				if (renderer.expandedBranchSummaryNode != null) {
 					renderer.expandedBranchSummaryNode.setCollapsed(true);
 					renderer.setExpandedBranchSummaryNode(null);
@@ -679,7 +671,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		List<List<PathwayVertexRep>> contextPaths = new ArrayList<>();
 		if (pathwayView != null) {
 			for (APathwayPathRenderer renderer : renderers.keySet()) {
-				List<PathwayVertexRep> flattenedPath = PathUtil.flattenSegments(renderer.getPathSegments());
+				List<PathwayVertexRep> flattenedPath = PathwayPath.flattenSegments(renderer.getPathSegments());
 				if (flattenedPath != null && !flattenedPath.isEmpty()) {
 					contextPaths.add(flattenedPath);
 				}

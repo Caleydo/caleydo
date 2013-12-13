@@ -64,7 +64,7 @@ void main(void)
 		float hDelta = abs(hsv.x - 120.);
 		float sDelta = abs(hsv.y - 0.25);
 		float vDelta = 1. - hsv.z;
-		if (hDelta < 5. && sDelta < 0.15 && vDelta < 0.1) //matching
+		if ((hDelta < 5. && sDelta < 0.15 && vDelta < 0.1)) // || (texValue.r > 0.95 && texValue.g > 0.95 && texValue.b > 0.95) ) //matching
 			discard;
 		else if (hDelta < 5. && vDelta > 0.1) { //fade to black
 			texValue.rgb = vec3(0,0,0);

@@ -25,6 +25,7 @@ import org.caleydo.view.pathway.v2.ui.PathwayTextureRepresentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.AverageColorMappingAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.HighVarianceIndicatorAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.MultiMappingIndicatorAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.PathwayTextureBackgroundColorAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.StdDevBarAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.StdDevBarConsideringVertexHighlightAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.path.BubbleSetPathAugmentation;
@@ -52,8 +53,14 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		PathwayDataMappingHandler pathwayMappingHandler = new PathwayDataMappingHandler();
 		pathwayMappingHandler.setEventSpace(eventSpace);
 
+		pathwayElement.addBackgroundAugmentation(new PathwayTextureBackgroundColorAugmentation(pathwayElement
+				.getPathwayRepresentation()));
+		pathwayElement.addBackgroundAugmentation(new BubbleSetPathAugmentation(pathwayElement
+				.getPathwayRepresentation()));
+
 		AverageColorMappingAugmentation colorMappingAugmentation = new AverageColorMappingAugmentation(
 				pathwayElement.getPathwayRepresentation(), pathwayElement.getMappingHandler());
+
 		pathwayElement.addBackgroundAugmentation(colorMappingAugmentation);
 		pathwayElement.addBackgroundAugmentation(new MultiMappingIndicatorAugmentation(pathwayElement
 				.getPathwayRepresentation()));
@@ -62,8 +69,6 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		pathwayElement.addForegroundAugmentation(new HighVarianceIndicatorAugmentation(pathwayElement
 				.getPathwayRepresentation(), pathwayElement.getMappingHandler()));
 		pathwayElement.addForegroundAugmentation(new StdDevBarConsideringVertexHighlightAugmentation(pathwayElement));
-		pathwayElement.addForegroundAugmentation(new BubbleSetPathAugmentation(pathwayElement
-				.getPathwayRepresentation()));
 	}
 
 	@Override

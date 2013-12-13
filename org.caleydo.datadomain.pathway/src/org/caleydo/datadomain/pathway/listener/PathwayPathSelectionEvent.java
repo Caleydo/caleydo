@@ -8,15 +8,11 @@
  */
 package org.caleydo.datadomain.pathway.listener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.caleydo.core.event.AEvent;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 
 /**
- * Event that specifies a list of pathway path segments.
+ * Event that specifies the selection of a {@link PathwayPath}.
  *
  * @author Christian Partl
  *
@@ -26,33 +22,25 @@ public class PathwayPathSelectionEvent extends AEvent {
 	/**
 	 * Path object that specifies a path.
 	 */
-	private List<PathwayPath> pathSegments;
+	private PathwayPath path;
 
 	@Override
 	public boolean checkIntegrity() {
-		return pathSegments != null;
+		return path.checkIntegrity();
 	}
 
 	/**
-	 * @return the pathSegments, see {@link #pathSegments}
+	 * @return the path, see {@link #path}
 	 */
-	public List<PathwayPath> getPathSegments() {
-		return pathSegments;
-	}
-
-	public List<List<PathwayVertexRep>> getPathSegmentsAsVertexList() {
-		List<List<PathwayVertexRep>> segments = new ArrayList<>(pathSegments.size());
-		for (PathwayPath path : pathSegments) {
-			segments.add(path.getNodes());
-		}
-		return segments;
+	public PathwayPath getPath() {
+		return new PathwayPath(path);
 	}
 
 	/**
-	 * @param pathSegments
-	 *            setter, see {@link pathSegments}
+	 * @param path
+	 *            setter, see {@link path}
 	 */
-	public void setPathSegments(List<PathwayPath> pathSegments) {
-		this.pathSegments = pathSegments;
+	public void setPath(PathwayPath path) {
+		this.path = path;
 	}
 }

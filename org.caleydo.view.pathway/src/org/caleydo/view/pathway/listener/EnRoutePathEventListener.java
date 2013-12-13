@@ -28,7 +28,7 @@ public class EnRoutePathEventListener extends AEventListener<GLPathway> {
 			return;
 		if (event instanceof PathwayPathSelectionEvent) {
 			PathwayPathSelectionEvent e = (PathwayPathSelectionEvent) event;
-			handler.setSelectedPathSegments(e.getPathSegments());
+			handler.setSelectedPathSegments(e.getPath());
 		}
 	}
 

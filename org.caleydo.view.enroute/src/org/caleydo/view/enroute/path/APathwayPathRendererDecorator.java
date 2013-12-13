@@ -18,6 +18,7 @@ import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 
@@ -66,12 +67,12 @@ public abstract class APathwayPathRendererDecorator extends APathwayPathRenderer
 	}
 
 	@Override
-	public void setPath(List<List<PathwayVertexRep>> pathSegments) {
+	public void setPath(PathwayPath pathSegments) {
 		decoratee.setPath(pathSegments);
 	}
 
 	@Override
-	protected void createNodes(List<List<PathwayVertexRep>> pathSegments) {
+	protected void createNodes(PathwayPath pathSegments) {
 		decoratee.createNodes(pathSegments);
 	}
 

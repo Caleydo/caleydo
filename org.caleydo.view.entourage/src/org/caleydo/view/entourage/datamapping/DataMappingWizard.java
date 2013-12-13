@@ -204,7 +204,7 @@ public class DataMappingWizard extends GLElementContainer {
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onPathwayPathSelected(PathwayPathSelectionEvent e) {
 
-		if (!e.getPathSegments().isEmpty()) {
+		if (!e.getPath().isEmpty()) {
 			pathAndDataLayer.setVisibility(EVisibility.NONE);
 			updateDataLayerVisibility();
 		} else {

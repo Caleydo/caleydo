@@ -90,9 +90,9 @@ public class BubbleSetPathAugmentation extends GLElement {
 		gl.glStencilMask(0xFF);
 		gl.glClear(GL.GL_STENCIL_BUFFER_BIT); // needs mask=0xFF
 
-		// for (PathwayVertexRep vertex : vertexReps) {
-		// g.fillRect(pathwayRepresentation.getVertexRepBounds(vertex));
-		// }
+		for (PathwayVertexRep vertex : vertexReps) {
+			g.fillRect(pathwayRepresentation.getVertexRepBounds(vertex));
+		}
 
 		gl.glColorMask(true, true, true, true);
 		gl.glDepthMask(true);
