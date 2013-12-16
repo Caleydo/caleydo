@@ -17,6 +17,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.geom.Line;
@@ -53,9 +54,9 @@ public class BubbleSetPathAugmentation extends GLElement implements IPathUpdateL
 	@DeepScan
 	protected PathwayPathHandler pathHandler;
 
-	public BubbleSetPathAugmentation(IPathwayRepresentation pathwayRepresentation) {
+	public BubbleSetPathAugmentation(IPathwayRepresentation pathwayRepresentation, IGLCanvas canvas) {
 		this.pathwayRepresentation = pathwayRepresentation;
-		this.pathHandler = new PathwayPathHandler(pathwayRepresentation);
+		this.pathHandler = new PathwayPathHandler(pathwayRepresentation, canvas);
 
 		pathHandler.addPathUpdateListener(this);
 

@@ -166,4 +166,12 @@ public class PathSegment extends ArrayList<PathwayVertexRep> {
 				: get(size() - 1), edges, 0);
 	}
 
+	public PathwayVertexRep getFirst() {
+		return isEmpty() ? null : get(0);
+	}
+
+	public PathwayVertexRep getLast() {
+		return isEmpty() ? null : get(size() - 1);
+	}
+
 }

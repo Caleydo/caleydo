@@ -63,7 +63,7 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 				.getPathwayRepresentation()));
 
 		pathwayElement.addForegroundAugmentation(new BubbleSetPathAugmentation(pathwayElement
-				.getPathwayRepresentation()));
+				.getPathwayRepresentation(), canvas));
 
 		pathwayElement.addForegroundAugmentation(new StdDevBarAugmentation(pathwayElement.getPathwayRepresentation(),
 				pathwayElement.getMappingHandler()));

@@ -85,7 +85,7 @@ public class PathwayPath extends ArrayList<PathSegment> {
 	/**
 	 * Determines, whether the specified target path segments are shown by the source path segments. If the specified
 	 * pathway is not null, only segments referring to this pathway are considered.
-	 * 
+	 *
 	 * @param segments
 	 * @return
 	 */
@@ -120,7 +120,7 @@ public class PathwayPath extends ArrayList<PathSegment> {
 
 	/**
 	 * Determines whether the specified path segments contain a vertex rep.
-	 * 
+	 *
 	 * @param pathSegments
 	 * @param vertexRep
 	 * @return
@@ -137,7 +137,7 @@ public class PathwayPath extends ArrayList<PathSegment> {
 
 	/**
 	 * Determines the number of equal vertices of the specified paths.
-	 * 
+	 *
 	 * @param segments
 	 * @return
 	 */
@@ -160,7 +160,7 @@ public class PathwayPath extends ArrayList<PathSegment> {
 
 	/**
 	 * Determines the set of vertices the specified paths have in common.
-	 * 
+	 *
 	 * @param sourcePathSegments
 	 * @param targetPathSegments
 	 * @return
@@ -180,6 +180,14 @@ public class PathwayPath extends ArrayList<PathSegment> {
 		}
 
 		return commonVertices;
+	}
+
+	public PathSegment getFirst() {
+		return isEmpty() ? null : get(0);
+	}
+
+	public PathSegment getLast() {
+		return isEmpty() ? null : get(size() - 1);
 	}
 
 }
