@@ -16,6 +16,66 @@ import com.google.common.base.Predicate;
  */
 public class DoublePredicates {
 	public static final IDoublePredicate isNaN = new CompareDoublePredicate(6, 0);
+	public static final IDoublePredicate alwaysTrue = new IDoublePredicate() {
+		@Override
+		public boolean apply(Double arg0) {
+			return true;
+		}
+
+		@Override
+		public boolean apply(double in) {
+			return true;
+		}
+	};
+	public static final IDoublePredicate alwaysFalse = not(alwaysTrue);
+
+	public static IDoublePredicate and(final IDoublePredicate... operands) {
+		if (operands.length == 1)
+			return operands[0];
+		if (operands.length == 0)
+			return alwaysTrue;
+		return new IDoublePredicate() {
+			@Override
+			public boolean apply(Double input) {
+				for (IDoublePredicate p : operands)
+					if (!p.apply(input))
+						return false;
+				return true;
+			}
+
+			@Override
+			public boolean apply(double in) {
+				for (IDoublePredicate p : operands)
+					if (!p.apply(in))
+						return false;
+				return true;
+			}
+		};
+	}
+
+	public static IDoublePredicate or(final IDoublePredicate... operands) {
+		if (operands.length == 1)
+			return operands[0];
+		if (operands.length == 0)
+			return alwaysFalse;
+		return new IDoublePredicate() {
+			@Override
+			public boolean apply(Double input) {
+				for(IDoublePredicate p : operands)
+					if (p.apply(input))
+						return true;
+				return false;
+			}
+
+			@Override
+			public boolean apply(double in) {
+				for(IDoublePredicate p : operands)
+					if (!p.apply(in))
+						return true;
+				return false;
+			}
+		};
+	}
 
 	public static IDoublePredicate lt(double v) {
 		return new CompareDoublePredicate(0, v);

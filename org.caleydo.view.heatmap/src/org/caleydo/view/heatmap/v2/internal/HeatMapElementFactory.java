@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -17,13 +18,15 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.Function2;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
-import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
+import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory2;
 import org.caleydo.view.heatmap.v2.BasicBlockColorer;
 import org.caleydo.view.heatmap.v2.HeatMapElement;
 import org.caleydo.view.heatmap.v2.HeatMapElementBase;
 import org.caleydo.view.heatmap.v2.ListDataProvider;
 import org.caleydo.view.heatmap.v2.ListDataProvider.DimensionData;
+import org.caleydo.view.heatmap.v2.internal.BarPlotElementFactory.SpacingStrategyLocator;
 
 import com.google.common.base.Function;
 
@@ -33,15 +36,21 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class HeatMapElementFactory implements IGLElementFactory {
+public class HeatMapElementFactory implements IGLElementFactory2 {
 	@Override
 	public String getId() {
 		return "heatmap";
 	}
 
 	@Override
+	public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
+		return GLElementDimensionDesc.newBuilder().linear(1)
+				.locateUsing(new SpacingStrategyLocator(dim, (HeatMapElementBase) elem)).build();
+	}
+
+	@Override
 	public boolean apply(GLElementFactoryContext context) {
-		if (DataSupportDefinitions.homogenousTables.apply(context.getData()))
+		if (DataSupportDefinitions.homogenousColumns.apply(context.getData()))
 			return true;
 
 		boolean hasColorer = context.get(Function2.class, null) != null;

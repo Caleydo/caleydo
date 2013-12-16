@@ -26,6 +26,7 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy.ISpacingLayout;
 import org.caleydo.view.heatmap.v2.internal.DimensionRenderer;
@@ -205,8 +206,8 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 		record.updateSpacing(size.y());
 	}
 
-	public final CellSpace getCellSpace(EDimension dim, int index) {
-		return get(dim).getCellSpace(index, textWidth);
+	public final GLLocation getLocation(EDimension dim, int index) {
+		return get(dim).getLocation(index, textWidth);
 	}
 
 	public final int getIndex(EDimension dim, float position) {

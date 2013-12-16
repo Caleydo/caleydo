@@ -17,15 +17,14 @@ import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.v2.CellSpace;
 import org.caleydo.view.heatmap.v2.EShowLabels;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy.ISpacingLayout;
 import org.caleydo.view.heatmap.v2.SpacingStrategies;
 
 import com.google.common.primitives.Ints;
-
 /**
  * utility class to render the selection of a heatmap as one ore more crosses
  *
@@ -191,13 +190,13 @@ public class DimensionRenderer {
 	/**
 	 * @param index
 	 */
-	public CellSpace getCellSpace(int index, float textWidth) {
+	public GLLocation getLocation(int index, float textWidth) {
 		if (spacing == null)
 			return null;
 		float pos = spacing.getPosition(index);
 		if (label == EShowLabels.LEFT)
 			pos += textWidth;
-		return new CellSpace(pos, spacing.getSize(index));
+		return new GLLocation(pos, spacing.getSize(index));
 	}
 
 	/**

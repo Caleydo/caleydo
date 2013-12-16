@@ -5,6 +5,8 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.manage;
 
+import gleem.linalg.Vec2f;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,10 +14,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.ExtensionUtils.IExtensionLoader;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 
@@ -91,6 +95,10 @@ public final class GLElementFactories {
 		private GLElementSupplier(ElementExtension extension, GLElementFactoryContext context) {
 			this.extension = extension;
 			this.context = context;
+		}
+
+		public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
+			return extension.getDesc(dim, elem);
 		}
 
 		@Override
@@ -176,6 +184,16 @@ public final class GLElementFactories {
 				this.order = 10;
 			else
 				this.order = Integer.parseInt(order);
+		}
+
+		public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
+			if (factory instanceof IGLElementFactory2)
+				return ((IGLElementFactory2) factory).getDesc(dim, elem);
+			// create a dummy one
+			Vec2f size = new Vec2f(100, 100);
+			if (elem instanceof IHasMinSize)
+				size = ((IHasMinSize) elem).getMinSize();
+			return GLElementDimensionDesc.newBuilder().fix(dim.select(size)).build();
 		}
 
 		@Override
