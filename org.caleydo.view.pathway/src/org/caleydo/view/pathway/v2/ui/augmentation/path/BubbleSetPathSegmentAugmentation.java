@@ -14,10 +14,7 @@ import java.util.List;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.geom.Line;
@@ -25,9 +22,8 @@ import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.util.spline.ITesselatedPolygon;
 import org.caleydo.core.view.opengl.util.spline.TesselatedPolygons;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
-import org.caleydo.datadomain.pathway.graph.PathwayPath;
+import org.caleydo.datadomain.pathway.graph.PathSegment;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.view.pathway.v2.ui.augmentation.path.PathwayPathHandler.IPathUpdateListener;
 
 import setvis.SetOutline;
 import setvis.bubbleset.BubbleSet;
@@ -41,7 +37,7 @@ import com.jogamp.opengl.util.awt.TextureRenderer;
  * @author Christian
  *
  */
-public class BubbleSetPathAugmentation extends GLElement implements IPathUpdateListener {
+public class BubbleSetPathSegmentAugmentation extends GLElement {
 
 	protected IPathwayRepresentation pathwayRepresentation;
 	protected boolean initialized = false;
@@ -51,21 +47,17 @@ public class BubbleSetPathAugmentation extends GLElement implements IPathUpdateL
 	protected AbstractShapeGenerator shaper;
 	protected CanvasComponent bubblesetCanvas;
 
-	@DeepScan
-	protected PathwayPathHandler pathHandler;
+	protected PathSegment pathSegment;
+	protected Color color = new Color();
 
-	public BubbleSetPathAugmentation(IPathwayRepresentation pathwayRepresentation, IGLCanvas canvas) {
+	public BubbleSetPathSegmentAugmentation(IPathwayRepresentation pathwayRepresentation) {
 		this.pathwayRepresentation = pathwayRepresentation;
-		this.pathHandler = new PathwayPathHandler(pathwayRepresentation, canvas);
-
-		pathHandler.addPathUpdateListener(this);
 
 		setOutline = new BubbleSet(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
 		((BubbleSet) setOutline).useVirtualEdges(false);
 		shaper = new BSplineShapeGenerator(setOutline);
 		bubblesetCanvas = new CanvasComponent(shaper);
 		bubblesetCanvas.setDefaultView();
-
 		// setVisibility(EVisibility.PICKABLE);
 
 	}
@@ -100,8 +92,7 @@ public class BubbleSetPathAugmentation extends GLElement implements IPathUpdateL
 		// draw where stencil's value is 0
 		gl.glStencilFunc(GL.GL_EQUAL, 0, 0xFF);
 
-		Color selColor = SelectionType.SELECTION.getColor();
-		Color color = new Color(selColor.r, selColor.g, selColor.b, 0.5f);
+
 
 		List<Vec2f> points = calcBubbleSet();
 
@@ -120,7 +111,7 @@ public class BubbleSetPathAugmentation extends GLElement implements IPathUpdateL
 		List<Rect> positions = new ArrayList<>();
 		List<Line> edges = new ArrayList<>();
 
-		for (PathwayVertexRep v : PathwayPath.flattenSegments(pathHandler.getSelectedPath())) {
+		for (PathwayVertexRep v : pathSegment) {
 			Rect vertexBounds = pathwayRepresentation.getVertexRepBounds(v);
 			Rect bounds = new Rect(vertexBounds.x() + vertexBounds.width() / 2.0f, vertexBounds.y()
 					+ vertexBounds.height() / 2.0f, vertexBounds.width(), vertexBounds.height());
@@ -131,7 +122,7 @@ public class BubbleSetPathAugmentation extends GLElement implements IPathUpdateL
 			}
 			previousBounds = bounds;
 		}
-		setGroup(positions, edges, SelectionType.SELECTION.getColor());
+		setGroup(positions, edges, color);
 		return getOutlinePoints();
 	}
 
@@ -166,10 +157,22 @@ public class BubbleSetPathAugmentation extends GLElement implements IPathUpdateL
 		return points;
 	}
 
-	@Override
-	public void onPathsChanged(PathwayPathHandler handler) {
+	/**
+	 * @param pathSegment
+	 *            setter, see {@link pathSegment}
+	 */
+	public void setPathSegment(PathSegment pathSegment) {
+		this.pathSegment = pathSegment;
 		repaintAll();
+	}
 
+	/**
+	 * @param color
+	 *            setter, see {@link color}
+	 */
+	public void setColor(Color color) {
+		this.color = color;
+		repaint();
 	}
 
 }

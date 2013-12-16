@@ -269,6 +269,11 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 		}
 	}
 
+	public void takeDown() {
+		listeners.clear();
+		canvas.removeKeyListener(keyListener);
+	}
+
 	public static interface IPathUpdateListener {
 		public void onPathsChanged(PathwayPathHandler handler);
 	}
