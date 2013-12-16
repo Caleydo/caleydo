@@ -24,6 +24,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
+import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
@@ -82,6 +83,19 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 		// if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
 		isPathSelectionMode = event.isPathSelectionMode();
 		// }
+	}
+
+	@ListenTo
+	public void onSelectedPathChanged(PathwayPathSelectionEvent event) {
+		// if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
+		if (event.getSender() == this)
+			return;
+		selectedPath = event.getPath();
+		startVertexRep = null;
+		notifyListeners();
+
+		// }
+
 	}
 
 	@Override

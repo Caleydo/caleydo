@@ -30,7 +30,7 @@ public class PathwayPathSelectionEvent extends AEvent {
 	}
 
 	/**
-	 * @return the path, see {@link #path}
+	 * @return a new copy of the path, see {@link #path}
 	 */
 	public PathwayPath getPath() {
 		return new PathwayPath(path);

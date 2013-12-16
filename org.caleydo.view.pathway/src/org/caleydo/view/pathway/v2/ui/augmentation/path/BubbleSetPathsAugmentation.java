@@ -37,16 +37,26 @@ public class BubbleSetPathsAugmentation extends GLElementContainer implements IP
 	@Override
 	public void onPathsChanged(PathwayPathHandler handler) {
 		List<PathSegment> segments = handler.getSelectedPath().getSegmentsOfPathway(pathwayRepresentation.getPathway());
-		clear();
 		Color selColor = SelectionType.SELECTION.getColor();
 		Color color = new Color(selColor.r, selColor.g, selColor.b, 0.5f);
+		int childIndex = 0;
 		for (PathSegment segment : segments) {
-			BubbleSetPathSegmentAugmentation seg = new BubbleSetPathSegmentAugmentation(pathwayRepresentation);
-			seg.setColor(color);
-			seg.setPathSegment(segment);
-			add(seg);
+			if (size() > childIndex) {
+				BubbleSetPathSegmentAugmentation seg = (BubbleSetPathSegmentAugmentation) get(childIndex);
+				seg.setColor(color);
+				seg.setPathSegment(segment);
+				childIndex++;
+			} else {
+				BubbleSetPathSegmentAugmentation seg = new BubbleSetPathSegmentAugmentation(pathwayRepresentation);
+				seg.setColor(color);
+				seg.setPathSegment(segment);
+				add(seg);
+			}
 		}
-		repaint();
+		int diff = size() - segments.size();
+		for (int i = 0; i < diff; i++) {
+			remove(size() - 1);
+		}
 	}
 
 	@Override

@@ -110,12 +110,19 @@ public class BubbleSetPathSegmentAugmentation extends GLElement {
 		Rect previousBounds = null;
 		List<Rect> positions = new ArrayList<>();
 		List<Line> edges = new ArrayList<>();
+		// boolean updatedParameters = false;
 
 		for (PathwayVertexRep v : pathSegment) {
 			Rect vertexBounds = pathwayRepresentation.getVertexRepBounds(v);
 			Rect bounds = new Rect(vertexBounds.x() + vertexBounds.width() / 2.0f, vertexBounds.y()
 					+ vertexBounds.height() / 2.0f, vertexBounds.width(), vertexBounds.height());
 			positions.add(bounds);
+
+			// if(!updatedParameters) {
+			// ((BubbleSet) setOutline).setParameter(100, 20, 3, 10.0, 7.0, 0.5,
+			// 2.5, 15.0, 8);
+			// updatedParameters = true;
+			// }
 
 			if (previousBounds != null) {
 				edges.add(new Line(previousBounds.x(), previousBounds.y(), bounds.x(), bounds.y()));
