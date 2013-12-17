@@ -40,16 +40,15 @@ public class ScoreBarElement extends ValueElement {
 	}
 
 	@Override
-	protected void renderImpl(GLGraphics g, float w, float h) {
-		final IRow r = getLayoutDataAs(IRow.class, null); // current row
-		double v = model.applyPrimitive(r);
-		boolean inferred = model.isValueInferred(r);
-		renderValue(g, w, h, r, v, inferred, false, model.getColor(), null);
+	protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
+		double v = model.applyPrimitive(row);
+		boolean inferred = model.isValueInferred(row);
+		renderValue(g, w, h, row, v, inferred, false, model.getColor(), null);
 	}
 
 	@Override
 	public String getTooltip() {
-		final IRow r = getLayoutDataAs(IRow.class, null); // current row
+		final IRow r = getRow();
 		double v = model.applyPrimitive(r);
 		if (Double.isNaN(v) || v < 0)
 			return null;

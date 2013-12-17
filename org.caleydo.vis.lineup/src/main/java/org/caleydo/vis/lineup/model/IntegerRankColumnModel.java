@@ -145,12 +145,11 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 
 	class MyElement extends ValueElement {
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 			if (h < 5)
 				return;
-			super.renderImpl(g, w, h);
 			float hi = Math.min(h, 16);
-			int f = getInt(getLayoutDataAs(IRow.class, null));
+			int f = getInt(row);
 			g.drawText(formatter == null ? f + "" : formatter.format(f), 1, 1 + (h - hi) * 0.5f, w - 2,
 						hi - 2);
 		}

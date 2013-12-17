@@ -181,7 +181,7 @@ public class BoxPlotRankTableModel extends ADataDomainRankTableModel implements 
 		}
 
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 			if (h < 1)
 				return;
 			AdvancedDoubleStatistics stats = updateStats();

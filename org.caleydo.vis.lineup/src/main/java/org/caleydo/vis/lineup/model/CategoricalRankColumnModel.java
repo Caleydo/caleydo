@@ -252,7 +252,7 @@ public final class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<C
 		}
 
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 			if (h < 5)
 				return;
 			String info = getTooltip();

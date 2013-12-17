@@ -21,9 +21,9 @@ import org.caleydo.vis.lineup.ui.detail.ValueElement;
 
 /**
  * a {@link ARankColumnModel} for a categorical datadomain, which shows a horizontal mosiac plot
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class DistributionRankTableModel extends ADataDomainRankTableModel {
 	public DistributionRankTableModel(ATableBasedDataDomain d, EDimension dim) {
@@ -104,7 +104,7 @@ public class DistributionRankTableModel extends ADataDomainRankTableModel {
 	private class MyValueElement extends ValueElement {
 
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 			if (h < 1)
 				return;
 			CategoricalHistogram hist = getHist(getRow());
