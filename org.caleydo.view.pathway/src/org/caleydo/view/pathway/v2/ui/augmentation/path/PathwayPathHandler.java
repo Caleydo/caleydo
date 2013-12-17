@@ -45,6 +45,7 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 	protected boolean isAltDown = false;
 	protected boolean isControlDown = false;
 	protected boolean isShiftDown = false;
+	protected boolean isUpDown = false;
 
 	protected boolean isPathSelectionMode = false;
 	protected String eventSpace;
@@ -52,6 +53,9 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 	protected PathwayPath selectedPath = new PathwayPath();
 	protected IPathwayRepresentation pathwayRepresentation;
 	protected Set<IPathUpdateListener> listeners = new LinkedHashSet<>();
+
+	protected List<PathSegment> alternativeSegments = new ArrayList<>();
+	protected int selectedAlternativeIndex = 0;
 
 	public PathwayPathHandler(IPathwayRepresentation pathwayRepresentation, IGLCanvas canvas) {
 		this.pathwayRepresentation = pathwayRepresentation;
@@ -61,18 +65,21 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 
 			@Override
 			public void keyReleased(IKeyEvent e) {
-				isControlDown = e.isControlDown();
-				isShiftDown = e.isShiftDown();
-				isAltDown = e.isAltDown();
-
+				update(e);
 			}
 
 			@Override
 			public void keyPressed(IKeyEvent e) {
+				update(e);
+				if (e.isUpDown()) {
+					selectNextAlternative();
+				}
+			}
+
+			private void update(IKeyEvent e) {
 				isControlDown = e.isControlDown();
 				isShiftDown = e.isShiftDown();
 				isAltDown = e.isAltDown();
-
 			}
 		});
 		canvas.addKeyListener(keyListener);
@@ -92,6 +99,7 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 			return;
 		selectedPath = event.getPath();
 		startVertexRep = null;
+		alternativeSegments.clear();
 		notifyListeners();
 
 		// }
@@ -112,24 +120,26 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 				selectPath(startVertexRep, vertexRep);
 			} else if (isShiftDown && !selectedPath.isEmpty()) {
 				PathwayVertexRep v = selectedPath.getLast().getLast();
-				List<PathSegment> paths = calcPaths(v, vertexRep);
+				calcAlternatives(v, vertexRep);
 
-				if (!paths.isEmpty() && v != vertexRep) {
+				if (!alternativeSegments.isEmpty() && v != vertexRep) {
 					startVertexRep = v;
-					addToPath(paths.get(0));
+					selectedAlternativeIndex = 0;
+					addToPath(alternativeSegments.get(selectedAlternativeIndex));
 				}
 			}
 			break;
 		case CLICKED:
-			boolean isVertexEquivalentToLastVertexInPath = isVertexEquivalentToLastVertexOfPath(vertexRep);
-			if (isVertexEquivalentToLastVertexInPath && selectedPath.getLast().size() == 1) {
-				selectedPath.remove(selectedPath.size() - 1);
-			}
+			// boolean isVertexEquivalentToLastVertexInPath = isVertexEquivalentToLastVertexOfPath(vertexRep);
+			// if (isVertexEquivalentToLastVertexInPath && selectedPath.getLast().size() == 1) {
+			// selectedPath.remove(selectedPath.size() - 1);
+			// }
 
 			if (isShiftDown) {
+
 				handleShiftClick(vertexRep);
 			} else {
-				handleClick(vertexRep, isVertexEquivalentToLastVertexInPath);
+				handleClick(vertexRep);
 			}
 
 			break;
@@ -138,16 +148,20 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 		}
 	}
 
-	protected void handleClick(PathwayVertexRep vertexRep, boolean isVertexEquivalentToLastVertexInPath) {
+	protected void handleClick(PathwayVertexRep vertexRep) {
 
+		boolean isVertexEquivalentToLastVertexInPath = isVertexEquivalentToLastVertexOfPath(vertexRep);
 		if (startVertexRep == null) {
 			startVertexRep = vertexRep;
+			selectedAlternativeIndex = 0;
 			if (!isVertexEquivalentToLastVertexInPath)
 				selectedPath.clear();
 			selectPath(startVertexRep, vertexRep);
 		} else {
-			if (isVertexEquivalentToLastVertexInPath)
+			if (isVertexEquivalentToLastVertexInPath) {
 				startVertexRep = vertexRep;
+				selectedAlternativeIndex = 0;
+			}
 
 			selectPath(startVertexRep, vertexRep);
 			if (!isVertexEquivalentToLastVertexInPath)
@@ -159,15 +173,18 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 
 		if (startVertexRep == null) {
 			startVertexRep = vertexRep;
+			selectedAlternativeIndex = 0;
 			selectPath(startVertexRep, vertexRep);
 		} else {
-			List<PathSegment> paths = calcPaths(startVertexRep, vertexRep);
-
-			if (paths.isEmpty())
+			calcAlternatives(startVertexRep, vertexRep);
+			boolean restartSelection = alternativeSegments.isEmpty();
+			if (restartSelection) {
 				startVertexRep = vertexRep;
+				selectedAlternativeIndex = 0;
+			}
 
 			selectPath(startVertexRep, vertexRep);
-			if (!paths.isEmpty())
+			if (!restartSelection)
 				startVertexRep = null;
 		}
 	}
@@ -180,34 +197,63 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 		return false;
 	}
 
-	protected List<PathSegment> calcPaths(PathwayVertexRep from, PathwayVertexRep to) {
+	protected void selectNextAlternative() {
+		if (alternativeSegments.isEmpty())
+			return;
+		int newIndex = selectedAlternativeIndex + 1;
+		if (newIndex >= alternativeSegments.size())
+			newIndex = 0;
+		selectAlternative(newIndex);
+	}
 
+	protected void selectAlternative(int alternativeIndex) {
+		if (alternativeIndex == selectedAlternativeIndex || alternativeIndex > alternativeSegments.size())
+			return;
+
+		PathSegment currentSegment = alternativeSegments.get(selectedAlternativeIndex);
+		PathSegment lastPathSegment = selectedPath.getLast();
+		for (int i = 1; i < currentSegment.size(); i++) {
+			lastPathSegment.remove(lastPathSegment.size() - 1);
+		}
+
+		selectedAlternativeIndex = alternativeIndex;
+		addToPath(alternativeSegments.get(alternativeIndex));
+
+	}
+
+	protected void calcAlternatives(PathwayVertexRep from, PathwayVertexRep to) {
+
+		alternativeSegments.clear();
 		if (from == to) {
-			return Arrays.asList(new PathSegment(Arrays.asList(from)));
+			selectedAlternativeIndex = 0;
+			alternativeSegments.add(new PathSegment(Arrays.asList(from)));
 		} else {
 			KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 					pathwayRepresentation.getPathway(), from, MAX_ALTERNATIVE_PATHS);
 			List<GraphPath<PathwayVertexRep, DefaultEdge>> paths = pathAlgo.getPaths(to);
-			List<PathSegment> segments = new ArrayList<>();
+
 			if (paths != null && !paths.isEmpty()) {
 				for (GraphPath<PathwayVertexRep, DefaultEdge> path : paths) {
-					segments.add(new PathSegment(path));
+					alternativeSegments.add(new PathSegment(path));
 				}
 			}
-			return segments;
 		}
 	}
 
 	protected void selectPath(PathwayVertexRep from, PathwayVertexRep to) {
-		List<PathSegment> paths = calcPaths(from, to);
-		if (!paths.isEmpty()) {
-			addToPath(paths.get(0));
+		calcAlternatives(from, to);
+		if (!alternativeSegments.isEmpty()) {
+			if (selectedAlternativeIndex > alternativeSegments.size())
+				selectedAlternativeIndex = 0;
+			addToPath(alternativeSegments.get(selectedAlternativeIndex));
 		}
 	}
 
 	protected void addToPath(PathSegment segment) {
 		if (segment == null || segment.isEmpty())
 			return;
+		selectedPath.ensurePathLevelIntegrity();
+
 		if (selectedPath.isEmpty()) {
 			selectedPath.add(segment);
 		} else {
@@ -228,6 +274,9 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 				selectedPath.add(segment);
 			}
 		}
+
+		selectedPath.ensurePathLevelIntegrity();
+
 		StringBuilder b = new StringBuilder("Path (");
 		for (PathSegment s : selectedPath) {
 			b.append("[");
@@ -286,6 +335,18 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 	public void takeDown() {
 		listeners.clear();
 		canvas.removeKeyListener(keyListener);
+	}
+
+	public PathSegment getSelectedAlternativeSegment() {
+		return selectedAlternativeIndex > alternativeSegments.size() ? null : alternativeSegments
+				.get(selectedAlternativeIndex);
+	}
+
+	/**
+	 * @return the alternativeSegments, see {@link #alternativeSegments}
+	 */
+	public List<PathSegment> getAlternativeSegments() {
+		return alternativeSegments;
 	}
 
 	public static interface IPathUpdateListener {

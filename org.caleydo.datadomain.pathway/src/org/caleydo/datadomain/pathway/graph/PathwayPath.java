@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.jgrapht.graph.DefaultEdge;
 
 /**
  *
@@ -62,12 +64,73 @@ public class PathwayPath extends ArrayList<PathSegment> {
 	}
 
 	public boolean checkIntegrity() {
+		PathSegment prevSegment = null;
 		for (PathSegment segment : this) {
-			if (!segment.checkIntegrity()) {
+			if (segment == null || segment.isEmpty() || !segment.checkIntegrity()) {
 				return false;
 			}
+			if (prevSegment != null && (prevSegment.size() == 1 || (segment.size() == 1 && getLast() != segment))
+					&& PathwayManager.get().areVerticesEquivalent(segment.getFirst(), prevSegment.getLast())) {
+				return false;
+			}
+
+			if (prevSegment != null && prevSegment.getPathway() == segment.getPathway()) {
+				DefaultEdge edge1 = segment.getPathway().getEdge(prevSegment.getLast(), segment.getFirst());
+				DefaultEdge edge2 = segment.getPathway().getEdge(segment.getFirst(), prevSegment.getLast());
+				if (edge1 != null || edge2 != null) {
+					return false;
+				}
+			}
+
+			prevSegment = segment;
 		}
 		return true;
+	}
+
+	public void ensurePathLevelIntegrity() {
+		boolean pathChanged = false;
+
+		do {
+			pathChanged = false;
+
+			PathSegment prevSegment = null;
+			for (int i = 0; i < size(); i++) {
+				PathSegment segment = get(i);
+
+				if (segment == null || segment.isEmpty()) {
+					remove(i);
+					pathChanged = true;
+					break;
+				}
+
+				if (prevSegment != null && prevSegment.size() == 1
+						&& PathwayManager.get().areVerticesEquivalent(segment.getFirst(), prevSegment.getLast())) {
+					remove(i - 1);
+					pathChanged = true;
+					break;
+				}
+
+				if (prevSegment != null && segment.size() == 1 && getLast() != segment
+						&& PathwayManager.get().areVerticesEquivalent(segment.getFirst(), prevSegment.getLast())) {
+					remove(i);
+					pathChanged = true;
+					break;
+				}
+
+				if (prevSegment != null && prevSegment.getPathway() == segment.getPathway()) {
+					DefaultEdge edge1 = segment.getPathway().getEdge(prevSegment.getLast(), segment.getFirst());
+					DefaultEdge edge2 = segment.getPathway().getEdge(segment.getFirst(), prevSegment.getLast());
+					if (edge1 != null || edge2 != null) {
+						prevSegment.addAll(segment);
+						remove(i);
+						pathChanged = true;
+						break;
+					}
+				}
+
+				prevSegment = segment;
+			}
+		} while (pathChanged);
 	}
 
 	/**
