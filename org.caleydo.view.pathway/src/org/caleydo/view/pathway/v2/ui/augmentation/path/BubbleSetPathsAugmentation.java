@@ -41,17 +41,19 @@ public class BubbleSetPathsAugmentation extends GLElementContainer implements IP
 		List<PathSegment> alternativeSegments = handler.getAlternativeSegments();
 		PathSegment selectedAltSegment = handler.getSelectedAlternativeSegment();
 
-		List<Color> colors = ColorBrewer.Set3.getColors(alternativeSegments.size());
+		List<Color> colors = ColorBrewer.Set1.getColors(alternativeSegments.size());
 
 		int childIndex = 0;
 		int colorIndex = 0;
+		int numAlternativeSegmentsAdded = 0;
 		for (PathSegment altSegment : alternativeSegments) {
 			if (colorIndex > colors.size())
 				colorIndex = 0;
 			if (altSegment != selectedAltSegment) {
 				Color altColor = colors.get(colorIndex);
-				Color color = new Color(altColor.r, altColor.g, altColor.b, 0.4f);
+				Color color = new Color(altColor.r, altColor.g, altColor.b, 0.1f);
 				addSegment(color, altSegment, childIndex);
+				numAlternativeSegmentsAdded++;
 				childIndex++;
 			}
 			colorIndex++;
@@ -66,7 +68,7 @@ public class BubbleSetPathsAugmentation extends GLElementContainer implements IP
 			childIndex++;
 		}
 
-		int diff = size() - pathSegments.size() - (alternativeSegments.size() - 1);
+		int diff = size() - pathSegments.size() - numAlternativeSegmentsAdded;
 		for (int i = 0; i < diff; i++) {
 			remove(size() - 1);
 		}

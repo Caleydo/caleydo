@@ -23,6 +23,7 @@ import org.caleydo.core.view.opengl.util.spline.ITesselatedPolygon;
 import org.caleydo.core.view.opengl.util.spline.TesselatedPolygons;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.graph.PathSegment;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 
 import setvis.SetOutline;
@@ -92,14 +93,20 @@ public class BubbleSetPathSegmentAugmentation extends GLElement {
 		// draw where stencil's value is 0
 		gl.glStencilFunc(GL.GL_EQUAL, 0, 0xFF);
 
-
-
 		List<Vec2f> points = calcBubbleSet();
+		Rect pathwayBounds = pathwayRepresentation.getPathwayBounds();
+		PathwayGraph pathway = pathwayRepresentation.getPathway();
 
+		g.gl.glPushMatrix();
+
+		g.move(pathwayBounds.x(), pathwayBounds.y());
+		g.gl.glScalef(pathwayBounds.width() / pathway.getWidth(), pathwayBounds.height() / pathway.getHeight(), 1f);
 		ITesselatedPolygon polygon = TesselatedPolygons.polygon2(points);
 		g.incZ();
-		g.color(color).fillPolygon(polygon);
+		g.color(color).fillPolygon(polygon).lineWidth(2).drawPath(polygon);
 		g.decZ();
+		// g.move(-pathwayBounds.x(), -pathwayBounds.y());
+		g.gl.glPopMatrix();
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
 		// repaint();
@@ -107,20 +114,22 @@ public class BubbleSetPathSegmentAugmentation extends GLElement {
 	}
 
 	protected List<Vec2f> calcBubbleSet() {
+
 		Rect previousBounds = null;
 		List<Rect> positions = new ArrayList<>();
 		List<Line> edges = new ArrayList<>();
 		// boolean updatedParameters = false;
 
 		for (PathwayVertexRep v : pathSegment) {
-			Rect vertexBounds = pathwayRepresentation.getVertexRepBounds(v);
-			Rect bounds = new Rect(vertexBounds.x() + vertexBounds.width() / 2.0f, vertexBounds.y()
-					+ vertexBounds.height() / 2.0f, vertexBounds.width(), vertexBounds.height());
+
+			Rect bounds = new Rect(v.getLowerLeftCornerX(), v.getLowerLeftCornerY(), v.getWidth(), v.getHeight());
 			positions.add(bounds);
 
-			// if(!updatedParameters) {
-			// ((BubbleSet) setOutline).setParameter(100, 20, 3, 10.0, 7.0, 0.5,
-			// 2.5, 15.0, 8);
+			// if (!updatedParameters) {
+			// float scaling = 1; // (bounds.height() / 10f) / v.getHeight();
+			// // ((BubbleSet) setOutline).setParameter(1, 1, 1, 0.5, 1.5, 0.5, 0.5, 0.5, 1);
+			// ((BubbleSet) setOutline).setParameter(100, 20, 3, scaling * 10.0, scaling * 7.0, scaling * 0.5,
+			// scaling * 2.5, scaling * 15.0, 8);
 			// updatedParameters = true;
 			// }
 
@@ -131,6 +140,35 @@ public class BubbleSetPathSegmentAugmentation extends GLElement {
 		}
 		setGroup(positions, edges, color);
 		return getOutlinePoints();
+
+		// Rect previousBounds = null;
+		// List<Rect> positions = new ArrayList<>();
+		// List<Line> edges = new ArrayList<>();
+		// boolean updatedParameters = false;
+		//
+		// for (PathwayVertexRep v : pathSegment) {
+		// Rect vertexBounds = pathwayRepresentation.getVertexRepBounds(v);
+		// Rect bounds = new Rect(vertexBounds.x() + vertexBounds.width() / 20.0f, vertexBounds.y()
+		// + vertexBounds.height() / 20.0f, vertexBounds.width() / 10.0f, vertexBounds.height() / 10.0f);
+		// positions.add(bounds);
+		//
+		// if (!updatedParameters) {
+		// float scaling = (bounds.height() / 10f) / v.getHeight();
+		// // ((BubbleSet) setOutline).setParameter(1, 1, 1, 0.5, 1.5, 0.5, 0.5, 0.5, 1);
+		// ((BubbleSet) setOutline).setParameter(100, 20, 3, scaling * 10.0, scaling * 7.0, scaling * 0.5,
+		// scaling * 2.5, scaling * 15.0, 8);
+		// updatedParameters = true;
+		// }
+		//
+		// if (previousBounds != null) {
+		// edges.add(new Line(previousBounds.x() + previousBounds.width() / 2.0f, previousBounds.y()
+		// + previousBounds.height() / 2.0f, bounds.x() + bounds.width() / 2.0f, bounds.y()
+		// + bounds.height() / 2.0f));
+		// }
+		// previousBounds = bounds;
+		// }
+		// setGroup(positions, edges, color);
+		// return getOutlinePoints();
 	}
 
 	@Override

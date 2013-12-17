@@ -338,7 +338,7 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 	}
 
 	public PathSegment getSelectedAlternativeSegment() {
-		return selectedAlternativeIndex > alternativeSegments.size() ? null : alternativeSegments
+		return selectedAlternativeIndex >= alternativeSegments.size() ? null : alternativeSegments
 				.get(selectedAlternativeIndex);
 	}
 
