@@ -21,6 +21,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -30,6 +31,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
+import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 import org.caleydo.core.view.opengl.util.spline.TesselatedPolygons;
 
 import com.google.common.base.Supplier;
@@ -221,7 +223,7 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 	 * @param h
 	 * @return
 	 */
-	private List<Vec2f> createCurve(IDoubleList data, float w, float h) {
+	protected List<Vec2f> createCurve(IDoubleList data, float w, float h) {
 		assert data.size() != 0;
 
 		List<Vec2f> linePoints = new ArrayList<>();
@@ -251,6 +253,19 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 		return linePoints;
 	}
 
+	protected final Pair<Vec2f, Vec2f> getLocation(List<Vec2f> curve, double value, float w) {
+		float x = (float) value * w;
+		Vec2f last = curve.get(0);
+		for (Vec2f point : curve.subList(1, curve.size())) {
+			float lastX = last.x();
+			float x2 = point.x();
+			if (lastX <= x && x <= x2)
+				return Pair.make(last, point);
+			last = point;
+		}
+		return Pair.make(last, last);
+	}
+
 	@Override
 	public Vec2f getMinSize() {
 		switch (detailLevel) {
@@ -260,6 +275,8 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 			return new Vec2f(100, 100);
 		}
 	}
+
+	public abstract List<GLLocation> getLocations(EDimension dim, Iterable<Integer> dataIndizes);
 
 	@Override
 	public String toString() {

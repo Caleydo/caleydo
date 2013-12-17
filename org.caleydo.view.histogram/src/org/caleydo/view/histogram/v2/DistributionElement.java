@@ -8,28 +8,33 @@ package org.caleydo.view.histogram.v2;
 import gleem.linalg.Vec2f;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.CategoricalHistogram;
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.TablePerspectiveSelectionMixin;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 
 import com.google.common.base.Supplier;
-
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 /**
  * Rendering the distribution of a categorical element in various forms
  *
  * @author Samuel Gratzl
  */
 public class DistributionElement extends ADistributionElement implements IPickingLabelProvider,
-		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback {
+		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback, GLLocation.ILocator {
 	@DeepScan
 	protected final TablePerspectiveSelectionMixin selections;
 
@@ -98,6 +103,36 @@ public class DistributionElement extends ADistributionElement implements IPickin
 	@Override
 	protected Histogram getHist() {
 		return hist;
+	}
+
+	@Override
+	public GLLocation apply(int dataIndex) {
+		EDimension dim;
+		switch (getMode()) {
+		case HORIZONTAL_BAR:
+			dim = EDimension.DIMENSION;
+			break;
+		case VERTICAL_BAR:
+			dim = EDimension.RECORD;
+			break;
+		default:
+			return GLLocation.UNKNOWN;
+		}
+		float max = dim.select(getSize());
+		Perspective p = dim.select(getTablePerspective().getDimensionPerspective(), getTablePerspective()
+				.getRecordPerspective());
+		float m = max / p.getVirtualArray().size();
+		return new GLLocation(dataIndex * m, m);
+	}
+
+	@Override
+	public List<GLLocation> apply(Iterable<Integer> dataIndizes) {
+		return Lists.newArrayList(Iterables.transform(dataIndizes, this));
+	}
+
+	@Override
+	public GLLocation apply(Integer input) {
+		return GLLocation.applyPrimitive(this, input);
 	}
 
 	@Override

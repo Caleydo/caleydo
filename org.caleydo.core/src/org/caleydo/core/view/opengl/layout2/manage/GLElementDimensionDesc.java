@@ -72,6 +72,13 @@ public class GLElementDimensionDesc extends ALocator {
 		return before.getValue() + after.getValue();
 	}
 
+	/**
+	 * @param dataSafe
+	 */
+	public double getSize(int size) {
+		return before.getValue() + size * factor.getValue() + after.getValue();
+	}
+
 	public static DescBuilder newBuilder() {
 		return new DescBuilder();
 	}
@@ -165,6 +172,5 @@ public class GLElementDimensionDesc extends ALocator {
 			return isValid.apply(input) && input.doubleValue() > 0;
 		}
 	}
-
 
 }

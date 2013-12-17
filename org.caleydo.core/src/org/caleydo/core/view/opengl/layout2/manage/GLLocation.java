@@ -5,7 +5,11 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.manage;
 
+import java.util.List;
+
 import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 /**
  * @author Samuel Gratzl
@@ -14,12 +18,19 @@ import com.google.common.base.Function;
 public class GLLocation {
 	public static interface ILocator extends Function<Integer, GLLocation> {
 		GLLocation apply(int dataIndex);
+
+		List<GLLocation> apply(Iterable<Integer> dataIndizes);
 	}
 
 	public static abstract class ALocator implements ILocator {
 		@Override
 		public GLLocation apply(Integer input) {
 			return applyPrimitive(this, input);
+		}
+
+		@Override
+		public List<GLLocation> apply(Iterable<Integer> dataIndizes) {
+			return Lists.newArrayList(Iterables.transform(dataIndizes, this));
 		}
 	}
 	public static final GLLocation UNKNOWN = new GLLocation(Double.NaN, Double.NaN);

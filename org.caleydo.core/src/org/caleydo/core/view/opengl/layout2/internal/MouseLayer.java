@@ -427,10 +427,19 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent,
 			int deltaTimeMs) {
 		for (IGLLayoutElement child : children) {
-			child.setBounds(defaultValue(child.getSetX(), 0), defaultValue(child.getSetY(), 0),
+			child.setBounds(defaultValue2(child.getSetX(), 0), defaultValue2(child.getSetY(), 0),
 					defaultValue(child.getSetWidth(), w), defaultValue(child.getSetHeight(), h));
 		}
 		return false;
+	}
+
+	/**
+	 * @param setY
+	 * @param i
+	 * @return
+	 */
+	private static float defaultValue2(float v, float default_) {
+		return Float.isNaN(v) ? default_ : v;
 	}
 
 	@Override

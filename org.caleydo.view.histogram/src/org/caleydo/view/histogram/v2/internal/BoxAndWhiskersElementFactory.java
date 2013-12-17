@@ -6,6 +6,8 @@
 package org.caleydo.view.histogram.v2.internal;
 
 
+import gleem.linalg.Vec2f;
+
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
@@ -16,8 +18,12 @@ import org.caleydo.core.util.function.AdvancedDoubleStatistics;
 import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
-import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
+import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
+import org.caleydo.core.view.opengl.layout2.manage.GLLocation.ALocator;
+import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory2;
+import org.caleydo.view.histogram.v2.ABoxAndWhiskersElement;
 import org.caleydo.view.histogram.v2.BoxAndWhiskersElement;
 import org.caleydo.view.histogram.v2.BoxAndWhiskersMultiElement;
 import org.caleydo.view.histogram.v2.ListBoxAndWhiskersElement;
@@ -28,7 +34,7 @@ import org.caleydo.view.histogram.v2.ListBoxAndWhiskersElement;
  * @author Samuel Gratzl
  *
  */
-public class BoxAndWhiskersElementFactory implements IGLElementFactory {
+public class BoxAndWhiskersElementFactory implements IGLElementFactory2 {
 	@Override
 	public String getId() {
 		return "boxandwhiskers";
@@ -47,6 +53,28 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory {
 		if (context.get(AdvancedDoubleStatistics.class, null) != null)
 			return true;
 		return false;
+	}
+
+	@Override
+	public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
+		assert elem instanceof ABoxAndWhiskersElement;
+		final ABoxAndWhiskersElement b = (ABoxAndWhiskersElement) elem;
+		EDimension dir = b.getDirection();
+		Vec2f minSize = b.getMinSize();
+		if (dir == dim && b instanceof ListBoxAndWhiskersElement) {
+			// we can locate
+			return GLElementDimensionDesc.newBuilder().fix(dim.select(minSize)).locateUsing(new ALocator() {
+				private final ListBoxAndWhiskersElement vis = (ListBoxAndWhiskersElement) b;
+
+				@Override
+				public GLLocation apply(int dataIndex) {
+					return vis.getLocation(dataIndex);
+				}
+			}).build();
+		} else {
+			// we cant
+			return GLElementDimensionDesc.newBuilder().fix(dim.select(minSize)).build();
+		}
 	}
 
 	@Override

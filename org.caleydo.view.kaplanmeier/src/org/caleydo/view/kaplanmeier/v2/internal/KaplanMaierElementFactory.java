@@ -5,15 +5,23 @@
  *******************************************************************************/
 package org.caleydo.view.kaplanmeier.v2.internal;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.caleydo.core.data.collection.EDataClass;
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
+import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc.DescBuilder;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
-import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
+import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
+import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory2;
+import org.caleydo.view.kaplanmeier.v2.AKaplanMeierElement;
 import org.caleydo.view.kaplanmeier.v2.KaplanMeierElement;
 import org.caleydo.view.kaplanmeier.v2.ListKaplanMeierElement;
 
@@ -23,10 +31,28 @@ import org.caleydo.view.kaplanmeier.v2.ListKaplanMeierElement;
  * @author Samuel Gratzl
  *
  */
-public class KaplanMaierElementFactory implements IGLElementFactory {
+public class KaplanMaierElementFactory implements IGLElementFactory2 {
 	@Override
 	public String getId() {
 		return "kaplanmaier";
+	}
+
+	@Override
+	public GLElementDimensionDesc getDesc(final EDimension dim, GLElement elem) {
+		final AKaplanMeierElement k = (AKaplanMeierElement) elem;
+		final DescBuilder b = GLElementDimensionDesc.newBuilder().fix(dim.select(k.getMinSize()));
+		b.locateUsing(new GLLocation.ALocator() {
+			@Override
+			public GLLocation apply(int dataIndex) {
+				return k.getLocations(dim, Collections.singleton(dataIndex)).get(0);
+			}
+
+			@Override
+			public List<GLLocation> apply(Iterable<Integer> dataIndizes) {
+				return k.getLocations(dim, dataIndizes);
+			}
+		});
+		return b.build();
 	}
 
 	@Override

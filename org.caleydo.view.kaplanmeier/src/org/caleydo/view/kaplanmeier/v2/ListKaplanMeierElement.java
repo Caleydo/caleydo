@@ -5,9 +5,15 @@
  *******************************************************************************/
 package org.caleydo.view.kaplanmeier.v2;
 
+import gleem.linalg.Vec2f;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import org.caleydo.core.data.collection.EDimension;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.ADoubleFunction;
 import org.caleydo.core.util.function.ArrayDoubleList;
@@ -17,6 +23,8 @@ import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.GLSandBox;
+import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 
 import com.google.common.base.Preconditions;
 
@@ -27,6 +35,7 @@ import com.google.common.base.Preconditions;
  *
  */
 public class ListKaplanMeierElement extends AKaplanMeierElement {
+	private final IDoubleList raw;
 	private final IDoubleList data;
 	private Axis xAxis;
 	private Axis yAxis;
@@ -41,6 +50,7 @@ public class ListKaplanMeierElement extends AKaplanMeierElement {
 		this.xAxis = new Axis("Time", 6, (float) DoubleStatistics.of(data).getMax());
 		this.yAxis = new Axis("Percentage", 6, 100);
 
+		this.raw = data;
 		this.data = convert(Preconditions.checkNotNull(data));
 	}
 
@@ -97,6 +107,22 @@ public class ListKaplanMeierElement extends AKaplanMeierElement {
 		repaint();
 	}
 
+	@Override
+	public List<GLLocation> getLocations(EDimension dim, Iterable<Integer> dataIndizes) {
+		Vec2f wh = getSize();
+		List<Vec2f> curve = createCurve(data, wh.x(), wh.y());
+		List<GLLocation> r = new ArrayList<>();
+		for (Integer dataIndex : dataIndizes) {
+			double v = raw.getPrimitive(dataIndex);
+			v = Double.isNaN(v) ? 1 : v;
+			Pair<Vec2f, Vec2f> loc = getLocation(curve, v, wh.x());
+
+			float offset = dim.select(loc.getFirst());
+			float size = dim.select(loc.getSecond()) - offset;
+			r.add(new GLLocation(offset, size));
+		}
+		return r;
+	}
 
 	/**
 	 * @param checkNotNull
@@ -129,5 +155,14 @@ public class ListKaplanMeierElement extends AKaplanMeierElement {
 	@Override
 	protected Axis getAxis(EDimension dim) {
 		return dim.select(xAxis, yAxis);
+	}
+
+	public static void main(String[] args) {
+		Random r = new Random();
+		double[] d = new double[100];
+		for (int i = 0; i < d.length; ++i)
+			d[i] = r.nextDouble() * 100;
+		IDoubleList data = new ArrayDoubleList(d);
+		GLSandBox.main(args, new ListKaplanMeierElement(data, EDetailLevel.HIGH));
 	}
 }
