@@ -44,7 +44,15 @@ public enum EEmbeddingID {
 	/**
 	 * Embedding ID for views that represent pathway data in header bricks.
 	 */
-	CLINICAL_HEADER_BRICK("org.caleydo.view.stratomex.clinical.header.brick");
+	CLINICAL_HEADER_BRICK("org.caleydo.view.stratomex.clinical.header.brick"),
+	/**
+	 * Embedding ID for views that represent pathway data in segment bricks.
+	 */
+	CLINICAL_NUMERICAL_SEGMENT_BRICK("org.caleydo.view.stratomex.clinical.numerical.segment.brick"),
+	/**
+	 * Embedding ID for views that represent pathway data in header bricks.
+	 */
+	CLINICAL_NUMERICAL_HEADER_BRICK("org.caleydo.view.stratomex.clinical.numerical.header.brick");
 
 
 	/**

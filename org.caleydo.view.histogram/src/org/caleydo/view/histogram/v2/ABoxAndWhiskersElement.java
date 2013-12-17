@@ -45,8 +45,6 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 	 */
 	private static final float BOX_HEIGHT_PERCENTAGE = 1 / 3.f;
 	private static final float LINE_TAIL_HEIGHT_PERCENTAGE = 0.75f;
-	private static final float MIN_MAX_HEIGHT_PERCENTAGE = 0.9f;
-	private static final float OUTLIER_HEIGHT_PERCENTAGE = 0.5f;
 
 	private final EDetailLevel detailLevel;
 	private final EDimension direction;
@@ -83,6 +81,20 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 	}
 
 	/**
+	 * @param value
+	 * @return
+	 */
+	protected double normalize(double value) {
+		return DoubleFunctions.normalize(min, max).apply(value);
+	}
+	/**
+	 * @return the direction, see {@link #direction}
+	 */
+	public EDimension getDirection() {
+		return direction;
+	}
+
+	/**
 	 * @return the showScale, see {@link #showScale}
 	 */
 	public boolean isShowScale() {
@@ -115,7 +127,7 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 		return b.toString();
 	}
 
-	public void setData(IDoubleList list) {
+	public final void setData(IDoubleList list) {
 		setData(list, Double.NaN, Double.NaN);
 	}
 
@@ -127,7 +139,7 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 		repaint();
 	}
 
-	public void setData(AdvancedDoubleStatistics stats) {
+	public final void setData(AdvancedDoubleStatistics stats) {
 		setData(stats, Double.NaN, Double.NaN);
 	}
 

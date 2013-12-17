@@ -514,7 +514,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 
 	@Override
 	protected boolean hasPickAbles() {
-		return !children.isEmpty(); // may have pickables
+		return super.hasPickAbles() || !children.isEmpty(); // may have pickables
 	}
 
 	@Override

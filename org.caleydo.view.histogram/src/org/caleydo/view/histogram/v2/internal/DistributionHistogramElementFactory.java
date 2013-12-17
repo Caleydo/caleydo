@@ -21,7 +21,6 @@ public class DistributionHistogramElementFactory extends ADistributionBarElement
 		return "distribution.hist";
 	}
 
-
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
 		return create(context, EDistributionMode.HISTOGRAM);

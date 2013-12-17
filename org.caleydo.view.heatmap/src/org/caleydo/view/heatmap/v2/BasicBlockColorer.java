@@ -29,9 +29,19 @@ public class BasicBlockColorer implements Function2<Integer, Integer, Color> {
 
 	@Override
 	public Color apply(Integer recordID, Integer dimensionID) {
+		if (isInvalid(recordID) || isInvalid(dimensionID))
+			return Color.NOT_A_NUMBER_COLOR;
 		// get value
 		float[] color = table.getColor(dimensionID, recordID);
 		// to a color
 		return new Color(color[0], color[1], color[2], 1.0f);
+	}
+
+	/**
+	 * @param recordID
+	 * @return
+	 */
+	private static boolean isInvalid(Integer id) {
+		return id == null || id.intValue() < 0;
 	}
 }

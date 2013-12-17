@@ -7,6 +7,7 @@ package org.caleydo.view.kaplanmeier.v2;
 
 import gleem.linalg.Vec2f;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.ArrayDoubleList;
 import org.caleydo.core.util.function.IDoubleList;
@@ -28,6 +30,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -35,6 +38,9 @@ import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 import org.caleydo.view.kaplanmeier.GLKaplanMeier;
 
 import com.google.common.base.Supplier;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 
 /**
  * kaplan meier plot implementation as a {@link GLElement}
@@ -162,6 +168,63 @@ public class KaplanMeierElement extends AKaplanMeierElement implements
 		}
 	}
 
+	@Override
+	public List<GLLocation> getLocations(EDimension dim, Iterable<Integer> dataIndizes) {
+		final TablePerspective tablePerspective = getTablePerspective();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+
+		final Table table = tablePerspective.getDataDomain().getTable();
+		final Integer dimensionID = dimensionVA.get(0);
+		final Vec2f wh = getSize();
+
+		List<GLLocation> r = new ArrayList<>();
+
+		final VirtualArray va = tablePerspective.getRecordPerspective().getVirtualArray();
+		if (tablePerspective.getParentTablePerspective() != null
+				|| tablePerspective.getRecordPerspective().getVirtualArray().getGroupList().size() <= 1) {
+			// single group
+			IDoubleList data = readData(va.getIDs(), table, dimensionID);
+
+			List<Vec2f> curve = createCurve(data, wh.x(), wh.y());
+
+			for (Integer dataIndex : dataIndizes) {
+				double v = table.getNormalizedValue(dimensionID, va.get(dataIndex));
+				v = Double.isNaN(v) ? 1 : v;
+				Pair<Vec2f, Vec2f> loc = getLocation(curve, v, wh.x());
+
+				float offset = dim.select(loc.getFirst());
+				float size = dim.select(loc.getSecond()) - offset;
+				r.add(new GLLocation(offset, size));
+			}
+			return r;
+		} else {
+			LoadingCache<Group, List<Vec2f>> curveLoader = CacheBuilder.newBuilder().build(
+					new CacheLoader<Group, List<Vec2f>>() {
+						@Override
+						public List<Vec2f> load(Group key) throws Exception {
+							final List<Integer> iDs = tablePerspective.getRecordPerspective().getVirtualArray()
+									.getIDsOfGroup(key.getGroupIndex());
+							IDoubleList data = readData(iDs, table, dimensionID);
+
+							List<Vec2f> curve = createCurve(data, wh.x(), wh.y());
+							return curve;
+						}
+					});
+			for (Integer dataIndex : dataIndizes) {
+				double v = table.getNormalizedValue(dimensionID, va.get(dataIndex));
+				v = Double.isNaN(v) ? 1 : v;
+
+				Group group = va.getGroupList().getGroupOfVAIndex(dataIndex);
+				Pair<Vec2f, Vec2f> loc = getLocation(curveLoader.getUnchecked(group), v, wh.x());
+
+				float offset = dim.select(loc.getFirst());
+				float size = dim.select(loc.getSecond()) - offset;
+				r.add(new GLLocation(offset, size));
+			}
+			return r;
+		}
+	}
+
 	private void renderCurve(GLGraphics g, Group group, VirtualArray recordVA, boolean fillCurve,
 			boolean hasPrimaryCurve, float w, float h) {
 
@@ -230,6 +293,7 @@ public class KaplanMeierElement extends AKaplanMeierElement implements
 		Arrays.sort(data);
 		return new ArrayDoubleList(data);
 	}
+
 
 	private class GroupPicker implements IPickingLabelProvider,IPickingListener {
 		@Override

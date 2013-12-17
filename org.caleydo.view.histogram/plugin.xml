@@ -118,6 +118,30 @@
                </ViewCreator>
             </Embedding>
          </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.clinical.numerical.segment.brick"
+                  icon="resources/icons/histogram.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.view.histogram.HistogramVisInfo">
+               <ViewCreator
+                     class="org.caleydo.view.histogram.HistogramRemoteViewCreator">
+               </ViewCreator>
+            </Embedding>
+         </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.clinical.numerical.header.brick"
+                  icon="resources/icons/histogram.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.view.histogram.HistogramVisInfo">
+               <ViewCreator
+                     class="org.caleydo.view.histogram.HistogramRemoteViewCreator">
+               </ViewCreator>
+            </Embedding>
+         </ParentView>
       </EmbeddingInfo>
       <EmbeddingInfo
             viewID="org.caleydo.view.boxandwhiskers">
@@ -209,6 +233,30 @@
                viewID="org.caleydo.view.stratomex">
             <Embedding
                   embeddingID="org.caleydo.view.stratomex.clinical.header.brick"
+                  icon="resources/icons/chart_boxandwhiskers.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersVisInfo">
+               <RendererCreator
+                     class="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersRemoteViewCreator">
+               </RendererCreator>
+            </Embedding>
+         </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.clinical.numerical.segment.brick"
+                  icon="resources/icons/chart_boxandwhiskers.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersVisInfo">
+               <RendererCreator
+                     class="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersRemoteViewCreator">
+               </RendererCreator>
+            </Embedding>
+         </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.clinical.numerical.header.brick"
                   icon="resources/icons/chart_boxandwhiskers.png"
                   isDefaultView="false"
                   visInfo="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersVisInfo">

@@ -141,10 +141,14 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	}
 
 	public RawType getRaw(int index) {
+		if (index < 0 || index >= rawContainer.size())
+			return null;
 		return rawContainer.get(index);
 	}
 
 	public String getRawAsString(int index) {
+		if (index < 0 || index >= rawContainer.size())
+			return null;
 		return rawContainer.get(index).toString();
 	}
 

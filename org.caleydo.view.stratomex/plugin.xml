@@ -77,6 +77,12 @@
          <Embedding
                id="org.caleydo.view.stratomex.clinical.header.brick">
          </Embedding>
+         <Embedding
+               id="org.caleydo.view.stratomex.clinical.numerical.segment.brick">
+         </Embedding>
+         <Embedding
+               id="org.caleydo.view.stratomex.clinical.numerical.header.brick">
+         </Embedding>
       </Provider>
    </extension>
 </plugin>

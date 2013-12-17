@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -125,8 +126,15 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 		c.add(filterStratifications);
 		filterStratifications.add(lineUp.get(2)); // move data domain selector
 		c.add(lineUp.get(2)); // move table
-		lineUp.add(lineUp.size() - 1,
-				wrap("Groups", "Select the groups to show", this.groups, 250, this.groups.createSelectAllNone()));
+
+		{
+			GLElementContainer g = new GLElementContainer(GLLayouts.flowVertical(2));
+			g.add(drawText("Groups", "Select the groups to show"));
+			g.add(this.groups.createSelectAllNone());
+			g.add(this.groups);
+			g.setSize(250, -1);
+			lineUp.add(lineUp.size() - 1, g);
+		}
 
 		if (isBound2View())
 			loadViewState();
@@ -196,7 +204,7 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 		c.add(drawText(label, toolTip));
 		for (GLElement p : postLabel)
 			c.add(p);
-		c.add(ScrollingDecorator.wrap(content, 8));
+		c.add(ScrollingDecorator.wrap(content, 8, EDimension.RECORD));
 		c.setSize(width, -1);
 		return c;
 	}

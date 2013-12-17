@@ -10,6 +10,7 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.AdvancedDoubleStatistics;
 import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 
 import com.google.common.base.Preconditions;
 
@@ -22,6 +23,7 @@ import com.google.common.base.Preconditions;
 public class ListBoxAndWhiskersElement extends ABoxAndWhiskersElement {
 	private final Color color;
 	private final String label;
+	private IDoubleList data;
 
 	public ListBoxAndWhiskersElement(IDoubleList data, EDetailLevel detailLevel, EDimension direction,
 			boolean showOutlier, boolean showMinMax, String label, Color color) {
@@ -29,6 +31,7 @@ public class ListBoxAndWhiskersElement extends ABoxAndWhiskersElement {
 		this.color = Preconditions.checkNotNull(color);
 		this.label = Preconditions.checkNotNull(label);
 		setData(data);
+		this.data = data;
 	}
 
 	public ListBoxAndWhiskersElement(AdvancedDoubleStatistics stats, EDetailLevel detailLevel, EDimension direction,
@@ -39,6 +42,37 @@ public class ListBoxAndWhiskersElement extends ABoxAndWhiskersElement {
 		setData(stats);
 	}
 
+	public boolean hasData() {
+		return this.data != null;
+	}
+
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	public IDoubleList getData() {
+		return data;
+	}
+
+	public GLLocation getLocation(int dataIndex) {
+		if (dataIndex < 0 || !hasData() || dataIndex >= this.data.size())
+			return GLLocation.UNKNOWN;
+		float total = getDirection().select(getSize());
+		double value = this.data.getPrimitive(dataIndex);
+		double pos = total * normalize(value);
+		return new GLLocation(pos, 1. / data.size());
+	}
+
+	@Override
+	public void setData(IDoubleList list, double min, double max) {
+		this.data = list;
+		super.setData(list, min, max);
+	}
+
+	@Override
+	public void setData(AdvancedDoubleStatistics stats, double min, double max) {
+		this.data = null;
+		super.setData(stats, min, max);
+	}
 	/**
 	 * @return the label, see {@link #label}
 	 */
