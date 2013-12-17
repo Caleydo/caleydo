@@ -80,6 +80,12 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	 */
 	volatile DnDItem active;
 
+	/**
+	 * a shared version of the current item, shared within the same VM, avoids encryption and decryption, as well as in
+	 * some os (I'm talking about Mac OS), you can#t access intermedidate data
+	 */
+	volatile static DnDItem activeShared;
+
 	public MouseLayer(IGLCanvas canvas) {
 		super();
 		this.canvas = canvas;
@@ -110,7 +116,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 				// check if possible
 				IDragInfo info = source.startSWTDrag(e);
 				if (info != null) { // if so
-					active = new DnDItem(info, source, true);
+					activeShared = active = new DnDItem(info, source, true);
 					active.setMousePos(e.getMousePos());
 					EventPublisher.trigger(new DragItemEvent(readOnly(active), active.source, false)
 							.to(MouseLayer.this));
@@ -150,6 +156,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 			// thread switch
 			EventPublisher.trigger(new DragItemEvent(readOnly(active), active.source, true).to(MouseLayer.this));
 			active = null;
+			activeShared = null;
 		}
 	};
 	private final DropTargetListener drop = new DropTargetListener() {
@@ -189,8 +196,10 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 						.to(MouseLayer.this));
 				activeDropTarget = null;
 			}
-			if (active != null && active.source == null) // cleanup remote
+			if (active != null && active.source == null) {// cleanup remote
 				active = null;
+				activeShared = null;
+			}
 		}
 
 		private int fromType(EDnDType type) {
@@ -388,7 +397,9 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		DnDItem item = null;
 		if (active != null) // cached one e.g local drag
 			item = active;
-		else {
+		else if (activeShared != null) { // same vm
+			item = active = activeShared;
+		} else {
 			// really extract the data
 			IDragInfo info = extract(event);
 			if (info != null)
