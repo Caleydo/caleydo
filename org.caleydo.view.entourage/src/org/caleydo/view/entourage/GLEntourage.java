@@ -67,6 +67,7 @@ import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
+import org.caleydo.datadomain.pathway.graph.PathSegment;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
@@ -141,7 +142,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	/**
 	 * All segments of the currently selected path.
 	 */
-	private List<PathwayPath> pathSegments = new ArrayList<>();
+	private PathwayPath path = new PathwayPath();
 
 	/**
 	 * Info for the {@link MultiFormRenderer} of the selected path.
@@ -1228,9 +1229,9 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
 		public void onPathSelection(PathwayPathSelectionEvent event) {
-			pathSegments = event.getPathSegments();
-			if (pathSegments.size() > 0) {
-				PathwayPath segment = pathSegments.get(pathSegments.size() - 1);
+			path = event.getPath();
+			if (path.size() > 0) {
+				PathSegment segment = path.get(path.size() - 1);
 				PathwayMultiFormInfo info = getPathwayMultiFormInfo(segment.getPathway());
 				if (info != null) {
 					lastUsedRenderer = info.multiFormRenderer;
@@ -1366,12 +1367,11 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		// textureSelectionListeners.clear();
 		PathwayVertexRep lastNodeOfPrevSegment = null;
 
-		for (PathwayPath segment : pathSegments) {
-			List<PathwayVertexRep> nodes = segment.getNodes();
-			if (!nodes.isEmpty()) {
+		for (PathSegment segment : path) {
+			if (!segment.isEmpty()) {
 				if (lastNodeOfPrevSegment != null) {
 					PathwayMultiFormInfo info1 = getInfo(lastNodeOfPrevSegment);
-					PathwayMultiFormInfo info2 = getInfo(nodes.get(0));
+					PathwayMultiFormInfo info2 = getInfo(segment.get(0));
 					if (pathwayRow.getVisibility() == EVisibility.NONE || info1 == null || info2 == null)
 						continue;
 					Rect loc1 = getAbsoluteVertexLocation(
@@ -1380,12 +1380,12 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 							info1.container);
 					Rect loc2 = getAbsoluteVertexLocation(
 							getPathwayRepresentation(info2.multiFormRenderer,
-									info2.multiFormRenderer.getActiveRendererID()), nodes.get(0), info2.container);
+									info2.multiFormRenderer.getActiveRendererID()), segment.get(0), info2.container);
 					augmentation.add(new LinkRenderer(this, true, loc1, loc2, info1, info2, 1, false, false, false,
-							true, lastNodeOfPrevSegment, nodes.get(0), connectionBandRenderer));
+							true, lastNodeOfPrevSegment, segment.get(0), connectionBandRenderer));
 				}
 
-				lastNodeOfPrevSegment = nodes.get(nodes.size() - 1);
+				lastNodeOfPrevSegment = segment.get(segment.size() - 1);
 			}
 		}
 		if (pathwayRow.getVisibility() != EVisibility.NONE) {
@@ -1528,17 +1528,16 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	protected boolean isPathLink(PathwayVertexRep v1, PathwayVertexRep v2) {
 		PathwayVertexRep lastNodeOfPrevSegment = null;
-		for (PathwayPath segment : pathSegments) {
-			List<PathwayVertexRep> nodes = segment.getNodes();
-			if (!nodes.isEmpty()) {
+		for (PathSegment segment : path) {
+			if (!segment.isEmpty()) {
 				if (lastNodeOfPrevSegment != null) {
-					if ((v1 == lastNodeOfPrevSegment && v2 == nodes.get(0))
-							|| (v2 == lastNodeOfPrevSegment && v1 == nodes.get(0))) {
+					if ((v1 == lastNodeOfPrevSegment && v2 == segment.get(0))
+							|| (v2 == lastNodeOfPrevSegment && v1 == segment.get(0))) {
 						return true;
 					}
 				}
 
-				lastNodeOfPrevSegment = nodes.get(nodes.size() - 1);
+				lastNodeOfPrevSegment = segment.get(segment.size() - 1);
 			}
 		}
 		return false;
@@ -1681,18 +1680,10 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	}
 
 	/**
-	 * @return the pathSegments, see {@link #pathSegments}
+	 * @return the path, see {@link #path}
 	 */
-	public List<PathwayPath> getPathSegments() {
-		return pathSegments;
-	}
-
-	public boolean hasPathPathway(PathwayGraph pathway) {
-		for (PathwayPath segment : pathSegments) {
-			if (segment.getPathway() == pathway)
-				return true;
-		}
-		return false;
+	public PathwayPath getPath() {
+		return path;
 	}
 
 	public boolean hasPathwayCurrentContext(PathwayGraph pathway) {

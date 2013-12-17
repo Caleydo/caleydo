@@ -80,6 +80,7 @@ import org.caleydo.datadomain.pathway.VertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.datadomain.pathway.contextmenu.item.LoadPathwaysByPathwayItem;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
+import org.caleydo.datadomain.pathway.graph.PathSegment;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
@@ -200,7 +201,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	private IPickingListener pathwayElementPickingListener;
 
 	private Set<PathwayVertexRep> portalVertexReps = new HashSet<>();
-	private List<PathwayPath> pathSegments = new ArrayList<PathwayPath>();
+	private PathwayPath pathSegments = new PathwayPath();
 	/**
 	 * The currently selected path as selected by the user from allPaths.
 	 */
@@ -1018,7 +1019,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			// {
 
 			boolean renderAlternatives = false;
-			for (PathwayPath pathSegment : pathSegments) {
+			for (PathSegment pathSegment : pathSegments) {
 				if (pathSegment.getPathway() == pathway) {
 					renderAlternatives = true;
 					continue;
@@ -1563,7 +1564,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					// previousSelectedPath.getEndVertex(), pathway);
 					if (pathSegments != null && !pathSegments.isEmpty()) {
 						isPortalNode = PathwayManager.get().areVerticesEquivalent(
-								pathSegments.get(pathSegments.size() - 1).getPath().getEndVertex(), vertexRep);
+								pathSegments.get(pathSegments.size() - 1).asGraphPath().getEndVertex(), vertexRep);
 						// portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(
 						// pathSegments.get(pathSegments.size() - 1).getPath().getEndVertex(), pathway);
 						// for (PathwayVertexRep portal : portalVertexReps) {
@@ -1579,7 +1580,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 					}
 
 					generateSingleNodePath(vertexRep);
-					pathSegments.add(new PathwayPath(selectedPath));
+					pathSegments.add(new PathSegment(selectedPath));
 					isPathStartSelected = true;
 					triggerPathUpdate = true;
 				}
@@ -1614,7 +1615,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			}
 			// update
 			if (pathSegments.size() > 0)
-				pathSegments.set(pathSegments.size() - 1, new PathwayPath(selectedPath));
+				pathSegments.set(pathSegments.size() - 1, new PathSegment(selectedPath));
 			if (selectionType == SelectionType.SELECTION) {// click on
 															// end node
 				isPathStartSelected = false;
@@ -1634,14 +1635,14 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			return;
 		vertexRep = getSelectableVertexRepForPath(vertexRep);
 		if (pathSegments.size() > 0) {
-			PathwayPath lastSegment = pathSegments.get(pathSegments.size() - 1);
-			PathwayVertexRep lastVertexRep = lastSegment.getNodes().get(lastSegment.getNodes().size() - 1);
-			PathwayVertexRep firstVertexRep = lastSegment.getNodes().get(0);
+			PathSegment lastSegment = pathSegments.get(pathSegments.size() - 1);
+			PathwayVertexRep lastVertexRep = lastSegment.get(lastSegment.size() - 1);
+			PathwayVertexRep firstVertexRep = lastSegment.get(0);
 			// Do not add the same node after each other
 			if (lastVertexRep == vertexRep)
 				return;
 			if (pathway.containsEdge(lastVertexRep, vertexRep)) {
-				List<DefaultEdge> edges = new ArrayList<>(lastSegment.getPath().getEdgeList());
+				List<DefaultEdge> edges = new ArrayList<>(lastSegment.asGraphPath().getEdgeList());
 				edges.add(pathway.getEdge(lastVertexRep, vertexRep));
 				GraphPath<PathwayVertexRep, DefaultEdge> path = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
 						pathway, firstVertexRep, vertexRep, edges, 0);
@@ -1653,7 +1654,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 				allPathsList.add(new Pair<List<GraphPath<PathwayVertexRep, DefaultEdge>>, Integer>(allPaths, 0));
 				selectedPath = path;
 				selectedPathID = 0;
-				pathSegments.set(pathSegments.size() - 1, new PathwayPath(selectedPath));
+				pathSegments.set(pathSegments.size() - 1, new PathSegment(selectedPath));
 				triggerPathUpdate();
 				isBubbleTextureDirty = true;
 				return;
@@ -1661,7 +1662,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		}
 
 		generateSingleNodePath(vertexRep);
-		pathSegments.add(new PathwayPath(selectedPath));
+		pathSegments.add(new PathSegment(selectedPath));
 		triggerPathUpdate();
 		isBubbleTextureDirty = true;
 		pathStartVertexRep = vertexRep;
@@ -1715,11 +1716,11 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 		if (selectedPath != null) {
 			if (pathSegments.size() > 0)
-				pathSegments.set(pathSegments.size() - 1, new PathwayPath(selectedPath));
+				pathSegments.set(pathSegments.size() - 1, new PathSegment(selectedPath));
 			else
-				pathSegments.add(new PathwayPath(selectedPath));
+				pathSegments.add(new PathSegment(selectedPath));
 		}
-		pathEvent.setPathSegments(pathSegments);
+		pathEvent.setPath(pathSegments);
 		pathEvent.setSender(this);
 		pathEvent.setEventSpace(pathwayPathEventSpace);
 		eventPublisher.triggerEvent(pathEvent);
@@ -1729,7 +1730,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	 * @param selectedPath
 	 *            setter, see {@link #selectedPath}
 	 */
-	public void setSelectedPathSegments(List<PathwayPath> pathSegmentsBroadcasted) {
+	public void setSelectedPathSegments(PathwayPath pathSegmentsBroadcasted) {
 		// System.out.println("pathSegmentsBroadcasted");
 		if (pathSegmentsBroadcasted == null) {
 			// System.out.println("(pathSegmentsBroadcasted == null");
@@ -1739,10 +1740,10 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		pathSegments = pathSegmentsBroadcasted;
 		boolean wasPathSelected = this.selectedPath != null;
 		this.selectedPath = null;
-		for (PathwayPath path : pathSegments) {
+		for (PathSegment segment : pathSegments) {
 			// TODO: Handle multiple path segments
-			if (path.getPathway() == pathway) {
-				this.selectedPath = path.getPath();
+			if (segment.getPathway() == pathway) {
+				this.selectedPath = segment.asGraphPath();
 				break;
 			}
 		}

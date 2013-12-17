@@ -801,8 +801,8 @@ public class GLPathwayGridLayout2 implements IGLLayout {
 
 		@Override
 		public int compare(PathwayMultiFormInfo o1, PathwayMultiFormInfo o2) {
-			boolean hasPath1 = view.hasPathPathway(o1.pathway);
-			boolean hasPath2 = view.hasPathPathway(o2.pathway);
+			boolean hasPath1 = view.getPath().hasPathway(o1.pathway);
+			boolean hasPath2 = view.getPath().hasPathway(o2.pathway);
 			if (hasPath1 && !hasPath2)
 				return -1;
 			if (hasPath2 && !hasPath1)

@@ -5,11 +5,9 @@
  ******************************************************************************/
 package org.caleydo.view.enroute.path;
 
-import java.util.List;
-
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.MinSizeUpdateEvent;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.listener.EnableFreePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
@@ -42,7 +40,7 @@ public class SelectedPathUpdateStrategy extends APathUpdateStrategy {
 
 	@Override
 	public void onSelectedPathChanged(PathwayPathSelectionEvent event) {
-		renderer.setPath(event.getPathSegmentsAsVertexList());
+		renderer.setPath(event.getPath());
 	}
 
 	@Override
@@ -59,7 +57,7 @@ public class SelectedPathUpdateStrategy extends APathUpdateStrategy {
 	}
 
 	@Override
-	public boolean isPathChangePermitted(List<List<PathwayVertexRep>> newPath) {
+	public boolean isPathChangePermitted(PathwayPath newPath) {
 		return true;
 	}
 
