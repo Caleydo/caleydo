@@ -10,7 +10,6 @@ import java.util.Collections;
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.color.Color;
@@ -45,19 +44,6 @@ public class StratificationDataMode extends ATourGuideDataMode implements ITourG
 		if (!((ATableBasedDataDomain) dataDomain).getTable().isDataHomogeneous())
 			return InhomogenousDataDomainQuery.hasOne(dataDomain, Sets.immutableEnumSet(EDataClass.CATEGORICAL));
 		return true;
-	}
-
-	@Override
-	public int getNumCategories() {
-		return 2;
-	}
-
-	@Override
-	public int getCategory(IDataDomain dataDomain) {
-		if (DataDomainOracle.isCategoricalDataDomain(dataDomain)
-				|| !DataSupportDefinitions.homogenousTables.apply(dataDomain))
-			return 1;
-		return 0;
 	}
 
 	@Override
