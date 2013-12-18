@@ -8,16 +8,17 @@ import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
-import org.caleydo.datadomain.pathway.embedding.IPathwayViewCreator;
+import org.caleydo.datadomain.pathway.IPathwayRepresentation;
+import org.caleydo.datadomain.pathway.embedding.IPathwayRepresentationCreator;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
-public class EntourageLevel1PathwayCreator implements IPathwayViewCreator {
+public class EntourageLevel1PathwayCreator implements IPathwayRepresentationCreator {
 
 	public EntourageLevel1PathwayCreator() {
 	}
 
 	@Override
-	public AGLView create(AGLView remoteRenderingView, PathwayGraph pathway,
+	public IPathwayRepresentation create(AGLView remoteRenderingView, PathwayGraph pathway,
 			List<TablePerspective> tablePerspectives, TablePerspective mappingTablePerspective,
 			String embeddingEventSpace) {
 		GLPathway pathwayView = (GLPathway) GeneralManager

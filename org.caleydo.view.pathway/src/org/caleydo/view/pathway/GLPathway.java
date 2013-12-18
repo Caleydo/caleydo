@@ -63,6 +63,8 @@ import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.Units;
 import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -2047,6 +2049,31 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		float y = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight() - vecTranslation.y()) - height;
 
 		return new Rect(x, y, width, height);
+	}
+
+	@Override
+	public GLElement asGLElement() {
+		return null;
+	}
+
+	@Override
+	public AGLView asAGLView() {
+		return this;
+	}
+
+	@Override
+	public ALayoutRenderer asLayoutRenderer() {
+		return null;
+	}
+
+	@Override
+	public float getMinWidth() {
+		return getMinPixelWidth();
+	}
+
+	@Override
+	public float getMinHeight() {
+		return getMinPixelHeight();
 	}
 
 }

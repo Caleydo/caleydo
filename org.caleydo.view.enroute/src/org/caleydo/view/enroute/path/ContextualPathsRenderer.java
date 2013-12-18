@@ -41,6 +41,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
@@ -689,6 +690,31 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	public Rect getPathwayBounds() {
 		return new Rect(0, 0, view.getPixelGLConverter().getPixelWidthForGLWidth(elementLayout.getSizeScaledX()), view
 				.getPixelGLConverter().getPixelHeightForGLHeight(elementLayout.getSizeScaledY()));
+	}
+
+	@Override
+	public GLElement asGLElement() {
+		return null;
+	}
+
+	@Override
+	public AGLView asAGLView() {
+		return null;
+	}
+
+	@Override
+	public ALayoutRenderer asLayoutRenderer() {
+		return this;
+	}
+
+	@Override
+	public float getMinWidth() {
+		return getMinWidthPixels();
+	}
+
+	@Override
+	public float getMinHeight() {
+		return getMinHeightPixels();
 	}
 
 }

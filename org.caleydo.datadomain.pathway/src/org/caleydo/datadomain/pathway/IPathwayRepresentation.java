@@ -7,6 +7,9 @@ package org.caleydo.datadomain.pathway;
 
 import java.util.List;
 
+import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -78,6 +81,34 @@ public interface IPathwayRepresentation {
 	 * @param listener
 	 */
 	public void addVertexRepSelectionListener(IVertexRepSelectionListener listener);
+
+	/**
+	 * @return The minimum width in pixels required by the pathway representation.
+	 */
+	public float getMinWidth();
+
+	/**
+	 * @return The minimum height in pixels required by the pathway representation.
+	 */
+	public float getMinHeight();
+
+	/**
+	 *
+	 * @return This pathway representation as {@link GLElement}. Null if not supported.
+	 */
+	public GLElement asGLElement();
+
+	/**
+	 *
+	 * @return This pathway representation as {@link AGLView}. Null if not supported.
+	 */
+	public AGLView asAGLView();
+
+	/**
+	 *
+	 * @return This pathway representation as {@link ALayoutRenderer}. Null if not supported.
+	 */
+	public ALayoutRenderer asLayoutRenderer();
 
 	// /**
 	// * Adds a vertex rep based event that should be triggered when picking a vertex rep in the specified mode.

@@ -30,6 +30,7 @@ public class PathwayElement extends GLElementContainer {
 
 	@DeepScan
 	protected PathwayDataMappingHandler mappingHandler;
+
 	protected String eventSpace;
 
 	public PathwayElement(String eventSpace) {
@@ -88,6 +89,7 @@ public class PathwayElement extends GLElementContainer {
 		// make use of the correctly laid out pathway representation
 		add(0, pathwayRepresentation);
 		this.pathwayRepresentation = pathwayRepresentation;
+		pathwayRepresentation.setWrappingElement(this);
 		mappingHandler.setPathwayRepersentation(pathwayRepresentation);
 	}
 

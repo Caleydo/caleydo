@@ -6,15 +6,20 @@
 package org.caleydo.view.pathway.v2.internal;
 
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayoutDatas;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
 import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.pathway.v2.ui.PathwayElement;
-import org.caleydo.view.pathway.v2.ui.PathwayDataMappingHandler;
 import org.caleydo.view.pathway.v2.ui.PathwayTextureRepresentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.AverageColorMappingAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.HighVarianceIndicatorAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.MultiMappingIndicatorAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.StdDevBarAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.StdDevBarConsideringVertexHighlightAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.path.BubbleSetPathsAugmentation;
 
 import com.google.common.base.Supplier;
 
@@ -41,17 +46,29 @@ public class PathwayElementFactory implements IGLElementFactory {
 			}
 		};
 
-		PathwayElement elem = new PathwayElement(context.get("eventSpace", String.class, supp));
+		IGLCanvas canvas = context.get(IGLCanvas.class, GLLayoutDatas.<IGLCanvas> throwInvalidException());
 
-		// TODO
-		elem.setPathwayRepresentation(new PathwayTextureRepresentation(pathway));
-		PathwayDataMappingHandler pathwayMappingHandler = new PathwayDataMappingHandler();
-		pathwayMappingHandler.setEventSpace(context.get("eventSpace", String.class, supp));
+		PathwayElement pathwayElement = new PathwayElement(context.get("eventSpace", String.class, supp));
+
+		pathwayElement.setPathwayRepresentation(new PathwayTextureRepresentation(pathway));
+
 		AverageColorMappingAugmentation colorMappingAugmentation = new AverageColorMappingAugmentation(
-				elem.getPathwayRepresentation(), pathwayMappingHandler);
-		elem.addBackgroundAugmentation(colorMappingAugmentation);
+				pathwayElement.getPathwayRepresentation(), pathwayElement.getMappingHandler());
 
-		return elem;
+		pathwayElement.addBackgroundAugmentation(colorMappingAugmentation);
+		pathwayElement.addBackgroundAugmentation(new MultiMappingIndicatorAugmentation(pathwayElement
+				.getPathwayRepresentation()));
+
+		pathwayElement.addForegroundAugmentation(new BubbleSetPathsAugmentation(pathwayElement
+				.getPathwayRepresentation(), canvas, context.get("eventSpace", String.class, supp)));
+
+		pathwayElement.addForegroundAugmentation(new StdDevBarAugmentation(pathwayElement.getPathwayRepresentation(),
+				pathwayElement.getMappingHandler()));
+		pathwayElement.addForegroundAugmentation(new HighVarianceIndicatorAugmentation(pathwayElement
+				.getPathwayRepresentation(), pathwayElement.getMappingHandler()));
+		pathwayElement.addForegroundAugmentation(new StdDevBarConsideringVertexHighlightAugmentation(pathwayElement));
+
+		return pathwayElement;
 	}
 
 	@Override

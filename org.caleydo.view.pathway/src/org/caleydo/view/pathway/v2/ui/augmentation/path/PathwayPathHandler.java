@@ -13,6 +13,7 @@ import java.util.Set;
 
 import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
 import org.caleydo.core.view.opengl.canvas.GLThreadListenerWrapper;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
@@ -61,9 +62,10 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 	protected List<PathSegment> alternativeSegments = new ArrayList<>();
 	protected int selectedAlternativeIndex = 0;
 
-	public PathwayPathHandler(IPathwayRepresentation pathwayRepresentation, IGLCanvas canvas) {
+	public PathwayPathHandler(IPathwayRepresentation pathwayRepresentation, IGLCanvas canvas, String eventSpace) {
 		this.pathwayRepresentation = pathwayRepresentation;
 		this.canvas = canvas;
+		this.eventSpace = eventSpace;
 		pathwayRepresentation.addVertexRepSelectionListener(this);
 		keyListener = GLThreadListenerWrapper.wrap(new IGLKeyListener() {
 
@@ -107,23 +109,23 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 		canvas.addMouseListener(mouseListener);
 	}
 
-	@ListenTo
+	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onPathSelectionModeChanged(EnablePathSelectionEvent event) {
-		// if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
-		isPathSelectionMode = event.isPathSelectionMode();
+		// if (eventSpace == null || (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace))) {
+			isPathSelectionMode = event.isPathSelectionMode();
 		// }
 	}
 
-	@ListenTo
+	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onSelectedPathChanged(PathwayPathSelectionEvent event) {
-		// if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
-		if (event.getSender() == this)
-			return;
-		selectedPath = event.getPath();
-		startVertexRep = null;
-		alternativeSegments.clear();
-		notifyListeners();
-
+		// if (event.getSender() != this
+		// && (eventSpace == null || (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)))) {
+			if (event.getSender() == this)
+				return;
+			selectedPath = event.getPath();
+			startVertexRep = null;
+			alternativeSegments.clear();
+			notifyListeners();
 		// }
 
 	}
@@ -131,6 +133,7 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 	@Override
 	public void onSelect(PathwayVertexRep vertexRep, Pick pick) {
 		if (!isPathSelectionMode
+				|| isControlDown
 				|| (vertexRep.getType() != EPathwayVertexType.gene
 						&& vertexRep.getType() != EPathwayVertexType.compound && vertexRep.getType() != EPathwayVertexType.group))
 			return;
@@ -309,6 +312,8 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 
 		selectedPath.ensurePathLevelIntegrity();
 
+		triggerPathUpdate();
+
 		StringBuilder b = new StringBuilder("Path (");
 		for (PathSegment s : selectedPath) {
 			b.append("[");
@@ -320,6 +325,14 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 		b.append(")");
 		System.out.println(b);
 		notifyListeners();
+	}
+
+	protected void triggerPathUpdate() {
+		PathwayPathSelectionEvent event = new PathwayPathSelectionEvent();
+		event.setPath(selectedPath);
+		event.setEventSpace(eventSpace);
+		event.setSender(this);
+		EventPublisher.trigger(event);
 	}
 
 	/**
@@ -388,6 +401,14 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 
 	public static interface IPathUpdateListener {
 		public void onPathsChanged(PathwayPathHandler handler);
+	}
+
+	/**
+	 * @param eventSpace
+	 *            setter, see {@link eventSpace}
+	 */
+	public void setEventSpace(String eventSpace) {
+		this.eventSpace = eventSpace;
 	}
 
 }

@@ -135,7 +135,10 @@ public class GLElementAdapter extends GLElementContainer {
 	protected void renderAdapter(GLGraphics g, float w, float h) {
 		float windowHeight = view.getViewFrustum().getHeight();
 		Vec2f loc = getAbsoluteLocation();
-		if (viewFrustum.getRight() != w || viewFrustum.getTop() != (windowHeight - loc.y())) {
+		if (Float.compare(viewFrustum.getLeft(), loc.x() + 140) != 0
+				|| Float.compare(viewFrustum.getBottom(), windowHeight - loc.y() - h) != 0
+				|| Float.compare(viewFrustum.getRight(), loc.x() + w) != 0
+				|| Float.compare(viewFrustum.getTop(), windowHeight - loc.y()) != 0) {
 			viewFrustum.setLeft(loc.x());
 			viewFrustum.setBottom(windowHeight - loc.y() - h);
 			viewFrustum.setRight(loc.x() + w);

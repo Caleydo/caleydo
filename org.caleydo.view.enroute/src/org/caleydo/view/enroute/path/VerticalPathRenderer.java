@@ -21,6 +21,8 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
@@ -466,6 +468,31 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	public Rect getPathwayBounds() {
 		return new Rect(0, 0, view.getPixelGLConverter().getPixelWidthForGLWidth(elementLayout.getSizeScaledX()), view
 				.getPixelGLConverter().getPixelHeightForGLHeight(elementLayout.getSizeScaledY()));
+	}
+
+	@Override
+	public GLElement asGLElement() {
+		return null;
+	}
+
+	@Override
+	public AGLView asAGLView() {
+		return null;
+	}
+
+	@Override
+	public ALayoutRenderer asLayoutRenderer() {
+		return this;
+	}
+
+	@Override
+	public float getMinWidth() {
+		return getMinWidthPixels();
+	}
+
+	@Override
+	public float getMinHeight() {
+		return getMinHeightPixels();
 	}
 
 }

@@ -9,16 +9,14 @@ import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 /**
- * Factory for pathway views.
- *
- * @author Christian Partl
+ * @author Christian
  *
  */
-public interface IPathwayViewCreator {
-
+public interface IPathwayRepresentationCreator {
 	/**
 	 * Creates a pathway view.
 	 *
@@ -36,7 +34,7 @@ public interface IPathwayViewCreator {
 	 *            should get.
 	 * @return the The layout renderer to visualize the pathway.
 	 */
-	public AGLView create(AGLView remoteRenderingView, PathwayGraph pathway,
+	public IPathwayRepresentation create(AGLView remoteRenderingView, PathwayGraph pathway,
 			List<TablePerspective> tablePerspectives, TablePerspective mappingTablePerspective,
 			String embeddingEventSpace);
 }

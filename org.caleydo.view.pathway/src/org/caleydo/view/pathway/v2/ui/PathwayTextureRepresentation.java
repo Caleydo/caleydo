@@ -55,6 +55,9 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 
 	protected List<IVertexRepSelectionListener> vertexListeners = new ArrayList<>();
 
+	protected float minWidth = -1;
+	protected float minHeight = -1;
+
 	public PathwayTextureRepresentation() {
 	}
 
@@ -287,6 +290,24 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 		if (pathway == null)
 			return null;
 		return new Rect(origin.x(), origin.y(), renderSize.x(), renderSize.y());
+	}
+
+	@Override
+	public float getMinWidth() {
+		if (minWidth < 0)
+			return minWidth;
+		if (pathway == null)
+			return 120;
+		return pathway.getWidth() * 0.8f;
+	}
+
+	@Override
+	public float getMinHeight() {
+		if (minHeight < 0)
+			return minHeight;
+		if (pathway == null)
+			return 120;
+		return pathway.getHeight() * 0.8f;
 	}
 
 }

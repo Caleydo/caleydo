@@ -50,11 +50,11 @@ public class PathwayDataMappingHandler implements IEventBasedSelectionManagerUse
 
 	protected List<IPathwayMappingListener> listeners = new ArrayList<>();
 
-	@ListenTo
+	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onMapTablePerspective(PathwayMappingEvent event) {
-		if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
-			setMappingPerspective(event.getTablePerspective());
-		}
+		// if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
+		setMappingPerspective(event.getTablePerspective());
+		// }
 	}
 
 	@ListenTo
@@ -69,20 +69,20 @@ public class PathwayDataMappingHandler implements IEventBasedSelectionManagerUse
 		// }
 	}
 
-	@ListenTo
+	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onAddTablePerspective(AddTablePerspectivesEvent event) {
-		if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
-			for (TablePerspective tp : event.getTablePerspectives()) {
-				addTablePerspective(tp);
-			}
+		// if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
+		for (TablePerspective tp : event.getTablePerspectives()) {
+			addTablePerspective(tp);
 		}
+		// }
 	}
 
-	@ListenTo
+	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onRemoveTablePerspective(RemoveTablePerspectiveEvent event) {
-		if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
-			removeTablePerspective(event.getTablePerspective());
-		}
+		// if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
+		removeTablePerspective(event.getTablePerspective());
+		// }
 	}
 
 	public void addTablePerspective(TablePerspective tablePerspective) {

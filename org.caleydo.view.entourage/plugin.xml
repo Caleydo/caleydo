@@ -94,9 +94,9 @@
          <pathway
                embeddingID="org.caleydo.view.entourage.pathway.multiform.level4"
                icon="resources/icons/pathway_lv4.png">
-            <rendererCreator
+            <creator
                   class="org.caleydo.view.entourage.PathwayLevel4Creator">
-            </rendererCreator>
+            </creator>
          </pathway>
       </parent>
    </extension>

@@ -10,6 +10,7 @@ import java.util.List;
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.ARemoteGLElementCreator;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
@@ -32,7 +33,8 @@ public class BoxAndWhiskersRemoteViewCreator extends ARemoteGLElementCreator {
 	 * @return
 	 */
 	@Override
-	protected GLElement create(List<TablePerspective> tablePerspectives) {
+	protected GLElement create(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
+			String embeddingEventSpace) {
 		GLElementFactoryContext context = createContext(tablePerspectives);
 
 		BoxAndWhiskersElementFactory f = new BoxAndWhiskersElementFactory();
@@ -40,7 +42,6 @@ public class BoxAndWhiskersRemoteViewCreator extends ARemoteGLElementCreator {
 			return new GLElement();
 		return f.create(context);
 	}
-
 
 	private static GLElementFactoryContext createContext(List<TablePerspective> tablePerspectives) {
 		Builder b = GLElementFactoryContext.builder();

@@ -19,7 +19,6 @@ import org.caleydo.core.view.opengl.layout2.view.AMultiTablePerspectiveElementVi
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.v2.internal.serial.SerializedPathwayView;
-import org.caleydo.view.pathway.v2.ui.PathwayDataMappingHandler;
 import org.caleydo.view.pathway.v2.ui.PathwayElement;
 import org.caleydo.view.pathway.v2.ui.PathwayTextureRepresentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.AverageColorMappingAugmentation;
@@ -49,8 +48,8 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		pathwayElement = new PathwayElement(eventSpace);
 		pathwayElement.setPathwayRepresentation(new PathwayTextureRepresentation(PathwayManager.get()
 				.getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG)));
-		PathwayDataMappingHandler pathwayMappingHandler = new PathwayDataMappingHandler();
-		pathwayMappingHandler.setEventSpace(eventSpace);
+		// PathwayDataMappingHandler pathwayMappingHandler = new PathwayDataMappingHandler();
+		// pathwayMappingHandler.setEventSpace(eventSpace);
 
 		// pathwayElement.addBackgroundAugmentation(new PathwayTextureBackgroundColorAugmentation(pathwayElement
 		// .getPathwayRepresentation()));
@@ -63,7 +62,7 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 				.getPathwayRepresentation()));
 
 		pathwayElement.addForegroundAugmentation(new BubbleSetPathsAugmentation(pathwayElement
-				.getPathwayRepresentation(), canvas));
+				.getPathwayRepresentation(), canvas, eventSpace));
 
 		pathwayElement.addForegroundAugmentation(new StdDevBarAugmentation(pathwayElement.getPathwayRepresentation(),
 				pathwayElement.getMappingHandler()));

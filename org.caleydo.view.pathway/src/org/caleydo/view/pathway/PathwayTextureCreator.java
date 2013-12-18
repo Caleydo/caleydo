@@ -13,17 +13,19 @@ import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
-import org.caleydo.datadomain.pathway.embedding.IPathwayViewCreator;
+import org.caleydo.datadomain.pathway.IPathwayRepresentation;
+import org.caleydo.datadomain.pathway.embedding.IPathwayRepresentationCreator;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 /**
  * @author Christian
  *
  */
-public class PathwayTextureCreator implements IPathwayViewCreator {
+public class PathwayTextureCreator implements IPathwayRepresentationCreator {
 
 	@Override
-	public AGLView create(AGLView remoteRenderingView, PathwayGraph pathway, List<TablePerspective> tablePerspectives,
+	public IPathwayRepresentation create(AGLView remoteRenderingView, PathwayGraph pathway,
+			List<TablePerspective> tablePerspectives,
 			TablePerspective mappingTablePerspective, String embeddingEventSpace) {
 		GLPathway pathwayView = (GLPathway) GeneralManager
 				.get()

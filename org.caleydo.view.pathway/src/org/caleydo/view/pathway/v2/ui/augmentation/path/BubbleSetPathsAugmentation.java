@@ -30,8 +30,8 @@ public class BubbleSetPathsAugmentation extends GLElementContainer implements IP
 	protected PathwayPathHandler pathHandler;
 	protected IPathwayRepresentation pathwayRepresentation;
 
-	public BubbleSetPathsAugmentation(IPathwayRepresentation pathwayRepresentation, IGLCanvas canvas) {
-		this.pathHandler = new PathwayPathHandler(pathwayRepresentation, canvas);
+	public BubbleSetPathsAugmentation(IPathwayRepresentation pathwayRepresentation, IGLCanvas canvas, String eventSpace) {
+		this.pathHandler = new PathwayPathHandler(pathwayRepresentation, canvas, eventSpace);
 		this.pathwayRepresentation = pathwayRepresentation;
 		pathHandler.addPathUpdateListener(this);
 		setLayout(GLLayouts.LAYERS);
@@ -85,14 +85,14 @@ public class BubbleSetPathsAugmentation extends GLElementContainer implements IP
 		} else {
 			seg = new BubbleSetPathSegmentAugmentation(pathwayRepresentation);
 			// if (isAlternativeSegment) {
-				seg.onPick(new APickingListener() {
-					@Override
-					protected void clicked(Pick pick) {
+			seg.onPick(new APickingListener() {
+				@Override
+				protected void clicked(Pick pick) {
 					int alternativeID = pathHandler.getAlternativeSegmentID(seg.getPathSegment());
 					if (alternativeID != -1)
 						pathHandler.selectAlternative(alternativeID);
-					}
-				});
+				}
+			});
 			// }
 			add(seg);
 		}

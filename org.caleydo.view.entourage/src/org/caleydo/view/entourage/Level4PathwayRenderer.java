@@ -24,7 +24,9 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
@@ -107,6 +109,31 @@ public class Level4PathwayRenderer extends ALayoutRenderer implements IPathwayRe
 	@Override
 	public Rect getPathwayBounds() {
 		return new Rect(0, 0, 0, 0);
+	}
+
+	@Override
+	public GLElement asGLElement() {
+		return null;
+	}
+
+	@Override
+	public AGLView asAGLView() {
+		return null;
+	}
+
+	@Override
+	public ALayoutRenderer asLayoutRenderer() {
+		return this;
+	}
+
+	@Override
+	public float getMinWidth() {
+		return getMinWidthPixels();
+	}
+
+	@Override
+	public float getMinHeight() {
+		return getMinHeightPixels();
 	}
 
 	// @Override

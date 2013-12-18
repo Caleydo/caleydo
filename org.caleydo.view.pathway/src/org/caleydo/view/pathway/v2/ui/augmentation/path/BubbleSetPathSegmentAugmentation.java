@@ -100,16 +100,21 @@ public class BubbleSetPathSegmentAugmentation extends GLElement {
 		Rect pathwayBounds = pathwayRepresentation.getPathwayBounds();
 		PathwayGraph pathway = pathwayRepresentation.getPathway();
 
-		g.gl.glPushMatrix();
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+
+		gl.glPushMatrix();
+		gl.glPushAttrib(GL2.GL_LINE_BIT);
 
 		g.move(pathwayBounds.x(), pathwayBounds.y());
-		g.gl.glScalef(pathwayBounds.width() / pathway.getWidth(), pathwayBounds.height() / pathway.getHeight(), 1f);
+		gl.glScalef(pathwayBounds.width() / pathway.getWidth(), pathwayBounds.height() / pathway.getHeight(), 1f);
 		ITesselatedPolygon polygon = TesselatedPolygons.polygon2(points);
 		g.incZ();
 		g.color(color).fillPolygon(polygon).lineWidth(2).drawPath(polygon);
 		g.decZ();
-		// g.move(-pathwayBounds.x(), -pathwayBounds.y());
-		g.gl.glPopMatrix();
+
+		gl.glPopAttrib();
+		gl.glPopMatrix();
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
 		// repaint();

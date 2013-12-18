@@ -39,19 +39,6 @@
       </EmbeddingInfo>
    </extension>
    <extension
-         point="org.caleydo.datadomain.pathway.embeddedPathway">
-      <parent
-            viewID="org.caleydo.view.entourage">
-         <pathway
-               embeddingID="org.caleydo.view.entourage.pathway.multiform.level1"
-               icon="resources/icons/pathway_lv1.png">
-            <viewCreator
-                  class="org.caleydo.view.pathway.EntourageLevel1PathwayCreator">
-            </viewCreator>
-         </pathway>
-      </parent>
-   </extension>
-   <extension
          point="org.eclipse.ui.views">
       <view
             allowMultiple="true"
@@ -98,5 +85,18 @@
             </menu>
          </menu>
       </menuContribution>
+   </extension>
+   <extension
+         point="org.caleydo.datadomain.pathway.embeddedPathway">
+      <parent
+            viewID="org.caleydo.view.entourage">
+         <pathway
+               embeddingID="org.caleydo.view.entourage.pathway.multiform.level1"
+               icon="resources/icons/pathway_lv1.png">
+            <creator
+                  class="org.caleydo.view.pathway.v2.internal.EntouragePathwayLevel1Creator">
+            </creator>
+         </pathway>
+      </parent>
    </extension>
 </plugin>

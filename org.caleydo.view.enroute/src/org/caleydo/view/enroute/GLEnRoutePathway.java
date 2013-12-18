@@ -45,8 +45,10 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -1014,6 +1016,31 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		return new Rect(0, 0, pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()),
 				pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight()));
+	}
+
+	@Override
+	public GLElement asGLElement() {
+		return null;
+	}
+
+	@Override
+	public AGLView asAGLView() {
+		return this;
+	}
+
+	@Override
+	public ALayoutRenderer asLayoutRenderer() {
+		return null;
+	}
+
+	@Override
+	public float getMinWidth() {
+		return getMinPixelWidth();
+	}
+
+	@Override
+	public float getMinHeight() {
+		return getMinPixelHeight();
 	}
 
 }

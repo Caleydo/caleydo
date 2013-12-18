@@ -94,11 +94,11 @@ public class GLMultiFormWindow extends GLWindow {
 		}
 	}
 
-	public int getMinWidth() {
+	public float getMinWidth() {
 		return Math.max(info.multiFormRenderer.getMinWidthPixels(), 230);
 	}
 
-	public int getMinHeight() {
+	public float getMinHeight() {
 		return info.multiFormRenderer.getMinHeightPixels() + 20;
 	}
 

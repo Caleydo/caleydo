@@ -147,6 +147,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 
 		if (dirty) {
 			root.setBounds(0, 0, w, h);
+			root.relayout();
 			dirty = false;
 		}
 
@@ -181,6 +182,12 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	@Override
 	public void relayout() {
 		dirty = true;
+	}
+
+	@Override
+	public void setLimits(float x, float y) {
+		super.setLimits(x, y);
+		relayout();
 	}
 
 	@Override
