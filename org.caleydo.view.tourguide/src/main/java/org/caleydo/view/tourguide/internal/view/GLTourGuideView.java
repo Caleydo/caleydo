@@ -578,7 +578,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		GLElementContainer vis = new GLElementContainer(new ReactiveFlowLayout(10));
 		this.dataDomainQueryUI = new DataDomainQueryUI(queries, mode);
 		vis.add(new ScrollingDecorator(dataDomainQueryUI, null, new ScrollBar(false), RenderStyle.SCROLLBAR_WIDTH,
-				EDimension.RECORD));
+				EDimension.RECORD).setSize(130, -1));
 		this.tableUI = new TableUI(table, new RankTableUIConfig(), RowHeightLayouts.UNIFORM);
 		ScrollingDecorator sc = new ScrollingDecorator(tableUI, new ScrollBar(true), null, RenderStyle.SCROLLBAR_WIDTH);
 		vis.add(sc);

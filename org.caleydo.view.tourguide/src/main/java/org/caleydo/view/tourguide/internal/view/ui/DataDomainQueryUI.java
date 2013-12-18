@@ -44,7 +44,7 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout,
 
 	@Override
 	public Vec2f getMinSize() {
-		return new Vec2f(130, size() * (20 + 2));
+		return new Vec2f(130, size() * (20) + 4);
 	}
 
 	@Override
