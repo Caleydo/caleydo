@@ -116,7 +116,8 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 				// check if possible
 				IDragInfo info = source.startSWTDrag(e);
 				if (info != null) { // if so
-					activeShared = active = new DnDItem(info, source, true);
+					active = new DnDItem(info, source, true);
+					activeShared = new DnDItem(info, null, false);
 					active.setMousePos(e.getMousePos());
 					EventPublisher.trigger(new DragItemEvent(readOnly(active), active.source, false)
 							.to(MouseLayer.this));
@@ -510,13 +511,20 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	private static class DnDItem implements IDnDItem {
 		private final IDragGLSource source;
 		private final IDragInfo info;
-		private final boolean isInternal;
+		private boolean isInternal;
 		private EDnDType type = EDnDType.MOVE;
 		private Vec2f mousePos;
 
 		public DnDItem(IDragInfo info, IDragGLSource source, boolean isInternal) {
 			this.info = info;
 			this.source = source;
+			this.isInternal = isInternal;
+		}
+
+		/**
+		 * @param isInternal setter, see {@link isInternal}
+		 */
+		public void setInternal(boolean isInternal) {
 			this.isInternal = isInternal;
 		}
 
