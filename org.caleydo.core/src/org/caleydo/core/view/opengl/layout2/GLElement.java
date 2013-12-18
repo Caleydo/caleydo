@@ -113,7 +113,7 @@ public class GLElement implements IHasGLLayoutData {
 	/**
 	 * the picking ID to use, automatically resolved by settings the visibility mode to {@link EVisibility#PICKABLE)
 	 */
-	private int pickingID = -1;
+	protected int pickingID = -1;
 	/**
 	 * the renderer to use for picking, default: a full sized rect
 	 */
