@@ -59,7 +59,7 @@ public class BubbleSetPathSegmentAugmentation extends GLElement {
 		shaper = new BSplineShapeGenerator(setOutline);
 		bubblesetCanvas = new CanvasComponent(shaper);
 		bubblesetCanvas.setDefaultView();
-		// setVisibility(EVisibility.PICKABLE);
+		setVisibility(EVisibility.PICKABLE);
 
 	}
 
@@ -69,7 +69,7 @@ public class BubbleSetPathSegmentAugmentation extends GLElement {
 			texRenderer = new TextureRenderer((int) w, (int) h, true);
 			initialized = true;
 		}
-		texRenderer.setSize((int) w, (int) h);
+		texRenderer.setSize(1, 1);
 		GL2 gl = g.gl;
 
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
@@ -82,10 +82,13 @@ public class BubbleSetPathSegmentAugmentation extends GLElement {
 		// draw stencil pattern
 		gl.glStencilMask(0xFF);
 		gl.glClear(GL.GL_STENCIL_BUFFER_BIT); // needs mask=0xFF
-
+		if (g.isPickingPass() && pickingID >= 0)
+			g.popName();
 		for (PathwayVertexRep vertex : pathwayRepresentation.getPathway().vertexSet()) {
 			g.fillRect(pathwayRepresentation.getVertexRepBounds(vertex));
 		}
+		if (g.isPickingPass() && pickingID >= 0)
+			g.pushName(pickingID);
 
 		gl.glColorMask(true, true, true, true);
 		gl.glDepthMask(true);
@@ -209,6 +212,13 @@ public class BubbleSetPathSegmentAugmentation extends GLElement {
 	public void setPathSegment(PathSegment pathSegment) {
 		this.pathSegment = pathSegment;
 		repaintAll();
+	}
+
+	/**
+	 * @return the pathSegment, see {@link #pathSegment}
+	 */
+	public PathSegment getPathSegment() {
+		return pathSegment;
 	}
 
 	/**

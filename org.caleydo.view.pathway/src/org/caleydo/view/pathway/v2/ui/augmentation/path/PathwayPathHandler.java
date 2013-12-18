@@ -13,9 +13,11 @@ import java.util.Set;
 
 import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
 import org.caleydo.core.view.opengl.canvas.GLThreadListenerWrapper;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
@@ -41,6 +43,8 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 	protected final IGLCanvas canvas;
 	@DeepScan
 	protected IGLKeyListener keyListener;
+	@DeepScan
+	protected IGLMouseListener mouseListener;
 
 	protected boolean isAltDown = false;
 	protected boolean isControlDown = false;
@@ -74,6 +78,9 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 				if (e.isUpDown()) {
 					selectNextAlternative();
 				}
+				if (e.isDownDown()) {
+					selectPreviousAlternative();
+				}
 			}
 
 			private void update(IKeyEvent e) {
@@ -83,6 +90,21 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 			}
 		});
 		canvas.addKeyListener(keyListener);
+
+		mouseListener = GLThreadListenerWrapper.wrap(new GLMouseAdapter() {
+
+			@Override
+			public void mouseWheelMoved(IMouseEvent mouseEvent) {
+				if (isAltDown) {
+					if (mouseEvent.getWheelRotation() > 0) {
+						selectNextAlternative();
+					} else {
+						selectPreviousAlternative();
+					}
+				}
+			}
+		});
+		canvas.addMouseListener(mouseListener);
 	}
 
 	@ListenTo
@@ -197,16 +219,26 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 		return false;
 	}
 
-	protected void selectNextAlternative() {
+	public void selectNextAlternative() {
+		selectAlternativeByIndexOffset(1);
+	}
+
+	public void selectPreviousAlternative() {
+		selectAlternativeByIndexOffset(-1);
+	}
+
+	protected void selectAlternativeByIndexOffset(int offset) {
 		if (alternativeSegments.isEmpty())
 			return;
-		int newIndex = selectedAlternativeIndex + 1;
+		int newIndex = selectedAlternativeIndex + offset;
 		if (newIndex >= alternativeSegments.size())
 			newIndex = 0;
+		if (newIndex < 0)
+			newIndex = alternativeSegments.size() - 1;
 		selectAlternative(newIndex);
 	}
 
-	protected void selectAlternative(int alternativeIndex) {
+	public void selectAlternative(int alternativeIndex) {
 		if (alternativeIndex == selectedAlternativeIndex || alternativeIndex > alternativeSegments.size())
 			return;
 
@@ -335,6 +367,7 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 	public void takeDown() {
 		listeners.clear();
 		canvas.removeKeyListener(keyListener);
+		canvas.removeMouseListener(mouseListener);
 	}
 
 	public PathSegment getSelectedAlternativeSegment() {
@@ -347,6 +380,10 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 	 */
 	public List<PathSegment> getAlternativeSegments() {
 		return alternativeSegments;
+	}
+
+	public int getAlternativeSegmentID(PathSegment segment) {
+		return alternativeSegments.indexOf(segment);
 	}
 
 	public static interface IPathUpdateListener {

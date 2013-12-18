@@ -14,6 +14,8 @@ import org.caleydo.core.util.color.ColorBrewer;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.graph.PathSegment;
 import org.caleydo.view.pathway.v2.ui.augmentation.path.PathwayPathHandler.IPathUpdateListener;
@@ -36,7 +38,7 @@ public class BubbleSetPathsAugmentation extends GLElementContainer implements IP
 	}
 
 	@Override
-	public void onPathsChanged(PathwayPathHandler handler) {
+	public void onPathsChanged(final PathwayPathHandler handler) {
 
 		List<PathSegment> alternativeSegments = handler.getAlternativeSegments();
 		PathSegment selectedAltSegment = handler.getSelectedAlternativeSegment();
@@ -46,25 +48,26 @@ public class BubbleSetPathsAugmentation extends GLElementContainer implements IP
 		int childIndex = 0;
 		int colorIndex = 0;
 		int numAlternativeSegmentsAdded = 0;
-		for (PathSegment altSegment : alternativeSegments) {
+		for (final PathSegment altSegment : alternativeSegments) {
 			if (colorIndex > colors.size())
 				colorIndex = 0;
 			if (altSegment != selectedAltSegment) {
 				Color altColor = colors.get(colorIndex);
 				Color color = new Color(altColor.r, altColor.g, altColor.b, 0.1f);
-				addSegment(color, altSegment, childIndex);
+				addSegment(color, altSegment, childIndex, true);
 				numAlternativeSegmentsAdded++;
 				childIndex++;
 			}
 			colorIndex++;
 		}
 
-		List<PathSegment> pathSegments = handler.getSelectedPath().getSegmentsOfPathway(pathwayRepresentation.getPathway());
+		List<PathSegment> pathSegments = handler.getSelectedPath().getSegmentsOfPathway(
+				pathwayRepresentation.getPathway());
 		Color selColor = SelectionType.SELECTION.getColor();
 		Color color = new Color(selColor.r, selColor.g, selColor.b, 0.5f);
 
 		for (PathSegment segment : pathSegments) {
-			addSegment(color, segment, childIndex);
+			addSegment(color, segment, childIndex, false);
 			childIndex++;
 		}
 
@@ -74,17 +77,28 @@ public class BubbleSetPathsAugmentation extends GLElementContainer implements IP
 		}
 	}
 
-	private void addSegment(Color color, PathSegment segment, int childIndex) {
+	private BubbleSetPathSegmentAugmentation addSegment(Color color, PathSegment segment, int childIndex,
+			boolean isAlternativeSegment) {
+		final BubbleSetPathSegmentAugmentation seg;
 		if (size() > childIndex) {
-			BubbleSetPathSegmentAugmentation seg = (BubbleSetPathSegmentAugmentation) get(childIndex);
-			seg.setColor(color);
-			seg.setPathSegment(segment);
+			seg = (BubbleSetPathSegmentAugmentation) get(childIndex);
 		} else {
-			BubbleSetPathSegmentAugmentation seg = new BubbleSetPathSegmentAugmentation(pathwayRepresentation);
-			seg.setColor(color);
-			seg.setPathSegment(segment);
+			seg = new BubbleSetPathSegmentAugmentation(pathwayRepresentation);
+			// if (isAlternativeSegment) {
+				seg.onPick(new APickingListener() {
+					@Override
+					protected void clicked(Pick pick) {
+					int alternativeID = pathHandler.getAlternativeSegmentID(seg.getPathSegment());
+					if (alternativeID != -1)
+						pathHandler.selectAlternative(alternativeID);
+					}
+				});
+			// }
 			add(seg);
 		}
+		seg.setColor(color);
+		seg.setPathSegment(segment);
+		return seg;
 	}
 
 	@Override
