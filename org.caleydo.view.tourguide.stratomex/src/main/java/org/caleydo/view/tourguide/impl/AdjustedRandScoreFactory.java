@@ -130,6 +130,11 @@ public class AdjustedRandScoreFactory implements IScoreFactory2 {
 		}
 
 		@Override
+		public void onUpdateStratification(TablePerspective tablePerspective, IReactions adapter) {
+			adapter.replaceTemplate(tablePerspective, false);
+		}
+
+		@Override
 		public void select(TablePerspective tablePerspective, IReactions reactions) {
 			createAdjustedRandScore(tablePerspective, reactions);
 		}

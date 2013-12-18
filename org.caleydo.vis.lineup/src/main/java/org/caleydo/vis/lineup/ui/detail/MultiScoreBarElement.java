@@ -49,8 +49,8 @@ public class MultiScoreBarElement extends ScoreBarElement {
 	}
 
 	@Override
-	public void renderImpl(GLGraphics g, float w, float h) {
-		final IRow r = getLayoutDataAs(IRow.class, null);
+	public void renderImpl(GLGraphics g, float w, float h, IRow row) {
+		final IRow r = row;
 		IMultiColumnMixin mmodel = (IMultiColumnMixin) model;
 		MultiDouble v = mmodel.getSplittedValue(r);
 		if (v.repr < 0)

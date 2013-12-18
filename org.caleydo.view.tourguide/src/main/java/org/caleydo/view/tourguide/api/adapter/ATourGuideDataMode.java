@@ -47,16 +47,6 @@ public abstract class ATourGuideDataMode implements ITourGuideDataMode {
 		return b.build();
 	}
 
-	@Override
-	public int getNumCategories() {
-		return 1;
-	}
-
-	@Override
-	public int getCategory(IDataDomain dataDomain) {
-		return 0;
-	}
-
 	protected static void addDataDomainRankColumn(RankTableModel table) {
 		table.add(new DataDomainRankColumnModel().setWidth(80).setCollapsed(true));
 	}

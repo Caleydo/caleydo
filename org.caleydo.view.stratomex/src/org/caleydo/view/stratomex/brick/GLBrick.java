@@ -62,6 +62,7 @@ import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitching
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.ATimedMouseOutPickingListener;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
@@ -240,6 +241,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	private APickingListener pickingListener;
 
 	private ATimedMouseOutPickingListener brickPickingListener;
+	private IPickingListener brickClickPickingListener;
 
 	public GLBrick(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
@@ -751,7 +753,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	private void registerPickingListeners() {
 
-		APickingListener pickingListener = new APickingListener() {
+		this.brickClickPickingListener = new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -827,9 +829,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			}
 		};
 
-		stratomex.addIDPickingListener(pickingListener, EPickingType.BRICK.name(), getID());
+		stratomex.addIDPickingListener(brickClickPickingListener, EPickingType.BRICK.name(), getID());
 		if (isHeaderBrick) {
-			stratomex.addIDPickingListener(pickingListener, EPickingType.DIMENSION_GROUP.name(), brickColumn.getID());
+			stratomex.addIDPickingListener(brickClickPickingListener, EPickingType.DIMENSION_GROUP.name(),
+					brickColumn.getID());
 		}
 
 		stratomex.addIDPickingTooltipListener(this, EPickingType.BRICK_TITLE.name(), getID());
@@ -921,7 +924,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		stratomex.removeTypePickingListener(brickPickingListener, EPickingType.BRICK_PENETRATING.name());
 		stratomex.removeAllIDPickingListeners(EPickingType.BRICK.name(), getID());
 		if (isHeaderBrick) {
-			stratomex.removeAllIDPickingListeners(EPickingType.DIMENSION_GROUP.name(), brickColumn.getID());
+			// remove just me not all as multiple headers (detail header + header) can exist
+			stratomex.removeIDPickingListener(brickClickPickingListener, EPickingType.DIMENSION_GROUP.name(),
+					brickColumn.getID());
+			brickClickPickingListener = null;
 		}
 		stratomex.removeAllIDPickingListeners(EPickingType.BRICK_TITLE.name(), getID());
 		stratomex.removeAllIDPickingListeners(EPickingType.MOVE_VERTICALLY_HANDLE.name(), getID());

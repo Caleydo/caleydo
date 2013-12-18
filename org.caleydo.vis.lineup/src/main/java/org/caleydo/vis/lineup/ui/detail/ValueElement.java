@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.ui.detail;
 
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.ui.IColumnRenderInfo;
@@ -66,5 +67,15 @@ public class ValueElement extends PickableGLElement {
 	 */
 	public void setAnimationFlag(int animationFlag) {
 		this.animationFlag = animationFlag;
+	}
+
+	@Override
+	protected final void renderImpl(GLGraphics g, float w, float h) {
+		renderImpl(g, w, h, getRow());
+		super.renderImpl(g, w, h);
+	}
+
+	protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
+
 	}
 }

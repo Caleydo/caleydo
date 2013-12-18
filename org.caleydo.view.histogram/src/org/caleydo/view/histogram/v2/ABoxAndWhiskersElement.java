@@ -117,6 +117,12 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 			return null;
 		StringBuilder b = new StringBuilder();
 		b.append(getLabel()).append('\n');
+		b.append(String.format("%s:\t%d", "count", stats.getN()));
+		if (stats.getNaNs() > 0) {
+			b.append(String.format("(+%d invalid)\n", stats.getNaNs()));
+		} else
+			b.append('\n');
+		b.append(String.format("%s:\t%.3f\n", "median", stats.getMedian()));
 		b.append(String.format("%s:\t%.3f\n", "mean", stats.getMean()));
 		b.append(String.format("%s:\t%.3f\n", "median", stats.getMedian()));
 		b.append(String.format("%s:\t%.3f\n", "sd", stats.getSd()));

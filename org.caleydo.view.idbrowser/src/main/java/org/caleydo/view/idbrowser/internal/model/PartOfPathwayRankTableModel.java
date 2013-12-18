@@ -92,10 +92,10 @@ public class PartOfPathwayRankTableModel extends MultiCategoricalRankColumnModel
 		}
 
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 			if (h < 5)
 				return;
-			Set<PathwayGraph> v = getCatValue(getRow());
+			Set<PathwayGraph> v = getCatValue(row);
 			int size = v == null ? 0 : v.size();
 			float hi = Math.min(h, 18);
 			// render just the number of matches

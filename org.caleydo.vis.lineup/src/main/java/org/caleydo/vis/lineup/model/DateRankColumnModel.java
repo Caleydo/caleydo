@@ -214,12 +214,11 @@ public final class DateRankColumnModel extends ABasicFilterableRankColumnModel i
 
 	class MyElement extends ValueElement {
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 			if (h < 5)
 				return;
-			super.renderImpl(g, w, h);
 			float hi = Math.min(h, 16);
-			Date f = getDate(getLayoutDataAs(IRow.class, null));
+			Date f = getDate(row);
 			g.drawText(formatter == null ? f + "" : formatter.format(f), 1, 1 + (h - hi) * 0.5f, w - 2,
 						hi - 2);
 		}

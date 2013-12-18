@@ -339,7 +339,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 	class MyValueElement extends ValueElement {
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 			if (h < 5 || (w - 7) < 10)
 				return;
 			String value = getTooltip();
@@ -351,7 +351,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 		@Override
 		public String getTooltip() {
-			return data.apply(getLayoutDataAs(IRow.class, null));
+			return data.apply(getRow());
 		}
 	}
 }

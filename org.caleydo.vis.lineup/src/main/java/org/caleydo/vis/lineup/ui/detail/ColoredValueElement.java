@@ -41,7 +41,7 @@ public class ColoredValueElement extends ValueElement {
 	}
 
 	@Override
-	protected void renderImpl(GLGraphics g, float w, float h) {
+	protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 		if (remaining > 0) {
 			remaining -= g.getDeltaTimeMs();
 			if (remaining < 0)
@@ -57,6 +57,5 @@ public class ColoredValueElement extends ValueElement {
 			g.incZ();
 			repaint();
 		}
-		super.renderImpl(g, w, h);
 	}
 }

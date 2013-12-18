@@ -285,7 +285,7 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 		}
 
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 			if (h < 5)
 				return;
 			String info = getTooltip();

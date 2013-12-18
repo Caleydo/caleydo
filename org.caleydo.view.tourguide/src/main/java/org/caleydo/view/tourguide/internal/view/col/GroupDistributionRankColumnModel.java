@@ -93,7 +93,7 @@ public class GroupDistributionRankColumnModel extends ARankColumnModel {
 		}
 
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 			if (h < 1)
 				return;
 			AScoreRow r = this.getLayoutDataAs(AScoreRow.class, null);
