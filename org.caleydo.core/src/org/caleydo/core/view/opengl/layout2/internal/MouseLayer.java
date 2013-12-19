@@ -100,15 +100,13 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		registered = true;
 	}
 
-	private void free() {
-		if (!registered)
-			return;
-		if (!dropTargets.isEmpty() || !dragSources.isEmpty())
-			return;
+	@Override
+	protected void takeDown() {
 		canvas.removeDragListener(drag);
 		canvas.removeDropListener(drop);
-		registered = false;
+		super.takeDown();
 	}
+
 	private final DragSourceListener drag = new DragSourceListener() {
 		@Override
 		public void dragStart(DragSourceEvent event) {
@@ -471,7 +469,6 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	@Override
 	public void removeDragSource(IDragGLSource dragSource) {
 		this.dragSources.remove(dragSource);
-		free();
 	}
 
 	@Override
@@ -486,7 +483,6 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		if (activeDropTarget == dropTarget) {
 			activeDropTarget = null;
 		}
-		free();
 	}
 
 	@Override

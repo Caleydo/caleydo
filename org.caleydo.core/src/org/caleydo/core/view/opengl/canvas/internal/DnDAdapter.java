@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
@@ -47,6 +48,7 @@ import org.eclipse.swt.widgets.Display;
  *
  */
 public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyListener {
+	private static final Logger log = Logger.create(DnDAdapter.class);
 	private final IGLCanvas canvas;
 	private final Iterable<IGLMouseListener> mouseListeners;
 
@@ -96,6 +98,7 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 	private void ensureTarget() {
 		if (this.target != null)
 			return;
+		log.debug(canvas.toString() + "creating DropTarget");
 		target = new DropTarget(getComposite(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK | DND.DROP_DEFAULT);
 		target.setTransfer(new Transfer[] { CaleydoTransfer.getInstance(), FileTransfer.getInstance(),
 				URLTransfer.getInstance(), TextTransfer.getInstance() });
@@ -112,6 +115,7 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 	private void freeTarget(boolean force) {
 		if ((targetListeners.isEmpty() || force) && target != null) {
 			target.dispose();
+			log.debug(canvas.toString() + " free DropTarget");
 			target = null;
 		}
 	}
@@ -119,6 +123,7 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 	private void freeSource(boolean force) {
 		if ((sourceListeners.isEmpty() || force) && source != null) {
 			source.dispose();
+			log.debug(canvas.toString() + " free DragSource");
 			source = null;
 		}
 	}
@@ -126,6 +131,7 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 	private void ensureSource() {
 		if (this.source != null)
 			return;
+		log.debug(canvas.toString() + "creating DragSource");
 		source = new DragSource(getComposite(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK);
 		source.setTransfer(new Transfer[] { CaleydoTransfer.getInstance(), FileTransfer.getInstance(),
 				URLTransfer.getInstance(), TextTransfer.getInstance() });
