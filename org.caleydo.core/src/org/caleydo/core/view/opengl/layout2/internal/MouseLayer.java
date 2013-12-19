@@ -20,7 +20,6 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.internal.CaleydoTransfer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
-import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 import org.caleydo.core.view.opengl.layout2.dnd.EDnDType;
 import org.caleydo.core.view.opengl.layout2.dnd.FileDragInfo;
@@ -57,6 +56,7 @@ import org.eclipse.swt.widgets.Display;
 public final class MouseLayer extends GLElementContainer implements IMouseLayer, IGLLayout2 {
 	private final IGLCanvas canvas;
 
+	private boolean registered = false;
 	/**
 	 * current possible drop targets
 	 */
@@ -92,20 +92,23 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		setLayout(this);
 	}
 
-	@Override
-	protected void init(IGLElementContext context) {
+	private void ensure() {
+		if (registered)
+			return;
 		canvas.addDragListener(drag);
 		canvas.addDropListener(drop);
-		super.init(context);
+		registered = true;
 	}
 
-	@Override
-	protected void takeDown() {
+	private void free() {
+		if (!registered)
+			return;
+		if (!dropTargets.isEmpty() || !dragSources.isEmpty())
+			return;
 		canvas.removeDragListener(drag);
 		canvas.removeDropListener(drop);
-		super.takeDown();
+		registered = false;
 	}
-
 	private final DragSourceListener drag = new DragSourceListener() {
 		@Override
 		public void dragStart(DragSourceEvent event) {
@@ -462,17 +465,19 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	@Override
 	public void addDragSource(IDragGLSource dragSource) {
 		this.dragSources.add(dragSource);
+		ensure();
 	}
 
 	@Override
 	public void removeDragSource(IDragGLSource dragSource) {
 		this.dragSources.remove(dragSource);
+		free();
 	}
 
 	@Override
 	public void addDropTarget(IDropGLTarget dropTarget) {
 		this.dropTargets.add(dropTarget);
-
+		ensure();
 	}
 
 	@Override
@@ -481,6 +486,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		if (activeDropTarget == dropTarget) {
 			activeDropTarget = null;
 		}
+		free();
 	}
 
 	@Override
@@ -511,20 +517,13 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	private static class DnDItem implements IDnDItem {
 		private final IDragGLSource source;
 		private final IDragInfo info;
-		private boolean isInternal;
+		private final boolean isInternal;
 		private EDnDType type = EDnDType.MOVE;
 		private Vec2f mousePos;
 
 		public DnDItem(IDragInfo info, IDragGLSource source, boolean isInternal) {
 			this.info = info;
 			this.source = source;
-			this.isInternal = isInternal;
-		}
-
-		/**
-		 * @param isInternal setter, see {@link isInternal}
-		 */
-		public void setInternal(boolean isInternal) {
 			this.isInternal = isInternal;
 		}
 
