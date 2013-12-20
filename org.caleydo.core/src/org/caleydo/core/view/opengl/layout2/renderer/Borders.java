@@ -28,14 +28,20 @@ public class Borders {
 	public static interface IBorderGLRenderer extends IGLRenderer {
 		Color getColor();
 
-		void setColor(Color color);
+		IBorderGLRenderer setColor(Color color);
+
+		IBorderGLRenderer setWidth(float width);
+
+		float getWidth();
 	}
 
 	private static class BorderRenderer implements IBorderGLRenderer {
 		private Color color;
+		private float width;
 
 		public BorderRenderer(Color color) {
 			this.color = color;
+			this.width = 2.f;
 		}
 
 		/**
@@ -47,14 +53,33 @@ public class Borders {
 		}
 
 		/**
+		 * @return the width, see {@link #width}
+		 */
+		@Override
+		public float getWidth() {
+			return width;
+		}
+
+		/**
+		 * @param width
+		 *            setter, see {@link width}
+		 */
+		@Override
+		public IBorderGLRenderer setWidth(float width) {
+			this.width = width;
+			return this;
+		}
+
+		/**
 		 * @param color
 		 *            setter, see {@link color}
 		 */
 		@Override
-		public void setColor(Color color) {
+		public BorderRenderer setColor(Color color) {
 			if (Objects.equals(this.color, color))
-				return;
+				return this;
 			this.color = color;
+			return this;
 		}
 
 		@Override
@@ -63,9 +88,9 @@ public class Borders {
 				return;
 			g.color(color);
 			g.drawRect(0, 0, w, h);
-			g.lineWidth(2);
+			g.lineWidth(width);
 			g.color(color.darker());
-			g.drawRect(-1, -1, w + 2, h + 2);
+			g.drawRect(-width * 0.5f, -width * 0.5f, w + width, h + width);
 			g.lineWidth(1);
 		}
 	}
