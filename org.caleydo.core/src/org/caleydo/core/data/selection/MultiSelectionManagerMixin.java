@@ -48,6 +48,8 @@ public class MultiSelectionManagerMixin implements Iterable<SelectionManager> {
 	}
 
 	public final void clear() {
+		for (SelectionManager m : selectionManagers)
+			m.unregisterEventListeners();
 		this.selectionManagers.clear();
 	}
 
@@ -115,7 +117,7 @@ public class MultiSelectionManagerMixin implements Iterable<SelectionManager> {
 
 	/**
 	 * fire the selection delta for the given {@link SelectionManager}
-	 * 
+	 *
 	 * @param manager
 	 * @return whether a delta was fired
 	 */

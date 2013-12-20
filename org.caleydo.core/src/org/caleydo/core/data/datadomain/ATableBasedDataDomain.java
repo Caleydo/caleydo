@@ -599,25 +599,35 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
-
-		if (recordSelectionManager == null)
-			return;
-
-		if (recordIDMappingManager.hasMapping(selectionDelta.getIDType(), recordSelectionManager.getIDType())) {
+		if (recordSelectionManager != null
+				&& recordIDMappingManager.hasMapping(selectionDelta.getIDType(), recordSelectionManager.getIDType())) {
 			recordSelectionManager.setDelta(selectionDelta);
-		} else if (dimensionIDMappingManager.hasMapping(selectionDelta.getIDType(),
+		} else if (dimensionSelectionManager != null
+				&& dimensionIDMappingManager.hasMapping(selectionDelta.getIDType(),
 				dimensionSelectionManager.getIDType())) {
 			dimensionSelectionManager.setDelta(selectionDelta);
 		}
 
-		if (selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
+		if (recordGroupSelectionManager != null
+				&& selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
 			recordGroupSelectionManager.setDelta(selectionDelta);
 		}
 	}
 
 	@Override
 	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
-		// TODO Auto-generated method stub
+		if (recordSelectionManager != null
+				&& (idCategory == null || idCategory.equals(recordSelectionManager.getIDType()))) {
+			recordSelectionManager.executeSelectionCommand(selectionCommand);
+		} else if (dimensionSelectionManager != null
+				&& (idCategory == null || idCategory.equals(dimensionSelectionManager.getIDType()))) {
+			dimensionSelectionManager.executeSelectionCommand(selectionCommand);
+		}
+
+		if (recordGroupSelectionManager != null
+				&& (idCategory == null || idCategory.equals(recordGroupSelectionManager.getIDType()))) {
+			recordGroupSelectionManager.executeSelectionCommand(selectionCommand);
+		}
 	}
 
 	/**
@@ -797,12 +807,13 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		super.registerEventListeners();
 		SelectionUpdateListener selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setExclusiveEventSpace(dataDomainID);
+		// selectionUpdateListener.setExclusiveEventSpace(dataDomainID); //no event space similar to
+		// EventBasedSelectionManager
 		listeners.register(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		SelectionCommandListener selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setEventSpace(dataDomainID);
+		// selectionCommandListener.setEventSpace(dataDomainID); //no event space similar to EventBasedSelectionManager
 		listeners.register(SelectionCommandEvent.class, selectionCommandListener);
 
 		StartClusteringListener startClusteringListener = new StartClusteringListener();
