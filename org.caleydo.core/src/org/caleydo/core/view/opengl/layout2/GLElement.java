@@ -614,7 +614,7 @@ public class GLElement implements IHasGLLayoutData {
 	protected final IGLElementParent findParent(Predicate<IGLElementParent> satisfies) {
 		IGLElementParent act = parent;
 		while (act != null && !(satisfies.apply(act))) {
-			act = parent.getParent();
+			act = act.getParent();
 		}
 		return act;
 	}
@@ -628,7 +628,7 @@ public class GLElement implements IHasGLLayoutData {
 	protected final <T> T findParent(Class<T> isInstanceOf) {
 		IGLElementParent act = parent;
 		while (act != null && !(isInstanceOf.isInstance(act))) {
-			act = parent.getParent();
+			act = act.getParent();
 		}
 		return isInstanceOf.cast(act);
 	}
