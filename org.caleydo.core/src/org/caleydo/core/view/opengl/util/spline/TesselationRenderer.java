@@ -50,17 +50,21 @@ public class TesselationRenderer {
 		super.finalize();
 	}
 
-	public GLUtessellator begin(GL2 gl) {
-		tessCallback.gl = gl;
+	public GLUtessellator begin(GLGraphics g) {
+		tessCallback.gl = g.gl;
+		tessCallback.g = g;
 		return tesselator;
 	}
 
 	public void end() {
 		tessCallback.gl = null;
+		tessCallback.g = null;
 	}
 
 	private class TesselationCallback implements GLUtessellatorCallback {
-		private GL2 gl;
+		GLGraphics g;
+		GL2 gl;
+
 		@Override
 		public void begin(int type) {
 			// gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_LINE);
@@ -95,7 +99,7 @@ public class TesselationRenderer {
 				gl.glVertex3f(v.x(), v.y(), v.z());
 			} else if (vertexData instanceof Vec2f) {
 				Vec2f v = (Vec2f) vertexData;
-				gl.glVertex3f(v.x(), v.y(), 0);
+				gl.glVertex3f(v.x(), v.y(), g.z());
 			}
 		}
 
@@ -204,7 +208,7 @@ public class TesselationRenderer {
 	 * @param vertices
 	 */
 	public void render3(GLGraphics g, Iterable<Vec3f> vertices) {
-		GLUtessellator tesselator = begin(g.gl);
+		GLUtessellator tesselator = begin(g);
 		GLU.gluTessBeginPolygon(tesselator, null);
 		{
 			GLU.gluTessBeginContour(tesselator);
@@ -226,7 +230,7 @@ public class TesselationRenderer {
 	 * @param vertices
 	 */
 	public void render2(GLGraphics g, Iterable<Vec2f> vertices) {
-		GLUtessellator tesselator = begin(g.gl);
+		GLUtessellator tesselator = begin(g);
 		GLU.gluTessBeginPolygon(tesselator, null);
 		{
 			GLU.gluTessBeginContour(tesselator);
