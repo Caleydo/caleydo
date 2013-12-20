@@ -31,6 +31,7 @@ public class MyPreferences extends AbstractPreferenceInitializer {
 
 	public static final String VIEW_ZOOM_FACTOR = "view.zoomfactor";
 	public static final String FPS = "view.fps";
+	public static final String SAVE_RECENT_PROJECT = "saveRecentProject";
 
 	public static IPreferenceStore prefs() {
 		Activator a = Activator.getDefault();
@@ -44,6 +45,7 @@ public class MyPreferences extends AbstractPreferenceInitializer {
 		IPreferenceStore store = prefs();
 		store.setDefault(VIEW_ZOOM_FACTOR, 100);
 		store.setDefault(FPS, 30);
+		store.setDefault(SAVE_RECENT_PROJECT, true);
 	}
 
 	public static float getViewZoomFactor() {
@@ -128,6 +130,13 @@ public class MyPreferences extends AbstractPreferenceInitializer {
 		if (fps <= 0)
 			fps = 30;
 		return fps;
+	}
+
+	/**
+	 * @return
+	 */
+	public static boolean saveRecentProject() {
+		return prefs().getBoolean(SAVE_RECENT_PROJECT);
 	}
 
 }
