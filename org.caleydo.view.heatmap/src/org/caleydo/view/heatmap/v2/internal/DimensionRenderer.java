@@ -219,8 +219,8 @@ public class DimensionRenderer {
 	 * @return
 	 */
 	public void select(SelectionType selection, boolean clearExisting, IndexedId id) {
-		if (id != null)
-			select(SelectionType.SELECTION, clearExisting, false, id.getId());
+		if (id != null && id.getId() != null)
+			select(selection, clearExisting, false, id.getId());
 		hoveredID = id;
 	}
 
@@ -236,6 +236,7 @@ public class DimensionRenderer {
 			else
 				m.addToType(selectionType, Ints.asList(ids));
 		}
+		data.fireSelectionChanged(m);
 	}
 
 	/**

@@ -109,4 +109,9 @@ public class TablePerspectiveDataProvider implements IHeatMapDataProvider,
 	public SelectionManager getManager(EDimension dim) {
 		return dim.isDimension() ? selections.getDimensionSelectionManager() : selections.getRecordSelectionManager();
 	}
+
+	@Override
+	public void fireSelectionChanged(SelectionManager manager) {
+		selections.fireSelectionDelta(manager);
+	}
 }

@@ -397,7 +397,7 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 			IndexedId id = dim.select(ids);
 			DimensionRenderer r = get(dim);
 			if (id.getId() != null && !Objects.equal(id, r.getHoveredID())) {
-				dimension.drag(id);
+				r.drag(id);
 				repaint = true;
 			}
 		}
