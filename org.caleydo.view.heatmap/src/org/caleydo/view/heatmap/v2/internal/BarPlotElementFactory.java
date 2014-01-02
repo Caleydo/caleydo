@@ -54,13 +54,14 @@ public class BarPlotElementFactory implements IGLElementFactory2 {
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
 		TablePerspective data = context.getData();
+		boolean blurNotSelected = context.is("blurNotSelected");
 		@SuppressWarnings("unchecked")
 		Function2<Integer, Integer, Color> blockColorer = context.get(Function2.class,
 				new BasicBlockColorer(data.getDataDomain()));
 		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
 
 		BarPlotElement elem = new BarPlotElement(data, blockColorer, detailLevel, context.get(EScalingMode.class,
-				EScalingMode.GLOBAL));
+				EScalingMode.GLOBAL), blurNotSelected);
 
 		elem.setMinimumItemHeightFactor(context.getInt("minimumItemHeightFactor", elem.getMinimumItemHeightFactor()));
 		setCommon(context, elem);

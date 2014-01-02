@@ -24,14 +24,14 @@ public class BarPlotElement extends HeatMapElementBase {
 
 	public BarPlotElement(TablePerspective tablePerspective) {
 		this(tablePerspective, new BasicBlockColorer(tablePerspective.getDataDomain()), EDetailLevel.HIGH,
-				EScalingMode.GLOBAL);
+				EScalingMode.GLOBAL, true);
 	}
 
 	public BarPlotElement(TablePerspective tablePerspective, Function2<Integer, Integer, Color> blockColorer,
 			EDetailLevel detailLevel,
-			EScalingMode scalingMode) {
+ EScalingMode scalingMode, boolean blurNotSelected) {
 		super(new TablePerspectiveDataProvider(tablePerspective), new BarPlotRenderer(scalingMode, tablePerspective, blockColorer),
-				detailLevel);
+ detailLevel, blurNotSelected);
 	}
 
 	/**

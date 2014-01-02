@@ -8,6 +8,7 @@ package org.caleydo.view.heatmap.v2;
 import gleem.linalg.Vec2f;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.caleydo.core.data.collection.EDimension;
@@ -64,9 +65,15 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 	private final IHeatMapRenderer renderer;
 	@DeepScan
 	private final IHeatMapDataProvider data;
+	/**
+	 * wether to blur the not selected or show selection rects
+	 */
+	private final boolean blurNotSelected;
 
-	public HeatMapElementBase(IHeatMapDataProvider data, IHeatMapRenderer renderer, EDetailLevel detailLevel) {
+	public HeatMapElementBase(IHeatMapDataProvider data, IHeatMapRenderer renderer, EDetailLevel detailLevel,
+			boolean blurNotSelected) {
 		this.data = data;
+		this.blurNotSelected = blurNotSelected;
 		this.data.setCallback(this);
 		this.renderer = renderer;
 		detailLevel = Objects.firstNonNull(detailLevel, EDetailLevel.LOW);
@@ -290,11 +297,36 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 		renderer.render(g, w, h, record.getSpacing(), dimension.getSpacing());
 
 		g.incZ();
-		record.render(g, w, h);
-		dimension.render(g, w, h);
+		if (blurNotSelected) {
+			renderBlurSelection(g, SelectionType.MOUSE_OVER, w, h);
+			renderBlurSelection(g, SelectionType.SELECTION, w, h);
+		} else { // as selection rects
+			record.render(g, w, h);
+			dimension.render(g, w, h);
+		}
 		g.decZ();
 
 		g.restore();
+	}
+
+	/**
+	 * @param g
+	 * @param type
+	 * @param w
+	 * @param h
+	 */
+	private void renderBlurSelection(GLGraphics g, SelectionType type, float w, float h) {
+		List<Vec2f> dims = dimension.getNotSelectedRanges(type, w, h);
+		List<Vec2f> recs = dimension.getNotSelectedRanges(type, w, h);
+		if (dims == null && recs == null) // nothing selected or hoverded
+			return;
+		dims = dims == null ? Collections.singletonList(new Vec2f(0, w)) : dims;
+		recs = recs == null ? Collections.singletonList(new Vec2f(0, h)) : recs;
+		Color c = type.getColor().brighter().brighter();
+		g.color(c.r, c.g, c.b, 0.5f);
+		for (Vec2f dim : dims)
+			for (Vec2f rec : recs)
+				g.fillRect(dim.x(), rec.x(), dim.y(), rec.y());
 	}
 
 	/**
