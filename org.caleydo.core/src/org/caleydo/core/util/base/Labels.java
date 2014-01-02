@@ -7,9 +7,11 @@ package org.caleydo.core.util.base;
 
 import java.util.Comparator;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.viewers.LabelProvider;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Iterators;
 
 /**
  * function utilities for labels
@@ -50,4 +52,8 @@ public class Labels {
 			return super.getText(element);
 		}
 	};
+
+	public static String join(Iterable<? extends ILabeled> labels, String separator) {
+		return StringUtils.join(Iterators.transform(labels.iterator(), TO_LABEL), separator);
+	}
 }
