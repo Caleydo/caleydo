@@ -90,4 +90,9 @@ final class IdentityIDTypeMapper<K, V> implements IIDTypeMapper<K, V> {
 		return String.format("IdentityIDTypeMapper [sourceAndTarget=%s]", sourceAndTarget);
 	}
 
+	@Override
+	public boolean isOne2OneMapping() {
+		return true;
+	}
+
 }

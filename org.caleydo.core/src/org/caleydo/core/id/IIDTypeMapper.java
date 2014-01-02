@@ -38,4 +38,6 @@ public interface IIDTypeMapper<K, V> extends Function<K, Set<V>> {
 	boolean isMapAble(K sourceId);
 
 	Collection<Set<V>> applySeq(Collection<K> sourceIDs);
+
+	boolean isOne2OneMapping();
 }
