@@ -93,7 +93,7 @@ public class DimensionRenderer {
 		return getData().size();
 	}
 
-	private void render(GLGraphics g, SelectionType selectionType, float w, float h) {
+	public void render(GLGraphics g, SelectionType selectionType, float w, float h) {
 		List<Integer> indices = prepareRender(selectionType);
 		final boolean isDimension = dim.isDimension();
 
@@ -107,18 +107,20 @@ public class DimensionRenderer {
 		if (indices.isEmpty())
 			return null;
 		List<Vec2f> r = new ArrayList<>();
-		int lastIndex = 0;
+		int lastIndex = -1;
 		float x = 0;
 		for (int index : indices) {
 			if (index != (lastIndex + 1)) {
 				float to = spacing.getPosition(index);
 				r.add(new Vec2f(x, to - x));
 				x = to + spacing.getSize(index);
-				lastIndex = index;
 			}
+			lastIndex = index;
 		}
-		if ((lastIndex + 1) < getData().size())
+		if ((lastIndex + 1) < getData().size()) {
+			x = spacing.getPosition(lastIndex) + spacing.getSize(lastIndex);
 			r.add(new Vec2f(x, total - x));
+		}
 		return r;
 	}
 
@@ -182,12 +184,6 @@ public class DimensionRenderer {
 		}
 		Collections.sort(indices);
 		return indices;
-	}
-
-	public void render(GLGraphics g, float w, float h) {
-		render(g, SelectionType.SELECTION, w, h);
-		render(g, SelectionType.MOUSE_OVER, w, h);
-		g.lineWidth(1);
 	}
 
 	/**

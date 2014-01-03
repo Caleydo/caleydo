@@ -298,12 +298,16 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 
 		g.incZ();
 		if (blurNotSelected) {
-			renderBlurSelection(g, SelectionType.MOUSE_OVER, w, h);
 			renderBlurSelection(g, SelectionType.SELECTION, w, h);
+			record.render(g, SelectionType.MOUSE_OVER, w, h);
+			dimension.render(g, SelectionType.MOUSE_OVER, w, h);
 		} else { // as selection rects
-			record.render(g, w, h);
-			dimension.render(g, w, h);
+			record.render(g, SelectionType.SELECTION, w, h);
+			dimension.render(g, SelectionType.SELECTION, w, h);
+			record.render(g, SelectionType.MOUSE_OVER, w, h);
+			dimension.render(g, SelectionType.MOUSE_OVER, w, h);
 		}
+		g.lineWidth(1);
 		g.decZ();
 
 		g.restore();
@@ -317,13 +321,12 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 	 */
 	private void renderBlurSelection(GLGraphics g, SelectionType type, float w, float h) {
 		List<Vec2f> dims = dimension.getNotSelectedRanges(type, w, h);
-		List<Vec2f> recs = dimension.getNotSelectedRanges(type, w, h);
+		List<Vec2f> recs = record.getNotSelectedRanges(type, w, h);
 		if (dims == null && recs == null) // nothing selected or hoverded
 			return;
 		dims = dims == null ? Collections.singletonList(new Vec2f(0, w)) : dims;
 		recs = recs == null ? Collections.singletonList(new Vec2f(0, h)) : recs;
-		Color c = type.getColor().brighter().brighter();
-		g.color(c.r, c.g, c.b, 0.5f);
+		g.color(1, 1, 1, 0.5f);
 		for (Vec2f dim : dims)
 			for (Vec2f rec : recs)
 				g.fillRect(dim.x(), rec.x(), dim.y(), rec.y());

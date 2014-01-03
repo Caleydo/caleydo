@@ -64,8 +64,19 @@ public class GLLocation {
 		return size;
 	}
 
+	public double getOffset2() {
+		return offset + size;
+	}
+
 	public static GLLocation applyPrimitive(ILocator loc, Integer input) {
 		return input == null ? UNKNOWN : loc.apply(input.intValue());
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isDefined() {
+		return !Double.isNaN(offset) && !Double.isNaN(size);
 	}
 }
 
