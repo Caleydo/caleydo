@@ -46,8 +46,10 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 	public GLPathwayView(IGLCanvas glCanvas) {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
 		pathwayElement = new PathwayElement(eventSpace);
+		// pathwayElement.setPathwayRepresentation(new PathwayTextureRepresentation(PathwayManager.get()
+		// .getPathwayByTitle("ErbB signaling pathway", EPathwayDatabaseType.WIKIPATHWAYS)));
 		pathwayElement.setPathwayRepresentation(new PathwayTextureRepresentation(PathwayManager.get()
-				.getPathwayByTitle("ErbB signaling pathway", EPathwayDatabaseType.WIKIPATHWAYS)));
+				.getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG)));
 		// PathwayDataMappingHandler pathwayMappingHandler = new PathwayDataMappingHandler();
 		// pathwayMappingHandler.setEventSpace(eventSpace);
 
