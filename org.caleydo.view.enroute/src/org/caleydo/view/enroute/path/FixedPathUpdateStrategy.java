@@ -213,7 +213,8 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 			if (contextualPathsRenderer.isControlKeyPressed())
 				return;
 
-			if (isPathSelectionMode && (!createNewPathSelection || contextualPathsRenderer.isShiftKeyPressed())
+			if (isPathSelectionMode && !selectedPathSegments.isEmpty()
+					&& (!createNewPathSelection || contextualPathsRenderer.isShiftKeyPressed())
 					&& renderer.pathNodes.indexOf(node) > renderer.pathNodes.indexOf(selectedPathStartNode)) {
 				Pair<Integer, Integer> fromIndexPair = renderer.determinePathSegmentAndIndexOfPathNode(
 						selectedPathStartNode, selectedPathSegments.get(selectedPathSegments.size() - 1).get(0));

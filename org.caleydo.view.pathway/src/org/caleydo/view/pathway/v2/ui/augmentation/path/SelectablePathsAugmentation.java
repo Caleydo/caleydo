@@ -24,13 +24,13 @@ import org.caleydo.view.pathway.v2.ui.augmentation.path.PathwayPathHandler.IPath
  * @author Christian
  *
  */
-public class BubbleSetPathsAugmentation extends GLElementContainer implements IPathUpdateListener {
+public class SelectablePathsAugmentation extends GLElementContainer implements IPathUpdateListener {
 
 	@DeepScan
 	protected PathwayPathHandler pathHandler;
 	protected IPathwayRepresentation pathwayRepresentation;
 
-	public BubbleSetPathsAugmentation(IPathwayRepresentation pathwayRepresentation, IGLCanvas canvas, String eventSpace) {
+	public SelectablePathsAugmentation(IPathwayRepresentation pathwayRepresentation, IGLCanvas canvas, String eventSpace) {
 		this.pathHandler = new PathwayPathHandler(pathwayRepresentation, canvas, eventSpace);
 		this.pathwayRepresentation = pathwayRepresentation;
 		pathHandler.addPathUpdateListener(this);
@@ -77,13 +77,13 @@ public class BubbleSetPathsAugmentation extends GLElementContainer implements IP
 		}
 	}
 
-	private BubbleSetPathSegmentAugmentation addSegment(Color color, PathSegment segment, int childIndex,
+	private PathSegmentAugmentation addSegment(Color color, PathSegment segment, int childIndex,
 			boolean isAlternativeSegment) {
-		final BubbleSetPathSegmentAugmentation seg;
+		final PathSegmentAugmentation seg;
 		if (size() > childIndex) {
-			seg = (BubbleSetPathSegmentAugmentation) get(childIndex);
+			seg = (PathSegmentAugmentation) get(childIndex);
 		} else {
-			seg = new BubbleSetPathSegmentAugmentation(pathwayRepresentation);
+			seg = new PathSegmentAugmentation(pathwayRepresentation);
 			// if (isAlternativeSegment) {
 			seg.onPick(new APickingListener() {
 				@Override

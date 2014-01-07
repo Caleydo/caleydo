@@ -190,6 +190,8 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 		}
 
 		GL2 gl = g.gl;
+		// g.gl.glEnable(GL.GL_BLEND);
+		// g.gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		if (shaderProgramTextOverlay > 0) {
 			gl.glUseProgram(shaderProgramTextOverlay);
 			// texture
@@ -198,12 +200,15 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 			gl.glUniform1i(gl.glGetUniformLocation(shaderProgramTextOverlay, "mode"), this.pathway.getType().ordinal());
 		}
 
+
 		g.fillImage(pathway.getImage().getPath(), origin.x(), origin.y(), renderSize.x(), renderSize.y());
 
 		if (shaderProgramTextOverlay > 0)
 			gl.glUseProgram(0);
 
-		// g.color(0f, 0f, 0f, 0f);
+
+		// repaint();
+		// g.color(0f, 0f, 0f, 1f);
 		// for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
 		// g.fillRect(getVertexRepBounds(vertexRep));
 		// }
@@ -335,6 +340,22 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 	// contextMenuItems.add(item);
 	//
 	// }
+
+	/**
+	 * @param minHeight
+	 *            setter, see {@link minHeight}
+	 */
+	public void setMinHeight(float minHeight) {
+		this.minHeight = minHeight;
+	}
+
+	/**
+	 * @param minWidth
+	 *            setter, see {@link minWidth}
+	 */
+	public void setMinWidth(float minWidth) {
+		this.minWidth = minWidth;
+	}
 
 	@Override
 	public void addVertexRepSelectionListener(IVertexRepSelectionListener listener) {

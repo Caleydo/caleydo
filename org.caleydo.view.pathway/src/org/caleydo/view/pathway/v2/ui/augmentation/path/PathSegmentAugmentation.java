@@ -38,7 +38,7 @@ import com.jogamp.opengl.util.awt.TextureRenderer;
  * @author Christian
  *
  */
-public class BubbleSetPathSegmentAugmentation extends GLElement {
+public class PathSegmentAugmentation extends GLElement {
 
 	protected IPathwayRepresentation pathwayRepresentation;
 	protected boolean initialized = false;
@@ -51,7 +51,7 @@ public class BubbleSetPathSegmentAugmentation extends GLElement {
 	protected PathSegment pathSegment;
 	protected Color color = new Color();
 
-	public BubbleSetPathSegmentAugmentation(IPathwayRepresentation pathwayRepresentation) {
+	public PathSegmentAugmentation(IPathwayRepresentation pathwayRepresentation) {
 		this.pathwayRepresentation = pathwayRepresentation;
 
 		setOutline = new BubbleSet(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
@@ -65,10 +65,14 @@ public class BubbleSetPathSegmentAugmentation extends GLElement {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		if (pathSegment == null || pathSegment.isEmpty())
+			return;
 		if (!initialized) {
 			texRenderer = new TextureRenderer((int) w, (int) h, true);
 			initialized = true;
 		}
+		// g.color(1f, 1f, 0f).fillRect(0, 0, w, h);
+
 		texRenderer.setSize(1, 1);
 		GL2 gl = g.gl;
 

@@ -19,7 +19,7 @@ import org.caleydo.view.pathway.v2.ui.augmentation.HighVarianceIndicatorAugmenta
 import org.caleydo.view.pathway.v2.ui.augmentation.MultiMappingIndicatorAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.StdDevBarAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.StdDevBarConsideringVertexHighlightAugmentation;
-import org.caleydo.view.pathway.v2.ui.augmentation.path.BubbleSetPathsAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.path.SelectablePathsAugmentation;
 
 import com.google.common.base.Supplier;
 
@@ -59,7 +59,7 @@ public class PathwayElementFactory implements IGLElementFactory {
 		pathwayElement.addBackgroundAugmentation(new MultiMappingIndicatorAugmentation(pathwayElement
 				.getPathwayRepresentation()));
 
-		pathwayElement.addForegroundAugmentation(new BubbleSetPathsAugmentation(pathwayElement
+		pathwayElement.addForegroundAugmentation(new SelectablePathsAugmentation(pathwayElement
 				.getPathwayRepresentation(), canvas, context.get("eventSpace", String.class, supp)));
 
 		pathwayElement.addForegroundAugmentation(new StdDevBarAugmentation(pathwayElement.getPathwayRepresentation(),
