@@ -20,7 +20,6 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.internal.CaleydoTransfer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
-import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 import org.caleydo.core.view.opengl.layout2.dnd.EDnDType;
 import org.caleydo.core.view.opengl.layout2.dnd.FileDragInfo;
@@ -57,6 +56,7 @@ import org.eclipse.swt.widgets.Display;
 public final class MouseLayer extends GLElementContainer implements IMouseLayer, IGLLayout2 {
 	private final IGLCanvas canvas;
 
+	private boolean registered = false;
 	/**
 	 * current possible drop targets
 	 */
@@ -92,11 +92,12 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		setLayout(this);
 	}
 
-	@Override
-	protected void init(IGLElementContext context) {
+	private void ensure() {
+		if (registered)
+			return;
 		canvas.addDragListener(drag);
 		canvas.addDropListener(drop);
-		super.init(context);
+		registered = true;
 	}
 
 	@Override
@@ -116,7 +117,8 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 				// check if possible
 				IDragInfo info = source.startSWTDrag(e);
 				if (info != null) { // if so
-					activeShared = active = new DnDItem(info, source, true);
+					active = new DnDItem(info, source, true);
+					activeShared = new DnDItem(info, null, false);
 					active.setMousePos(e.getMousePos());
 					EventPublisher.trigger(new DragItemEvent(readOnly(active), active.source, false)
 							.to(MouseLayer.this));
@@ -461,6 +463,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	@Override
 	public void addDragSource(IDragGLSource dragSource) {
 		this.dragSources.add(dragSource);
+		ensure();
 	}
 
 	@Override
@@ -471,7 +474,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	@Override
 	public void addDropTarget(IDropGLTarget dropTarget) {
 		this.dropTargets.add(dropTarget);
-
+		ensure();
 	}
 
 	@Override

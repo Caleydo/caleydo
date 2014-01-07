@@ -166,7 +166,10 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 	}
 
 	public GLElementDimensionDesc getActiveDesc(EDimension dim) {
-		return dim.select(dimDesc, recDesc);
+		GLElementDimensionDesc desc = dim.select(dimDesc, recDesc);
+		if (desc == null)
+			desc = GLElementDimensionDesc.newBuilder().constant(100).build();
+		return desc;
 	}
 
 	/**

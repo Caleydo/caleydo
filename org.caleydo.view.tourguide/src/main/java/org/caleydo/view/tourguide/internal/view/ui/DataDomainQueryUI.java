@@ -9,6 +9,7 @@ import gleem.linalg.Vec2f;
 
 import java.util.List;
 
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
@@ -44,7 +45,18 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout,
 
 	@Override
 	public Vec2f getMinSize() {
-		return new Vec2f(130, size() * (20) + 4);
+		return new Vec2f(130, visibleSize() * (20) + 4);
+	}
+
+	/**
+	 * @return
+	 */
+	private int visibleSize() {
+		int c = 0;
+		for (GLElement elem : this)
+			if (elem.getVisibility().doRender())
+				c++;
+		return c;
 	}
 
 	@Override
@@ -73,6 +85,7 @@ public class DataDomainQueryUI extends GLElementContainer implements IGLLayout,
 			child.setBounds(2, y, w, 18);
 			y += 20;
 		}
+		relayoutParent();
 	}
 
 	private ADataDomainElement createFor(ADataDomainQuery q) {

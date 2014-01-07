@@ -27,6 +27,11 @@ public final class Rect implements Cloneable {
 		this(xywh.x(), xywh.y(), xywh.z(), xywh.w());
 	}
 
+	public Rect(Rectangle2D r) {
+		this((float) r.getX(), (float) r.getY(), (float) r.getWidth(), (float) r.getHeight());
+	}
+
+
 	public Rect(float x, float y, float width, float height) {
 		this.x = x;
 		this.y = y;
@@ -114,6 +119,18 @@ public final class Rect implements Cloneable {
 
 	public Vec2f xy() {
 		return new Vec2f(x, y);
+	}
+
+	public Vec2f xy2() {
+		return new Vec2f(x, y2());
+	}
+
+	public Vec2f x2y2() {
+		return new Vec2f(x2(), y2());
+	}
+
+	public Vec2f x2y() {
+		return new Vec2f(x2(), y);
 	}
 
 	public Rect xy(Vec2f xy) {

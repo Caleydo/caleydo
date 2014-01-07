@@ -689,6 +689,14 @@ public class IDMappingManager {
 		}
 
 		@Override
+		public boolean isOne2OneMapping() {
+			for (MappingType p : path)
+				if (p.isMultiMap())
+					return false;
+			return true;
+		}
+
+		@Override
 		public Set<V> apply(K sourceID) {
 			// resolve ids
 			Object currentID = sourceID;

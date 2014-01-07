@@ -79,6 +79,11 @@ public class ListDataProvider implements IHeatMapDataProvider,
 		return selections.get(dim.select(0, 1));
 	}
 
+	@Override
+	public void fireSelectionChanged(SelectionManager manager) {
+		selections.fireSelectionDelta(manager);
+	}
+
 	public static class DimensionData {
 		private final List<Integer> data;
 		private final Function<Integer, String> labels;

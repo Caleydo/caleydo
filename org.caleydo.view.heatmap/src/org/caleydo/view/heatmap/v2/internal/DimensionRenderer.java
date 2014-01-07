@@ -5,8 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.heatmap.v2.internal;
 
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_LINE_WIDTH;
+import gleem.linalg.Vec2f;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -94,23 +93,57 @@ public class DimensionRenderer {
 		return getData().size();
 	}
 
-	private void render(GLGraphics g, SelectionType selectionType, float w, float h) {
-		List<Integer> indices = prepareRender(g, selectionType);
+	public void render(GLGraphics g, SelectionType selectionType, float w, float h) {
+		List<Integer> indices = prepareRender(selectionType);
 		final boolean isDimension = dim.isDimension();
 
+		renderSelectionRects(g, w, h, indices, selectionType, isDimension);
+
+	}
+
+	public List<Vec2f> getNotSelectedRanges(SelectionType type, float w, float h) {
+		float total = dim.select(w, h);
+		List<Integer> indices = prepareRender(type);
+		if (indices.isEmpty())
+			return null;
+		List<Vec2f> r = new ArrayList<>();
+		int lastIndex = -1;
+		float x = 0;
+		for (int index : indices) {
+			if (index != (lastIndex + 1)) {
+				float to = spacing.getPosition(index);
+				r.add(new Vec2f(x, to - x));
+				x = to + spacing.getSize(index);
+			}
+			lastIndex = index;
+		}
+		if ((lastIndex + 1) < getData().size()) {
+			x = spacing.getPosition(lastIndex) + spacing.getSize(lastIndex);
+			r.add(new Vec2f(x, total - x));
+		}
+		return r;
+	}
+
+	private void renderSelectionRects(GLGraphics g, float w, float h, List<Integer> indices, SelectionType type,
+			final boolean isDimension) {
+		g.color(type.getColor());
+		// if (type == SelectionType.SELECTION) {
+		// g.lineWidth(SELECTED_LINE_WIDTH);
+		// } else if (type == SelectionType.MOUSE_OVER) {
+		// g.lineWidth(MOUSE_OVER_LINE_WIDTH);
+		// }
+		g.gl.glLineWidth(3);
 		// dimension selection
 		// if (isDimension) {
 		// g.gl.glEnable(GL2.GL_LINE_STIPPLE);
 		// g.gl.glLineStipple(2, (short) 0xAAAA);
 		// }
-
 		int lastIndex = -1;
 		float x = 0;
 		float wi = 0;
 		for (int index : indices) {
 			if (index != (lastIndex + 1)) // just the outsides
 			{
-				g.gl.glLineWidth(3);
 				// flush previous
 				if (isDimension)
 					g.drawRect(x, 0, wi, h);
@@ -132,15 +165,8 @@ public class DimensionRenderer {
 		// g.gl.glDisable(GL2.GL_LINE_STIPPLE);
 	}
 
-	private List<Integer> prepareRender(GLGraphics g, SelectionType selectionType) {
+	private List<Integer> prepareRender(SelectionType selectionType) {
 		Set<Integer> selectedSet = getManager().getElements(selectionType);
-
-		g.color(selectionType.getColor());
-		if (selectionType == SelectionType.SELECTION) {
-			g.lineWidth(SELECTED_LINE_WIDTH);
-		} else if (selectionType == SelectionType.MOUSE_OVER) {
-			g.lineWidth(MOUSE_OVER_LINE_WIDTH);
-		}
 		List<Integer> indices = toIndices(selectedSet);
 		return indices;
 	}
@@ -158,12 +184,6 @@ public class DimensionRenderer {
 		}
 		Collections.sort(indices);
 		return indices;
-	}
-
-	public void render(GLGraphics g, float w, float h) {
-		render(g, SelectionType.SELECTION, w, h);
-		render(g, SelectionType.MOUSE_OVER, w, h);
-		g.lineWidth(1);
 	}
 
 	/**
@@ -219,8 +239,8 @@ public class DimensionRenderer {
 	 * @return
 	 */
 	public void select(SelectionType selection, boolean clearExisting, IndexedId id) {
-		if (id != null)
-			select(SelectionType.SELECTION, clearExisting, false, id.getId());
+		if (id != null && id.getId() != null)
+			select(selection, clearExisting, false, id.getId());
 		hoveredID = id;
 	}
 
@@ -236,6 +256,7 @@ public class DimensionRenderer {
 			else
 				m.addToType(selectionType, Ints.asList(ids));
 		}
+		data.fireSelectionChanged(m);
 	}
 
 	/**

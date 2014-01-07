@@ -62,6 +62,7 @@ public class HeatMapElementFactory implements IGLElementFactory2 {
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
 		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
+		boolean blurNotSelected = context.is("blurNotSelected");
 		boolean forceTextures = context.is("forceTextures");
 		@SuppressWarnings("unchecked")
 		Function2<Integer, Integer, Color> colorer = context.get(Function2.class, null);
@@ -71,11 +72,11 @@ public class HeatMapElementFactory implements IGLElementFactory2 {
 		if (data != null) {
 			if (colorer == null)
 				colorer = new BasicBlockColorer(data.getDataDomain());
-			elem = new HeatMapElement(data, colorer, detailLevel, forceTextures);
+			elem = new HeatMapElement(data, colorer, detailLevel, forceTextures, blurNotSelected);
 		} else {
 			IHeatMapDataProvider datap = new ListDataProvider(toData(context, "records"), toData(context, "dimensions"));
 			IHeatMapRenderer renderer = new HeatMapRenderer(detailLevel, forceTextures, colorer);
-			elem = new HeatMapElementBase(datap, renderer, detailLevel);
+			elem = new HeatMapElementBase(datap, renderer, detailLevel, blurNotSelected);
 		}
 
 		BarPlotElementFactory.setCommon(context, elem);

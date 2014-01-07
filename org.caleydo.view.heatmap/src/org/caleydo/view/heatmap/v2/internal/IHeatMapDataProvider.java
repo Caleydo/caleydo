@@ -22,6 +22,8 @@ public interface IHeatMapDataProvider {
 
 	SelectionManager getManager(EDimension dim);
 
+	void fireSelectionChanged(SelectionManager manager);
+
 	void setCallback(IDataChangedCallback callback);
 
 	public interface IDataChangedCallback {
