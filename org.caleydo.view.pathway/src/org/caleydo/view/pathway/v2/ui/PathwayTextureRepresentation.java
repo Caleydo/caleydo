@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES2;
 
@@ -30,6 +31,7 @@ import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.view.pathway.v2.internal.GLPathwayView;
 
@@ -173,6 +175,10 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 
 		calculateTransforms(w, h);
 
+		if (pathway.getType() == EPathwayDatabaseType.WIKIPATHWAYS) {
+			renderBackground(g);
+		}
+
 		GL2 gl = g.gl;
 		if (shaderProgramTextOverlay > 0) {
 			gl.glUseProgram(shaderProgramTextOverlay);
@@ -192,6 +198,45 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 		// g.fillRect(getVertexRepBounds(vertexRep));
 		// }
 
+	}
+
+	private void renderBackground(GLGraphics g) {
+		GL2 gl = g.gl;
+
+		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+		gl.glEnable(GL.GL_STENCIL_TEST);
+		gl.glColorMask(false, false, false, false);
+		gl.glDepthMask(false);
+		gl.glStencilFunc(GL.GL_NEVER, 1, 0xFF);
+		gl.glStencilOp(GL.GL_REPLACE, GL.GL_KEEP, GL.GL_KEEP); // draw 1s on test fail (always)
+
+		// draw stencil pattern
+		gl.glStencilMask(0xFF);
+		gl.glClear(GL.GL_STENCIL_BUFFER_BIT); // needs mask=0xFF
+
+		for (PathwayVertexRep vertex : pathway.vertexSet()) {
+			g.fillRect(getVertexRepBounds(vertex));
+		}
+
+		gl.glColorMask(true, true, true, true);
+		gl.glDepthMask(true);
+		gl.glStencilMask(0x00);
+		// draw where stencil's value is 0
+		gl.glStencilFunc(GL.GL_EQUAL, 0, 0xFF);
+
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+
+		gl.glPushMatrix();
+		gl.glPushAttrib(GL2.GL_LINE_BIT);
+
+		g.color(1, 1, 1, 1).fillRect(origin.x(), origin.y(), renderSize.x(), renderSize.y());
+		g.color(0, 0, 0, 1).drawRect(origin.x(), origin.y(), renderSize.x(), renderSize.y());
+
+		gl.glPopAttrib();
+		gl.glPopMatrix();
+
+		gl.glDisable(GL.GL_STENCIL_TEST);
 	}
 
 	@Override
