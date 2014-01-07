@@ -24,6 +24,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.view.entourage.GLEntourage.PathwayMultiFormInfo;
 
 /**
  * @author Christian
@@ -33,17 +34,21 @@ public class PortalHighlightRenderer extends PickableGLElement {
 
 	private final Rect location;
 	private final GLPathwayWindow window;
+	private final PathwayMultiFormInfo info;
 
 	/**
 	 *
 	 */
-	public PortalHighlightRenderer(Rect location, GLPathwayWindow window) {
+	public PortalHighlightRenderer(PathwayMultiFormInfo info, Rect location, GLPathwayWindow window) {
 		this.location = location;
 		this.window = window;
+		this.info = info;
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		if (info.window.isZoomed())
+			return;
 		g.incZ(0.5f);
 		g.color(PortalRenderStyle.CONTEXT_PORTAL_COLOR)
 				.lineWidth(2)
@@ -55,6 +60,8 @@ public class PortalHighlightRenderer extends PickableGLElement {
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
+		if (info.window.isZoomed())
+			return;
 		g.incZ(0.5f);
 		g.fillRect(location.x() + 1, location.y() + 1, location.width() + 1, location.height() + 1);
 		g.lineWidth(1);

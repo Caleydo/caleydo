@@ -1420,7 +1420,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 							EPathwayDatabaseType.KEGG);
 					PathwayMultiFormInfo target = getPathwayMultiFormInfo(pathway);
 					if (target != null) {
-						PortalHighlightRenderer renderer = new PortalHighlightRenderer(getPortalLocation(vertexRep,
+						PortalHighlightRenderer renderer = new PortalHighlightRenderer(info, getPortalLocation(
+								vertexRep,
 								info).getFirst(), (GLPathwayWindow) target.window);
 						// textureSelectionListeners.add(renderer);
 						augmentation.add(renderer);
@@ -1454,7 +1455,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		if (pathway != null) {
 			PathwayMultiFormInfo windowInfo = getPathwayMultiFormInfo(pathway);
 			if (windowInfo != null) {
-				PortalHighlightRenderer renderer = new PortalHighlightRenderer(getPortalLocation(vertexRep, info)
+				PortalHighlightRenderer renderer = new PortalHighlightRenderer(info, getPortalLocation(vertexRep, info)
 						.getFirst(), (GLPathwayWindow) windowInfo.window);
 				// textureSelectionListeners.add(renderer);
 				augmentation.add(renderer);

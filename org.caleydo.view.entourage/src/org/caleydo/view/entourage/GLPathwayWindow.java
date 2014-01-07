@@ -112,7 +112,8 @@ public class GLPathwayWindow extends GLMultiFormWindow {
 
 	@Override
 	public float getMinHeight() {
-		return info.multiFormRenderer.getMinHeightPixels() + 20;
+		PathwayMultiFormInfo pInfo = (PathwayMultiFormInfo) info;
+		return pInfo.getCurrentPathwayRepresentation().getMinHeight() + 20;
 	}
 
 }

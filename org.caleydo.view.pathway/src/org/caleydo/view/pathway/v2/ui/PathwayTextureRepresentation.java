@@ -339,7 +339,7 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 
 	@Override
 	public float getMinWidth() {
-		if (minWidth < 0)
+		if (minWidth > 0)
 			return minWidth;
 		if (pathway == null)
 			return 120;
@@ -348,7 +348,7 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 
 	@Override
 	public float getMinHeight() {
-		if (minHeight < 0)
+		if (minHeight > 0)
 			return minHeight;
 		if (pathway == null)
 			return 120;
