@@ -65,13 +65,13 @@ public interface IPathwayRepresentation {
 	 */
 	public Rect getPathwayBounds();
 
-	/**
-	 * Adds the specified context menu item to the context menu of all vertexReps in this pathway. The selected
-	 * vertexRep is set in the item using {@link VertexRepBasedContextMenuItem#setVertexRep(PathwayVertexRep)}.
-	 *
-	 * @param item
-	 */
-	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item);
+	// /**
+	// * Adds the specified context menu item to the context menu of all vertexReps in this pathway. The selected
+	// * vertexRep is set in the item using {@link VertexRepBasedContextMenuItem#setVertexRep(PathwayVertexRep)}.
+	// *
+	// * @param item
+	// */
+	// public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item);
 
 	/**
 	 * Adds a {@link IVertexRepSelectionListener} to the representation. The representation then calls

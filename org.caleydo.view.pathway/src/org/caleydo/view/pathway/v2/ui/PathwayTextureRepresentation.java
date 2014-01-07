@@ -28,7 +28,6 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
-import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -59,6 +58,8 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 
 	protected float minWidth = -1;
 	protected float minHeight = -1;
+
+	// protected List<VertexRepBasedContextMenuItem> contextMenuItems = new ArrayList<>();
 
 	public PathwayTextureRepresentation() {
 	}
@@ -101,6 +102,15 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 		for (IVertexRepSelectionListener listener : vertexListeners) {
 			listener.onSelect(vertexRep, pick);
 		}
+
+		// if (pick.getPickingMode() == PickingMode.RIGHT_CLICKED) {
+		// ContextMenuCreator creator = new ContextMenuCreator();
+		// for (VertexRepBasedContextMenuItem item : contextMenuItems) {
+		// item.setVertexRep(vertexRep);
+		// creator.add(item);
+		// }
+		// context.getSWTLayer().showContextMenu(creator);
+		// }
 	}
 
 	private void initShaders(GL2 gl) throws IOException {
@@ -319,11 +329,12 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 		return Arrays.asList(bounds);
 	}
 
-	@Override
-	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
-		// TODO Auto-generated method stub
-
-	}
+	// @Override
+	// public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
+	// if (item != null)
+	// contextMenuItems.add(item);
+	//
+	// }
 
 	@Override
 	public void addVertexRepSelectionListener(IVertexRepSelectionListener listener) {

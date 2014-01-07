@@ -897,7 +897,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		return null;
 	}
 
-	@Override
+	// @Override
 	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
 		if (pathRenderer != null)
 			pathRenderer.addVertexRepBasedContextMenuItem(item);

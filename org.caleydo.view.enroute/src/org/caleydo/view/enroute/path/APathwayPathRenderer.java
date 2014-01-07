@@ -957,7 +957,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		return boundsList;
 	}
 
-	@Override
+	// @Override
 	public synchronized void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
 		nodeContextMenuItems.add(item);
 	}

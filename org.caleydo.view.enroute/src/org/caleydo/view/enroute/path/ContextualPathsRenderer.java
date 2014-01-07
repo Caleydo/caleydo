@@ -220,7 +220,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		return allBounds;
 	}
 
-	@Override
+	// @Override
 	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
 		nodeContextMenuItems.add(item);
 		for (APathwayPathRenderer renderer : renderers.keySet()) {

@@ -30,7 +30,6 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
-import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 
@@ -94,10 +93,6 @@ public class Level4PathwayRenderer extends ALayoutRenderer implements IPathwayRe
 			return list;
 		}
 		return null;
-	}
-
-	@Override
-	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
 	}
 
 	@Override

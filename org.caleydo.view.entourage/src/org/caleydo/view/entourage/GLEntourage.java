@@ -575,6 +575,9 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 						if (info.window == activeWindow) {
 							ShowCommonNodesPathwaysEvent event = new ShowCommonNodesPathwaysEvent(info.pathway);
 							event.setEventSpace(pathEventSpace);
+							// getContextMenuCreator().add(
+							// new GenericContextMenuItem(
+							// "Show Related Pathways with Common Nodes", event));
 							contextMenuItemsToShow.add(new GenericContextMenuItem(
 									"Show Related Pathways with Common Nodes", event));
 						}
@@ -823,8 +826,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		// "Show Node Info", ShowNodeInfoEvent.class, pathEventSpace));
 		// pathwayRepresentation.addVertexRepBasedContextMenuItem(new ShowCommonNodeItem(
 		// ShowCommonNodePathwaysEvent.class, pathEventSpace));
-		pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem("Show Context",
-				ShowNodeContextEvent.class, pathEventSpace));
+		// pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem("Show Context",
+		// ShowNodeContextEvent.class, pathEventSpace));
 
 		pathwayRepresentation.addVertexRepSelectionListener(new IVertexRepSelectionListener() {
 
@@ -839,6 +842,13 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 					break;
 				case DOUBLE_CLICKED:
 					new AddPathwayEventFactory(pathEventSpace).triggerEvent(vertexRep);
+					break;
+				case RIGHT_CLICKED:
+					VertexRepBasedContextMenuItem item = new VertexRepBasedContextMenuItem("Show Context",
+							ShowNodeContextEvent.class, pathEventSpace);
+					item.setVertexRep(vertexRep);
+					getContextMenuCreator().add(item);
+					// contextMenuItemsToShow.add(item);
 					break;
 				default:
 					break;
@@ -958,12 +968,16 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 		super.display(gl);
 
+
+
 		if (wasContextChanged) {
 			// We need to remove and add it again, otherwise there is no selection delta, as the currentContextVertexRep
 			// is already selected
-			vertexSelectionManager.removeFromType(SelectionType.SELECTION, currentContextVertexRep.getID());
+			vertexSelectionManager.clearSelection(SelectionType.SELECTION);
+			// vertexSelectionManager.removeFromType(SelectionType.SELECTION, currentContextVertexRep.getID());
 			vertexSelectionManager.addToType(SelectionType.SELECTION, currentContextVertexRep.getID());
 			vertexSelectionManager.triggerSelectionUpdateEvent();
+			wasContextChanged = false;
 		}
 
 		// for (AContextMenuItem item : contextMenuItemsToShow) {

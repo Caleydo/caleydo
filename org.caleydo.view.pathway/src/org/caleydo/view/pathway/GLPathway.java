@@ -1924,7 +1924,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		return null;
 	}
 
-	@Override
+	// @Override
 	public synchronized void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
 		addedContextMenuItems.add(item);
 	}
