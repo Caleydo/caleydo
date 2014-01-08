@@ -113,9 +113,9 @@ public class PathSegmentAugmentation extends GLElement {
 		g.move(pathwayBounds.x(), pathwayBounds.y());
 		gl.glScalef(pathwayBounds.width() / pathway.getWidth(), pathwayBounds.height() / pathway.getHeight(), 1f);
 		ITesselatedPolygon polygon = TesselatedPolygons.polygon2(points);
-		g.incZ();
+		g.incZ(-0.3f); // move to 0
 		g.color(color).fillPolygon(polygon).lineWidth(2).drawPath(polygon);
-		g.decZ();
+		g.incZ(0.3f);
 
 		gl.glPopAttrib();
 		gl.glPopMatrix();
