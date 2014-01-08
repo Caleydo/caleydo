@@ -229,6 +229,7 @@ public class WikiPathwaysParser implements IPathwayParser, IRunnableWithProgress
 				PathwayVertexRep endVertexRep = vertexReps.get(endGraphRef);
 				if (startVertexRep != null && endVertexRep != null) {
 					pathwayGraph.addEdge(startVertexRep, endVertexRep);
+					pathwayManager.addEdgesToRootPathway(startVertexRep, endVertexRep);
 				}
 			}
 		}

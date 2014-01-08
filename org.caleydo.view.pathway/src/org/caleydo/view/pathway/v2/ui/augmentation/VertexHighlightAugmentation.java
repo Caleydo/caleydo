@@ -7,6 +7,7 @@ package org.caleydo.view.pathway.v2.ui.augmentation;
 
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -68,6 +69,8 @@ public class VertexHighlightAugmentation extends APerVertexAugmentation implemen
 
 	protected void renderHighlight(GLGraphics g, Rect bounds, Color color, PathwayVertexRep vertexRep) {
 		g.gl.glPushAttrib(GL2.GL_LINE_BIT);
+		g.gl.glEnable(GL.GL_BLEND);
+		g.gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		g.lineWidth(3).color(color);
 		if (vertexRep.getType() == EPathwayVertexType.compound) {
 			float radius = bounds.width() / 2.0f;
@@ -88,7 +91,7 @@ public class VertexHighlightAugmentation extends APerVertexAugmentation implemen
 			break;
 
 		case MOUSE_OUT:
-			vertexSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
+			vertexSelectionManager.removeFromType(SelectionType.MOUSE_OVER, vertexRep.getID());
 			break;
 
 		case CLICKED:
