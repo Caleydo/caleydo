@@ -475,6 +475,7 @@ public class KgmlSaxHandler extends DefaultHandler {
 
 						currentPathway
 								.addEdge(relationSourceVertexRep, relationTargetVertexRep, pathwayRelationEdgeRep);
+						pathwayManager.addEdgesToRootPathway(relationSourceVertexRep, relationTargetVertexRep);
 					}
 
 					pathwayRelationEdgeRep.addRelationSubType(subType);
@@ -541,10 +542,12 @@ public class KgmlSaxHandler extends DefaultHandler {
 
 		try {
 			currentPathway.addEdge(sourceVertexRep, targetVertexRep, pathwayReactionEdgeRep);
+			pathwayManager.addEdgesToRootPathway(sourceVertexRep, targetVertexRep);
 
 			if (currentReactionType == EPathwayReactionEdgeType.reversible) {
 				pathwayReactionEdgeRep = new PathwayReactionEdgeRep(currentReactionType);
 				currentPathway.addEdge(targetVertexRep, sourceVertexRep, pathwayReactionEdgeRep);
+				pathwayManager.addEdgesToRootPathway(targetVertexRep, sourceVertexRep);
 			}
 		} catch (Exception e) {
 			// Logger.log(new Status(
@@ -584,10 +587,12 @@ public class KgmlSaxHandler extends DefaultHandler {
 
 		try {
 			currentPathway.addEdge(sourceVertexRep, targetVertexRep, pathwayReactionEdgeRep);
+			pathwayManager.addEdgesToRootPathway(sourceVertexRep, targetVertexRep);
 
 			if (currentReactionType == EPathwayReactionEdgeType.reversible) {
 				pathwayReactionEdgeRep = new PathwayReactionEdgeRep(currentReactionType);
 				currentPathway.addEdge(targetVertexRep, sourceVertexRep, pathwayReactionEdgeRep);
+				pathwayManager.addEdgesToRootPathway(targetVertexRep, sourceVertexRep);
 			}
 		} catch (Exception e) {
 			// Logger.log(new Status(

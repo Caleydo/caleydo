@@ -72,6 +72,7 @@ import org.caleydo.datadomain.pathway.graph.PathSegment;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.ESampleMappingMode;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
@@ -234,6 +235,11 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	private ColoredConnectionBandRenderer connectionBandRenderer = null;
 
 	private boolean isControlKeyPressed = false;
+	private boolean isAltKeyPressed = false;
+	private boolean isShiftKeyPressed = false;
+
+	private PathwayVertex fromVertex;
+	private PathwayVertex toVertex;
 
 	public boolean showSrcWindowLinks = false;
 
@@ -636,11 +642,15 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			public void keyPressed(IKeyEvent e) {
 				update(e);
 				isControlKeyPressed = e.isControlDown();
+				isAltKeyPressed = e.isAltDown();
+				isShiftKeyPressed = e.isShiftDown();
 			}
 
 			@Override
 			public void keyReleased(IKeyEvent e) {
 				isControlKeyPressed = e.isControlDown();
+				isAltKeyPressed = e.isAltDown();
+				isShiftKeyPressed = e.isShiftDown();
 				// update(e);
 			}
 
@@ -836,6 +846,21 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				switch (pick.getPickingMode()) {
 				case CLICKED:
 					new ShowNodeContextEventFactory(pathEventSpace, GLEntourage.this).triggerEvent(vertexRep);
+					// Temporary
+					if (isAltKeyPressed) {
+						if (fromVertex == null || toVertex != null) {
+							fromVertex = vertexRep.getPathwayVertices().get(0);
+							toVertex = null;
+						} else {
+							toVertex = vertexRep.getPathwayVertices().get(0);
+						}
+						if (fromVertex != null && toVertex != null) {
+							System.out.println("From: " + fromVertex.getHumanReadableName() + ", To: "
+									+ toVertex.getHumanReadableName());
+							PathwayManager.get().getShortestPaths(fromVertex, toVertex);
+						}
+					}
+
 					break;
 				case MOUSE_OVER:
 					new SelectPathwayEventFactory(pathEventSpace).triggerEvent(vertexRep);
@@ -967,8 +992,6 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		}
 
 		super.display(gl);
-
-
 
 		if (wasContextChanged) {
 			// We need to remove and add it again, otherwise there is no selection delta, as the currentContextVertexRep
@@ -1435,8 +1458,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 					PathwayMultiFormInfo target = getPathwayMultiFormInfo(pathway);
 					if (target != null) {
 						PortalHighlightRenderer renderer = new PortalHighlightRenderer(info, getPortalLocation(
-								vertexRep,
-								info).getFirst(), (GLPathwayWindow) target.window);
+								vertexRep, info).getFirst(), (GLPathwayWindow) target.window);
 						// textureSelectionListeners.add(renderer);
 						augmentation.add(renderer);
 					}

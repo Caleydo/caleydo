@@ -107,6 +107,7 @@ public class PathSegmentAugmentation extends GLElement {
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
+
 		gl.glPushMatrix();
 		gl.glPushAttrib(GL2.GL_LINE_BIT);
 
@@ -119,6 +120,7 @@ public class PathSegmentAugmentation extends GLElement {
 
 		gl.glPopAttrib();
 		gl.glPopMatrix();
+
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
 		// repaint();
