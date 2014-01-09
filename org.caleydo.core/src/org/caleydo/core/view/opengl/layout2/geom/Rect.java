@@ -77,6 +77,22 @@ public final class Rect implements Cloneable {
 	}
 
 	/**
+	 * @param max
+	 */
+	public Rect y2(float y2) {
+		this.height = y2 - y;
+		return this;
+	}
+
+	/**
+	 * @param max
+	 */
+	public Rect x2(float x2) {
+		this.width = x2 - x;
+		return this;
+	}
+
+	/**
 	 * @param y
 	 *            setter, see {@link y}
 	 */

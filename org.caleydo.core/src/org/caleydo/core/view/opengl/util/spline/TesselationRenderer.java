@@ -13,8 +13,11 @@ import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUtessellator;
 import javax.media.opengl.glu.GLUtessellatorCallback;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.util.gleem.ColoredVec2f;
 import org.caleydo.core.view.opengl.util.gleem.ColoredVec3f;
+import org.caleydo.core.view.opengl.util.gleem.IColored;
 
 /**
  * a tesselation renderer supporting: {@link Vec3f}, {@link ColoredVec3f}, double[] and {@link Vec2f}
@@ -78,6 +81,7 @@ public class TesselationRenderer {
 
 		@Override
 		public void vertex(Object vertexData) {
+			checkColor(vertexData);
 			if (vertexData instanceof double[]) {
 				double[] pointer = (double[]) vertexData;
 				assert pointer.length >= 3;
@@ -92,14 +96,17 @@ public class TesselationRenderer {
 				gl.glVertex3dv(pointer, 0);
 			} else if (vertexData instanceof Vec3f) {
 				Vec3f v = (Vec3f) vertexData;
-				if (v instanceof ColoredVec3f) {
-					ColoredVec3f cv = (ColoredVec3f) v;
-					gl.glColor4fv(cv.getColor().getRGBA(), 0);
-				}
 				gl.glVertex3f(v.x(), v.y(), v.z());
 			} else if (vertexData instanceof Vec2f) {
 				Vec2f v = (Vec2f) vertexData;
 				gl.glVertex3f(v.x(), v.y(), g.z());
+			}
+		}
+
+		private void checkColor(Object v) {
+			if (v instanceof IColored) {
+				IColored cv = (IColored) v;
+				gl.glColor4fv(cv.getColor().getRGBA(), 0);
 			}
 		}
 
@@ -144,28 +151,38 @@ public class TesselationRenderer {
 			} else if (type instanceof ColoredVec3f) {
 				ColoredVec3f cv = new ColoredVec3f();
 				cv.set((float) coords[0], (float) coords[1], (float) coords[2]);
-				float r = 0, g = 0, b = 0, a = 0;
-				for (int j = 0; j < weight.length; ++j) {
-					ColoredVec3f d = (ColoredVec3f) data[j];
-					if (d == null)
-						continue;
-					float[] rgba = d.getColor().getRGBA();
-					r += weight[j] * rgba[0];
-					g += weight[j] * rgba[1];
-					b += weight[j] * rgba[2];
-					a += weight[j] * rgba[3];
-				}
-				cv.setColor(r, g, b, a);
+				cv.setColor(interpolateColor(data, weight));
 				outData[0] = cv;
 			} else if (type instanceof Vec3f) {
 				Vec3f v = new Vec3f();
 				v.set((float) coords[0], (float) coords[1], (float) coords[2]);
+				outData[0] = v;
+			} else if (type instanceof ColoredVec2f) {
+				ColoredVec2f v = new ColoredVec2f();
+				v.set((float) coords[0], (float) coords[1]);
+				v.setColor(interpolateColor(data, weight));
 				outData[0] = v;
 			} else if (type instanceof Vec2f) {
 				Vec2f v = new Vec2f();
 				v.set((float) coords[0], (float) coords[1]);
 				outData[0] = v;
 			}
+		}
+
+		private Color interpolateColor(Object[] data, float[] weight) {
+			float r = 0, g = 0, b = 0, a = 0;
+			for (int j = 0; j < weight.length; ++j) {
+				IColored d = (IColored) data[j];
+				if (d == null)
+					continue;
+				float[] rgba = d.getColor().getRGBA();
+				r += weight[j] * rgba[0];
+				g += weight[j] * rgba[1];
+				b += weight[j] * rgba[2];
+				a += weight[j] * rgba[3];
+			}
+			Color c = new Color(r, g, b, a);
+			return c;
 		}
 
 		@Override

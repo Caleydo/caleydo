@@ -15,6 +15,7 @@ import java.util.ListIterator;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2ES1;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.base.ILabeled;
@@ -240,6 +241,12 @@ public class GLGraphics {
 			return color(rgba[0], rgba[1], rgba[2], 1);
 		else
 			return color(rgba[0], rgba[1], rgba[2], rgba[3]);
+	}
+
+	public Color getColor() {
+		float[] rgba = new float[4];
+		gl.glGetFloatv(GL2ES1.GL_CURRENT_COLOR, rgba, 0);
+		return new Color(rgba);
 	}
 
 	public GLGraphics textColor(Color color) {
