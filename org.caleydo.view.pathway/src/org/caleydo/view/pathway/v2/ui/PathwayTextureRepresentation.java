@@ -66,6 +66,29 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 
 	public PathwayTextureRepresentation(PathwayGraph pathway) {
 		this.pathway = pathway;
+
+		// DefaultDirectedGraph<PathwayVertexRep, DefaultEdge> testGraph1 = new
+		// DefaultDirectedGraph<>(DefaultEdge.class);
+		// PathwayVertexRep v1 = new PathwayVertexRep("A", EPathwayVertexShape.rectangle.name(), (short) 0, (short) 0,
+		// (short) 0, (short) 0);
+		// PathwayVertexRep v2 = new PathwayVertexRep("B", EPathwayVertexShape.rectangle.name(), (short) 0, (short) 0,
+		// (short) 0, (short) 0);
+		// PathwayVertexRep v3 = new PathwayVertexRep("C", EPathwayVertexShape.rectangle.name(), (short) 0, (short) 0,
+		// (short) 0, (short) 0);
+		//
+		// testGraph1.addVertex(v1);
+		// testGraph1.addVertex(v2);
+		// testGraph1.addVertex(v3);
+		//
+		// testGraph1.addEdge(v1, v2);
+		// testGraph1.addEdge(v1, v2);
+		// testGraph1.addEdge(v2, v1);
+		// testGraph1.addEdge(v1, v1);
+		//
+		// System.out.println("Edges of A: ");
+		// for (DefaultEdge e : testGraph1.edgesOf(v1)) {
+		// System.out.println(e);
+		// }
 	}
 
 	@Override
@@ -200,12 +223,10 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 			gl.glUniform1i(gl.glGetUniformLocation(shaderProgramTextOverlay, "mode"), this.pathway.getType().ordinal());
 		}
 
-
 		g.fillImage(pathway.getImage().getPath(), origin.x(), origin.y(), renderSize.x(), renderSize.y());
 
 		if (shaderProgramTextOverlay > 0)
 			gl.glUseProgram(0);
-
 
 		// repaint();
 		// g.color(0f, 0f, 0f, 1f);
