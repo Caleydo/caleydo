@@ -111,6 +111,10 @@ public class GLElementFactoryContext {
 		if (StringUtils.isBlank(key)) {
 			if (objects.containsKey(clazz))
 				return objects.getInstance(clazz);
+			for (Object obj : objects.values()) { // check super classes
+				if (clazz.isInstance(obj))
+					return clazz.cast(obj);
+			}
 			return default_ == null ? null : default_.get();
 		}
 

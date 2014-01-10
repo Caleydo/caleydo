@@ -59,11 +59,18 @@ public class ButtonBarBuilder {
 	private final Collection<GLElement> prepend = new ArrayList<>(0);
 	private final Collection<GLElement> append = new ArrayList<>(0);
 
+	private ISelectionCallback custom;
+
 	/**
 	 *
 	 */
 	public ButtonBarBuilder(GLElementFactorySwitcher switcher) {
 		this.switcher = switcher;
+	}
+
+	public ButtonBarBuilder customCallback(ISelectionCallback callback) {
+		this.custom = callback;
+		return this;
 	}
 
 	public ButtonBarBuilder prepend(GLElement elem) {
@@ -267,6 +274,7 @@ public class ButtonBarBuilder {
 		private final EButtonBarLayout layout;
 		private final RadioController controller = new RadioController(this);
 		final GLElementFactorySwitcher switcher;
+		private final ISelectionCallback custom;
 		final int prepended;
 
 		boolean hovered;
@@ -290,6 +298,7 @@ public class ButtonBarBuilder {
 			addAll(builder.prepend);
 			addButtons(builder);
 			addAll(builder.append);
+			this.custom = builder.custom;
 		}
 
 		/**
@@ -318,6 +327,7 @@ public class ButtonBarBuilder {
 					b.setHoverEffect(builder.hoverEffect);
 				controller.add(b);
 				b.setSize(builder.size, builder.size);
+				b.setzDelta(0.5f);
 				this.add(b, 0);
 			}
 		}
@@ -382,6 +392,8 @@ public class ButtonBarBuilder {
 		@Override
 		public void onSelectionChanged(GLButton button, boolean selected) {
 			switcher.setActive(button.getPickingObjectId());
+			if (custom != null)
+				custom.onSelectionChanged(button, selected);
 		}
 
 		@Override

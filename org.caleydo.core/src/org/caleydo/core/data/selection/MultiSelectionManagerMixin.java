@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.core.data.selection;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -31,7 +32,7 @@ import com.google.common.collect.Iterators;
  * @author Samuel Gratzl
  *
  */
-public class MultiSelectionManagerMixin implements Iterable<SelectionManager> {
+public class MultiSelectionManagerMixin extends AbstractList<SelectionManager> {
 	protected final List<SelectionManager> selectionManagers = new ArrayList<>(2);
 	protected final ISelectionMixinCallback callback;
 
@@ -39,14 +40,22 @@ public class MultiSelectionManagerMixin implements Iterable<SelectionManager> {
 		this.callback = callback;
 	}
 
-	public final void add(SelectionManager manager) {
-		this.selectionManagers.add(manager);
+	@Override
+	public final boolean add(SelectionManager manager) {
+		return this.selectionManagers.add(manager);
 	}
 
+	@Override
 	public final SelectionManager get(int index) {
 		return selectionManagers.get(index);
 	}
+	
+	@Override
+	public int size() {
+		return selectionManagers.size();
+	}
 
+	@Override
 	public final void clear() {
 		for (SelectionManager m : selectionManagers)
 			m.unregisterEventListeners();
