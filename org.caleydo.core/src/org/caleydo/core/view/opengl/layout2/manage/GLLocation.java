@@ -72,6 +72,10 @@ public class GLLocation {
 		return input == null ? UNKNOWN : loc.apply(input.intValue());
 	}
 
+	public static List<GLLocation> apply(ILocator loc, Iterable<Integer> dataIndizes) {
+		return Lists.newArrayList(Iterables.transform(dataIndizes, loc));
+	}
+
 	/**
 	 * @return
 	 */

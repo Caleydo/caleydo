@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.view.histogram.v2;
+package org.caleydo.view.histogram.v2.internal;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -18,8 +18,10 @@ import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorBrewer;
-import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
 
 /**
@@ -28,8 +30,7 @@ import com.google.common.collect.ImmutableList;
  * @author Samuel Gratzl
  *
  */
-public class HistDistributionElement extends ADistributionElement implements
-		MultiSelectionManagerMixin.ISelectionMixinCallback {
+public class HistDistributionData implements IDistributionData, MultiSelectionManagerMixin.ISelectionMixinCallback {
 	@DeepScan
 	protected final MultiSelectionManagerMixin selections;
 
@@ -37,13 +38,14 @@ public class HistDistributionElement extends ADistributionElement implements
 	private final int size;
 	private final List<Color> colors;
 	private final List<String> labels;
+	private final List<Integer> ids;
 
-	/**
-	 *
-	 */
-	public HistDistributionElement(Histogram hist, IDType idType, EDistributionMode mode, String[] labels,
-			Color[] colors) {
-		super(mode);
+	private GLElement callback;
+
+
+	public HistDistributionData(Histogram hist, IDType idType, String[] labels,
+ Color[] colors, List<Integer> ids) {
+		this.ids = ids;
 		this.colors = ImmutableList.copyOf(toColors(hist.size(), colors));
 		this.labels = ImmutableList.copyOf(toLabels(hist.size(), labels));
 		this.size = size(hist);
@@ -54,6 +56,23 @@ public class HistDistributionElement extends ADistributionElement implements
 			this.selections = new MultiSelectionManagerMixin(this);
 			this.selections.add(new SelectionManager(idType));
 		}
+	}
+
+	@Override
+	public void onChange(GLElement callback) {
+		this.callback = callback;
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		return getLayoutDataAs(clazz, Suppliers.ofInstance(default_));
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
+		if (clazz.isInstance(hist))
+			return clazz.cast(hist);
+		return default_.get();
 	}
 
 	/**
@@ -82,35 +101,28 @@ public class HistDistributionElement extends ADistributionElement implements
 		return ColorBrewer.Set2.getColors(size).toArray(new Color[0]);
 	}
 
-	@Override
-	protected void init(IGLElementContext context) {
-		super.init(context);
-
-		if (bucketPickingIds != null)
-			bucketPickingIds.ensure(0, hist.size());
-	}
 
 	@Override
-	protected Histogram getHist() {
+	public Histogram getHist() {
 		return hist;
 	}
 
 	@Override
-	protected String getBinName(int bin) {
+	public String getBinName(int bin) {
 		if (bin >= labels.size())
 			return "<NoName>";
 		return labels.get(bin);
 	}
 
 	@Override
-	protected Color getBinColor(int bin) {
+	public Color getBinColor(int bin) {
 		if (bin >= colors.size())
 			return Color.NEUTRAL_GREY;
 		return colors.get(bin);
 	}
 
 	@Override
-	protected void select(Collection<Integer> ids, SelectionType selectionType, boolean clear) {
+	public void select(Collection<Integer> ids, SelectionType selectionType, boolean clear) {
 		if (selections == null)
 			return;
 		SelectionManager manager = selections.get(0);
@@ -121,7 +133,7 @@ public class HistDistributionElement extends ADistributionElement implements
 	}
 
 	@Override
-	protected Set<Integer> getElements(SelectionType selectionType) {
+	public Set<Integer> getElements(SelectionType selectionType) {
 		if (selections == null)
 			return Collections.emptySet();
 		return selections.get(0).getElements(selectionType);
@@ -129,11 +141,31 @@ public class HistDistributionElement extends ADistributionElement implements
 
 	@Override
 	public void onSelectionUpdate(SelectionManager manager) {
-		repaint();
+		callback.repaint();
 	}
 
 	@Override
-	protected int size() {
+	public int getBinOf(int dataIndex) {
+		if (ids == null || ids.isEmpty()) {
+			// bin order
+			int offset = 0;
+			for (int bin = 0; bin < hist.size(); ++bin) {
+				offset += hist.getIDsForBucket(bin).size();
+				if (offset >= dataIndex)
+					return bin;
+			}
+		} else {
+			Integer id = ids.get(dataIndex);
+			for (int bin = 0; bin < hist.size(); ++bin) {
+				if (hist.getIDsForBucket(bin).contains(id))
+					return bin;
+			}
+		}
+		return -1;
+	}
+
+	@Override
+	public int size() {
 		return size;
 	}
 }

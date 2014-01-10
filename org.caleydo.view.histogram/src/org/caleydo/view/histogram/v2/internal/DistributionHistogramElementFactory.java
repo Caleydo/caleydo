@@ -5,9 +5,13 @@
  *******************************************************************************/
 package org.caleydo.view.histogram.v2.internal;
 
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
+import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
+import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc.DescBuilder;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
-import org.caleydo.view.histogram.v2.ADistributionElement.EDistributionMode;
+import org.caleydo.view.histogram.v2.HistogramDistributionElement;
 
 /**
  * element factory for creating distribution elements
@@ -23,7 +27,14 @@ public class DistributionHistogramElementFactory extends ADistributionBarElement
 
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
-		return create(context, EDistributionMode.HISTOGRAM);
+		return new HistogramDistributionElement(createData(context));
 	}
 
+	@Override
+	public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
+		final DescBuilder builder = GLElementDimensionDesc.newBuilder().fix(dim.select(((IHasMinSize) elem).getMinSize()));
+		if (dim != EDimension.RECORD)
+			builder.locateUsing(((HistogramDistributionElement) elem));
+		return builder.build();
+	}
 }

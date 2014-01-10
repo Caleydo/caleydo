@@ -5,10 +5,14 @@
  *******************************************************************************/
 package org.caleydo.view.histogram.v2.internal;
 
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
+import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
+import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc.DescBuilder;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
-import org.caleydo.view.histogram.v2.ADistributionElement.EDistributionMode;
+import org.caleydo.view.histogram.v2.BarDistributionElement;
 
 /**
  * element factory for creating distribution elements
@@ -30,7 +34,20 @@ public class DistributionBarElementFactory extends ADistributionBarElementFactor
 			vertical = data.getDimensionPerspective().getVirtualArray().size() == 1;
 		}
 		vertical = context.is("vertical", vertical);
-		return create(context, vertical ? EDistributionMode.VERTICAL_BAR : EDistributionMode.HORIZONTAL_BAR);
+		return new BarDistributionElement(createData(context), vertical);
+	}
+
+	@Override
+	public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
+		BarDistributionElement bar = (BarDistributionElement) elem;
+
+		final DescBuilder b = GLElementDimensionDesc.newBuilder();
+		if (dim == bar.getDimension()) {
+			b.linear(1).locateUsing(bar);
+		} else {
+			b.fix(dim.select(((IHasMinSize) elem).getMinSize()));
+		}
+		return b.build();
 	}
 
 }

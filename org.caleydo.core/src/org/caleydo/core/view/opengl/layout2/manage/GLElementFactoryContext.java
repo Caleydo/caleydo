@@ -115,7 +115,13 @@ public class GLElementFactoryContext {
 		}
 
 		// named
-		key = prefix + key;
+		String pkey = prefix + key;
+		if (namedObjects.containsKey(pkey)) {
+			Object o = namedObjects.get(pkey);
+			if (clazz.isInstance(o))
+				return clazz.cast(o);
+		}
+		// check without key
 		if (namedObjects.containsKey(key)) {
 			Object o = namedObjects.get(key);
 			if (clazz.isInstance(o))
@@ -140,7 +146,7 @@ public class GLElementFactoryContext {
 	}
 
 	public int getInt(String key, int default_) {
-		Integer r = get(key, Integer.class, Integer.valueOf(default_));
+		Number r = get(key, Number.class, Integer.valueOf(default_));
 		return r == null ? default_ : r.intValue();
 	}
 
@@ -148,11 +154,19 @@ public class GLElementFactoryContext {
 		return getFloat(key, Float.NaN);
 	}
 
+	public double getDouble(String key) {
+		return getDouble(key, Double.NaN);
+	}
+
 	public float getFloat(String key, float default_) {
-		Float r = get(key, Float.class, default_);
+		Number r = get(key, Number.class, default_);
 		return r == null ? default_ : r.floatValue();
 	}
 
+	public double getDouble(String key, double default_) {
+		Number r = get(key, Number.class, default_);
+		return r == null ? default_ : r.doubleValue();
+	}
 	/**
 	 *
 	 * @return
@@ -211,6 +225,10 @@ public class GLElementFactoryContext {
 
 		public Builder set(String key, float value) {
 			return put(key, value);
+		}
+
+		public Builder set(String key, double value) {
+			return set(key, value);
 		}
 
 		public GLElementFactoryContext build() {

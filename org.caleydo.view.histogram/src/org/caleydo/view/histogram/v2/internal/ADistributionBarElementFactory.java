@@ -5,6 +5,8 @@
  *******************************************************************************/
 package org.caleydo.view.histogram.v2.internal;
 
+import java.util.List;
+
 import org.caleydo.core.data.collection.CategoricalHistogram;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
@@ -14,12 +16,8 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
-import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
-import org.caleydo.view.histogram.v2.ADistributionElement.EDistributionMode;
-import org.caleydo.view.histogram.v2.DistributionElement;
-import org.caleydo.view.histogram.v2.HistDistributionElement;
+import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory2;
 
 /**
  * element factory for creating distribution elements
@@ -27,7 +25,7 @@ import org.caleydo.view.histogram.v2.HistDistributionElement;
  * @author Samuel Gratzl
  *
  */
-public abstract class ADistributionBarElementFactory implements IGLElementFactory {
+public abstract class ADistributionBarElementFactory implements IGLElementFactory2 {
 	@Override
 	public boolean apply(GLElementFactoryContext context) {
 		// first using table perspective
@@ -50,12 +48,16 @@ public abstract class ADistributionBarElementFactory implements IGLElementFactor
 	 * @param eDistributionMode
 	 * @return
 	 */
-	protected GLElement create(GLElementFactoryContext context, EDistributionMode mode) {
+	protected IDistributionData createData(GLElementFactoryContext context) {
 		if (context.getData() != null)
-			return new DistributionElement(context.getData(), mode);
+			return new TablePerspectiveDistributionData(context.getData());
 		else {
-			Color[] colors = context.get("colors", Color[].class, null);
-			String[] labels = context.get("labels",String[].class,null);
+			Color[] colors = context.get("colors", Color[].class,
+					context.get("distribution.colors", Color[].class, null));
+			String[] labels = context.get("labels", String[].class,
+					context.get("distribution.labels", String[].class, null));
+			@SuppressWarnings("unchecked")
+			List<Integer> ids = context.get("data", List.class, null);
 			Histogram hist = context.get(Histogram.class,null);
 			IDType idType = context.get("idType", IDType.class,null);
 
@@ -68,13 +70,14 @@ public abstract class ADistributionBarElementFactory implements IGLElementFactor
 				idType = va.getIdType();
 				hist = createHist(va);
 				labels = createLabels(va.getGroupList());
+				ids = va.getIDs();
 			}
 			assert hist != null;
 			if (hist instanceof CategoricalHistogram) { // extract colors and labels from advanced va
 				labels = toLabels((CategoricalHistogram) hist);
 				colors = toColors((CategoricalHistogram) hist);
 			}
-			return new HistDistributionElement(hist, idType, mode, labels, colors);
+			return new HistDistributionData(hist, idType, labels, colors, ids);
 		}
 	}
 

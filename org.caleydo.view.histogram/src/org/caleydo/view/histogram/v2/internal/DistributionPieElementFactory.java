@@ -10,8 +10,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
-import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory2;
-import org.caleydo.view.histogram.v2.ADistributionElement.EDistributionMode;
+import org.caleydo.view.histogram.v2.PieDistributionElement;
 
 /**
  * element factory for creating distribution elements
@@ -19,7 +18,7 @@ import org.caleydo.view.histogram.v2.ADistributionElement.EDistributionMode;
  * @author Samuel Gratzl
  *
  */
-public class DistributionPieElementFactory extends ADistributionBarElementFactory implements IGLElementFactory2 {
+public class DistributionPieElementFactory extends ADistributionBarElementFactory {
 	@Override
 	public String getId() {
 		return "distribution.pie";
@@ -32,7 +31,7 @@ public class DistributionPieElementFactory extends ADistributionBarElementFactor
 
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
-		return create(context, EDistributionMode.PIE);
+		return new PieDistributionElement(createData(context));
 	}
 
 }

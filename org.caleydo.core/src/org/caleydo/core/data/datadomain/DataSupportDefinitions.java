@@ -80,7 +80,7 @@ public final class DataSupportDefinitions {
 			public boolean apply(TablePerspective in) {
 				if (in == null)
 					return false;
-				if (numericalTables.apply(in)) {
+				if (homogenousTables.apply(in)) {
 					return type
 							.contains(in.getDataDomain().getDataSetDescription().getDataDescription().getDataClass());
 				}
