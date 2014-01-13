@@ -16,6 +16,8 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 
 /**
+ * Displays a {@link PathwayPath} as continuous bubbleset across multiple path segments.
+ *
  * @author Christian
  *
  */
@@ -34,6 +36,11 @@ public class MergedPathSegmentsAugmentation extends GLElementContainer {
 		add(segmentRenderer);
 	}
 
+	/**
+	 * Sets the path that shall be displayed as continuous bubbleset.
+	 *
+	 * @param path
+	 */
 	public void setPath(PathwayPath path) {
 		PathwayPath segmentsToMerge = new PathwayPath();
 		List<PathwayGraph> pathways = pathwayRepresentation.getPathways();
@@ -47,6 +54,11 @@ public class MergedPathSegmentsAugmentation extends GLElementContainer {
 		segmentRenderer.setPathSegment(mergedSegment);
 	}
 
+	/**
+	 * Sets the color of the bubbleset.
+	 *
+	 * @param color
+	 */
 	public void setColor(Color color) {
 		segmentRenderer.setColor(color);
 	}

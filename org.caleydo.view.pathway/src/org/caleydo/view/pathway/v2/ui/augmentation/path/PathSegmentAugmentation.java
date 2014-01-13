@@ -35,11 +35,16 @@ import setvis.shape.BSplineShapeGenerator;
 import com.jogamp.opengl.util.awt.TextureRenderer;
 
 /**
+ * Augments the pathway vertices of a given {@link PathSegment} by a bubble set.
+ *
  * @author Christian
  *
  */
 public class PathSegmentAugmentation extends GLElement {
 
+	/**
+	 * The pathway representation that shall be augmented.
+	 */
 	protected IPathwayRepresentation pathwayRepresentation;
 	protected boolean initialized = false;
 	protected TextureRenderer texRenderer = null;
@@ -48,7 +53,13 @@ public class PathSegmentAugmentation extends GLElement {
 	protected AbstractShapeGenerator shaper;
 	protected CanvasComponent bubblesetCanvas;
 
+	/**
+	 * The path segment specifying the pathway vertices that need to be augmented in the {@link #pathwayRepresentation}.
+	 */
 	protected PathSegment pathSegment;
+	/**
+	 * Color of the bubble set.
+	 */
 	protected Color color = new Color();
 
 	public PathSegmentAugmentation(IPathwayRepresentation pathwayRepresentation) {
@@ -107,7 +118,6 @@ public class PathSegmentAugmentation extends GLElement {
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
-
 		gl.glPushMatrix();
 		gl.glPushAttrib(GL2.GL_LINE_BIT);
 
@@ -120,7 +130,6 @@ public class PathSegmentAugmentation extends GLElement {
 
 		gl.glPopAttrib();
 		gl.glPopMatrix();
-
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
 		// repaint();

@@ -8,7 +8,6 @@ package org.caleydo.view.pathway.v2.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
@@ -17,17 +16,24 @@ import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.view.pathway.Activator;
 
 /**
- * element of this view holding a {@link TablePerspective}
+ * {@link GLElementContainer} that uses {@link APathwayElementRepresentation} as base representation and allows to add
+ * any {@link GLElement}s as foreground or background augmentations of this base representation.
  *
  * @author Christian
  *
  */
 public class PathwayElement extends GLElementContainer {
 
+	/**
+	 * The base pathway representation.
+	 */
 	protected APathwayElementRepresentation pathwayRepresentation;
 	protected List<GLElement> backgroundAugmentations = new ArrayList<>();
 	protected List<GLElement> foregroundAugmentations = new ArrayList<>();
 
+	/**
+	 * Handler for any data mapped onto the pathway. Intended to be used by augmentations.
+	 */
 	@DeepScan
 	protected PathwayDataMappingHandler mappingHandler;
 

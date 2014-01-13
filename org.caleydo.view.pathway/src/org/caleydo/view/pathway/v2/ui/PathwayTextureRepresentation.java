@@ -38,6 +38,10 @@ import com.google.common.io.CharStreams;
 import com.jogamp.opengl.util.glsl.ShaderUtil;
 
 /**
+ * Pathway representation that renders a single KEGG- or Wikipathway as texture. The locations {@link PathwayVertexRep}s
+ * are masked to allow background augmentations.
+ *
+ *
  * @author Christian
  *
  */
@@ -308,15 +312,6 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 			scaling.set(renderSize.x() / pathwayWidth, renderSize.y() / pathwayHeight);
 		}
 		origin.set((w - renderSize.x()) / 2.0f, (h - renderSize.y()) / 2.0f);
-		// Center pathway in x direction
-		// if (pathwayWidth < w) {
-		// vecTranslation.setX((w - pathwayWidth) / 2.0f);
-		// }
-		//
-		// // Center pathway in y direction
-		// if (pathwayHeight < h) {
-		// vecTranslation.setY((h - pathwayHeight) / 2.0f);
-		// }
 	}
 
 	@Override
@@ -354,13 +349,6 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 			return new ArrayList<>();
 		return Arrays.asList(bounds);
 	}
-
-	// @Override
-	// public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
-	// if (item != null)
-	// contextMenuItems.add(item);
-	//
-	// }
 
 	/**
 	 * @param minHeight

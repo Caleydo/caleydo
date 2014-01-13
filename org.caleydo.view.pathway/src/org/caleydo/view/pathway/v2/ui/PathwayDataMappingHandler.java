@@ -28,6 +28,7 @@ import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.ESampleMappingMode;
@@ -35,16 +36,27 @@ import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.datadomain.pathway.listener.SampleMappingModeEvent;
 
 /**
+ * Stores the a single mapping perspective for single table perspective based pathway augmentations and also multiple
+ * table perspectives for multi table perspective based augmentations. Handles Events that update these table
+ * perspective and caches {@link Average}s of the mapped samples for each table perspective for all pathway vertices of
+ * a {@link IPathwayRepresentation}.
+ *
  * @author Christian
  *
  */
 public class PathwayDataMappingHandler implements IEventBasedSelectionManagerUser {
 
+	/**
+	 * The table perspective used for single table perspective augmentations.
+	 */
 	protected TablePerspective mappingPerspective;
+	/**
+	 * The currently used sampling mode (all samples of a perspective, or only selected samples)
+	 */
 	protected ESampleMappingMode sampleMappingMode = ESampleMappingMode.ALL;
 	protected String eventSpace;
 	protected EventBasedSelectionManager sampleSelectionManager;
-	protected APathwayElementRepresentation pathwayRepresentation;
+	protected IPathwayRepresentation pathwayRepresentation;
 	protected Map<PathwayVertexRep, Average> mappingPerspectiveAverages = new HashMap<>();
 	protected Map<TablePerspective, Map<PathwayVertexRep, Average>> addedTablePerspectiveAverages = new HashMap<>();
 
@@ -85,7 +97,7 @@ public class PathwayDataMappingHandler implements IEventBasedSelectionManagerUse
 		// }
 	}
 
-	public void addTablePerspective(TablePerspective tablePerspective) {
+	protected void addTablePerspective(TablePerspective tablePerspective) {
 		if (addedTablePerspectiveAverages.keySet().contains(tablePerspective))
 			return;
 		Map<PathwayVertexRep, Average> averages = new HashMap<>();
@@ -94,7 +106,7 @@ public class PathwayDataMappingHandler implements IEventBasedSelectionManagerUse
 		notifyListeners();
 	}
 
-	public void removeTablePerspective(TablePerspective tablePerspective) {
+	protected void removeTablePerspective(TablePerspective tablePerspective) {
 		if (addedTablePerspectiveAverages.remove(tablePerspective) != null)
 			notifyListeners();
 	}
@@ -171,6 +183,11 @@ public class PathwayDataMappingHandler implements IEventBasedSelectionManagerUse
 		}
 	}
 
+	/**
+	 * Adds a listener to be notified about table perspective changes.
+	 *
+	 * @param listener
+	 */
 	public void addListener(IPathwayMappingListener listener) {
 		listeners.add(listener);
 	}
@@ -258,11 +275,24 @@ public class PathwayDataMappingHandler implements IEventBasedSelectionManagerUse
 		return average;
 	}
 
+	/**
+	 *
+	 *
+	 * @param vertexRep
+	 * @return The average for the specified vertex from mapped samples in {@link #mappingPerspective}. Null, if no
+	 *         average exists.
+	 */
 	public Average getMappingAverage(PathwayVertexRep vertexRep) {
 		return mappingPerspectiveAverages.get(vertexRep);
 	}
 
-	public Average getAverage(TablePerspective tablePerspective, PathwayVertexRep vertexRep) {
+	/**
+	 * @param tablePerspective
+	 * @param vertexRep
+	 * @return The cached average for the samples mapped to the provided vertex in the provided table perspective. Null,
+	 *         if no cached average exists.
+	 */
+	public Average getCachedAverage(TablePerspective tablePerspective, PathwayVertexRep vertexRep) {
 		Map<PathwayVertexRep, Average> averages = addedTablePerspectiveAverages.get(tablePerspective);
 		if (averages == null)
 			return null;
@@ -273,12 +303,15 @@ public class PathwayDataMappingHandler implements IEventBasedSelectionManagerUse
 	 * @param pathwayRepresentation
 	 *            setter, see {@link pathwayRepersentation}
 	 */
-	public void setPathwayRepersentation(APathwayElementRepresentation pathwayRepresentation) {
+	public void setPathwayRepersentation(IPathwayRepresentation pathwayRepresentation) {
 		this.pathwayRepresentation = pathwayRepresentation;
 		updateAllAverages();
 		notifyListeners();
 	}
 
+	/**
+	 * @return All table perspectives for multi-table perspective augmentations
+	 */
 	public Set<TablePerspective> getTablePerspectives() {
 		return addedTablePerspectiveAverages.keySet();
 	}

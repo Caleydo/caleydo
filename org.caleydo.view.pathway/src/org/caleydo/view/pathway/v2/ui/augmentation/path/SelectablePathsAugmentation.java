@@ -21,6 +21,9 @@ import org.caleydo.datadomain.pathway.graph.PathSegment;
 import org.caleydo.view.pathway.v2.ui.augmentation.path.PathwayPathHandler.IPathUpdateListener;
 
 /**
+ * Renders the selected path segments and alternatives of a {@link PathwayPathHandler}. Allows to select alternative
+ * segments.
+ *
  * @author Christian
  *
  */
