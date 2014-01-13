@@ -65,8 +65,8 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.event.ShowPathEvent;
 import org.caleydo.view.pathway.v2.ui.PathwayElement;
 import org.caleydo.view.pathway.v2.ui.PathwayTextureRepresentation;
-import org.caleydo.view.pathway.v2.ui.augmentation.path.MultiplePathsAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.path.MergedPathSegmentsAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.path.MultiplePathsAugmentation;
 
 /**
  * Renderer that shows the alternative entrances
