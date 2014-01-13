@@ -601,14 +601,17 @@ public class PathwayManager extends AManager<PathwayGraph> {
 			public void run() {
 				DirectedGraph<PathwayVertex, DefaultEdge> rootPathway = getRootPathway();
 				// KShortestPaths<PathwayVertex, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertex, DefaultEdge>(
-				// rootPathway, from, 1);
+				// rootPathway, from, 3, 5);
 				// List<GraphPath<PathwayVertex, DefaultEdge>> paths = pathAlgo.getPaths(to);
 				DijkstraShortestPath<PathwayVertex, DefaultEdge> pathAlgo = new DijkstraShortestPath<>(rootPathway,
 						from, to);
+
 				GraphPath<PathwayVertex, DefaultEdge> vertexPath = pathAlgo.getPath();
 
 				if (vertexPath != null) {
 					PathwayPath path = new PathwayPath();
+
+					// GraphPath<PathwayVertex, DefaultEdge> vertexPath = paths.get(0);
 
 					StringBuilder b = new StringBuilder();
 					PathSegment currentSegment = null;

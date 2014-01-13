@@ -9,7 +9,10 @@
 package org.caleydo.datadomain.pathway.listener;
 
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Event that specifies the selection of a {@link PathwayPath}.
@@ -26,6 +29,12 @@ public class PathwayPathSelectionEvent extends AEvent {
 
 	@Override
 	public boolean checkIntegrity() {
+		if (path == null)
+			return false;
+		boolean ok = path.checkIntegrity();
+		if (!ok) {
+			Logger.log(new Status(IStatus.ERROR, "Pathway Path", "Integrity check of path failed: " + path.toString()));
+		}
 		return path.checkIntegrity();
 	}
 

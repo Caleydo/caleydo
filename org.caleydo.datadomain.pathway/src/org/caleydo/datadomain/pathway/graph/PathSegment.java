@@ -178,7 +178,7 @@ public class PathSegment extends ArrayList<PathwayVertexRep> {
 	public String toString() {
 
 		StringBuilder b = new StringBuilder();
-		b.append("( ").append(getPathway().getLabel()).append(" ").append("[");
+		b.append("(").append(getPathway().getLabel()).append(" ").append("[");
 		for (int i = 0; i < size(); i++) {
 			PathwayVertexRep v = get(i);
 			b.append(v.getShortName());
