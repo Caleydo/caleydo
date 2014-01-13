@@ -27,13 +27,14 @@ public class DistributionHistogramElementFactory extends ADistributionBarElement
 
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
-		return new HistogramDistributionElement(createData(context));
+		boolean vertical = context.is("vertical", context.get(EDimension.class, EDimension.DIMENSION).isRecord());
+		return new HistogramDistributionElement(createData(context), EDimension.get(!vertical));
 	}
 
 	@Override
 	public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
 		final DescBuilder builder = GLElementDimensionDesc.newBuilder().fix(dim.select(((IHasMinSize) elem).getMinSize()));
-		if (dim != EDimension.RECORD)
+		if (dim == ((HistogramDistributionElement) elem).getDimension())
 			builder.locateUsing(((HistogramDistributionElement) elem));
 		return builder.build();
 	}

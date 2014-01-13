@@ -33,7 +33,7 @@ public class DistributionBarElementFactory extends ADistributionBarElementFactor
 			TablePerspective data = context.getData();
 			vertical = data.getDimensionPerspective().getVirtualArray().size() == 1;
 		}
-		vertical = context.is("vertical", vertical);
+		vertical = context.is("vertical", context.get(EDimension.class, EDimension.get(vertical)).isRecord());
 		return new BarDistributionElement(createData(context), vertical);
 	}
 

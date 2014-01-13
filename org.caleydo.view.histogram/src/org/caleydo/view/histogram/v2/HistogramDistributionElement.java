@@ -9,6 +9,7 @@ import gleem.linalg.Vec2f;
 
 import java.util.Set;
 
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;
@@ -26,17 +27,41 @@ import com.google.common.collect.Sets;
  */
 public class HistogramDistributionElement extends ADistributionElement {
 
+	private EDimension dim;
+
 	/**
 	 * @param data
+	 * @param dim
 	 */
-	public HistogramDistributionElement(IDistributionData data) {
+	public HistogramDistributionElement(IDistributionData data, EDimension dim) {
 		super(data);
+		this.dim = dim;
+	}
+
+	/**
+	 * @return the dimension, see {@link #dim}
+	 */
+	public EDimension getDimension() {
+		return dim;
 	}
 
 	@Override
 	protected void render(GLGraphics g, float w, float h) {
+		if (dim.isDimension())
+			renderHistImpl(g, w, h);
+		else {
+			g.save();
+			g.gl.glRotatef(90, 0, 0, 1);
+			g.move(0, -w);
+			renderHistImpl(g, h, w);
+			g.restore();
+		}
+	}
+
+	private void renderHistImpl(GLGraphics g, float w, float h) {
 		h -= HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW * 2;
 		w -= HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW * 2;
+
 		final Histogram hist = data.getHist();
 		final float factor = h / hist.getLargestValue();
 		final float delta = w / hist.size();
@@ -102,7 +127,7 @@ public class HistogramDistributionElement extends ADistributionElement {
 	@Override
 	public GLLocation apply(int dataIndex) {
 		int bin = data.getBinOf(dataIndex);
-		float w = getSize().x();
+		float w = dim.select(getSize());
 		w -= HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW * 2;
 		final Histogram hist = data.getHist();
 		final float delta = w / hist.size();
