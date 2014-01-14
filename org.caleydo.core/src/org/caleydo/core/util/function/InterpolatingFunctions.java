@@ -66,20 +66,6 @@ public final class InterpolatingFunctions {
 			return v0 * (1 - t) + v1 * t;
 		}
 
-		/**
-		 * @return the v0, see {@link #v0}
-		 */
-		public double getV0() {
-			return v0;
-		}
-
-		/**
-		 * @return the v1, see {@link #v1}
-		 */
-		public double getV1() {
-			return v1;
-		}
-
 		@Override
 		public String toString() {
 			return String.format("(%f*(1-t) + %f*(t))", v0, v1);

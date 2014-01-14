@@ -117,6 +117,12 @@ public class ExpressionFunctions {
 		};
 	}
 
+	/**
+	 * some utility functions, that expresses mathematical operations
+	 * 
+	 * @author Samuel Gratzl
+	 * 
+	 */
 	public enum EMonoOperator implements IDoubleFunction {
 		NEGATE, LN, LOG10, SQUARED;
 

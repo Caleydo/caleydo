@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.util.function;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.google.common.base.Predicate;
 
 
@@ -25,6 +27,11 @@ public class DoublePredicates {
 		@Override
 		public boolean apply(double in) {
 			return true;
+		}
+
+		@Override
+		public String toString() {
+			return "true";
 		}
 	};
 	public static final IDoublePredicate alwaysFalse = not(alwaysTrue);
@@ -50,6 +57,11 @@ public class DoublePredicates {
 						return false;
 				return true;
 			}
+
+			@Override
+			public String toString() {
+				return "and(" + StringUtils.join(operands, ", ") + ")";
+			}
 		};
 	}
 
@@ -73,6 +85,11 @@ public class DoublePredicates {
 					if (!p.apply(in))
 						return true;
 				return false;
+			}
+
+			@Override
+			public String toString() {
+				return "or(" + StringUtils.join(operands, ", ") + ")";
 			}
 		};
 	}
@@ -110,6 +127,11 @@ public class DoublePredicates {
 			@Override
 			public boolean apply(double in) {
 				return !o.apply(in);
+			}
+
+			@Override
+			public String toString() {
+				return "not(" + o + ")";
 			}
 		};
 	}
@@ -161,6 +183,27 @@ public class DoublePredicates {
 				return Double.isNaN(in);
 			}
 			return false;
+		}
+
+		@Override
+		public String toString() {
+			switch (mode) {
+			case 0:
+				return "lt(" + v + ")";
+			case 1:
+				return "le(" + v + ")";
+			case 2:
+				return "gt(" + v + ")";
+			case 3:
+				return "ge(" + v + ")";
+			case 4:
+				return "ne(" + v + ")";
+			case 5:
+				return "eq(" + v + ")";
+			case 6:
+				return "isNaN";
+			}
+			return "";
 		}
 
 	}

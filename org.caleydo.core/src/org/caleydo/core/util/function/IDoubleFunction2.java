@@ -13,6 +13,13 @@ package org.caleydo.core.util.function;
  *
  */
 public interface IDoubleFunction2 extends Function2<Double, Double, Double> {
-	public double apply(double v1, double v2);
+	/**
+	 * apply the given function with two arguments
+	 * 
+	 * @param v1
+	 * @param v2
+	 * @return
+	 */
+	double apply(double v1, double v2);
 }
 

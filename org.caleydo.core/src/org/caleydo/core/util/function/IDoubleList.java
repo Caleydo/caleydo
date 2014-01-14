@@ -48,6 +48,9 @@ public interface IDoubleList extends List<Double>, IDoubleSizedIterable {
 	 */
 	double reduce(double start, IDoubleFunction2 r);
 
+	/**
+	 * returns an iterator with a size
+	 */
 	@Override
 	IDoubleSizedIterator iterator();
 

@@ -8,10 +8,18 @@ package org.caleydo.core.util.function;
 import com.google.common.collect.Table;
 
 /**
+ * utility class for {@link Function2}
+ *
  * @author Samuel Gratzl
  *
  */
 public class Functions2 {
+	/**
+	 * create a lookup function based on a table
+	 *
+	 * @param table
+	 * @return
+	 */
 	public static <F1, F2, T> Function2<F1, F2, T> fromTable(final Table<F1, F2, T> table) {
 		return new Function2<F1, F2, T>() {
 			@Override
@@ -21,6 +29,12 @@ public class Functions2 {
 		};
 	}
 
+	/**
+	 * wrapper for swapping arguments
+	 * 
+	 * @param f
+	 * @return
+	 */
 	public static <F1, F2, T> Function2<F2, F1, T> swap(final Function2<F1, F2, T> f) {
 		return new Function2<F2, F1, T>() {
 			@Override

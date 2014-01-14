@@ -11,6 +11,12 @@ package org.caleydo.core.util.function;
  *
  */
 public class DoubleReductions {
+	/**
+	 * set of simple reduce operators, for some of them the data item order matters
+	 * 
+	 * @author Samuel Gratzl
+	 * 
+	 */
 	public enum EReduceOperations implements IDoubleFunction2 {
 		PRODUCT, SUM, MIN, MAX, SUB, DIVIDE;
 

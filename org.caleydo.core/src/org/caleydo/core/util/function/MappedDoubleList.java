@@ -10,9 +10,10 @@ import java.util.List;
 import com.google.common.base.Function;
 
 /**
- *
+ * utility class that converts any given input list using a function to a double list
+ * 
  * @author Samuel Gratzl
- *
+ * 
  * @param <T>
  */
 public final class MappedDoubleList<T> extends ADoubleList {
