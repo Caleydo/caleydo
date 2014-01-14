@@ -209,8 +209,8 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 		if (stats == null)
 			return;
 
-		if (direction.isHorizontal()) {
-			g.save().gl.glRotatef(90, 0, 0, 1);
+		if (direction.isRecord()) {
+			g.save().move(w, 0).gl.glRotatef(90, 0, 0, 1);
 			renderBoxAndWhiskers(g, h, w);
 			g.restore();
 		} else
@@ -331,6 +331,11 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 
 	@Override
 	public final Vec2f getMinSize() {
+		Vec2f r = getHorizontalMinSize();
+		return direction.isHorizontal() ? r : new Vec2f(r.y(), r.x());
+	}
+
+	private Vec2f getHorizontalMinSize() {
 		switch (detailLevel) {
 		case HIGH:
 			return new Vec2f(300, 90);

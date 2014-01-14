@@ -110,16 +110,16 @@ public class ListKaplanMeierElement extends AKaplanMeierElement {
 	@Override
 	public List<GLLocation> getLocations(EDimension dim, Iterable<Integer> dataIndizes) {
 		Vec2f wh = getSize();
-		List<Vec2f> curve = createCurve(data, wh.x(), wh.y());
+		List<Vec2f> curve = createCurve(data, wh.x() - padding.hor(), wh.y() - padding.vert());
 		List<GLLocation> r = new ArrayList<>();
 		for (Integer dataIndex : dataIndizes) {
-			double v = raw.getPrimitive(dataIndex);
+			double v = data.getPrimitive(dataIndex);
 			v = Double.isNaN(v) ? 1 : v;
 			Pair<Vec2f, Vec2f> loc = getLocation(curve, v, wh.x());
 
 			float offset = dim.select(loc.getFirst());
 			float size = dim.select(loc.getSecond()) - offset;
-			r.add(new GLLocation(offset, size));
+			r.add(new GLLocation(offset + dim.select(padding.left, padding.top), size));
 		}
 		return r;
 	}

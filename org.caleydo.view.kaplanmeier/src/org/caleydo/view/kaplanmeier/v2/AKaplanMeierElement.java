@@ -44,7 +44,7 @@ import com.google.common.base.Supplier;
  */
 public abstract class AKaplanMeierElement extends PickableGLElement implements IHasMinSize {
 	protected final EDetailLevel detailLevel;
-	private final GLPadding padding;
+	protected final GLPadding padding;
 	/**
 	 * @param tablePerspective
 	 */
