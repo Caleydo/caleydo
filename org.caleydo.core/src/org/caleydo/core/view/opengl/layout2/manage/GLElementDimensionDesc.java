@@ -17,14 +17,29 @@ import org.caleydo.core.view.opengl.layout2.manage.GLLocation.ALocator;
 import org.caleydo.core.view.opengl.layout2.manage.GLLocation.ILocator;
 
 import com.google.common.base.Objects;
+
 /**
+ * description of a dimension of a visualization including size information and location service
+ *
  * @author Samuel Gratzl
  *
  */
 public class GLElementDimensionDesc extends ALocator {
+	/**
+	 * a size before the items
+	 */
 	private final Value before;
+	/**
+	 * a factor for each item
+	 */
 	private final Value factor;
+	/**
+	 * a size after the items
+	 */
 	private final Value after;
+	/**
+	 * locator service for looking up a data position
+	 */
 	private final ILocator locator;
 
 	private GLElementDimensionDesc(Value before, Value factor, Value after, ILocator locator) {
@@ -64,6 +79,11 @@ public class GLElementDimensionDesc extends ALocator {
 		return after;
 	}
 
+	/**
+	 * whether the described dimension depends on the number of items
+	 *
+	 * @return
+	 */
 	public boolean isSizeDependent() {
 		return factor != ZERO;
 	}
@@ -73,7 +93,9 @@ public class GLElementDimensionDesc extends ALocator {
 	}
 
 	/**
-	 * @param dataSafe
+	 * computes the target size given the number of items
+	 *
+	 * @param size
 	 */
 	public double getSize(int size) {
 		return before.getValue() + size * factor.getValue() + after.getValue();
@@ -133,14 +155,25 @@ public class GLElementDimensionDesc extends ALocator {
 
 	public static final Value ZERO = new Value(0, alwaysFalse);
 
+	/**
+	 * @param value
+	 * @return a value with is exactly the given value with no excuse
+	 */
 	public static final Value constant(double value) {
 		return new Value(value, alwaysFalse);
 	}
 
+	/**
+	 * @param value
+	 * @return a value with is initially the given value but and be anything besides that
+	 */
 	public static final Value unbound(double value) {
 		return new Value(value, alwaysTrue);
 	}
 
+	/**
+	 * @return a value within the given range
+	 */
 	public static final Value inRange(double value, double min, double max) {
 		final IDoublePredicate f = and(ge(min), le(max));
 		return new Value(value, f);

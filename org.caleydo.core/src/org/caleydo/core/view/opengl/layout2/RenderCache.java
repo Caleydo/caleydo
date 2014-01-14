@@ -20,12 +20,17 @@ public final class RenderCache {
 	private boolean wasDirty;
 	private int numVertices;
 
+	/**
+	 * is the cache currently active, i.e a display list is used
+	 * 
+	 * @return
+	 */
 	public boolean isActive() {
 		return displayListIndex >= 0;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param pool
 	 * @return returns the last validCounter
 	 */

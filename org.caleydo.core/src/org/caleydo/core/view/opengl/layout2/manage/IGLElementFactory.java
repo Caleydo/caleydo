@@ -10,8 +10,10 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import com.google.common.base.Predicate;
 
 /**
+ * a {@link IGLElementFactory} is a factory pattern for creating {@link GLElement} based on a given context
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public interface IGLElementFactory extends Predicate<GLElementFactoryContext> {
 	/**

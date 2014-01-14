@@ -12,10 +12,18 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 /**
+ * a pair of offset + size, used for locating elements
+ *
  * @author Samuel Gratzl
  *
  */
 public class GLLocation {
+	/**
+	 * service, which can be a {@link GLLocation} to a given data Index
+	 * 
+	 * @author Samuel Gratzl
+	 * 
+	 */
 	public static interface ILocator extends Function<Integer, GLLocation> {
 		GLLocation apply(int dataIndex);
 
@@ -81,6 +89,44 @@ public class GLLocation {
 	 */
 	public boolean isDefined() {
 		return !Double.isNaN(offset) && !Double.isNaN(size);
+	}
+
+	public static ILocator shift(final ILocator wrappee, final double offsetShift) {
+		return new ALocator() {
+
+			@Override
+			public GLLocation apply(int dataIndex) {
+				GLLocation l = wrappee.apply(dataIndex);
+				return l.shift(offsetShift);
+			}
+		};
+	}
+
+	public static ILocator scale(final ILocator wrappee, final double factor) {
+		return new ALocator() {
+
+			@Override
+			public GLLocation apply(int dataIndex) {
+				GLLocation l = wrappee.apply(dataIndex);
+				return l.scale(factor);
+			}
+		};
+	}
+
+	/**
+	 * @param offsetShift
+	 * @return
+	 */
+	protected GLLocation shift(double offsetShift) {
+		return new GLLocation(offset + offsetShift, size);
+	}
+
+	/**
+	 * @param offsetShift
+	 * @return
+	 */
+	protected GLLocation scale(double factor) {
+		return new GLLocation(offset * factor, size * factor);
 	}
 }
 

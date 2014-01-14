@@ -8,12 +8,19 @@ package org.caleydo.core.view.opengl.layout2;
 import com.google.common.base.Stopwatch;
 
 /**
+ * utility class for computing and handling time differences
+ *
  * @author Samuel Gratzl
  *
  */
 public class TimeDelta {
 	private final Stopwatch stopWatch = new Stopwatch();
 
+	/**
+	 * return the time between the last call and the current one, reset the timer
+	 * 
+	 * @return
+	 */
 	public int getDeltaTimeMs() {
 		int deltaTimeMs = 0;
 		if (stopWatch.isRunning()) {
