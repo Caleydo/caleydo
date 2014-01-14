@@ -129,6 +129,9 @@ public class ListKaplanMeierElement extends AKaplanMeierElement {
 	 * @return
 	 */
 	private IDoubleList convert(IDoubleList data) {
+		DoubleStatistics stats = DoubleStatistics.of(data);
+		// normalize
+		data = data.map(DoubleFunctions.normalize(stats.getMin(), stats.getMax()));
 		// remove nan
 		data = data.map(new ADoubleFunction() {
 			@Override
@@ -136,9 +139,6 @@ public class ListKaplanMeierElement extends AKaplanMeierElement {
 				return Double.isNaN(v) ? 1 : v;
 			}
 		});
-		DoubleStatistics stats = DoubleStatistics.of(data);
-		// normalize
-		data = data.map(DoubleFunctions.normalize(stats.getMin(), stats.getMax()));
 		// sort
 		double[] vs = data.toPrimitiveArray();
 		Arrays.sort(vs);

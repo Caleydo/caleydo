@@ -56,5 +56,10 @@
                icon="resources/icons/linearplot.png"
                name="Bar Plot">
          </factory>
+         <factory
+               factory="org.caleydo.view.heatmap.v2.internal.SingleBarElementFactory"
+               icon="resources/icons/hbar.png"
+               name="Horizontal Bar Plot">
+         </factory>
       </extension>
 </plugin>

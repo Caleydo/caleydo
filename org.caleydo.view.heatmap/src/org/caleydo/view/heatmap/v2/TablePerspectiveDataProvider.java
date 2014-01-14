@@ -8,6 +8,7 @@ package org.caleydo.view.heatmap.v2;
 import java.util.List;
 
 import org.caleydo.core.data.collection.EDimension;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -15,6 +16,7 @@ import org.caleydo.core.data.selection.TablePerspectiveSelectionMixin;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
+import org.caleydo.core.util.function.Function2;
 import org.caleydo.core.view.opengl.layout2.layout.IHasGLLayoutData;
 import org.caleydo.view.heatmap.v2.internal.IHeatMapDataProvider;
 
@@ -26,7 +28,8 @@ import com.google.common.base.Suppliers;
  *
  */
 public class TablePerspectiveDataProvider implements IHeatMapDataProvider,
-		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback, IHasGLLayoutData {
+		TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback, IHasGLLayoutData,
+		Function2<Integer, Integer, Double> {
 	@DeepScan
 	private final TablePerspectiveSelectionMixin selections;
 	private IDataChangedCallback callback;
@@ -45,6 +48,16 @@ public class TablePerspectiveDataProvider implements IHeatMapDataProvider,
 		if (clazz.isInstance(getTablePerspective()))
 			return clazz.cast(getTablePerspective());
 		return default_.get();
+	}
+
+	public float getNormalized(Integer dimensionID, Integer recordID) {
+		Table table = getDataDomain().getTable();
+		return table.getNormalizedValue(dimensionID, recordID);
+	}
+
+	@Override
+	public Double apply(Integer dimensionID, Integer recordID) {
+		return (double) getNormalized(dimensionID, recordID);
 	}
 
 	@Override

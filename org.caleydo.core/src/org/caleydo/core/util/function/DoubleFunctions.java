@@ -18,6 +18,18 @@ public final class DoubleFunctions {
 
 	}
 
+	public static final ADoubleFunction IDENTITY = new ADoubleFunction() {
+		@Override
+		public double apply(double in) {
+			return in;
+		}
+
+		@Override
+		public String toString() {
+			return "identity";
+		}
+	};
+
 	/**
 	 * clamps the given value between 0 and 1
 	 */

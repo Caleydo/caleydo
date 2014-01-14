@@ -152,11 +152,12 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 		// render ticks
 		for (int i = 0; i < numTicks; i++) {
 			float v = factor * i;
-			String text = String.valueOf((int) (i * step));
 			if (isXAxis) {
+				String text = String.valueOf((int) (i * step));
 				g.drawLine(v, h - 7, v, h + 7);
 				g.drawText(text, v - 100, h + AXIS_TICK_LABEL_SPACING_PIXELS, 200, 13, VAlign.CENTER);
 			} else {
+				String text = String.valueOf((int) ((numTicks - i - 1) * step));
 				g.drawLine(-7, v, 7, v);
 				g.drawText(text, -100, v - 7, 100 - AXIS_TICK_LABEL_SPACING_PIXELS, 13, VAlign.RIGHT);
 			}

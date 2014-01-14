@@ -35,8 +35,10 @@ public class ListDataProvider implements IHeatMapDataProvider,
 		this.record = record;
 		this.dimension = dimension;
 		selections = new MultiSelectionManagerMixin(this);
-		selections.add(new SelectionManager(dimension.idType));
-		selections.add(new SelectionManager(record.idType));
+		if (dimension != null && dimension.idType != null)
+			selections.add(new SelectionManager(dimension.idType));
+		if (record != null && record.idType != null)
+			selections.add(new SelectionManager(record.idType));
 	}
 
 	@Override
@@ -76,7 +78,7 @@ public class ListDataProvider implements IHeatMapDataProvider,
 
 	@Override
 	public SelectionManager getManager(EDimension dim) {
-		return selections.get(dim.select(0, 1));
+		return selections.getSelectionManager(get(dim).idType);
 	}
 
 	@Override
@@ -86,11 +88,12 @@ public class ListDataProvider implements IHeatMapDataProvider,
 
 	public static class DimensionData {
 		private final List<Integer> data;
-		private final Function<Integer, String> labels;
+		private final Function<? super Integer, String> labels;
 		private final List<Group> groups;
 		private final IDType idType;
 
-		public DimensionData(List<Integer> data, Function<Integer, String> labels, List<Group> groups, IDType idType) {
+		public DimensionData(List<Integer> data, Function<? super Integer, String> labels, List<Group> groups,
+				IDType idType) {
 			this.data = data;
 			this.labels = labels;
 			this.groups = groups;
