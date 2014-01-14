@@ -158,17 +158,20 @@ public class EventListenerManager implements DisposeListener {
 				Collection<Object> r = (Collection<Object>) field;
 				scanAll(root, r, eventSpace, scanWhile);
 				scanAgain = true; // collections may change
-			} else if (field instanceof Map<?, ?>) {
+			}
+			if (field instanceof Map<?, ?>) {
 				@SuppressWarnings("unchecked")
 				Map<?, Object> r = (Map<?, Object>) field;
 				scanAll(root, r.values(), eventSpace, scanWhile);
 				scanAgain = true; // collections may change
-			} else if (field instanceof Multimap<?, ?>) {
+			}
+			if (field instanceof Multimap<?, ?>) {
 				@SuppressWarnings("unchecked")
 				Multimap<?, Object> r = (Multimap<?, Object>) field;
 				scanAll(root, r.values(), eventSpace, scanWhile);
 				scanAgain = true; // collections may change
-			} else { // primitive
+			}
+			{ // primitive always scan
 				boolean hasFieldOne = scan(root, field, eventSpace, scanWhile);
 				scanAgain = scanAgain || hasFieldOne;
 			}
