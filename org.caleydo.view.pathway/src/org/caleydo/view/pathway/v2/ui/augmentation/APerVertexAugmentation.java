@@ -10,18 +10,20 @@ import java.util.List;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
+import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.view.pathway.v2.ui.APathwayElementRepresentation;
 
 /**
+ * Base class for pathway augmentations that are rendered for each {@link PathwayVertexRep}.
+ *
  * @author Christian
  *
  */
 public abstract class APerVertexAugmentation extends GLElement {
-	protected APathwayElementRepresentation pathwayRepresentation;
+	protected IPathwayRepresentation pathwayRepresentation;
 
-	public APerVertexAugmentation(APathwayElementRepresentation pathwayRepresentation) {
+	public APerVertexAugmentation(IPathwayRepresentation pathwayRepresentation) {
 		this.pathwayRepresentation = pathwayRepresentation;
 	}
 
@@ -37,6 +39,19 @@ public abstract class APerVertexAugmentation extends GLElement {
 		}
 	}
 
+	/**
+	 * Renders an augmentation for an individual {@link PathwayVertexRep}.
+	 *
+	 * @param g
+	 * @param w
+	 *            Width of this element.
+	 * @param h
+	 *            Height of this element
+	 * @param vertexRep
+	 *            The vertex to augment.
+	 * @param bounds
+	 *            The bounds of the vertex to augment as given by the pathway representation.
+	 */
 	protected abstract void renderVertexAugmentation(GLGraphics g, float w, float h, PathwayVertexRep vertexRep,
 			Rect bounds);
 }

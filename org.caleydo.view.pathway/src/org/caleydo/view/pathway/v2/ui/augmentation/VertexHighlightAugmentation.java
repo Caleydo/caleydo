@@ -24,8 +24,10 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.pathway.v2.ui.APathwayElementRepresentation;
 
 /**
- * @author Christian
+ * Renders an outline highlight for mouse-overed or selected pathway vertices.
  *
+ * @author Christian
+ * 
  */
 public class VertexHighlightAugmentation extends APerVertexAugmentation implements IVertexRepSelectionListener,
 		IEventBasedSelectionManagerUser {

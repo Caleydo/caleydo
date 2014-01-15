@@ -62,4 +62,22 @@ public final class FileUtil {
 		}
 	}
 
+	/**
+	 * Gets the name of the file from a complete file path.
+	 *
+	 * @param path
+	 * @return
+	 */
+	public static String exctractFileName(String path) {
+		if (path == null)
+			return null;
+		int lastSeparatorIndex = path.lastIndexOf("/");
+		if (lastSeparatorIndex == -1) {
+			lastSeparatorIndex = path.lastIndexOf("\\");
+		}
+		if (lastSeparatorIndex == -1 || lastSeparatorIndex == path.length() - 1)
+			return "";
+		return path.substring(lastSeparatorIndex + 1);
+	}
+
 }

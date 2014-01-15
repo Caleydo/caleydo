@@ -34,6 +34,9 @@ import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultEdge;
 
 /**
+ * Handles the selection of a {@link PathwayPath} in an {@link IPathwayRepresentation}, triggers, receives path related
+ * events, and updates the selected path accordingly. Also handles alternative paths generated during path selection.
+ *
  * @author Christian
  *
  */
@@ -54,13 +57,49 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 
 	protected boolean isPathSelectionMode = false;
 	protected String eventSpace;
+	/**
+	 * The vertex that is considered the start vertex when selecting a {@link PathSegment} in the
+	 * {@link #pathwayRepresentation}.
+	 */
 	protected PathwayVertexRep startVertexRep;
+	/**
+	 * The currently selected path.
+	 */
 	protected PathwayPath selectedPath = new PathwayPath();
+	/**
+	 * The pathway representation that shall be used for path selection.
+	 */
 	protected IPathwayRepresentation pathwayRepresentation;
+	/**
+	 * Registered listeners interested in path updates.
+	 */
 	protected Set<IPathUpdateListener> listeners = new LinkedHashSet<>();
 
+	/**
+	 * The determined alternative {@link PathSegment}s that were calculated from the {@link #startVertexRep} to another
+	 * vertex during path selection.
+	 */
 	protected List<PathSegment> alternativeSegments = new ArrayList<>();
+	/**
+	 * The index of the {@link PathSegment} from {@link #alternativeSegments} that is currently selected and part of the
+	 * {@link #selectedPath}.
+	 */
 	protected int selectedAlternativeIndex = 0;
+
+	/**
+	 * Listener that gets notified about path changes of a {@link PathwayPathHandler}.
+	 *
+	 * @author Christian
+	 *
+	 */
+	public static interface IPathUpdateListener {
+		/**
+		 * Called when paths in the specified handler changed.
+		 *
+		 * @param handler
+		 */
+		public void onPathsChanged(PathwayPathHandler handler);
+	}
 
 	public PathwayPathHandler(IPathwayRepresentation pathwayRepresentation, IGLCanvas canvas, String eventSpace) {
 		this.pathwayRepresentation = pathwayRepresentation;
@@ -112,7 +151,7 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onPathSelectionModeChanged(EnablePathSelectionEvent event) {
 		// if (eventSpace == null || (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace))) {
-			isPathSelectionMode = event.isPathSelectionMode();
+		isPathSelectionMode = event.isPathSelectionMode();
 		// }
 	}
 
@@ -120,12 +159,12 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 	public void onSelectedPathChanged(PathwayPathSelectionEvent event) {
 		// if (event.getSender() != this
 		// && (eventSpace == null || (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)))) {
-			if (event.getSender() == this)
-				return;
-			selectedPath = event.getPath();
-			startVertexRep = null;
-			alternativeSegments.clear();
-			notifyListeners();
+		if (event.getSender() == this)
+			return;
+		selectedPath = event.getPath();
+		startVertexRep = null;
+		alternativeSegments.clear();
+		notifyListeners();
 		// }
 
 	}
@@ -222,10 +261,16 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 		return false;
 	}
 
+	/**
+	 * Selects the next available {@link PathSegment} from {@link #alternativeSegments}.
+	 */
 	public void selectNextAlternative() {
 		selectAlternativeByIndexOffset(1);
 	}
 
+	/**
+	 * Selects the previous {@link PathSegment} from {@link #alternativeSegments}.
+	 */
 	public void selectPreviousAlternative() {
 		selectAlternativeByIndexOffset(-1);
 	}
@@ -241,6 +286,11 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 		selectAlternative(newIndex);
 	}
 
+	/**
+	 * Selects a {@link PathSegment} alternative from {@link #alternativeSegments} using the specified index.
+	 *
+	 * @param alternativeIndex
+	 */
 	public void selectAlternative(int alternativeIndex) {
 		if (alternativeIndex == selectedAlternativeIndex || alternativeIndex > alternativeSegments.size())
 			return;
@@ -313,17 +363,6 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 		selectedPath.ensurePathLevelIntegrity();
 
 		triggerPathUpdate();
-
-		StringBuilder b = new StringBuilder("Path (");
-		for (PathSegment s : selectedPath) {
-			b.append("[");
-			for (PathwayVertexRep v : s) {
-				b.append(v.getShortName() + ", ");
-			}
-			b.append("]");
-		}
-		b.append(")");
-		System.out.println(b);
 		notifyListeners();
 	}
 
@@ -362,6 +401,11 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 		return selectedPath;
 	}
 
+	/**
+	 * Adds a listener to be notified about path changes.
+	 *
+	 * @param listener
+	 */
 	public void addPathUpdateListener(IPathUpdateListener listener) {
 		if (listener != null)
 			listeners.add(listener);
@@ -377,12 +421,18 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 		}
 	}
 
+	/**
+	 * Cleans up the resources of this handler. Shall be called when no longer needed.
+	 */
 	public void takeDown() {
 		listeners.clear();
 		canvas.removeKeyListener(keyListener);
 		canvas.removeMouseListener(mouseListener);
 	}
 
+	/**
+	 * @return The path segment that is currently selected.
+	 */
 	public PathSegment getSelectedAlternativeSegment() {
 		return selectedAlternativeIndex >= alternativeSegments.size() ? null : alternativeSegments
 				.get(selectedAlternativeIndex);
@@ -395,12 +445,12 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 		return alternativeSegments;
 	}
 
+	/**
+	 * @param segment
+	 * @return The index of the specified segment in {@link #alternativeSegments}.
+	 */
 	public int getAlternativeSegmentID(PathSegment segment) {
 		return alternativeSegments.indexOf(segment);
-	}
-
-	public static interface IPathUpdateListener {
-		public void onPathsChanged(PathwayPathHandler handler);
 	}
 
 	/**

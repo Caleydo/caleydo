@@ -22,6 +22,9 @@ import org.caleydo.view.pathway.v2.ui.IPathwayMappingListener;
 import org.caleydo.view.pathway.v2.ui.PathwayDataMappingHandler;
 
 /**
+ * On-node color mapping of the average value for all samples mapped to each pathway vertex. The mapped samples are
+ * taken from the mapping perspective of a {@link PathwayDataMappingHandler}.
+ *
  * @author Christian
  *
  */

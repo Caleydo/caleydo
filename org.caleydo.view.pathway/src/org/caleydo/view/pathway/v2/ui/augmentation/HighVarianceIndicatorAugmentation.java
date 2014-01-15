@@ -17,6 +17,9 @@ import org.caleydo.view.pathway.v2.ui.IPathwayMappingListener;
 import org.caleydo.view.pathway.v2.ui.PathwayDataMappingHandler;
 
 /**
+ * Augments a vertex by an exclamation mark if its mapped samples of any table perspective of the
+ * {@link PathwayDataMappingHandler} exhibit high variance.
+ *
  * @author Christian
  *
  */
@@ -44,7 +47,7 @@ public class HighVarianceIndicatorAugmentation extends APerVertexAugmentation im
 		Pair<TablePerspective, Average> highestAverage = null;
 		Average average;
 		for (TablePerspective tablePerspective : handler.getTablePerspectives()) {
-			average = handler.getAverage(tablePerspective, vertexRep);
+			average = handler.getCachedAverage(tablePerspective, vertexRep);
 			if (average == null)
 				continue;
 			if (average.getStandardDeviation() > threshold) {

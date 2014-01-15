@@ -18,6 +18,14 @@ import org.caleydo.view.pathway.v2.ui.augmentation.StdDevBarAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.StdDevBarConsideringVertexHighlightAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.path.SelectablePathsAugmentation;
 
+/**
+ * Factory class for a Level 1 Pathway view in Entourage. Uses a texture based representation that uses augmentations
+ * for on-node color mapping, std-dev bars, exclamation marks for high variance, multi-mapping indicators, vertex
+ * highlighting, and pathway paths.
+ *
+ * @author Christian
+ *
+ */
 public class EntouragePathwayLevel1Creator implements IPathwayRepresentationCreator {
 
 	@Override

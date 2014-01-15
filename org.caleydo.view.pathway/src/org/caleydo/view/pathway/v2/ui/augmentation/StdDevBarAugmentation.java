@@ -16,6 +16,9 @@ import org.caleydo.view.pathway.v2.ui.IPathwayMappingListener;
 import org.caleydo.view.pathway.v2.ui.PathwayDataMappingHandler;
 
 /**
+ * Renders a bar indicating the standard deviation of all mapped samples for each pathway vertex. The samples are taken
+ * from the mapping perspective of the {@link PathwayDataMappingHandler}.
+ *
  * @author Christian
  *
  */

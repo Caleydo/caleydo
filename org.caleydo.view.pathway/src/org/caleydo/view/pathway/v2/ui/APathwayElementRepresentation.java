@@ -18,7 +18,13 @@ import org.caleydo.datadomain.pathway.IPathwayRepresentation;
  */
 public abstract class APathwayElementRepresentation extends GLElement implements IPathwayRepresentation {
 
+	/**
+	 * Layout renderer that is used to wrap this element.
+	 */
 	private ALayoutRenderer wrappingLayoutRenderer;
+	/**
+	 * The wrapping parent pathway element.
+	 */
 	private PathwayElement wrappingElement;
 
 	/**

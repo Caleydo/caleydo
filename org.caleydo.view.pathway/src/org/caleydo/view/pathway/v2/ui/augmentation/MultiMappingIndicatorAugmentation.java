@@ -15,9 +15,10 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.pathway.v2.ui.APathwayElementRepresentation;
 
 /**
- *
+ * Augments a pathway vertex by a small triangle if that vertex represents more than one gene/protein.
+ * 
  * @author Christian
- *
+ * 
  */
 public class MultiMappingIndicatorAugmentation extends APerVertexAugmentation {
 

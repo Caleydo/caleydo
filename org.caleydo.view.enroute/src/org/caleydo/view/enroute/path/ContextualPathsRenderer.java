@@ -65,8 +65,8 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.event.ShowPathEvent;
 import org.caleydo.view.pathway.v2.ui.PathwayElement;
 import org.caleydo.view.pathway.v2.ui.PathwayTextureRepresentation;
-import org.caleydo.view.pathway.v2.ui.augmentation.path.ContextPathsAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.path.MergedPathSegmentsAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.path.MultiplePathsAugmentation;
 
 /**
  * Renderer that shows the alternative entrances
@@ -101,7 +101,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	private boolean isControlKeyPressed = false;
 	private boolean isShiftKeyPressed = false;
 
-	protected ContextPathsAugmentation contextPathsAugmentation;
+	protected MultiplePathsAugmentation contextPathsAugmentation;
 	protected MergedPathSegmentsAugmentation selectedPathAugmentation;
 
 	/**
@@ -146,7 +146,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 			pathwayElement.setPathwayRepresentation(pathwayThumbnail);
 
-			contextPathsAugmentation = new ContextPathsAugmentation(pathwayThumbnail);
+			contextPathsAugmentation = new MultiplePathsAugmentation(pathwayThumbnail);
 			pathwayElement.addForegroundAugmentation(contextPathsAugmentation);
 
 			selectedPathAugmentation = new MergedPathSegmentsAugmentation(pathwayThumbnail);
@@ -710,7 +710,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		if (contextPathsAugmentation != null) {
 			contextPathsAugmentation.clearPaths();
 			for (APathwayPathRenderer renderer : renderers.keySet()) {
-				contextPathsAugmentation.addContextPath(renderer.getPathSegments());
+				contextPathsAugmentation.addPath(renderer.getPathSegments());
 				// List<PathwayVertexRep> flattenedPath = PathwayPath.flattenSegments(renderer.getPathSegments());
 				// if (flattenedPath != null && !flattenedPath.isEmpty()) {
 				// contextPaths.add(flattenedPath);

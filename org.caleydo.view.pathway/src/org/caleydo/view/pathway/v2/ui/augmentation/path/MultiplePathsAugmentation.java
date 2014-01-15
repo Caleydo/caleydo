@@ -15,39 +15,67 @@ import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 
 /**
+ * Renders multiple {@link PathwayPath} using {@link MergedPathSegmentsAugmentation}s.
+ *
  * @author Christian
  *
  */
-public class ContextPathsAugmentation extends GLElementContainer {
+public class MultiplePathsAugmentation extends GLElementContainer {
 
-	public static final Color CONTEX_PATH_COLOR = new Color(0f, 0f, 1f, 1f);
+	public static final Color PATH_COLOR = new Color(0f, 0f, 1f, 1f);
 
-	protected List<PathwayPath> contextPaths = new ArrayList<>();
+	/**
+	 * The paths to render.
+	 */
+	protected List<PathwayPath> paths = new ArrayList<>();
+	/**
+	 * The pathway presentation that shall be augmented.
+	 */
 	protected IPathwayRepresentation pathwayRepresentation;
+	/**
+	 * The color of the paths.
+	 */
+	protected Color pathColor = PATH_COLOR;
 
-	public ContextPathsAugmentation(IPathwayRepresentation pathwayRepresentation) {
+	public MultiplePathsAugmentation(IPathwayRepresentation pathwayRepresentation) {
 		setLayout(GLLayouts.LAYERS);
 		this.pathwayRepresentation = pathwayRepresentation;
 	}
 
 	/**
-	 * @return the contextPaths, see {@link #contextPaths}
+	 * @return the paths, see {@link #paths}
 	 */
-	public List<PathwayPath> getContextPaths() {
-		return contextPaths;
+	public List<PathwayPath> getPaths() {
+		return paths;
 	}
 
-	public void addContextPath(PathwayPath path) {
-		contextPaths.add(path);
+	/**
+	 * Adds a specified path to the augmentation.
+	 *
+	 * @param path
+	 */
+	public void addPath(PathwayPath path) {
+		paths.add(path);
 		MergedPathSegmentsAugmentation aug = new MergedPathSegmentsAugmentation(pathwayRepresentation);
 		aug.setPath(path);
-		aug.setColor(CONTEX_PATH_COLOR);
+		aug.setColor(pathColor);
 		add(aug);
 	}
 
+	/**
+	 * Removes all paths.
+	 */
 	public void clearPaths() {
-		contextPaths.clear();
+		paths.clear();
 		clear();
+	}
+
+	/**
+	 * @param pathColor
+	 *            setter, see {@link pathColor}
+	 */
+	public void setPathColor(Color pathColor) {
+		this.pathColor = pathColor;
 	}
 
 }

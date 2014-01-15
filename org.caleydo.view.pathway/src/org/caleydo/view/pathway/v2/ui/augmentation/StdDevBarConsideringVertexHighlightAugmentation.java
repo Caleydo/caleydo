@@ -15,6 +15,9 @@ import org.caleydo.view.pathway.v2.ui.PathwayDataMappingHandler;
 import org.caleydo.view.pathway.v2.ui.PathwayElement;
 
 /**
+ * Same as {@link VertexHighlightAugmentation}, but considers the std-dev bars of a {@link StdDevBarAugmentation} when
+ * rendering the outlines.
+ *
  * @author Christian
  *
  */

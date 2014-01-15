@@ -22,6 +22,7 @@ import org.caleydo.view.pathway.v2.internal.serial.SerializedPathwayView;
 import org.caleydo.view.pathway.v2.ui.PathwayElement;
 import org.caleydo.view.pathway.v2.ui.PathwayTextureRepresentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.AverageColorMappingAugmentation;
+import org.caleydo.view.pathway.v2.ui.augmentation.CompoundAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.HighVarianceIndicatorAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.MultiMappingIndicatorAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.StdDevBarAugmentation;
@@ -71,6 +72,37 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		pathwayElement.addForegroundAugmentation(new HighVarianceIndicatorAugmentation(pathwayElement
 				.getPathwayRepresentation(), pathwayElement.getMappingHandler()));
 		pathwayElement.addForegroundAugmentation(new StdDevBarConsideringVertexHighlightAugmentation(pathwayElement));
+		pathwayElement.addForegroundAugmentation(new CompoundAugmentation(pathwayElement.getPathwayRepresentation()));
+
+		// IDMappingDescription desc = new IDMappingDescription();
+		// desc.setParsingStartLine(0);
+		// desc.setParsingStopLine(-1);
+		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/INTERACTION_ID2COMPOUND_ID.txt");
+		// desc.setDelimiter("\t");
+		// desc.setFromIDType(EGeneIDTypes.INTERACTION_ID.name());
+		// desc.setToIDType(EGeneIDTypes.COMPOUND_ID.name());
+		// desc.setIdCategory(EGeneIDTypes.GENE.name());
+		// desc.setMultiMapping(true);
+		// desc.setCreateReverseMapping(true);
+		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
+		// desc.setFromDataType(EDataType.INTEGER);
+		// desc.setToDataType(EDataType.INTEGER);
+		// IDMappingManager.addIDMappingDescription(desc);
+		//
+		// desc = new IDMappingDescription();
+		// desc.setParsingStartLine(0);
+		// desc.setParsingStopLine(-1);
+		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/INTERACTION_ID2ENTREZ_GENE_ID.txt");
+		// desc.setDelimiter("\t");
+		// desc.setFromIDType(EGeneIDTypes.INTERACTION_ID.name());
+		// desc.setToIDType(EGeneIDTypes.ENTREZ_GENE_ID.name());
+		// desc.setIdCategory(EGeneIDTypes.GENE.name());
+		// desc.setMultiMapping(true);
+		// desc.setCreateReverseMapping(true);
+		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
+		// desc.setFromDataType(EDataType.INTEGER);
+		// desc.setToDataType(EDataType.INTEGER);
+		// IDMappingManager.addIDMappingDescription(desc);
 	}
 
 	@Override
