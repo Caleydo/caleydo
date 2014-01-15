@@ -45,6 +45,7 @@ import org.caleydo.view.idbrowser.internal.ui.PathwayCategoryQuery;
 import org.caleydo.vis.lineup.config.RankTableConfigBase;
 import org.caleydo.vis.lineup.config.RankTableUIConfigBase;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
+import org.caleydo.vis.lineup.model.ColumnRanker;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.RankRankColumnModel;
 import org.caleydo.vis.lineup.model.RankTableModel;
@@ -217,13 +218,26 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 		if (!(row instanceof PrimaryIDRow))
 			return;
 		PrimaryIDRow r = (PrimaryIDRow)row;
-		System.out.println(pick.getPickingMode() + r.getLabel());
 		if (!(r.getPrimary() instanceof Integer))
 			return;
 		switch(pick.getPickingMode()) {
 		case CLICKED:
 			boolean ctrlDown = ((IMouseEvent) pick).isCtrlDown();
-			if (isSelected(r))
+			boolean shiftDown = ((IMouseEvent) pick).isShiftDown();
+			if (shiftDown) {
+				ColumnRanker ranker = table.getDefaultRanker();
+				int start = ranker.getSelectedRank();
+				int end = ranker.getRank(row);
+				if (start < end) {
+					for (int i = start; i <= end; ++i) {
+						select(ranker.get(i), true);
+					}
+				} else {
+					for (int i = end; i <= start; ++i) {
+						select(ranker.get(i), true);
+					}
+				}
+			} else if (isSelected(r))
 				clear(r, ctrlDown);
 			else
 				select(r, ctrlDown);
@@ -233,11 +247,16 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 		}
 	}
 
-	public void select(PrimaryIDRow r, boolean additional) {
-		SelectionManager m = getOrCreate(r.getPrimaryIDType());
+	public void select(IRow r, boolean additional) {
+		if (!(r instanceof PrimaryIDRow))
+			return;
+		PrimaryIDRow p = (PrimaryIDRow) r;
+		if (!(p.getPrimary() instanceof Integer))
+			return;
+		SelectionManager m = getOrCreate(p.getPrimaryIDType());
 		if (!additional)
 			m.clearSelection(SelectionType.SELECTION);
-		m.addToType(SelectionType.SELECTION, (Integer) r.getPrimary());
+		m.addToType(SelectionType.SELECTION, (Integer) p.getPrimary());
 		selections.fireSelectionDelta(m);
 	}
 
