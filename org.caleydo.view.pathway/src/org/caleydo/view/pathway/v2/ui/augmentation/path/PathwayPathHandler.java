@@ -363,17 +363,6 @@ public class PathwayPathHandler implements IVertexRepSelectionListener {
 		selectedPath.ensurePathLevelIntegrity();
 
 		triggerPathUpdate();
-
-		StringBuilder b = new StringBuilder("Path (");
-		for (PathSegment s : selectedPath) {
-			b.append("[");
-			for (PathwayVertexRep v : s) {
-				b.append(v.getShortName() + ", ");
-			}
-			b.append("]");
-		}
-		b.append(")");
-		System.out.println(b);
 		notifyListeners();
 	}
 

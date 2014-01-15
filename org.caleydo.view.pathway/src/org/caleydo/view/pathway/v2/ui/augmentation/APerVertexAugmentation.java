@@ -10,9 +10,9 @@ import java.util.List;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
+import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.view.pathway.v2.ui.APathwayElementRepresentation;
 
 /**
  * Base class for pathway augmentations that are rendered for each {@link PathwayVertexRep}.
@@ -21,9 +21,9 @@ import org.caleydo.view.pathway.v2.ui.APathwayElementRepresentation;
  *
  */
 public abstract class APerVertexAugmentation extends GLElement {
-	protected APathwayElementRepresentation pathwayRepresentation;
+	protected IPathwayRepresentation pathwayRepresentation;
 
-	public APerVertexAugmentation(APathwayElementRepresentation pathwayRepresentation) {
+	public APerVertexAugmentation(IPathwayRepresentation pathwayRepresentation) {
 		this.pathwayRepresentation = pathwayRepresentation;
 	}
 
