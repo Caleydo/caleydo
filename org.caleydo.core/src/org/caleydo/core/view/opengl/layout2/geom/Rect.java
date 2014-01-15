@@ -133,6 +133,10 @@ public final class Rect implements Cloneable {
 		return this;
 	}
 
+	public Vec2f wh() {
+		return new Vec2f(width, height);
+	}
+
 	public Vec2f xy() {
 		return new Vec2f(x, y);
 	}

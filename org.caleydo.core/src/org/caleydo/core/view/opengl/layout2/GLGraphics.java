@@ -785,4 +785,28 @@ public class GLGraphics {
 		restore();
 		return this;
 	}
+
+	/**
+	 *
+	 */
+	public GLGraphics lineStippled(boolean enable) {
+		return lineStippled(enable ? 2 : -1, 0xAAAA);
+	}
+
+	/**
+	 *
+	 * @param factor
+	 *            <= 0 to disable
+	 * @param pattern
+	 * @return
+	 */
+	public GLGraphics lineStippled(int factor, int pattern) {
+		if (factor > 0) {
+			gl.glEnable(GL2.GL_LINE_STIPPLE);
+			gl.glLineStipple(factor, (short) pattern);
+		} else {
+			gl.glDisable(GL2.GL_LINE_STIPPLE);
+		}
+		return this;
+	}
 }
