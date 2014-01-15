@@ -168,7 +168,7 @@ public class BoxPlotRankTableModel extends ADataDomainRankTableModel implements 
 		 */
 		public MyValueElement() {
 			IDoubleList l = new ArrayDoubleList(new double[0]);
-			content = new ListBoxAndWhiskersElement(l, EDetailLevel.LOW, EDimension.RECORD, false, false,
+			content = new ListBoxAndWhiskersElement(l, EDetailLevel.LOW, EDimension.DIMENSION, false, false,
 					d.getLabel(), Color.LIGHT_GRAY);
 		}
 

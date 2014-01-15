@@ -43,7 +43,9 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
 import org.caleydo.core.view.opengl.layout2.basic.WaitingElement;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.tourguide.api.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.api.external.ImportExternalScoreCommand;
@@ -839,29 +841,29 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		}
 
 		@Override
-		public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
+		public void renderRowBackground(GLGraphics g, Rect rect, boolean even, IRow row,
 				IRow selected) {
 			if (row == selected) {
 				g.color(TourGuideRenderStyle.colorSelectedRow());
 				g.incZ();
-				g.fillRect(x, y, w, h);
+				g.fillRect(rect);
 				if (adapter != null && adapter.isPreviewing((AScoreRow) row)) {
 					TourGuideRenderStyle.COLOR_PREVIEW_BORDER_ROW.set(g.gl);
-					g.drawLine(x, y, x + w, y);
-					g.drawLine(x, y + h, x + w, y + h);
+					g.drawLine(rect.x(), rect.y(), rect.x() + rect.width(), rect.y());
+					g.drawLine(rect.x(), rect.y() + rect.height(), rect.x() + rect.width(), rect.y() + rect.height());
 					TourGuideRenderStyle.COLOR_PREVIEW_BORDER_ROW.clear(g.gl);
 				} else {
 					g.color(RenderStyle.COLOR_SELECTED_BORDER);
-					g.drawLine(x, y, x + w, y);
-					g.drawLine(x, y + h, x + w, y + h);
+					g.drawLine(rect.x(), rect.y(), rect.x() + rect.width(), rect.y());
+					g.drawLine(rect.x(), rect.y() + rect.height(), rect.x() + rect.width(), rect.y() + rect.height());
 				}
 				g.decZ();
 			} else if (adapter != null && adapter.isVisible((AScoreRow) row)) {
 				g.color(TourGuideRenderStyle.COLOR_STRATOMEX_ROW);
-				g.fillRect(x, y, w, h);
+				g.fillRect(rect);
 			} else if (!even) {
 				g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
-				g.fillRect(x, y, w, h);
+				g.fillRect(rect);
 			}
 		}
 
@@ -871,8 +873,9 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		}
 
 		@Override
-		public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected,
+		public void onRowClick(RankTableModel table, Pick pick, IRow row, boolean isSelected,
 				IGLElementContext context) {
+			PickingMode pickingMode = pick.getPickingMode();
 			if (!isSelected && pickingMode == PickingMode.CLICKED) {
 				table.setSelectedRow(row);
 			} else if ((isSelected && pickingMode == PickingMode.CLICKED && adapter != null && adapter

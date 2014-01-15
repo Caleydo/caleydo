@@ -9,7 +9,8 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
-import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.RankTableModel;
@@ -76,7 +77,7 @@ public interface IRankTableUIConfig {
 
 	public EButtonBarPositionMode getButtonBarPosition();
 
-	void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row, IRow selected);
+	void renderRowBackground(GLGraphics g, Rect bounds, boolean even, IRow row, IRow selected);
 
 	boolean canEditValues();
 
@@ -90,8 +91,9 @@ public interface IRankTableUIConfig {
 	 * @param pickingMode
 	 * @param row
 	 * @param isSelected
+	 * @param pick
 	 */
-	void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected,
+	void onRowClick(RankTableModel table, Pick pick, IRow row, boolean isSelected,
 			IGLElementContext context);
 
 	/**

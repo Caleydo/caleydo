@@ -39,6 +39,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBarCompatibility;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -173,9 +174,9 @@ public class RankingElement extends GLElementContainer {
 			}
 
 			@Override
-			public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
+			public void renderRowBackground(GLGraphics g, Rect rect, boolean even, IRow row,
 					IRow selected) {
-				renderRowBackgroundImpl(g, x, y, w, h, even, row, selected);
+				renderRowBackgroundImpl(g, rect.x(), rect.y(), rect.width(), rect.height(), even, row, selected);
 			}
 
 			@Override

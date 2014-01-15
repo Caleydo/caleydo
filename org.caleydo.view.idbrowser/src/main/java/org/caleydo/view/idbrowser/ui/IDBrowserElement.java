@@ -11,9 +11,15 @@ import java.util.Collections;
 import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.selection.MultiSelectionManagerMixin;
+import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -23,13 +29,16 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.basic.RadioController;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.datadomain.pathway.PathwayActions;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.idbrowser.internal.Activator;
 import org.caleydo.view.idbrowser.internal.model.PathwayRow;
+import org.caleydo.view.idbrowser.internal.model.PrimaryIDRow;
 import org.caleydo.view.idbrowser.internal.ui.ACategoryQuery;
 import org.caleydo.view.idbrowser.internal.ui.IDCategoryQuery;
 import org.caleydo.view.idbrowser.internal.ui.PathwayCategoryQuery;
@@ -52,7 +61,8 @@ import com.google.common.collect.Lists;
  * @author AUTHOR
  *
  */
-public class IDBrowserElement extends GLElementContainer implements ISelectionCallback {
+public class IDBrowserElement extends GLElementContainer implements ISelectionCallback,
+		MultiSelectionManagerMixin.ISelectionMixinCallback {
 
 	private final RankTableModel table = new RankTableModel(new RankTableConfigBase() {
 		@Override
@@ -61,6 +71,9 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 		}
 	});
 	private TableUI tableUI;
+
+	@DeepScan
+	private final MultiSelectionManagerMixin selections = new MultiSelectionManagerMixin(this);
 
 	public IDBrowserElement() {
 		setLayout(GLLayouts.flowHorizontal(10));
@@ -141,9 +154,9 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 			}
 
 			@Override
-			public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected,
+			public void onRowClick(RankTableModel table, Pick pick, IRow row, boolean isSelected,
 					IGLElementContext context) {
-				if (pickingMode == PickingMode.RIGHT_CLICKED) {
+				if (pick.getPickingMode() == PickingMode.RIGHT_CLICKED) {
 					ContextMenuCreator c = new ContextMenuCreator();
 					if (row instanceof PathwayRow) {
 						PathwayGraph pathway = ((PathwayRow) row).getPathway();
@@ -153,13 +166,112 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 						context.getSWTLayer().showContextMenu(c);
 					}
 				}
-				super.onRowClick(table, pickingMode, row, isSelected, context);
+				onRowClickImpl(pick, row);
+				super.onRowClick(table, pick, row, isSelected, context);
+			}
+
+			@Override
+			public void renderRowBackground(GLGraphics g, Rect rect, boolean even, IRow row,
+					IRow selected) {
+				if (!g.isPickingPass())
+					renderRowBackgroundImpl(g, rect.x(), rect.y(), rect.width(), rect.height(), even, row, selected);
+				else
+					super.renderRowBackground(g, rect, even, row, selected);
 			}
 		});
 
 		ScrollingDecorator sc = new ScrollingDecorator(this.tableUI, new ScrollBar(true), null,
 				RenderStyle.SCROLLBAR_WIDTH);
 		this.add(sc);
+	}
+
+	protected void renderRowBackgroundImpl(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
+			IRow selected) {
+		if (row == selected) {
+			g.color(RenderStyle.COLOR_SELECTED_ROW);
+			g.incZ();
+			g.fillRect(x, y, w, h);
+			g.color(RenderStyle.COLOR_SELECTED_BORDER);
+			g.drawLine(x, y, x + w, y);
+			g.drawLine(x, y + h, x + w, y + h);
+			g.decZ();
+		} else if (row instanceof PrimaryIDRow && isSelected((PrimaryIDRow) row)) {
+			g.color(SelectionType.SELECTION.getColor().brighter());
+			g.incZ();
+			g.fillRect(x, y, w, h);
+			g.color(RenderStyle.COLOR_SELECTED_BORDER);
+			g.drawLine(x, y, x + w, y);
+			g.drawLine(x, y + h, x + w, y + h);
+			g.decZ();
+		} else if (!even) {
+			g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
+			g.fillRect(x, y, w, h);
+		}
+	}
+
+	/**
+	 * @param pick
+	 * @param row
+	 */
+	protected void onRowClickImpl(Pick pick, IRow row) {
+		if (!(row instanceof PrimaryIDRow))
+			return;
+		PrimaryIDRow r = (PrimaryIDRow)row;
+		System.out.println(pick.getPickingMode() + r.getLabel());
+		if (!(r.getPrimary() instanceof Integer))
+			return;
+		switch(pick.getPickingMode()) {
+		case CLICKED:
+			boolean ctrlDown = ((IMouseEvent) pick).isCtrlDown();
+			if (isSelected(r))
+				clear(r, ctrlDown);
+			else
+				select(r, ctrlDown);
+			break;
+		default:
+			break;
+		}
+	}
+
+	public void select(PrimaryIDRow r, boolean additional) {
+		SelectionManager m = getOrCreate(r.getPrimaryIDType());
+		if (!additional)
+			m.clearSelection(SelectionType.SELECTION);
+		m.addToType(SelectionType.SELECTION, (Integer) r.getPrimary());
+		selections.fireSelectionDelta(m);
+	}
+
+	public void clear(PrimaryIDRow r, boolean additional) {
+		SelectionManager m = getOrCreate(r.getPrimaryIDType());
+		if (!additional)
+			m.clearSelection(SelectionType.SELECTION);
+		else
+			m.removeFromType(SelectionType.SELECTION, (Integer) r.getPrimary());
+		selections.fireSelectionDelta(m);
+	}
+
+	/**
+	 * @param r
+	 * @return
+	 */
+	private boolean isSelected(PrimaryIDRow r) {
+		if (!(r.getPrimary() instanceof Integer))
+			return false;
+		SelectionManager m = getOrCreate(r.getPrimaryIDType());
+		return m.checkStatus(SelectionType.SELECTION, (Integer) r.getPrimary());
+	}
+
+	/**
+	 * @param primaryIDType
+	 * @return
+	 */
+	private SelectionManager getOrCreate(IDType idType) {
+		SelectionManager m = selections.getSelectionManager(idType);
+		if (m != null)
+			return m;
+		m = new SelectionManager(idType);
+		selections.add(m);
+		return m;
 	}
 
 	private void initQueries() {
@@ -176,6 +288,7 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 			controller.add(q);
 			q.setSize(-1, 20);
 			queries.add(q);
+			selections.add(new SelectionManager(cat.getPrimaryMappingType()));
 		}
 		Collections.sort(queries);
 		{
@@ -203,6 +316,11 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 		g.pushResourceLocator(Activator.getResourceLocator());
 		super.renderPickImpl(g, w, h);
 		g.popResourceLocator();
+	}
+
+	@Override
+	public void onSelectionUpdate(SelectionManager manager) {
+		tableUI.getBody().repaint();
 	}
 
 }
