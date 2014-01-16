@@ -285,7 +285,7 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 	 * @return
 	 */
 	private SelectionManager getOrCreate(IDType idType) {
-		SelectionManager m = selections.getSelectionManager(idType);
+		SelectionManager m = selections.get(idType);
 		if (m != null)
 			return m;
 		m = new SelectionManager(idType);
