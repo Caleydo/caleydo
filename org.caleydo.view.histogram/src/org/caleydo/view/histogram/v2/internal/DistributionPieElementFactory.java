@@ -26,12 +26,17 @@ public class DistributionPieElementFactory extends ADistributionBarElementFactor
 
 	@Override
 	public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
-		return GLElementDimensionDesc.newBuilder().fix(dim.select(((IHasMinSize) elem).getMinSize())).build();
+		return GLElementDimensionDesc.newFix(dim.select(((IHasMinSize) elem).getMinSize())).build();
 	}
 
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
 		return new PieDistributionElement(createData(context));
+	}
+
+	@Override
+	public GLElement createParameters(GLElement elem) {
+		return null;
 	}
 
 }

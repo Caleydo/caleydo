@@ -5,18 +5,15 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.manage;
 
-import static org.caleydo.core.util.function.DoublePredicates.alwaysFalse;
-import static org.caleydo.core.util.function.DoublePredicates.alwaysTrue;
 import static org.caleydo.core.util.function.DoublePredicates.and;
 import static org.caleydo.core.util.function.DoublePredicates.ge;
 import static org.caleydo.core.util.function.DoublePredicates.le;
-import static org.caleydo.core.view.opengl.layout2.manage.GLLocation.NO_LOCATOR;
 
+import java.util.List;
+
+import org.caleydo.core.util.function.DoublePredicates;
 import org.caleydo.core.util.function.IDoublePredicate;
-import org.caleydo.core.view.opengl.layout2.manage.GLLocation.ALocator;
 import org.caleydo.core.view.opengl.layout2.manage.GLLocation.ILocator;
-
-import com.google.common.base.Objects;
 
 /**
  * description of a dimension of a visualization including size information and location service
@@ -24,33 +21,39 @@ import com.google.common.base.Objects;
  * @author Samuel Gratzl
  *
  */
-public class GLElementDimensionDesc extends ALocator {
-	/**
-	 * a size before the items
-	 */
-	private final Value before;
-	/**
-	 * a factor for each item
-	 */
-	private final Value factor;
-	/**
-	 * a size after the items
-	 */
-	private final Value after;
-	/**
-	 * locator service for looking up a data position
-	 */
-	private final ILocator locator;
+public class GLElementDimensionDesc implements GLLocation.ILocator {
+	private final GLLocation.ILocator locator;
+	private final double offset;
+	private final double factor;
+	private IDoublePredicate validator;
 
-	private GLElementDimensionDesc(Value before, Value factor, Value after, ILocator locator) {
-		this.before = Objects.firstNonNull(before, ZERO);
-		this.factor = Objects.firstNonNull(factor, ZERO);
-		this.after = Objects.firstNonNull(after, ZERO);
-		this.locator = Objects.firstNonNull(locator, NO_LOCATOR);
+	private GLElementDimensionDesc(ILocator locator, double offset, double factor, IDoublePredicate validator) {
+		this.locator = locator;
+		this.offset = offset;
+		this.factor = factor;
+		this.validator = validator;
 	}
 
-	public boolean hasLocation() {
-		return locator != NO_LOCATOR;
+	public boolean isCountDependent() {
+		return factor > 0;
+	}
+
+	public double countDependentSize(int count) {
+		return factor * count;
+	}
+
+	public double fixSize() {
+		return offset;
+	}
+
+	public boolean isValid(double size, int count) {
+		if (isCountDependent()) {
+			if (size < offset)
+				return false;
+			size -= offset; // no offset
+			size /= count; // size per item
+		}
+		return validator.apply(size);
 	}
 
 	@Override
@@ -58,152 +61,68 @@ public class GLElementDimensionDesc extends ALocator {
 		return locator.apply(dataIndex);
 	}
 
-	/**
-	 * @return the before, see {@link #before}
-	 */
-	public Value getBefore() {
-		return before;
+	@Override
+	public List<GLLocation> apply(Iterable<Integer> dataIndizes) {
+		return locator.apply(dataIndizes);
 	}
 
-	/**
-	 * @return the factor, see {@link #factor}
-	 */
-	public Value getFactor() {
-		return factor;
+	@Override
+	public GLLocation apply(Integer input) {
+		return locator.apply(input);
 	}
 
-	/**
-	 * @return the after, see {@link #after}
-	 */
-	public Value getAfter() {
-		return after;
+	public boolean hasLocation() {
+		return locator != GLLocation.NO_LOCATOR;
 	}
 
-	/**
-	 * whether the described dimension depends on the number of items
-	 *
-	 * @return
-	 */
-	public boolean isSizeDependent() {
-		return factor != ZERO;
+	public double size(int count) {
+		return fixSize() + countDependentSize(count);
 	}
 
-	public double getOffset() {
-		return before.getValue() + after.getValue();
+	public static DescBuilder newCountDependent(double scale) {
+		return newCountDependent(scale, 0);
 	}
 
-	/**
-	 * computes the target size given the number of items
-	 *
-	 * @param size
-	 */
-	public double getSize(int size) {
-		return before.getValue() + size * factor.getValue() + after.getValue();
+	public static DescBuilder newCountDependent(double scale, double offset) {
+		return new DescBuilder(offset, scale);
 	}
 
-	public static DescBuilder newBuilder() {
-		return new DescBuilder();
+	public static DescBuilder newFix(double fix) {
+		return new DescBuilder(fix, 0);
 	}
 
 	public static class DescBuilder {
-		private Value before;
-		private Value factor;
-		private Value after;
-		private ILocator locator;
+		private GLLocation.ILocator locator = GLLocation.NO_LOCATOR;
+		private IDoublePredicate validator = DoublePredicates.alwaysTrue;
 
-		private DescBuilder() {
+		private final double offset;
+		private final double factor;
+
+		public DescBuilder(double offset, double factor) {
+			this.offset = offset;
+			this.factor = factor;
 		}
 
-		public DescBuilder before(Value value) {
-			this.before = value;
+		public DescBuilder validateUsing(IDoublePredicate validator) {
+			this.validator = validator;
 			return this;
 		}
 
-		public DescBuilder constant(double value) {
-			return before(GLElementDimensionDesc.constant(value));
+		public DescBuilder inRange(double min, double max) {
+			return validateUsing(and(ge(min), le(max)));
 		}
 
-		public DescBuilder fix(double value) {
-			before(GLElementDimensionDesc.unbound(value));
-			return this;
+		public DescBuilder minimum(double min) {
+			return validateUsing(ge(min));
 		}
 
-		public DescBuilder factor(Value value) {
-			this.factor = value;
-			return this;
-		}
-
-		public DescBuilder linear(double value) {
-			factor(GLElementDimensionDesc.unbound(value));
-			return this;
-		}
-
-		public DescBuilder after(Value value) {
-			this.after = value;
-			return this;
-		}
-
-		public DescBuilder locateUsing(ILocator value) {
-			this.locator = value;
+		public DescBuilder locateUsing(GLLocation.ILocator locator) {
+			this.locator = locator;
 			return this;
 		}
 
 		public GLElementDimensionDesc build() {
-			return new GLElementDimensionDesc(before, factor, after, locator);
+			return new GLElementDimensionDesc(locator, offset, factor, validator);
 		}
 	}
-
-	public static final Value ZERO = new Value(0, alwaysFalse);
-
-	/**
-	 * @param value
-	 * @return a value with is exactly the given value with no excuse
-	 */
-	public static final Value constant(double value) {
-		return new Value(value, alwaysFalse);
-	}
-
-	/**
-	 * @param value
-	 * @return a value with is initially the given value but and be anything besides that
-	 */
-	public static final Value unbound(double value) {
-		return new Value(value, alwaysTrue);
-	}
-
-	/**
-	 * @return a value within the given range
-	 */
-	public static final Value inRange(double value, double min, double max) {
-		final IDoublePredicate f = and(ge(min), le(max));
-		return new Value(value, f);
-	}
-
-	public static final class Value implements IDoublePredicate {
-		private final double value;
-		private final IDoublePredicate isValid;
-
-		public Value(double value, IDoublePredicate isValid) {
-			this.value = value;
-			this.isValid = isValid;
-		}
-
-		/**
-		 * @return the value, see {@link #value}
-		 */
-		public double getValue() {
-			return value;
-		}
-
-		@Override
-		public boolean apply(double in) {
-			return isValid.apply(in) && in > 0;
-		}
-
-		@Override
-		public boolean apply(Double input) {
-			return isValid.apply(input) && input.doubleValue() > 0;
-		}
-	}
-
 }

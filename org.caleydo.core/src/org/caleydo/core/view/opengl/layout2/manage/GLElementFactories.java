@@ -193,7 +193,7 @@ public final class GLElementFactories {
 			Vec2f size = new Vec2f(100, 100);
 			if (elem instanceof IHasMinSize)
 				size = ((IHasMinSize) elem).getMinSize();
-			return GLElementDimensionDesc.newBuilder().fix(dim.select(size)).build();
+			return GLElementDimensionDesc.newFix(dim.select(size)).build();
 		}
 
 		@Override

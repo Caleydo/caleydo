@@ -44,8 +44,13 @@ public class HeatMapElementFactory implements IGLElementFactory2 {
 
 	@Override
 	public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
-		return GLElementDimensionDesc.newBuilder().linear(1)
+		return GLElementDimensionDesc.newCountDependent(1)
 				.locateUsing(new SpacingStrategyLocator(dim, (HeatMapElementBase) elem)).build();
+	}
+
+	@Override
+	public GLElement createParameters(GLElement elem) {
+		return null;
 	}
 
 	@Override

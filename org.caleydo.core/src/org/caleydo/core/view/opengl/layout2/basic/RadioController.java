@@ -86,7 +86,7 @@ public class RadioController implements GLButton.ISelectionCallback, Iterable<GL
 	}
 
 	public GLButton getSelectedItem() {
-		return selected < 0 ? null : buttons.get(selected);
+		return selected < 0 || selected >= buttons.size() ? null : buttons.get(selected);
 	}
 
 	@Override

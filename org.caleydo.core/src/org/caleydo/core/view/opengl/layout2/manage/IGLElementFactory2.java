@@ -19,4 +19,12 @@ public interface IGLElementFactory2 extends IGLElementFactory {
 	 * returns a {@link GLElementDimensionDesc} describing the created element in a given dimension
 	 */
 	GLElementDimensionDesc getDesc(EDimension dim, GLElement elem);
+
+	/**
+	 * returns a GLElement containing the ui elements for setting the parameter so this element
+	 *
+	 * @param elem
+	 * @return an element or null if no parameters can be set
+	 */
+	GLElement createParameters(GLElement elem);
 }

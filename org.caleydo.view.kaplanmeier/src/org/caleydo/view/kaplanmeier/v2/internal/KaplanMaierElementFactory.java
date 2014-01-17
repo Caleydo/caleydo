@@ -40,7 +40,7 @@ public class KaplanMaierElementFactory implements IGLElementFactory2 {
 	@Override
 	public GLElementDimensionDesc getDesc(final EDimension dim, GLElement elem) {
 		final AKaplanMeierElement k = (AKaplanMeierElement) elem;
-		final DescBuilder b = GLElementDimensionDesc.newBuilder().fix(dim.select(k.getMinSize()));
+		final DescBuilder b = GLElementDimensionDesc.newFix(dim.select(k.getMinSize()));
 		b.locateUsing(new GLLocation.ALocator() {
 			@Override
 			public GLLocation apply(int dataIndex) {
@@ -53,6 +53,11 @@ public class KaplanMaierElementFactory implements IGLElementFactory2 {
 			}
 		});
 		return b.build();
+	}
+
+	@Override
+	public GLElement createParameters(GLElement elem) {
+		return null;
 	}
 
 	@Override

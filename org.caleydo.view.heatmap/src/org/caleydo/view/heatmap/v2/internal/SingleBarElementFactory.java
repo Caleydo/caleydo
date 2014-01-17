@@ -128,18 +128,23 @@ public class SingleBarElementFactory implements IGLElementFactory2 {
 	@Override
 	public GLElementDimensionDesc getDesc(final EDimension dim, GLElement elem) {
 		final SingleBarPlotElement l = (SingleBarPlotElement) elem;
-		DescBuilder b = GLElementDimensionDesc.newBuilder();
+		DescBuilder b;
 		if (l.getDimension() == dim) {
-			b.linear(1).locateUsing(new GLLocation.ALocator() {
+			b = GLElementDimensionDesc.newCountDependent(1).locateUsing(new GLLocation.ALocator() {
 				@Override
 				public GLLocation apply(int dataIndex) {
 					return l.getLocation(dim, dataIndex);
 				}
 			});
 		} else {
-			b.before(GLElementDimensionDesc.inRange(50, 10, Double.POSITIVE_INFINITY));
+			b = GLElementDimensionDesc.newFix(50).minimum(10);
 		}
 		return b.build();
+	}
+
+	@Override
+	public GLElement createParameters(GLElement elem) {
+		return null;
 	}
 }
 
