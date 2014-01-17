@@ -101,6 +101,13 @@ public final class GLElementFactories {
 			return extension.getDesc(dim, elem);
 		}
 
+		/**
+		 * @return
+		 */
+		public GLElement createParameters(GLElement elem) {
+			return extension.createParameters(elem);
+		}
+
 		@Override
 		public GLElement get() {
 			return extension.create(context);
@@ -184,6 +191,12 @@ public final class GLElementFactories {
 				this.order = 10;
 			else
 				this.order = Integer.parseInt(order);
+		}
+
+		public GLElement createParameters(GLElement elem) {
+			if (factory instanceof IGLElementFactory2)
+				return ((IGLElementFactory2) factory).createParameters(elem);
+			return null;
 		}
 
 		public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {

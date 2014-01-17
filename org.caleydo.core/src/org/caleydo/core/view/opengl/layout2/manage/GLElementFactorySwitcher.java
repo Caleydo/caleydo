@@ -187,6 +187,14 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 		}
 	}
 
+	/**
+	 * @return
+	 */
+	public GLElement createParameter() {
+		GLElementSupplier s = getActiveSupplier();
+		return s.createParameters(getActiveElement());
+	}
+
 	private void setup(GLElement child) {
 		GLElementAccessor.setParent(child, this);
 		if (context != null)
