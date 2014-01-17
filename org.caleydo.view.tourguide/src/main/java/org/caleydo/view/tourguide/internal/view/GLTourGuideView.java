@@ -275,7 +275,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 	private void onRemoveDataDomain(final RemoveDataDomainEvent event) {
 		final String id = event.getEventSpace();
 		for (ADataDomainQuery query : queries) {
-			if (Objects.equals(query.getDataDomain().getDataDomainID(), id)) {
+			if (query.getDataDomain() != null && Objects.equals(query.getDataDomain().getDataDomainID(), id)) {
 				query.cleanup();
 				query.removePropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
 				query.removePropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
@@ -435,7 +435,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		getPopupLayer().hide(waiting);
 		int offset = table.getDataSize();
 		ADataDomainQuery q = event.getNewQuery();
-		System.out.println("add data of " + q.getDataDomain().getLabel());
+		System.out.println("add data of " + q.getLabel());
 		table.addData(q.getOrCreate());
 		List<?> m = table.getDataModifiable();
 		// use sublists to save memory
@@ -453,7 +453,7 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 
 		for (Pair<ADataDomainQuery, List<AScoreRow>> pair : event.getExtras()) {
 			ADataDomainQuery q = pair.getFirst();
-			System.out.println("add data of " + q.getDataDomain().getLabel());
+			System.out.println("add data of " + q.getLabel());
 			int offset = table.getDataSize();
 			table.addData(pair.getSecond());
 			List<?> m = table.getDataModifiable();

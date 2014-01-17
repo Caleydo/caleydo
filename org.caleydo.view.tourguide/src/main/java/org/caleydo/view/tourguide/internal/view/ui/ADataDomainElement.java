@@ -164,7 +164,7 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
 		if (isSelected())
-			g.color(model.getDataDomain().getColor()).fillRect(2, 2, 14, 14);
+			g.color(model.getColor()).fillRect(2, 2, 14, 14);
 		g.fillImage(EButtonIcon.CHECKBOX.get(false), 0, 0, 18, 18);
 
 		float tw = Math.min(g.text.getTextWidth(getLabel(), 14), w - 18 - 18);
@@ -174,7 +174,7 @@ public abstract class ADataDomainElement extends GLButton implements GLButton.IS
 	}
 
 	protected String getLabel() {
-		return model.getDataDomain().getLabel();
+		return model.getLabel();
 	}
 
 	@Override
