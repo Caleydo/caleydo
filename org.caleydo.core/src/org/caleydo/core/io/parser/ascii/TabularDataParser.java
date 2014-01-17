@@ -221,6 +221,7 @@ public class TabularDataParser extends ATextParser {
 				GenericContainer<String> container = new GenericContainer<>(numberOfDataLines);
 				targetRawContainer.add(container);
 				GenericColumn<String> column = new GenericColumn<>(dataDescription);
+				container.setDataType(column.getRawDataType());
 				column.setRawData(container);
 				columnID = table.addColumn(column);
 				break;
