@@ -22,7 +22,6 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
  * DataDomain for genetic data.
@@ -45,12 +44,6 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	public GeneticDataDomain() {
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER
 				+ IDCreator.createPersistentID(GeneticDataDomain.class));
-	}
-
-	@Override
-	public void init() {
-		icon = EIconTextures.DATA_DOMAIN_GENETIC;
-		super.init();
 	}
 
 	@Override

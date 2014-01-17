@@ -24,6 +24,7 @@
 		<module>org.caleydo.datadomain.generic</module>
 		<module>org.caleydo.datadomain.genetic</module>
 		<module>org.caleydo.datadomain.pathway</module>
+		<module>org.caleydo.datadomain.image</module>
 		
 		<module>org.caleydo.data.tcga</module>
 		<module>org.caleydo.data.pathway.kegg</module>

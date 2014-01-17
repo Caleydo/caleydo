@@ -74,6 +74,7 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		pathwayElement.addForegroundAugmentation(new StdDevBarConsideringVertexHighlightAugmentation(pathwayElement));
 		pathwayElement.addForegroundAugmentation(new CompoundAugmentation(pathwayElement.getPathwayRepresentation()));
 
+
 		// IDMappingDescription desc = new IDMappingDescription();
 		// desc.setParsingStartLine(0);
 		// desc.setParsingStopLine(-1);
