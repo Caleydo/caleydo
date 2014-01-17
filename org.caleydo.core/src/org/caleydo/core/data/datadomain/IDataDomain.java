@@ -11,7 +11,6 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.util.base.ILabelHolder;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
  * Data domains are the unique points of coordinations for views and its data.
@@ -36,11 +35,6 @@ public interface IDataDomain
 	 * @param dataDomainType
 	 */
 	public void setDataDomainID(String dataDomainType);
-
-	/**
-	 * Returns the icon representing the data contained in this domain
-	 */
-	public EIconTextures getIcon();
 
 	/**
 	 * Gets the parameters for loading the data-{@link Set} contained in this

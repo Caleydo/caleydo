@@ -11,7 +11,6 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.id.IDCreator;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
  * Use case for generic set-based data which is not further specified.
@@ -33,11 +32,5 @@ public class GenericDataDomain
 
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER
 				+ IDCreator.createPersistentID(GenericDataDomain.class));
-	}
-
-	@Override
-	public void init() {
-		icon = EIconTextures.DATA_DOMAIN_CLINICAL;
-		super.init();
 	}
 }
