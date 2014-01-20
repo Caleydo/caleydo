@@ -17,13 +17,13 @@ import org.caleydo.core.event.data.NewDataDomainEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorManager;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.swt.widgets.Shell;
 
@@ -70,22 +70,13 @@ public class DataDomainManager {
 	 * @param dataDomainType the plug-in id of the data domain
 	 */
 	public void initalizeDataDomain(String dataDomainType) {
-
-		IExtensionRegistry reg = Platform.getExtensionRegistry();
-
-		IExtensionPoint ep = reg
-				.getExtensionPoint("org.caleydo.datadomain.DataDomainInitialization");
-		IExtension ext = ep.getExtension(dataDomainType);
-		IConfigurationElement[] ce = ext.getConfigurationElements();
-
-		try {
-			IDataDomainInitialization dataDomain = (IDataDomainInitialization) ce[0]
-					.createExecutableExtension("class");
-			dataDomain.createIDTypesAndMapping();
-		}
-		catch (Exception ex) {
-			throw new RuntimeException("Could not instantiate data domain " + dataDomainType,
-					ex);
+		for (IDataDomainInitialization initializer : ExtensionUtils.findImplementation(
+				"org.caleydo.datadomain.DataDomainInitialization", "class", IDataDomainInitialization.class)) {
+			try {
+				initializer.createIDTypesAndMapping();
+			} catch (Exception ex) {
+				throw new RuntimeException("Could not instantiate data domain " + dataDomainType, ex);
+			}
 		}
 	}
 

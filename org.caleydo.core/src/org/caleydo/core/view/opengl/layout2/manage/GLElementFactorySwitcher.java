@@ -168,7 +168,7 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 	public GLElementDimensionDesc getActiveDesc(EDimension dim) {
 		GLElementDimensionDesc desc = dim.select(dimDesc, recDesc);
 		if (desc == null)
-			desc = GLElementDimensionDesc.newBuilder().constant(100).build();
+			desc = GLElementDimensionDesc.newFix(100).minimum(100).build();
 		return desc;
 	}
 
@@ -185,6 +185,14 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 			this.recDesc = s.getDesc(EDimension.RECORD, e);
 			this.dimDesc = s.getDesc(EDimension.DIMENSION, e);
 		}
+	}
+
+	/**
+	 * @return
+	 */
+	public GLElement createParameter() {
+		GLElementSupplier s = getActiveSupplier();
+		return s.createParameters(getActiveElement());
 	}
 
 	private void setup(GLElement child) {

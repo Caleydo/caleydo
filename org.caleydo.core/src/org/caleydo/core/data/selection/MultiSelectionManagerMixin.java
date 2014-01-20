@@ -49,7 +49,15 @@ public class MultiSelectionManagerMixin extends AbstractList<SelectionManager> {
 	public final SelectionManager get(int index) {
 		return selectionManagers.get(index);
 	}
-	
+
+	public final SelectionManager get(IDType idType) {
+		for (SelectionManager m : selectionManagers) {
+			if (m.getIDType().equals(idType))
+				return m;
+		}
+		return null;
+	}
+
 	@Override
 	public int size() {
 		return selectionManagers.size();
@@ -109,14 +117,6 @@ public class MultiSelectionManagerMixin extends AbstractList<SelectionManager> {
 			if (m.getIDType().equals(type))
 				fireSelectionDelta(m);
 		}
-	}
-
-	public final SelectionManager getSelectionManager(IDType type) {
-		for (SelectionManager m : selectionManagers) {
-			if (m.getIDType().equals(type))
-				return m;
-		}
-		return null;
 	}
 
 	@Override

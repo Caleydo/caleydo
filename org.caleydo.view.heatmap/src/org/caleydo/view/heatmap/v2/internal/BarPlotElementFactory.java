@@ -5,9 +5,6 @@
  *******************************************************************************/
 package org.caleydo.view.heatmap.v2.internal;
 
-import static org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc.inRange;
-import static org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc.unbound;
-
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -46,9 +43,17 @@ public class BarPlotElementFactory implements IGLElementFactory2 {
 
 	@Override
 	public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
-		return GLElementDimensionDesc.newBuilder()
-				.factor(dim.isDimension() ? inRange(10, 12, Double.POSITIVE_INFINITY) : unbound(1))
-				.locateUsing(new SpacingStrategyLocator(dim, (HeatMapElementBase) elem)).build();
+		GLElementDimensionDesc.DescBuilder b;
+		if (dim.isDimension())
+			b = GLElementDimensionDesc.newCountDependent(12).minimum(10);
+		else
+			b = GLElementDimensionDesc.newCountDependent(1);
+		return b.locateUsing(new SpacingStrategyLocator(dim, (HeatMapElementBase) elem)).build();
+	}
+
+	@Override
+	public GLElement createParameters(GLElement elem) {
+		return null;
 	}
 
 	@Override

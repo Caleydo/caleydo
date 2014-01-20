@@ -78,7 +78,7 @@ public class ListDataProvider implements IHeatMapDataProvider,
 
 	@Override
 	public SelectionManager getManager(EDimension dim) {
-		return selections.getSelectionManager(get(dim).idType);
+		return selections.get(get(dim).idType);
 	}
 
 	@Override

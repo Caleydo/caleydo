@@ -101,6 +101,13 @@ public final class GLElementFactories {
 			return extension.getDesc(dim, elem);
 		}
 
+		/**
+		 * @return
+		 */
+		public GLElement createParameters(GLElement elem) {
+			return extension.createParameters(elem);
+		}
+
 		@Override
 		public GLElement get() {
 			return extension.create(context);
@@ -186,6 +193,12 @@ public final class GLElementFactories {
 				this.order = Integer.parseInt(order);
 		}
 
+		public GLElement createParameters(GLElement elem) {
+			if (factory instanceof IGLElementFactory2)
+				return ((IGLElementFactory2) factory).createParameters(elem);
+			return null;
+		}
+
 		public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
 			if (factory instanceof IGLElementFactory2)
 				return ((IGLElementFactory2) factory).getDesc(dim, elem);
@@ -193,7 +206,7 @@ public final class GLElementFactories {
 			Vec2f size = new Vec2f(100, 100);
 			if (elem instanceof IHasMinSize)
 				size = ((IHasMinSize) elem).getMinSize();
-			return GLElementDimensionDesc.newBuilder().fix(dim.select(size)).build();
+			return GLElementDimensionDesc.newFix(dim.select(size)).build();
 		}
 
 		@Override

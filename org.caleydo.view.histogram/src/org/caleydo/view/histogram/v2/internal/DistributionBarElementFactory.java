@@ -41,13 +41,18 @@ public class DistributionBarElementFactory extends ADistributionBarElementFactor
 	public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
 		BarDistributionElement bar = (BarDistributionElement) elem;
 
-		final DescBuilder b = GLElementDimensionDesc.newBuilder();
+		final DescBuilder b;
 		if (dim == bar.getDimension()) {
-			b.linear(1).locateUsing(bar);
+			b = GLElementDimensionDesc.newCountDependent(1).locateUsing(bar);
 		} else {
-			b.fix(dim.select(((IHasMinSize) elem).getMinSize()));
+			b = GLElementDimensionDesc.newFix(dim.select(((IHasMinSize) elem).getMinSize()));
 		}
 		return b.build();
+	}
+
+	@Override
+	public GLElement createParameters(GLElement elem) {
+		return null;
 	}
 
 }

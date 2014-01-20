@@ -51,6 +51,8 @@ public class DataDomainRankColumnModel extends StringRankColumnModel {
 				return;
 			AScoreRow r = this.getLayoutDataAs(AScoreRow.class, null);
 			IDataDomain dataDomain = r.getDataDomain();
+			if (dataDomain == null)
+				return;
 			g.color(dataDomain.getColor()).fillRect(1, (h - hint) * 0.5f, hint, hint);
 			if (h < 5 || w < 20)
 				return;

@@ -47,7 +47,7 @@ public class TablePerspectiveDataProvider implements IHeatMapDataProvider,
 			return clazz.cast(getDataDomain());
 		if (clazz.isInstance(getTablePerspective()))
 			return clazz.cast(getTablePerspective());
-		return default_.get();
+		return default_ == null ? null : default_.get();
 	}
 
 	public float getNormalized(Integer dimensionID, Integer recordID) {

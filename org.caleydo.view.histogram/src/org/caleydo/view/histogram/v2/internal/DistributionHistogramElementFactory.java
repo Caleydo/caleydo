@@ -33,9 +33,14 @@ public class DistributionHistogramElementFactory extends ADistributionBarElement
 
 	@Override
 	public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
-		final DescBuilder builder = GLElementDimensionDesc.newBuilder().fix(dim.select(((IHasMinSize) elem).getMinSize()));
+		final DescBuilder builder = GLElementDimensionDesc.newFix(dim.select(((IHasMinSize) elem).getMinSize()));
 		if (dim == ((HistogramDistributionElement) elem).getDimension())
 			builder.locateUsing(((HistogramDistributionElement) elem));
 		return builder.build();
+	}
+
+	@Override
+	public GLElement createParameters(GLElement elem) {
+		return null;
 	}
 }
