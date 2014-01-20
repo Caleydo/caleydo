@@ -42,7 +42,7 @@ public class CompoundAugmentation extends APerVertexAugmentation {
 				for (int davidID : vertexRep.getDavidIDs()) {
 
 					Set<Object> ids = idMappingManager.getIDAsSet(IDType.getIDType(EGeneIDTypes.DAVID.name()),
-							IDType.getIDType(EGeneIDTypes.COMPOUND_ID.name()), davidID);
+							IDType.getIDType("COMPOUND_ID"), davidID);
 					if (ids != null)
 						compoundIDs.addAll(ids);
 				}
