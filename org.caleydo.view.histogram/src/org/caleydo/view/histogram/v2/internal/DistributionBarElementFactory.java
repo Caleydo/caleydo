@@ -51,6 +51,11 @@ public class DistributionBarElementFactory extends ADistributionBarElementFactor
 	}
 
 	@Override
+	public EVisScaleType getScaleType() {
+		return EVisScaleType.DATA_DEPENDENT;
+	}
+
+	@Override
 	public GLElement createParameters(GLElement elem) {
 		return null;
 	}

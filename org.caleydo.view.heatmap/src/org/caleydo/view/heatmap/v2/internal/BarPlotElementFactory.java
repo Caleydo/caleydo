@@ -52,6 +52,11 @@ public class BarPlotElementFactory implements IGLElementFactory2 {
 	}
 
 	@Override
+	public EVisScaleType getScaleType() {
+		return EVisScaleType.DATA_DEPENDENT;
+	}
+
+	@Override
 	public GLElement createParameters(GLElement elem) {
 		return null;
 	}

@@ -39,4 +39,9 @@ public class DistributionPieElementFactory extends ADistributionBarElementFactor
 		return null;
 	}
 
+	@Override
+	public EVisScaleType getScaleType() {
+		return EVisScaleType.FIX;
+	}
+
 }

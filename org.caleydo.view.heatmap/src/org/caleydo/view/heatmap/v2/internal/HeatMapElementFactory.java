@@ -54,6 +54,11 @@ public class HeatMapElementFactory implements IGLElementFactory2 {
 	}
 
 	@Override
+	public EVisScaleType getScaleType() {
+		return EVisScaleType.DATA_DEPENDENT;
+	}
+
+	@Override
 	public boolean apply(GLElementFactoryContext context) {
 		if (DataSupportDefinitions.homogenousColumns.apply(context.getData()))
 			return true;

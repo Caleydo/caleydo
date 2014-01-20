@@ -20,6 +20,7 @@ import org.caleydo.core.util.ExtensionUtils.IExtensionLoader;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
+import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory2.EVisScaleType;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 
@@ -62,20 +63,40 @@ public final class GLElementFactories {
 
 	/**
 	 * returns a list a element suppliers that can be created using the given parameters
-	 *
+	 * 
 	 * @param context
 	 *            the context with all the parameters set
 	 * @param callerId
 	 *            the id of the caller (for including excluding)
 	 * @param filter
-	 *            a additional filter to include / exclude from the caller side
+	 *            an additional filter to include / exclude from the caller side
 	 * @return
 	 */
 	public static ImmutableList<GLElementSupplier> getExtensions(GLElementFactoryContext context, String callerId,
 			Predicate<? super String> filter) {
+		return getExtensions(context, callerId, filter, null);
+	}
+	
+	/**
+	 * returns a list a element suppliers that can be created using the given parameters
+	 * 
+	 * @param context
+	 *            the context with all the parameters set
+	 * @param callerId
+	 *            the id of the caller (for including excluding)
+	 * @param filter
+	 *            an additional filter to include / exclude from the caller side
+	 * @param scaleFilter
+	 *            an additional filter to include / exclude scaling type specific elements
+	 * @return
+	 */
+	public static ImmutableList<GLElementSupplier> getExtensions(GLElementFactoryContext context, String callerId,
+			Predicate<? super String> filter, Predicate<? super EVisScaleType> scaleFilter) {
 		ImmutableList.Builder<GLElementSupplier> builder = ImmutableList.builder();
 		for (ElementExtension elem : extensions) {
-			if ((filter != null && !filter.apply(elem.getId())) || !elem.canCreate(callerId, context))
+			if ((filter != null && !filter.apply(elem.getId()))
+					|| (scaleFilter != null && !scaleFilter.apply(elem.getScaleType()))
+					|| !elem.canCreate(callerId, context))
 				continue;
 			builder.add(new GLElementSupplier(elem, context));
 		}
@@ -197,6 +218,12 @@ public final class GLElementFactories {
 			if (factory instanceof IGLElementFactory2)
 				return ((IGLElementFactory2) factory).createParameters(elem);
 			return null;
+		}
+
+		public EVisScaleType getScaleType() {
+			if (factory instanceof IGLElementFactory2)
+				return ((IGLElementFactory2) factory).getScaleType();
+			return EVisScaleType.FIX;
 		}
 
 		public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {

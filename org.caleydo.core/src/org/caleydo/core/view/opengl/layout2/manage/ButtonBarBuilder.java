@@ -29,6 +29,9 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+
 /**
  * @author Samuel Gratzl
  *
@@ -62,6 +65,11 @@ public class ButtonBarBuilder {
 	private ISelectionCallback custom;
 
 	/**
+	 * filter of the possible items
+	 */
+	private Predicate<? super String> filter = Predicates.alwaysTrue();
+
+	/**
 	 *
 	 */
 	public ButtonBarBuilder(GLElementFactorySwitcher switcher) {
@@ -70,6 +78,11 @@ public class ButtonBarBuilder {
 
 	public ButtonBarBuilder customCallback(ISelectionCallback callback) {
 		this.custom = callback;
+		return this;
+	}
+
+	public ButtonBarBuilder filterBy(Predicate<? super String> filter) {
+		this.filter = filter;
 		return this;
 	}
 
@@ -318,6 +331,10 @@ public class ButtonBarBuilder {
 		private void addButtons(ButtonBarBuilder builder) {
 			int i = 0;
 			for (GLElementSupplier sup : builder.switcher) {
+				if (!builder.filter.apply(sup.getId())) {
+					i++;
+					continue;
+				}
 				GLButton b = new GLButton();
 				b.setPickingObjectId(i++);
 				b.setTooltip(sup.getLabel());
@@ -380,7 +397,7 @@ public class ButtonBarBuilder {
 		protected void init(IGLElementContext context) {
 			super.init(context);
 			switcher.onActiveChanged(this);
-			controller.setSelected(switcher.getActive());
+			onActiveChanged(switcher.getActive());
 		}
 
 		@Override
@@ -398,7 +415,14 @@ public class ButtonBarBuilder {
 
 		@Override
 		public void onActiveChanged(int active) {
-			controller.setSelected(active);
+			int i = 0;
+			for (GLButton b : controller) {
+				if (b.getPickingObjectId() == active) {
+					controller.setSelected(i);
+					break;
+				}
+				i++;
+			}
 			relayout();
 		}
 
