@@ -114,6 +114,11 @@ public class EventListenerManager implements DisposeListener {
 	}
 
 	protected boolean scan(Object root, Object listener, String eventSpace, Predicate<? super Class<?>> scanWhile) {
+		if (listener instanceof IRetrictedToEventSpace) {
+			String _newEventSpace = ((IRetrictedToEventSpace) listener).getEventSpace();
+			if (_newEventSpace != null)
+				eventSpace = _newEventSpace;
+		}
 		final Class<?> clazz = listener.getClass();
 		if (nothingFounds.contains(clazz.getCanonicalName())) // avoid scanning useless objects again
 			return false;
@@ -279,6 +284,21 @@ public class EventListenerManager implements DisposeListener {
 	@Target(ElementType.FIELD)
 	public @interface DeepScan {
 
+	}
+
+	/**
+	 * interface to provide a event space for {@link ListenTo#restrictToEventSpace()}
+	 *
+	 * @author Samuel Gratzl
+	 *
+	 */
+	public interface IRetrictedToEventSpace {
+		/**
+		 * return the event space to use
+		 *
+		 * @return
+		 */
+		String getEventSpace();
 	}
 
 	private static class AnnotationBasedEventListener extends AEventListener<IListenerOwner> {

@@ -61,6 +61,11 @@ public class KaplanMaierElementFactory implements IGLElementFactory2 {
 	}
 
 	@Override
+	public EVisScaleType getScaleType() {
+		return EVisScaleType.FIX;
+	}
+
+	@Override
 	public boolean apply(GLElementFactoryContext context) {
 		TablePerspective data = context.getData();
 		if (data != null) {

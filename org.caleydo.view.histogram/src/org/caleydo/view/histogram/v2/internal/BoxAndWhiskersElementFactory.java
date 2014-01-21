@@ -83,6 +83,11 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory2 {
 	}
 
 	@Override
+	public EVisScaleType getScaleType() {
+		return EVisScaleType.FIX;
+	}
+
+	@Override
 	public GLElement create(GLElementFactoryContext context) {
 		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
 
