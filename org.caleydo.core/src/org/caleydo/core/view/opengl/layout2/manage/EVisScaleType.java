@@ -3,19 +3,12 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.core.view.opengl.layout2.basic;
+package org.caleydo.core.view.opengl.layout2.manage;
 
 /**
- * standard icons for a radio button and a checkbox
- * 
  * @author Samuel Gratzl
- * 
+ *
  */
-public enum EButtonIcon {
-	RADIO, CHECKBOX;
-
-	public String get(boolean selected) {
-		return String.format("resources/icons/general/%s_%sselected.png", this.name().toLowerCase(), (selected ? ""
-				: "not_"));
-	}
+public enum EVisScaleType {
+	FIX, DATADEPENDENT
 }

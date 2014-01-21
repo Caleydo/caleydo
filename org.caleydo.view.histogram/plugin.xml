@@ -236,27 +236,32 @@
       <factory
             factory="org.caleydo.view.histogram.v2.internal.HistogramElementFactory"
             icon="resources/icons/chart_bar.png"
-            name="Histogram">
+            name="Histogram"
+            scaleType="fix">
       </factory>
       <factory
             factory="org.caleydo.view.histogram.v2.internal.DistributionBarElementFactory"
             icon="resources/icons/chart_distribution.png"
-            name="Distribution (Bar)">
+            name="Distribution (Bar)"
+            scaleType="dataDependent">
       </factory>
       <factory
             factory="org.caleydo.view.histogram.v2.internal.DistributionPieElementFactory"
             icon="resources/icons/chart_pie.png"
-            name="Distribution (Pie)">
+            name="Distribution (Pie)"
+            scaleType="fix">
       </factory>
       <factory
             factory="org.caleydo.view.histogram.v2.internal.DistributionHistogramElementFactory"
             icon="resources/icons/chart_bar.png"
-            name="Histogram">
+            name="Histogram"
+            scaleType="fix">
       </factory>
       <factory
             factory="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersElementFactory"
             icon="resources/icons/chart_boxandwhiskers.png"
-            name="Box-and-Whiskers">
+            name="Box-and-Whiskers"
+            scaleType="fix">
       </factory>
    </extension>
 </plugin>

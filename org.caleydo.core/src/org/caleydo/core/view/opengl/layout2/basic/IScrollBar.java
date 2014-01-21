@@ -20,6 +20,11 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
  */
 public interface IScrollBar extends IGLRenderer, IPickingListener {
 
+	/**
+	 * set the width of the item
+	 * 
+	 * @param w
+	 */
 	void setWidth(float w);
 
 	float getWidth();

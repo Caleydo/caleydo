@@ -43,9 +43,4 @@ public class DistributionHistogramElementFactory extends ADistributionBarElement
 	public GLElement createParameters(GLElement elem) {
 		return null;
 	}
-
-	@Override
-	public EVisScaleType getScaleType() {
-		return EVisScaleType.FIX;
-	}
 }

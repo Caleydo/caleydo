@@ -20,8 +20,6 @@ public interface IGLElementFactory2 extends IGLElementFactory {
 	 */
 	GLElementDimensionDesc getDesc(EDimension dim, GLElement elem);
 
-	EVisScaleType getScaleType();
-
 	/**
 	 * returns a GLElement containing the ui elements for setting the parameter so this element
 	 *
@@ -29,8 +27,4 @@ public interface IGLElementFactory2 extends IGLElementFactory {
 	 * @return an element or null if no parameters can be set
 	 */
 	GLElement createParameters(GLElement elem);
-
-	public enum EVisScaleType {
-		FIX, DATA_DEPENDENT
-	}
 }

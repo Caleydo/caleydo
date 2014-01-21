@@ -64,7 +64,8 @@
       <factory
             factory="org.caleydo.view.kaplanmeier.v2.internal.KaplanMaierElementFactory"
             icon="resources/icons/icon.png"
-            name="Kaplan Maier Plot">
+            name="Kaplan Maier Plot"
+            scaleType="fix">
       </factory>
    </extension>
 </plugin>

@@ -8,7 +8,6 @@ package org.caleydo.core.view.opengl.layout2.manage;
 import java.net.URL;
 
 import org.caleydo.core.util.base.ILabeled;
-import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory2.EVisScaleType;
 
 /**
  * description of a {@link IGLElementFactory} relevant meta data
@@ -27,7 +26,7 @@ public interface IGLElementMetaData extends ILabeled {
 
 	/**
 	 * return the unique id of this element factory
-	 *
+	 * 
 	 * @return
 	 */
 	String getId();

@@ -34,18 +34,41 @@ public class GLElementDimensionDesc implements GLLocation.ILocator {
 		this.validator = validator;
 	}
 
+	/**
+	 * whether the size of the element is data size dependent or not
+	 *
+	 * @return
+	 */
 	public boolean isCountDependent() {
 		return factor > 0;
 	}
 
+	/**
+	 * size part given the number of items shown
+	 *
+	 * @param count
+	 * @return
+	 */
 	public double countDependentSize(int count) {
 		return factor * count;
 	}
 
+	/**
+	 * the constant / fix part of this element
+	 *
+	 * @return
+	 */
 	public double fixSize() {
 		return offset;
 	}
 
+	/**
+	 * checks whether the given size (+count) is valid according to these specs
+	 *
+	 * @param size
+	 * @param count
+	 * @return
+	 */
 	public boolean isValid(double size, int count) {
 		if (isCountDependent()) {
 			if (size < offset)
@@ -71,22 +94,55 @@ public class GLElementDimensionDesc implements GLLocation.ILocator {
 		return locator.apply(input);
 	}
 
+	/**
+	 * whether location information are provided
+	 *
+	 * @return
+	 */
 	public boolean hasLocation() {
 		return locator != GLLocation.NO_LOCATOR;
 	}
 
+	/**
+	 * total size of in this dimension given the data count
+	 *
+	 * @param count
+	 * @return
+	 */
 	public double size(int count) {
 		return fixSize() + countDependentSize(count);
 	}
 
+	/**
+	 * factory builder for a count dependent one
+	 *
+	 * @param scale
+	 *            scaling factor per element
+	 * @return
+	 */
 	public static DescBuilder newCountDependent(double scale) {
 		return newCountDependent(scale, 0);
 	}
 
+	/**
+	 * factory builder for a count dependent one
+	 *
+	 * @param scale
+	 *            scaling factor per element
+	 * @param offset
+	 *            additional fix offset regardless of the number of items
+	 * @return
+	 */
 	public static DescBuilder newCountDependent(double scale, double offset) {
 		return new DescBuilder(offset, scale);
 	}
 
+	/**
+	 * factory builder for a fix one
+	 * 
+	 * @param fix
+	 * @return
+	 */
 	public static DescBuilder newFix(double fix) {
 		return new DescBuilder(fix, 0);
 	}

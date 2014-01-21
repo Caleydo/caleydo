@@ -55,12 +55,18 @@ public interface ISWTLayer {
 
 	/**
 	 * creates a gl canvas specific picking listener that computes the label to show
-	 * 
+	 *
 	 * @param label
 	 * @return
 	 */
 	IPickingListener createTooltip(IPickingLabelProvider label);
 
+	/**
+	 * similar to {@link Runnable} but with additional arguments for the display
+	 * 
+	 * @author Samuel Gratzl
+	 * 
+	 */
 	public interface ISWTLayerRunnable {
 		void run(Display display, Composite canvas);
 	}

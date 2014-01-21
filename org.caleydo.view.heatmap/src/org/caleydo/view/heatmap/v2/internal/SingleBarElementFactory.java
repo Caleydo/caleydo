@@ -87,11 +87,6 @@ public class SingleBarElementFactory implements IGLElementFactory2 {
 		return new SingleBarPlotElement(data, detailLevel, blurNotSelected, dim, id2double, value2bar, id2color);
 	}
 
-	@Override
-	public EVisScaleType getScaleType() {
-		return EVisScaleType.DATA_DEPENDENT;
-	}
-
 	/**
 	 * @param context
 	 * @return

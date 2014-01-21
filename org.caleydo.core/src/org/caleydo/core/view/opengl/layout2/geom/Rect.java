@@ -47,18 +47,27 @@ public final class Rect implements Cloneable {
 	}
 
 	/**
-	 * @return the x, see {@link #x}
+	 * @param x
+	 *            setter, see {@link x}
+	 */
+	public Rect x(float x) {
+		this.x = x;
+		return this;
+	}
+
+	/**
+	 * @return the {@link #x}+{@link #width()}
 	 */
 	public float x2() {
 		return x + width;
 	}
 
 	/**
-	 * @param x
-	 *            setter, see {@link x}
+	 * @param x2
+	 *            setter for {@link #width()} using x2 - {@link #x()}
 	 */
-	public Rect x(float x) {
-		this.x = x;
+	public Rect x2(float x2) {
+		this.width = x2 - x;
 		return this;
 	}
 
@@ -70,28 +79,20 @@ public final class Rect implements Cloneable {
 	}
 
 	/**
-	 * @return the y, see {@link #y}
+	 * @return {@link #y}+{@link #height()}
 	 */
 	public float y2() {
 		return y + height;
 	}
 
 	/**
-	 * @param max
+	 * @param y2
+	 *            setter for {@link #height()} using y2 - {@link #y()}
 	 */
 	public Rect y2(float y2) {
 		this.height = y2 - y;
 		return this;
 	}
-
-	/**
-	 * @param max
-	 */
-	public Rect x2(float x2) {
-		this.width = x2 - x;
-		return this;
-	}
-
 	/**
 	 * @param y
 	 *            setter, see {@link y}
@@ -131,10 +132,6 @@ public final class Rect implements Cloneable {
 	public Rect height(float height) {
 		this.height = height;
 		return this;
-	}
-
-	public Vec2f wh() {
-		return new Vec2f(width, height);
 	}
 
 	public Vec2f xy() {
@@ -193,14 +190,23 @@ public final class Rect implements Cloneable {
 		return bounds(bounds.x, bounds.y, bounds.width, bounds.height);
 	}
 
+	public Rect bounds(Rectangle2D bounds) {
+		if (bounds instanceof Rectangle2D.Float) {
+			Rectangle2D.Float f = (Rectangle2D.Float) bounds;
+			return bounds(f.x, f.y, f.width, f.height);
+		}
+		return bounds((float) bounds.getX(), (float) bounds.getY(), (float) bounds.getWidth(),
+				(float) bounds.getHeight());
+	}
+
 	public Rect bounds(float x, float y, float w, float h) {
 		this.x = x;
 		this.y = y;
 		this.width = w;
 		this.height = h;
 		return this;
-
 	}
+
 
 	@Override
 	public Rect clone() {
@@ -250,5 +256,21 @@ public final class Rect implements Cloneable {
 		builder.append(width).append(',');
 		builder.append(height).append(')');
 		return builder.toString();
+	}
+
+	public boolean intersects(Rect other) {
+		return asRectangle2D().intersects(other.asRectangle2D());
+	}
+
+	public boolean contains(Rect other) {
+		return asRectangle2D().contains(other.asRectangle2D());
+	}
+
+	public boolean contains(Vec2f other) {
+		return contains(other.x(), other.y());
+	}
+
+	public boolean contains(float x, float y) {
+		return asRectangle2D().contains(x, y);
 	}
 }

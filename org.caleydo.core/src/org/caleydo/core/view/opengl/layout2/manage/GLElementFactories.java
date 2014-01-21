@@ -21,7 +21,6 @@ import org.caleydo.core.util.ExtensionUtils.IExtensionLoader;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
-import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory2.EVisScaleType;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 
@@ -181,6 +180,12 @@ public final class GLElementFactories {
 
 	}
 
+	/**
+	 * internal class holding the factory and its metadata
+	 *
+	 * @author Samuel Gratzl
+	 *
+	 */
 	private static class ElementExtension implements IGLElementMetaData, Comparable<ElementExtension> {
 		private final String label;
 		private final URL icon;
@@ -189,6 +194,7 @@ public final class GLElementFactories {
 		private final IGLElementFactory factory;
 		private final Set<String> excludes;
 		private final Set<String> includes;
+		private final EVisScaleType scaleType;
 
 		/**
 		 * @param elem
@@ -201,11 +207,22 @@ public final class GLElementFactories {
 			id = factory.getId();
 			excludes = parseList(elem, "exclude");
 			includes = parseList(elem, "include");
+			scaleType = parseEnum(elem.getAttribute("scaleType"));
 			String order = elem.getAttribute("order");
 			if (order == null || StringUtils.isBlank(order) || !StringUtils.isNumeric(order))
 				this.order = 10;
 			else
 				this.order = Integer.parseInt(order);
+		}
+
+		/**
+		 * @param attribute
+		 * @return
+		 */
+		private EVisScaleType parseEnum(String value) {
+			if (StringUtils.isBlank(value))
+				return EVisScaleType.FIX;
+			return EVisScaleType.valueOf(value.toUpperCase());
 		}
 
 		public GLElement createParameters(GLElement elem) {
@@ -216,9 +233,7 @@ public final class GLElementFactories {
 
 		@Override
 		public EVisScaleType getScaleType() {
-			if (factory instanceof IGLElementFactory2)
-				return ((IGLElementFactory2) factory).getScaleType();
-			return EVisScaleType.FIX;
+			return scaleType;
 		}
 
 		public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {

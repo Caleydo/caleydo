@@ -77,10 +77,22 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 		}
 	}
 
+	/**
+	 * factory method for creating a {@link ScrollingDecorator}
+	 * 
+	 * @param content
+	 *            what
+	 * @param scrollBarWidth
+	 *            size of the scrollbar
+	 * @param mouseWheelsScrolls
+	 *            in which direction should the mouse wheel scroll, null is allowed
+	 * @return
+	 */
 	public static ScrollingDecorator wrap(GLElement content, float scrollBarWidth, EDimension mouseWheelsScrolls) {
 		return new ScrollingDecorator(content, new ScrollBar(true), new ScrollBar(false), scrollBarWidth,
 				mouseWheelsScrolls);
 	}
+
 	public static ScrollingDecorator wrap(GLElement content, float scrollBarWidth) {
 		return wrap(content, scrollBarWidth, null);
 	}

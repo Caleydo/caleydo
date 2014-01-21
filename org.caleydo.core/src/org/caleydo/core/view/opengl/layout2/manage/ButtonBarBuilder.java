@@ -33,6 +33,8 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
 /**
+ * a {@link ButtonBarBuilder} is used for creating the visualization switching button bars
+ *
  * @author Samuel Gratzl
  *
  */
@@ -54,14 +56,26 @@ public class ButtonBarBuilder {
 	};
 
 	public final GLElementFactorySwitcher switcher;
+	/**
+	 * size of the buttons, by default 16
+	 */
 	private int size = 16;
 	private IGLRenderer renderer = BUTTON_RENDERER;
 	private IGLRenderer hoverEffect = null;
 	private IGLLayout2 layout = GLLayouts.flowHorizontal(2);
 
+	/**
+	 * prepended elements to render
+	 */
 	private final Collection<GLElement> prepend = new ArrayList<>(0);
+	/**
+	 * appended elements to render
+	 */
 	private final Collection<GLElement> append = new ArrayList<>(0);
 
+	/**
+	 * a custom callback to be notified during a change
+	 */
 	private ISelectionCallback custom;
 
 	/**
@@ -124,6 +138,12 @@ public class ButtonBarBuilder {
 		return new ButtonBar(this);
 	}
 
+	/**
+	 * special button bar layouts including fancy circular and sliding ones
+	 *
+	 * @author Samuel Gratzl
+	 *
+	 */
 	public static enum EButtonBarLayout implements IGLLayout2 {
 		HORIZONTAL, VERTICAL, SLIDE_LEFT, SLIDE_RIGHT, SLIDE_DOWN, HOVER_BLOCK_3x3;
 
@@ -282,13 +302,19 @@ public class ButtonBarBuilder {
 		// }
 	}
 
+	/**
+	 * result of the bulder
+	 *
+	 * @author Samuel Gratzl
+	 *
+	 */
 	private static class ButtonBar extends AnimatedGLElementContainer implements ISelectionCallback,
 			IActiveChangedCallback, IPickingListener {
 		private final EButtonBarLayout layout;
 		private final RadioController controller = new RadioController(this);
 		final GLElementFactorySwitcher switcher;
 		private final ISelectionCallback custom;
-		final int prepended;
+		final int prepended; // for right counting the buttons
 
 		boolean hovered;
 

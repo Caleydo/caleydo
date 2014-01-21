@@ -20,9 +20,9 @@ import com.google.common.collect.Lists;
 public class GLLocation {
 	/**
 	 * service, which can be a {@link GLLocation} to a given data Index
-	 * 
+	 *
 	 * @author Samuel Gratzl
-	 * 
+	 *
 	 */
 	public static interface ILocator extends Function<Integer, GLLocation> {
 		GLLocation apply(int dataIndex);
@@ -72,46 +72,21 @@ public class GLLocation {
 		return size;
 	}
 
+	/**
+	 * @return {@link #offset}+{@link #size}
+	 */
 	public double getOffset2() {
 		return offset + size;
 	}
 
-	public static GLLocation applyPrimitive(ILocator loc, Integer input) {
-		return input == null ? UNKNOWN : loc.apply(input.intValue());
-	}
-
-	public static List<GLLocation> apply(ILocator loc, Iterable<Integer> dataIndizes) {
-		return Lists.newArrayList(Iterables.transform(dataIndizes, loc));
-	}
-
 	/**
-	 * @return
+	 * @return whether the location has valid values or not
 	 */
 	public boolean isDefined() {
 		return !Double.isNaN(offset) && !Double.isNaN(size);
 	}
 
-	public static ILocator shift(final ILocator wrappee, final double offsetShift) {
-		return new ALocator() {
 
-			@Override
-			public GLLocation apply(int dataIndex) {
-				GLLocation l = wrappee.apply(dataIndex);
-				return l.shift(offsetShift);
-			}
-		};
-	}
-
-	public static ILocator scale(final ILocator wrappee, final double factor) {
-		return new ALocator() {
-
-			@Override
-			public GLLocation apply(int dataIndex) {
-				GLLocation l = wrappee.apply(dataIndex);
-				return l.scale(factor);
-			}
-		};
-	}
 
 	/**
 	 * @param offsetShift
@@ -127,6 +102,96 @@ public class GLLocation {
 	 */
 	protected GLLocation scale(double factor) {
 		return new GLLocation(offset * factor, size * factor);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("GLLocation [offset=");
+		builder.append(offset);
+		builder.append(", size=");
+		builder.append(size);
+		builder.append("]");
+		return builder.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(offset);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(size);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GLLocation other = (GLLocation) obj;
+		if (Double.doubleToLongBits(offset) != Double.doubleToLongBits(other.offset))
+			return false;
+		if (Double.doubleToLongBits(size) != Double.doubleToLongBits(other.size))
+			return false;
+		return true;
+	}
+
+	/**
+	 * utility for applying the primitive integer integer version given the boxed one
+	 *
+	 * @param loc
+	 * @param input
+	 * @return
+	 */
+	public static GLLocation applyPrimitive(ILocator loc, Integer input) {
+		return input == null ? UNKNOWN : loc.apply(input.intValue());
+	}
+
+	public static List<GLLocation> apply(ILocator loc, Iterable<Integer> dataIndizes) {
+		return Lists.newArrayList(Iterables.transform(dataIndizes, loc));
+	}
+
+	/**
+	 * wraps the given {@link ILocator} such that location will be shifted
+	 *
+	 * @param wrappee
+	 * @param factor
+	 * @return
+	 */
+	public static ILocator shift(final ILocator wrappee, final double shift) {
+		return new ALocator() {
+
+			@Override
+			public GLLocation apply(int dataIndex) {
+				GLLocation l = wrappee.apply(dataIndex);
+				return l.shift(shift);
+			}
+		};
+	}
+
+	/**
+	 * wraps the given {@link ILocator} such that location will be scaled by the given factor
+	 *
+	 * @param wrappee
+	 * @param factor
+	 * @return
+	 */
+	public static ILocator scale(final ILocator wrappee, final double factor) {
+		return new ALocator() {
+
+			@Override
+			public GLLocation apply(int dataIndex) {
+				GLLocation l = wrappee.apply(dataIndex);
+				return l.scale(factor);
+			}
+		};
 	}
 }
 

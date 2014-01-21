@@ -14,15 +14,43 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 
 import com.google.common.base.Preconditions;
 
+/**
+ * abstract base class of a {@link IScrollBar}
+ *
+ * @author Samuel Gratzl
+ *
+ */
 public abstract class AScrollBar implements IScrollBar {
+	/**
+	 * minimum size of the windows for dragging
+	 */
 	private static final float MIN_WINDOW = 8;
+	/**
+	 * size of the jump buttons
+	 */
 	private static final float JUMP_BUTTON_SIZE = 8;
+	/**
+	 * when the up/down jump buttons are used, how much should be jumped
+	 */
 	private static final float JUMP_PERCENTAGE = 0.1f;
+
 	protected final EDimension dim;
+
 	protected boolean hovered = false;
+
+	/**
+	 * scrolling offset
+	 */
 	private float offset;
+	/**
+	 * window size
+	 */
 	private float window;
+	/**
+	 * total size
+	 */
 	private float size;
+
 	protected IScrollBarCallback callback;
 
 	private float width;
