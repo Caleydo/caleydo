@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -62,8 +63,20 @@ public final class GLElementFactories {
 	}
 
 	/**
+	 * @param id
+	 * @return the corresponding meta data of an item
+	 */
+	public static IGLElementMetaData getMetaData(String id) {
+		for (ElementExtension elem : extensions) {
+			if (Objects.equals(elem.getId(), id))
+				return elem;
+		}
+		return null;
+	}
+
+	/**
 	 * returns a list a element suppliers that can be created using the given parameters
-	 * 
+	 *
 	 * @param context
 	 *            the context with all the parameters set
 	 * @param callerId
@@ -74,28 +87,9 @@ public final class GLElementFactories {
 	 */
 	public static ImmutableList<GLElementSupplier> getExtensions(GLElementFactoryContext context, String callerId,
 			Predicate<? super String> filter) {
-		return getExtensions(context, callerId, filter, null);
-	}
-	
-	/**
-	 * returns a list a element suppliers that can be created using the given parameters
-	 * 
-	 * @param context
-	 *            the context with all the parameters set
-	 * @param callerId
-	 *            the id of the caller (for including excluding)
-	 * @param filter
-	 *            an additional filter to include / exclude from the caller side
-	 * @param scaleFilter
-	 *            an additional filter to include / exclude scaling type specific elements
-	 * @return
-	 */
-	public static ImmutableList<GLElementSupplier> getExtensions(GLElementFactoryContext context, String callerId,
-			Predicate<? super String> filter, Predicate<? super EVisScaleType> scaleFilter) {
 		ImmutableList.Builder<GLElementSupplier> builder = ImmutableList.builder();
 		for (ElementExtension elem : extensions) {
 			if ((filter != null && !filter.apply(elem.getId()))
-					|| (scaleFilter != null && !scaleFilter.apply(elem.getScaleType()))
 					|| !elem.canCreate(callerId, context))
 				continue;
 			builder.add(new GLElementSupplier(elem, context));
@@ -187,7 +181,7 @@ public final class GLElementFactories {
 
 	}
 
-	private static class ElementExtension implements ILabeled, Comparable<ElementExtension> {
+	private static class ElementExtension implements IGLElementMetaData, Comparable<ElementExtension> {
 		private final String label;
 		private final URL icon;
 		private final String id;
@@ -220,6 +214,7 @@ public final class GLElementFactories {
 			return null;
 		}
 
+		@Override
 		public EVisScaleType getScaleType() {
 			if (factory instanceof IGLElementFactory2)
 				return ((IGLElementFactory2) factory).getScaleType();
@@ -252,6 +247,7 @@ public final class GLElementFactories {
 		/**
 		 * @return the id, see {@link #id}
 		 */
+		@Override
 		public String getId() {
 			return id;
 		}
@@ -259,6 +255,7 @@ public final class GLElementFactories {
 		/**
 		 * @return the icon, see {@link #icon}
 		 */
+		@Override
 		public URL getIcon() {
 			return icon;
 		}
