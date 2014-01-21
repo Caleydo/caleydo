@@ -32,6 +32,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 
+import com.google.common.collect.ImmutableList;
 import com.jogamp.common.nio.Buffers;
 
 /**
@@ -241,8 +242,10 @@ public abstract class APickingManager<T extends APickingEntry> {
 		BitSet wasMouseIn = new BitSet();
 
 		// first send mouse out
-		for (Iterator<T> it = this.mouseIn.iterator(); it.hasNext();) {
-			T entry = it.next();
+		ImmutableList<T> local = ImmutableList.copyOf(this.mouseIn);
+		for (T entry : local) {
+			if (!this.mouseIn.contains(entry))
+				continue;
 			if (picked.contains(entry.pickingId)) { //again picked
 				wasMouseIn.set(entry.pickingId);
 			} else if ((entry.isDragging() && (mode == PickingMode.MOUSE_RELEASED || mode == PickingMode.DRAGGED))) {
