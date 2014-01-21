@@ -47,6 +47,11 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	private boolean enabled = true;
 
 	/**
+	 * whether the viewport should be automatically reseted, if scrolling isn't needed anymore
+	 */
+	private boolean autoResetViewport = true;
+
+	/**
 	 * a custom min size provider otherwise the content will be used
 	 */
 	private IHasMinSize minSizeProvider = null;
@@ -120,6 +125,16 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	}
 
 	/**
+	 * @param autoResetViewport
+	 *            setter, see {@link autoResetViewport}
+	 */
+	public void setAutoResetViewport(boolean autoResetViewport) {
+		this.autoResetViewport = autoResetViewport;
+		if (this.autoResetViewport)
+			relayout();
+	}
+
+	/**
 	 * @param enabled
 	 *            setter, see {@link enabled}
 	 */
@@ -149,6 +164,13 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 		Vec2f offset = content.getLocation();
 		offset.setX(-offset.x());
 		offset.setY(-offset.y());
+
+		if (!autoResetViewport && offset.x() != 0) {
+			minSize.setX(Math.max(size.x() + offset.x(), minSize.x()));
+		}
+		if (!autoResetViewport && offset.y() != 0) {
+			minSize.setY(Math.max(size.y() + offset.y(), minSize.y()));
+		}
 
 		boolean needHor = horizontal != null && size.x() < minSize.x();
 		if (needHor)
