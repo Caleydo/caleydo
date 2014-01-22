@@ -680,15 +680,15 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	public String getRecordDenomination(boolean capitalized, boolean plural) {
 		String recordDenomination;
 		if (plural)
-			recordDenomination = recordIDCategory.getDenominationPlural();
+			recordDenomination = recordIDCategory.getDenominationPlural(capitalized);
 		else
-			recordDenomination = recordIDCategory.getDenomination();
+			recordDenomination = recordIDCategory.getDenomination(capitalized);
 
-		if (capitalized) {
-			// Make first char capitalized
-			recordDenomination = recordDenomination.substring(0, 1).toUpperCase()
-					+ recordDenomination.substring(1, recordDenomination.length());
-		}
+		// if (capitalized) {
+		// // Make first char capitalized
+		// recordDenomination = recordDenomination.substring(0, 1).toUpperCase()
+		// + recordDenomination.substring(1, recordDenomination.length());
+		// }
 		return recordDenomination;
 	}
 
@@ -697,15 +697,15 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		String dimensionDenomination;
 
 		if (plural)
-			dimensionDenomination = dimensionIDCategory.getDenominationPlural();
+			dimensionDenomination = dimensionIDCategory.getDenominationPlural(capitalized);
 		else
-			dimensionDenomination = dimensionIDCategory.getDenomination();
+			dimensionDenomination = dimensionIDCategory.getDenomination(capitalized);
 
-		if (capitalized) {
-			// Make first char capitalized
-			dimensionDenomination = dimensionDenomination.substring(0, 1).toUpperCase()
-					+ dimensionDenomination.substring(1, dimensionDenomination.length());
-		}
+		// if (capitalized) {
+		// // Make first char capitalized
+		// dimensionDenomination = dimensionDenomination.substring(0, 1).toUpperCase()
+		// + dimensionDenomination.substring(1, dimensionDenomination.length());
+		// }
 		return dimensionDenomination;
 	}
 

@@ -95,7 +95,7 @@ public class IDCategory {
 
 	/**
 	 * Returns all registered ID categories.
-	 * 
+	 *
 	 * @return all registered ID categories
 	 */
 	public static Collection<IDCategory> getAllRegisteredIDCategories() {
@@ -196,7 +196,10 @@ public class IDCategory {
 	/**
 	 * @return the denomination, see {@link #denomination}
 	 */
-	public String getDenomination() {
+	public String getDenomination(boolean capitalized) {
+		if (capitalized) {
+			return denomination.substring(0, 1).toUpperCase() + denomination.substring(1, denomination.length());
+		}
 		return denomination;
 	}
 
@@ -213,7 +216,11 @@ public class IDCategory {
 	/**
 	 * @return the denominationPlural, see {@link #denominationPlural}
 	 */
-	public String getDenominationPlural() {
+	public String getDenominationPlural(boolean capitalized) {
+		if (capitalized) {
+			return denominationPlural.substring(0, 1).toUpperCase()
+					+ denominationPlural.substring(1, denominationPlural.length());
+		}
 		return denominationPlural;
 	}
 

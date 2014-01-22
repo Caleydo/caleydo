@@ -64,7 +64,7 @@ public class CategoryItem implements ILabeled, Comparable<CategoryItem> {
 
 	@Override
 	public String getLabel() {
-		return category.getDenomination();
+		return category.getDenomination(false);
 	}
 
 	public boolean update() {
