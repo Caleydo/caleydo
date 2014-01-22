@@ -604,7 +604,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 			recordSelectionManager.setDelta(selectionDelta);
 		} else if (dimensionSelectionManager != null
 				&& dimensionIDMappingManager.hasMapping(selectionDelta.getIDType(),
-				dimensionSelectionManager.getIDType())) {
+						dimensionSelectionManager.getIDType())) {
 			dimensionSelectionManager.setDelta(selectionDelta);
 		}
 
@@ -870,7 +870,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(localIDType);
 
-
 		VirtualArray foreignVA = foreignPerspective.getVirtualArray();
 
 		GroupList groupList = foreignVA.getGroupList();
@@ -972,6 +971,14 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	}
 
 	// ================ New ID based interface ======================
+
+	/**
+	 * @param idCategory
+	 * @return True if the specified id category is one of the two primary id categories of this table.
+	 */
+	public boolean hasIDCategory(IDCategory idCategory) {
+		return recordIDCategory == idCategory || dimensionIDCategory == idCategory;
+	}
 
 	/** Returns true if the specified id type is one of the two primary categories registered for this table. */
 	public boolean hasIDCategory(IDType idType) {
