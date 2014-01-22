@@ -56,8 +56,7 @@ public class StdDevBarAugmentation extends APerVertexAugmentation implements IPa
 			g.color(BACKGROUND_COLOR).fillRect(barBounds);
 			g.color(handler.getMappingPerspective().getDataDomain().getColor().darker()).fillRect(barBounds.x(),
 					barBounds.y(), stdDevWidth, barBounds.height());
-			g.color(BORDER_COLOR)
-					.renderRect(false, barBounds.x(), barBounds.y(), barBounds.width(), barBounds.height());
+			g.color(BORDER_COLOR).drawRect(barBounds.x(), barBounds.y(), barBounds.width(), barBounds.height());
 
 		}
 

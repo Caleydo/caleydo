@@ -10,6 +10,7 @@ import gleem.linalg.Vec3f;
 
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -278,6 +279,11 @@ public class GLGraphics {
 		return this;
 	}
 
+	public GLGraphics pointSize(float pointSize) {
+		gl.glPointSize(pointSize);
+		return this;
+	}
+
 	// ######### picking setters
 
 	public GLGraphics pushName(int id) {
@@ -320,7 +326,7 @@ public class GLGraphics {
 		return fillRect(bounds.x(), bounds.y(), bounds.width(), bounds.height());
 	}
 
-	public GLGraphics renderRect(boolean fill, float x, float y, float w, float h) {
+	private GLGraphics renderRect(boolean fill, float x, float y, float w, float h) {
 		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
 			return this;
 		stats.incRect();
@@ -329,15 +335,6 @@ public class GLGraphics {
 		gl.glVertex3f(x + w, y, z);
 		gl.glVertex3f(x + w, y + h, z);
 		gl.glVertex3f(x, y + h, z);
-		gl.glEnd();
-		return this;
-	}
-
-	public GLGraphics drawPoint(float x, float y) {
-		if (isInvalid(x) || isInvalid(y))
-			return this;
-		gl.glBegin(GL.GL_POINTS);
-		gl.glVertex3f(x, y, z);
 		gl.glEnd();
 		return this;
 	}
@@ -659,7 +656,7 @@ public class GLGraphics {
 	}
 
 	/**
-	 * returns a set of points as lines
+	 * renders a set of points as lines
 	 *
 	 * @param points
 	 * @param closed
@@ -670,6 +667,13 @@ public class GLGraphics {
 		return render(closed ? GL.GL_LINE_LOOP : GL.GL_LINE_STRIP, points);
 	}
 
+	/**
+	 * see {@link #drawPath(Iterable, boolean)} but with varargs
+	 *
+	 * @param closed
+	 * @param points
+	 * @return
+	 */
 	public GLGraphics drawPath(boolean closed, Vec2f... points) {
 		return render(closed ? GL.GL_LINE_LOOP : GL.GL_LINE_STRIP, Arrays.asList(points));
 	}
@@ -680,7 +684,47 @@ public class GLGraphics {
 		return this;
 	}
 
+	/**
+	 * draws a single point
+	 *
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public GLGraphics drawPoint(float x, float y) {
+		if (isInvalid(x) || isInvalid(y))
+			return this;
+		gl.glBegin(GL.GL_POINTS);
+		gl.glVertex3f(x, y, z);
+		gl.glEnd();
+		return this;
+	}
+
+	/**
+	 * draws a set of points, see {@link #drawPoints(Iterable)} with varargs
+	 *
+	 * @param points
+	 * @return
+	 */
+	public GLGraphics drawPoints(Vec2f... points) {
+		if (points.length == 0)
+			return this;
+		return render(GL.GL_POINTS, Arrays.asList(points));
+	}
+
+	/**
+	 * draws a set of points
+	 *
+	 * @param points
+	 * @return
+	 */
+	public GLGraphics drawPoints(Iterable<Vec2f> points) {
+		return render(GL.GL_POINTS, points);
+	}
+
 	private GLGraphics render(int mode, Iterable<Vec2f> points) {
+		if (points instanceof Collection && ((Collection<?>) points).isEmpty())
+			return this;
 		int count = 0;
 		gl.glBegin(mode);
 		for (Vec2f p : points) {
