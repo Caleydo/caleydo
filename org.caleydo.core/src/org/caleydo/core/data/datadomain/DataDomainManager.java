@@ -183,6 +183,27 @@ public class DataDomainManager {
 	}
 
 	/**
+	 * Get a concrete dataDomain object for the dataDomainType with the given
+	 * label. Returns null if no dataDomain object has assigned the label. If
+	 * more than one data domain object has that label, the first data domain
+	 * object is returned.
+	 *
+	 * @param dataDomainType
+	 * @return
+	 */
+	public synchronized IDataDomain getDataDomainByLabel(String dataDomainType,
+			String label) {
+
+		List<IDataDomain> domains = getDataDomainsByType(dataDomainType);
+		if (domains != null)
+			for (IDataDomain dataDomain : domains)
+				if (dataDomain.getLabel().equalsIgnoreCase(label))
+					return dataDomain;
+
+		return null;
+	}
+
+	/**
 	 * Register a concrete data domain
 	 *
 	 * @param dataDomain
@@ -202,8 +223,7 @@ public class DataDomainManager {
 
 		// Only assign random color if no color has been set externally
 		if (dataDomain.getColor() == null) {
-			Color color = ColorManager.get().getFirstMarkedColorOfList(ColorManager.QUALITATIVE_COLORS, false);
-			ColorManager.get().markColor(ColorManager.QUALITATIVE_COLORS, color, true);
+			Color color = ColorManager.get().getAndMarkColor(ColorManager.QUALITATIVE_COLORS);
 			dataDomain.getDataSetDescription().setColor(color);
 		}
 

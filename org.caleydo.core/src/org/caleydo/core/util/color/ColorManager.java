@@ -81,7 +81,7 @@ public class ColorManager {
 		return colorList;
 	}
 
-	public Color getFirstMarkedColorOfList(String colorListID, boolean isColorMarked) {
+	public Color getFirstColorOfList(String colorListID, boolean isColorMarked) {
 		List<Pair<Color, Boolean>> list = colorLists.get(colorListID);
 
 		if (list == null)
@@ -107,6 +107,18 @@ public class ColorManager {
 				colorItem.setSecond(mark);
 			}
 		}
+	}
+
+	/**
+	 * Get first unmarked color and mark it
+	 *
+	 * @param colorListID
+	 * @return
+	 */
+	public Color getAndMarkColor(String colorListID) {
+		Color color = getFirstColorOfList(ColorManager.QUALITATIVE_COLORS, false);
+		markColor(ColorManager.QUALITATIVE_COLORS, color, true);
+		return color;
 	}
 
 	public void unmarkAllColors(String colorListID) {
