@@ -164,19 +164,19 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 		}
 	}
 
-	protected final void drawCurve(GLGraphics g, IDoubleList data, Color color, float w, float h, boolean fillCurve,
-			SelectionType selectionType, String label) {
-		List<Vec2f> linePoints = createCurve(data, w, h);
-
+	protected void drawCurve(GLGraphics g, Color color, float w, float h, boolean fillCurve,
+			SelectionType selectionType, String label, List<Vec2f> linePoints) {
 		if (fillCurve) {
 			if (color.isGray())
 				g.color(Color.MEDIUM_DARK_GRAY);
 			else
 				g.color(color.lessSaturated());
 			// add addition points to get a closed shape
-			linePoints.add(new Vec2f(w, h));
-			linePoints.add(new Vec2f(0, h)); // origin
+			linePoints.add(new Vec2f(1, 1));
+			linePoints.add(new Vec2f(0, 1)); // origin
+			g.save().gl.glScalef(w, h, 1);
 			g.fillPolygon(TesselatedPolygons.polygon2(linePoints));
+			g.restore();
 			linePoints.remove(linePoints.size() - 1); // remove again not part of the curve
 			linePoints.remove(linePoints.size() - 1); // remove again not part of the curve
 		}
@@ -187,7 +187,9 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 		}
 		g.color(color);
 		g.incZ(translationZ);
+		g.save().gl.glScalef(w, h, 1);
 		g.drawPath(linePoints, false);
+		g.restore();
 		g.incZ(-translationZ);
 	}
 
@@ -224,13 +226,13 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 	 * @param h
 	 * @return
 	 */
-	protected List<Vec2f> createCurve(IDoubleList data, float w, float h) {
+	protected List<Vec2f> createCurve(IDoubleList data) {
 		assert data.size() != 0;
 
 		List<Vec2f> linePoints = new ArrayList<>();
 
-		float timeFactor = w; // / maxAxisTime; //as normalized in 0...maxtime
-		float valueFactor = h / data.size();
+		float timeFactor = 1; // / maxAxisTime; //as normalized in 0...maxtime
+		float valueFactor = 1.f / data.size();
 
 		double last = data.get(0);
 		float lastTime = 0;
@@ -250,12 +252,12 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 		}
 		// final one
 		linePoints.add(new Vec2f(lastTime, lastIndex * valueFactor));
-		linePoints.add(new Vec2f(w, lastIndex * valueFactor));
+		linePoints.add(new Vec2f(1, lastIndex * valueFactor));
 		return linePoints;
 	}
 
-	protected final Pair<Vec2f, Vec2f> getLocation(List<Vec2f> curve, double value, float w) {
-		float x = (float) value * w;
+	protected final Pair<Vec2f, Vec2f> getLocation(List<Vec2f> curve, double value) {
+		float x = (float) value;
 		Vec2f last = curve.get(0);
 		for (Vec2f point : curve.subList(1, curve.size())) {
 			float lastX = last.x();

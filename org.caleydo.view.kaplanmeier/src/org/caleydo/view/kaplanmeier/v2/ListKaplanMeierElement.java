@@ -41,6 +41,7 @@ public class ListKaplanMeierElement extends AKaplanMeierElement {
 	private Axis yAxis;
 	private Color color = Color.GRAY;
 	private boolean isFillCurve = false;
+	private final List<Vec2f> curve;
 
 	/**
 	 * @param tablePerspective
@@ -52,6 +53,7 @@ public class ListKaplanMeierElement extends AKaplanMeierElement {
 
 		this.raw = data;
 		this.data = convert(Preconditions.checkNotNull(data));
+		this.curve = createCurve(this.data);
 	}
 
 	/**
@@ -110,15 +112,16 @@ public class ListKaplanMeierElement extends AKaplanMeierElement {
 	@Override
 	public List<GLLocation> getLocations(EDimension dim, Iterable<Integer> dataIndizes) {
 		Vec2f wh = getSize();
-		List<Vec2f> curve = createCurve(data, wh.x() - padding.hor(), wh.y() - padding.vert());
+		float factor = dim.select(wh.x() - padding.hor(), wh.y() - padding.vert());
 		List<GLLocation> r = new ArrayList<>();
 		for (Integer dataIndex : dataIndizes) {
 			double v = data.getPrimitive(dataIndex);
 			v = Double.isNaN(v) ? 1 : v;
-			Pair<Vec2f, Vec2f> loc = getLocation(curve, v, wh.x());
+			Pair<Vec2f, Vec2f> loc = getLocation(curve, v);
 
-			float offset = dim.select(loc.getFirst());
-			float size = dim.select(loc.getSecond()) - offset;
+			float offset = dim.select(loc.getFirst()) * factor;
+			float size = dim.select(loc.getSecond()) * factor - offset;
+
 			r.add(new GLLocation(offset + dim.select(padding.left, padding.top), size));
 		}
 		return r;
@@ -148,7 +151,7 @@ public class ListKaplanMeierElement extends AKaplanMeierElement {
 
 	@Override
 	protected void renderCurve(GLGraphics g, float w, float h) {
-		drawCurve(g, data, color, w, h, isFillCurve, null, null);
+		drawCurve(g, color, w, h, isFillCurve, null, null, curve);
 	}
 
 
