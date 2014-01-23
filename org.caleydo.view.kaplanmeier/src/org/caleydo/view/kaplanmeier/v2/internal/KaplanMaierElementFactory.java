@@ -12,8 +12,10 @@ import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.IDoubleList;
+import org.caleydo.core.util.function.MappedDoubleList;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
@@ -24,6 +26,8 @@ import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory2;
 import org.caleydo.view.kaplanmeier.v2.AKaplanMeierElement;
 import org.caleydo.view.kaplanmeier.v2.KaplanMeierElement;
 import org.caleydo.view.kaplanmeier.v2.ListKaplanMeierElement;
+
+import com.google.common.base.Function;
 
 /**
  * element factory for creating heatmaps
@@ -72,7 +76,10 @@ public class KaplanMaierElementFactory implements IGLElementFactory2 {
 				return false;
 			return true;
 		}
+
 		if (context.get(IDoubleList.class, null) != null)
+			return true;
+		if (context.get(List.class, null) != null && context.get("id2double", Function.class, null) != null)
 			return true;
 		return false;
 	}
@@ -84,13 +91,21 @@ public class KaplanMaierElementFactory implements IGLElementFactory2 {
 		if (data != null)
 			return new KaplanMeierElement(data, detailLevel, context.is("useParentMaxTimeIfPossible",
 				true));
-		IDoubleList l = context.get(IDoubleList.class, null);
+
+		IDType idType = context.get(IDType.class, null);
+		@SuppressWarnings("unchecked")
+		List<Integer> ids = context.get(List.class, null);
+		@SuppressWarnings("unchecked")
+		Function<Integer, Double> id2double = context.get("id2double", Function.class, null);
+
+		IDoubleList l = context.get(IDoubleList.class, new MappedDoubleList<>(ids, id2double));
 		assert l != null;
-		ListKaplanMeierElement elem = new ListKaplanMeierElement(l, detailLevel);
+		ListKaplanMeierElement elem = new ListKaplanMeierElement(l, ids, idType, detailLevel);
 		elem.setColor(context.get("color", Color.class, elem.getColor()));
 		elem.setXAxis(context.get("xAxis", String.class, elem.getXAxis()));
 		elem.setXMaxValue(context.getFloat("xMaxValue", elem.getXMaxValue()));
 		elem.setYAxis(context.get("yAxis", String.class, elem.getYAxis()));
+		elem.setFillCurve(context.is("fillCurve"));
 
 		return elem;
 	}
