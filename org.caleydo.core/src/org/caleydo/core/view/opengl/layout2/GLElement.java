@@ -39,7 +39,7 @@ public class GLElement implements IHasGLLayoutData {
 	 * @author Samuel Gratzl
 	 *
 	 */
-	public enum EVisibility {
+	public enum EVisibility implements Predicate<GLElement> {
 		/**
 		 * will just be drawn (default)
 		 */
@@ -59,6 +59,11 @@ public class GLElement implements IHasGLLayoutData {
 
 		public boolean doRender() {
 			return this == VISIBLE || this == PICKABLE;
+		}
+
+		@Override
+		public boolean apply(GLElement input) {
+			return input.getVisibility() == this;
 		}
 	}
 
@@ -391,6 +396,8 @@ public class GLElement implements IHasGLLayoutData {
 		onVisibilityChanged(old, new_);
 
 		repaint();
+		if (old == EVisibility.PICKABLE || new_ == EVisibility.PICKABLE)
+			repaintPick();
 		return this;
 	}
 

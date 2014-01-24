@@ -14,8 +14,13 @@ import static org.caleydo.view.kaplanmeier.GLKaplanMeier.RIGHT_AXIS_SPACING_PIXE
 import static org.caleydo.view.kaplanmeier.GLKaplanMeier.TOP_AXIS_SPACING_PIXELS;
 import gleem.linalg.Vec2f;
 
+import java.util.AbstractCollection;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NavigableSet;
 
 import javax.media.opengl.GL2;
 
@@ -35,6 +40,8 @@ import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 import org.caleydo.core.view.opengl.util.spline.TesselatedPolygons;
 
 import com.google.common.base.Supplier;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterators;
 
 /**
  * kaplan meier plot implementation as a {@link GLElement}
@@ -164,21 +171,23 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 		}
 	}
 
-	protected final void drawCurve(GLGraphics g, IDoubleList data, Color color, float w, float h, boolean fillCurve,
-			SelectionType selectionType, String label) {
-		List<Vec2f> linePoints = createCurve(data, w, h);
-
+	protected void drawCurve(GLGraphics g, Color color, float w, float h, boolean fillCurve,
+			SelectionType selectionType, String label, List<Vec2f> linePoints) {
 		if (fillCurve) {
 			if (color.isGray())
 				g.color(Color.MEDIUM_DARK_GRAY);
 			else
 				g.color(color.lessSaturated());
 			// add addition points to get a closed shape
-			linePoints.add(new Vec2f(w, h));
-			linePoints.add(new Vec2f(0, h)); // origin
-			g.fillPolygon(TesselatedPolygons.polygon2(linePoints));
-			linePoints.remove(linePoints.size() - 1); // remove again not part of the curve
-			linePoints.remove(linePoints.size() - 1); // remove again not part of the curve
+			float x0 = linePoints.get(0).x();
+			float xn = linePoints.get(linePoints.size()-1).x();
+			Vec2f a = new Vec2f(xn, 1);
+			Vec2f b = new Vec2f(x0, 1); // origin
+
+			g.save().gl.glScalef(w, h, 1);
+			g.fillPolygon(TesselatedPolygons.polygon2(concat(linePoints, a, b)));
+			g.restore();
+
 		}
 
 		float translationZ = 0;
@@ -187,7 +196,11 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 		}
 		g.color(color);
 		g.incZ(translationZ);
+
+		g.save().gl.glScalef(w, h, 1);
 		g.drawPath(linePoints, false);
+		g.restore();
+
 		g.incZ(-translationZ);
 	}
 
@@ -224,13 +237,13 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 	 * @param h
 	 * @return
 	 */
-	protected List<Vec2f> createCurve(IDoubleList data, float w, float h) {
+	protected List<Vec2f> createCurve(IDoubleList data) {
 		assert data.size() != 0;
 
 		List<Vec2f> linePoints = new ArrayList<>();
 
-		float timeFactor = w; // / maxAxisTime; //as normalized in 0...maxtime
-		float valueFactor = h / data.size();
+		float timeFactor = 1; // / maxAxisTime; //as normalized in 0...maxtime
+		float valueFactor = 1.f / data.size();
 
 		double last = data.get(0);
 		float lastTime = 0;
@@ -250,12 +263,12 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 		}
 		// final one
 		linePoints.add(new Vec2f(lastTime, lastIndex * valueFactor));
-		linePoints.add(new Vec2f(w, lastIndex * valueFactor));
+		linePoints.add(new Vec2f(1, lastIndex * valueFactor));
 		return linePoints;
 	}
 
-	protected final Pair<Vec2f, Vec2f> getLocation(List<Vec2f> curve, double value, float w) {
-		float x = (float) value * w;
+	protected final Pair<Vec2f, Vec2f> getLocation(List<Vec2f> curve, double value) {
+		float x = (float) value;
 		Vec2f last = curve.get(0);
 		for (Vec2f point : curve.subList(1, curve.size())) {
 			float lastX = last.x();
@@ -265,6 +278,44 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 			last = point;
 		}
 		return Pair.make(last, last);
+	}
+
+	protected final Collection<List<Vec2f>> getSubCurves(List<Vec2f> curve, NavigableSet<Float> values) {
+		if (values.isEmpty())
+			return Collections.emptyList();
+
+		Collection<List<Vec2f>> r = new ArrayList<>();
+		Iterator<Float> it = values.iterator();
+		float act = it.next().floatValue();
+		int start = 0;
+		float lastx = curve.get(0).x();
+		for (int i = 1; i < curve.size(); i += 2) {
+			Vec2f point = curve.get(i);
+			float x2 = point.x();
+			if (lastx <= act && act <= x2) {
+				while (lastx <= act && act <= x2 && it.hasNext())
+					act = it.next().floatValue();
+				if (lastx <= act && act <= x2 && !it.hasNext()) { // no more points, flush and break
+					r.add(curve.subList(start, i + 1));
+					start = curve.size() - 1;
+					break;
+				}
+				lastx = x2;
+				continue;
+			}
+			lastx = x2;
+			// not part of the sublist
+			if ((start + 2) == i || (start + 1) == i) { // empty sublist
+				start = i;
+				continue;
+			}
+			r.add(curve.subList(start, i));
+			start = i;
+		}
+		if ((start + 1) != curve.size()) {
+			r.add(curve.subList(start, curve.size()));
+		}
+		return r;
 	}
 
 	@Override
@@ -295,4 +346,29 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 			this.max = max;
 		}
 	}
+
+	private static Collection<Vec2f> concat(Collection<Vec2f> rest, Vec2f a, Vec2f b) {
+		return new PrefixedCollection(rest, ImmutableList.of(a, b));
+	}
+
+	private static final class PrefixedCollection extends AbstractCollection<Vec2f> {
+		private final Collection<Vec2f> a, b;
+
+		public PrefixedCollection(Collection<Vec2f> a, Collection<Vec2f> b) {
+			this.a = a;
+			this.b = b;
+		}
+
+		@Override
+		public Iterator<Vec2f> iterator() {
+			return Iterators.concat(a.iterator(), b.iterator());
+		}
+
+		@Override
+		public int size() {
+			return a.size() + b.size();
+		}
+
+	}
+
 }

@@ -5,9 +5,9 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.animation;
 
-import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
-
 import gleem.linalg.Vec4f;
+
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
  * @author Samuel Gratzl
@@ -37,7 +37,8 @@ public class DummyAnimation extends ALayoutAnimation {
 		switch (type) {
 		case IN:
 		case MOVE:
-			animated.setBounds(to);
+			if (to != null)
+				animated.setBounds(to);
 			break;
 		case OUT:
 			animated.hide();

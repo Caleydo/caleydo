@@ -79,7 +79,7 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 
 	/**
 	 * factory method for creating a {@link ScrollingDecorator}
-	 * 
+	 *
 	 * @param content
 	 *            what
 	 * @param scrollBarWidth
@@ -244,6 +244,26 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 			return getSize().y();
 	}
 
+	/**
+	 * externally set the clipping location
+	 *
+	 * @param x
+	 * @param y
+	 */
+	public void setClippingLocation(float x, float y) {
+		x = fix(horizontal, x);
+		y = fix(vertical, y);
+		content.setLocation(x, y);
+		repaint();
+	}
+
+	private static float fix(ScrollBarImpl s, float v) {
+		if (s == null) // no scrolling in this dimension
+			return 0;
+		v = Math.max(0, Math.min(v, s.scrollBar.getSize() - s.scrollBar.getWindow()));
+		return v;
+	}
+
 	@Override
 	public void onScrollBarMoved(IScrollBar scrollBar, float value) {
 		Vec2f loc = content.getLocation();
@@ -353,6 +373,10 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 		r.width(needVer() ? size.x() - scrollBarWidth : size.x());
 		r.height(needHor() ? size.y() - scrollBarWidth : size.y());
 		return r;
+	}
+
+	public void setClippingLocation(Vec2f location) {
+		setClippingLocation(location.x(), location.y());
 	}
 
 	protected boolean needHor() {

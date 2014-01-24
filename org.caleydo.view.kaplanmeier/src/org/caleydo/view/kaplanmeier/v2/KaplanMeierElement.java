@@ -176,7 +176,7 @@ public class KaplanMeierElement extends AKaplanMeierElement implements
 		final Table table = tablePerspective.getDataDomain().getTable();
 		final Integer dimensionID = dimensionVA.get(0);
 		final Vec2f wh = getSize();
-
+		final float factor = dim.select(wh);
 		List<GLLocation> r = new ArrayList<>();
 
 		final VirtualArray va = tablePerspective.getRecordPerspective().getVirtualArray();
@@ -185,15 +185,15 @@ public class KaplanMeierElement extends AKaplanMeierElement implements
 			// single group
 			IDoubleList data = readData(va.getIDs(), table, dimensionID);
 
-			List<Vec2f> curve = createCurve(data, wh.x(), wh.y());
+			List<Vec2f> curve = createCurve(data);
 
 			for (Integer dataIndex : dataIndizes) {
 				double v = table.getNormalizedValue(dimensionID, va.get(dataIndex));
 				v = Double.isNaN(v) ? 1 : v;
-				Pair<Vec2f, Vec2f> loc = getLocation(curve, v, wh.x());
+				Pair<Vec2f, Vec2f> loc = getLocation(curve, v);
 
-				float offset = dim.select(loc.getFirst());
-				float size = dim.select(loc.getSecond()) - offset;
+				float offset = dim.select(loc.getFirst()) * factor;
+				float size = dim.select(loc.getSecond()) * factor - offset;
 				r.add(new GLLocation(offset, size));
 			}
 			return r;
@@ -206,7 +206,7 @@ public class KaplanMeierElement extends AKaplanMeierElement implements
 									.getIDsOfGroup(key.getGroupIndex());
 							IDoubleList data = readData(iDs, table, dimensionID);
 
-							List<Vec2f> curve = createCurve(data, wh.x(), wh.y());
+							List<Vec2f> curve = createCurve(data);
 							return curve;
 						}
 					});
@@ -215,10 +215,10 @@ public class KaplanMeierElement extends AKaplanMeierElement implements
 				v = Double.isNaN(v) ? 1 : v;
 
 				Group group = va.getGroupList().getGroupOfVAIndex(dataIndex);
-				Pair<Vec2f, Vec2f> loc = getLocation(curveLoader.getUnchecked(group), v, wh.x());
+				Pair<Vec2f, Vec2f> loc = getLocation(curveLoader.getUnchecked(group), v);
 
-				float offset = dim.select(loc.getFirst());
-				float size = dim.select(loc.getSecond()) - offset;
+				float offset = dim.select(loc.getFirst()) * factor;
+				float size = dim.select(loc.getSecond()) * factor - offset;
 				r.add(new GLLocation(offset, size));
 			}
 			return r;
@@ -273,8 +273,9 @@ public class KaplanMeierElement extends AKaplanMeierElement implements
 
 		String label = detailLevel == EDetailLevel.HIGH ? group.getLabel() : null;
 
-		drawCurve(g, data, color, w, h, fillCurve, recordGroupSelections.getHighestSelectionType(group.getID()),
- label);
+		final List<Vec2f> curve = createCurve(data);
+		drawCurve(g, color, w, h, fillCurve, recordGroupSelections.getHighestSelectionType(group.getID()), label,
+				curve);
 
 		g.popName();
 	}
