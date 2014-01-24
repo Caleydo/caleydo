@@ -233,7 +233,11 @@ public class TabularDataParser extends ATextParser {
 			if (headers != null) {
 				String idString = headers[columnDescription.getColumn()];
 				idString = convertID(idString, parsingRules);
-				columnIDMappingManager.addMapping(mappingType, columnID, idString);
+				if (sourceColumnIDType.getDataType() == EDataType.INTEGER) {
+					columnIDMappingManager.addMapping(mappingType, columnID, Integer.parseInt(idString));
+				} else {
+					columnIDMappingManager.addMapping(mappingType, columnID, idString);
+				}
 			} else {
 				columnIDMappingManager.addMapping(mappingType, columnID, "Column " + columnID);
 			}
@@ -297,7 +301,11 @@ public class TabularDataParser extends ATextParser {
 			// id mapping
 			String id = splitLine[columnOfRowIDs];
 			id = convertID(id, parsingRules);
-			rowIDMappingManager.addMapping(mappingType, id, lineCounter);
+			if (fromIDType.getDataType() == EDataType.INTEGER) {
+				rowIDMappingManager.addMapping(mappingType, Integer.parseInt(id), lineCounter);
+			} else {
+				rowIDMappingManager.addMapping(mappingType, id, lineCounter);
+			}
 
 			for (int count = 0; count < parsingPattern.size(); count++) {
 
