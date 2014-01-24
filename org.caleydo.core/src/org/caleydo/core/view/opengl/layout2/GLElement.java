@@ -396,6 +396,8 @@ public class GLElement implements IHasGLLayoutData {
 		onVisibilityChanged(old, new_);
 
 		repaint();
+		if (old == EVisibility.PICKABLE || new_ == EVisibility.PICKABLE)
+			repaintPick();
 		return this;
 	}
 
