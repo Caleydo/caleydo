@@ -5,11 +5,10 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.manage;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.Set;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
 /**
  * a pair of offset + size, used for locating elements
@@ -27,7 +26,7 @@ public class GLLocation {
 	public static interface ILocator extends Function<Integer, GLLocation> {
 		GLLocation apply(int dataIndex);
 
-		List<GLLocation> apply(Iterable<Integer> dataIndizes);
+		Set<Integer> unapply(GLLocation location);
 	}
 
 	public static abstract class ALocator implements ILocator {
@@ -35,18 +34,19 @@ public class GLLocation {
 		public GLLocation apply(Integer input) {
 			return applyPrimitive(this, input);
 		}
-
-		@Override
-		public List<GLLocation> apply(Iterable<Integer> dataIndizes) {
-			return Lists.newArrayList(Iterables.transform(dataIndizes, this));
-		}
 	}
 	public static final GLLocation UNKNOWN = new GLLocation(Double.NaN, Double.NaN);
+	public static final Set<Integer> UNKNOWN_IDS = Collections.emptySet();
 	public static final ILocator NO_LOCATOR = new ALocator() {
 
 		@Override
 		public GLLocation apply(int dataIndex) {
 			return UNKNOWN;
+		}
+
+		@Override
+		public Set<Integer> unapply(GLLocation location) {
+			return Collections.emptySet();
 		}
 	};
 
@@ -154,10 +154,6 @@ public class GLLocation {
 		return input == null ? UNKNOWN : loc.apply(input.intValue());
 	}
 
-	public static List<GLLocation> apply(ILocator loc, Iterable<Integer> dataIndizes) {
-		return Lists.newArrayList(Iterables.transform(dataIndizes, loc));
-	}
-
 	/**
 	 * wraps the given {@link ILocator} such that location will be shifted
 	 *
@@ -172,6 +168,11 @@ public class GLLocation {
 			public GLLocation apply(int dataIndex) {
 				GLLocation l = wrappee.apply(dataIndex);
 				return l.shift(shift);
+			}
+
+			@Override
+			public Set<Integer> unapply(GLLocation location) {
+				return wrappee.unapply(location.shift(-shift));
 			}
 		};
 	}
@@ -190,6 +191,11 @@ public class GLLocation {
 			public GLLocation apply(int dataIndex) {
 				GLLocation l = wrappee.apply(dataIndex);
 				return l.scale(factor);
+			}
+
+			@Override
+			public Set<Integer> unapply(GLLocation location) {
+				return wrappee.unapply(location.scale(1. / factor));
 			}
 		};
 	}

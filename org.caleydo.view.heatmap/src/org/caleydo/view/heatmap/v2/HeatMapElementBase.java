@@ -10,6 +10,7 @@ import gleem.linalg.Vec2f;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.selection.SelectionType;
@@ -215,6 +216,10 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 
 	public final GLLocation getLocation(EDimension dim, int index) {
 		return get(dim).getLocation(index, textWidth);
+	}
+
+	public final Set<Integer> forLocation(EDimension dim, GLLocation location) {
+		return get(dim).forLocation(location, textWidth);
 	}
 
 	public final int getIndex(EDimension dim, float position) {

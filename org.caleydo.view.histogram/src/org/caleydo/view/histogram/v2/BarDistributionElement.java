@@ -16,6 +16,8 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 import org.caleydo.view.histogram.v2.internal.IDistributionData;
 
+import com.google.common.collect.DiscreteDomains;
+import com.google.common.collect.Ranges;
 import com.google.common.collect.Sets;
 
 /**
@@ -94,6 +96,14 @@ public class BarDistributionElement extends ADistributionElement {
 		float max = EDimension.get(!vertical).select(getSize());
 		float m = max / data.size();
 		return new GLLocation(dataIndex * m, m);
+	}
+
+	@Override
+	public Set<Integer> unapply(GLLocation location) {
+		float max = EDimension.get(!vertical).select(getSize());
+		int from = (int) (location.getOffset() * data.size() / max);
+		int to = (int) (location.getOffset2() * data.size() / max);
+		return Ranges.closed(from, to).asSet(DiscreteDomains.integers());
 	}
 
 	/**

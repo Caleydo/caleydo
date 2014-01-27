@@ -5,6 +5,8 @@
  *******************************************************************************/
 package org.caleydo.view.heatmap.v2.internal;
 
+import java.util.Set;
+
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -101,6 +103,11 @@ public class BarPlotElementFactory implements IGLElementFactory2 {
 		@Override
 		public GLLocation apply(int dataIndex) {
 			return elem.getLocation(dim, dataIndex);
+		}
+
+		@Override
+		public Set<Integer> unapply(GLLocation location) {
+			return elem.forLocation(dim, location);
 		}
 	}
 }

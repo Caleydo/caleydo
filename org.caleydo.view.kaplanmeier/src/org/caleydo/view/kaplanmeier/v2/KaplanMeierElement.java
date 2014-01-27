@@ -10,6 +10,7 @@ import gleem.linalg.Vec2f;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.collection.table.Table;
@@ -223,6 +224,11 @@ public class KaplanMeierElement extends AKaplanMeierElement implements
 			}
 			return r;
 		}
+	}
+
+	@Override
+	public Set<Integer> forLocation(EDimension dim, GLLocation location) {
+		return GLLocation.UNKNOWN_IDS;
 	}
 
 	private void renderCurve(GLGraphics g, Group group, VirtualArray recordVA, boolean fillCurve,

@@ -170,9 +170,4 @@ public abstract class ADistributionElement extends PickableGLElement implements 
 	public GLLocation apply(Integer input) {
 		return GLLocation.applyPrimitive(this, input);
 	}
-
-	@Override
-	public List<GLLocation> apply(Iterable<Integer> dataIndizes) {
-		return GLLocation.apply(this, dataIndizes);
-	}
 }
