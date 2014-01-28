@@ -195,7 +195,9 @@ public final class ProjectManager {
 			if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
 				DataDomainManager.get().initalizeDataDomain("org.caleydo.datadomain.genetic");
 
-			IDTypeInitializer.initIDs(dataSetDescription);
+			// Not every data domain has got a dataSetDescription
+			if (dataSetDescription != null)
+				IDTypeInitializer.initIDs(dataSetDescription);
 			dataDomain.init();
 			// Register data domain by hand because it restored from the
 			// serialization and not created via the

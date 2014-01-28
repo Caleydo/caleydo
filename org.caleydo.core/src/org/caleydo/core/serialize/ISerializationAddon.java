@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.core.serialize;
 
+import java.io.IOException;
 import java.util.Collection;
 
 import javax.xml.bind.Marshaller;
@@ -14,21 +15,21 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 
 /**
  * addon specification to load and store a project
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public interface ISerializationAddon {
 	/**
 	 * the additional jaxb classes to register to the context
-	 * 
+	 *
 	 * @return
 	 */
 	public Collection<? extends Class<?>> getJAXBContextClasses();
 
 	/**
 	 * triggers to deserialize data from the given project directory using the given {@link Unmarshaller}
-	 * 
+	 *
 	 * @param dirName
 	 * @param unmarshaller
 	 */
@@ -38,7 +39,7 @@ public interface ISerializationAddon {
 	 * triggers for a delayed project deserialization where the intermediate descriptions are stored within the given
 	 * {@link SerializationData} object. The actual loading of the data should take place in
 	 * {@link #load(SerializationData)}
-	 * 
+	 *
 	 * @param dirName
 	 * @param unmarshaller
 	 * @param serializationData
@@ -47,17 +48,18 @@ public interface ISerializationAddon {
 
 	/**
 	 * triggers to persist the custom data using the given data
-	 * 
+	 *
 	 * @param toSave
 	 *            the data domain, that are going to be stored
 	 * @param marshaller
 	 * @param dirName
+	 * @throws IOException
 	 */
-	public void serialize(Collection<? extends IDataDomain> toSave, Marshaller marshaller, String dirName);
+	public void serialize(Collection<? extends IDataDomain> toSave, Marshaller marshaller, String dirName) throws IOException;
 
 	/**
 	 * see {@link #deserialize(String, Unmarshaller, SerializationData)} to actually load the data
-	 * 
+	 *
 	 * @param serializationDataList
 	 */
 	public void load(SerializationData data);

@@ -272,18 +272,22 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Returns a list of all data domains of this type registered or null if no such data domain is registered.
+	 * Returns a list of all data domains of this type registered or an empty
+	 * list if no such data domain is registered.
 	 *
 	 * @param dataDomainType
 	 * @return
 	 */
 	public List<IDataDomain> getDataDomainsByType(String dataDomainType) {
-		return byType.get(dataDomainType);
+		List<IDataDomain> result = byType.get(dataDomainType);
+		if( result == null )
+			result = new ArrayList<>();
+		return result;
 	}
 
 	/**
-	 * Returns a list containing all DataDomains that are of the type classType. If no type is registered the list is
-	 * returned empty.
+	 * Returns a list containing all DataDomains that are of the type classType.
+	 * If no type is registered the list is returned empty.
 	 *
 	 * @param classType
 	 * @return
