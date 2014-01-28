@@ -35,7 +35,7 @@ public final class ZipUtils {
 	public static void zipDirectory(String dirName, String zipFileName) {
 		try {
 			ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFileName));
-			zipDirectory(dirName, zos);
+			zipDirectory(dirName, zos, "");
 			zos.close();
 		}
 		catch (Exception ex) {
@@ -50,8 +50,12 @@ public final class ZipUtils {
 	 *            directory to zip
 	 * @param zos
 	 *            stream to write to
+	 * @param base
+	 *            base path
 	 */
-	public static void zipDirectory(String dir2zip, ZipOutputStream zos) {
+	public static void zipDirectory( String dir2zip,
+									 ZipOutputStream zos,
+									 String basePath ) {
 		try {
 			// create a new File object based on the directory we have to zip
 			File zipDir = new File(dir2zip);
@@ -65,23 +69,24 @@ public final class ZipUtils {
 			for (int i = 0; i < dirList.length; i++) {
 				File f = new File(zipDir, dirList[i]);
 				if (f.isDirectory()) {
-					// FIXME files in sub-directories loose their relative-path in the zip file
-					String filePath = f.getPath();
-					zipDirectory(filePath, zos);
+					String path = basePath + f.getName() + "/";
+					zos.putNextEntry(new ZipEntry(path));
+
+					zipDirectory(f.getPath(), zos, path);
+
+					zos.closeEntry();
 				}
 				else {
 					// if we reached here, the File object f was not a directory
 					// create a FileInputStream on top of f
 					FileInputStream fis = new FileInputStream(f);
-					// create a new zip entry
-					ZipEntry anEntry = new ZipEntry(f.getName());
-					// place the zip entry in the ZipOutputStream object
-					zos.putNextEntry(anEntry);
-					// now write the content of the file to the ZipOutputStream
+					zos.putNextEntry(new ZipEntry(basePath + f.getName()));
+
 					while ((bytesIn = fis.read(readBuffer)) != -1) {
 						zos.write(readBuffer, 0, bytesIn);
 					}
-					// close the Stream
+
+					zos.closeEntry();
 					fis.close();
 				}
 			}
@@ -133,12 +138,15 @@ public final class ZipUtils {
 			ZipEntry entry = zis.getNextEntry();
 
 			while (entry != null) {
-				FileOutputStream fos = new FileOutputStream(dirName + entry.getName());
-
-				while ((bytesIn = zis.read(readBuffer)) != -1) {
-					fos.write(readBuffer, 0, bytesIn);
+				if (entry.isDirectory()) {
+					new File(dirName, entry.getName()).mkdirs();
+				} else {
+					FileOutputStream fos = new FileOutputStream(dirName + entry.getName());
+					while ((bytesIn = zis.read(readBuffer)) != -1) {
+						fos.write(readBuffer, 0, bytesIn);
+					}
+					fos.close();
 				}
-				fos.close();
 
 				entry = zis.getNextEntry();
 			}
