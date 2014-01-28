@@ -100,7 +100,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 
 	@Override
 	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
-		return GLLayouts.resolveLayoutDatas(clazz, default_, view, this.local);
+		return GLLayouts.resolveLayoutDatas(clazz, default_, view, view.getParentGLCanvas(), this.local);
 	}
 
 	@Override
