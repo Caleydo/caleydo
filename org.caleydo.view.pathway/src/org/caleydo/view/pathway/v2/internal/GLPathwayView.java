@@ -104,6 +104,21 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		// desc.setFromDataType(EDataType.INTEGER);
 		// desc.setToDataType(EDataType.INTEGER);
 		// IDMappingManager.addIDMappingDescription(desc);
+		//
+		// desc = new IDMappingDescription();
+		// desc.setParsingStartLine(0);
+		// desc.setParsingStopLine(-1);
+		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/FINGERPRINT_ID2COMPOUND_ID.txt");
+		// desc.setDelimiter("\t");
+		// desc.setFromIDType(EGeneIDTypes.FINGERPRINT_ID.name());
+		// desc.setToIDType(EGeneIDTypes.COMPOUND_ID.name());
+		// desc.setIdCategory(EGeneIDTypes.GENE.name());
+		// desc.setMultiMapping(true);
+		// desc.setCreateReverseMapping(true);
+		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
+		// desc.setFromDataType(EDataType.INTEGER);
+		// desc.setToDataType(EDataType.INTEGER);
+		// IDMappingManager.addIDMappingDescription(desc);
 	}
 
 	@Override

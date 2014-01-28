@@ -130,7 +130,7 @@ public class IDMappingParser extends ATextParser {
 			/**
 			 * Start parsing if current line lineInFile is larger than parsingStartLine ..
 			 */
-			if (lineCounter <= startParsingAtLine) {
+			if (lineCounter < startParsingAtLine) {
 				lineCounter++;
 				continue;
 			}
