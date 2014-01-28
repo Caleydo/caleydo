@@ -8,6 +8,8 @@ package org.caleydo.view.histogram.v2.internal;
 
 import gleem.linalg.Vec2f;
 
+import java.util.Set;
+
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
@@ -69,6 +71,11 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory2 {
 				@Override
 				public GLLocation apply(int dataIndex) {
 					return vis.getLocation(dataIndex);
+				}
+
+				@Override
+				public Set<Integer> unapply(GLLocation location) {
+					return vis.forLocation(location);
 				}
 			}).build();
 		} else {

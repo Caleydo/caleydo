@@ -9,7 +9,7 @@ import static org.caleydo.core.util.function.DoublePredicates.and;
 import static org.caleydo.core.util.function.DoublePredicates.ge;
 import static org.caleydo.core.util.function.DoublePredicates.le;
 
-import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.util.function.DoublePredicates;
 import org.caleydo.core.util.function.IDoublePredicate;
@@ -85,13 +85,13 @@ public class GLElementDimensionDesc implements GLLocation.ILocator {
 	}
 
 	@Override
-	public List<GLLocation> apply(Iterable<Integer> dataIndizes) {
-		return locator.apply(dataIndizes);
+	public GLLocation apply(Integer input) {
+		return locator.apply(input);
 	}
 
 	@Override
-	public GLLocation apply(Integer input) {
-		return locator.apply(input);
+	public Set<Integer> unapply(GLLocation location) {
+		return locator.unapply(location);
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class GLElementDimensionDesc implements GLLocation.ILocator {
 
 	/**
 	 * factory builder for a fix one
-	 * 
+	 *
 	 * @param fix
 	 * @return
 	 */

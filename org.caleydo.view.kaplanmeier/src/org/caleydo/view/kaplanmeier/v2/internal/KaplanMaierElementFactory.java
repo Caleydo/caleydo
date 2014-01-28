@@ -7,6 +7,7 @@ package org.caleydo.view.kaplanmeier.v2.internal;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDimension;
@@ -52,8 +53,8 @@ public class KaplanMaierElementFactory implements IGLElementFactory2 {
 			}
 
 			@Override
-			public List<GLLocation> apply(Iterable<Integer> dataIndizes) {
-				return k.getLocations(dim, dataIndizes);
+			public Set<Integer> unapply(GLLocation location) {
+				return k.forLocation(dim, location);
 			}
 		});
 		return b.build();

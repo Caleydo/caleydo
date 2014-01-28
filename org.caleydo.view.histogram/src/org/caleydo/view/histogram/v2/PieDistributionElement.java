@@ -107,4 +107,9 @@ public class PieDistributionElement extends ADistributionElement {
 	public GLLocation apply(int dataIndex) {
 		return GLLocation.UNKNOWN;
 	}
+
+	@Override
+	public Set<Integer> unapply(GLLocation location) {
+		return GLLocation.UNKNOWN_IDS;
+	}
 }

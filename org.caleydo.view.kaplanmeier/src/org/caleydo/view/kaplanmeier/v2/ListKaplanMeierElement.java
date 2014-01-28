@@ -28,8 +28,8 @@ import org.caleydo.core.util.function.ADoubleFunction;
 import org.caleydo.core.util.function.ArrayDoubleList;
 import org.caleydo.core.util.function.DoubleFunctions;
 import org.caleydo.core.util.function.DoubleStatistics;
-import org.caleydo.core.util.function.IDoubleFunction;
 import org.caleydo.core.util.function.IDoubleList;
+import org.caleydo.core.util.function.IInvertableDoubleFunction;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -37,6 +37,7 @@ import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * kaplan meier plot implementation as a {@link GLElement}
@@ -49,7 +50,7 @@ public class ListKaplanMeierElement extends AKaplanMeierElement implements
 
 	private final List<Integer> ids;
 	private final IDoubleList raw;
-	private final IDoubleFunction normalize;
+	private final IInvertableDoubleFunction normalize;
 
 	private final List<Vec2f> curve;
 	private final IDoubleList data;
@@ -154,20 +155,42 @@ public class ListKaplanMeierElement extends AKaplanMeierElement implements
 
 	@Override
 	public List<GLLocation> getLocations(EDimension dim, Iterable<Integer> dataIndizes) {
-		Vec2f wh = getSize();
-		float factor = dim.select(wh.x() - padding.hor(), wh.y() - padding.vert());
 		List<GLLocation> r = new ArrayList<>();
 		for (Integer dataIndex : dataIndizes) {
-			double v = normalize.apply(raw.getPrimitive(dataIndex));
-			v = Double.isNaN(v) ? 1 : v;
-			Pair<Vec2f, Vec2f> loc = getLocation(curve, v);
-
-			float offset = dim.select(loc.getFirst()) * factor;
-			float size = dim.select(loc.getSecond()) * factor - offset;
-
-			r.add(new GLLocation(offset + dim.select(padding.left, padding.top), size));
+			GLLocation g = forLocation(dim, dataIndex);
+			r.add(g);
 		}
 		return r;
+	}
+
+	GLLocation forLocation(EDimension dim, Integer dataIndex) {
+		Vec2f wh = getSize();
+		float factor = dim.select(wh.x() - padding.hor(), wh.y() - padding.vert());
+		double v = normalize.apply(raw.getPrimitive(dataIndex));
+		v = Double.isNaN(v) ? 1 : v;
+		Pair<Vec2f, Vec2f> loc = getLocation(curve, v);
+
+		float offset = dim.select(loc.getFirst()) * factor;
+		float size = dim.select(loc.getSecond()) * factor - offset;
+		GLLocation g = new GLLocation(offset + dim.select(padding.left, padding.top), size);
+		return g;
+	}
+
+	@Override
+	public Set<Integer> forLocation(EDimension dim, GLLocation location) {
+		Vec2f wh = getSize();
+		float factor = dim.select(wh.x() - padding.hor(), wh.y() - padding.vert());
+		double from = normalize.unapply((location.getOffset() - dim.select(padding.left, padding.top)) / factor);
+		double to = normalize.unapply(location.getSize() / factor);
+
+		List<Integer> r = new ArrayList<>();
+		for(int i = 0; i < raw.size(); ++i) {
+			double v = raw.getPrimitive(i);
+			v = Double.isNaN(v) ? 1 : v;
+			if (from <= v && v <= to)
+				r.add(i);
+		}
+		return ImmutableSet.copyOf(r);
 	}
 
 	/**

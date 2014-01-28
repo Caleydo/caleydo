@@ -5,15 +5,14 @@
  ******************************************************************************/
 package org.caleydo.core.util.function;
 
+
 /**
- * basic implementation of a {@link IDoubleFunction}
- *
+ * a {@link IDoubleFunction} which can be inverted
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public abstract class ADoubleFunction implements IDoubleFunction {
-	@Override
-	public final Double apply(Double v) {
-		return DoubleFunctions.applyPrimitive(this, v);
-	}
+public interface IInvertableDoubleFunction extends IDoubleFunction {
+	double unapply(double in);
 }
+

@@ -195,7 +195,9 @@ public final class ProjectManager {
 			if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
 				DataDomainManager.get().initalizeDataDomain("org.caleydo.datadomain.genetic");
 
-			IDTypeInitializer.initIDs(dataSetDescription);
+			// Not every data domain has got a dataSetDescription
+			if (dataSetDescription != null)
+				IDTypeInitializer.initIDs(dataSetDescription);
 			dataDomain.init();
 			// Register data domain by hand because it restored from the
 			// serialization and not created via the
@@ -287,17 +289,19 @@ public final class ProjectManager {
 
 		File idMapping = new File(dirName, ID_MAPPING_FILE);
 
-		if (idMapping.exists()) {
-			IDMappingList idMappingList = (IDMappingList) unmarshaller.unmarshal(idMapping);
-			for (IDMappingDescription desc : idMappingList.getIDMappingDescriptions()) {
+		if (!idMapping.exists())
+			return;
+		IDMappingList idMappingList = (IDMappingList) unmarshaller.unmarshal(idMapping);
+		if (idMappingList == null || idMappingList.getIDMappingDescriptions() == null)
+			return;
+		for (IDMappingDescription desc : idMappingList.getIDMappingDescriptions()) {
 
-				String fileNameOnly = FileUtil.exctractFileName(desc.getFileName());
-				// Update to correct file name
-				desc.setFileName(dirName + fileNameOnly);
+			String fileNameOnly = FileUtil.exctractFileName(desc.getFileName());
+			// Update to correct file name
+			desc.setFileName(dirName + fileNameOnly);
 
-				desc.addMapping();
-				IDMappingManager.addIDMappingDescription(desc);
-			}
+			desc.addMapping();
+			IDMappingManager.addIDMappingDescription(desc);
 		}
 	}
 

@@ -8,6 +8,7 @@ package org.caleydo.view.heatmap.v2;
 import gleem.linalg.Vec2f;
 
 import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.selection.SelectionType;
@@ -165,6 +166,12 @@ public class SingleBarPlotElement extends PickableGLElement implements IHasMinSi
 		if (dim == this.dim)
 			return renderer.getLocation(index, 0);
 		return GLLocation.UNKNOWN;
+	}
+
+	public final Set<Integer> forLocation(EDimension dim, GLLocation location) {
+		if (dim == this.dim)
+			return renderer.forLocation(location, 0);
+		return GLLocation.UNKNOWN_IDS;
 	}
 
 	public final int getIndex(EDimension dim, float position) {

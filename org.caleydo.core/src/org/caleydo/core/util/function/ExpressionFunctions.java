@@ -16,21 +16,6 @@ import org.caleydo.core.util.function.DoubleReductions.EReduceOperations;
  *
  */
 public class ExpressionFunctions {
-
-	/**
-	 * identity mapping
-	 */
-	public static final ADoubleFunction IDENTITY = new ADoubleFunction() {
-		@Override
-		public double apply(double v) {
-			return v;
-		}
-
-		@Override
-		public String toString() {
-			return "v";
-		}
-	};
 	/**
 	 * composes the given function. For {@code f: A->B} and {@code g: B->C}, composition is defined as the function h
 	 * such that {@code h(a) == g(f(a))} for each {@code a}.
@@ -119,12 +104,12 @@ public class ExpressionFunctions {
 
 	/**
 	 * some utility functions, that expresses mathematical operations
-	 * 
+	 *
 	 * @author Samuel Gratzl
-	 * 
+	 *
 	 */
-	public enum EMonoOperator implements IDoubleFunction {
-		NEGATE, LN, LOG10, SQUARED;
+	public enum EMonoOperator implements IInvertableDoubleFunction {
+		NEGATE, LN, LOG10, SQUARED, SQRT;
 
 		@Override
 		public double apply(double v) {
@@ -137,13 +122,32 @@ public class ExpressionFunctions {
 				return Math.log10(v);
 			case SQUARED:
 				return v * v;
+			case SQRT:
+				return Math.sqrt(v);
 			}
 			throw new IllegalStateException();
 		}
 
 		@Override
 		public Double apply(Double input) {
-			return apply(input.doubleValue());
+			return DoubleFunctions.applyPrimitive(this, input);
+		}
+
+		@Override
+		public double unapply(double v) {
+			switch (this) {
+			case NEGATE:
+				return -v;
+			case LN:
+				return Math.exp(v);
+			case LOG10:
+				return Math.pow(10, v);
+			case SQUARED:
+				return Math.sqrt(v);
+			case SQRT:
+				return v * v;
+			}
+			throw new IllegalStateException();
 		}
 
 		@Override

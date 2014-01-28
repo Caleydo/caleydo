@@ -24,6 +24,7 @@ import org.caleydo.core.util.function.DoubleFunctions;
 import org.caleydo.core.util.function.IDoubleFunction;
 import org.caleydo.core.util.function.IDoubleIterator;
 import org.caleydo.core.util.function.IDoubleList;
+import org.caleydo.core.util.function.IInvertableDoubleFunction;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -53,14 +54,7 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 	private boolean showScale = false;
 
 	private AdvancedDoubleStatistics stats;
-	/**
-	 * the min, max value to use for normalization
-	 */
-	private double min;
-	/**
-	 * the min, max value to use for normalization
-	 */
-	private double max;
+	protected IInvertableDoubleFunction normalize;
 	/**
 	 * value which is just above the <code>25 quartile - iqr*1.5</code> margin
 	 */
@@ -80,13 +74,6 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 		this.showMinMax = showMinMax;
 	}
 
-	/**
-	 * @param value
-	 * @return
-	 */
-	protected double normalize(double value) {
-		return DoubleFunctions.normalize(min, max).apply(value);
-	}
 	/**
 	 * @return the direction, see {@link #direction}
 	 */
@@ -140,8 +127,9 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 	public void setData(IDoubleList list, double min, double max) {
 		this.stats = AdvancedDoubleStatistics.of(list);
 		updateIQRMatches(list);
-		this.min = Double.isNaN(min) ? stats.getMin() : min;
-		this.max = Double.isNaN(max) ? stats.getMax() : max;
+		min = Double.isNaN(min) ? stats.getMin() : min;
+		max = Double.isNaN(max) ? stats.getMax() : max;
+		normalize = DoubleFunctions.normalize(min, max);
 		repaint();
 	}
 
@@ -153,8 +141,9 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 		this.stats = stats;
 		if (stats != null) {
 			updateIQRMatches(null);
-			this.min = Double.isNaN(min) ? stats.getMin() : min;
-			this.max = Double.isNaN(max) ? stats.getMax() : max;
+			min = Double.isNaN(min) ? stats.getMin() : min;
+			max = Double.isNaN(max) ? stats.getMax() : max;
+			normalize = DoubleFunctions.normalize(min, max);
 		}
 		repaint();
 	}
@@ -224,8 +213,6 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 		final float hi = h * BOX_HEIGHT_PERCENTAGE;
 		final float y = (h - hi) * 0.5f;
 		final float center = h / 2;
-
-		IDoubleFunction normalize = DoubleFunctions.normalize(min, max);
 
 		{
 			final float firstQuantrileBoundary = (float) (normalize.apply(stats.getQuartile25())) * w;
@@ -305,15 +292,14 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 		float x = delta;
 		final float v_delta = 1.f / ticks;
 
-		IDoubleFunction f = DoubleFunctions.unnormalize(min, max);
 		final int textHeight = 10;
 
-		g.drawText(Formatter.formatNumber(f.apply(0)), 1, hi, delta, textHeight);
+		g.drawText(Formatter.formatNumber(normalize.unapply(0)), 1, hi, delta, textHeight);
 		for (int i = 1; i < ticks; ++i) {
-			g.drawText(Formatter.formatNumber(f.apply(v_delta * i)), x - delta * 0.5f, hi, delta, textHeight,
+			g.drawText(Formatter.formatNumber(normalize.unapply(v_delta * i)), x - delta * 0.5f, hi, delta, textHeight,
 					VAlign.CENTER);
 		}
-		g.drawText(Formatter.formatNumber(f.apply(1)), w - delta - 1, hi, delta - 1, textHeight, VAlign.RIGHT);
+		g.drawText(Formatter.formatNumber(normalize.unapply(1)), w - delta - 1, hi, delta - 1, textHeight, VAlign.RIGHT);
 	}
 
 	/**

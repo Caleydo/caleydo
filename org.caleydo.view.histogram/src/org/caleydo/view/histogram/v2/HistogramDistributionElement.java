@@ -7,6 +7,9 @@ package org.caleydo.view.histogram.v2;
 
 import gleem.linalg.Vec2f;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDimension;
@@ -18,6 +21,7 @@ import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 import org.caleydo.view.histogram.HistogramRenderStyle;
 import org.caleydo.view.histogram.v2.internal.IDistributionData;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
 /**
@@ -138,5 +142,40 @@ public class HistogramDistributionElement extends ADistributionElement {
 
 		x += delta * bin - lineWidthHalf;
 		return new GLLocation(x, lineWidth);
+	}
+
+	@Override
+	public Set<Integer> unapply(GLLocation location) {
+		Set<Integer> r = new HashSet<>();
+		final Histogram hist = data.getHist();
+		for (Integer bin : toBins(location)) {
+			r.addAll(hist.getIDsForBucket(bin));
+		}
+		return ImmutableSet.copyOf(r);
+	}
+
+	/**
+	 * @param location
+	 * @return
+	 */
+	private Iterable<Integer> toBins(GLLocation location) {
+		float w = dim.select(getSize());
+		w -= HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW * 2;
+		final Histogram hist = data.getHist();
+		final float delta = w / hist.size();
+		final float lineWidth = Math.min(delta - 1, 25);
+		final float lineWidthHalf = lineWidth * 0.5f;
+		float x = delta / 2 + HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW;
+		List<Integer> r = new ArrayList<>(hist.size());
+		for (int i = 0; i < hist.size(); ++i) {
+			float xi = x + delta * i - lineWidthHalf;
+			float wi = lineWidth;
+			if ((xi + wi) < location.getOffset())
+				continue;
+			if (xi > location.getOffset2())
+				break;
+			r.add(i);
+		}
+		return r;
 	}
 }

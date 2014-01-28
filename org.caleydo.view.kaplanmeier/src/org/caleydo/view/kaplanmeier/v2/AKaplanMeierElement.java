@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NavigableSet;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 
@@ -329,6 +330,8 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 	}
 
 	public abstract List<GLLocation> getLocations(EDimension dim, Iterable<Integer> dataIndizes);
+
+	public abstract Set<Integer> forLocation(EDimension dim, GLLocation location);
 
 	@Override
 	public String toString() {

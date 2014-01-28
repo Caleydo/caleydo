@@ -5,6 +5,10 @@
  *******************************************************************************/
 package org.caleydo.view.histogram.v2;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.AdvancedDoubleStatistics;
@@ -13,6 +17,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * a {@link BoxAndWhiskersElement} based on a simple {@link IDoubleList}
@@ -58,8 +63,23 @@ public class ListBoxAndWhiskersElement extends ABoxAndWhiskersElement {
 			return GLLocation.UNKNOWN;
 		float total = getDirection().select(getSize());
 		double value = this.data.getPrimitive(dataIndex);
-		double pos = total * normalize(value);
+		double pos = total * normalize.apply(value);
 		return new GLLocation(pos, 1. / data.size());
+	}
+
+	public Set<Integer> forLocation(GLLocation location) {
+		if (!hasData())
+			return GLLocation.UNKNOWN_IDS;
+		float total = getDirection().select(getSize());
+		double from = normalize.unapply(location.getOffset() / total);
+		double to = normalize.unapply(location.getOffset2() / total);
+		List<Integer> r = new ArrayList<>();
+		for (int i = 0; i < this.data.size(); ++i) {
+			double v = this.data.getPrimitive(i);
+			if (from <= v && v <= to)
+				r.add(i);
+		}
+		return ImmutableSet.copyOf(r);
 	}
 
 	@Override

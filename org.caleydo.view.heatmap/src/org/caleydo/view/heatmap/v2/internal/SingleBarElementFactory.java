@@ -9,6 +9,7 @@ import gleem.linalg.Vec2f;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
@@ -134,6 +135,11 @@ public class SingleBarElementFactory implements IGLElementFactory2 {
 				@Override
 				public GLLocation apply(int dataIndex) {
 					return l.getLocation(dim, dataIndex);
+				}
+
+				@Override
+				public Set<Integer> unapply(GLLocation location) {
+					return l.forLocation(dim, location);
 				}
 			});
 		} else {
