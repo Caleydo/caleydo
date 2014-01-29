@@ -32,6 +32,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.core.util.system.RemoteFile;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.genetic.GeneticMetaData;
 import org.caleydo.datadomain.genetic.Organism;
@@ -734,5 +735,36 @@ public class PathwayManager extends AManager<PathwayGraph> {
 			log.error("can't download: " + url);
 			return null;
 		}
+	}
+
+	/**
+	 * Gets all mapped gene ids for a specified pathway
+	 *
+	 * @param pathway
+	 * @param idType
+	 *            The gene id type of the result set.
+	 * @return
+	 */
+	public Set<Object> getPathwayGeneIDs(PathwayGraph pathway, IDType idType) {
+		Set<Object> ids = new HashSet<>();
+		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idType);
+		IIDTypeMapper<Object, Object> mapper = idMappingManager.getIDTypeMapper(
+				IDType.getIDType(EGeneIDTypes.DAVID.name()), idType);
+		if (mapper == null)
+			return ids;
+
+		for (PathwayVertexRep v : pathway.vertexSet()) {
+			ArrayList<Integer> vertexIDs = v.getDavidIDs();
+			if (vertexIDs != null) {
+				for (int davidID : vertexIDs) {
+					Set<Object> mappedIDs = mapper.apply(davidID);
+					if (mappedIDs != null) {
+						ids.addAll(mappedIDs);
+					}
+				}
+			}
+		}
+
+		return ids;
 	}
 }
