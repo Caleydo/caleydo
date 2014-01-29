@@ -11,6 +11,7 @@ import gleem.linalg.Vec4f;
 import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
+import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.AGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
@@ -32,7 +33,7 @@ import com.google.common.base.Suppliers;
  * @author Samuel Gratzl
  *
  */
-public class GLElement implements IHasGLLayoutData {
+public class GLElement implements IHasGLLayoutData, IHasMinSize {
 	/**
 	 * the visibility state of this element
 	 *
@@ -758,6 +759,11 @@ public class GLElement implements IHasGLLayoutData {
 		public Vec4f getSetBounds() {
 			return bounds_set.bounds();
 		}
+	}
+
+	@Override
+	public Vec2f getMinSize() {
+		return new Vec2f(0, 0);
 	}
 }
 
