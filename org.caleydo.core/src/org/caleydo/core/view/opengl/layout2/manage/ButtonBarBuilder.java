@@ -29,9 +29,6 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-
 /**
  * a {@link ButtonBarBuilder} is used for creating the visualization switching button bars
  *
@@ -55,7 +52,6 @@ public class ButtonBarBuilder {
 		}
 	};
 
-	public final GLElementFactorySwitcher switcher;
 	/**
 	 * size of the buttons, by default 16
 	 */
@@ -64,6 +60,7 @@ public class ButtonBarBuilder {
 	private IGLRenderer hoverEffect = null;
 	private IGLLayout2 layout = GLLayouts.flowHorizontal(2);
 
+	private final GLElementFactorySwitcher switcher;
 	/**
 	 * prepended elements to render
 	 */
@@ -79,24 +76,18 @@ public class ButtonBarBuilder {
 	private ISelectionCallback custom;
 
 	/**
-	 * filter of the possible items
-	 */
-	private Predicate<? super String> filter = Predicates.alwaysTrue();
-
-	/**
 	 *
 	 */
+	public ButtonBarBuilder() {
+		this(null);
+	}
+
 	public ButtonBarBuilder(GLElementFactorySwitcher switcher) {
 		this.switcher = switcher;
 	}
 
 	public ButtonBarBuilder customCallback(ISelectionCallback callback) {
 		this.custom = callback;
-		return this;
-	}
-
-	public ButtonBarBuilder filterBy(Predicate<? super String> filter) {
-		this.filter = filter;
 		return this;
 	}
 
@@ -134,8 +125,13 @@ public class ButtonBarBuilder {
 		return layoutUsing(layout);
 	}
 
+	public GLElement build(Iterable<GLElementSupplier> suppliers, String initialID) {
+		return new ButtonBar(this, suppliers, initialID);
+	}
+
 	public GLElement build() {
-		return new ButtonBar(this);
+		assert switcher != null;
+		return new ButtonBar(this, switcher, switcher, null);
 	}
 
 	/**
@@ -312,17 +308,24 @@ public class ButtonBarBuilder {
 			IActiveChangedCallback, IPickingListener {
 		private final EButtonBarLayout layout;
 		private final RadioController controller = new RadioController(this);
-		final GLElementFactorySwitcher switcher;
 		private final ISelectionCallback custom;
 		final int prepended; // for right counting the buttons
 
 		boolean hovered;
 
-		public ButtonBar(ButtonBarBuilder builder) {
+		private final GLElementFactorySwitcher switcher;
+		private final String initialID;
+
+		public ButtonBar(ButtonBarBuilder builder, Iterable<GLElementSupplier> suppliers, String initialID) {
+			this(builder, null, suppliers, initialID);
+		}
+
+		public ButtonBar(ButtonBarBuilder builder, GLElementFactorySwitcher switcher,
+				Iterable<GLElementSupplier> suppliers, String initialID) {
+			this.initialID = initialID;
 			setLayout(builder.layout);
-			this.switcher = builder.switcher;
-			this.switcher.onActiveChanged(this);
 			layout = toButtonBarLayout(builder.layout);
+			this.switcher = switcher;
 
 			if (layout != null) {
 				setAnimateByDefault(true);
@@ -335,7 +338,7 @@ public class ButtonBarBuilder {
 
 			prepended = builder.prepend.size();
 			addAll(builder.prepend);
-			addButtons(builder);
+			addButtons(builder, suppliers);
 			addAll(builder.append);
 			this.custom = builder.custom;
 		}
@@ -344,7 +347,7 @@ public class ButtonBarBuilder {
 		 * @return
 		 */
 		public int getActive() {
-			return switcher.getActive() + prepended;
+			return controller.getSelected() + prepended;
 		}
 
 		private static EButtonBarLayout toButtonBarLayout(IGLLayout2 layout) {
@@ -354,13 +357,9 @@ public class ButtonBarBuilder {
 			return l.isAnimated() ? l : null;
 		}
 
-		private void addButtons(ButtonBarBuilder builder) {
+		private void addButtons(ButtonBarBuilder builder, Iterable<GLElementSupplier> suppliers) {
 			int i = 0;
-			for (GLElementSupplier sup : builder.switcher) {
-				if (!builder.filter.apply(sup.getId())) {
-					i++;
-					continue;
-				}
+			for (GLElementSupplier sup : suppliers) {
 				GLButton b = new GLButton();
 				b.setPickingObjectId(i++);
 				b.setTooltip(sup.getLabel());
@@ -422,19 +421,36 @@ public class ButtonBarBuilder {
 		@Override
 		protected void init(IGLElementContext context) {
 			super.init(context);
-			switcher.onActiveChanged(this);
-			onActiveChanged(switcher.getActive());
+			String target = initialID;
+			if (switcher != null) {
+				switcher.onActiveChanged(this);
+				target = switcher.getActiveId();
+			}
+			if (target != null) {
+				int i = 0;
+				for (GLButton b : controller) {
+					if (target.equals(b.getLayoutDataAs(GLElementSupplier.class, null).getId())) {
+						controller.setCallback(null);
+						controller.setSelected(i);
+						controller.setCallback(this);
+						break;
+					}
+					i++;
+				}
+			}
 		}
 
 		@Override
 		protected void takeDown() {
-			switcher.removeOnActiveChanged(this);
+			if (switcher != null)
+				switcher.removeOnActiveChanged(this);
 			super.takeDown();
 		}
 
 		@Override
 		public void onSelectionChanged(GLButton button, boolean selected) {
-			switcher.setActive(button.getPickingObjectId());
+			if (switcher != null)
+				switcher.setActive(button.getPickingObjectId());
 			if (custom != null)
 				custom.onSelectionChanged(button, selected);
 		}
