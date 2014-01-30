@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Label;
  * @author Christian
  *
  */
-public class DataSetTypePage extends AImportDataPage {
+public class DataSetTypePage extends AImportDataPage<DataImportWizard> {
 
 	public static final String PAGE_NAME = "Select Dataset Type";
 

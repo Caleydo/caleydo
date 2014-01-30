@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Label;
  * @author Christian Partl
  *
  */
-public class InhomogeneousDataPropertiesPage extends AImportDataPage {
+public class InhomogeneousDataPropertiesPage extends AImportDataPage<DataImportWizard> {
 
 	public static final String PAGE_NAME = "Inhomogeneous Dataset Properties";
 

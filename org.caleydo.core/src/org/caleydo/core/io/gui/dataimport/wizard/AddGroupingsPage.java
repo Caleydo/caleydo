@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.List;
  * @author Christian Partl
  *
  */
-public class AddGroupingsPage extends AImportDataPage {
+public class AddGroupingsPage extends AImportDataPage<DataImportWizard> {
 
 	public static final String PAGE_NAME = "Add Groupings";
 

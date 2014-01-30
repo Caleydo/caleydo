@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.Spinner;
  * @author Christian Partl
  *
  */
-public class LoadDataSetPage extends AImportDataPage implements Listener {
+public class LoadDataSetPage extends AImportDataPage<DataImportWizard> implements Listener {
 
 	public static final String PAGE_NAME = "Load Dataset";
 

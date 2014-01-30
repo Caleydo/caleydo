@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Christian Partl
  *
  */
-public class CategoricalDataPropertiesPage extends AImportDataPage {
+public class CategoricalDataPropertiesPage extends AImportDataPage<DataImportWizard> {
 
 	public static final String PAGE_NAME = "Categorical Dataset Properties";
 

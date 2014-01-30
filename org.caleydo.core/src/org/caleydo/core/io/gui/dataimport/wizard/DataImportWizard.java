@@ -9,9 +9,7 @@
 package org.caleydo.core.io.gui.dataimport.wizard;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.DataLoader;
@@ -27,7 +25,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.IWizardContainer;
-import org.eclipse.jface.wizard.Wizard;
 
 /**
  * Wizard that guides the user through the different steps of importing a dataset: 1. Dataset Specification, 2. Dataset
@@ -36,7 +33,7 @@ import org.eclipse.jface.wizard.Wizard;
  * @author Christian Partl
  *
  */
-public class DataImportWizard extends Wizard {
+public class DataImportWizard extends AWizard<DataImportWizard> {
 
 	/**
 	 * The {@link DataSetDescription} specified by this wizard that is used to load the dataset.
@@ -76,7 +73,7 @@ public class DataImportWizard extends Wizard {
 	/**
 	 * The data page chosen by the user (numerical, categorical, or inhomogeneous).
 	 */
-	private AImportDataPage chosenDataTypePage;
+	private AImportDataPage<DataImportWizard> chosenDataTypePage;
 
 	/**
 	 * Determines whether all required data has been specified and the dialog can be finished.
@@ -102,8 +99,6 @@ public class DataImportWizard extends Wizard {
 	 * List of rowIDs as they occur in the dataset.
 	 */
 	private List<String> columnOfRowIDs;
-
-	private Set<AImportDataPage> visitedPages = new HashSet<AImportDataPage>();
 
 	private ATableBasedDataDomain dataDomain;
 
@@ -267,22 +262,18 @@ public class DataImportWizard extends Wizard {
 		return requiredDataSpecified;
 	}
 
-	public void addVisitedPage(AImportDataPage page) {
-		visitedPages.add(page);
-	}
-
 	/**
 	 * @param chosenDataTypePage
 	 *            setter, see {@link chosenDataTypePage}
 	 */
-	public void setChosenDataTypePage(AImportDataPage chosenDataTypePage) {
+	public void setChosenDataTypePage(AImportDataPage<DataImportWizard> chosenDataTypePage) {
 		this.chosenDataTypePage = chosenDataTypePage;
 	}
 
 	/**
 	 * @return the chosenDataTypePage, see {@link #chosenDataTypePage}
 	 */
-	public AImportDataPage getChosenDataTypePage() {
+	public AImportDataPage<DataImportWizard> getChosenDataTypePage() {
 		return chosenDataTypePage;
 	}
 
