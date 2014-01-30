@@ -7,17 +7,13 @@ package org.caleydo.view.pathway.v2.ui;
 
 import gleem.linalg.Vec2f;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import javax.media.opengl.GL2ES2;
 
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -33,9 +29,6 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.view.pathway.v2.internal.GLPathwayView;
-
-import com.google.common.io.CharStreams;
-import com.jogamp.opengl.util.glsl.ShaderUtil;
 
 /**
  * Pathway representation that renders a single KEGG- or Wikipathway as texture. The locations {@link PathwayVertexRep}s
@@ -140,60 +133,12 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 		// }
 	}
 
-	private void initShaders(GL2 gl) throws IOException {
+	private void initShaders(GLGraphics g) throws IOException {
 		isShaderInitialized = true;
-		shaderProgramTextOverlay = -1;
-		if (!ShaderUtil.isShaderCompilerAvailable(gl)) {
-			GLPathwayView.log.error("no shader available no intelligent texture manipulation");
-			return;
-		}
-		int vs = gl.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
-		String vsrc = CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream(
-				"../../vsTextOverlay.glsl")));
-		gl.glShaderSource(vs, 1, new String[] { vsrc }, (int[]) null, 0);
-		gl.glCompileShader(vs);
-
-		ByteArrayOutputStream slog = new ByteArrayOutputStream();
-		PrintStream slog_print = new PrintStream(slog);
-
-		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, slog_print)) {
-			gl.glDeleteShader(vs);
-			GLPathwayView.log.error("can't compile vertex shader: " + slog.toString());
-			return;
-		} else {
-			GLPathwayView.log.debug("compiling vertex shader warnings: " + ShaderUtil.getShaderInfoLog(gl, vs));
-		}
-
-		String fsrc = CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream(
-				"../../fsTextOverlay.glsl")));
-		int fs = gl.glCreateShader(GL2ES2.GL_FRAGMENT_SHADER);
-		gl.glShaderSource(fs, 1, new String[] { fsrc }, (int[]) null, 0);
-		gl.glCompileShader(fs);
-		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, slog_print)) {
-			gl.glDeleteShader(vs);
-			gl.glDeleteShader(fs);
-			GLPathwayView.log.error("can't compile fragment shader: " + slog.toString());
-			return;
-		} else {
-			GLPathwayView.log.debug("compiling fragment shader warnings: " + ShaderUtil.getShaderInfoLog(gl, fs));
-		}
-
-		shaderProgramTextOverlay = gl.glCreateProgram();
-		gl.glAttachShader(shaderProgramTextOverlay, vs);
-		gl.glAttachShader(shaderProgramTextOverlay, fs);
-		gl.glLinkProgram(shaderProgramTextOverlay);
-		gl.glValidateProgram(shaderProgramTextOverlay);
-		if (!ShaderUtil.isProgramLinkStatusValid(gl, shaderProgramTextOverlay, slog_print)) {
-			gl.glDeleteShader(vs);
-			gl.glDeleteShader(fs);
-			gl.glDeleteProgram(shaderProgramTextOverlay);
-			shaderProgramTextOverlay = -1;
-			GLPathwayView.log.error("can't link program: " + slog.toString());
-			return;
-		} else {
-			GLPathwayView.log.debug("linking program warnings: "
-					+ ShaderUtil.getProgramInfoLog(gl, shaderProgramTextOverlay));
-		}
+		shaderProgramTextOverlay = g.loadShader(
+			this.getClass().getResourceAsStream("../../vsTextOverlay.glsl"),
+			this.getClass().getResourceAsStream("../../fsTextOverlay.glsl")
+		);
 	}
 
 	@Override
@@ -204,7 +149,7 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 
 		if (!isShaderInitialized) {
 			try {
-				initShaders(g.gl);
+				initShaders(g);
 			} catch (IOException e) {
 				GLPathwayView.log.error("Error while reading shader file");
 			}
