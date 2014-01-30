@@ -5,105 +5,72 @@
  ******************************************************************************/
 package org.caleydo.datadomain.image;
 
-import java.util.Set;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.data.datadomain.ADataDomain;
+import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.id.IDCreator;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.ColorManager;
 
-
+/**
+ * @author Thomas Geymayer
+ *
+ */
 @XmlType
 @XmlRootElement
-public class ImageDataDomain implements IDataDomain {
+public class ImageDataDomain extends ADataDomain {
+
+	private ImageSet imageSet;
+
+	private Color color;
 
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.image";
 
-	@Override
-	public int getDataAmount() {
-		// TODO Auto-generated method stub
-		return 0;
+	public ImageDataDomain() {
+		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER
+				+ IDCreator.createPersistentID(ImageDataDomain.class));
+	}
+
+	public void setImageSet(ImageSet imageSet) {
+		this.imageSet = imageSet;
+	}
+
+	public ImageSet getImageSet() {
+		return imageSet;
 	}
 
 	@Override
 	public void setLabel(String label) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public String getProviderName() {
-		// TODO Auto-generated method stub
-		return null;
+		imageSet.setName(label);
 	}
 
 	@Override
 	public String getLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		if (imageSet != null && imageSet.getName() != null)
+			return imageSet.getName();
+		else
+			return dataDomainID;
 	}
 
-	@Override
-	public String getDataDomainID() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setDataDomainID(String dataDomainType) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public DataSetDescription getDataSetDescription() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setDataSetDescription(DataSetDescription dataSetDescription) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public String getDataDomainType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setDataDomainType(String dataDomainType) {
-		// TODO Auto-generated method stub
-
+	public void setColor(Color color) {
+		if (this.color != null)
+			ColorManager.get().markColor(ColorManager.QUALITATIVE_COLORS, this.color, false);
+		ColorManager.get().markColor(ColorManager.QUALITATIVE_COLORS, color, true);
+		this.color = color;
 	}
 
 	@Override
 	public Color getColor() {
-		// TODO Auto-generated method stub
-		return null;
+		if (color == null)
+			color = ColorManager.get().getAndMarkColor(ColorManager.QUALITATIVE_COLORS);
+		return color;
 	}
 
 	@Override
-	public Set<IDCategory> getIDCategories() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void addIDCategory(IDCategory category) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean isSerializeable() {
-		// TODO Auto-generated method stub
-		return false;
+	public int getDataAmount() {
+		return 0;
 	}
 
 }
