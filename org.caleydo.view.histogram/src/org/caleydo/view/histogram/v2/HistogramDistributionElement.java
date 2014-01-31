@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDimension;
-import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 import org.caleydo.view.histogram.HistogramRenderStyle;
 import org.caleydo.view.histogram.v2.internal.IDistributionData;
+import org.caleydo.view.histogram.v2.internal.IDistributionData.DistributionEntry;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -66,9 +66,9 @@ public class HistogramDistributionElement extends ADistributionElement {
 		h -= HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW * 2;
 		w -= HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW * 2;
 
-		final Histogram hist = data.getHist();
-		final float factor = h / hist.getLargestValue();
-		final float delta = w / hist.size();
+		final List<DistributionEntry> entries = data.getEntries();
+		final int bins = entries.size();
+		final float delta = w / bins;
 
 		final float lineWidth = Math.min(delta - 1, 25);
 		final float lineWidthHalf = lineWidth * 0.5f;
@@ -78,9 +78,10 @@ public class HistogramDistributionElement extends ADistributionElement {
 				HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW + h - 1);
 		g.color(Color.DARK_GRAY).drawLine(0, 0, w, 0);
 
-		for (int i = 0; i < hist.size(); ++i) {
-			g.color(toHighlight(data.getBinColor(i), i));
-			float v = -hist.get(i) * factor;
+		for (int i = 0; i < bins; ++i) {
+			DistributionEntry entry = entries.get(i);
+			g.color(toHighlight(entry.getColor(), i));
+			float v = -h * entry.getValue();
 
 			if (v <= -1) {
 				g.pushName(bucketPickingIds.get(i));
@@ -94,8 +95,9 @@ public class HistogramDistributionElement extends ADistributionElement {
 			if (RenderStyle.COLOR_BORDER != null) {
 				g.color(RenderStyle.COLOR_BORDER);
 				x = delta / 2;
-				for (int i = 0; i < hist.size(); ++i) {
-					float v = -hist.get(i) * factor;
+				for (int i = 0; i < bins; ++i) {
+					DistributionEntry entry = entries.get(i);
+					float v = -h * entry.getValue();
 					if (v <= -1) {
 						g.drawRect(x - lineWidthHalf, 0, lineWidth, v);
 					}
@@ -109,9 +111,11 @@ public class HistogramDistributionElement extends ADistributionElement {
 					continue;
 				g.color(toHighlightColor(selectionType));
 				x = delta / 2;
-				for (int i = 0; i < hist.size(); ++i) {
-					Set<Integer> ids = hist.getIDsForBucket(i);
-					float v = -Sets.intersection(elements, ids).size() * factor;
+				for (int i = 0; i < bins; ++i) {
+					DistributionEntry entry = entries.get(i);
+					final Set<Integer> ids = entry.getIDs();
+					float p = ids.isEmpty() ? 0 : Sets.intersection(elements, ids).size() / ids.size();
+					float v = -h * entry.getValue() * p;
 					if (v <= -1) {
 						g.fillRect(x - lineWidthHalf, 0, lineWidth, v);
 					}
@@ -130,12 +134,12 @@ public class HistogramDistributionElement extends ADistributionElement {
 
 	@Override
 	public GLLocation apply(int dataIndex) {
-		int bin = data.getBinOf(dataIndex);
+		DistributionEntry entry = data.getOf(dataIndex);
 		float w = dim.select(getSize());
 		w -= HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW * 2;
-		final Histogram hist = data.getHist();
-		final float delta = w / hist.size();
-
+		final List<DistributionEntry> entries = data.getEntries();
+		final float delta = w / entries.size();
+		int bin = entries.indexOf(entry);
 		final float lineWidth = Math.min(delta - 1, 25);
 		final float lineWidthHalf = lineWidth * 0.5f;
 		float x = delta / 2 + HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW;
@@ -147,9 +151,8 @@ public class HistogramDistributionElement extends ADistributionElement {
 	@Override
 	public Set<Integer> unapply(GLLocation location) {
 		Set<Integer> r = new HashSet<>();
-		final Histogram hist = data.getHist();
-		for (Integer bin : toBins(location)) {
-			r.addAll(hist.getIDsForBucket(bin));
+		for (DistributionEntry bin : toBins(location)) {
+			r.addAll(bin.getIDs());
 		}
 		return ImmutableSet.copyOf(r);
 	}
@@ -158,23 +161,23 @@ public class HistogramDistributionElement extends ADistributionElement {
 	 * @param location
 	 * @return
 	 */
-	private Iterable<Integer> toBins(GLLocation location) {
+	private List<DistributionEntry> toBins(GLLocation location) {
 		float w = dim.select(getSize());
 		w -= HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW * 2;
-		final Histogram hist = data.getHist();
-		final float delta = w / hist.size();
+		List<DistributionEntry> entries = data.getEntries();
+		final float delta = w / entries.size();
 		final float lineWidth = Math.min(delta - 1, 25);
 		final float lineWidthHalf = lineWidth * 0.5f;
 		float x = delta / 2 + HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW;
-		List<Integer> r = new ArrayList<>(hist.size());
-		for (int i = 0; i < hist.size(); ++i) {
+		List<DistributionEntry> r = new ArrayList<>(entries.size());
+		for (int i = 0; i < entries.size(); ++i) {
 			float xi = x + delta * i - lineWidthHalf;
 			float wi = lineWidth;
 			if ((xi + wi) < location.getOffset())
 				continue;
 			if (xi > location.getOffset2())
 				break;
-			r.add(i);
+			r.add(entries.get(i));
 		}
 		return r;
 	}

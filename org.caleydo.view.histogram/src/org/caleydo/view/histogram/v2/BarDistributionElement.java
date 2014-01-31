@@ -7,14 +7,15 @@ package org.caleydo.view.histogram.v2;
 
 import gleem.linalg.Vec2f;
 
+import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDimension;
-import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 import org.caleydo.view.histogram.v2.internal.IDistributionData;
+import org.caleydo.view.histogram.v2.internal.IDistributionData.DistributionEntry;
 
 import com.google.common.collect.DiscreteDomains;
 import com.google.common.collect.Ranges;
@@ -37,11 +38,12 @@ public class BarDistributionElement extends ADistributionElement {
 	protected void render(GLGraphics g, float w, float h) {
 		final float factor = (vertical ? h : w) / data.size();
 		float x = 0;
-		final Histogram hist = data.getHist();
-		for (int i = 0; i < hist.size(); ++i) {
-			int bucket = hist.get(i);
-			float v = bucket * factor;
-			g.color(toHighlight(data.getBinColor(i), i));
+		final List<DistributionEntry> entries = data.getEntries();
+		final int size = entries.size();
+		for (int i = 0; i < size; ++i) {
+			DistributionEntry bucket = entries.get(i);
+			float v = bucket.getValue() * factor;
+			g.color(toHighlight(bucket.getColor(), i));
 			g.pushName(bucketPickingIds.get(i));
 			if (vertical)
 				g.fillRect(0, x, w, v);
@@ -54,9 +56,9 @@ public class BarDistributionElement extends ADistributionElement {
 			if (RenderStyle.COLOR_BORDER != null) {
 				g.color(RenderStyle.COLOR_BORDER);
 				x = 0;
-				for (int i = 0; i < hist.size(); ++i) {
-					int bucket = hist.get(i);
-					float v = bucket * factor;
+				for (int i = 0; i < size; ++i) {
+					DistributionEntry bucket = entries.get(i);
+					float v = bucket.getValue() * factor;
 					if (vertical)
 						g.drawRect(0, x, w, v);
 					else
@@ -71,14 +73,14 @@ public class BarDistributionElement extends ADistributionElement {
 					continue;
 				g.color(toHighlightColor(selectionType));
 				x = 0;
-				for (int i = 0; i < hist.size(); ++i) {
-					Set<Integer> ids = hist.getIDsForBucket(i);
-					float v = Sets.intersection(elements, ids).size() * factor;
+				for (int i = 0; i < size; ++i) {
+					DistributionEntry bucket = entries.get(i);
+					float v = Sets.intersection(elements, bucket.getIDs()).size() * factor;
 					if (vertical)
 						g.fillRect(0, x, w, v);
 					else
 						g.fillRect(x, 0, v, h);
-					v = hist.get(i) * factor;
+					v = bucket.getValue() * factor;
 					x += v;
 				}
 			}

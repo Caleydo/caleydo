@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
@@ -30,6 +29,7 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 import org.caleydo.view.histogram.v2.internal.IDistributionData;
+import org.caleydo.view.histogram.v2.internal.IDistributionData.DistributionEntry;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.Sets;
@@ -84,19 +84,20 @@ public abstract class ADistributionElement extends PickableGLElement implements 
 
 	@Override
 	public String getLabel(Pick pick) {
-		final Histogram hist = data.getHist();
 		int bucket = pick.getObjectID();
 		StringBuilder b = new StringBuilder();
-		final int count = hist.get(bucket);
-		b.append(String.format("%s: %d (%.2f%%)", data.getBinName(bucket), count, count * 100. / data.size()));
+		final DistributionEntry entry = data.get(bucket);
+		b.append(String.format("%s: %d (%.2f%%)", entry.getLabel(), entry.getValue() * data.size(),
+				entry.getValue() * 100));
 		for (SelectionType selectionType : SELECTIONTYPES) {
 			Set<Integer> elements = data.getElements(selectionType);
 			if (elements.isEmpty())
 				continue;
-			Set<Integer> ids = hist.getIDsForBucket(bucket);
+			Set<Integer> ids = entry.getIDs();
 			int scount = Sets.intersection(elements, ids).size();
 			if (scount > 0)
-				b.append(String.format("\n  %s: %d (%.2f%%)", selectionType.getType(), scount, scount * 100f / count));
+				b.append(String.format("\n  %s: %d (%.2f%%)", selectionType.getType(), scount,
+						scount * 100f / ids.size()));
 		}
 		return b.toString();
 	}
@@ -105,12 +106,11 @@ public abstract class ADistributionElement extends PickableGLElement implements 
 	 * @param pick
 	 */
 	protected void onBucketPick(Pick pick) {
-		final Histogram hist = data.getHist();
 		int bucket = pick.getObjectID();
 		switch (pick.getPickingMode()) {
 		case MOUSE_OVER:
 			hovered = bucket;
-			data.select(hist.getIDsForBucket(pick.getObjectID()), SelectionType.MOUSE_OVER, true);
+			data.select(data.get(pick.getObjectID()).getIDs(), SelectionType.MOUSE_OVER, true);
 			repaint();
 			break;
 		case MOUSE_OUT:
@@ -120,7 +120,7 @@ public abstract class ADistributionElement extends PickableGLElement implements 
 			break;
 		case CLICKED:
 			// select bucket:
-			data.select(hist.getIDsForBucket(pick.getObjectID()), SelectionType.SELECTION, true);
+			data.select(data.get(pick.getObjectID()).getIDs(), SelectionType.SELECTION, true);
 			break;
 		default:
 			break;

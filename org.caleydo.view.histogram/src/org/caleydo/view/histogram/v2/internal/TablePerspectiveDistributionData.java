@@ -5,7 +5,9 @@
  ******************************************************************************/
 package org.caleydo.view.histogram.v2.internal;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.CategoricalHistogram;
@@ -17,7 +19,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.TablePerspectiveSelectionMixin;
 import org.caleydo.core.data.selection.TablePerspectiveSelectionMixin.ITablePerspectiveMixinCallback;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
-import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 
 import com.google.common.base.Supplier;
@@ -31,8 +32,8 @@ public class TablePerspectiveDistributionData implements IDistributionData, ITab
 	@DeepScan
 	protected final TablePerspectiveSelectionMixin selections;
 
-	private CategoricalHistogram hist;
 	private int histTotal;
+	private List<DistributionEntry> entries;
 
 	private GLElement callback;
 
@@ -77,21 +78,42 @@ public class TablePerspectiveDistributionData implements IDistributionData, ITab
 	public void onVAUpdate(TablePerspective tablePerspective) {
 		Histogram hist = tablePerspective.getContainerStatistics().getHistogram();
 		assert hist instanceof CategoricalHistogram;
-		this.hist = (CategoricalHistogram) hist;
+		CategoricalHistogram chist = (CategoricalHistogram) hist;
+
+		float factor;
+		if (tablePerspective.getParentTablePerspective() != null)
+			factor = 1.f / tablePerspective.getParentTablePerspective().getContainerStatistics().getHistogram()
+					.getLargestValue();
+		else
+			factor = 1.f / hist.getLargestValue();
 
 		int total = 0;
+		this.entries = new ArrayList<DistributionEntry>(hist.size());
 		for (int i = 0; i < hist.size(); ++i) {
 			total += hist.get(i);
+			float value = hist.get(i) * factor;
+			entries.add(new DistributionEntry(chist.getName(i), chist.getColor(i), value, hist.getIDsForBucket(i)));
 		}
 		total += hist.getNanCount();
 		histTotal = total;
+
 
 		callback.repaintAll();
 	}
 
 	@Override
-	public int getBinOf(int dataIndex) {
-		return -1;
+	public DistributionEntry getOf(int dataIndex) {
+		return null;
+	}
+
+	@Override
+	public DistributionEntry get(int entry) {
+		return entries.get(entry);
+	}
+
+	@Override
+	public List<DistributionEntry> getEntries() {
+		return entries;
 	}
 
 	@Override
@@ -103,20 +125,6 @@ public class TablePerspectiveDistributionData implements IDistributionData, ITab
 		selections.fireRecordSelectionDelta();
 	}
 
-	@Override
-	public Histogram getHist() {
-		return hist;
-	}
-
-	@Override
-	public String getBinName(int bin) {
-		return hist.getName(bin);
-	}
-
-	@Override
-	public Color getBinColor(int bin) {
-		return hist.getColor(bin);
-	}
 
 	@Override
 	public int size() {
