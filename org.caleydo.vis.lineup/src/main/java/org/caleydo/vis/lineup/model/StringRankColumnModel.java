@@ -27,6 +27,7 @@ import org.caleydo.vis.lineup.internal.event.SearchEvent;
 import org.caleydo.vis.lineup.internal.event.SearchEvent.SearchResult;
 import org.caleydo.vis.lineup.internal.ui.StringFilterDialog;
 import org.caleydo.vis.lineup.internal.ui.StringSearchDialog;
+import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.lineup.model.mixin.IRankColumnModel;
@@ -47,7 +48,7 @@ import com.google.common.base.Function;
  *
  */
 public class StringRankColumnModel extends ABasicFilterableRankColumnModel implements IGrabRemainingHorizontalSpace,
-		IFilterColumnMixin, IRankableColumnMixin, ISearchableColumnMixin {
+		IFilterColumnMixin, IRankableColumnMixin, ISearchableColumnMixin, IDataBasedColumnMixin {
 	/**
 	 * different strategies for filter modi
 	 *
@@ -137,6 +138,14 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	@Override
 	public StringRankColumnModel clone() {
 		return new StringRankColumnModel(this);
+	}
+
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	@Override
+	public Function<IRow, String> getData() {
+		return data;
 	}
 
 	@Override
@@ -275,6 +284,13 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	@Override
 	public boolean isFiltered() {
 		return filter != null;
+	}
+
+	/**
+	 * @return the filter, see {@link #filter}
+	 */
+	public String getFilter() {
+		return filter;
 	}
 
 	@Override

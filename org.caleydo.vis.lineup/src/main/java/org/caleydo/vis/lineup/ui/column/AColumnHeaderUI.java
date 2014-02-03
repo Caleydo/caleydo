@@ -174,7 +174,7 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 
 		@Override
 		public void onDropped(IDnDItem info) {
-			if (info.getType() != EDnDType.NONE)
+			if (info.getType() != EDnDType.NONE && context != null)
 				context.getMouseLayer().removeDragSource(this);
 		}
 

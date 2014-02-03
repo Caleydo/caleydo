@@ -136,7 +136,7 @@ public final class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<C
 		});
 	}
 
-	protected void setFilter(Collection<CATEGORY_TYPE> filter, boolean isFilterNA, boolean isGlobalFilter,
+	public void setFilter(Collection<CATEGORY_TYPE> filter, boolean isFilterNA, boolean isGlobalFilter,
 			boolean isRankIndependentFilter) {
 		if (filter.equals(selection) && isFilterNA == this.filterNA && this.isGlobalFilter == isGlobalFilter
 				&& this.isRankIndependentFilter == isRankIndependentFilter)
@@ -153,6 +153,13 @@ public final class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<C
 	@Override
 	public boolean isFiltered() {
 		return selection.size() < metaData.size();
+	}
+
+	/**
+	 * @return the selection, see {@link #selection}
+	 */
+	public Set<CATEGORY_TYPE> getSelection() {
+		return selection;
 	}
 
 	/**

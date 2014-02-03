@@ -25,6 +25,7 @@ import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.ui.DateFilterDialog;
+import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.lineup.ui.GLPropertyChangeListeners;
@@ -40,7 +41,7 @@ import com.google.common.base.Function;
  *
  */
 public final class DateRankColumnModel extends ABasicFilterableRankColumnModel implements IRankableColumnMixin,
-		IFilterColumnMixin, Cloneable {
+		IFilterColumnMixin, Cloneable, IDataBasedColumnMixin {
 	private final Function<IRow, Date> data;
 
 	public enum DateMode {
@@ -113,6 +114,14 @@ public final class DateRankColumnModel extends ABasicFilterableRankColumnModel i
 		return new DateRankColumnModel(this);
 	}
 
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	@Override
+	public Function<IRow, Date> getData() {
+		return data;
+	}
+
 	@Override
 	public GLElement createSummary(boolean interactive) {
 		return new MyHeaderElement(interactive);
@@ -155,14 +164,17 @@ public final class DateRankColumnModel extends ABasicFilterableRankColumnModel i
 	}
 
 	/**
-	 * @param first
-	 * @param second
-	 * @param filterGlobally
-	 * @param filterRankIndendent
+	 * @return the from, see {@link #from}
 	 */
-	public void setFilter(Date first, Date second, boolean filterGlobally, boolean filterRankIndendent) {
-		// TODO Auto-generated method stub
+	public Calendar getFrom() {
+		return from;
+	}
 
+	/**
+	 * @return the to, see {@link #to}
+	 */
+	public Calendar getTo() {
+		return to;
 	}
 
 	@Override
