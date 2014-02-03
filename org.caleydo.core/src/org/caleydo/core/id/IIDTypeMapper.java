@@ -6,6 +6,7 @@
 package org.caleydo.core.id;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Function;
@@ -20,6 +21,8 @@ public interface IIDTypeMapper<K, V> extends Function<K, Set<V>> {
 	IDType getSource();
 
 	IDType getTarget();
+
+	List<MappingType> getPath();
 
 	/**
 	 * maps the given set of ids at once
