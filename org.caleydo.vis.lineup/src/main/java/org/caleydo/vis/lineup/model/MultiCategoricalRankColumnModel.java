@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.ui.CatFilterDalog;
+import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
@@ -54,7 +55,7 @@ import com.google.common.collect.Multiset;
  */
 public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> extends
 		ABasicFilterableRankColumnModel implements IFilterColumnMixin, IGrabRemainingHorizontalSpace,
-		IRankableColumnMixin {
+		IRankableColumnMixin, IDataBasedColumnMixin {
 	private final Function<IRow, Set<CATEGORY_TYPE>> data;
 	private final Set<CATEGORY_TYPE> selection = new HashSet<>();
 	private final Set<CATEGORY_TYPE> categories;
@@ -110,6 +111,14 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 	@Override
 	public MultiCategoricalRankColumnModel<CATEGORY_TYPE> clone() {
 		return new MultiCategoricalRankColumnModel<>(this);
+	}
+
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	@Override
+	public Function<IRow, Set<CATEGORY_TYPE>> getData() {
+		return data;
 	}
 
 	/**

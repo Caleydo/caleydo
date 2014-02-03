@@ -26,6 +26,7 @@ import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.ui.CatFilterDalog;
+import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
@@ -47,7 +48,7 @@ import com.google.common.collect.Multiset;
 public final class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> extends
 		ABasicFilterableRankColumnModel implements
  IFilterColumnMixin, IGrabRemainingHorizontalSpace, Cloneable,
-		IRankableColumnMixin {
+		IRankableColumnMixin, IDataBasedColumnMixin {
 	private final Function<IRow, CATEGORY_TYPE> data;
 	private final Set<CATEGORY_TYPE> selection = new HashSet<>();
 	private final String labelNA;
@@ -101,6 +102,14 @@ public final class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<C
 
 	public Map<CATEGORY_TYPE, String> getMetaData() {
 		return metaData;
+	}
+
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	@Override
+	public Function<IRow, CATEGORY_TYPE> getData() {
+		return data;
 	}
 
 	@Override
