@@ -132,7 +132,10 @@ public class DnDAdapter implements DragSourceListener, DropTargetListener, KeyLi
 		if (this.source != null)
 			return;
 		log.debug(canvas.toString() + "creating DragSource");
-		source = new DragSource(getComposite(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK);
+		final Composite c = getComposite();
+		if (c.isDisposed())
+			return;
+		source = new DragSource(c, DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK);
 		source.setTransfer(new Transfer[] { CaleydoTransfer.getInstance(), FileTransfer.getInstance(),
 				URLTransfer.getInstance(), TextTransfer.getInstance() });
 		source.addDragListener(this);

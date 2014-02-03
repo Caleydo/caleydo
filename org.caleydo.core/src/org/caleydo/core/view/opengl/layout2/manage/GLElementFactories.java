@@ -297,5 +297,24 @@ public final class GLElementFactories {
 			return label;
 		}
 
+		@Override
+		public String toString() {
+			StringBuilder builder = new StringBuilder();
+			builder.append("ElementExtension [id=");
+			builder.append(id);
+			builder.append(", label=");
+			builder.append(label);
+			builder.append(", scaleType=");
+			builder.append(scaleType);
+			builder.append(", order=");
+			builder.append(order);
+			builder.append(", excludes=");
+			builder.append(excludes);
+			builder.append(", includes=");
+			builder.append(includes);
+			builder.append("]");
+			return builder.toString();
+		}
+
 	}
 }

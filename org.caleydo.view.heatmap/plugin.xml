@@ -64,5 +64,11 @@
                name="Horizontal Bar Plot"
                scaleType="dataDependent">
          </factory>
+         <factory
+               factory="org.caleydo.view.heatmap.v2.internal.SingleHeatMapElementFactory"
+               icon="resources/icons/heatmap.png"
+               name="HeatMap"
+               scaleType="dataDependent">
+         </factory>
       </extension>
 </plugin>

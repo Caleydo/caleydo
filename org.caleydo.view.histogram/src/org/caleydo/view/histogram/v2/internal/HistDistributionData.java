@@ -5,6 +5,7 @@
  *******************************************************************************/
 package org.caleydo.view.histogram.v2.internal;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +23,6 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-import com.google.common.collect.ImmutableList;
 
 /**
  * a distribution renderer based on a {@link Histogram}
@@ -34,28 +34,36 @@ public class HistDistributionData implements IDistributionData, MultiSelectionMa
 	@DeepScan
 	protected final MultiSelectionManagerMixin selections;
 
-	private final Histogram hist;
 	private final int size;
-	private final List<Color> colors;
-	private final List<String> labels;
-	private final List<Integer> ids;
+		private final List<Integer> ids;
 
 	private GLElement callback;
 
+	private List<DistributionEntry> entries;
 
-	public HistDistributionData(Histogram hist, IDType idType, String[] labels,
+	public HistDistributionData(Histogram hist, int largestBinSize, IDType idType, String[] labels,
  Color[] colors, List<Integer> ids) {
 		this.ids = ids;
-		this.colors = ImmutableList.copyOf(toColors(hist.size(), colors));
-		this.labels = ImmutableList.copyOf(toLabels(hist.size(), labels));
 		this.size = size(hist);
-		this.hist = hist;
+		this.entries = toDistributions(toColors(hist.size(), colors), toLabels(hist.size(), labels), hist, largestBinSize);
 		if (idType == null) {
 			this.selections = null;
 		} else {
 			this.selections = new MultiSelectionManagerMixin(this);
 			this.selections.add(new SelectionManager(idType));
 		}
+	}
+
+	private List<DistributionEntry> toDistributions(Color[] colors, String[] labels, Histogram hist, int largestBinSize) {
+		float f = 1.f / largestBinSize;
+		List<DistributionEntry> r = new ArrayList<>(hist.size());
+		for(int i = 0; i < hist.size(); ++i) {
+			float value = f * hist.get(i);
+			String label = i < labels.length ? labels[i] : "NoName";
+			Color color = i < colors.length ? colors[i] : Color.NEUTRAL_GREY;
+			r.add(new DistributionEntry(label, color, value, hist.getIDsForBucket(i)));
+		}
+		return r;
 	}
 
 	@Override
@@ -70,8 +78,6 @@ public class HistDistributionData implements IDistributionData, MultiSelectionMa
 
 	@Override
 	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
-		if (clazz.isInstance(hist))
-			return clazz.cast(hist);
 		return default_.get();
 	}
 
@@ -103,22 +109,33 @@ public class HistDistributionData implements IDistributionData, MultiSelectionMa
 
 
 	@Override
-	public Histogram getHist() {
-		return hist;
+	public List<DistributionEntry> getEntries() {
+		return entries;
 	}
 
 	@Override
-	public String getBinName(int bin) {
-		if (bin >= labels.size())
-			return "<NoName>";
-		return labels.get(bin);
+	public DistributionEntry get(int entry) {
+		return entries.get(entry);
 	}
 
 	@Override
-	public Color getBinColor(int bin) {
-		if (bin >= colors.size())
-			return Color.NEUTRAL_GREY;
-		return colors.get(bin);
+	public DistributionEntry getOf(int dataIndex) {
+		if (ids == null || ids.isEmpty()) {
+			// bin order
+			int offset = 0;
+			for (DistributionEntry entry : entries) {
+				offset += entry.getIDs().size();
+				if (offset >= dataIndex)
+					return entry;
+			}
+		} else {
+			Integer id = ids.get(dataIndex);
+			for (DistributionEntry entry : entries) {
+				if (entry.getIDs().contains(id))
+					return entry;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -142,26 +159,6 @@ public class HistDistributionData implements IDistributionData, MultiSelectionMa
 	@Override
 	public void onSelectionUpdate(SelectionManager manager) {
 		callback.repaint();
-	}
-
-	@Override
-	public int getBinOf(int dataIndex) {
-		if (ids == null || ids.isEmpty()) {
-			// bin order
-			int offset = 0;
-			for (int bin = 0; bin < hist.size(); ++bin) {
-				offset += hist.getIDsForBucket(bin).size();
-				if (offset >= dataIndex)
-					return bin;
-			}
-		} else {
-			Integer id = ids.get(dataIndex);
-			for (int bin = 0; bin < hist.size(); ++bin) {
-				if (hist.getIDsForBucket(bin).contains(id))
-					return bin;
-			}
-		}
-		return -1;
 	}
 
 	@Override

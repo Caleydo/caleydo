@@ -104,7 +104,7 @@ public class KaplanMaierElementFactory implements IGLElementFactory2 {
 		ListKaplanMeierElement elem = new ListKaplanMeierElement(l, ids, idType, detailLevel);
 		elem.setColor(context.get("color", Color.class, elem.getColor()));
 		elem.setXAxis(context.get("xAxis", String.class, elem.getXAxis()));
-		elem.setXMaxValue(context.getFloat("xMaxValue", elem.getXMaxValue()));
+		elem.setXMaxValue(context.getFloat("max", elem.getXMaxValue()));
 		elem.setYAxis(context.get("yAxis", String.class, elem.getYAxis()));
 		elem.setFillCurve(context.is("fillCurve"));
 

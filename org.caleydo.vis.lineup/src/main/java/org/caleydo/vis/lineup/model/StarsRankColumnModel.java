@@ -14,6 +14,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.lineup.data.ADoubleFunction;
 import org.caleydo.vis.lineup.data.IDoubleFunction;
 import org.caleydo.vis.lineup.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
@@ -30,7 +31,7 @@ import com.jogamp.common.util.IntObjectHashMap;
  */
 public final class StarsRankColumnModel extends ARankColumnModel implements IDoubleRankableColumnMixin,
 		IHideableColumnMixin, ICollapseableColumnMixin, Cloneable,
-		ISetableColumnMixin {
+ ISetableColumnMixin, IDataBasedColumnMixin {
 	private final int stars;
 	private final IDoubleFunction<IRow> data;
 	private final IntObjectHashMap valueOverrides = new IntObjectHashMap(3);
@@ -55,6 +56,14 @@ public final class StarsRankColumnModel extends ARankColumnModel implements IDou
 	@Override
 	public StarsRankColumnModel clone() {
 		return new StarsRankColumnModel(this);
+	}
+
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	@Override
+	public IDoubleFunction<IRow> getData() {
+		return data;
 	}
 
 	/**

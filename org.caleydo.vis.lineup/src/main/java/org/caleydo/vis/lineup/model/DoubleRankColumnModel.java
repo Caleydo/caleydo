@@ -11,6 +11,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
 import java.util.BitSet;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ import org.caleydo.vis.lineup.internal.ui.FloatFilterDialog;
 import org.caleydo.vis.lineup.internal.ui.FloatFilterDialog.FilterChecked;
 import org.caleydo.vis.lineup.model.mapping.IMappingFunction;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
@@ -52,7 +54,7 @@ import org.eclipse.swt.widgets.Display;
  *
  */
 public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel implements IMappedColumnMixin,
-		IDoubleRankableColumnMixin, ISetableColumnMixin, ISnapshotableColumnMixin {
+		IDoubleRankableColumnMixin, ISetableColumnMixin, ISnapshotableColumnMixin, IDataBasedColumnMixin {
 
 	private final IMappingFunction mapping;
 	private final IDoubleInferrer missingValueInferer;
@@ -116,6 +118,14 @@ public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel imple
 	@Override
 	public DoubleRankColumnModel clone() {
 		return new DoubleRankColumnModel(this);
+	}
+
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	@Override
+	public IDoubleFunction<IRow> getData() {
+		return data;
 	}
 
 	@Override
@@ -193,6 +203,13 @@ public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel imple
 		}
 	}
 
+	/**
+	 * @return the valueOverrides, see {@link #valueOverrides}
+	 */
+	public Map<IRow, Double> getValueOverrides() {
+		return Collections.unmodifiableMap(valueOverrides);
+	}
+
 	@Override
 	public Double apply(IRow row) {
 		return applyPrimitive(row);
@@ -221,6 +238,13 @@ public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel imple
 	@Override
 	public String getOriginalValue(IRow row) {
 		return format(data.applyPrimitive(row));
+	}
+
+	/**
+	 * @return the mapping, see {@link #mapping}
+	 */
+	public IMappingFunction getMapping() {
+		return mapping;
 	}
 
 	@Override

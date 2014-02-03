@@ -30,6 +30,7 @@ import org.caleydo.vis.lineup.config.IRankTableUIConfig;
 import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.ui.CatFilterDalog;
 import org.caleydo.vis.lineup.model.mapping.ICategoricalMappingFunction;
+import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
@@ -53,7 +54,7 @@ import com.google.common.base.Function;
  *
  */
 public final class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel implements
-		IFilterColumnMixin, IMappedColumnMixin, IDoubleRankableColumnMixin, Cloneable {
+		IFilterColumnMixin, IMappedColumnMixin, IDoubleRankableColumnMixin, Cloneable, IDataBasedColumnMixin {
 	private static final int MAX_CATEGORY_COLORS = 8;
 
 	private final Function<IRow, CATEGORY_TYPE> data;
@@ -102,6 +103,14 @@ public final class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicF
 	@Override
 	public boolean isComplexMapping() {
 		return mapping.isComplexMapping();
+	}
+
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	@Override
+	public Function<IRow, CATEGORY_TYPE> getData() {
+		return data;
 	}
 
 	@Override

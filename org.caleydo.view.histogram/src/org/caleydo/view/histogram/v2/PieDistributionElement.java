@@ -7,17 +7,18 @@ package org.caleydo.view.histogram.v2;
 
 import gleem.linalg.Vec2f;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
-import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 import org.caleydo.view.histogram.HistogramRenderStyle;
 import org.caleydo.view.histogram.v2.internal.IDistributionData;
+import org.caleydo.view.histogram.v2.internal.IDistributionData.DistributionEntry;
 
 import com.google.common.collect.Sets;
 
@@ -42,13 +43,17 @@ public class PieDistributionElement extends ADistributionElement {
 
 		GLU glu = g.glu();
 		GLUquadric quad = glu.gluNewQuadric();
-		double factor = 360. / data.size();
+		float s = 0;
+		List<DistributionEntry> entries = data.getEntries();
+		for (DistributionEntry entry : entries)
+			s += entry.getValue();
+		double factor = 360. / s;
 		double acc = 0;
-		final Histogram hist = data.getHist();
-		for(int i = 0; i < hist.size(); ++i) {
-			int bucket = hist.get(i);
-			double sweep = factor * bucket;
-			g.color(toHighlight(data.getBinColor(i), i));
+		final int bins = entries.size();
+		for (int i = 0; i < bins; ++i) {
+			DistributionEntry bucket = entries.get(i);
+			double sweep = factor * bucket.getValue();
+			g.color(toHighlight(bucket.getColor(), i));
 			g.pushName(bucketPickingIds.get(i));
 			if (sweep > 0)
 				glu.gluPartialDisk(quad, 0, r, toSlices(sweep), 2, acc, sweep);
@@ -61,9 +66,9 @@ public class PieDistributionElement extends ADistributionElement {
 			if (RenderStyle.COLOR_BORDER != null) {
 				g.color(RenderStyle.COLOR_BORDER);
 				acc = 0;
-				for (int i = 0; i < hist.size(); ++i) {
-					int bucket = hist.get(i);
-					double sweep = factor * bucket;
+				for (int i = 0; i < bins; ++i) {
+					DistributionEntry bucket = entries.get(i);
+					double sweep = factor * bucket.getValue();
 					if (sweep > 0)
 						glu.gluPartialDisk(quad, 0, r, toSlices(sweep), 2, acc, sweep);
 					acc += sweep;
@@ -76,12 +81,14 @@ public class PieDistributionElement extends ADistributionElement {
 					continue;
 				g.color(toHighlightColor(selectionType));
 				acc = 0;
-				for (int i = 0; i < hist.size(); ++i) {
-					Set<Integer> ids = hist.getIDsForBucket(i);
-					double sweep = factor * Sets.intersection(elements, ids).size();
+				for (int i = 0; i < bins; ++i) {
+					DistributionEntry bucket = entries.get(i);
+					final Set<Integer> ids = bucket.getIDs();
+					float p = ids.isEmpty() ? 0 : Sets.intersection(elements, ids).size() / ids.size();
+					double sweep = factor * p * bucket.getValue();
 					if (sweep > 0)
 						glu.gluPartialDisk(quad, 0, r, toSlices(sweep), 2, acc, sweep);
-					sweep = factor * hist.get(i);
+					sweep = factor * bucket.getValue();
 					acc += sweep;
 				}
 			}

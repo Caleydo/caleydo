@@ -23,6 +23,7 @@ import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.lineup.internal.event.IntegerFilterEvent;
 import org.caleydo.vis.lineup.internal.ui.IntegerFilterDialog;
+import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.lineup.ui.GLPropertyChangeListeners;
@@ -38,7 +39,7 @@ import com.google.common.base.Function;
  *
  */
 public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel implements IRankableColumnMixin,
-		IFilterColumnMixin {
+		IFilterColumnMixin, IDataBasedColumnMixin {
 	private final Function<IRow, Integer> data;
 
 	private int min = 0;
@@ -69,6 +70,14 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 	@Override
 	public IntegerRankColumnModel clone() {
 		return new IntegerRankColumnModel(this);
+	}
+
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	@Override
+	public Function<IRow, Integer> getData() {
+		return data;
 	}
 
 	@Override
@@ -106,6 +115,20 @@ public class IntegerRankColumnModel extends ABasicFilterableRankColumnModel impl
 		min = min2 == null ? 0 : min2.intValue();
 		max = max2 == null ? Integer.MAX_VALUE : max2.intValue();
 		propertySupport.firePropertyChange(PROP_FILTER, old, Pair.make(min, max));
+	}
+
+	/**
+	 * @return the min, see {@link #min}
+	 */
+	public int getMin() {
+		return min;
+	}
+
+	/**
+	 * @return the max, see {@link #max}
+	 */
+	public int getMax() {
+		return max;
 	}
 
 	@Override

@@ -45,7 +45,8 @@ public class DistributionBarElementFactory extends ADistributionBarElementFactor
 		if (dim == bar.getDimension()) {
 			b = GLElementDimensionDesc.newCountDependent(1).locateUsing(bar);
 		} else {
-			b = GLElementDimensionDesc.newFix(dim.select(((IHasMinSize) elem).getMinSize()));
+			final float min = dim.select(((IHasMinSize) elem).getMinSize());
+			b = GLElementDimensionDesc.newFix(min).inRange(min, min);
 		}
 		return b.build();
 	}
