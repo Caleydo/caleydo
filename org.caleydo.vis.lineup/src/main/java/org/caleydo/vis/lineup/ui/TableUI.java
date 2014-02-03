@@ -70,6 +70,11 @@ public class TableUI extends GLElementContainer implements IGLLayout, IPickingLi
 	}
 
 	@Override
+	public Vec2f getMinSize() {
+		return getLayoutDataAs(Vec2f.class, new Vec2f(0, 0));
+	}
+
+	@Override
 	public void pick(Pick pick) {
 		if (pick.getPickingMode() == PickingMode.MOUSE_WHEEL) {
 			int r = ((IMouseEvent) pick).getWheelRotation();
