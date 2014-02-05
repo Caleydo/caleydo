@@ -90,6 +90,14 @@ public class GLLayouts {
 		return new GLFlowLayout(false, gap, GLPadding.ZERO);
 	}
 
+	public static IGLLayout2 sizeRestrictiveFlowHorizontal(float gap) {
+		return new GLSizeRestrictiveFlowLayout(true, gap, GLPadding.ZERO);
+	}
+
+	public static IGLLayout2 sizeRestrictiveFlowVertical(float gap) {
+		return new GLSizeRestrictiveFlowLayout(false, gap, GLPadding.ZERO);
+	}
+
 	/**
 	 * returns the default value if the value to check is lower than 0 or NaN
 	 *

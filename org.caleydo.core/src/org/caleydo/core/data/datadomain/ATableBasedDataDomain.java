@@ -1115,4 +1115,20 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		throw new IllegalStateException("ID Category " + idCategory + " not registered with this datadomain "
 				+ this.toString());
 	}
+
+	public IDType getDatasetDescriptionIDType(IDCategory idCategory) {
+		if (idCategory.equals(recordIDCategory)) {
+			if (isColumnDimension()) {
+				return IDType.getIDType(dataSetDescription.getRowIDSpecification().getIdType());
+			} else {
+				return IDType.getIDType(dataSetDescription.getColumnIDSpecification().getIdType());
+			}
+		} else {
+			if (isColumnDimension()) {
+				return IDType.getIDType(dataSetDescription.getColumnIDSpecification().getIdType());
+			} else {
+				return IDType.getIDType(dataSetDescription.getRowIDSpecification().getIdType());
+			}
+		}
+	}
 }
