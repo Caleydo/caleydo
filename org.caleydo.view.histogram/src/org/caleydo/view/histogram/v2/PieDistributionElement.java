@@ -107,7 +107,7 @@ public class PieDistributionElement extends ADistributionElement {
 
 	@Override
 	public final Vec2f getMinSize() {
-		return new Vec2f(200, 200);
+		return new Vec2f(100, 100);
 	}
 
 	@Override

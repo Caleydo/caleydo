@@ -87,7 +87,7 @@ public abstract class ADistributionElement extends PickableGLElement implements 
 		int bucket = pick.getObjectID();
 		StringBuilder b = new StringBuilder();
 		final DistributionEntry entry = data.get(bucket);
-		b.append(String.format("%s: %d (%.2f%%)", entry.getLabel(), entry.getValue() * data.size(),
+		b.append(String.format("%s: %f (%.2f%%)", entry.getLabel(), entry.getValue() * data.size(),
 				entry.getValue() * 100));
 		for (SelectionType selectionType : SELECTIONTYPES) {
 			Set<Integer> elements = data.getElements(selectionType);
