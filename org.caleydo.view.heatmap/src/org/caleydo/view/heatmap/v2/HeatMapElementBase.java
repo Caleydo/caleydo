@@ -304,13 +304,13 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 		g.incZ();
 		if (blurNotSelected) {
 			renderBlurSelection(g, SelectionType.SELECTION, w, h);
-			record.render(g, SelectionType.MOUSE_OVER, w, h);
-			dimension.render(g, SelectionType.MOUSE_OVER, w, h);
+			record.renderSelectionRects(g, SelectionType.MOUSE_OVER, w, h, true);
+			dimension.renderSelectionRects(g, SelectionType.MOUSE_OVER, w, h, true);
 		} else { // as selection rects
-			record.render(g, SelectionType.SELECTION, w, h);
-			dimension.render(g, SelectionType.SELECTION, w, h);
-			record.render(g, SelectionType.MOUSE_OVER, w, h);
-			dimension.render(g, SelectionType.MOUSE_OVER, w, h);
+			record.renderSelectionRects(g, SelectionType.SELECTION, w, h, false);
+			dimension.renderSelectionRects(g, SelectionType.SELECTION, w, h, false);
+			record.renderSelectionRects(g, SelectionType.MOUSE_OVER, w, h, false);
+			dimension.renderSelectionRects(g, SelectionType.MOUSE_OVER, w, h, false);
 		}
 		g.lineWidth(1);
 		g.decZ();

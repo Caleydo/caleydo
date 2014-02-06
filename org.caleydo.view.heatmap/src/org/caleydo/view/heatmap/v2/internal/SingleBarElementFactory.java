@@ -46,7 +46,6 @@ public class SingleBarElementFactory extends ASingleElementFactory {
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
 		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
-		boolean blurNotSelected = context.is("blurNotSelected");
 
 		IHeatMapDataProvider data;
 		EDimension dim;
@@ -80,7 +79,7 @@ public class SingleBarElementFactory extends ASingleElementFactory {
 				Functions.constant(context.get("color", Color.class, Color.BLACK)));
 		value2bar = extractValue2Bar(context);
 
-		return new SingleBarPlotElement(data, detailLevel, blurNotSelected, dim, id2double, value2bar, id2color);
+		return new SingleBarPlotElement(data, detailLevel, dim, id2double, value2bar, id2color);
 	}
 
 	/**
