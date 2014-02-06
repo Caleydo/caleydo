@@ -73,8 +73,4 @@ public enum EDimension {
 	public <T> T select(T dim, T rec) {
 		return this == DIMENSION ? dim : rec;
 	}
-
-	public <T> T selectZL(T z, T l) {
-		return this == DIMENSION ? z : l;
-	}
 }

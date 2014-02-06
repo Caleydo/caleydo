@@ -41,10 +41,7 @@ public class IDMappingDescription {
 	protected boolean resolveCodeMappingUsingCodeToId_LUT;
 
 	public void addMapping() {
-		IDCategory category = IDCategory.getIDCategory(idCategory);
-		if (category == null) {
-			IDCategory.registerCategory(idCategory);
-		}
+		IDCategory category = IDCategory.registerCategoryIfAbsent(idCategory);
 
 		IDMappingParser.loadMapping(fileName, parsingStartLine, parsingStopLine,
 				getOrCreateIDType(fromIDType, fromDataType), getOrCreateIDType(toIDType, toDataType), delimiter,
