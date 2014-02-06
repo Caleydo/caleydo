@@ -19,6 +19,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IPopupLayer.IPopupElement;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
@@ -37,7 +38,8 @@ import org.eclipse.swt.SWT;
  * @author Samuel Gratzl
  *
  */
-class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer, GLButton.ISelectionCallback {
+class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer, GLButton.ISelectionCallback,
+		IPopupElement {
 	private static final int FLAG_HAS_HEADER = FLAG_MOVEABLE | FLAG_COLLAPSABLE;
 	private final GLElement content;
 	private final int flags;
@@ -72,10 +74,16 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		this.add(resize);
 
 		if (bounds != null) {
-			this.setSize(bounds.width(), bounds.height() + (isFlagSet(FLAG_HAS_HEADER) ? 8 : 0));
+			setContentSize(bounds.width(), bounds.height());
 			this.setLayoutData(bounds.xy()); // store the encoded location within the layout data
 		}
 		setVisibility(EVisibility.PICKABLE); // as a barrier to the underlying
+	}
+
+	@Override
+	public void setContentSize(float w, float h) {
+		this.setSize(w, h + (isFlagSet(FLAG_HAS_HEADER) ? 8 : 0));
+		relayout();
 	}
 
 	@Override
@@ -227,6 +235,17 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		Vec2f s = this.getSize();
 		setSize(s.x() + dx, s.y() + dy);
 		relayout();
+	}
+
+	@Override
+	public void shift(float dx, float dy) {
+		Vec2f xy = getLocation();
+		setLocation(xy.x() + dx, xy.y() + dy);
+	}
+
+	@Override
+	public void hide() {
+		findParent(PopupLayer.class).remove(this);
 	}
 
 	class Resize extends PickableGLElement {

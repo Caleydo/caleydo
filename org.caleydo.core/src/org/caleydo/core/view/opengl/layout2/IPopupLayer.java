@@ -71,5 +71,13 @@ public interface IPopupLayer {
 	 * @return
 	 */
 	Vec2f getSize();
+
+	public interface IPopupElement {
+		void hide();
+
+		void shift(float dx, float dy);
+
+		void setContentSize(float w, float h);
+	}
 }
 

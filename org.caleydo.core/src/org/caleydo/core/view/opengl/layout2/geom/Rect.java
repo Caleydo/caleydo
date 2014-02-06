@@ -9,6 +9,7 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
 import java.awt.geom.Rectangle2D;
+import java.util.Objects;
 
 /**
  * a custom implementation of a rect to avoid awt
@@ -272,5 +273,21 @@ public final class Rect implements Cloneable {
 
 	public boolean contains(float x, float y) {
 		return asRectangle2D().contains(x, y);
+	}
+
+	/**
+	 * @param boundingBox
+	 */
+	public static Rect union(Rect a, Rect b) {
+		if (Objects.equals(a, b))
+			return a == null ? null : a.clone();
+		if (a == null)
+			return b.clone();
+		if (b == null)
+			return a.clone();
+		Rect r = new Rect(Math.min(a.x(), b.x()), Math.min(a.y(), b.y()), 0, 0);
+		r.x2(Math.max(a.x2(), b.x2()));
+		r.y2(Math.max(a.y2(), b.y2()));
+		return r;
 	}
 }
