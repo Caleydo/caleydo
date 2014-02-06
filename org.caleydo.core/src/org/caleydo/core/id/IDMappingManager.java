@@ -822,6 +822,11 @@ public class IDMappingManager {
 		private IDMappingManager getOuterType() {
 			return IDMappingManager.this;
 		}
+
+		@Override
+		public List<MappingType> getPath() {
+			return path;
+		}
 	}
 
 	// public void printGraph() {

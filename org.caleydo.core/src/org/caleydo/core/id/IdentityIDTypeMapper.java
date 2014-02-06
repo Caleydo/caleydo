@@ -7,6 +7,7 @@ package org.caleydo.core.id;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.Collections2;
@@ -93,6 +94,11 @@ final class IdentityIDTypeMapper<K, V> implements IIDTypeMapper<K, V> {
 	@Override
 	public boolean isOne2OneMapping() {
 		return true;
+	}
+
+	@Override
+	public List<MappingType> getPath() {
+		return null;
 	}
 
 }
