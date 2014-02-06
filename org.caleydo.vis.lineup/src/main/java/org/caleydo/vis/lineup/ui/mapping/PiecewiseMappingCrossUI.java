@@ -13,8 +13,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import javax.media.opengl.GL2;
-
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -337,11 +335,10 @@ public class PiecewiseMappingCrossUI extends MappingCrossUI<PiecewiseMapping> im
 			if (mode != EMode.PSEUDO)
 				g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), -5, -5, 10, 10, color);
 			else {
-				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
-				g.gl.glLineStipple(2, (short) 0xAAAA);
+				g.lineStippled(2, (short) 0xAAAA);
 				g.lineWidth(2);
 				g.color(color).drawCircle(0, 0, 5);
-				g.gl.glDisable(GL2.GL_LINE_STIPPLE);
+				g.lineStippled(false);
 				g.lineWidth(1);
 			}
 			// g.fillCircle(0, 0, 5);

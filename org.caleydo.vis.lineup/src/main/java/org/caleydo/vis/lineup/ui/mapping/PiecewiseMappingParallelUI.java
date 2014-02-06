@@ -10,8 +10,6 @@ import gleem.linalg.Vec2f;
 import java.util.List;
 import java.util.Map;
 
-import javax.media.opengl.GL2;
-
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -302,9 +300,7 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 				}
 				break;
 			case PSEUDO:
-				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
-				g.gl.glLineStipple(2, (short) 0xAAAA);
-				g.lineWidth(2);
+				g.lineStippled(2, (short) 0xAAAA).lineWidth(2);
 				if (isHorizontal) {
 					float x2 = (float) f * w;
 					float x1 = (float) t * w;
@@ -318,8 +314,7 @@ public class PiecewiseMappingParallelUI extends MappingParallelUI<PiecewiseMappi
 					g.drawCircle(0, y1, 5);
 					g.drawCircle(w, y2, 5);
 				}
-				g.gl.glDisable(GL2.GL_LINE_STIPPLE);
-				g.lineWidth(1);
+				g.lineStippled(false).lineWidth(1);
 				break;
 			}
 		}

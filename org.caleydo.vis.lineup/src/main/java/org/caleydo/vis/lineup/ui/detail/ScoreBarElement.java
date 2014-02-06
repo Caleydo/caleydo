@@ -71,10 +71,9 @@ public class ScoreBarElement extends ValueElement {
 			}
 			g.fillRect(0, 1, w - 2, h - 2);
 			if (inferred) {
-				g.gl.glLineStipple(4, (short) 0xAAAA);
-				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
+				g.lineStippled(4, (short) 0xAAAA);
 				g.color(0, 0, 0, .5f).drawRect(1, 2, w - 4, h - 4);
-				g.gl.glDisable(GL2.GL_LINE_STIPPLE);
+				g.lineStippled(false);
 			}
 		} else {
 			// score bar
@@ -84,10 +83,9 @@ public class ScoreBarElement extends ValueElement {
 			} else
 				g.fillRect(0, 1, w * v_f, h - 2);
 			if (inferred) {
-				g.gl.glLineStipple(1, (short) 0xAAAA);
-				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
+				g.lineStippled(1, (short) 0xAAAA);
 				g.color(0, 0, 0, .5f).drawRect(0, 1, w * v_f, h - 2);
-				g.gl.glDisable(GL2.GL_LINE_STIPPLE);
+				g.lineStippled(false);
 			} else if (getRenderInfo().getBarOutlineColor() != null) {
 				// outline
 				g.color(getRenderInfo().getBarOutlineColor()).drawRect(0, 1, w * v_f, h - 2);

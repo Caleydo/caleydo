@@ -134,7 +134,7 @@ public class DimensionRenderer {
 		// } else if (type == SelectionType.MOUSE_OVER) {
 		// g.lineWidth(MOUSE_OVER_LINE_WIDTH);
 		// }
-		g.gl.glLineWidth(3);
+		g.lineWidth(3);
 		// dimension selection
 		// if (isDimension) {
 		// g.gl.glEnable(GL2.GL_LINE_STIPPLE);
