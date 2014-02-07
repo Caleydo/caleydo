@@ -290,4 +290,11 @@ public final class Rect implements Cloneable {
 		r.y2(Math.max(a.y2(), b.y2()));
 		return r;
 	}
+
+	/**
+	 * @param miniMapFactor
+	 */
+	public Rect times(float v) {
+		return new Rect(x * v, y * v, width * v, height * v);
+	}
 }
