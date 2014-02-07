@@ -188,6 +188,9 @@ public final class ProjectManager {
 		SubMonitor monitor = GeneralManager.get().createSubProgressMonitor();
 		monitor.beginTask("Loading Data", dataDomainList.getDataDomains().size() * 10);
 
+		// load mappings before the data, as we possibly want to load some mapping such that we can load the data
+		loadIDMappings(dirName);
+
 		for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
 			DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
 
@@ -272,8 +275,6 @@ public final class ProjectManager {
 				monitor.worked(10);
 			}
 		}
-
-		loadIDMappings(dirName);
 
 		for (ISerializationAddon addon : serializationManager.getAddons()) {
 			addon.deserialize(dirName, unmarshaller, serializationData);
