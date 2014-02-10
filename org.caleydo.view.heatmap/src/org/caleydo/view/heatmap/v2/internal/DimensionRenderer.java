@@ -95,12 +95,11 @@ public class DimensionRenderer {
 		return getData().size();
 	}
 
-	public void render(GLGraphics g, SelectionType selectionType, float w, float h) {
+	public void renderSelectionRects(GLGraphics g, SelectionType selectionType, float w, float h, boolean fill) {
 		List<Integer> indices = prepareRender(selectionType);
 		final boolean isDimension = dim.isDimension();
 
-		renderSelectionRects(g, w, h, indices, selectionType, isDimension);
-
+		renderSelectionRects(g, w, h, indices, selectionType, isDimension, fill);
 	}
 
 	public List<Vec2f> getNotSelectedRanges(SelectionType type, float w, float h) {
@@ -127,19 +126,10 @@ public class DimensionRenderer {
 	}
 
 	private void renderSelectionRects(GLGraphics g, float w, float h, List<Integer> indices, SelectionType type,
-			final boolean isDimension) {
+			final boolean isDimension, boolean fill) {
 		g.color(type.getColor());
-		// if (type == SelectionType.SELECTION) {
-		// g.lineWidth(SELECTED_LINE_WIDTH);
-		// } else if (type == SelectionType.MOUSE_OVER) {
-		// g.lineWidth(MOUSE_OVER_LINE_WIDTH);
-		// }
-		g.gl.glLineWidth(3);
-		// dimension selection
-		// if (isDimension) {
-		// g.gl.glEnable(GL2.GL_LINE_STIPPLE);
-		// g.gl.glLineStipple(2, (short) 0xAAAA);
-		// }
+		if (!fill)
+			g.lineWidth(3);
 		int lastIndex = -1;
 		float x = 0;
 		float wi = 0;
@@ -148,9 +138,9 @@ public class DimensionRenderer {
 			{
 				// flush previous
 				if (isDimension)
-					g.drawRect(x, 0, wi, h);
+					renderRect(fill, g, x, 0, wi, h);
 				else
-					g.drawRect(0, x, w, wi);
+					renderRect(fill, g, 0, x, w, wi);
 				x = spacing.getPosition(index);
 				wi = 0;
 			}
@@ -159,12 +149,16 @@ public class DimensionRenderer {
 		}
 		if (wi > 0)
 			if (isDimension)
-				g.drawRect(x, 0, wi, h);
+				renderRect(fill, g, x, 0, wi, h);
 			else
-				g.drawRect(0, x, w, wi);
+				renderRect(fill, g, 0, x, w, wi);
+	}
 
-		// if (isDimension)
-		// g.gl.glDisable(GL2.GL_LINE_STIPPLE);
+	private static void renderRect(boolean fill, GLGraphics g, float x, float y, float w, float h) {
+		if (fill)
+			g.fillRect(x, y, w, h);
+		else
+			g.drawRect(x, y, w, h);
 	}
 
 	private List<Integer> prepareRender(SelectionType selectionType) {

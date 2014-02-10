@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.IPopupLayer;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
@@ -20,9 +21,9 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 /**
  * implementation of {@link IPopupLayer} using a {@link GLElementContainer} by using the layout data for meta data about
  * elements
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public final class PopupLayer extends GLElementContainer implements IPopupLayer, IGLLayout {
 
@@ -88,5 +89,6 @@ public final class PopupLayer extends GLElementContainer implements IPopupLayer,
 	public void show(GLElement popup, Rect bounds, int flags) {
 		this.add(new PopupElement(popup, bounds, flags));
 	}
+
 
 }

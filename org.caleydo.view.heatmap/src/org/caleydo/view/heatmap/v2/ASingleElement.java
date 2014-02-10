@@ -43,17 +43,11 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 	protected final DimensionRenderer renderer;
 	@DeepScan
 	protected final IHeatMapDataProvider data;
-	/**
-	 * wether to blur the not selected or show selection rects
-	 */
-	private final boolean blurNotSelected;
 	private final EDimension dim;
 
-	public ASingleElement(IHeatMapDataProvider data, EDetailLevel detailLevel,
- boolean blurNotSelected, EDimension dim) {
+	public ASingleElement(IHeatMapDataProvider data, EDetailLevel detailLevel, EDimension dim) {
 		this.data = data;
 		this.dim = dim;
-		this.blurNotSelected = blurNotSelected;
 		this.data.setCallback(this);
 		detailLevel = Objects.firstNonNull(detailLevel, EDetailLevel.LOW);
 
@@ -168,12 +162,9 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 		render(g, w, h, renderer.getSpacing());
 
 		g.incZ();
-		if (blurNotSelected) {
-			renderBlurSelection(g, SelectionType.SELECTION, w, h);
-			renderer.render(g, SelectionType.MOUSE_OVER, w, h);
-		} else { // as selection rects
-			renderer.render(g, SelectionType.SELECTION, w, h);
-			renderer.render(g, SelectionType.MOUSE_OVER, w, h);
+		{ // as selection rects
+			renderer.renderSelectionRects(g, SelectionType.SELECTION, w, h, true);
+			renderer.renderSelectionRects(g, SelectionType.MOUSE_OVER, w, h, true);
 		}
 		g.lineWidth(1);
 		g.decZ();
@@ -182,19 +173,6 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 	}
 
 	protected abstract void render(GLGraphics g, float w, float h, ISpacingLayout spacing);
-
-	private void renderBlurSelection(GLGraphics g, SelectionType type, float w, float h) {
-		List<Vec2f> dims = renderer.getNotSelectedRanges(type, w, h);
-		if (dims == null) // nothing selected or hoverded
-			return;
-		g.color(1, 1, 1, 0.5f);
-		if (this.dim.isHorizontal())
-			for (Vec2f dim : dims)
-				g.fillRect(dim.x(), 0, dim.y(), h);
-		else
-			for (Vec2f dim : dims)
-				g.fillRect(0, dim.x(), w, dim.y());
-	}
 
 	@Override
 	protected final void onClicked(Pick pick) {

@@ -39,10 +39,10 @@ public class SingleBarPlotElement extends ASingleElement {
 	 */
 	protected final Function<? super Integer, Color> id2color;
 
-	public SingleBarPlotElement(IHeatMapDataProvider data, EDetailLevel detailLevel, boolean blurNotSelected,
-			EDimension dim, Function<? super Integer, Double> id2double, Function<? super Double, Vec2f> value2bar,
+	public SingleBarPlotElement(IHeatMapDataProvider data, EDetailLevel detailLevel, EDimension dim,
+			Function<? super Integer, Double> id2double, Function<? super Double, Vec2f> value2bar,
 			Function<? super Integer, Color> id2color) {
-		super(data, detailLevel, blurNotSelected, dim);
+		super(data, detailLevel, dim);
 		this.id2double = id2double;
 		this.value2bar = value2bar;
 		this.id2color = id2color;

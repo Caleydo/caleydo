@@ -394,9 +394,9 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	}
 
 	private class ScrollBarImpl {
-		private final IScrollBar scrollBar;
-		private int pickingId;
-		private boolean needIt;
+		final IScrollBar scrollBar;
+		int pickingId;
+		boolean needIt;
 
 		public ScrollBarImpl(IScrollBar scrollBar) {
 			this.scrollBar = scrollBar;

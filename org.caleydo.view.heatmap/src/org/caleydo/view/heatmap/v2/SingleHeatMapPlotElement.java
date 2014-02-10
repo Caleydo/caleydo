@@ -33,9 +33,9 @@ public class SingleHeatMapPlotElement extends ASingleElement implements Function
 	private final IHeatMapRenderer hRenderer;
 	private final Function<? super Integer, Color> id2color;
 
-	public SingleHeatMapPlotElement(IHeatMapDataProvider data, EDetailLevel detailLevel, boolean blurNotSelected,
-			EDimension dim, Function<? super Integer, Color> id2color) {
-		super(data, detailLevel, blurNotSelected, dim);
+	public SingleHeatMapPlotElement(IHeatMapDataProvider data, EDetailLevel detailLevel, EDimension dim,
+			Function<? super Integer, Color> id2color) {
+		super(data, detailLevel, dim);
 		this.id2color = id2color;
 		this.hRenderer = new HeatMapRenderer(detailLevel, true, this);
 	}

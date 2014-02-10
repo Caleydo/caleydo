@@ -27,6 +27,12 @@ public class IDMappingDescription {
 	protected String idCategory;
 
 	protected String fromIDType;
+	/**
+	 * whether the from data type should be the primary of its category
+	 */
+	private boolean fromPrimary;
+	private boolean toHumanReadable;
+
 	protected EDataType fromDataType;
 	protected String toIDType;
 	protected EDataType toDataType;
@@ -42,12 +48,18 @@ public class IDMappingDescription {
 
 	public void addMapping() {
 		IDCategory category = IDCategory.getIDCategory(idCategory);
-		if (category == null) {
-			IDCategory.registerCategory(idCategory);
+		boolean new_ = category == null;
+		category = IDCategory.registerCategoryIfAbsent(idCategory);
+		final IDType to = getOrCreateIDType(toIDType, toDataType);
+		final IDType from = getOrCreateIDType(fromIDType, fromDataType);
+		if (new_ && fromPrimary && from.getDataType() == EDataType.INTEGER) {
+			category.setPrimaryMappingType(from);
+			if (toHumanReadable && to.getDataType() == EDataType.STRING)
+				category.setHumanReadableIDType(to);
 		}
 
 		IDMappingParser.loadMapping(fileName, parsingStartLine, parsingStopLine,
-				getOrCreateIDType(fromIDType, fromDataType), getOrCreateIDType(toIDType, toDataType), delimiter,
+ from, to, delimiter,
 				category, isMultiMapping, createReverseMapping,
 				resolveCodeMappingUsingCodeToId_LUT,
 				getOrCreateIDType(codeResolvedFromIDType, codeResolvedFromDataType),
@@ -61,6 +73,36 @@ public class IDMappingDescription {
 		if (idType != null)
 			return idType;
 		return IDType.registerType(typeName, IDCategory.getIDCategory(idCategory), dataType);
+	}
+
+	/**
+	 * @return the fromPrimary, see {@link #fromPrimary}
+	 */
+	public boolean isFromPrimary() {
+		return fromPrimary;
+	}
+
+	/**
+	 * @param fromPrimary
+	 *            setter, see {@link fromPrimary}
+	 */
+	public void setFromPrimary(boolean fromPrimary) {
+		this.fromPrimary = fromPrimary;
+	}
+
+	/**
+	 * @return the toHumanReadable, see {@link #toHumanReadable}
+	 */
+	public boolean isToHumanReadable() {
+		return toHumanReadable;
+	}
+
+	/**
+	 * @param toHumanReadable
+	 *            setter, see {@link toHumanReadable}
+	 */
+	public void setToHumanReadable(boolean toHumanReadable) {
+		this.toHumanReadable = toHumanReadable;
 	}
 
 	/**
