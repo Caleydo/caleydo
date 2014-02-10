@@ -59,6 +59,8 @@ import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.layout2.util.GLElementWindow;
+import org.caleydo.core.view.opengl.layout2.util.GLElementWindow.ICloseWindowListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -87,7 +89,6 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
 import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.event.FitToViewWidthEvent;
-import org.caleydo.view.entourage.GLWindow.ICloseWindowListener;
 import org.caleydo.view.entourage.MultiLevelSlideInElement.IWindowState;
 import org.caleydo.view.entourage.SlideInElement.ESlideInElementPosition;
 import org.caleydo.view.entourage.datamapping.DataMappers;
@@ -129,13 +130,13 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	private AnimatedGLElementContainer nodeInfoContainer = new AnimatedGLElementContainer(
 			new GLSizeRestrictiveFlowLayout(true, 10, GLPadding.ZERO));
 
-	private GLWindow activeWindow = null;
+	private GLEntourageWindow activeWindow = null;
 	private GLPathwayWindow portalFocusWindow = null;
 
 	private ShowPortalsAction showPortalsButton;
 	// private HighlightAllPortalsAction highlightAllPortalsButton;
 
-	protected GLWindow rankingWindow;
+	protected GLEntourageWindow rankingWindow;
 
 	// private List<IPathwayRepresentation> pathwayRepresentations = new ArrayList<>();
 
@@ -230,7 +231,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	protected Set<GLPathwayWindow> pinnedWindows = new HashSet<>();
 
-	private GLWindow windowToSetActive;
+	private GLEntourageWindow windowToSetActive;
 
 	private ColoredConnectionBandRenderer connectionBandRenderer = null;
 
@@ -483,7 +484,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL1).get(0));
 		// pathInfo.window.setShowViewSwitchingBar(false);
 		dataMappingWizard = new DataMappingWizard(this);
-		pathInfo.window.contentContainer.add(dataMappingWizard);
+		pathInfo.window.addContentLayer(dataMappingWizard);
 		// This assumes that a path level 2 view exists
 		// if (pathInfo.multiFormRenderer.getActiveRendererID() != rendererID) {
 		// pathInfo.multiFormRenderer.setActive(rendererID);
@@ -609,7 +610,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				// return;
 			}
 
-			private boolean setWindowActive(Vec2f mousePosition, GLWindow window) {
+			private boolean setWindowActive(Vec2f mousePosition, GLEntourageWindow window) {
 				Vec2f location = window.getAbsoluteLocation();
 				Vec2f size = window.getSize();
 				if ((mousePosition.x() >= location.x() && mousePosition.x() <= location.x() + size.x())
@@ -784,7 +785,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		final GLPathwayWindow pathwayWindow = new GLPathwayWindow(pathway.getTitle(), this, info, false);
 		pathwayWindow.onClose(new ICloseWindowListener() {
 			@Override
-			public void onWindowClosed(GLWindow w) {
+			public void onWindowClosed(GLElementWindow w) {
 				removePathwayWindow(pathwayWindow);
 			}
 		});
@@ -1073,13 +1074,14 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 						DataMappers.getDataMapper().show();
 						isEnRouteFirstTimeVisible = false;
 					}
-					pathInfo.window.titleBar.add(pathInfo.window.titleBar.size() - 1, fitEnrouteToViewWidthButton);
-					pathInfo.window.titleBar.add(pathInfo.window.titleBar.size() - 1, useColorMappingButton);
-					pathInfo.window.titleBar.add(pathInfo.window.titleBar.size() - 1, useCenterLineButton);
+					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1,
+							fitEnrouteToViewWidthButton);
+					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1, useColorMappingButton);
+					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1, useCenterLineButton);
 				} else {
-					pathInfo.window.titleBar.remove(fitEnrouteToViewWidthButton);
-					pathInfo.window.titleBar.remove(useColorMappingButton);
-					pathInfo.window.titleBar.remove(useCenterLineButton);
+					pathInfo.window.getTitleBar().remove(fitEnrouteToViewWidthButton);
+					pathInfo.window.getTitleBar().remove(useColorMappingButton);
+					pathInfo.window.getTitleBar().remove(useCenterLineButton);
 				}
 			}
 		}
@@ -1120,7 +1122,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	/**
 	 * @return the currentActiveBackground, see {@link #activeWindow}
 	 */
-	public GLWindow getActiveWindow() {
+	public GLElementWindow getActiveWindow() {
 		return activeWindow;
 	}
 
@@ -1128,7 +1130,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	 * @param currentActiveBackground
 	 *            setter, see {@link currentActiveBackground}
 	 */
-	public void setActiveWindow(GLWindow activeWindow) {
+	public void setActiveWindow(GLEntourageWindow activeWindow) {
 		if (activeWindow != null && this.activeWindow != null && activeWindow != this.activeWindow) {
 			this.activeWindow.setActive(false);
 		}

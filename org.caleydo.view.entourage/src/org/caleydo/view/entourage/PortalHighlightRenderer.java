@@ -23,6 +23,7 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
+import org.caleydo.core.view.opengl.layout2.util.GLElementWindow.GLTitleBar;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.entourage.GLEntourage.PathwayMultiFormInfo;
 
@@ -84,7 +85,7 @@ public class PortalHighlightRenderer extends PickableGLElement {
 		// System.out.println("highight out");
 		window.setTitleBarColor(GLTitleBar.DEFAULT_COLOR);
 		window.setBackgroundColor(GLPathwayBackground.DEFAULT_COLOR);
-		window.titleBar.setHighlight(false);
+		window.getTitleBar().setHighlight(false);
 	}
 
 	// @Override

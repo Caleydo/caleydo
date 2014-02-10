@@ -341,4 +341,9 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 		return pathway.getHeight() * 0.8f;
 	}
 
+	@Override
+	public Vec2f getMinSize() {
+		return new Vec2f(getMinWidth(), getMinHeight());
+	}
+
 }

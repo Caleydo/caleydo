@@ -32,7 +32,7 @@ import org.caleydo.view.entourage.GLEntourage.MultiFormInfo;
  * @author Christian
  *
  */
-public class GLMultiFormWindow extends GLWindow {
+public class GLMultiFormWindow extends GLEntourageWindow {
 
 	protected final MultiFormInfo info;
 	protected final GLElementViewSwitchingBar viewSwitchingBar;
