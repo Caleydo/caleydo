@@ -8,6 +8,8 @@ package org.caleydo.core.view.opengl.layout2.basic;
 import java.util.Locale;
 
 import org.caleydo.core.data.collection.EDimension;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -17,6 +19,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.layout2.basic.AInputBoxDialog.SetValueEvent;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.eclipse.swt.widgets.Composite;
@@ -381,6 +384,12 @@ public class GLSlider extends PickableGLElement {
 		}
 	};
 
+
+	@ListenTo(sendToMe = true)
+	private void onSetValueEvent(SetValueEvent event) {
+		setValue(Float.parseFloat(event.getValue()));
+	}
+
 	private class InputBox extends AInputBoxDialog {
 		public InputBox(Composite canvas) {
 			super(null, "Set Value", GLSlider.this, canvas);
@@ -388,7 +397,7 @@ public class GLSlider extends PickableGLElement {
 
 		@Override
 		protected void set(String value) {
-			setValue(Float.parseFloat(value));
+			EventPublisher.trigger(new SetValueEvent(value).to(GLSlider.this));
 		}
 
 		@Override
