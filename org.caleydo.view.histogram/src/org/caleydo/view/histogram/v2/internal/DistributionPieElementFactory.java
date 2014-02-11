@@ -26,7 +26,8 @@ public class DistributionPieElementFactory extends ADistributionBarElementFactor
 
 	@Override
 	public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
-		return GLElementDimensionDesc.newFix(dim.select(((IHasMinSize) elem).getMinSize())).build();
+		final float v = dim.select(((IHasMinSize) elem).getMinSize());
+		return GLElementDimensionDesc.newFix(v).minimum(v * 0.5f).build();
 	}
 
 	@Override

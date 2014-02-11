@@ -63,9 +63,10 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory2 {
 		final ABoxAndWhiskersElement b = (ABoxAndWhiskersElement) elem;
 		EDimension dir = b.getDirection();
 		Vec2f minSize = b.getMinSize();
+		final float v = dim.select(minSize);
 		if (dir == dim && b instanceof ListBoxAndWhiskersElement) {
 			// we can locate
-			return GLElementDimensionDesc.newFix(dim.select(minSize)).locateUsing(new ALocator() {
+			return GLElementDimensionDesc.newFix(v).minimum(v * 0.1f).locateUsing(new ALocator() {
 				private final ListBoxAndWhiskersElement vis = (ListBoxAndWhiskersElement) b;
 
 				@Override
@@ -80,7 +81,7 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory2 {
 			}).build();
 		} else {
 			// we cant
-			return GLElementDimensionDesc.newFix(dim.select(minSize)).build();
+			return GLElementDimensionDesc.newFix(v).minimum(v * 0.5f).build();
 		}
 	}
 
