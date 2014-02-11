@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.pathway.v2.ui;
 
+import gleem.linalg.Vec2f;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.core.view.opengl.layout2.layout.GLMinSizeProviders;
 import org.caleydo.view.pathway.Activator;
 
 /**
@@ -121,6 +124,11 @@ public class PathwayElement extends GLElementContainer {
 	 */
 	public PathwayDataMappingHandler getMappingHandler() {
 		return mappingHandler;
+	}
+
+	@Override
+	public Vec2f getMinSize() {
+		return GLMinSizeProviders.getLayeredMinSize(this);
 	}
 
 	@Override

@@ -42,6 +42,7 @@ import org.caleydo.core.view.opengl.layout2.basic.ScrollBarCompatibility;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.layout2.util.GLElementWindow;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -49,7 +50,6 @@ import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.entourage.EEmbeddingID;
 import org.caleydo.view.entourage.GLEntourage;
-import org.caleydo.view.entourage.GLWindow;
 import org.caleydo.vis.lineup.config.IRankTableUIConfig;
 import org.caleydo.vis.lineup.config.RankTableConfigBase;
 import org.caleydo.vis.lineup.config.RankTableUIConfigBase;
@@ -84,7 +84,7 @@ public class RankingElement extends GLElementContainer {
 	private ARankColumnModel currentRankColumnModel;
 	private StringRankColumnModel pathwayNameColumn;
 	private CategoricalRankColumnModel<?> pathwayDataBaseColumn;
-	private GLWindow window;
+	private GLElementWindow window;
 	private TableUI tableUI;
 	private IGLMouseListener mouseListener;
 
@@ -365,7 +365,7 @@ public class RankingElement extends GLElementContainer {
 	 * @param window
 	 *            setter, see {@link window}
 	 */
-	public void setWindow(GLWindow window) {
+	public void setWindow(GLElementWindow window) {
 		this.window = window;
 	}
 }
