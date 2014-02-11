@@ -188,15 +188,20 @@ public final class ProjectManager {
 		SubMonitor monitor = GeneralManager.get().createSubProgressMonitor();
 		monitor.beginTask("Loading Data", dataDomainList.getDataDomains().size() * 10);
 
-		// load mappings before the data, as we possibly want to load some mapping such that we can load the data
-		loadIDMappings(dirName);
-
+		// 1. init datadomains
 		for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
-			DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
-
 			// FIXME hack
 			if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
 				DataDomainManager.get().initalizeDataDomain("org.caleydo.datadomain.genetic");
+		}
+
+		// 2. load extra mappings
+		// load mappings before the data, as we possibly want to load some mapping such that we can load the data
+		loadIDMappings(dirName);
+
+		// 3. load the real data
+		for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
+			DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
 
 			// Not every data domain has got a dataSetDescription
 			if (dataSetDescription != null)
