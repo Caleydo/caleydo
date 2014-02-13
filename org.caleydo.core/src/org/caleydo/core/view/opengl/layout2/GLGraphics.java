@@ -560,42 +560,56 @@ public class GLGraphics {
 	}
 
 	public GLGraphics drawText(String text, float x, float y, float w, float h, VAlign valign, ETextStyle style) {
-		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
+		return drawRotatedText(text, x, y, w, h, valign, style, 0);
+	}
+
+	public GLGraphics drawRotatedText(String text, float x, float y, float textWidth, float textHeight, VAlign valign, ETextStyle style,
+			float angle) {
+		if (isInvalidOrZero(textWidth) || isInvalidOrZero(textHeight) || isInvalid(x) || isInvalid(y))
 			return this;
 		if (text == null || text.trim().isEmpty())
 			return this;
 		if (text.indexOf('\n') < 0) {
-			return drawSingleTextLine(text, x, y, w, h, valign, style);
+			if (angle == 0) {
+				return drawSingleTextLine(text, x, y, textWidth, textHeight, valign, style);
+			} else {
+				save().move(x, y);
+				gl.glRotatef(angle, 0, 0, 1);
+				drawSingleTextLine(text, 0, 0, textWidth, textHeight, valign, style);
+				restore();
+				return this;
+			}
 		} else {
-			return drawText(Arrays.asList(text.split("\n")), x, y, w, h, 0, valign, style);
+			return drawRotatedText(Arrays.asList(text.split("\n")), x, y, textWidth, textHeight, 0, valign, style, angle);
 		}
 	}
 
-	private GLGraphics drawSingleTextLine(String text, float x, float y, float w, float h, VAlign valign,
+
+	private GLGraphics drawSingleTextLine(String text, float x, float y, float textWidth, float textHeight, VAlign valign,
 			ETextStyle style) {
 		stats.incText(text.length());
-		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
+		if (isInvalidOrZero(textWidth) || isInvalidOrZero(textHeight) || isInvalid(x) || isInvalid(y))
 			return this;
 		ITextRenderer font = selectFont(style);
 		if (originInTopLeft && !font.isOriginTopLeft()) {
 			gl.glPushMatrix();
-			gl.glTranslatef(0, y + h, 0);
+			gl.glTranslatef(0, y + textHeight, 0);
 			y = 0;
 			gl.glScalef(1, -1, 1);
 		}
-		float hi = h;
+		float hi = textHeight;
 		float xi = x;
 		switch (valign) {
 		case CENTER:
-			xi += w * 0.5f - Math.min(font.getTextWidth(text, hi), w) * 0.5f;
+			xi += textWidth * 0.5f - Math.min(font.getTextWidth(text, hi), textWidth) * 0.5f;
 			break;
 		case RIGHT:
-			xi += w - Math.min(font.getTextWidth(text, hi), w);
+			xi += textWidth - Math.min(font.getTextWidth(text, hi), textWidth);
 			break;
 		default:
 			break;
 		}
-		font.renderTextInBounds(gl, text, xi, y, z + 0.25f, w, hi);
+		font.renderTextInBounds(gl, text, xi, y, z + 0.25f, textWidth, hi);
 
 		if (font.isDirty())
 			stats.dirtyTextTexture();
@@ -607,6 +621,11 @@ public class GLGraphics {
 
 	public GLGraphics drawText(List<String> lines, float x, float y, float w, float h, float lineSpace, VAlign valign,
 			ETextStyle style) {
+		return drawTextImpl(lines, x, y, w, h, lineSpace, valign, style);
+	}
+
+	private GLGraphics drawTextImpl(List<String> lines, float x, float y, float w, float h, float lineSpace,
+			VAlign valign, ETextStyle style) {
 		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y) || isInvalid(lineSpace))
 			return this;
 		if (lines == null || lines.isEmpty())
@@ -642,6 +661,19 @@ public class GLGraphics {
 
 		if (originInTopLeft && !font.isOriginTopLeft())
 			gl.glPopMatrix();
+		return this;
+	}
+
+	public GLGraphics drawRotatedText(List<String> lines, float x, float y, float w, float h, float lineSpace,
+			VAlign valign, ETextStyle style, float angle) {
+		if (angle == 0) {
+			return drawTextImpl(lines, x, y, w, h, lineSpace, valign, style);
+		} else {
+			save();
+			gl.glRotatef(angle, 0, 0, 1);
+			drawTextImpl(lines, x, y, w, h, lineSpace, valign, style);
+			restore();
+		}
 		return this;
 	}
 
