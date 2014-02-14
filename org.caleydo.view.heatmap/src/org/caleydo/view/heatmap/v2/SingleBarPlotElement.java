@@ -64,7 +64,7 @@ public class SingleBarPlotElement extends ASingleElement {
 			if (dim.isVertical()) {
 				g.fillRect(bar.x() * w, pos, (bar.x() + bar.y()) * w, size);
 			} else {
-				g.fillRect(pos, bar.x() * w, size, (bar.x() + bar.y()) * w);
+				g.fillRect(pos, bar.x() * h, size, (bar.x() + bar.y()) * h);
 			}
 		}
 	}
