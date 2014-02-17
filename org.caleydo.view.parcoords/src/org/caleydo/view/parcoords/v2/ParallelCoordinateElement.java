@@ -445,7 +445,7 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 	private void renderXAxis(GLGraphics g, float w, float h) {
 		g.color(PCRenderStyle.X_AXIS_COLOR).lineWidth(PCRenderStyle.X_AXIS_LINE_WIDTH);
 		g.drawLine(0, h, w, h);
-		g.lineWidth(0);
+		g.lineWidth(1);
 	}
 
 	@Override
