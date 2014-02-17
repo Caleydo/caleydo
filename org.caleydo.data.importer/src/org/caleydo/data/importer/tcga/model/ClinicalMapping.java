@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataClass;
@@ -28,6 +30,7 @@ import org.caleydo.core.util.color.ColorBrewer;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.io.CharStreams;
 
@@ -112,6 +115,7 @@ public class ClinicalMapping {
 	private final EDataType dataType;
 	private final String[] extra;
 	private final List<CategoryProperty<String>> properties;
+	private final Map<String, String> aliasLookup;
 
 	ClinicalMapping(String name, String label, EDataClass dataClass, EDataType dataType, String[] extra,
 			List<CategoryProperty<String>> properties) {
@@ -121,7 +125,18 @@ public class ClinicalMapping {
 		this.dataClass = dataClass;
 		this.dataType = dataType;
 		this.extra = extra;
-		this.properties = properties;
+		this.properties = new ArrayList<>(properties.size());
+		Map<String, String> seen = new HashMap<>();
+		ImmutableMap.Builder<String, String> b = ImmutableMap.builder();
+		for (CategoryProperty<String> p : properties) {
+			if (seen.containsKey(p.getCategoryName())) {
+				b.put(p.getCategory(), seen.get(p.getCategoryName()));
+			} else {
+				seen.put(p.getCategoryName(), p.getCategory());
+				this.properties.add(p);
+			}
+		}
+		this.aliasLookup = b.build();
 	}
 
 	public String getLabel() {
@@ -138,6 +153,10 @@ public class ClinicalMapping {
 
 	public EDataType getDataType() {
 		return dataType;
+	}
+
+	public Map<String, String> getAliasLookup() {
+		return aliasLookup;
 	}
 
 	public ColumnDescription create(int i) {
@@ -195,5 +214,22 @@ public class ClinicalMapping {
 		d.setCategoricalClassDescription(cc);
 		ColumnDescription c = new ColumnDescription(i, d);
 		return c;
+	}
+
+	public static Map<String, String> getAliasMap(Collection<String> toInclude) {
+		ImmutableMap.Builder<String, String> b = ImmutableMap.builder();
+		if (toInclude == null || toInclude.isEmpty()) {
+			for (ClinicalMapping m : types) {
+				b.putAll(m.getAliasLookup());
+			}
+		} else {
+			for (String include : toInclude) {
+				ClinicalMapping r = byName(include);
+				if (r == null)
+					continue;
+				b.putAll(r.getAliasLookup());
+			}
+		}
+		return b.build();
 	}
 }
