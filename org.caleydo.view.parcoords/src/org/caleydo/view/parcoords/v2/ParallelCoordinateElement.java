@@ -466,7 +466,7 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 			if (Float.isNaN(raw)) {
 				raw = NAN_VALUE;
 			}
-			points.add(new Vec2f(axis.getX(), raw));
+			points.add(new Vec2f(axis.getX(), 1 - raw));
 		}
 		return points;
 	}
