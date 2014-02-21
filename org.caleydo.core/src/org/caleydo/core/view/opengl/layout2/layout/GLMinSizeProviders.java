@@ -51,6 +51,20 @@ public class GLMinSizeProviders {
 		};
 	}
 
+	public static IHasMinSize createDefaultMinSizeProvider(final Vec2f minSize) {
+		return new IHasMinSize() {
+
+			@Override
+			public Vec2f getMinSize() {
+				return minSize;
+			}
+		};
+	}
+
+	public static IHasMinSize createDefaultMinSizeProvider(float x, float y) {
+		return createDefaultMinSizeProvider(new Vec2f(x, y));
+	}
+
 	public static Vec2f getHorizontalFlowMinSize(final Iterable<GLElement> container, final float gap,
 			final GLPadding padding) {
 

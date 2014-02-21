@@ -919,6 +919,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 			gl.glPushName(ViewManager.get().getPickingManager()
 					.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
+			gl.glEnable(GL.GL_BLEND);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			// //////////////////////////START 2/2 HIER NEU CHRISITIAN
 			// enable shader
 			if (shaderProgramTextOverlay > 0) {

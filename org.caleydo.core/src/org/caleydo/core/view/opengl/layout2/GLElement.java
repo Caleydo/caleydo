@@ -142,6 +142,11 @@ public class GLElement implements IHasGLLayoutData, IHasMinSize {
 	 */
 	private float zDelta = 0;
 
+	/**
+	 * if set, {@link #getMinSize()} will return by default the minSize of this provider
+	 */
+	private IHasMinSize minSizeProvider;
+
 	public GLElement() {
 
 	}
@@ -383,7 +388,7 @@ public class GLElement implements IHasGLLayoutData, IHasMinSize {
 		if (old == EVisibility.NONE || new_ == EVisibility.NONE)
 			relayoutParent();
 		if (old == EVisibility.PICKABLE) {
-			//not longer pickable
+			// not longer pickable
 			if (pickingID >= 0) {
 				context.unregisterPickingListener(pickingID);
 				pickingID = -1;
@@ -441,7 +446,8 @@ public class GLElement implements IHasGLLayoutData, IHasMinSize {
 	 * @return
 	 */
 	public final GLElement setSize(float w, float h) {
-		if (equals(this.bounds_layout.width(), w) && equals(this.bounds_layout.height(), h) && equals(this.bounds_set.width(), w) && equals(this.bounds_set.height(), h))
+		if (equals(this.bounds_layout.width(), w) && equals(this.bounds_layout.height(), h)
+				&& equals(this.bounds_set.width(), w) && equals(this.bounds_set.height(), h))
 			return this;
 		this.bounds_set.width(w);
 		this.bounds_layout.width(w);
@@ -452,7 +458,7 @@ public class GLElement implements IHasGLLayoutData, IHasMinSize {
 	}
 
 	private static boolean equals(float a, float b) {
-		return Float.compare(a,b) == 0;
+		return Float.compare(a, b) == 0;
 	}
 
 	/**
@@ -463,7 +469,8 @@ public class GLElement implements IHasGLLayoutData, IHasMinSize {
 	 * @return
 	 */
 	public final GLElement setLocation(float x, float y) {
-		if (equals(this.bounds_layout.x(), x) && equals(this.bounds_layout.y(), y) && equals(this.bounds_set.x(), x) && equals(this.bounds_set.y(), y))
+		if (equals(this.bounds_layout.x(), x) && equals(this.bounds_layout.y(), y) && equals(this.bounds_set.x(), x)
+				&& equals(this.bounds_set.y(), y))
 			return this;
 		this.bounds_set.x(x);
 		this.bounds_layout.x(x);
@@ -643,6 +650,7 @@ public class GLElement implements IHasGLLayoutData, IHasMinSize {
 
 	/**
 	 * setup method, when adding a child to a parent
+	 *
 	 * @param context
 	 */
 	protected void init(IGLElementContext context) {
@@ -763,10 +771,16 @@ public class GLElement implements IHasGLLayoutData, IHasMinSize {
 
 	@Override
 	public Vec2f getMinSize() {
-		return new Vec2f(0, 0);
+		if (minSizeProvider == null)
+			return new Vec2f(0, 0);
+		return minSizeProvider.getMinSize();
+	}
+
+	/**
+	 * @param minSizeProvider
+	 *            setter, see {@link minSizeProvider}
+	 */
+	public void setMinSizeProvider(IHasMinSize minSizeProvider) {
+		this.minSizeProvider = minSizeProvider;
 	}
 }
-
-
-
-
