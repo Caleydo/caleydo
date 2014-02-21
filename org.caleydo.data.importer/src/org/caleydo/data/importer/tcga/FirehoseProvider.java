@@ -91,6 +91,13 @@ public final class FirehoseProvider {
 		return tumor.toString();
 	}
 
+	/**
+	 * @return
+	 */
+	public boolean is2014Run() {
+		return relevantDate.get(Calendar.YEAR) >= 2014;
+	}
+
 	private String getFileName(String suffix) {
 		return tumorSample + suffix;
 	}
@@ -396,5 +403,6 @@ public final class FirehoseProvider {
 		builder.append("]");
 		return builder.toString();
 	}
+
 
 }

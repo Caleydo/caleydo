@@ -80,6 +80,7 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		g.color(Color.BLACK).drawRect(0, 0, w, h);
 		render(g, w, h);
 		super.renderImpl(g, w, h);
 	}

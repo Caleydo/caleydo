@@ -13,10 +13,16 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
+import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
 import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory2;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.parcoords.v2.SingleAxisElement;
 
 import com.google.common.base.Function;
@@ -99,6 +105,19 @@ public class SingleAxisElementFactory implements IGLElementFactory2 {
 
 	@Override
 	public GLElement createParameters(GLElement elem) {
-		return null;
+		final SingleAxisElement axis = (SingleAxisElement) elem;
+
+		GLButton b = new GLButton(EButtonMode.CHECKBOX);
+		b.setSelected(axis.isInvertOrder());
+		b.setCallback(new ISelectionCallback() {
+			@Override
+			public void onSelectionChanged(GLButton button, boolean selected) {
+				axis.setInvertOrder(selected);
+			}
+		});
+		b.setRenderer(GLRenderers.drawText("min->max", VAlign.CENTER, new GLPadding(1, 2, 1, 6)));
+		b.setSelectedRenderer(GLRenderers.drawText("max->min", VAlign.CENTER, new GLPadding(1, 2, 1, 6)));
+		b.setSize(100, -1);
+		return b;
 	}
 }

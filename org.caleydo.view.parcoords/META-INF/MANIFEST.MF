@@ -12,3 +12,4 @@ Export-Package: org.caleydo.view.parcoords,
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.parcoords.Activator
+Import-Package: org.caleydo.datadomain.mock

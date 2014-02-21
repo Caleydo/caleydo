@@ -69,6 +69,7 @@ public final class FileUtil {
 	 * @return
 	 */
 	public static String exctractFileName(String path) {
+		// new File(path).getName()
 		if (path == null)
 			return null;
 		int lastSeparatorIndex = path.lastIndexOf("/");

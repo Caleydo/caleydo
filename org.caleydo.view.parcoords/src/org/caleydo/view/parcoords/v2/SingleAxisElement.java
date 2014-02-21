@@ -68,6 +68,8 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 	private float selectEndPrev = Float.NaN;
 	private float selectEnd = Float.NaN;
 
+	private boolean invertOrder = false;
+
 	public SingleAxisElement(TablePerspective t) {
 		this(EDimension.get(t.getNrDimensions() == 1), t, EDimension.get(t.getNrDimensions() == 1)
 				.select(t.getRecordPerspective(), t.getDimensionPerspective()).getVirtualArray());
@@ -113,6 +115,24 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		onPick(this);
 	}
 
+	/**
+	 * @return the invertOrder, see {@link #invertOrder}
+	 */
+	public boolean isInvertOrder() {
+		return invertOrder;
+	}
+
+	/**
+	 * @param invertOrder
+	 *            setter, see {@link invertOrder}
+	 */
+	public void setInvertOrder(boolean invertOrder) {
+		if (this.invertOrder == invertOrder)
+			return;
+		this.invertOrder = invertOrder;
+		repaintAll();
+	}
+
 	@Override
 	protected void init(IGLElementContext context) {
 		onPick(context.getSWTLayer().createTooltip(this));
@@ -124,6 +144,8 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		Vec2f xy = toRelative(pick.getPickedPoint());
 		float max = dim.select(getSize());
 		float ratio = dim.select(xy) / max;
+		if (invertOrder)
+			ratio = 1 - ratio;
 		String marker = null;
 		if (markers > 0) {
 			float delta = 1.f / (markers - 1);
@@ -148,6 +170,8 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		SelectionManager manager = selections.get(0);
 		Vec2f xy = toRelative(pick.getPickedPoint());
 		float v = dim.select(xy) / dim.select(getSize());
+		if (invertOrder)
+			v = 1 - v;
 		boolean ctrlDown = ((IMouseEvent) pick).isCtrlDown();
 		switch(pick.getPickingMode()) {
 		case DRAG_DETECTED:
@@ -251,7 +275,6 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		float o = dim.opposite().select(w, h) * (0.5f - ITEM_AXIS_WIDTH / 2f);
 		if (dim.isHorizontal()) {
 			g.color(Color.BLACK).drawLine(0, h * 0.5f, h, h * 0.5f);
-
 		} else {
 			g.color(Color.BLACK).drawLine(w * 0.5f, 0, w * 0.5f, h);
 		}
@@ -268,6 +291,8 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 				final Color c = t.getColor();
 				g.color(c.r, c.g, c.b, 0.5f);
 			}
+			if (invertOrder)
+				v = 1 - v;
 			if (dim.isHorizontal()) {
 				g.drawLine(w * (float) v, o, w * (float) v, h - o);
 			} else {
@@ -290,6 +315,10 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 	private void renderSelection(GLGraphics g, float w, float h) {
 		float min = Math.min(selectStart, selectEnd);
 		float max = Math.max(selectStart, selectEnd);
+		if (invertOrder) {
+			min = 1 - min;
+			max = 1 - max;
+		}
 		final Color c = SelectionType.SELECTION.getColor();
 		g.color(c.r, c.g, c.b, 0.5f);
 		if (dim.isHorizontal())
@@ -304,7 +333,8 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		float delta = max / (nMarkers - 1);
 		for (int i = 0; i < nMarkers; ++i) {
 			float v = i * delta;
-
+			if (invertOrder)
+				v = max - v;
 			if (dim.isHorizontal()) {
 				g.drawLine(v, 0, v, h);
 			} else {
@@ -322,7 +352,7 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		double pdelta = 1. / (nMarkers - 1);
 		for (int i = 0; i < (nMarkers - 1); i += every) {
 			float v = i * delta;
-			String li = toMarker.apply(pdelta * i);
+			String li = toMarker.apply(pdelta * (invertOrder ? nMarkers - 1 - i : i));
 			if (li == null)
 				continue;
 			if (dim.isHorizontal()) {
@@ -332,7 +362,7 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 			}
 		}
 		{
-			String li = toMarker.apply(1.);
+			String li = toMarker.apply(invertOrder ? 0. : 1.);
 			if (li != null) {
 				if (dim.isHorizontal()) {
 					g.drawText(li, w - delta * every - 2, shift, delta * every, hi, VAlign.RIGHT);
@@ -374,14 +404,23 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 	public GLLocation apply(int dataIndex) {
 		float total = dim.select(getSize());
 		double n = normalize.apply(list.getPrimitive(dataIndex));
+		if (invertOrder)
+			n = 1 - n;
 		return new GLLocation(n * total, 1);
 	}
 
 	@Override
 	public Set<Integer> unapply(GLLocation location) {
 		float total = dim.select(getSize());
-		double from = normalize.unapply(location.getOffset() / total);
-		double to = normalize.unapply(location.getOffset2() / total);
+		double min = location.getOffset() / total;
+		double max = location.getOffset2() / total;
+		if (invertOrder) {
+			min = 1 - min;
+			max = 1 - max;
+		}
+		double from = normalize.unapply(min);
+		double to = normalize.unapply(max);
+
 		Set<Integer> r = new HashSet<>();
 		for (int i = 0; i < list.size(); ++i) {
 			double v = list.getPrimitive(i);
@@ -427,6 +466,7 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 
 		final SingleAxisElement elem = new SingleAxisElement(EDimension.RECORD, new ArrayDoubleList(arr), 0, 1, null,
 				null);
+		elem.setInvertOrder(true);
 		elem.setMarker("A", "B", "C");
 		GLSandBox.main(args,
 				elem);
