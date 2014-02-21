@@ -43,7 +43,7 @@ public class BoxAndWhiskersMultiElement extends GLElementContainer implements IH
 		this(split);
 		for (TablePerspective t : (split.isVertical() ? tablePerspective.getRecordSubTablePerspectives()
 				: tablePerspective.getDimensionSubTablePerspectives())) {
-			this.add(new BoxAndWhiskersElement(t, detailLevel, split, showOutliers, showMinMax));
+			this.add(new BoxAndWhiskersElement(t, detailLevel, split.opposite(), showOutliers, showMinMax));
 		}
 	}
 
