@@ -348,6 +348,8 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 			int from = indexOf(child);
 			if (from < index) // as we remove before we insert
 				index--;
+			if (index < 0) // index can be -1 if the child was removed and added again immediately
+				index = 0;
 		}
 		// we want to add this child now but smooth it in, so we are interested in its final position in the future at
 		// the future state
@@ -442,6 +444,14 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	public final void resizeChild(GLElement child, float w, float h) {
 		final IMoveTransition animation = child.getLayoutDataAs(IMoveTransition.class, defaultMoveTransition);
 		final Duration duration = child.getLayoutDataAs(Duration.class, defaultDuration);
+		ManualMoveAnimation anim = new ManualMoveAnimation(duration.getDuration(), animation, child.getBounds());
+		child.setSize(w, h);
+		layoutAnimations.put(GLElementAccessor.asLayoutElement(child), anim);
+	}
+
+	public final void resizeChild(GLElement child, float w, float h, Duration duration) {
+		final IMoveTransition animation = child.getLayoutDataAs(IMoveTransition.class, defaultMoveTransition);
+		// final Duration duration = child.getLayoutDataAs(Duration.class, defaultDuration);
 		ManualMoveAnimation anim = new ManualMoveAnimation(duration.getDuration(), animation, child.getBounds());
 		child.setSize(w, h);
 		layoutAnimations.put(GLElementAccessor.asLayoutElement(child), anim);

@@ -44,7 +44,7 @@ public class GLElementAccessor {
 
 	/**
 	 * calls repaint of the given element but prevent that the parent element will be called
-	 * 
+	 *
 	 * useful e.g. for repainting downwards
 	 *
 	 * @param elem
@@ -58,7 +58,7 @@ public class GLElementAccessor {
 
 	/**
 	 * calls repaintPick of the given element but prevent that the parent element will be called
-	 * 
+	 *
 	 * useful e.g. for repainting downwards
 	 *
 	 * @param elem
@@ -72,7 +72,7 @@ public class GLElementAccessor {
 
 	/**
 	 * calls relayout of the given element but prevent that the parent element will be called
-	 * 
+	 *
 	 * useful e.g. for repainting downwards
 	 *
 	 * @param elem
@@ -82,5 +82,9 @@ public class GLElementAccessor {
 		elem.setParent(null);
 		elem.relayout();
 		elem.setParent(parent);
+	}
+
+	public static boolean isLayoutDirty(GLElement elem) {
+		return elem.isDirtyLayout();
 	}
 }

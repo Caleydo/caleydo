@@ -783,4 +783,11 @@ public class GLElement implements IHasGLLayoutData, IHasMinSize {
 	public void setMinSizeProvider(IHasMinSize minSizeProvider) {
 		this.minSizeProvider = minSizeProvider;
 	}
+
+	/**
+	 * @return the dirtyLayout, see {@link #dirtyLayout}
+	 */
+	boolean isDirtyLayout() {
+		return dirtyLayout;
+	}
 }
