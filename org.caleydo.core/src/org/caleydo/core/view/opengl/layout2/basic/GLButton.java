@@ -97,6 +97,19 @@ public class GLButton extends AGLButton {
 		return this;
 	}
 
+	/**
+	 * same as {@link #setSelected(boolean)}, but does not trigger the callback
+	 *
+	 * @param selected
+	 */
+	public final GLButton setSelectedSilent(boolean selected) {
+		if (this.selected == selected)
+			return this;
+		this.selected = selected;
+		repaint();
+		return this;
+	}
+
 	protected final void fireCallback(boolean state) {
 		callback.onSelectionChanged(this, state);
 	}

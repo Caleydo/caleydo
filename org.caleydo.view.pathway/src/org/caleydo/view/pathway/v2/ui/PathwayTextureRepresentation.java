@@ -18,6 +18,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
+import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.util.PickingPool;
 import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -55,6 +56,8 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 
 	protected float minWidth = -1;
 	protected float minHeight = -1;
+
+	protected GLPadding padding = GLPadding.ZERO;
 
 	// protected List<VertexRepBasedContextMenuItem> contextMenuItems = new ArrayList<>();
 
@@ -135,10 +138,8 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 
 	private void initShaders(GLGraphics g) throws IOException {
 		isShaderInitialized = true;
-		shaderProgramTextOverlay = g.loadShader(
-			this.getClass().getResourceAsStream("../../vsTextOverlay.glsl"),
-			this.getClass().getResourceAsStream("../../fsTextOverlay.glsl")
-		);
+		shaderProgramTextOverlay = g.loadShader(this.getClass().getResourceAsStream("../../vsTextOverlay.glsl"), this
+				.getClass().getResourceAsStream("../../fsTextOverlay.glsl"));
 	}
 
 	@Override
@@ -236,27 +237,31 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 
 	private void calculateTransforms(float w, float h) {
 
+		float availableWidth = w - (padding.left + padding.right);
+		float availableHeight = h - (padding.top + padding.bottom);
+
 		float pathwayWidth = pathway.getWidth();
 		float pathwayHeight = pathway.getHeight();
 
 		float pathwayAspectRatio = pathwayWidth / pathwayHeight;
-		float viewFrustumAspectRatio = w / h;
+		float viewFrustumAspectRatio = availableWidth / availableHeight;
 
-		if (pathwayWidth <= w && pathwayHeight <= h) {
+		if (pathwayWidth <= availableWidth && pathwayHeight <= h) {
 			scaling.set(1f, 1f);
 			renderSize.setX(pathwayWidth);
 			renderSize.setY(pathwayHeight);
 		} else {
 			if (viewFrustumAspectRatio > pathwayAspectRatio) {
-				renderSize.setX((h / pathwayHeight) * pathwayWidth);
-				renderSize.setY(h);
+				renderSize.setX((availableHeight / pathwayHeight) * pathwayWidth);
+				renderSize.setY(availableHeight);
 			} else {
-				renderSize.setX(w);
-				renderSize.setY((w / pathwayWidth) * pathwayHeight);
+				renderSize.setX(availableWidth);
+				renderSize.setY((availableWidth / pathwayWidth) * pathwayHeight);
 			}
 			scaling.set(renderSize.x() / pathwayWidth, renderSize.y() / pathwayHeight);
 		}
-		origin.set((w - renderSize.x()) / 2.0f, (h - renderSize.y()) / 2.0f);
+		origin.set(padding.left + (availableWidth - renderSize.x()) / 2.0f,
+				padding.top + (availableHeight - renderSize.y()) / 2.0f);
 	}
 
 	@Override
@@ -344,6 +349,15 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 	@Override
 	public Vec2f getMinSize() {
 		return new Vec2f(getMinWidth(), getMinHeight());
+	}
+
+	/**
+	 * @param padding
+	 *            setter, see {@link padding}
+	 */
+	public void setPadding(GLPadding padding) {
+		this.padding = padding;
+		repaintAll();
 	}
 
 }
