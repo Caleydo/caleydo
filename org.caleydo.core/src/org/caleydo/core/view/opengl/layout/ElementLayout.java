@@ -588,14 +588,14 @@ public class ElementLayout implements Comparable<ElementLayout> {
 		absoluteSizeX = Float.NaN;
 		ratioSizeX = 1;
 		pixelSizeX = Integer.MIN_VALUE;
-		dynamicSizeUnitsX = 0;
+		dynamicSizeUnitsX = Integer.MIN_VALUE;
 	}
 
 	private void resetY() {
 		absoluteSizeY = Float.NaN;
 		ratioSizeY = 1;
 		pixelSizeY = Integer.MIN_VALUE;
-		dynamicSizeUnitsY = 0;
+		dynamicSizeUnitsY = Integer.MIN_VALUE;
 	}
 
 	void render(GL2 gl) {
