@@ -62,9 +62,9 @@ public class SingleBarPlotElement extends ASingleElement {
 			Vec2f bar = value2bar.apply(v);
 			g.color(id2color.apply(id));
 			if (dim.isVertical()) {
-				g.fillRect(bar.x() * w, pos, (bar.x() + bar.y()) * w, size);
+				g.fillRect(bar.x() * w, pos, (bar.y()) * w, size);
 			} else {
-				g.fillRect(pos, bar.x() * h, size, (bar.x() + bar.y()) * h);
+				g.fillRect(pos, bar.x() * h, size, (bar.y()) * h);
 			}
 		}
 	}
