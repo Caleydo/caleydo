@@ -40,7 +40,7 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	private EDataType rawDataType;
 
 	/** The default transformation of this column */
-	private String defaultDataTransformation = Table.Transformation.LINEAR;
+	protected String defaultDataTransformation = Table.Transformation.LINEAR;
 
 	/** The id of this column, corresponds to the index of the column in the table */
 	private int id;
@@ -51,15 +51,17 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	/** A map of the string identifying a transformation to the transformed and normalized */
 	protected HashMap<String, FloatContainer> dataRepToContainerMap;
 
+	/** The metadata about the column */
+	protected DataDescription dataDescription;
+
 	/**
 	 * Constructor Initializes objects
 	 */
 	public AColumn(DataDescription dataDescription) {
+		this.dataDescription = dataDescription;
 		dataRepToContainerMap = new HashMap<>();
 		this.dataClass = dataDescription.getDataClass();
-		if (dataDescription.getNumericalProperties() != null) {
-			this.defaultDataTransformation = dataDescription.getNumericalProperties().getDataTransformation();
-		}
+
 		this.rawDataType = dataDescription.getRawDataType();
 	}
 

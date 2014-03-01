@@ -86,7 +86,7 @@ public class TabularDataParser extends ATextParser {
 	 * </p>
 	 */
 	@SuppressWarnings("unchecked")
-	private void initializTables() {
+	private void initializeTables() {
 
 		Table table = dataDomain.getTable();
 
@@ -249,7 +249,7 @@ public class TabularDataParser extends ATextParser {
 
 		SubMonitor monitor = GeneralManager.get().createSubProgressMonitor();
 		monitor.beginTask("Loading data for: " + dataSetDescription.getDataSetName(), calculateNumberOfLinesInFile());
-		initializTables();
+		initializeTables();
 
 		// Init progress bar
 		for (int countHeaderLines = 0; countHeaderLines < dataSetDescription.getNumberOfHeaderLines(); countHeaderLines++) {
