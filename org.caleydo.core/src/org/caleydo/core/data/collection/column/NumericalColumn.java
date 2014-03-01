@@ -10,6 +10,7 @@ import org.caleydo.core.data.collection.column.container.INumericalContainer;
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.io.DataDescription;
+import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.math.MathHelper;
 
 /**
@@ -31,6 +32,16 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	 */
 	public NumericalColumn(DataDescription dataDescription) {
 		super(dataDescription);
+		NumericalProperties properties = dataDescription.getNumericalProperties();
+		if (properties != null) {
+			defaultDataTransformation = properties.getDataTransformation();
+			if (properties.getMin() != null) {
+				externalMin = dataDescription.getNumericalProperties().getMin();
+			}
+			if (properties.getMax() != null) {
+				externalMax = dataDescription.getNumericalProperties().getMax();
+			}
+		}
 	}
 
 	/**
