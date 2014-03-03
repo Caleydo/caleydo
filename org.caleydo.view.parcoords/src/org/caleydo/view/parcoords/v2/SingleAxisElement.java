@@ -274,7 +274,7 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		int n = list.size();
 		float o = dim.opposite().select(w, h) * (0.5f - ITEM_AXIS_WIDTH / 2f);
 		if (dim.isHorizontal()) {
-			g.color(Color.BLACK).drawLine(0, h * 0.5f, h, h * 0.5f);
+			g.color(Color.BLACK).drawLine(0, h * 0.5f, w, h * 0.5f);
 		} else {
 			g.color(Color.BLACK).drawLine(w * 0.5f, 0, w * 0.5f, h);
 		}

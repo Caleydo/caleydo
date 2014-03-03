@@ -442,11 +442,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	 * @param h
 	 */
 	public final void resizeChild(GLElement child, float w, float h) {
-		final IMoveTransition animation = child.getLayoutDataAs(IMoveTransition.class, defaultMoveTransition);
-		final Duration duration = child.getLayoutDataAs(Duration.class, defaultDuration);
-		ManualMoveAnimation anim = new ManualMoveAnimation(duration.getDuration(), animation, child.getBounds());
-		child.setSize(w, h);
-		layoutAnimations.put(GLElementAccessor.asLayoutElement(child), anim);
+		resizeChild(child, w, h, child.getLayoutDataAs(Duration.class, defaultDuration));
 	}
 
 	public final void resizeChild(GLElement child, float w, float h, Duration duration) {
