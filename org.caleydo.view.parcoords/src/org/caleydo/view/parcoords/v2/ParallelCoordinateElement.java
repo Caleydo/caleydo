@@ -32,7 +32,6 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -342,8 +341,8 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 	public void onVAUpdate(TablePerspective tablePerspective) {
 		repaint();
 		repaintChildren();
-		this.samples = sample(tablePerspective.getRecordPerspective().getVirtualArray().getIDs(),
-				numberOfRandomElements);
+		this.samples = // tablePerspective.getRecordPerspective().getVirtualArray().getIDs();
+		sample(tablePerspective.getRecordPerspective().getVirtualArray().getIDs(), numberOfRandomElements);
 	}
 
 	/**
@@ -394,21 +393,35 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 				g.drawPath(points, false);
 				g.popName();
 			} else {
-				SelectionType type = record.getHighestSelectionType(recordID);
-				if (type != null) {
-					Color color = type.getColor();
-					g.color(color.r, color.g, color.b, alpha);
-					g.lineWidth(type.getLineWidth());
-				} else {
+				// SelectionType type = record.getHighestSelectionType(recordID);
+				// if (type != null) {
+				// Color color = type.getColor();
+				// g.color(color.r, color.g, color.b, alpha);
+				// g.lineWidth(type.getLineWidth());
+				// } else {
 					g.color(0, 0, 0, alpha);
 					g.lineWidth(1);
-				}
+				// }
 				g.drawPath(points, false);
 			}
 		}
 
+		drawSelection(g, SelectionType.SELECTION, axis);
+		drawSelection(g, SelectionType.MOUSE_OVER, axis);
+
 		g.lineWidth(1);
 		g.restore();
+	}
+
+	protected void drawSelection(GLGraphics g, SelectionType selectionType, Iterable<AAxisElement> axis) {
+		final SelectionManager record = selections.getRecordSelectionManager();
+		g.color(selectionType.getColor()).lineWidth(2);
+		for (Integer recordID : record.getElements(selectionType)) {
+			List<Vec2f> points = asPoints(recordID, axis);
+			if (points == null || points.isEmpty()) // skip empty
+				continue;
+			g.drawPath(points, false);
+		}
 	}
 
 	@Override
