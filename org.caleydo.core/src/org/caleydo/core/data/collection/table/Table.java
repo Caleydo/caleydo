@@ -584,6 +584,10 @@ public class Table {
 		return columns.get(columnID).getDataClassSpecificDescription();
 	}
 
+	public Object getDataClassSpecificDescription(Integer dimensionID) {
+		return columns.get(dimensionID).getDataClassSpecificDescription();
+	}
+
 	/**
 	 * @param defaultDataTransformation
 	 *            setter, see {@link defaultDataTransformation}
