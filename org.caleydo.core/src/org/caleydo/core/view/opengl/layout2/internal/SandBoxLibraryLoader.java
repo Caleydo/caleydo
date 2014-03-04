@@ -28,7 +28,7 @@ public final class SandBoxLibraryLoader {
 		// convert to native library name
 		libName = System.mapLibraryName(libName);
 		if (SystemUtils.IS_OS_MAC_OSX)
-			StringUtils.replace(libName, ".dylib", ".jnilib");
+			libName = StringUtils.replace(libName, ".dylib", ".jnilib");
 
 		// create
 		String extension = Files.getFileExtension(libName);
