@@ -20,6 +20,7 @@ import org.caleydo.core.util.function.AdvancedDoubleStatistics;
 import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
 import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
@@ -98,6 +99,8 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory2 {
 		EDimension split = context.get("splitGroups", EDimension.class, null);
 		EDimension direction = context.get(EDimension.class, EDimension.DIMENSION);
 
+		GLPadding padding = context.get(GLPadding.class, GLPadding.ZERO);
+
 		boolean showScale = context.is("showScale");
 		boolean showMinMax = context.is("showMinMax");
 
@@ -106,12 +109,12 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory2 {
 			if ((split == EDimension.DIMENSION && getGroupsSize(data.getDimensionPerspective()) > 1)
 					|| (split == EDimension.RECORD && getGroupsSize(data.getRecordPerspective()) > 1)) {
 				BoxAndWhiskersMultiElement b = new BoxAndWhiskersMultiElement(data, detailLevel, split, showOutliers,
-						showMinMax);
+						showMinMax, padding);
 				b.setShowScale(showScale);
 				return b;
 			} else {
 				BoxAndWhiskersElement b = new BoxAndWhiskersElement(data, detailLevel, direction, showOutliers,
-						showMinMax);
+						showMinMax, padding);
 				b.setShowScale(showScale);
 				return b;
 			}
@@ -121,11 +124,11 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory2 {
 			final Color color = context.get("color", Color.class, Color.LIGHT_GRAY);
 			if (list != null) {
 				return new ListBoxAndWhiskersElement(list, detailLevel, direction, showOutliers, showMinMax, labels,
-						color);
+						color, padding);
 			} else {
 				AdvancedDoubleStatistics stats = context.get(AdvancedDoubleStatistics.class, null);
 				assert stats != null;
-				return new ListBoxAndWhiskersElement(stats, detailLevel, direction, showMinMax, labels, color);
+				return new ListBoxAndWhiskersElement(stats, detailLevel, direction, showMinMax, labels, color, padding);
 			}
 		}
 	}

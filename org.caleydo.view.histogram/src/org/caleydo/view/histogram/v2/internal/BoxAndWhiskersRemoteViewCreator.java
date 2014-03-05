@@ -13,6 +13,7 @@ import org.caleydo.core.view.ARemoteGLElementCreator;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext.Builder;
 import org.caleydo.view.histogram.v2.BoxAndWhiskersElement;
@@ -50,6 +51,7 @@ public class BoxAndWhiskersRemoteViewCreator extends ARemoteGLElementCreator {
 		b.set("showScale");
 		b.set("showOutliers");
 		b.set("showMinMax");
+		b.put(GLPadding.class, new GLPadding(2, 0));
 		GLElementFactoryContext context = b.build();
 		return context;
 	}

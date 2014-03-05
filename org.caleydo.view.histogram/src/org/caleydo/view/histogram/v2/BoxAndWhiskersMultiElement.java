@@ -16,6 +16,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 
 import com.google.common.collect.Iterables;
 
@@ -39,19 +40,20 @@ public class BoxAndWhiskersMultiElement extends GLElementContainer implements IH
 	}
 
 	public BoxAndWhiskersMultiElement(TablePerspective tablePerspective, EDetailLevel detailLevel, EDimension split,
-			boolean showOutliers, boolean showMinMax) {
+			boolean showOutliers, boolean showMinMax, GLPadding padding) {
 		this(split);
 		for (TablePerspective t : (split.isVertical() ? tablePerspective.getRecordSubTablePerspectives()
 				: tablePerspective.getDimensionSubTablePerspectives())) {
-			this.add(new BoxAndWhiskersElement(t, detailLevel, split.opposite(), showOutliers, showMinMax));
+			this.add(new BoxAndWhiskersElement(t, detailLevel, split.opposite(), showOutliers, showMinMax, padding));
 		}
 	}
 
 	public BoxAndWhiskersMultiElement(List<IDoubleList> lists, EDetailLevel detailLevel, EDimension split,
-			boolean showOutliers, boolean showMinMax) {
+			boolean showOutliers, boolean showMinMax, GLPadding padding) {
 		this(split);
 		for (IDoubleList list : lists) {
-			this.add(new ListBoxAndWhiskersElement(list, detailLevel, split, showOutliers, showMinMax, null, null));
+			this.add(new ListBoxAndWhiskersElement(list, detailLevel, split, showOutliers, showMinMax, null, null,
+					padding));
 		}
 	}
 

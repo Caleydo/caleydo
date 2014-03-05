@@ -502,4 +502,12 @@ public class ParallelCoordinateElement extends GLElementContainer implements IGL
 		axisElement.setLayoutData(oldShift + shift);
 		axisMoved();
 	}
+
+	// public static void main(String[] args) {
+	// MockDataDomain d = MockDataDomain.createNumerical(10, 100, MockDataDomain.RANDOM);
+	//
+	// ParallelCoordinateElement root = new ParallelCoordinateElement(d.getDefaultTablePerspective(),
+	// EDetailLevel.HIGH);
+	// GLSandBox.main(args, root);
+	// }
 }

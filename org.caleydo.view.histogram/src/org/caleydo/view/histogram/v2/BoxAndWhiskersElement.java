@@ -20,6 +20,7 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.DoubleStatistics;
 import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 
 import com.google.common.base.Supplier;
 
@@ -33,13 +34,13 @@ public class BoxAndWhiskersElement extends ABoxAndWhiskersElement implements
 	@DeepScan
 	protected final TablePerspectiveSelectionMixin selections;
 
-	public BoxAndWhiskersElement(TablePerspective tablePerspective) {
-		this(tablePerspective, EDetailLevel.HIGH, EDimension.RECORD, false, false);
+	public BoxAndWhiskersElement(TablePerspective tablePerspective, GLPadding padding) {
+		this(tablePerspective, EDetailLevel.HIGH, EDimension.RECORD, false, false, padding);
 	}
 
 	public BoxAndWhiskersElement(TablePerspective tablePerspective, EDetailLevel detailLevel, EDimension direction,
-			boolean showOutlier, boolean showMinMax) {
-		super(detailLevel, direction, showOutlier, showMinMax);
+			boolean showOutlier, boolean showMinMax, GLPadding padding) {
+		super(detailLevel, direction, showOutlier, showMinMax, padding);
 		this.selections = new TablePerspectiveSelectionMixin(tablePerspective, this);
 
 		onVAUpdate(tablePerspective);

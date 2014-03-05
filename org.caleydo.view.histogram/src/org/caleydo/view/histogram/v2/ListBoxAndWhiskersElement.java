@@ -14,6 +14,7 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.AdvancedDoubleStatistics;
 import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 
 import com.google.common.base.Preconditions;
@@ -31,8 +32,8 @@ public class ListBoxAndWhiskersElement extends ABoxAndWhiskersElement {
 	private IDoubleList data;
 
 	public ListBoxAndWhiskersElement(IDoubleList data, EDetailLevel detailLevel, EDimension direction,
-			boolean showOutlier, boolean showMinMax, String label, Color color) {
-		super(detailLevel, direction, showOutlier, showMinMax);
+			boolean showOutlier, boolean showMinMax, String label, Color color, GLPadding padding) {
+		super(detailLevel, direction, showOutlier, showMinMax, padding);
 		this.color = Preconditions.checkNotNull(color);
 		this.label = Preconditions.checkNotNull(label);
 		setData(data);
@@ -40,8 +41,8 @@ public class ListBoxAndWhiskersElement extends ABoxAndWhiskersElement {
 	}
 
 	public ListBoxAndWhiskersElement(AdvancedDoubleStatistics stats, EDetailLevel detailLevel, EDimension direction,
-			boolean showMinMax, String label, Color color) {
-		super(detailLevel, direction, false, showMinMax);
+			boolean showMinMax, String label, Color color, GLPadding padding) {
+		super(detailLevel, direction, false, showMinMax, GLPadding.ONE);
 		this.color = Preconditions.checkNotNull(color);
 		this.label = Preconditions.checkNotNull(label);
 		setData(stats);
