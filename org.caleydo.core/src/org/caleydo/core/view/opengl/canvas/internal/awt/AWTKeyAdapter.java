@@ -126,6 +126,10 @@ final class AWTKeyAdapter implements KeyListener {
 				return event.getKeyCode() == KeyEvent.VK_PAGE_UP;
 			case PAGE_DOWN:
 				return event.getKeyCode() == KeyEvent.VK_PAGE_DOWN;
+			case DELETE:
+				return event.getKeyCode() == KeyEvent.VK_DELETE;
+			case INSERT:
+				return event.getKeyCode() == KeyEvent.VK_INSERT;
 			}
 			throw new IllegalStateException("unknown special key:" + c);
 		}

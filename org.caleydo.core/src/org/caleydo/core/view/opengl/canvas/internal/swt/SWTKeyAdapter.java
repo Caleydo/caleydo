@@ -102,6 +102,10 @@ final class SWTKeyAdapter implements KeyListener {
 				return event.keyCode == SWT.PAGE_UP;
 			case PAGE_DOWN:
 				return event.keyCode == SWT.PAGE_DOWN;
+			case DELETE:
+				return event.keyCode == SWT.DEL;
+			case INSERT:
+				return event.keyCode == SWT.INSERT;
 			}
 			throw new IllegalStateException("unknown special key:" + c);
 		}
