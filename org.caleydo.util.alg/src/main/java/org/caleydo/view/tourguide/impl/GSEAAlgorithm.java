@@ -151,12 +151,25 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 		// obs.s2n <- sort(obs.s2n, decreasing=T)
 
 		for (Integer col : cols) {
+			//String gene = table.getDataDomain().getDimensionLabel(col);
+//			Set<Integer> prim = dim2primary.apply(col);
+//			if (prim == null || prim.isEmpty()) {
+//				// System.out.println(gene.trim());
+//			} else if (seen.contains(gene)) {
+//				// System.out.println("dup: " + gene);
+//			} else {
+//				seen.add(gene);
+			//System.out.println("good: " + gene);
+//			}
 
-			// System.out.println(table.getDataDomain().getDimensionLabel(col));
 			for (Integer row : rows) {
 				Float v = table.getRaw(col, row);
 				if (v == null || v.isNaN() || v.isInfinite())
 					continue;
+				// boolean neg = v < 0;
+				// v = (float) Math.log(abs(v));
+				// if (neg)
+				// v = -v;
 				inA.add(row, v);
 			}
 			inA.flush(col);
@@ -179,6 +192,10 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 				Float v = table.getRaw(col, row);
 				if (v == null || v.isNaN() || v.isInfinite())
 					continue;
+				// boolean neg = v < 0;
+				// v = (float) Math.log(abs(v));
+				// if (neg)
+				// v = -v;
 				for (RankedSet s : sets)
 					s.add(row, v);
 			}
@@ -238,13 +255,15 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 				}
 			});
 			for (Entry<Integer, Float> ri : entrySet) {
-				Set<Integer> keys = dim2primary.apply(ri.getKey());
+				final Integer id = ri.getKey();
+				Set<Integer> keys = dim2primary.apply(id);
 				if (keys == null) {
 					// dim2primary.apply(ri.getKey());
 					continue;
 				}
-				for (Integer key : keys)
+				for (Integer key : keys) {
 					r.put(key, ri.getValue());
+				}
 			}
 			return r;
 		}
@@ -271,10 +290,10 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 			// S1 <- ifelse(S1 == 0, 0.2, S1)
 			// gc()
 			// }
-			s1 = (0.2 * abs(m1) < s1) ? s1 : 0.2 * abs(m1);
-			s1 = (s1 == 0.f) ? 0.2 : s1;
 			s2 = (0.2 * abs(m2) < s2) ? s2 : 0.2 * abs(m2);
 			s2 = (s2 == 0.f) ? 0.2 : s2;
+			s1 = (0.2 * abs(m1) < s1) ? s1 : 0.2 * abs(m1);
+			s1 = (s1 == 0.f) ? 0.2 : s1;
 
 			double s = s1 + s2;
 			double m = m1 - m2;
@@ -398,9 +417,8 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 		// return(list(ES = ES, arg.ES = arg.ES, RES = RES, indicator = tag.indicator))
 		// }
 		final int N = correlation.size();
-		final int N_h = geneS.size(); // real size not the only in this subset stratification
 
-		if (N_h == 0)
+		if (geneS.isEmpty())
 			return Float.NaN;
 
 		float N_R = 0;
@@ -413,6 +431,9 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 
 		if (intersection == 0)
 			return Float.NaN;
+
+		//FIX within GSEA the genes are prefiltered, so it is the intersection and not the real size
+		final int N_h = intersection; // geneS.size(); // real size not the only in this subset stratification
 
 		final double norm_tag = 1 / N_R;
 		final double norm_no_tag = 1. / (N - N_h); // watch out all integers!

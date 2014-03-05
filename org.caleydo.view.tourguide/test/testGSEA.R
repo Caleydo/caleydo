@@ -9,20 +9,22 @@
 #   no normalization and the range is from -1 to +1
 
 
-source('GSEA.1.0.R')
-source("http://bioconductor.org/biocLite.R")
-biocLite("PGSEA")
-require(PGSEA)
+#source('GSEA.1.0.R')
+#source("http://bioconductor.org/biocLite.R")
+#biocLite("PGSEA")
+#require(PGSEA)
 
-testGSEA = function(input.ds, group_id, genesets, result) {
+testGSEA = function(input.ds.name, group_id, genesets, result,transpose=F,nperm=1000,startWith=2) {
   #data
-  input.ds = read.table(input.ds,header=T,check.names=F)
+  input.ds = as.data.frame(read.table(input.ds.name,header=T,check.names=F,sep="\t"))
   rownames(input.ds) = input.ds[,1]
-  input.ds = input.ds[,-1]
+  input.ds = input.ds[,startWith:ncol(input.ds)]
+  if (transpose)
+  	input.ds = as.data.frame(t(input.ds))
   {
     input.cn = colnames(input.ds)
-    input.selected = as.character(read.table(group_id,nrows=1,as.is=T)[1,-1])
-    phen = ifelse(sapply(input.cn, function(x) { x %in% input.selected}),1,0) #convert to assignments
+    input.selected = as.character(read.table(group_id,nrows=1,as.is=T,sep="\t")[1,-1])
+    phen = ifelse(sapply(input.cn, function(x) { x %in% input.selected}),0,1) #convert to assignments
     #classification query group rest
     input.cls = list(class.v=as.vector(phen),phen=c("ALL","QUERY"))
   }
@@ -38,18 +40,18 @@ testGSEA = function(input.ds, group_id, genesets, result) {
   
   if (!file.exists("result"))
     dir.create("result")
-  source('GSEA.1.0.R')
+  #source('GSEA.1.0.R')
   r = GSEA(
     # Input/Output Files :-------------------------------------------
    input.ds =  input.ds,           # Input gene expression Affy dataset file in RES or GCT format
    input.cls = input.cls,           # Input class vector (phenotype) file in CLS format
    gs.db =     gs.db,         # Gene set database in GMT format
-   output.directory      = "result/",        # Directory where to store output and results (default: "")
+   output.directory      = "",        # Directory where to store output and results (default: "")
    #  Program parameters :-------------------------------------------------------------------------------------------------------------------------
    doc.string            = "result",   # Documentation string used as a prefix to name result files (default: "GSEA.analysis")
    non.interactive.run   = T,               # Run in interactive (i.e. R GUI) or batch (R command line) mode (default: F)
    reshuffling.type      = "sample.labels", # Type of permutation reshuffling: "sample.labels" or "gene.labels" (default: "sample.labels" 
-   nperm                 = 1000,            # Number of random permutations (default: 1000)
+   nperm                 = nperm,            # Number of random permutations (default: 1000)
    weighted.score.type   =  1,              # Enrichment correlation-based weighting: 0=no weight (KS), 1= weigthed, 2 = over-weigthed (default: 1)
    nom.p.val.threshold   = -1,              # Significance threshold for nominal p-vals for gene sets (default: -1, no thres)
    fwer.p.val.threshold  = -1,              # Significance threshold for FWER p-vals for gene sets (default: -1, no thres)
@@ -72,7 +74,7 @@ testGSEA = function(input.ds, group_id, genesets, result) {
   
   #store result
 	cr=rbind(as.data.frame(r$report1),as.data.frame(r$report2))
-	cr$ES = -as.numeric(levels(cr$ES))[cr$ES]
+	cr$ES = as.numeric(levels(cr$ES))[cr$ES]
 	write.table(cr,result,row.names=F,sep=";",quote=F)
   
 	r
@@ -85,4 +87,9 @@ testPGSEA = function(input.ds, group_id, genesets, result) {
 
 }
 
-r = testPGSEA("mRNA_3CNMF.csv", "mRNA_3CNMF_g1.csv", "KEGG_db.gmt", "result.csv")
+#r = testGSEA("mRNA_3CNMF.csv", "mRNA_3CNMF_g1.csv", "KEGG_db.gmt", "result.csv",nperm=10)
+
+#rm1 = testGSEA("mrnaseq.csv", "mrnaseq_1.csv", "KEGG_db.gmt", "mrnaseq_r_1.csv",transpose=T,nperm=10,startWith=22)
+#rm2 = testGSEA("mrnaseq.csv", "mrnaseq_2.csv", "KEGG_db.gmt", "mrnaseq_r_2.csv",transpose=T,nperm=10,startWith=22)
+#rp1 = testGSEA("rppa.csv", "rppa_1.csv", "KEGG_db.gmt", "rppa_r_1.csv",transpose=T,nperm=10)
+#rp2 = testGSEA("rppa.csv", "rppa_2.csv", "KEGG_db.gmt", "rppa_r_2.csv",transpose=T,nperm=10)
