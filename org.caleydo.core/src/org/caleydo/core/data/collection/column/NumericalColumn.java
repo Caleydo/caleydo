@@ -27,12 +27,15 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	private double externalMin = Double.NaN;
 	private double externalMax = Double.NaN;
 
+	NumericalProperties properties;
+
 	/**
 	 * Constructor
 	 */
 	public NumericalColumn(DataDescription dataDescription) {
 		super(dataDescription);
-		NumericalProperties properties = dataDescription.getNumericalProperties();
+		properties = dataDescription.getNumericalProperties();
+
 		if (properties != null) {
 			defaultDataTransformation = properties.getDataTransformation();
 			if (properties.getMin() != null) {
@@ -132,6 +135,11 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 		FloatContainer logContainer = rawContainer.log(2);
 		dataRepToContainerMap.put(NumericalTable.Transformation.LOG2,
 				logContainer.normalizeWithAtrificalExtrema(MathHelper.log(getMin(), 2), MathHelper.log(getMax(), 2)));
+	}
+
+	@Override
+	public Object getDataClassSpecificDescription() {
+		return properties;
 	}
 
 }
