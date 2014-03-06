@@ -81,15 +81,19 @@ public class ColumnConfigTable {
 				return "Set Properties";
 			} else if (rowIndex == 1) {
 				ColumnDescription columnDescription = columnDescriptions.get(columnIndex);
-				if (columnDescription.getDataDescription().getCategoricalClassDescription() != null) {
+				switch (columnDescription.getDataDescription().getDataClass()) {
+				case CATEGORICAL:
 					if (columnDescription.getDataDescription().getCategoricalClassDescription().getCategoryType() == ECategoryType.NOMINAL)
 						return "Categorical (Nominal)";
 					return "Categorical (Ordinal)";
-				} else {
+				case NATURAL_NUMBER:
+				case REAL_NUMBER:
 					if (columnDescription.getDataDescription().getRawDataType() == EDataType.FLOAT)
 						return "Numerical (Float)";
 					// String is not possible for numerical
 					return "Numerical (Integer)";
+				default:
+					return "Unique Object (String)";
 				}
 			} else {
 				return rowOfColumnIDs.get(columnIndex);
