@@ -119,9 +119,11 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory2 {
 			IDoubleList list = context.get(IDoubleList.class, null);
 			final String labels = context.get("label", String.class, "<Unnamed>");
 			final Color color = context.get("color", Color.class, Color.LIGHT_GRAY);
+			final Float min = context.get("min", Float.class, Float.NaN);
+			final Float max = context.get("max", Float.class, Float.NaN);
 			if (list != null) {
 				return new ListBoxAndWhiskersElement(list, detailLevel, direction, showOutliers, showMinMax, labels,
-						color);
+						color, min, max);
 			} else {
 				AdvancedDoubleStatistics stats = context.get(AdvancedDoubleStatistics.class, null);
 				assert stats != null;
