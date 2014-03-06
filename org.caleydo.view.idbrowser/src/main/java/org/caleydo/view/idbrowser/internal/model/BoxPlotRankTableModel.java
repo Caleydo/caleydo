@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.layout2.GLElementAccessor;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IGLElementParent;
+import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.view.histogram.v2.ListBoxAndWhiskersElement;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.IRow;
@@ -169,7 +170,7 @@ public class BoxPlotRankTableModel extends ADataDomainRankTableModel implements 
 		public MyValueElement() {
 			IDoubleList l = new ArrayDoubleList(new double[0]);
 			content = new ListBoxAndWhiskersElement(l, EDetailLevel.LOW, EDimension.DIMENSION, false, false,
-					d.getLabel(), Color.LIGHT_GRAY);
+					d.getLabel(), Color.LIGHT_GRAY, GLPadding.ZERO);
 		}
 
 		@Override

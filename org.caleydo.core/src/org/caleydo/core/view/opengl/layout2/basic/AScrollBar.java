@@ -222,15 +222,24 @@ public abstract class AScrollBar implements IScrollBar {
 			return false;
 
 		// jump
-		float v = unmap(s, mousePos);
-		callback.onScrollBarMoved(this, clamp(v));
+		move(unmap(s, mousePos));
 		return true;
 	}
 
 	protected final void drag(float mouseDelta) {
 		float[] s = map(callback.getHeight(this));
-		float vd = unmap(s, mouseDelta);
-		callback.onScrollBarMoved(this, clamp(offset + vd));
+		move(unmap(s, mouseDelta));
+	}
+
+	@Override
+	public void moveTo(float pos) {
+		offset = clamp(pos);
+		callback.onScrollBarMoved(this, offset);
+	}
+
+	@Override
+	public void move(float delta) {
+		moveTo(offset + delta);
 	}
 
 	@Override

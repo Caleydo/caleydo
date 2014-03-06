@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package gleem.linalg.open;
 
@@ -14,7 +14,7 @@ public class Vec4i extends Vec2i {
 	protected static final int W = 3;
 
 	/**
-	 * 
+	 *
 	 */
 	public Vec4i() {
 
@@ -29,13 +29,13 @@ public class Vec4i extends Vec2i {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public Vec4i(final Veci arg) {
 
 		super(4);
 		for (int i = 0; i < arg.length(); i++) {
-			set(i, arg.get(i));
+			setComponent(i, arg.get(i));
 		}
 	}
 
@@ -48,24 +48,24 @@ public class Vec4i extends Vec2i {
 	}
 
 	public final void setZ(int z) {
-		set(Z, z);
+		setComponent(Z, z);
 	}
 
 	public final void setW(int w) {
-		set(W, w);
+		setComponent(W, w);
 	}
 
 	public final void setXYZW(final int x, final int y, final int z, final int w) {
-		set(X, x);
-		set(Y, y);
-		set(Z, z);
-		set(W, w);
+		setComponent(X, x);
+		setComponent(Y, y);
+		setComponent(Z, z);
+		setComponent(W, w);
 	}
 
 	public final void set(final Vec4i copy) {
-		set(X, copy.x());
-		set(Y, copy.y());
-		set(Z, copy.z());
-		set(W, copy.w());
+		setComponent(X, copy.x());
+		setComponent(Y, copy.y());
+		setComponent(Z, copy.z());
+		setComponent(W, copy.w());
 	}
 }

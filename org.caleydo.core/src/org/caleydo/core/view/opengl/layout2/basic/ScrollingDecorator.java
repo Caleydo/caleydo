@@ -30,7 +30,7 @@ import org.caleydo.core.view.opengl.picking.PickingMode;
  * @author Samuel Gratzl
  *
  */
-public final class ScrollingDecorator extends AGLElementDecorator implements IScrollBarCallback {
+public class ScrollingDecorator extends AGLElementDecorator implements IScrollBarCallback {
 	private final ScrollBarImpl vertical;
 	private final ScrollBarImpl horizontal;
 	/**
@@ -131,6 +131,7 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	 * @param minSizeProvider
 	 *            setter, see {@link minSizeProvider}
 	 */
+	@Override
 	public void setMinSizeProvider(IHasMinSize minSizeProvider) {
 		this.minSizeProvider = minSizeProvider;
 		relayout();
@@ -377,6 +378,20 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 
 	public void setClippingLocation(Vec2f location) {
 		setClippingLocation(location.x(), location.y());
+	}
+
+	public void moveContentTo(Vec2f pos) {
+		if (horizontal != null)
+			horizontal.scrollBar.moveTo(pos.x());
+		if (vertical != null)
+			vertical.scrollBar.moveTo(pos.y());
+	}
+
+	public void moveContent(Vec2f delta) {
+		if (horizontal != null)
+			horizontal.scrollBar.move(delta.x());
+		if (vertical != null)
+			vertical.scrollBar.move(delta.y());
 	}
 
 	protected boolean needHor() {

@@ -1,0 +1,48 @@
+GS;SIZE;SOURCE;ES;NES;NOM p-val;FDR q-val;FWER p-val;Tag \%;Gene \%;Signal;FDR (median);glob.p.val
+Cell cycle;17;Cell cycle;0.52272;1.4621;0;0.5682;0.4;0.588;0.276;0.494;0;0.3
+Small cell lung cancer;17;Small cell lung cancer;0.45179;1.3064;0.1429;0.41776;0.5;0.588;0.276;0.494;0.13043;0.1
+Viral carcinogenesis;23;Viral carcinogenesis;0.42547;1.2751;0;0.39519;0.7;0.391;0.187;0.391;0.21212;0.1
+p53 signaling pathway;17;p53 signaling pathway;0.47544;1.1481;0.2;0.66534;0.7;0.588;0.276;0.494;0.74242;0.2
+Apoptosis;12;Apoptosis;0.31544;0.89715;0.4;1;1;0.333;0.171;0.306;1;0.6
+Hepatitis B;27;Hepatitis B;0.26715;0.85066;0.6667;1;1;0.296;0.211;0.299;1;0.7
+Non-small cell lung cancer;13;Non-small cell lung cancer;0.31642;0.83222;1;1;1;0.231;0.0732;0.239;1;0.6
+Epstein-Barr virus infection;15;Epstein-Barr virus infection;0.30989;0.81834;0.7143;1;1;0.4;0.236;0.348;1;0.6
+PI3K-Akt signaling pathway;38;PI3K-Akt signaling pathway;0.22521;0.7335;1;1;1;0.395;0.317;0.39;1;0.7
+Bladder cancer;13;Bladder cancer;0.25342;0.67435;1;1;1;0.385;0.276;0.311;1;0.7
+Hippo signaling pathway;14;Hippo signaling pathway;0.25552;0.63387;1;1;1;0.429;0.285;0.346;1;0.7
+Transcriptional misregulation in cancer;11;Transcriptional misregulation in cancer;0.24091;0.55779;1;0.96873;1;0.364;0.26;0.295;1;0.6
+mTOR signaling pathway;15;mTOR signaling pathway;-0.73238;-1.8875;0;0;0;0.667;0.22;0.593;0;0
+Toxoplasmosis;12;Toxoplasmosis;-0.53889;-1.7437;0;0.11861;0.2;0.5;0.179;0.455;0;0
+Insulin signaling pathway;17;Insulin signaling pathway;-0.66212;-1.5814;0;0.2635;0.4;0.647;0.268;0.549;0;0.1
+Fc epsilon RI signaling pathway;10;Fc epsilon RI signaling pathway;-0.71275;-1.5253;0;0.26218;0.6;0.9;0.325;0.661;0.26515;0
+Prolactin signaling pathway;14;Prolactin signaling pathway;-0.52582;-1.5132;0;0.20975;0.6;0.571;0.268;0.472;0.21212;0
+Colorectal cancer;20;Colorectal cancer;-0.36907;-1.5019;0;0.17479;0.6;0.5;0.276;0.432;0.17677;0
+Hepatitis C;14;Hepatitis C;-0.56169;-1.4865;0.2;0.17813;0.7;0.5;0.179;0.463;0.17576;0
+T cell receptor signaling pathway;10;T cell receptor signaling pathway;-0.74683;-1.4382;0;0.16802;0.7;0.8;0.268;0.637;0.15379;0
+Osteoclast differentiation;10;Osteoclast differentiation;-0.66839;-1.4373;0;0.14935;0.7;0.5;0.179;0.447;0.1367;0
+HIF-1 signaling pathway;17;HIF-1 signaling pathway;-0.57337;-1.4151;0;0.13441;0.7;0.706;0.309;0.566;0.12303;0
+Proteoglycans in cancer;15;Proteoglycans in cancer;-0.48827;-1.3967;0;0.14567;0.7;0.533;0.268;0.444;0.11185;0
+Tuberculosis;13;Tuberculosis;-0.37772;-1.322;0;0.25998;0.8;0.308;0.13;0.299;0.2625;0
+Progesterone-mediated oocyte maturation;13;Progesterone-mediated oocyte maturation;-0.58011;-1.3195;0.3333;0.25075;0.8;0.769;0.341;0.566;0.29615;0
+Estrogen signaling pathway;10;Estrogen signaling pathway;-0.56516;-1.3194;0.125;0.23284;0.8;0.5;0.293;0.385;0.275;0
+TNF signaling pathway;11;TNF signaling pathway;-0.51935;-1.3163;0;0.22438;0.8;0.455;0.179;0.41;0.25667;0
+Neurotrophin signaling pathway;19;Neurotrophin signaling pathway;-0.49495;-1.3092;0;0.23102;0.9;0.632;0.293;0.528;0.24062;0
+Prostate cancer;23;Prostate cancer;-0.37068;-1.2821;0.2;0.26445;0.9;0.565;0.276;0.503;0.30015;0
+ErbB signaling pathway;21;ErbB signaling pathway;-0.49253;-1.2413;0;0.32759;1;0.524;0.268;0.462;0.30286;0
+Chemokine signaling pathway;13;Chemokine signaling pathway;-0.48172;-1.23;0.2857;0.34916;1;0.615;0.293;0.487;0.31704;0
+HTLV-I infection;22;HTLV-I infection;-0.31219;-1.2192;0.1667;0.35031;1;0.227;0.0894;0.252;0.39421;0
+Acute myeloid leukemia;15;Acute myeloid leukemia;-0.54075;-1.2096;0;0.35058;1;0.4;0.114;0.404;0.37544;0
+Focal adhesion;25;Focal adhesion;-0.40179;-1.1847;0.3333;0.37429;1;0.44;0.276;0.4;0.40819;0
+MAPK signaling pathway;15;MAPK signaling pathway;-0.46621;-1.1561;0.4;0.39071;1;0.4;0.13;0.396;0.4244;0
+Glioma;15;Glioma;-0.31445;-1.06;0.4;0.54211;1;0.333;0.179;0.312;0.59717;0
+Endometrial cancer;17;Endometrial cancer;-0.35465;-1.047;0.3333;0.54827;1;0.529;0.268;0.45;0.59474;0
+VEGF signaling pathway;11;VEGF signaling pathway;-0.42815;-1.0291;0.5;0.5934;1;0.545;0.268;0.438;0.60729;0
+Bacterial invasion of epithelial cells;11;Bacterial invasion of epithelial cells;-0.43144;-1.0181;0.2857;0.59129;1;0.364;0.187;0.325;0.61167;0
+Natural killer cell mediated cytotoxicity;11;Natural killer cell mediated cytotoxicity;-0.35646;-0.98833;0.6667;0.62925;1;0.636;0.341;0.46;0.65341;0
+Chronic myeloid leukemia;19;Chronic myeloid leukemia;-0.28649;-0.98525;0.5;0.6109;1;0.211;0.0976;0.225;0.63088;0
+Pancreatic cancer;19;Pancreatic cancer;-0.28267;-0.96216;0.2;0.60704;1;0.211;0.0976;0.225;0.61404;0
+Pathways in cancer;48;Pathways in cancer;-0.25509;-0.95569;0.8;0.60263;1;0.375;0.276;0.445;0.59423;0
+Regulation of actin cytoskeleton;12;Regulation of actin cytoskeleton;-0.39832;-0.93251;0.6667;0.62065;1;0.5;0.268;0.405;0.62435;0
+Adherens junction;12;Adherens junction;-0.42391;-0.93118;0.6667;0.60184;1;0.5;0.317;0.378;0.60543;0
+Melanoma;15;Melanoma;-0.27801;-0.83218;0.75;0.7053;1;0.6;0.341;0.45;0.72601;0
+Oocyte meiosis;11;Oocyte meiosis;-0.25546;-0.81045;0.6667;0.73169;1;0.273;0.146;0.256;0.73526;0

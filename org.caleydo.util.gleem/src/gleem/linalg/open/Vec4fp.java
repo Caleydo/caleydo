@@ -237,7 +237,7 @@ public class Vec4fp {
 	public Vecf toVecf() {
 		Vecf out = new Vecf(4);
 		for (int i = 0; i < 4; i++) {
-			out.set(i, get(i));
+			out.setComponent(i, get(i));
 		}
 		return out;
 	}

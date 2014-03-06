@@ -133,7 +133,7 @@ public class Vec3f {
 	}
 
 	/** Sets the ith component, 0 <= i < 3 */
-	public void set(int i, float val) {
+	public void setComponent(int i, float val) {
 		switch (i) {
 		case 0:
 			x = val;
@@ -302,7 +302,7 @@ public class Vec3f {
 	public Vecf toVecf() {
 		Vecf out = new Vecf(3);
 		for (int i = 0; i < 3; i++) {
-			out.set(i, get(i));
+			out.setComponent(i, get(i));
 		}
 		return out;
 	}

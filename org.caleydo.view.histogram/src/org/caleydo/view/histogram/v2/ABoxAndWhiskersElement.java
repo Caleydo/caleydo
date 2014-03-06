@@ -30,6 +30,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
+import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 
 import com.google.common.primitives.Doubles;
@@ -55,6 +56,8 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 
 	private AdvancedDoubleStatistics stats;
 	protected IInvertableDoubleFunction normalize;
+
+	private final GLPadding padding;
 	/**
 	 * value which is just above the <code>25 quartile - iqr*1.5</code> margin
 	 */
@@ -67,11 +70,12 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 	private IDoubleList outliers;
 
 	public ABoxAndWhiskersElement(EDetailLevel detailLevel, EDimension direction, boolean showOutlier,
-			boolean showMinMax) {
+			boolean showMinMax, GLPadding padding) {
 		this.detailLevel = detailLevel;
 		this.direction = direction;
 		this.showOutlier = showOutlier;
 		this.showMinMax = showMinMax;
+		this.padding = padding;
 	}
 
 	/**
@@ -197,7 +201,11 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 		super.renderImpl(g, w, h);
 		if (stats == null)
 			return;
-
+		float hor = padding.hor();
+		float vert = padding.vert();
+		w -= hor;
+		h -= vert;
+		g.save().move(padding.left, padding.top);
 		if (direction.isRecord()) {
 			g.save().move(w, 0).gl.glRotatef(90, 0, 0, 1);
 			renderBoxAndWhiskers(g, h, w);
@@ -207,6 +215,7 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 
 		if (showScale && detailLevel == EDetailLevel.HIGH)
 			renderScale(g, w, h);
+		g.restore();
 	}
 
 	private void renderBoxAndWhiskers(GLGraphics g, float w, float h) {
@@ -289,14 +298,14 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 		final int ticks = numberOfTicks(w);
 
 		float delta = w / ticks;
-		float x = delta;
 		final float v_delta = 1.f / ticks;
 
 		final int textHeight = 10;
 
 		g.drawText(Formatter.formatNumber(normalize.unapply(0)), 1, hi, delta, textHeight);
 		for (int i = 1; i < ticks; ++i) {
-			g.drawText(Formatter.formatNumber(normalize.unapply(v_delta * i)), x - delta * 0.5f, hi, delta, textHeight,
+			g.drawText(Formatter.formatNumber(normalize.unapply(v_delta * i)), delta * i - delta * 0.5f, hi, delta,
+					textHeight,
 					VAlign.CENTER);
 		}
 		g.drawText(Formatter.formatNumber(normalize.unapply(1)), w - delta - 1, hi, delta - 1, textHeight, VAlign.RIGHT);
