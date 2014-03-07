@@ -5,13 +5,16 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
+
 import com.jogamp.opengl.util.texture.Texture;
 
 /**
  * Render image and set setSize to size of image on loading.
- * 
+ *
  * @author Thomas Geymayer
- * 
+ *
  */
 public class GLImageElement extends GLElement {
 
@@ -38,7 +41,14 @@ public class GLImageElement extends GLElement {
 			relayout();
 		}
 
+		// Alpha test (required to use depth base picking)
+		g.gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		g.gl.glAlphaFunc(GL.GL_GREATER, 0.3f);
+		g.gl.glEnable(GL2.GL_ALPHA_TEST);
+
 		g.fillImage(texture, 0, 0, w, h);
+
+		g.gl.glPopAttrib();
 	}
 
 }
