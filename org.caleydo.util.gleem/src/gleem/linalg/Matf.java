@@ -109,7 +109,7 @@ public class Matf {
 			for (int j = 0; j < nCol(); j++) {
 				tmp += get(i, j) * v.get(j);
 			}
-			out.set(i, tmp);
+			out.setComponent(i, tmp);
 		}
 		return out;
 	}

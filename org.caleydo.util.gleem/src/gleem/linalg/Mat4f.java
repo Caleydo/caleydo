@@ -257,7 +257,7 @@ public class Mat4f {
 				tmp += get(rc, cc) * src.get(cc);
 			}
 			tmp += get(rc, 3);
-			dest.set(rc, tmp);
+			dest.setComponent(rc, tmp);
 		}
 	}
 
@@ -271,7 +271,7 @@ public class Mat4f {
 			for (int cc = 0; cc < 3; cc++) {
 				tmp += get(rc, cc) * src.get(cc);
 			}
-			dest.set(rc, tmp);
+			dest.setComponent(rc, tmp);
 		}
 	}
 

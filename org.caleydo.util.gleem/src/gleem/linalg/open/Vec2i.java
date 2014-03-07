@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package gleem.linalg.open;
 
@@ -14,7 +14,7 @@ public class Vec2i extends Veci {
 	protected static final int Y = 1;
 
 	/**
-	 * 
+	 *
 	 */
 	public Vec2i() {
 
@@ -58,20 +58,20 @@ public class Vec2i extends Veci {
 	}
 
 	public final void set(Vec2i arg) {
-		set(X, arg.x());
-		set(Y, arg.y());
+		setComponent(X, arg.x());
+		setComponent(Y, arg.y());
 	}
 
 	public final void setX(int x) {
-		set(X, x);
+		setComponent(X, x);
 	}
 
 	public final void setY(int y) {
-		set(Y, y);
+		setComponent(Y, y);
 	}
 
 	public final void setXY(int x, int y) {
-		set(X, x);
-		set(Y, y);
+		setComponent(X, x);
+		setComponent(Y, y);
 	}
 }

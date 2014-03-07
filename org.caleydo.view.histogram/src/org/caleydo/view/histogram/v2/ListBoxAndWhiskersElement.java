@@ -33,10 +33,15 @@ public class ListBoxAndWhiskersElement extends ABoxAndWhiskersElement {
 
 	public ListBoxAndWhiskersElement(IDoubleList data, EDetailLevel detailLevel, EDimension direction,
 			boolean showOutlier, boolean showMinMax, String label, Color color, GLPadding padding) {
+		this(data, detailLevel, direction, showOutlier, showMinMax, label, color, Float.NaN, Float.NaN, padding);
+	}
+
+	public ListBoxAndWhiskersElement(IDoubleList data, EDetailLevel detailLevel, EDimension direction,
+			boolean showOutlier, boolean showMinMax, String label, Color color, Float min, Float max, GLPadding padding) {
 		super(detailLevel, direction, showOutlier, showMinMax, padding);
 		this.color = Preconditions.checkNotNull(color);
 		this.label = Preconditions.checkNotNull(label);
-		setData(data);
+		setData(data, min, max);
 		this.data = data;
 	}
 
@@ -94,6 +99,7 @@ public class ListBoxAndWhiskersElement extends ABoxAndWhiskersElement {
 		this.data = null;
 		super.setData(stats, min, max);
 	}
+
 	/**
 	 * @return the label, see {@link #label}
 	 */

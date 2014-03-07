@@ -54,7 +54,7 @@ public class Vec2f {
 	}
 
 	/** Sets the ith component, 0 <= i < 2 */
-	public void set(int i, float val) {
+	public void setComponent(int i, float val) {
 		switch (i) {
 		case 0:
 			x = val;
@@ -121,10 +121,25 @@ public class Vec2f {
 		return tmp;
 	}
 
+	/** Returns this * rhs; (componentwise) creates new vector */
+	public Vec2f times(Vec2f rhs) {
+		return new Vec2f(x * rhs.x, y * rhs.y);
+	}
+
+	/** Returns this / rhs; (componentwise) creates new vector */
+	public Vec2f divided(Vec2f rhs) {
+		return new Vec2f(x / rhs.x, y / rhs.y);
+	}
+
 	/** this = this * val */
 	public void scale(float val) {
 		x *= val;
 		y *= val;
+	}
+
+	/** this = this * val; creates new vector */
+	public Vec2f scaled(float val) {
+		return new Vec2f(x * val, y * val);
 	}
 
 	/** Returns this + arg; creates new vector */
@@ -179,7 +194,7 @@ public class Vec2f {
 	public Vecf toVecf() {
 		Vecf out = new Vecf(2);
 		for (int i = 0; i < 2; i++) {
-			out.set(i, get(i));
+			out.setComponent(i, get(i));
 		}
 		return out;
 	}
