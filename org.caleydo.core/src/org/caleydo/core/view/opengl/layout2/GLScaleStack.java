@@ -19,9 +19,9 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
  * the same size. The actual size is calculated by multiplying the setSize of
  * the first element added and the scale factor. Any remaining background is
  * filled with color.
- * 
+ *
  * @author Thomas Geymayer
- * 
+ *
  */
 public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 
@@ -104,6 +104,18 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 	 */
 	public float getScale() {
 		return scale;
+	}
+
+	@Override
+	public GLElement set(int index, GLElement child) {
+		// Skip background (== first element)
+		return super.set(index + 1, child);
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// Ignore background
+		return size() < 2;
 	}
 
 	@Override

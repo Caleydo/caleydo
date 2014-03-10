@@ -37,7 +37,8 @@ public class GLZoomPanContainer extends ScrollingDecorator {
 			public void pick(Pick pick) {
 				switch (pick.getPickingMode()) {
 				case DRAG_DETECTED:
-					pick.setDoDragging(true);
+					if (!pick.isAnyDragging())
+						pick.setDoDragging(true);
 					break;
 				case DRAGGED:
 					if (pick.isDoDragging())
@@ -71,5 +72,13 @@ public class GLZoomPanContainer extends ScrollingDecorator {
 	 */
 	public void add(GLElement child) {
 		elementStack.add(child);
+	}
+
+	public void set(int index, GLElement child) {
+		elementStack.set(index, child);
+	}
+
+	public boolean isEmpty() {
+		return elementStack.isEmpty();
 	}
 }

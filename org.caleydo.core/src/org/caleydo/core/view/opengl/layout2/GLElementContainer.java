@@ -214,7 +214,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		return children.size();
 	}
 
-	public final boolean isEmpty() {
+	public boolean isEmpty() {
 		return children.isEmpty();
 	}
 
@@ -242,7 +242,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		return e;
 	}
 
-	public final GLElement set(int index, GLElement element) {
+	public GLElement set(int index, GLElement element) {
 		GLElement old = children.get(index);
 		old.takeDown();
 		setup(element);

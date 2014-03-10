@@ -21,6 +21,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IHasGLLayoutData;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 
 import com.google.common.base.Predicate;
@@ -127,7 +128,7 @@ public class GLElement implements IHasGLLayoutData, IHasMinSize {
 	/**
 	 * the list of picking listeners, set by {@link #onPick(IPickingListener)}
 	 */
-	private final PickingListenerComposite pickingListener = new PickingListenerComposite(1);
+	protected final PickingListenerComposite pickingListener = new PickingListenerComposite(1);
 
 	/**
 	 * indicator whether the layouting should run next time
@@ -429,6 +430,15 @@ public class GLElement implements IHasGLLayoutData, IHasMinSize {
 	public final GLElement onPick(IPickingListener customPickingListener) {
 		this.pickingListener.add(customPickingListener);
 		return this;
+	}
+
+	/**
+	 * Forward pick event to listeners
+	 * 
+	 * @param pick
+	 */
+	public final void handlePick(Pick pick) {
+		pickingListener.pick(pick);
 	}
 
 	/**
