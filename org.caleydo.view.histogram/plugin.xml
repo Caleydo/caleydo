@@ -174,7 +174,7 @@
             <Embedding
                   embeddingID="org.caleydo.view.stratomex.clinical.segment.brick"
                   icon="resources/icons/chart_boxandwhiskers.png"
-                  isDefaultView="false"
+                  isDefaultView="true"
                   visInfo="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersVisInfo">
                <RendererCreator
                      class="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersRemoteViewCreator">
@@ -186,7 +186,7 @@
             <Embedding
                   embeddingID="org.caleydo.view.stratomex.clinical.header.brick"
                   icon="resources/icons/chart_boxandwhiskers.png"
-                  isDefaultView="false"
+                  isDefaultView="true"
                   visInfo="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersVisInfo">
                <RendererCreator
                      class="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersRemoteViewCreator">

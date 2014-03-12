@@ -37,7 +37,7 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 
 	public GLScaleStack() {
 		setLayout(this);
-
+		// TODO: wouldn't it be much easier to use set the background via a renderer on the GLScaleStack itself
 		GLElement background = new GLElement();
 		background.setRenderer(GLRenderers.fillRect(backgroundColor));
 		add(background);
@@ -81,6 +81,7 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 		relayoutParent();
 
 		// Update layout immediately
+		// FIXME HACK
 		((GLElement) getParent()).layout(0);
 
 		return true;
@@ -108,12 +109,14 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 
 	@Override
 	public GLElement set(int index, GLElement child) {
+		// FIXME HACK
 		// Skip background (== first element)
 		return super.set(index + 1, child);
 	}
 
 	@Override
 	public boolean isEmpty() {
+		// FIXME HACK
 		// Ignore background
 		return size() < 2;
 	}

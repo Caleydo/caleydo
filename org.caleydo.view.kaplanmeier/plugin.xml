@@ -29,7 +29,7 @@
             <Embedding
                   embeddingID="org.caleydo.view.stratomex.clinical.segment.brick"
                   icon="resources/icons/icon.png"
-                  isDefaultView="true"
+                  isDefaultView="false"
                   visInfo="org.caleydo.view.kaplanmeier.KaplanMeierVisInfo">
                <ViewCreator
                      class="org.caleydo.view.kaplanmeier.KaplanMeierRemoteViewCreator">
@@ -41,7 +41,7 @@
             <Embedding
                   embeddingID="org.caleydo.view.stratomex.clinical.header.brick"
                   icon="resources/icons/icon.png"
-                  isDefaultView="true"
+                  isDefaultView="false"
                   visInfo="org.caleydo.view.kaplanmeier.KaplanMeierVisInfo">
                <ViewCreator
                      class="org.caleydo.view.kaplanmeier.KaplanMeierRemoteViewCreator">
