@@ -82,7 +82,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 	/**
 	 * a shared version of the current item, shared within the same VM, avoids encryption and decryption, as well as in
-	 * some os (I'm talking about Mac OS), you can#t access intermedidate data
+	 * some os (I'm talking about Mac OS), you can#t access intermediate data
 	 */
 	volatile static DnDItem activeShared;
 
@@ -265,13 +265,13 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 			Display.getCurrent().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					if (activeDropTarget != null) {
-						IDnDItem item = toItem(event);
-						if (item != null)
-							EventPublisher.trigger(new DropEnterLeaveItemEvent(readOnly(item), activeDropTarget, false)
-									.to(MouseLayer.this));
-						activeDropTarget = null;
-					}
+					IDnDItem item = toItem(event);
+					if (item != null)
+						EventPublisher.trigger(new DropEnterLeaveItemEvent(readOnly(item), activeDropTarget, false)
+								.to(MouseLayer.this));
+					activeDropTarget = null;
+					if (active != null && active.source == null) // clean up remote cached active
+						active = null;
 				}
 			});
 		}
@@ -397,8 +397,9 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	 */
 	protected DnDItem toItem(DropTargetEvent event) {
 		DnDItem item = null;
-		if (active != null) // cached one e.g local drag
+		if (active != null) {// cached one e.g local drag
 			item = active;
+		}
 		else if (activeShared != null) { // same vm
 			item = active = activeShared;
 		} else {
