@@ -46,7 +46,7 @@ public class ImageSerializationAddon implements ISerializationAddon {
 		List<IDataDomain> domains = DataDomainManager.get()
 				.getDataDomainsByType(ImageDataDomain.DATA_DOMAIN_TYPE);
 		for(IDataDomain dataDomain: domains)
-			((ImageDataDomain)dataDomain).getImageSet().getImages().add(
+			((ImageDataDomain) dataDomain).getImageSet().add(
 				new File(dirName, dataDomain.getDataDomainID())
 			);
 	}
@@ -60,7 +60,6 @@ public class ImageSerializationAddon implements ISerializationAddon {
 				File savePath = new File(dirName, dataDomain.getDataDomainID());
 				savePath.mkdirs();
 				for(File img: ((ImageDataDomain)dataDomain).getImageSet()
-														   .getImages()
 														   .getFiles()
 														   .values()) {
 					Files.copy(img, new File(savePath, img.getName()));

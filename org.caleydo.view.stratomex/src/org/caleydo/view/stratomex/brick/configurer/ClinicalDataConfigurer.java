@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.data.datadomain.TablePerspectiveActions;
 import org.caleydo.core.data.perspective.table.TableDoubleLists;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -19,6 +20,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.function.IDoubleIterator;
 import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.ViewManager;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -298,6 +300,11 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 	@Override
 	public boolean distributeBricksUniformly() {
 		return true;
+	}
+
+	@Override
+	public void addDataSpecificContextMenuEntries(ContextMenuCreator creator, GLBrick brick) {
+		TablePerspectiveActions.add(creator, brick.getTablePerspective(), this, true);
 	}
 
 }

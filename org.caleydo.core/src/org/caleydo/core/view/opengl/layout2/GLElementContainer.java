@@ -156,7 +156,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 			child.init(context);
 	}
 
-	public final void clear() {
+	public void clear() {
 		int size = this.size();
 		for (Iterator<GLElement> it = children.iterator(); it.hasNext();) {
 			GLElement e = it.next();

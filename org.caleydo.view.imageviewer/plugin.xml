@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.imageviewer.internal.ImageViewerViewPart"
+            icon="resources/icons/eog.png"
+            id="org.caleydo.view.imageviewer"
+            name="ImageViewer">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.caleydo.menu.view.visualization">
+         <command
+               commandId="org.caleydo.view.imageviewer.command.open"
+               icon="resources/icons/eog.png"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.imageviewer.internal.OpenViewHandler"
+            id="org.caleydo.view.imageviewer.command.open"
+            name="ImageViewer">
+      </command>
+   </extension>
+   <extension
+         point="org.caleydo.core.data.datadomain.ViewDataDomainAssociation">
+      <association
+            view="org.caleydo.view.imageviewer">
+         <dataDomain
+               type="org.caleydo.datadomain.genetic">
+         </dataDomain>
+         <dataDomain
+               type="org.caleydo.datadomain.generic">
+         </dataDomain>
+      </association>
+   </extension>
+</plugin>

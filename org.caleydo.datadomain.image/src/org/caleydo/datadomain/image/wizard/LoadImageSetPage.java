@@ -419,7 +419,7 @@ public class LoadImageSetPage
 	public void pageActivated() {
 		ImageSet img = getWizard().getImageSet();
 		nameText.setText(img.getName());
-		imageGroups = img.getImages();
+		imageGroups = img;
 		files.fileGrouper = imageGroups;
 		updateTree();
 

@@ -82,13 +82,19 @@ public class GLImageViewer extends GLZoomPanContainer {
 		});
 	}
 
+	@Override
+	public void clear() {
+		super.clear();
+		lastZ = 0;
+	}
+
 	/**
 	 * Set the image shown in the base layer.
 	 *
 	 * @param path
 	 * @return
 	 */
-	public GLElement setImage(String path) {
+	public GLElement setBaseImage(String path) {
 		GLImageElement baseImg = new GLImageElement(path);
 		if (isEmpty())
 			add(baseImg);
