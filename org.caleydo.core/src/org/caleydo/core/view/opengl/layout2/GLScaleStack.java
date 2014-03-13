@@ -115,6 +115,13 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 	}
 
 	@Override
+	public void clear() {
+		int size = size();
+		while (size > 1)
+			remove(--size);
+	}
+
+	@Override
 	public boolean isEmpty() {
 		// FIXME HACK
 		// Ignore background

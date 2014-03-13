@@ -78,6 +78,10 @@ public class GLZoomPanContainer extends ScrollingDecorator {
 		elementStack.set(index, child);
 	}
 
+	public void clear() {
+		elementStack.clear();
+	}
+
 	public boolean isEmpty() {
 		return elementStack.isEmpty();
 	}

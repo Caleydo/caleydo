@@ -5,6 +5,14 @@
  *******************************************************************************/
 package org.caleydo.datadomain.image;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeMap;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
@@ -16,11 +24,9 @@ import org.caleydo.core.id.IDType;
  * @author Thomas Geymayer
  *
  */
-public class ImageSet {
+public class ImageSet extends FilePrefixGrouper {
 
 	protected String name;
-
-	protected FilePrefixGrouper images;
 
 	protected String idCategoryImage;
 	protected String idTypeImage;
@@ -28,8 +34,9 @@ public class ImageSet {
 	protected String idCategoryLayer;
 	protected String idTypeLayer;
 
+	protected SortedMap<String, LayeredImage> images;
+
 	public ImageSet() {
-		images = new FilePrefixGrouper();
 		IDCategory idCategoryImage = IDCategory.registerCategoryIfAbsent("Tissue Slice");
 		IDCategory idCategoryLayer = IDCategory.registerCategoryIfAbsent("Marker");
 		IDType idTypeImage = IDType.registerType("Tissue Slice", idCategoryImage, EDataType.STRING);
@@ -39,15 +46,17 @@ public class ImageSet {
 		this.idCategoryLayer = idCategoryLayer.getCategoryName();
 		this.idTypeImage = idTypeImage.getTypeName();
 		this.idTypeLayer = idTypeLayer.getTypeName();
+		images = new TreeMap<>();
 	}
 
 	public ImageSet(ImageSet other) {
+		super(other);
 		name = new String(other.name);
-		images = new FilePrefixGrouper(other.images);
 		idCategoryImage = new String(other.idCategoryImage);
 		idTypeImage = new String(other.idTypeImage);
 		idCategoryLayer = new String(other.idCategoryLayer);
 		idTypeLayer = new String(other.idTypeLayer);
+		images = new TreeMap<>(other.images);
 	}
 
 	public String getName() {
@@ -58,12 +67,48 @@ public class ImageSet {
 		this.name = name;
 	}
 
-	public FilePrefixGrouper getImages() {
-		return images;
+	@Override
+	public void refreshGroups() {
+		super.refreshGroups();
+
+		images.clear();
+
+		for (Entry<String, SortedSet<String>> group : groups.entrySet()) {
+			String name = group.getKey();
+			LayeredImage img = new LayeredImage();
+
+			File baseImage = files.get(name);
+			File baseThumb = files.get(name + "_thumb");
+			img.setBaseImage(baseImage, baseThumb);
+
+			for (String file : group.getValue()) {
+				if (file.endsWith("_thumb") || file.endsWith("_border"))
+					continue;
+
+				String borderName = file.substring(0, file.lastIndexOf("_highlight")) + "_border";
+
+				File layerImage = files.get(borderName);
+				File layerThumb = files.get(borderName + "_thumb");
+				File maskImage = files.get(file);
+				File maskThumb = files.get(file + "_thumb");
+				img.addLayer(file, layerImage, layerThumb, maskImage, maskThumb);
+			}
+
+			images.put(name, img);
+		}
 	}
 
-	public void setImages(FilePrefixGrouper image_grouper) {
-		images = image_grouper;
+	/**
+	 * Get names of all images (usually the name of each base image)
+	 *
+	 * @return
+	 */
+	public List<String> getImageNames() {
+		return new ArrayList<>(getGroups().keySet());
+	}
+
+	public LayeredImage getImage(String name) {
+		return images.get(name);
 	}
 
 	/**
