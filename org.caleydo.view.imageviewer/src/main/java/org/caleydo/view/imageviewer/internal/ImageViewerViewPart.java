@@ -34,6 +34,8 @@ import org.eclipse.swt.widgets.Control;
  */
 public class ImageViewerViewPart extends ARcpGLElementViewPart {
 
+	protected ImageSelector imageSelector;
+
 	public ImageViewerViewPart() {
 		super(SerializedImageViewerView.class);
 	}
@@ -45,9 +47,12 @@ public class ImageViewerViewPart extends ARcpGLElementViewPart {
 
 	@Override
 	public void addToolBarContent(IToolBarManager toolBarManager) {
-		toolBarManager.add(new MyComboBox("Hello"));
+		toolBarManager.add(imageSelector = new ImageSelector());
 		toolBarManager.update(true);
 	}
+
+	// TODO update on view.init()
+	// imageSelector.onImageChange();
 
 	public static class SelectImageEvent extends ADirectedEvent {
 
@@ -64,13 +69,13 @@ public class ImageViewerViewPart extends ARcpGLElementViewPart {
 
 	}
 
-	protected class MyComboBox extends ControlContribution {
+	protected class ImageSelector extends ControlContribution {
 
 		Combo domainCombo;
 		Combo imageCombo;
 
-		public MyComboBox(String str) {
-			super(str);
+		public ImageSelector() {
+			super("ImageSelector");
 		}
 
 		public ImageDataDomain getSelectedDomain() {
@@ -79,6 +84,23 @@ public class ImageViewerViewPart extends ARcpGLElementViewPart {
 
 		public LayeredImage getSelectedImage() {
 			return getSelectedDomain().getImageSet().getImage(imageCombo.getText());
+		}
+
+		public void onDomainChange() {
+			imageCombo.removeAll();
+			imageCombo.setEnabled(true);
+
+			ImageDataDomain imageSet = getSelectedDomain();
+			for (String name : imageSet.getImageSet().getImageNames())
+				imageCombo.add(name);
+			imageCombo.select(0);
+
+			onImageChange();
+		}
+
+		public void onImageChange() {
+			EventPublisher.trigger(new SelectImageEvent(getSelectedImage()).to(((ImageViewerView) getView())
+					.getImageViewer()));
 		}
 
 		@Override
@@ -92,7 +114,21 @@ public class ImageViewerViewPart extends ARcpGLElementViewPart {
 
 			domainCombo = new Combo(composite, comboStyle);
 			imageCombo = new Combo(composite, comboStyle);
-			imageCombo.add("<select image>");
+
+			domainCombo.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					onDomainChange();
+				}
+			});
+
+			imageCombo.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					onImageChange();
+				}
+			});
+			imageCombo.add("<no image>");
 			imageCombo.select(0);
 			imageCombo.setEnabled(false);
 
@@ -100,26 +136,7 @@ public class ImageViewerViewPart extends ARcpGLElementViewPart {
 				domainCombo.add(dataDomain.getLabel());
 			domainCombo.select(0);
 
-			domainCombo.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					imageCombo.removeAll();
-
-					ImageDataDomain imageSet = getSelectedDomain();
-					for (String name : imageSet.getImageSet().getImageNames())
-						imageCombo.add(name);
-					imageCombo.select(0);
-					imageCombo.setEnabled(true);
-				}
-			});
-
-			imageCombo.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					EventPublisher.trigger(new SelectImageEvent(getSelectedImage()).to(((ImageViewerView) getView())
-							.getImageViewer()));
-				}
-			});
+			onDomainChange();
 
 			return composite;
 		}
