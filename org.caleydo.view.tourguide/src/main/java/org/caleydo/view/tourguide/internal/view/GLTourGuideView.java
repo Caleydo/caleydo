@@ -221,6 +221,11 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		}
 	}
 
+	@Override
+	protected String getDefaultLabel() {
+		return adapter == null ? super.getDefaultLabel() : adapter.getLabel() + " - LineUp";
+	}
+
 	/**
 	 * @return the queries, see {@link #queries}
 	 */
