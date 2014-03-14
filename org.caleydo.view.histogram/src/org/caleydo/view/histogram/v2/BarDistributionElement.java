@@ -94,7 +94,7 @@ public class BarDistributionElement extends ADistributionElement {
 	}
 
 	@Override
-	public GLLocation apply(int dataIndex) {
+	public GLLocation apply(int dataIndex, boolean topLeft) {
 		float max = EDimension.get(!vertical).select(getSize());
 		float m = max / data.size();
 		return new GLLocation(dataIndex * m, m);

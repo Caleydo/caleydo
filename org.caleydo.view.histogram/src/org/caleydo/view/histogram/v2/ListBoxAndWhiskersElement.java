@@ -64,12 +64,13 @@ public class ListBoxAndWhiskersElement extends ABoxAndWhiskersElement {
 		return data;
 	}
 
-	public GLLocation getLocation(int dataIndex) {
+	public GLLocation getLocation(int dataIndex, boolean topLeft) {
 		if (dataIndex < 0 || !hasData() || dataIndex >= this.data.size())
 			return GLLocation.UNKNOWN;
 		float total = getDirection().select(getSize());
 		double value = this.data.getPrimitive(dataIndex);
 		double pos = total * normalize.apply(value);
+		// FIXME topLeft
 		return new GLLocation(pos, 1. / data.size());
 	}
 

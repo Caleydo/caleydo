@@ -272,7 +272,7 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		SelectionManager manager = selections == null || selections.isEmpty() ? null : selections.get(0);
 		int n = list.size();
-		float o = dim.opposite().select(w, h) * (0.5f - ITEM_AXIS_WIDTH / 2f);
+		float o = markerOffset(w, h);
 		if (dim.isHorizontal()) {
 			g.color(Color.BLACK).drawLine(0, h * 0.5f, w, h * 0.5f);
 		} else {
@@ -311,6 +311,9 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		super.renderImpl(g, w, h);
 	}
 
+	private float markerOffset(float w, float h) {
+		return dim.opposite().select(w, h) * (0.5f - ITEM_AXIS_WIDTH / 2f);
+	}
 
 	private void renderSelection(GLGraphics g, float w, float h) {
 		float min = Math.min(selectStart, selectEnd);
@@ -401,12 +404,13 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 	}
 
 	@Override
-	public GLLocation apply(int dataIndex) {
-		float total = dim.select(getSize());
+	public GLLocation apply(int dataIndex, boolean topLeft) {
+		final Vec2f size = getSize();
+		float total = dim.select(size);
 		double n = normalize.apply(list.getPrimitive(dataIndex));
 		if (invertOrder)
 			n = 1 - n;
-		return new GLLocation(n * total, 1);
+		return new GLLocation(n * total, 1, markerOffset(size.x(), size.y()));
 	}
 
 	@Override
@@ -431,8 +435,8 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 	}
 
 	@Override
-	public GLLocation apply(Integer input) {
-		return GLLocation.applyPrimitive(this, input);
+	public GLLocation apply(Integer input, Boolean topLeft) {
+		return GLLocation.applyPrimitive(this, input, topLeft);
 	}
 
 	private static Function<Double, String> toMarkerFunction(final String... markers) {

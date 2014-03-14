@@ -48,7 +48,7 @@ public class KaplanMeierElementFactory implements IGLElementFactory2 {
 		final DescBuilder b = GLElementDimensionDesc.newFix(dim.select(k.getMinSize()));
 		b.locateUsing(new GLLocation.ALocator() {
 			@Override
-			public GLLocation apply(int dataIndex) {
+			public GLLocation apply(int dataIndex, boolean topLeft) {
 				return k.getLocations(dim, Collections.singleton(dataIndex)).get(0);
 			}
 

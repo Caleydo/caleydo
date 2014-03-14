@@ -71,8 +71,8 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory2 {
 				private final ListBoxAndWhiskersElement vis = (ListBoxAndWhiskersElement) b;
 
 				@Override
-				public GLLocation apply(int dataIndex) {
-					return vis.getLocation(dataIndex);
+				public GLLocation apply(int dataIndex, boolean topLeft) {
+					return vis.getLocation(dataIndex, topLeft);
 				}
 
 				@Override

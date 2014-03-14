@@ -122,7 +122,8 @@ public class BarPlotElementFactory implements IGLElementFactory2 {
 		}
 
 		@Override
-		public GLLocation apply(int dataIndex) {
+		public GLLocation apply(int dataIndex, boolean topLeft) {
+			// FIXME intentions
 			return elem.getLocation(dim, dataIndex);
 		}
 

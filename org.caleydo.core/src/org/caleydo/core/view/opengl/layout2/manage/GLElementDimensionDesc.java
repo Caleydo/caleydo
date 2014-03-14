@@ -80,13 +80,13 @@ public class GLElementDimensionDesc implements GLLocation.ILocator {
 	}
 
 	@Override
-	public GLLocation apply(int dataIndex) {
-		return locator.apply(dataIndex);
+	public GLLocation apply(int dataIndex, boolean topLeft) {
+		return locator.apply(dataIndex, topLeft);
 	}
 
 	@Override
-	public GLLocation apply(Integer input) {
-		return locator.apply(input);
+	public GLLocation apply(Integer input, Boolean topLeft) {
+		return locator.apply(input, topLeft);
 	}
 
 	@Override

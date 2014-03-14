@@ -8,7 +8,7 @@ package org.caleydo.core.view.opengl.layout2.manage;
 import java.util.Collections;
 import java.util.Set;
 
-import com.google.common.base.Function;
+import org.caleydo.core.util.function.Function2;
 
 /**
  * a pair of offset + size, used for locating elements
@@ -23,24 +23,25 @@ public class GLLocation {
 	 * @author Samuel Gratzl
 	 *
 	 */
-	public static interface ILocator extends Function<Integer, GLLocation> {
-		GLLocation apply(int dataIndex);
+	public static interface ILocator extends Function2<Integer, Boolean, GLLocation> {
+		GLLocation apply(int dataIndex, boolean topLeft);
 
 		Set<Integer> unapply(GLLocation location);
 	}
 
 	public static abstract class ALocator implements ILocator {
 		@Override
-		public GLLocation apply(Integer input) {
-			return applyPrimitive(this, input);
+		public GLLocation apply(Integer input, Boolean topLeft) {
+			return applyPrimitive(this, input, topLeft);
 		}
 	}
-	public static final GLLocation UNKNOWN = new GLLocation(Double.NaN, Double.NaN);
+
+	public static final GLLocation UNKNOWN = new GLLocation(Double.NaN, Double.NaN, 0);
 	public static final Set<Integer> UNKNOWN_IDS = Collections.emptySet();
 	public static final ILocator NO_LOCATOR = new ALocator() {
 
 		@Override
-		public GLLocation apply(int dataIndex) {
+		public GLLocation apply(int dataIndex, boolean topLeft) {
 			return UNKNOWN;
 		}
 
@@ -52,10 +53,22 @@ public class GLLocation {
 
 	private final double offset;
 	private final double size;
+	private final double indentation;
 
 	public GLLocation(double offset, double size) {
+		this(offset, size, 0);
+	}
+	public GLLocation(double offset, double size, double indentation) {
 		this.offset = offset;
 		this.size = size;
+		this.indentation = indentation;
+	}
+
+	/**
+	 * @return the indentation, see {@link #indentation}
+	 */
+	public double getIndentation() {
+		return indentation;
 	}
 
 	/**
@@ -93,7 +106,7 @@ public class GLLocation {
 	 * @return
 	 */
 	protected GLLocation shift(double offsetShift) {
-		return new GLLocation(offset + offsetShift, size);
+		return new GLLocation(offset + offsetShift, size, indentation);
 	}
 
 	/**
@@ -101,7 +114,7 @@ public class GLLocation {
 	 * @return
 	 */
 	protected GLLocation scale(double factor) {
-		return new GLLocation(offset * factor, size * factor);
+		return new GLLocation(offset * factor, size * factor, indentation);
 	}
 
 	@Override
@@ -111,6 +124,8 @@ public class GLLocation {
 		builder.append(offset);
 		builder.append(", size=");
 		builder.append(size);
+		builder.append(", indentation=");
+		builder.append(indentation);
 		builder.append("]");
 		return builder.toString();
 	}
@@ -123,6 +138,8 @@ public class GLLocation {
 		temp = Double.doubleToLongBits(offset);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(size);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(indentation);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
@@ -140,6 +157,8 @@ public class GLLocation {
 			return false;
 		if (Double.doubleToLongBits(size) != Double.doubleToLongBits(other.size))
 			return false;
+		if (Double.doubleToLongBits(indentation) != Double.doubleToLongBits(other.indentation))
+			return false;
 		return true;
 	}
 
@@ -150,8 +169,8 @@ public class GLLocation {
 	 * @param input
 	 * @return
 	 */
-	public static GLLocation applyPrimitive(ILocator loc, Integer input) {
-		return input == null ? UNKNOWN : loc.apply(input.intValue());
+	public static GLLocation applyPrimitive(ILocator loc, Integer input, Boolean topLeft) {
+		return input == null ? UNKNOWN : loc.apply(input.intValue(), topLeft.booleanValue());
 	}
 
 	/**
@@ -165,8 +184,8 @@ public class GLLocation {
 		return new ALocator() {
 
 			@Override
-			public GLLocation apply(int dataIndex) {
-				GLLocation l = wrappee.apply(dataIndex);
+			public GLLocation apply(int dataIndex, boolean topLeft) {
+				GLLocation l = wrappee.apply(dataIndex, topLeft);
 				return l.shift(shift);
 			}
 
@@ -188,8 +207,8 @@ public class GLLocation {
 		return new ALocator() {
 
 			@Override
-			public GLLocation apply(int dataIndex) {
-				GLLocation l = wrappee.apply(dataIndex);
+			public GLLocation apply(int dataIndex, boolean topLeft) {
+				GLLocation l = wrappee.apply(dataIndex, topLeft);
 				return l.scale(factor);
 			}
 

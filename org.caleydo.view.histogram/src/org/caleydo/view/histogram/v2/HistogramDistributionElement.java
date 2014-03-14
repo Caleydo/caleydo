@@ -157,7 +157,7 @@ public class HistogramDistributionElement extends ADistributionElement {
 	}
 
 	@Override
-	public GLLocation apply(int dataIndex) {
+	public GLLocation apply(int dataIndex, boolean topLeft) {
 		DistributionEntry entry = data.getOf(dataIndex);
 		float w = dim.select(getSize());
 		w -= HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW * 2;
@@ -169,6 +169,7 @@ public class HistogramDistributionElement extends ADistributionElement {
 		float x = delta / 2 + HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW;
 
 		x += delta * bin - lineWidthHalf;
+		// FIXME topLeft
 		return new GLLocation(x, lineWidth);
 	}
 

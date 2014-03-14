@@ -111,7 +111,7 @@ public class PieDistributionElement extends ADistributionElement {
 	}
 
 	@Override
-	public GLLocation apply(int dataIndex) {
+	public GLLocation apply(int dataIndex, boolean topLeft) {
 		return GLLocation.UNKNOWN;
 	}
 

@@ -11,6 +11,7 @@ import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc.DescBuilder;
@@ -45,7 +46,7 @@ public abstract class ASingleElementFactory implements IGLElementFactory2 {
 		if (l.getDimension() == dim) {
 			b = GLElementDimensionDesc.newCountDependent(1).locateUsing(new GLLocation.ALocator() {
 				@Override
-				public GLLocation apply(int dataIndex) {
+				public GLLocation apply(int dataIndex, boolean topLeft) {
 					return l.getLocation(dim, dataIndex);
 				}
 
@@ -66,6 +67,7 @@ public abstract class ASingleElementFactory implements IGLElementFactory2 {
 	 * @param context
 	 */
 	static void setSelectionStrategies(ASingleElement elem, GLElementFactoryContext context) {
+		elem.setFrameColor(context.get("frameColor", Color.class, elem.getFrameColor()));
 		elem.setSelectionHoverStrategy(BarPlotElementFactory.toSelectionStrategy(SelectionType.MOUSE_OVER, context,
 				elem.getSelectionHoverStrategy()));
 		elem.setSelectionSelectedStrategy(BarPlotElementFactory.toSelectionStrategy(SelectionType.SELECTION, context,

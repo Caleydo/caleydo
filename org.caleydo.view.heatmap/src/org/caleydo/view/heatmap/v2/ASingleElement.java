@@ -15,6 +15,7 @@ import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
@@ -48,6 +49,7 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 
 	private ESelectionStrategy selectionHoverStrategy = ESelectionStrategy.OUTLINE;
 	private ESelectionStrategy selectionSelectedStrategy = ESelectionStrategy.OUTLINE;
+	private Color frameColor = null;
 
 	public ASingleElement(IHeatMapDataProvider data, EDetailLevel detailLevel, EDimension dim) {
 		this.data = data;
@@ -66,6 +68,24 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 			setVisibility(EVisibility.VISIBLE); // not pickable + textures
 			break;
 		}
+	}
+
+	/**
+	 * @param showFrame
+	 *            setter, see {@link showFrame}
+	 */
+	public void setFrameColor(Color frameColor) {
+		if (Objects.equal(this.frameColor, frameColor))
+			return;
+		this.frameColor = frameColor;
+		repaint();
+	}
+
+	/**
+	 * @return the frameColor, see {@link #frameColor}
+	 */
+	public Color getFrameColor() {
+		return frameColor;
 	}
 
 	@Override
@@ -199,6 +219,8 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 	protected final void renderImpl(GLGraphics g, float w, float h) {
 		g.save();
 
+		if (frameColor != null)
+			g.color(frameColor).drawRect(0, 0, w, h);
 		render(g, w, h, renderer.getSpacing());
 
 		g.incZ();
