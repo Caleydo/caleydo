@@ -34,8 +34,8 @@ public class SingleHeatMapPlotElement extends ASingleElement implements Function
 	private final Function<? super Integer, Color> id2color;
 
 	public SingleHeatMapPlotElement(IHeatMapDataProvider data, EDetailLevel detailLevel, EDimension dim,
-			Function<? super Integer, Color> id2color) {
-		super(data, detailLevel, dim);
+			Function<? super Integer, Color> id2color, boolean filledSelection) {
+		super(data, detailLevel, dim, filledSelection);
 		this.id2color = id2color;
 		this.hRenderer = new HeatMapRenderer(detailLevel, true, this);
 	}

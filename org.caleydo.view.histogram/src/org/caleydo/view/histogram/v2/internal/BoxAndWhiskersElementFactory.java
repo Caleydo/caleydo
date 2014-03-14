@@ -110,12 +110,14 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory2 {
 					|| (split == EDimension.RECORD && getGroupsSize(data.getRecordPerspective()) > 1)) {
 				BoxAndWhiskersMultiElement b = new BoxAndWhiskersMultiElement(data, detailLevel, split, showOutliers,
 						showMinMax, padding);
+				b.setFrameColor(context.get("frameColor", Color.class, b.getFrameColor()));
 				b.setShowScale(showScale);
 				return b;
 			} else {
 				BoxAndWhiskersElement b = new BoxAndWhiskersElement(data, detailLevel, direction, showOutliers,
 						showMinMax, padding);
 				b.setShowScale(showScale);
+				b.setFrameColor(context.get("frameColor", Color.class, b.getFrameColor()));
 				return b;
 			}
 		} else {
@@ -124,14 +126,17 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory2 {
 			final Color color = context.get("color", Color.class, Color.LIGHT_GRAY);
 			final Float min = context.get("min", Float.class, Float.NaN);
 			final Float max = context.get("max", Float.class, Float.NaN);
+			ListBoxAndWhiskersElement b;
 			if (list != null) {
-				return new ListBoxAndWhiskersElement(list, detailLevel, direction, showOutliers, showMinMax, labels,
+				b = new ListBoxAndWhiskersElement(list, detailLevel, direction, showOutliers, showMinMax, labels,
 						color, min, max, padding);
 			} else {
 				AdvancedDoubleStatistics stats = context.get(AdvancedDoubleStatistics.class, null);
 				assert stats != null;
-				return new ListBoxAndWhiskersElement(stats, detailLevel, direction, showMinMax, labels, color, padding);
+				b = new ListBoxAndWhiskersElement(stats, detailLevel, direction, showMinMax, labels, color, padding);
 			}
+			b.setFrameColor(context.get("frameColor", Color.class, b.getFrameColor()));
+			return b;
 		}
 	}
 

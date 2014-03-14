@@ -33,6 +33,7 @@ import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 
+import com.google.common.base.Objects;
 import com.google.common.primitives.Doubles;
 
 /**
@@ -53,6 +54,7 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 	private final boolean showOutlier;
 	private final boolean showMinMax;
 	private boolean showScale = false;
+	private Color frameColor = Color.LIGHT_GRAY;
 
 	private AdvancedDoubleStatistics stats;
 	protected IInvertableDoubleFunction normalize;
@@ -76,6 +78,24 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 		this.showOutlier = showOutlier;
 		this.showMinMax = showMinMax;
 		this.padding = padding;
+	}
+
+	/**
+	 * @return the frameColor, see {@link #frameColor}
+	 */
+	public Color getFrameColor() {
+		return frameColor;
+	}
+
+	/**
+	 * @param frameColor
+	 *            setter, see {@link frameColor}
+	 */
+	public void setFrameColor(Color frameColor) {
+		if (Objects.equal(this.frameColor, frameColor))
+			return;
+		this.frameColor = frameColor;
+		repaint();
 	}
 
 	/**
@@ -199,6 +219,8 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
+		if (frameColor != null)
+			g.color(frameColor).drawRect(0, 0, w, h);
 		if (stats == null)
 			return;
 		float hor = padding.hor();

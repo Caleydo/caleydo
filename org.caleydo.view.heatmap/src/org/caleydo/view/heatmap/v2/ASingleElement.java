@@ -44,10 +44,15 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 	@DeepScan
 	protected final IHeatMapDataProvider data;
 	private final EDimension dim;
+	/**
+	 * whether to blur the not selected or show selection rects
+	 */
+	private final boolean filledSelection;
 
-	public ASingleElement(IHeatMapDataProvider data, EDetailLevel detailLevel, EDimension dim) {
+	public ASingleElement(IHeatMapDataProvider data, EDetailLevel detailLevel, EDimension dim, boolean filledSelection) {
 		this.data = data;
 		this.dim = dim;
+		this.filledSelection = filledSelection;
 		this.data.setCallback(this);
 		detailLevel = Objects.firstNonNull(detailLevel, EDetailLevel.LOW);
 
@@ -163,8 +168,8 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 
 		g.incZ();
 		{ // as selection rects
-			renderer.renderSelectionRects(g, SelectionType.SELECTION, w, h, true);
-			renderer.renderSelectionRects(g, SelectionType.MOUSE_OVER, w, h, true);
+			renderer.renderSelectionRects(g, SelectionType.SELECTION, w, h, filledSelection);
+			renderer.renderSelectionRects(g, SelectionType.MOUSE_OVER, w, h, filledSelection);
 		}
 		g.lineWidth(1);
 		g.decZ();

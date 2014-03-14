@@ -78,8 +78,11 @@ public class SingleBarElementFactory extends ASingleElementFactory {
 		id2color = context.get("id2color", Function.class,
 				Functions.constant(context.get("color", Color.class, Color.BLACK)));
 		value2bar = extractValue2Bar(context);
-
-		return new SingleBarPlotElement(data, detailLevel, dim, id2double, value2bar, id2color);
+		boolean filledSelection = context.is("blurNotSelected");
+		SingleBarPlotElement elem = new SingleBarPlotElement(data, detailLevel, dim, id2double, value2bar, id2color,
+				filledSelection);
+		elem.setFrameColor(context.get("frameColor", Color.class, elem.getFrameColor()));
+		return elem;
 	}
 
 	/**

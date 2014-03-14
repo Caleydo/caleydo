@@ -67,7 +67,7 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 	@DeepScan
 	private final IHeatMapDataProvider data;
 	/**
-	 * wether to blur the not selected or show selection rects
+	 * whether to blur the not selected or show selection rects
 	 */
 	private final boolean blurNotSelected;
 

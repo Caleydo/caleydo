@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
@@ -46,6 +47,20 @@ public class BoxAndWhiskersMultiElement extends GLElementContainer implements IH
 				: tablePerspective.getDimensionSubTablePerspectives())) {
 			this.add(new BoxAndWhiskersElement(t, detailLevel, split.opposite(), showOutliers, showMinMax, padding));
 		}
+	}
+
+	/**
+	 * @return
+	 */
+	public Color getFrameColor() {
+		if (this.isEmpty())
+			return Color.LIGHT_GRAY;
+		return ((BoxAndWhiskersElement) this.get(0)).getFrameColor();
+	}
+
+	public void setFrameColor(Color color) {
+		for (BoxAndWhiskersElement elem : Iterables.filter(this, BoxAndWhiskersElement.class))
+			elem.setFrameColor(color);
 	}
 
 	public BoxAndWhiskersMultiElement(List<IDoubleList> lists, EDetailLevel detailLevel, EDimension split,

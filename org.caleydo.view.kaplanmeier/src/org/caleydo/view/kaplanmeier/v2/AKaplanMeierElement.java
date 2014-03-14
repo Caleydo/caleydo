@@ -40,6 +40,7 @@ import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 import org.caleydo.core.view.opengl.util.spline.TesselatedPolygons;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
@@ -53,6 +54,7 @@ import com.google.common.collect.Iterators;
 public abstract class AKaplanMeierElement extends PickableGLElement implements IHasMinSize {
 	protected final EDetailLevel detailLevel;
 	protected final GLPadding padding;
+	private Color frameColor = Color.LIGHT_GRAY;
 	/**
 	 * @param tablePerspective
 	 */
@@ -77,10 +79,29 @@ public abstract class AKaplanMeierElement extends PickableGLElement implements I
 		return super.getLayoutDataAs(clazz, default_);
 	}
 
+	/**
+	 * @param showFrame
+	 *            setter, see {@link showFrame}
+	 */
+	public void setFrameColor(Color frameColor) {
+		if (Objects.equal(this.frameColor, frameColor))
+			return;
+		this.frameColor = frameColor;
+		repaint();
+	}
+
+	/**
+	 * @return the frameColor, see {@link #frameColor}
+	 */
+	public Color getFrameColor() {
+		return frameColor;
+	}
+
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		g.color(Color.BLACK).drawRect(0, 0, w, h);
+		if (frameColor != null)
+			g.color(frameColor).drawRect(0, 0, w, h);
 		render(g, w, h);
 		super.renderImpl(g, w, h);
 	}
