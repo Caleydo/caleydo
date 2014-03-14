@@ -50,9 +50,8 @@ public class GLImageViewer extends GLZoomPanContainer {
 	protected float lastZ;
 
 	public GLImageViewer() {
-		GLElement bg = elementStack.get(0);
-		bg.setVisibility(EVisibility.PICKABLE);
-		bg.onPick(new IPickingListener() {
+		elementStack.setVisibility(EVisibility.PICKABLE);
+		elementStack.onPick(new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
 
@@ -173,9 +172,9 @@ public class GLImageViewer extends GLZoomPanContainer {
 			return;
 
 		// Get the element with a depth value equal to the read value
-		for (int i = 2; i < elementStack.size(); ++i)
-			if (Math.abs(z - elementStack.get(i).getzDelta()) < 0.01) {
-				hoverElement = elementStack.get(i);
+		for (GLElement element : elementStack)
+			if (Math.abs(z - element.getzDelta()) < 0.01) {
+				hoverElement = element;
 				break;
 			}
 	}

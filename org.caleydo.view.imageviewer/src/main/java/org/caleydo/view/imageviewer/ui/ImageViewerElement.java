@@ -8,6 +8,7 @@ package org.caleydo.view.imageviewer.ui;
 import java.util.Map.Entry;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLImageElement;
 import org.caleydo.core.view.opengl.layout2.GLImageViewer;
@@ -15,6 +16,7 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.image.LayeredImage;
 import org.caleydo.datadomain.image.LayeredImage.Image;
+import org.caleydo.view.imageviewer.internal.ImageViewerViewPart.SelectImageEvent;
 
 /**
  * element of this view holding a {@link TablePerspective}
@@ -24,10 +26,10 @@ import org.caleydo.datadomain.image.LayeredImage.Image;
  */
 public class ImageViewerElement extends GLImageViewer {
 
-	protected APickingListener pickingListener;
+	protected APickingListener layerPickListener;
 
 	public ImageViewerElement() {
-		pickingListener = new APickingListener() {
+		layerPickListener = new APickingListener() {
 			@Override
 			protected void mouseOver(Pick pick) {
 				((GLImageElement) pick.getObject()).setColor(Color.RED);
@@ -61,8 +63,15 @@ public class ImageViewerElement extends GLImageViewer {
 					maskPath = mask.image.getPath();
 			}
 
-			addLayer(highlightPath, maskPath).onPick(pickingListener);
+			addLayer(highlightPath, maskPath).onPick(layerPickListener);
 		}
+
+		elementStack.scaleToFit();
+	}
+
+	@ListenTo(sendToMe = true)
+	public void onSelectImage(SelectImageEvent e) {
+		setImage(e.image);
 	}
 
 }

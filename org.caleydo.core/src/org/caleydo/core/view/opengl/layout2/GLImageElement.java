@@ -53,6 +53,9 @@ public class GLImageElement extends GLElement {
 			texture = g.getTexture(texturePath);
 			setSize(texture.getWidth(), texture.getHeight());
 			relayout();
+
+			// Do not render before relayout with correct size
+			return;
 		}
 
 		// Alpha test (required to use depth base picking)
