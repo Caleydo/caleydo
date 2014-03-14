@@ -66,15 +66,12 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 	private final IHeatMapRenderer renderer;
 	@DeepScan
 	private final IHeatMapDataProvider data;
-	/**
-	 * whether to blur the not selected or show selection rects
-	 */
-	private final boolean blurNotSelected;
 
-	public HeatMapElementBase(IHeatMapDataProvider data, IHeatMapRenderer renderer, EDetailLevel detailLevel,
-			boolean blurNotSelected) {
+	private ESelectionStrategy selectionHoverStrategy = ESelectionStrategy.OUTLINE;
+	private ESelectionStrategy selectionSelectedStrategy = ESelectionStrategy.OUTLINE;
+
+	public HeatMapElementBase(IHeatMapDataProvider data, IHeatMapRenderer renderer, EDetailLevel detailLevel) {
 		this.data = data;
-		this.blurNotSelected = blurNotSelected;
 		this.data.setCallback(this);
 		this.renderer = renderer;
 		detailLevel = Objects.firstNonNull(detailLevel, EDetailLevel.LOW);
@@ -135,6 +132,42 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 		float w = dimension.minSize();
 		float h = record.minSize();
 		return new Vec2f(w, h);
+	}
+
+	/**
+	 * @param selectionStrategy
+	 *            setter, see {@link selectionStrategy}
+	 */
+	public void setSelectionHoverStrategy(ESelectionStrategy selectionStrategy) {
+		if (this.selectionHoverStrategy == selectionStrategy)
+			return;
+		this.selectionHoverStrategy = selectionStrategy;
+		repaint();
+	}
+
+	/**
+	 * @return the selectionStrategy, see {@link #selectionStrategy}
+	 */
+	public ESelectionStrategy getSelectionHoverStrategy() {
+		return selectionHoverStrategy;
+	}
+
+	/**
+	 * @param selectionStrategy
+	 *            setter, see {@link selectionStrategy}
+	 */
+	public void setSelectionSelectedStrategy(ESelectionStrategy selectionStrategy) {
+		if (this.selectionSelectedStrategy == selectionStrategy)
+			return;
+		this.selectionSelectedStrategy = selectionStrategy;
+		repaint();
+	}
+
+	/**
+	 * @return the selectionStrategy, see {@link #selectionStrategy}
+	 */
+	public ESelectionStrategy getSelectionSelectedStrategy() {
+		return selectionSelectedStrategy;
 	}
 
 	/**
@@ -302,20 +335,48 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 		renderer.render(g, w, h, record.getSpacing(), dimension.getSpacing());
 
 		g.incZ();
-		if (blurNotSelected) {
-			renderBlurSelection(g, SelectionType.SELECTION, w, h);
-			record.renderSelectionRects(g, SelectionType.MOUSE_OVER, w, h, true);
-			dimension.renderSelectionRects(g, SelectionType.MOUSE_OVER, w, h, true);
-		} else { // as selection rects
-			record.renderSelectionRects(g, SelectionType.SELECTION, w, h, false);
-			dimension.renderSelectionRects(g, SelectionType.SELECTION, w, h, false);
-			record.renderSelectionRects(g, SelectionType.MOUSE_OVER, w, h, false);
-			dimension.renderSelectionRects(g, SelectionType.MOUSE_OVER, w, h, false);
-		}
+		renderSelection(selectionSelectedStrategy, SelectionType.SELECTION, g, w, h);
+		renderSelection(selectionHoverStrategy, SelectionType.MOUSE_OVER, g, w, h);
+
 		g.lineWidth(1);
 		g.decZ();
 
 		g.restore();
+	}
+
+	private void renderSelection(ESelectionStrategy strategy, SelectionType type, GLGraphics g, float w, float h) {
+		boolean showOutline = shouldShowOutline(w, h, dimension.getData().size(), record.getData().size());
+		if (strategy == ESelectionStrategy.AUTO_BLUR_OUTLINE)
+			strategy = showOutline ? ESelectionStrategy.OUTLINE : ESelectionStrategy.BLUR;
+		if (strategy == ESelectionStrategy.AUTO_FILL_OUTLINE)
+			strategy = showOutline ? ESelectionStrategy.OUTLINE : ESelectionStrategy.FILL;
+
+		switch (strategy) {
+		case OUTLINE:
+			record.renderSelectionRects(g, type, w, h, false);
+			dimension.renderSelectionRects(g, type, w, h, false);
+			break;
+		case BLUR:
+			renderBlurSelection(g, type, w, h);
+			break;
+		case FILL:
+			record.renderSelectionRects(g, type, w, h, true);
+			dimension.renderSelectionRects(g, type, w, h, true);
+			break;
+		default:
+			break; // shouldn't happen
+		}
+	}
+
+	/**
+	 * determine whether in automatic mode the outlines or something different should be shown
+	 * 
+	 * @return
+	 */
+	static boolean shouldShowOutline(float w, float h, int cols, int rows) {
+		float wi = w / cols;
+		float hi = h / rows;
+		return wi > 5 && hi > 5;
 	}
 
 	/**

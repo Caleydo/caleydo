@@ -71,8 +71,9 @@ public class SingleHeatMapElementFactory extends ASingleElementFactory {
 			data = new ListDataProvider(dim.select(null, d), dim.select(d, null));
 			id2color = context.get("id2color", Function.class, null);
 		}
-		boolean filledSelection = context.is("blurNotSelected");
-		return new SingleHeatMapPlotElement(data, detailLevel, dim, id2color, filledSelection);
+		SingleHeatMapPlotElement elem = new SingleHeatMapPlotElement(data, detailLevel, dim, id2color);
+		setSelectionStrategies(elem, context);
+		return elem;
 	}
 
 	@Override

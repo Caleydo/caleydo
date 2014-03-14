@@ -45,8 +45,8 @@ public class SingleBarPlotElement extends ASingleElement {
 
 	public SingleBarPlotElement(IHeatMapDataProvider data, EDetailLevel detailLevel, EDimension dim,
 			Function<? super Integer, Double> id2double, Function<? super Double, Vec2f> value2bar,
-			Function<? super Integer, Color> id2color, boolean filledSelection) {
-		super(data, detailLevel, dim, filledSelection);
+			Function<? super Integer, Color> id2color) {
+		super(data, detailLevel, dim);
 		this.id2double = id2double;
 		this.value2bar = value2bar;
 		this.id2color = id2color;
