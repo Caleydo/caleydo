@@ -36,10 +36,10 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class KaplanMaierElementFactory implements IGLElementFactory2 {
+public class KaplanMeierElementFactory implements IGLElementFactory2 {
 	@Override
 	public String getId() {
-		return "kaplanmaier";
+		return "kaplanmeier";
 	}
 
 	@Override
