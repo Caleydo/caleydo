@@ -24,10 +24,10 @@ import org.caleydo.datadomain.image.LayeredImage.Image;
  */
 public class ImageViewerElement extends GLImageViewer {
 
-	protected APickingListener pickingListener;
+	protected APickingListener layerPickListener;
 
 	public ImageViewerElement() {
-		pickingListener = new APickingListener() {
+		layerPickListener = new APickingListener() {
 			@Override
 			protected void mouseOver(Pick pick) {
 				((GLImageElement) pick.getObject()).setColor(Color.RED);
@@ -61,7 +61,7 @@ public class ImageViewerElement extends GLImageViewer {
 					maskPath = mask.image.getPath();
 			}
 
-			addLayer(highlightPath, maskPath).onPick(pickingListener);
+			addLayer(highlightPath, maskPath).onPick(layerPickListener);
 		}
 	}
 

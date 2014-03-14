@@ -37,10 +37,7 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 
 	public GLScaleStack() {
 		setLayout(this);
-		// TODO: wouldn't it be much easier to use set the background via a renderer on the GLScaleStack itself
-		GLElement background = new GLElement();
-		background.setRenderer(GLRenderers.fillRect(backgroundColor));
-		add(background);
+		setRenderer(GLRenderers.fillRect(backgroundColor));
 	}
 
 	/**
@@ -108,40 +105,13 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 	}
 
 	@Override
-	public GLElement set(int index, GLElement child) {
-		// FIXME HACK
-		// Skip background (== first element)
-		return super.set(index + 1, child);
-	}
-
-	@Override
-	public void clear() {
-		int size = size();
-		while (size > 1)
-			remove(--size);
-	}
-
-	@Override
-	public boolean isEmpty() {
-		// FIXME HACK
-		// Ignore background
-		return size() < 2;
-	}
-
-	@Override
 	public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h, IGLLayoutElement parent,
 			int deltaTimeMs) {
 		if (children.isEmpty())
 			return false;
 
-		// Background fills all available space
-		children.get(0).setBounds(0, 0, w, h);
-
-		if (children.size() < 2)
-			return false;
-
-		// 2nd layer determines scale
-		IGLLayoutElement baseLayer = children.get(1);
+		// 1st layer determines scale
+		IGLLayoutElement baseLayer = children.get(0);
 
 		if (!baseLayer.getSetSize().equals(originalSize)) {
 			originalSize.set(baseLayer.getSetSize());
@@ -158,8 +128,8 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 		float x = .5f * (w - width);
 		float y = .5f * (h - height);
 
-		for (int i = 1; i < children.size(); ++i)
-			children.get(i).setBounds(x, y, width, height);
+		for (IGLLayoutElement child : children)
+			child.setBounds(x, y, width, height);
 
 		return false;
 	}
