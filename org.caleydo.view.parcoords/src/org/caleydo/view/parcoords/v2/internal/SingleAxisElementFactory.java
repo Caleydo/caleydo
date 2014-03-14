@@ -43,9 +43,10 @@ public class SingleAxisElementFactory implements IGLElementFactory2 {
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
 		SingleAxisElement elem = null;
+		boolean renderOutsideBounds = context.is("renderOutsideBounds",false);
 
 		if (hasTablePerspective(context))
-			elem = new SingleAxisElement(context.getData());
+			elem = new SingleAxisElement(context.getData(),renderOutsideBounds);
 		else {
 			EDimension dim = context.get(EDimension.class, EDimension.RECORD);
 			double min = context.getDouble("min", Double.NaN);
@@ -57,10 +58,10 @@ public class SingleAxisElementFactory implements IGLElementFactory2 {
 				IDType idType = context.get(IDType.class, null);
 				@SuppressWarnings("unchecked")
 				Function<Integer, Double> f = context.get("id2double", Function.class, null);
-				elem = new SingleAxisElement(dim, data, idType, f, min, max);
+				elem = new SingleAxisElement(dim, data, idType, f, min, max, renderOutsideBounds);
 			} else if (context.get(IDoubleList.class, null) != null) {
 				IDoubleList data = context.get(IDoubleList.class, null);
-				elem = new SingleAxisElement(dim, data, min, max);
+				elem = new SingleAxisElement(dim, data, min, max, renderOutsideBounds);
 			}
 		}
 		if (elem == null)

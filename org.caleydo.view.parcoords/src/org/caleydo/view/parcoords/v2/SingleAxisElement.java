@@ -69,23 +69,24 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 	private float selectEnd = Float.NaN;
 
 	private boolean invertOrder = false;
+	private final boolean renderOutsideBounds;
 
-	public SingleAxisElement(TablePerspective t) {
+	public SingleAxisElement(TablePerspective t, boolean renderOutsideBounds) {
 		this(EDimension.get(t.getNrDimensions() == 1), t, EDimension.get(t.getNrDimensions() == 1)
-				.select(t.getRecordPerspective(), t.getDimensionPerspective()).getVirtualArray());
+				.select(t.getRecordPerspective(), t.getDimensionPerspective()).getVirtualArray(), renderOutsideBounds);
 	}
 
-	public SingleAxisElement(EDimension dim, TablePerspective t, VirtualArray va) {
-		this(dim, TableDoubleLists.asNormalizedList(t), 0, 1, va.getIDs(), va.getIdType());
+	public SingleAxisElement(EDimension dim, TablePerspective t, VirtualArray va, boolean renderOutsideBounds) {
+		this(dim, TableDoubleLists.asNormalizedList(t), 0, 1, va.getIDs(), va.getIdType(), renderOutsideBounds);
 	}
 
 	public SingleAxisElement(EDimension dim, List<Integer> data, IDType idType, Function<Integer, Double> f,
-			double min, double max) {
-		this(dim, new MappedDoubleList<Integer>(data, f), min, max, data, idType);
+			double min, double max, boolean renderOutsideBounds) {
+		this(dim, new MappedDoubleList<Integer>(data, f), min, max, data, idType, renderOutsideBounds);
 	}
 
-	public SingleAxisElement(EDimension dim, IDoubleList data, double min, double max) {
-		this(dim, data, min, max, null, null);
+	public SingleAxisElement(EDimension dim, IDoubleList data, double min, double max, boolean renderOutsideBounds) {
+		this(dim, data, min, max, null, null, renderOutsideBounds);
 	}
 
 	// either String[] markers
@@ -93,10 +94,11 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 	// or nothing
 
 	public SingleAxisElement(EDimension dim, IDoubleList data, double min, double max, List<Integer> ids,
- IDType idType) {
+			IDType idType, boolean renderOutsideBounds) {
 		this.dim = dim;
 		this.data = ids;
 		this.list = data;
+		this.renderOutsideBounds = renderOutsideBounds;
 		if (Double.isNaN(min) || Double.isNaN(max)) {
 			DoubleStatistics stats = DoubleStatistics.of(list);
 			if (Double.isNaN(min))
@@ -270,14 +272,17 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		SelectionManager manager = selections == null || selections.isEmpty() ? null : selections.get(0);
-		int n = list.size();
-		float o = markerOffset(w, h);
+		final SelectionManager manager = selections == null || selections.isEmpty() ? null : selections.get(0);
+		final int n = list.size();
+
+		g.color(Color.BLACK);
 		if (dim.isHorizontal()) {
-			g.color(Color.BLACK).drawLine(0, h * 0.5f, w, h * 0.5f);
+			g.drawLine(0, h * 0.5f, w, h * 0.5f);
 		} else {
-			g.color(Color.BLACK).drawLine(w * 0.5f, 0, w * 0.5f, h);
+			g.drawLine(w * 0.5f, 0, w * 0.5f, h);
 		}
+
+		float o = markerOffset(w, h);
 		for (int i = 0; i < n; ++i) {
 			double v = normalize.apply(list.getPrimitive(i));
 			if (Double.isNaN(v))
@@ -312,7 +317,10 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 	}
 
 	private float markerOffset(float w, float h) {
-		return dim.opposite().select(w, h) * (0.5f - ITEM_AXIS_WIDTH / 2f);
+		final float total = dim.opposite().select(w, h);
+		if (renderOutsideBounds)
+			return -1;
+		return total * (0.5f - ITEM_AXIS_WIDTH / 2f);
 	}
 
 	private void renderSelection(GLGraphics g, float w, float h) {
@@ -334,16 +342,20 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		final float max = dim.select(w, h);
 		int nMarkers = determineMarkerCount(max);
 		float delta = max / (nMarkers - 1);
+		float other = dim.select(h, w);
+		float o = Math.max(5, 15 - other * 0.5f);
+		g.lineWidth(2);
 		for (int i = 0; i < nMarkers; ++i) {
 			float v = i * delta;
 			if (invertOrder)
 				v = max - v;
 			if (dim.isHorizontal()) {
-				g.drawLine(v, 0, v, h);
+				g.drawLine(v, -o, v, h + o);
 			} else {
-				g.drawLine(0, v, w, v);
+				g.drawLine(-o, v, w + o, v);
 			}
 		}
+		g.lineWidth(1);
 		renderMarkerLabels(g, w, h, delta, nMarkers);
 	}
 
@@ -394,7 +406,7 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 	 */
 	public GLElementDimensionDesc getDesc(EDimension dim) {
 		if (this.dim != dim)
-			return GLElementDimensionDesc.newFix(20).inRange(5, 40).build();
+			return GLElementDimensionDesc.newFix(renderOutsideBounds ? 5 : 20).inRange(5, 60).build();
 		return GLElementDimensionDesc.newFix(200).minimum(50).locateUsing(this).build();
 	}
 
@@ -410,7 +422,7 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		double n = normalize.apply(list.getPrimitive(dataIndex));
 		if (invertOrder)
 			n = 1 - n;
-		return new GLLocation(n * total, 1, markerOffset(size.x(), size.y()));
+		return new GLLocation(n * total - 0.5f, 1, markerOffset(size.x(), size.y()));
 	}
 
 	@Override
@@ -469,7 +481,7 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		}
 
 		final SingleAxisElement elem = new SingleAxisElement(EDimension.RECORD, new ArrayDoubleList(arr), 0, 1, null,
-				null);
+				null, false);
 		elem.setInvertOrder(true);
 		elem.setMarker("A", "B", "C");
 		GLSandBox.main(args,
