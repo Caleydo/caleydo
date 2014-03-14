@@ -140,11 +140,11 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 		// 1st layer determines scale
 		IGLLayoutElement baseLayer = children.get(0);
 
+		boolean needsRelayout = false;
 		if (!baseLayer.getSetSize().equals(originalSize)) {
 			originalSize.set(baseLayer.getSetSize());
 
-			relayoutParent();
-			return true; // self relayout
+			needsRelayout = true;
 		}
 
 		if (scaleToFit) {
@@ -154,10 +154,8 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 			float yScale = availSize.y() / originalSize.y();
 
 			// Scale to fit - image just fits in label.
-			if (setScaleNoRelayout(Math.min(xScale, yScale))) {
-				relayoutParent();
-				return true; // self relayout
-			}
+			if (setScaleNoRelayout(Math.min(xScale, yScale)))
+				needsRelayout = true;
 		}
 
 		// Center images on stack (visible and scrolled parts)
@@ -169,7 +167,9 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 		for (IGLLayoutElement child : children)
 			child.setBounds(x, y, width, height);
 
-		return false;
+		if (needsRelayout)
+			relayoutParent();
+		return needsRelayout;
 	}
 
 	@Override

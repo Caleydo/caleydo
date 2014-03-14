@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.ARcpGLElementViewPart;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout2.AGLElementView;
@@ -45,6 +47,21 @@ public class ImageViewerViewPart extends ARcpGLElementViewPart {
 	public void addToolBarContent(IToolBarManager toolBarManager) {
 		toolBarManager.add(new MyComboBox("Hello"));
 		toolBarManager.update(true);
+	}
+
+	public static class SelectImageEvent extends ADirectedEvent {
+
+		public LayeredImage image;
+
+		public SelectImageEvent(LayeredImage img) {
+			image = img;
+		}
+
+		@Override
+		public boolean checkIntegrity() {
+			return image != null;
+		}
+
 	}
 
 	protected class MyComboBox extends ControlContribution {
@@ -99,7 +116,8 @@ public class ImageViewerViewPart extends ARcpGLElementViewPart {
 			imageCombo.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					((ImageViewerView) getView()).getImageViewer().setImage(getSelectedImage());
+					EventPublisher.trigger(new SelectImageEvent(getSelectedImage()).to(((ImageViewerView) getView())
+							.getImageViewer()));
 				}
 			});
 
