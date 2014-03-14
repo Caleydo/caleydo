@@ -63,6 +63,8 @@ public class ImageViewerElement extends GLImageViewer {
 
 			addLayer(highlightPath, maskPath).onPick(layerPickListener);
 		}
+
+		elementStack.scaleToFit();
 	}
 
 }

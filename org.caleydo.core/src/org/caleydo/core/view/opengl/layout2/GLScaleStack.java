@@ -35,6 +35,8 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 
 	protected Color backgroundColor = new Color(.3f, .3f, .3f, 1f);
 
+	protected boolean scaleToFit = true;
+
 	public GLScaleStack() {
 		setLayout(this);
 		setRenderer(GLRenderers.fillRect(backgroundColor));
@@ -68,12 +70,11 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 	 * @return true if the scale factor has changed
 	 */
 	public boolean setScale(float newScale) {
-		newScale = Math.max(scaleMin, Math.min(newScale, scaleMax));
-
-		if (newScale == scale)
+		if (!setScaleNoRelayout(newScale))
 			return false;
 
-		scale = newScale;
+		scaleToFit = false;
+
 		relayout();
 		relayoutParent();
 
@@ -96,12 +97,38 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 	}
 
 	/**
+	 * Enable automatic scale to fit until first manual scale (call to
+	 * {@link #scale(float)}, {@link #setScale(float)} or
+	 * {@link #setScaleLimits(float, float)})
+	 */
+	public void scaleToFit() {
+		scaleToFit = true;
+	}
+
+	/**
 	 * Get current scale factor
 	 *
 	 * @return The current scale factor
 	 */
 	public float getScale() {
 		return scale;
+	}
+
+	/**
+	 * Internal helper to set scale without triggering a relayout.
+	 *
+	 * @param newScale
+	 * @return
+	 */
+	protected boolean setScaleNoRelayout(float newScale) {
+		newScale = Math.max(scaleMin, Math.min(newScale, scaleMax));
+
+		if (newScale == scale)
+			return false;
+
+		scale = newScale;
+
+		return true;
 	}
 
 	@Override
@@ -117,9 +144,20 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 			originalSize.set(baseLayer.getSetSize());
 
 			relayoutParent();
+			return true; // self relayout
+		}
 
-			// Update layout with new size
-			return true;
+		if (scaleToFit) {
+			Vec2f availSize = getParent().getSize();
+
+			float xScale = availSize.x() / originalSize.x();
+			float yScale = availSize.y() / originalSize.y();
+
+			// Scale to fit - image just fits in label.
+			if (setScaleNoRelayout(Math.min(xScale, yScale))) {
+				relayoutParent();
+				return true; // self relayout
+			}
 		}
 
 		// Center images on stack (visible and scrolled parts)
