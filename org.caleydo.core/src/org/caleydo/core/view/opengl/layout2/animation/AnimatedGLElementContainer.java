@@ -343,6 +343,10 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 				child.getLayoutDataAs(IInTransition.class, defaultInTransition));
 	}
 
+	public final void add(int index, GLElement child, int duration) {
+		add(index, child, asDuration(duration), child.getLayoutDataAs(IInTransition.class, defaultInTransition));
+	}
+
 	public final void add(int index, GLElement child, Duration duration, IInTransition animation) {
 		if (child.getParent() == this) {
 			int from = indexOf(child);
