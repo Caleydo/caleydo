@@ -86,8 +86,8 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		// desc.setMultiMapping(true);
 		// desc.setCreateReverseMapping(true);
 		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
-		// desc.setFromDataType(EDataType.INTEGER);
-		// desc.setToDataType(EDataType.INTEGER);
+		// desc.setFromDataType(EGeneIDTypes.INTERACTION_ID.getDataType());
+		// desc.setToDataType(EGeneIDTypes.COMPOUND_ID.getDataType());
 		// IDMappingManager.addIDMappingDescription(desc);
 		//
 		// desc = new IDMappingDescription();
@@ -101,8 +101,8 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		// desc.setMultiMapping(true);
 		// desc.setCreateReverseMapping(true);
 		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
-		// desc.setFromDataType(EDataType.INTEGER);
-		// desc.setToDataType(EDataType.INTEGER);
+		// desc.setFromDataType(EGeneIDTypes.INTERACTION_ID.getDataType());
+		// desc.setToDataType(EGeneIDTypes.ENTREZ_GENE_ID.getDataType());
 		// IDMappingManager.addIDMappingDescription(desc);
 		//
 		// desc = new IDMappingDescription();
