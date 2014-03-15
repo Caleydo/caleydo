@@ -36,6 +36,7 @@ import org.caleydo.core.view.opengl.layout2.layout.GLMinSizeProviders;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 
 /**
  * @author Christian
@@ -89,11 +90,11 @@ public class GLElementWindow extends GLElementContainer {
 		public static final Color DEFAULT_COLOR = new Color(0.6f, 0.6f, 0.6f);
 		public static final int TITLE_BAR_HEIGHT = 20;
 
-
 		protected ILabeled labelProvider;
 		protected final GLButton closeButton;
 		protected Color barColor = DEFAULT_COLOR;
 		protected boolean isHighlight = false;
+		protected GLElement spacingElement;
 
 		public GLTitleBar(String text) {
 			this(new DefaultLabelProvider(text));
@@ -104,13 +105,16 @@ public class GLElementWindow extends GLElementContainer {
 			this.labelProvider = labelProvider;
 			setSize(Float.NaN, TITLE_BAR_HEIGHT);
 			setLayout(new GLSizeRestrictiveFlowLayout(true, 2, new GLPadding(3, 2)));
-			add(new GLElement() {
+			setRenderer(new IGLRenderer() {
 
 				@Override
-				protected void renderImpl(GLGraphics g, float w, float h) {
+				public void render(GLGraphics g, float w, float h, GLElement parent) {
 					g.drawText(GLTitleBar.this.labelProvider, 0, -2, w, h);
+
 				}
 			});
+			spacingElement = new GLElement();
+			add(spacingElement);
 			closeButton = new GLButton(EButtonMode.BUTTON);
 			closeButton.setSize(16, 16);
 			closeButton.setTooltip("Close");
@@ -173,8 +177,6 @@ public class GLElementWindow extends GLElementContainer {
 		this(new DefaultLabelProvider(title));
 	}
 
-
-
 	/**
 	 * @param showCloseButton
 	 *            setter, see {@link showCloseButton}
@@ -186,6 +188,11 @@ public class GLElementWindow extends GLElementContainer {
 		} else {
 			titleBar.closeButton.setVisibility(EVisibility.NONE);
 		}
+	}
+
+	public void addTitleElement(GLElement element, boolean left) {
+		int index = left ? titleBar.indexOf(titleBar.spacingElement) : titleBar.indexOf(titleBar.spacingElement) + 1;
+		titleBar.add(index, element);
 	}
 
 	/**
