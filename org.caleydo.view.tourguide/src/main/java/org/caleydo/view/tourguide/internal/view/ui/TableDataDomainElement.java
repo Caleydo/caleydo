@@ -40,7 +40,9 @@ public class TableDataDomainElement extends ADataDomainElement {
 			GroupContextMenuItem item = new GroupContextMenuItem("Used " + getModel().getOppositeIDType() + " View");
 			creator.addContextMenuItem(item);
 			for (Perspective d : dims)
-				item.add(new GenericContextMenuItem(d.getLabel(), EContextMenuType.CHECK,
+				item.add(new GenericContextMenuItem(String.format("%s (%d items)", d.getLabel(), d.getVirtualArray()
+						.size()),
+						EContextMenuType.CHECK,
 						new SelectDimensionSelectionEvent(d).to(this)).setState(d == dim));
 			creator.addSeparator();
 		}

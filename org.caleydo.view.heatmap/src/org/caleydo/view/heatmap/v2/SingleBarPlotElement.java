@@ -17,6 +17,7 @@ import org.caleydo.view.heatmap.v2.ISpacingStrategy.ISpacingLayout;
 import org.caleydo.view.heatmap.v2.internal.IHeatMapDataProvider;
 
 import com.google.common.base.Function;
+import com.google.common.base.Objects;
 
 /**
  * a generic heat map implemenation
@@ -39,6 +40,9 @@ public class SingleBarPlotElement extends ASingleElement {
 	 */
 	protected final Function<? super Integer, Color> id2color;
 
+
+	private Color frameColor = null;
+
 	public SingleBarPlotElement(IHeatMapDataProvider data, EDetailLevel detailLevel, EDimension dim,
 			Function<? super Integer, Double> id2double, Function<? super Double, Vec2f> value2bar,
 			Function<? super Integer, Color> id2color) {
@@ -48,8 +52,28 @@ public class SingleBarPlotElement extends ASingleElement {
 		this.id2color = id2color;
 	}
 
+	/**
+	 * @param showFrame
+	 *            setter, see {@link showFrame}
+	 */
+	public void setFrameColor(Color frameColor) {
+		if (Objects.equal(this.frameColor, frameColor))
+			return;
+		this.frameColor = frameColor;
+		repaint();
+	}
+
+	/**
+	 * @return the frameColor, see {@link #frameColor}
+	 */
+	public Color getFrameColor() {
+		return frameColor;
+	}
+
 	@Override
 	protected void render(GLGraphics g, float w, float h, ISpacingLayout spacing) {
+		if (frameColor != null)
+			g.color(frameColor).drawRect(0, 0, w, h);
 		final EDimension dim = getDimension();
 		List<Integer> ids = data.getData(dim);
 		for (int i = 0; i < ids.size(); ++i) {

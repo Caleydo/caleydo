@@ -6,6 +6,7 @@
 package org.caleydo.view.histogram.v2.internal;
 
 import org.caleydo.core.data.collection.EDimension;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
@@ -28,7 +29,10 @@ public class DistributionHistogramElementFactory extends ADistributionBarElement
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
 		boolean vertical = context.is("vertical", context.get(EDimension.class, EDimension.DIMENSION).isRecord());
-		return new HistogramDistributionElement(createData(context), EDimension.get(!vertical));
+		HistogramDistributionElement h = new HistogramDistributionElement(createData(context),
+				EDimension.get(!vertical));
+		h.setFrameColor(context.get("frameColor", Color.class, h.getFrameColor()));
+		return h;
 	}
 
 	@Override

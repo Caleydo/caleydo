@@ -36,10 +36,10 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class KaplanMaierElementFactory implements IGLElementFactory2 {
+public class KaplanMeierElementFactory implements IGLElementFactory2 {
 	@Override
 	public String getId() {
-		return "kaplanmaier";
+		return "kaplanmeier";
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class KaplanMaierElementFactory implements IGLElementFactory2 {
 		elem.setXMaxValue(context.getFloat("max", elem.getXMaxValue()));
 		elem.setYAxis(context.get("yAxis", String.class, elem.getYAxis()));
 		elem.setFillCurve(context.is("fillCurve"));
-
+		elem.setFrameColor(context.get("frameColor", Color.class, elem.getFrameColor()));
 		return elem;
 	}
 

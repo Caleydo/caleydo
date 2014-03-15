@@ -10,8 +10,10 @@ import java.util.Set;
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.Function2;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
@@ -22,6 +24,7 @@ import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory2;
 import org.caleydo.view.heatmap.v2.BarPlotElement;
 import org.caleydo.view.heatmap.v2.BasicBlockColorer;
 import org.caleydo.view.heatmap.v2.EScalingMode;
+import org.caleydo.view.heatmap.v2.ESelectionStrategy;
 import org.caleydo.view.heatmap.v2.EShowLabels;
 import org.caleydo.view.heatmap.v2.HeatMapElementBase;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy;
@@ -61,14 +64,13 @@ public class BarPlotElementFactory implements IGLElementFactory2 {
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
 		TablePerspective data = context.getData();
-		boolean blurNotSelected = context.is("blurNotSelected");
 		@SuppressWarnings("unchecked")
 		Function2<Integer, Integer, Color> blockColorer = context.get(Function2.class,
 				new BasicBlockColorer(data.getDataDomain()));
 		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
 
 		BarPlotElement elem = new BarPlotElement(data, blockColorer, detailLevel, context.get(EScalingMode.class,
-				EScalingMode.GLOBAL), blurNotSelected);
+				EScalingMode.GLOBAL));
 
 		elem.setMinimumItemHeightFactor(context.getInt("minimumItemHeightFactor", elem.getMinimumItemHeightFactor()));
 		setCommon(context, elem);
@@ -89,6 +91,25 @@ public class BarPlotElementFactory implements IGLElementFactory2 {
 				context.get("recordSpacingStrategy", ISpacingStrategy.class, defaults_));
 
 		elem.setRenderGroupHints(context.is("renderGroupHints", false));
+
+		elem.setSelectionHoverStrategy(toSelectionStrategy(SelectionType.MOUSE_OVER, context,
+				elem.getSelectionHoverStrategy()));
+		elem.setSelectionSelectedStrategy(toSelectionStrategy(SelectionType.SELECTION, context,
+				elem.getSelectionSelectedStrategy()));
+	}
+
+	static ESelectionStrategy toSelectionStrategy(SelectionType type, GLElementFactoryContext context,
+			ESelectionStrategy default_) {
+		String key = type.getType().toLowerCase();
+		String defaults = default_.name();
+		String v = context.get("selection."+key, String.class, defaults);
+		try {
+			ESelectionStrategy s = ESelectionStrategy.valueOf(v.toUpperCase());
+			return s;
+		} catch (Exception e) {
+			Logger.create(BarPlotElementFactory.class).warn("invalid ESelectionStrategy type: " + v, e);
+		}
+		return default_;
 	}
 
 	static class SpacingStrategyLocator extends ALocator {

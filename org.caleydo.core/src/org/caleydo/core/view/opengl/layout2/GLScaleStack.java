@@ -35,12 +35,11 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 
 	protected Color backgroundColor = new Color(.3f, .3f, .3f, 1f);
 
+	protected boolean scaleToFit = true;
+
 	public GLScaleStack() {
 		setLayout(this);
-		// TODO: wouldn't it be much easier to use set the background via a renderer on the GLScaleStack itself
-		GLElement background = new GLElement();
-		background.setRenderer(GLRenderers.fillRect(backgroundColor));
-		add(background);
+		setRenderer(GLRenderers.fillRect(backgroundColor));
 	}
 
 	/**
@@ -71,12 +70,11 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 	 * @return true if the scale factor has changed
 	 */
 	public boolean setScale(float newScale) {
-		newScale = Math.max(scaleMin, Math.min(newScale, scaleMax));
-
-		if (newScale == scale)
+		if (!setScaleNoRelayout(newScale))
 			return false;
 
-		scale = newScale;
+		scaleToFit = false;
+
 		relayout();
 		relayoutParent();
 
@@ -99,6 +97,15 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 	}
 
 	/**
+	 * Enable automatic scale to fit until first manual scale (call to
+	 * {@link #scale(float)}, {@link #setScale(float)} or
+	 * {@link #setScaleLimits(float, float)})
+	 */
+	public void scaleToFit() {
+		scaleToFit = true;
+	}
+
+	/**
 	 * Get current scale factor
 	 *
 	 * @return The current scale factor
@@ -107,18 +114,21 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 		return scale;
 	}
 
-	@Override
-	public GLElement set(int index, GLElement child) {
-		// FIXME HACK
-		// Skip background (== first element)
-		return super.set(index + 1, child);
-	}
+	/**
+	 * Internal helper to set scale without triggering a relayout.
+	 *
+	 * @param newScale
+	 * @return
+	 */
+	protected boolean setScaleNoRelayout(float newScale) {
+		newScale = Math.max(scaleMin, Math.min(newScale, scaleMax));
 
-	@Override
-	public boolean isEmpty() {
-		// FIXME HACK
-		// Ignore background
-		return size() < 2;
+		if (newScale == scale)
+			return false;
+
+		scale = newScale;
+
+		return true;
 	}
 
 	@Override
@@ -127,22 +137,25 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 		if (children.isEmpty())
 			return false;
 
-		// Background fills all available space
-		children.get(0).setBounds(0, 0, w, h);
+		// 1st layer determines scale
+		IGLLayoutElement baseLayer = children.get(0);
 
-		if (children.size() < 2)
-			return false;
-
-		// 2nd layer determines scale
-		IGLLayoutElement baseLayer = children.get(1);
-
+		boolean needsRelayout = false;
 		if (!baseLayer.getSetSize().equals(originalSize)) {
 			originalSize.set(baseLayer.getSetSize());
 
-			relayoutParent();
+			needsRelayout = true;
+		}
 
-			// Update layout with new size
-			return true;
+		if (scaleToFit) {
+			Vec2f availSize = getParent().getSize();
+
+			float xScale = availSize.x() / originalSize.x();
+			float yScale = availSize.y() / originalSize.y();
+
+			// Scale to fit - image just fits in label.
+			if (setScaleNoRelayout(Math.min(xScale, yScale)))
+				needsRelayout = true;
 		}
 
 		// Center images on stack (visible and scrolled parts)
@@ -151,10 +164,12 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 		float x = .5f * (w - width);
 		float y = .5f * (h - height);
 
-		for (int i = 1; i < children.size(); ++i)
-			children.get(i).setBounds(x, y, width, height);
+		for (IGLLayoutElement child : children)
+			child.setBounds(x, y, width, height);
 
-		return false;
+		if (needsRelayout)
+			relayoutParent();
+		return needsRelayout;
 	}
 
 	@Override

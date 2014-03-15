@@ -31,8 +31,8 @@ public interface IDnDItem {
 	Vec2f getMousePos();
 
 	/**
-	 * whether the item is internally just dragged (within same view) or comming from the outside
-	 * 
+	 * whether the item is internally just dragged (within same view) or coming from the outside
+	 *
 	 * @return
 	 */
 	boolean isInternal();

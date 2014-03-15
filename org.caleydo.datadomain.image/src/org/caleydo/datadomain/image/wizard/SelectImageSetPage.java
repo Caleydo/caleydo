@@ -115,7 +115,7 @@ public class SelectImageSetPage
 
 		List<IDataDomain> imageSets = DataDomainManager.get()
 				.getDataDomainsByType(ImageDataDomain.DATA_DOMAIN_TYPE);
-		if (imageSets != null) {
+		if (!imageSets.isEmpty()) {
 			for (IDataDomain dataDomain : imageSets)
 				nameCombo.add(dataDomain.getLabel());
 			nameCombo.select(0);

@@ -44,4 +44,24 @@ public class BasicBlockColorer implements Function2<Integer, Integer, Color> {
 	private static boolean isInvalid(Integer id) {
 		return id == null || id.intValue() < 0;
 	}
+
+	/**
+	 * @param dataDomain
+	 * @return
+	 */
+	public static Function2<Integer, Integer, Float> toRaw(final ATableBasedDataDomain dataDomain) {
+		final Table table = dataDomain.getTable();
+		return new Function2<Integer, Integer, Float>() {
+			@Override
+			public Float apply(Integer recordID, Integer dimensionID) {
+				if (isInvalid(recordID) || isInvalid(dimensionID))
+					return Float.NaN;
+				// get value
+				Object v = table.getRaw(dimensionID, recordID);
+				// to a color
+				return v instanceof Number ? ((Number)v).floatValue() : Float.NaN;
+			}
+		};
+	}
+
 }

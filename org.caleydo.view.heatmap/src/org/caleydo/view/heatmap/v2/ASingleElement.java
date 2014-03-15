@@ -7,6 +7,7 @@ package org.caleydo.view.heatmap.v2;
 
 import gleem.linalg.Vec2f;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -45,6 +46,9 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 	protected final IHeatMapDataProvider data;
 	private final EDimension dim;
 
+	private ESelectionStrategy selectionHoverStrategy = ESelectionStrategy.OUTLINE;
+	private ESelectionStrategy selectionSelectedStrategy = ESelectionStrategy.OUTLINE;
+
 	public ASingleElement(IHeatMapDataProvider data, EDetailLevel detailLevel, EDimension dim) {
 		this.data = data;
 		this.dim = dim;
@@ -79,6 +83,42 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 	 */
 	public EDimension getDimension() {
 		return dim;
+	}
+
+	/**
+	 * @param selectionStrategy
+	 *            setter, see {@link selectionStrategy}
+	 */
+	public void setSelectionHoverStrategy(ESelectionStrategy selectionStrategy) {
+		if (this.selectionHoverStrategy == selectionStrategy)
+			return;
+		this.selectionHoverStrategy = selectionStrategy;
+		repaint();
+	}
+
+	/**
+	 * @return the selectionStrategy, see {@link #selectionStrategy}
+	 */
+	public ESelectionStrategy getSelectionHoverStrategy() {
+		return selectionHoverStrategy;
+	}
+
+	/**
+	 * @param selectionStrategy
+	 *            setter, see {@link selectionStrategy}
+	 */
+	public void setSelectionSelectedStrategy(ESelectionStrategy selectionStrategy) {
+		if (this.selectionSelectedStrategy == selectionStrategy)
+			return;
+		this.selectionSelectedStrategy = selectionStrategy;
+		repaint();
+	}
+
+	/**
+	 * @return the selectionStrategy, see {@link #selectionStrategy}
+	 */
+	public ESelectionStrategy getSelectionSelectedStrategy() {
+		return selectionSelectedStrategy;
 	}
 
 	@Override
@@ -163,13 +203,51 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 
 		g.incZ();
 		{ // as selection rects
-			renderer.renderSelectionRects(g, SelectionType.SELECTION, w, h, true);
-			renderer.renderSelectionRects(g, SelectionType.MOUSE_OVER, w, h, true);
+			renderSelection(selectionSelectedStrategy, SelectionType.SELECTION, g, w, h);
+			renderSelection(selectionHoverStrategy, SelectionType.MOUSE_OVER, g, w, h);
 		}
 		g.lineWidth(1);
 		g.decZ();
 
 		g.restore();
+	}
+
+	private void renderSelection(ESelectionStrategy strategy, SelectionType type, GLGraphics g, float w, float h) {
+		int size = renderer.getData().size();
+		boolean showOutline = HeatMapElementBase.shouldShowOutline(w, h, dim.select(size, 1), dim.select(1, size));
+		if (strategy == ESelectionStrategy.AUTO_BLUR_OUTLINE)
+			strategy = showOutline ? ESelectionStrategy.OUTLINE : ESelectionStrategy.BLUR;
+		if (strategy == ESelectionStrategy.AUTO_FILL_OUTLINE)
+			strategy = showOutline ? ESelectionStrategy.OUTLINE : ESelectionStrategy.FILL;
+
+		switch (strategy) {
+		case OUTLINE:
+			renderer.renderSelectionRects(g, type, w, h, false);
+			break;
+		case BLUR:
+			renderBlurSelection(g, type, w, h);
+			break;
+		case FILL:
+			renderer.renderSelectionRects(g, type, w, h, true);
+			break;
+		default:
+			break; // shouldn't happen
+		}
+	}
+
+	private void renderBlurSelection(GLGraphics g, SelectionType type, float w, float h) {
+		List<Vec2f> dims = renderer.getNotSelectedRanges(type, w, h);
+		if (dims == null) // nothing selected or hoverded
+			return;
+		dims = dims == null ? Collections.singletonList(new Vec2f(0, w)) : dims;
+		g.color(1, 1, 1, 0.5f);
+		if (dim.isHorizontal()) {
+			for (Vec2f dim : dims)
+				g.fillRect(dim.x(), 0, dim.y(), h);
+		} else {
+			for (Vec2f dim : dims)
+				g.fillRect(0, dim.x(), w, dim.y());
+		}
 	}
 
 	protected abstract void render(GLGraphics g, float w, float h, ISpacingLayout spacing);

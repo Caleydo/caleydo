@@ -10,6 +10,7 @@ import java.util.Set;
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc.DescBuilder;
@@ -57,6 +58,18 @@ public abstract class ASingleElementFactory implements IGLElementFactory2 {
 			b = fixDesc();
 		}
 		return b.build();
+	}
+
+	/**
+	 *
+	 * @param elem
+	 * @param context
+	 */
+	static void setSelectionStrategies(ASingleElement elem, GLElementFactoryContext context) {
+		elem.setSelectionHoverStrategy(BarPlotElementFactory.toSelectionStrategy(SelectionType.MOUSE_OVER, context,
+				elem.getSelectionHoverStrategy()));
+		elem.setSelectionSelectedStrategy(BarPlotElementFactory.toSelectionStrategy(SelectionType.SELECTION, context,
+				elem.getSelectionSelectedStrategy()));
 	}
 
 	/**

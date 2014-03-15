@@ -19,14 +19,15 @@ import org.caleydo.view.heatmap.v2.internal.HeatMapRenderer;
  */
 public class HeatMapElement extends HeatMapElementBase {
 	public HeatMapElement(TablePerspective tablePerspective) {
-		this(tablePerspective, new BasicBlockColorer(tablePerspective.getDataDomain()), EDetailLevel.HIGH, false, true);
+		this(tablePerspective, new BasicBlockColorer(tablePerspective.getDataDomain()), BasicBlockColorer
+				.toRaw(tablePerspective.getDataDomain()), EDetailLevel.HIGH, false);
 	}
 
 	public HeatMapElement(TablePerspective tablePerspective, Function2<Integer, Integer, Color> blockColorer,
-			EDetailLevel detailLevel,
- boolean forceTextures, boolean blurNotSelected) {
+			Function2<Integer, Integer, Float> toRaw, EDetailLevel detailLevel,
+ boolean forceTextures) {
 		super(new TablePerspectiveDataProvider(tablePerspective), new HeatMapRenderer(detailLevel, forceTextures,
-				blockColorer), detailLevel, blurNotSelected);
+				blockColorer), detailLevel);
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import org.caleydo.view.histogram.HistogramRenderStyle;
 import org.caleydo.view.histogram.v2.internal.IDistributionData;
 import org.caleydo.view.histogram.v2.internal.IDistributionData.DistributionEntry;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
@@ -32,14 +33,35 @@ import com.google.common.collect.Sets;
 public class HistogramDistributionElement extends ADistributionElement {
 
 	private EDimension dim;
+	private Color frameColor;
 
 	/**
 	 * @param data
 	 * @param dim
+	 * @param showFrame
 	 */
 	public HistogramDistributionElement(IDistributionData data, EDimension dim) {
 		super(data);
 		this.dim = dim;
+	}
+
+
+	/**
+	 * @param showFrame
+	 *            setter, see {@link showFrame}
+	 */
+	public void setFrameColor(Color frameColor) {
+		if (Objects.equal(this.frameColor, frameColor))
+			return;
+		this.frameColor = frameColor;
+		repaint();
+	}
+
+	/**
+	 * @return the frameColor, see {@link #frameColor}
+	 */
+	public Color getFrameColor() {
+		return frameColor;
 	}
 
 	/**
@@ -63,6 +85,8 @@ public class HistogramDistributionElement extends ADistributionElement {
 	}
 
 	private void renderHistImpl(GLGraphics g, float w, float h) {
+		if (frameColor != null)
+			g.color(frameColor).drawRect(0, 0, w, h);
 		h -= HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW * 2;
 		w -= HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW * 2;
 

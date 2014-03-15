@@ -46,7 +46,7 @@ public class ComputeAllOfJob extends AComputeJob {
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 		Stopwatch w = new Stopwatch().start();
-		log.info("compute the data for datadomain: " + query.getLabel());
+		log.info("compute the data for datadomain: %s", query.getLabel());
 		progress(0.0f, "Preparing Data");
 		boolean creating = !query.isInitialized();
 		List<AScoreRow> data = query.getOrCreate();
