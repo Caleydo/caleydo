@@ -78,7 +78,8 @@ public abstract class ADistributionBarElementFactory implements IGLElementFactor
 				colors = toColors((CategoricalHistogram) hist);
 			}
 			int largestValue = context.getInt("distribution.largestBin", hist.getLargestValue());
-			return new HistDistributionData(hist, largestValue, idType, labels, colors, ids);
+			int total = context.getInt("distribution.total", -1);
+			return new HistDistributionData(hist, largestValue, idType, labels, colors, ids, total);
 		}
 	}
 

@@ -84,4 +84,9 @@ public interface IDistributionData extends IHasGLLayoutData {
 			return label;
 		}
 	}
+
+	/**
+	 * @return
+	 */
+	boolean hasIds();
 }

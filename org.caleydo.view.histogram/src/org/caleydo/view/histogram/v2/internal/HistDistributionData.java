@@ -42,9 +42,10 @@ public class HistDistributionData implements IDistributionData, MultiSelectionMa
 	private List<DistributionEntry> entries;
 
 	public HistDistributionData(Histogram hist, int largestBinSize, IDType idType, String[] labels,
- Color[] colors, List<Integer> ids) {
+ Color[] colors,
+			List<Integer> ids, int size) {
 		this.ids = ids;
-		this.size = size(hist);
+		this.size = size < 0 ? size(hist) : size;
 		this.entries = toDistributions(toColors(hist.size(), colors), toLabels(hist.size(), labels), hist, largestBinSize);
 		if (idType == null) {
 			this.selections = null;
@@ -52,6 +53,11 @@ public class HistDistributionData implements IDistributionData, MultiSelectionMa
 			this.selections = new MultiSelectionManagerMixin(this);
 			this.selections.add(new SelectionManager(idType));
 		}
+	}
+
+	@Override
+	public boolean hasIds() {
+		return selections != null;
 	}
 
 	private List<DistributionEntry> toDistributions(Color[] colors, String[] labels, Histogram hist, int largestBinSize) {

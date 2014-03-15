@@ -43,6 +43,11 @@ public class TablePerspectiveDistributionData implements IDistributionData, ITab
 	}
 
 	@Override
+	public boolean hasIds() {
+		return true;
+	}
+
+	@Override
 	public void onChange(GLElement callback) {
 		this.callback = callback;
 	}
