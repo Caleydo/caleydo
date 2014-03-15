@@ -329,7 +329,7 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 	private float markerOffset(float w, float h) {
 		final float total = dim.opposite().select(w, h);
 		if (renderOutsideBounds)
-			return -1;
+			return -Math.max(1, total * 0.5f - 6);
 		return total * (0.5f - ITEM_AXIS_WIDTH / 2f);
 	}
 
@@ -354,13 +354,14 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		float delta = r[0];
 		float shift = r[1];
 		float other = dim.select(h, w);
-		float o = Math.max(5, 15 - other * 0.5f);
+		float o = Math.max(2, 5 - other * 0.5f);
 		// g.lineWidth(1);
 		g.color(Color.BLACK);
-		final float lastMark = max - delta;
+		boolean deltaEnoughSpace = dim.select(false, delta > TEXT_SIZE * 2);
+		final float lastMark = max - (deltaEnoughSpace ? 0 : delta);
 		if (shift > 0)
 			renderLine(g, 0, max, w, h, o);
-		for (float v = shift; v <= lastMark; v += delta) {
+		for (float v = shift; v < lastMark; v += delta) {
 			renderLine(g, v, max, w, h, o);
 		}
 		renderLine(g, max, max, w, h, o);
@@ -385,13 +386,14 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		final float wi = delta * every;
 		final float hi = dim.isHorizontal() ? TEXT_SIZE : Math.min(wi, TEXT_SIZE);
 
+		boolean deltaEnoughSpace = dim.select(false, delta > TEXT_SIZE * 2);
 		double pdelta = delta / max;
 		double pshift = deltaShift / max;
-		final float lastMark = max - delta - (invertOrder || (dim.isVertical() && delta > TEXT_SIZE * 2) ? 0 : delta);
+		final float lastMark = max - (deltaEnoughSpace ? 0 : delta);
 		double pv = pshift;
 		if (deltaShift > 0 || invertOrder)
 			renderMarker(g, 0, 0, max, shift, wi, hi);
-		for (float v = deltaShift; v <= lastMark; v += delta) {
+		for (float v = deltaShift; v < lastMark; v += delta) {
 			renderMarker(g, v, pv, max, shift, wi, hi);
 			pv += pdelta;
 		}
@@ -434,11 +436,15 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		// find a step width such that the difference is in the desired range
 		float factor = 1;
 		float step;
-		if (pxPerStep > 1) {
-			while (Float.isNaN(step = testFactor(pxPerStep * factor)))
+		if (pxPerStep > 100) {
+			step = pxPerStep < 30 ? Float.NEGATIVE_INFINITY : Float.POSITIVE_INFINITY;
+			while (Float.isInfinite(step = testFactor(pxPerStep * factor, step == Float.NEGATIVE_INFINITY))) {
 				factor = factor / 10.f;
+				// break;
+			}
 		} else {
-			while (Float.isNaN(step = testFactor(pxPerStep * factor)))
+			step = pxPerStep < 30 ? Float.NEGATIVE_INFINITY : Float.POSITIVE_INFINITY;
+			while (Float.isInfinite(step = testFactor(pxPerStep * factor, step == Float.NEGATIVE_INFINITY)))
 				factor = factor * 10.f;
 		}
 		float shift = 0;
@@ -449,26 +455,28 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		return new float[] { pxPerStep * factor * step, shift };
 	}
 
-	private static float testFactor(float pxPerStep) {
+	private static float testFactor(float pxPerStep, boolean prevSmaller) {
 		final float[] steps = { 1, 2.5f, 5f };
 		for (float step : steps) {
 			float v = pxPerStep * step;
-			if (inStepRange(v))
+			if (30 <= v && v <= 100)
 				return step;
+			boolean smaller = v < 30;
+			if (smaller != prevSmaller) // not the perfect match but the best matching one
+				return step;
+			prevSmaller = smaller;
 		}
-		return Float.NaN;
+		return prevSmaller ? Float.NEGATIVE_INFINITY : Float.POSITIVE_INFINITY;
 	}
 
-	private static boolean inStepRange(float size) {
-		return 15 <= size && size <= 50;
-	}
 	/**
 	 * @param dim
 	 * @return
 	 */
 	public GLElementDimensionDesc getDesc(EDimension dim) {
 		if (this.dim != dim)
-			return GLElementDimensionDesc.newFix(renderOutsideBounds ? 5 : 20).inRange(5, 60).build();
+			return GLElementDimensionDesc.newFix(renderOutsideBounds ? 5 : 20)
+					.inRange(5, renderOutsideBounds ? 20 : 60).build();
 		return GLElementDimensionDesc.newFix(200).minimum(50).locateUsing(this).build();
 	}
 
