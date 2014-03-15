@@ -55,6 +55,7 @@ import com.google.common.collect.ImmutableSet;
 public class SingleAxisElement extends GLElement implements MultiSelectionManagerMixin.ISelectionMixinCallback,
 		ILocator, IPickingLabelProvider, IPickingListener {
 	private final static float ITEM_AXIS_WIDTH = 0.3f;
+	private final static int TEXT_SIZE = 10;
 	@DeepScan
 	private final MultiSelectionManagerMixin selections;
 	private final EDimension dim;
@@ -354,7 +355,8 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		float shift = r[1];
 		float other = dim.select(h, w);
 		float o = Math.max(5, 15 - other * 0.5f);
-		g.lineWidth(2);
+		// g.lineWidth(1);
+		g.color(Color.BLACK);
 		final float lastMark = max - delta;
 		if (shift > 0)
 			renderLine(g, 0, max, w, h, o);
@@ -363,7 +365,7 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		}
 		renderLine(g, max, max, w, h, o);
 
-		g.lineWidth(1);
+		// g.lineWidth(1);
 		renderMarkerLabels(g, w, h, delta, max, shift);
 	}
 
@@ -378,14 +380,14 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 	}
 
 	private void renderMarkerLabels(GLGraphics g, float w, float h, float delta, float max, float deltaShift) {
-		int every = Math.round((float) Math.ceil(dim.select(30, 10) / delta));
+		int every = Math.round((float) Math.ceil(dim.select(30, TEXT_SIZE) / delta));
 		float shift = dim.select(h, w) * (0.5f + ITEM_AXIS_WIDTH / 2);
 		final float wi = delta * every;
-		final float hi = dim.isHorizontal() ? 10 : Math.min(wi, 10);
+		final float hi = dim.isHorizontal() ? TEXT_SIZE : Math.min(wi, TEXT_SIZE);
 
 		double pdelta = delta / max;
 		double pshift = deltaShift / max;
-		final float lastMark = max - delta - (invertOrder ? 0 : delta);
+		final float lastMark = max - delta - (invertOrder || (dim.isVertical() && delta > TEXT_SIZE * 2) ? 0 : delta);
 		double pv = pshift;
 		if (deltaShift > 0 || invertOrder)
 			renderMarker(g, 0, 0, max, shift, wi, hi);

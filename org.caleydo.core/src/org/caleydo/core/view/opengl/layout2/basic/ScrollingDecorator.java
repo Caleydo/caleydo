@@ -424,7 +424,7 @@ public class ScrollingDecorator extends AGLElementDecorator implements IScrollBa
 	 * @author Samuel Gratzl
 	 *
 	 */
-	public interface IHasMinSize {
+	public static interface IHasMinSize {
 		Vec2f getMinSize();
 	}
 }

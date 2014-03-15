@@ -434,7 +434,7 @@ public class GLElement implements IHasGLLayoutData, IHasMinSize {
 
 	/**
 	 * Forward pick event to listeners
-	 * 
+	 *
 	 * @param pick
 	 */
 	public final void handlePick(Pick pick) {
