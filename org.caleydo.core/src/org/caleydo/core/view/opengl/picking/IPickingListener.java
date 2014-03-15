@@ -20,8 +20,8 @@ package org.caleydo.core.view.opengl.picking;
 public interface IPickingListener {
 	/**
 	 * generic callback for a pick use {@link APickingListener} for distinction
-	 * 
+	 *
 	 * @param pick
 	 */
-	public void pick(Pick pick);
+	void pick(Pick pick);
 }

@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import javax.media.opengl.GL2;
+import javax.media.opengl.GL2ES1;
+
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.perspective.table.TableDoubleLists;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -282,6 +285,9 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 			g.drawLine(w * 0.5f, 0, w * 0.5f, h);
 		}
 
+		g.gl.glPushAttrib(GL2.GL_POINT_BIT);
+		g.pointSize(4);
+		g.gl.glEnable(GL2ES1.GL_POINT_SMOOTH);
 		float o = markerOffset(w, h);
 		for (int i = 0; i < n; ++i) {
 			double v = normalize.apply(list.getPrimitive(i));
@@ -300,10 +306,13 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 				v = 1 - v;
 			if (dim.isHorizontal()) {
 				g.drawLine(w * (float) v, o, w * (float) v, h - o);
+				g.drawPoint(w * (float) v, h * 0.5f);
 			} else {
 				g.drawLine(o, h * (float) v, w - o, h * (float) v);
+				g.drawPoint(w * 0.5f, h * (float) v);
 			}
 		}
+		g.gl.glPopAttrib();
 
 		if (isRenderMarkers()) {
 			renderMarkers(g, w, h);
@@ -340,66 +349,117 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 
 	private void renderMarkers(GLGraphics g, float w, float h) {
 		final float max = dim.select(w, h);
-		int nMarkers = determineMarkerCount(max);
-		float delta = max / (nMarkers - 1);
+		float[] r = determineMarkerStepsWidth(max);
+		float delta = r[0];
+		float shift = r[1];
 		float other = dim.select(h, w);
 		float o = Math.max(5, 15 - other * 0.5f);
 		g.lineWidth(2);
-		for (int i = 0; i < nMarkers; ++i) {
-			float v = i * delta;
-			if (invertOrder)
-				v = max - v;
-			if (dim.isHorizontal()) {
-				g.drawLine(v, -o, v, h + o);
-			} else {
-				g.drawLine(-o, v, w + o, v);
-			}
+		final float lastMark = max - delta;
+		if (shift > 0)
+			renderLine(g, 0, max, w, h, o);
+		for (float v = shift; v <= lastMark; v += delta) {
+			renderLine(g, v, max, w, h, o);
 		}
+		renderLine(g, max, max, w, h, o);
+
 		g.lineWidth(1);
-		renderMarkerLabels(g, w, h, delta, nMarkers);
+		renderMarkerLabels(g, w, h, delta, max, shift);
 	}
 
-	private void renderMarkerLabels(GLGraphics g, float w, float h, float delta, int nMarkers) {
+	private void renderLine(GLGraphics g, float v, float max, float w, float h, float o) {
+		if (invertOrder)
+			v = max - v;
+		if (dim.isHorizontal()) {
+			g.drawLine(v, -o, v, h + o);
+		} else {
+			g.drawLine(-o, v, w + o, v);
+		}
+	}
+
+	private void renderMarkerLabels(GLGraphics g, float w, float h, float delta, float max, float deltaShift) {
 		int every = Math.round((float) Math.ceil(dim.select(30, 10) / delta));
 		float shift = dim.select(h, w) * (0.5f + ITEM_AXIS_WIDTH / 2);
-		final float hi = dim.isHorizontal() ? Math.min(shift, 10) : Math.min(delta * every, 10);
+		final float wi = delta * every;
+		final float hi = dim.isHorizontal() ? 10 : Math.min(wi, 10);
 
-		double pdelta = 1. / (nMarkers - 1);
-		for (int i = 0; i < (nMarkers - 1); i += every) {
-			float v = i * delta;
-			String li = toMarker.apply(pdelta * (invertOrder ? nMarkers - 1 - i : i));
-			if (li == null)
-				continue;
+		double pdelta = delta / max;
+		double pshift = deltaShift / max;
+		final float lastMark = max - delta - (invertOrder ? 0 : delta);
+		double pv = pshift;
+		if (deltaShift > 0 || invertOrder)
+			renderMarker(g, 0, 0, max, shift, wi, hi);
+		for (float v = deltaShift; v <= lastMark; v += delta) {
+			renderMarker(g, v, pv, max, shift, wi, hi);
+			pv += pdelta;
+		}
+		renderMarker(g, max, 1, max, shift, wi, hi);
+	}
+
+	private void renderMarker(GLGraphics g, float v, final double pv, float max, float shift, final float wi,
+			final float hi) {
+		String li = toMarker.apply(pv);
+		if (invertOrder)
+			v = max - v;
+		if (li == null)
+			return;
+		if (v == max) {
 			if (dim.isHorizontal()) {
-				g.drawText(li, v + 2, shift, delta * every, hi);
+				g.drawText(li, max - wi - 2, shift, wi, hi, VAlign.RIGHT);
+			} else {
+				g.drawText(li, shift + 2, max - hi - 2, 100, hi);
+			}
+		} else {
+			if (dim.isHorizontal()) {
+				g.drawText(li, v + 2, shift, wi, hi);
 			} else {
 				g.drawText(li, shift + 2, v + 1, 100, hi);
 			}
 		}
-		{
-			String li = toMarker.apply(invertOrder ? 0. : 1.);
-			if (li != null) {
-				if (dim.isHorizontal()) {
-					g.drawText(li, w - delta * every - 2, shift, delta * every, hi, VAlign.RIGHT);
-				} else {
-					g.drawText(li, shift + 2, h - hi - 2, 100, hi);
-				}
-			}
-		}
 	}
 
-	private int determineMarkerCount(float size) {
+	private float[] determineMarkerStepsWidth(float size) {
 		if (this.markers >= 2) // externally specified
-			return this.markers;
+			return new float[] { size / (this.markers - 1), 0 };
+
 		if (size < 50)
-			return 2;
-		if (size < 100)
-			return 3;
-		if (size < 250)
-			return 5;
-		return 7;
+			return new float[] { size, 0 };
+
+		final float min = (float) normalize.unapply(0);
+		float range = (float) (normalize.unapply(1) + min);
+		float pxPerStep = (size / range);
+
+		// find a step width such that the difference is in the desired range
+		float factor = 1;
+		float step;
+		if (pxPerStep > 1) {
+			while (Float.isNaN(step = testFactor(pxPerStep * factor)))
+				factor = factor / 10.f;
+		} else {
+			while (Float.isNaN(step = testFactor(pxPerStep * factor)))
+				factor = factor * 10.f;
+		}
+		float shift = 0;
+		if (min != 0) {
+			shift = pxPerStep * (min % (factor * step));
+		}
+
+		return new float[] { pxPerStep * factor * step, shift };
 	}
 
+	private static float testFactor(float pxPerStep) {
+		final float[] steps = { 1, 2.5f, 5f };
+		for (float step : steps) {
+			float v = pxPerStep * step;
+			if (inStepRange(v))
+				return step;
+		}
+		return Float.NaN;
+	}
+
+	private static boolean inStepRange(float size) {
+		return 15 <= size && size <= 50;
+	}
 	/**
 	 * @param dim
 	 * @return
@@ -483,7 +543,7 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		final SingleAxisElement elem = new SingleAxisElement(EDimension.RECORD, new ArrayDoubleList(arr), 0, 1, null,
 				null, false);
 		elem.setInvertOrder(true);
-		elem.setMarker("A", "B", "C");
+		elem.setNumberMarkers();
 		GLSandBox.main(args,
 				elem);
 	}

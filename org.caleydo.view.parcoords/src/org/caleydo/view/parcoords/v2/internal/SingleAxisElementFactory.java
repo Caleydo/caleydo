@@ -72,6 +72,7 @@ public class SingleAxisElementFactory implements IGLElementFactory2 {
 			elem.setMarker(markers);
 		else if (detailLevel == EDetailLevel.HIGH)
 			elem.setNumberMarkers();
+		elem.setInvertOrder(context.is("invertOrder"));
 		return elem;
 
 	}
