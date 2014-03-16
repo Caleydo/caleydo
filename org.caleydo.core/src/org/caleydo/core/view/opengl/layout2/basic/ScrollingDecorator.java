@@ -133,6 +133,7 @@ public class ScrollingDecorator extends AGLElementDecorator implements IScrollBa
 	 */
 	@Override
 	public void setMinSizeProvider(IHasMinSize minSizeProvider) {
+		super.setMinSizeProvider(minSizeProvider);
 		this.minSizeProvider = minSizeProvider;
 		relayout();
 	}
