@@ -138,8 +138,8 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 
 	private void initShaders(GLGraphics g) throws IOException {
 		isShaderInitialized = true;
-		shaderProgramTextOverlay = g.loadShader(this.getClass().getResourceAsStream("../../vsTextOverlay.glsl"), this
-				.getClass().getResourceAsStream("../../fsTextOverlay.glsl"));
+		shaderProgramTextOverlay = g.loadShader(this.getClass().getResourceAsStream("vsTextOverlay.glsl"), this
+				.getClass().getResourceAsStream("fsTextOverlay.glsl"));
 	}
 
 	@Override
