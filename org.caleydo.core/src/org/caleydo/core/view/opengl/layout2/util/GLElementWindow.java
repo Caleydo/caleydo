@@ -195,6 +195,14 @@ public class GLElementWindow extends GLElementContainer {
 		titleBar.add(index, element);
 	}
 
+	public void clearTitleElements() {
+		for (GLElement element : titleBar) {
+			if (element != titleBar.spacingElement && element != titleBar.closeButton) {
+				titleBar.remove(element);
+			}
+		}
+	}
+
 	/**
 	 * @param content
 	 *            setter, see {@link content}
