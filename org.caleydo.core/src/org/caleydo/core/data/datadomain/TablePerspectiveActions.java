@@ -11,7 +11,6 @@ import java.util.Collection;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.contextmenu.ActionBasedContextMenuItem;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 
 /**
@@ -36,21 +35,15 @@ public class TablePerspectiveActions {
 
 	public static boolean add(ContextMenuCreator creator, TablePerspective tablePerspective, Object sender,
 			boolean separate) {
-		boolean first = separate;
-		boolean added = false;
+		return DataDomainActions.add(creator, map(tablePerspective, sender), separate);
+	}
+
+	private static Iterable<Collection<Pair<String, Runnable>>> map(TablePerspective tablePerspective, Object sender) {
+		Collection<Collection<Pair<String, Runnable>>> r = new ArrayList<>(factories.size());
 		for (ITablePerspectiveFactory factory : factories) {
-			Collection<Pair<String, Runnable>> create = factory.create(tablePerspective, sender);
-			if (create.isEmpty())
-				continue;
-			if (!first) {
-				creator.addSeparator();
-			}
-			first = false;
-			added = true;
-			for (Pair<String, Runnable> r : create)
-				creator.add(new ActionBasedContextMenuItem(r.getFirst(), r.getSecond()));
+			r.add(factory.create(tablePerspective, sender));
 		}
-		return added;
+		return r;
 	}
 
 	public interface ITablePerspectiveFactory {
