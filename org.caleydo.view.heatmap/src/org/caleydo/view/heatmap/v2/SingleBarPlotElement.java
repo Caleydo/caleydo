@@ -8,6 +8,7 @@ package org.caleydo.view.heatmap.v2;
 import gleem.linalg.Vec2f;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.util.color.Color;
@@ -39,6 +40,7 @@ public class SingleBarPlotElement extends ASingleElement {
 	 */
 	protected final Function<? super Integer, Color> id2color;
 
+	private Color outline = null;
 
 
 	public SingleBarPlotElement(IHeatMapDataProvider data, EDetailLevel detailLevel, EDimension dim,
@@ -50,17 +52,37 @@ public class SingleBarPlotElement extends ASingleElement {
 		this.id2color = id2color;
 	}
 
+	/**
+	 * @return
+	 */
+	public Color getOutline() {
+		return outline;
+	}
+
+	/**
+	 * @param outline
+	 *            setter, see {@link outline}
+	 */
+	public void setOutline(Color outline) {
+		if (Objects.equals(outline, this.outline))
+			return;
+		this.outline = outline;
+		repaint();
+	}
+
 	@Override
 	protected void render(GLGraphics g, float w, float h, ISpacingLayout spacing) {
 		final EDimension dim = getDimension();
 		List<Integer> ids = data.getData(dim);
+		Color o = dim.select(w, h) / ids.size() > 2 ? outline : null;
+
 		for (int i = 0; i < ids.size(); ++i) {
 			final Integer id = ids.get(i);
 			Double v = id2double.apply(id);
 			if (v == null || Double.isNaN(v))
 				continue;
 			float pos = spacing.getPosition(i);
-			float size = spacing.getSize(i);
+			float size = spacing.getSize(i) - (o != null ? 1 : 0);
 			Vec2f bar = value2bar.apply(v);
 			g.color(id2color.apply(id));
 			if (dim.isVertical()) {
@@ -68,6 +90,15 @@ public class SingleBarPlotElement extends ASingleElement {
 			} else {
 				g.fillRect(pos, bar.x() * h, size, (bar.y()) * h);
 			}
+			if (o != null) {
+				g.color(o);
+				if (dim.isVertical()) {
+					g.drawLine(bar.x() * w, pos + size, bar.x() * w + (bar.y()) * w + 1, pos + size);
+				} else {
+					g.drawLine(pos + size, bar.x() * h, pos + size, bar.x() * h + (bar.y()) * h + 1);
+				}
+			}
 		}
 	}
+
 }
