@@ -20,6 +20,7 @@
    <extension-point id="org.caleydo.ui.GLElementFactory" name="GLElementFactory" schema="schema/org.caleydo.ui.GLElementFactory.exsd"/>
    <extension-point id="org.caleydo.core.view.dnd.TransferSerializer" name="TransferSerializer" schema="schema/org.caleydo.core.view.dnd.TransferSerializer.exsd"/>
    <extension-point id="org.caleydo.datadomain.TablePerspectiveActions" name="TablePerspectiveActions" schema="schema/org.caleydo.datadomain.TablePerspectiveActions.exsd"/>
+   <extension-point id="org.caleydo.datadomain.TypedIDActions" name="TypedIDActions" schema="schema/org.caleydo.datadomain.TypedIDActions.exsd"/>
 
    <extension
          id="application"
