@@ -100,7 +100,6 @@ public class HistogramDistributionElement extends ADistributionElement {
 
 		g.save().move(HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW,
 				HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW + h - 1);
-		g.color(Color.DARK_GRAY).drawLine(0, 0, w, 0);
 
 		for (int i = 0; i < bins; ++i) {
 			DistributionEntry entry = entries.get(i);
@@ -147,6 +146,7 @@ public class HistogramDistributionElement extends ADistributionElement {
 				}
 			}
 		}
+		g.color(Color.DARK_GRAY).drawLine(0, 0, w, 0);
 
 		g.restore();
 	}
