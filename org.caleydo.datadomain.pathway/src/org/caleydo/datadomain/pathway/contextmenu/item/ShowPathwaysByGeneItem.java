@@ -8,10 +8,14 @@ package org.caleydo.datadomain.pathway.contextmenu.item;
 import java.util.Arrays;
 import java.util.Set;
 
+import org.caleydo.core.data.datadomain.DataDomainActions.ChooserRunnable;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.base.Runnables;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.listener.LoadPathwayEvent;
 import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
@@ -62,5 +66,31 @@ public class ShowPathwaysByGeneItem extends AContextMenuItem {
 		}
 
 		setLabel("Load Pathways (" + pathwayCount + ")");
+	}
+
+	public static Pair<String,Runnable> createChooser(PathwayDataDomain pathwayDataDomain, IDType idType, Integer david, Object sender) {
+		Set<PathwayGraph> pathwayGraphs = PathwayManager.get().getPathwayGraphsByGeneID(idType, david);
+
+		int pathwayCount = 0;
+
+		ChooserRunnable r = new ChooserRunnable();
+		if (pathwayGraphs != null) {
+
+			pathwayCount = pathwayGraphs.size();
+
+			PathwayGraph[] pathways = new PathwayGraph[pathwayGraphs.size()];
+			pathwayGraphs.toArray(pathways);
+			Arrays.sort(pathways);
+
+			for (PathwayGraph pathwayGraph : pathways) {
+				LoadPathwayEvent loadPathwayEvent = new LoadPathwayEvent();
+				loadPathwayEvent.setSender(sender);
+				loadPathwayEvent.setPathwayID(pathwayGraph.getID());
+				r.add(Pair.make(pathwayGraph.getTitle(), Runnables.sendEvent(loadPathwayEvent)));
+			}
+		}
+
+		final String label = "Load Pathways (" + pathwayCount + ")";
+		return Pair.make(label, (Runnable)r);
 	}
 }

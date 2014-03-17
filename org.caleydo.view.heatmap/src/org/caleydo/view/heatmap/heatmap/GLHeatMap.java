@@ -11,6 +11,7 @@ import java.util.Iterator;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
+import org.caleydo.core.data.datadomain.TypedIDActions;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -21,9 +22,7 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.IColorMappingUpdateListener;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingListener;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
-import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -36,8 +35,6 @@ import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
-import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapLayoutConfiguration;
 import org.caleydo.view.heatmap.heatmap.template.DefaultTemplate;
@@ -259,23 +256,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
-
-
-				if (dataDomain instanceof GeneticDataDomain && dataDomain.isColumnDimension()) {
-
-					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-					contexMenuItemContainer.setDataDomain(dataDomain);
-					contexMenuItemContainer.setData(recordIDType, pickingID);
-
-					contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
-					contextMenuCreator.addSeparator();
-				} else {
-					AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-							+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
-							+ dataDomain.getRecordLabel(recordIDType, pickingID), recordIDType, pickingID);
-					contextMenuCreator.addContextMenuItem(menuItem);
-				}
-
+				TypedIDActions.add(contextMenuCreator, pickingID, recordIDType, dataDomain, this, true);
 				break;
 
 			default:
@@ -297,21 +278,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 				selectionType = SelectionType.MOUSE_OVER;
 				break;
 			case RIGHT_CLICKED:
-
-				if (dataDomain instanceof GeneticDataDomain && !dataDomain.isColumnDimension()) {
-
-					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-					contexMenuItemContainer.setDataDomain(dataDomain);
-					contexMenuItemContainer.setData(dimensionIDType, pickingID);
-					contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
-					contextMenuCreator.addSeparator();
-				} else {
-
-					AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-							+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
-							+ dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType, pickingID);
-					contextMenuCreator.addContextMenuItem(menuItem);
-				}
+				TypedIDActions.add(contextMenuCreator, pickingID, dimensionIDType, dataDomain, this, true);
 				return;
 			default:
 				return;
