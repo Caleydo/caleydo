@@ -29,7 +29,7 @@ public class GLComboBox<T> extends AGLButton {
 	/**
 	 * items of this combo box
 	 */
-	private final List<T> model;
+	private List<T> model;
 
 	/**
 	 * is the drop down currently visible
@@ -107,16 +107,31 @@ public class GLComboBox<T> extends AGLButton {
 	}
 
 	public GLComboBox<T> setSelected(int index) {
-		if (selected == index)
-			return this;
-		this.selected = index;
-		onSelectionChanged(getSelectedItem());
-		repaint();
+		setSelected(index, false);
 		return this;
 	}
 
 	public GLComboBox<T> setSelectedItem(T item) {
 		setSelected(model.indexOf(item));
+		return this;
+	}
+
+	public GLComboBox<T> setSelectedSilent(int index) {
+		setSelected(index, true);
+		return this;
+	}
+
+	protected void setSelected(int index, boolean silent) {
+		if (selected == index)
+			return;
+		this.selected = index;
+		if (!silent)
+			onSelectionChanged(getSelectedItem());
+		repaint();
+	}
+
+	public GLComboBox<T> setSelectedItemSilent(T item) {
+		setSelectedSilent(model.indexOf(item));
 		return this;
 	}
 
@@ -268,6 +283,14 @@ public class GLComboBox<T> extends AGLButton {
 		super.onMouseOut(pick);
 	}
 
+	/**
+	 * @param model
+	 *            setter, see {@link model}
+	 */
+	public void setModel(List<T> model) {
+		this.model = model;
+		relayout();
+	}
 
 	/**
 	 * default value renderer, which renders the label it's a {@link ILabeled} otherwise the toString value
