@@ -133,14 +133,14 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 			b.append(String.format("(+%d invalid)\n", stats.getNaNs()));
 		} else
 			b.append('\n');
-		b.append(String.format("%s:\t%.3f\n", "median", stats.getMedian()));
-		b.append(String.format("%s:\t%.3f\n", "mean", stats.getMean()));
-		b.append(String.format("%s:\t%.3f\n", "median", stats.getMedian()));
-		b.append(String.format("%s:\t%.3f\n", "sd", stats.getSd()));
-		b.append(String.format("%s:\t%.3f\n", "var", stats.getVar()));
-		b.append(String.format("%s:\t%.3f\n", "mad", stats.getMedianAbsoluteDeviation()));
-		b.append(String.format("%s:\t%.3f\n", "min", stats.getMin()));
-		b.append(String.format("%s:\t%.3f", "max", stats.getMax()));
+		b.append(String.format("%s:\t%s\n", "median", Formatter.formatNumber(stats.getMedian())));
+		b.append(String.format("%s:\t%s\n", "mean", Formatter.formatNumber(stats.getMean())));
+		b.append(String.format("%s:\t%s\n", "median", Formatter.formatNumber(stats.getMedian())));
+		b.append(String.format("%s:\t%s\n", "sd", Formatter.formatNumber(stats.getSd())));
+		b.append(String.format("%s:\t%s\n", "var", Formatter.formatNumber(stats.getVar())));
+		b.append(String.format("%s:\t%s\n", "mad", Formatter.formatNumber(stats.getMedianAbsoluteDeviation())));
+		b.append(String.format("%s:\t%s\n", "min", Formatter.formatNumber(stats.getMin())));
+		b.append(String.format("%s:\t%s", "max", Formatter.formatNumber(stats.getMax())));
 		return b.toString();
 	}
 
