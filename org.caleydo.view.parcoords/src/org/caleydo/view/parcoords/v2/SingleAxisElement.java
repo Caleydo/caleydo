@@ -56,6 +56,7 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		ILocator, IPickingLabelProvider, IPickingListener {
 	private final static float ITEM_AXIS_WIDTH = 0.3f;
 	private final static int TEXT_SIZE = 10;
+	private final static float GLYPH_RADIUS = 2;
 	@DeepScan
 	private final MultiSelectionManagerMixin selections;
 	private final EDimension dim;
@@ -74,6 +75,8 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 
 	private boolean invertOrder = false;
 	private final boolean renderOutsideBounds;
+
+	private EValueGlyph glyph = EValueGlyph.DOT;
 
 	public SingleAxisElement(TablePerspective t, boolean renderOutsideBounds) {
 		this(EDimension.get(t.getNrDimensions() == 1), t, EDimension.get(t.getNrDimensions() == 1)
@@ -137,6 +140,24 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 			return;
 		this.invertOrder = invertOrder;
 		repaintAll();
+	}
+
+	/**
+	 * @param glyph
+	 *            setter, see {@link glyph}
+	 */
+	public void setGlyph(EValueGlyph glyph) {
+		if (this.glyph == glyph)
+			return;
+		this.glyph = glyph;
+		repaint();
+	}
+
+	/**
+	 * @return the glyph, see {@link #glyph}
+	 */
+	public EValueGlyph getGlyph() {
+		return glyph;
 	}
 
 	@Override
@@ -286,9 +307,11 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 			g.drawLine(w * 0.5f, 0, w * 0.5f, h);
 		}
 
-		g.gl.glPushAttrib(GL2.GL_POINT_BIT);
-		g.pointSize(4);
-		g.gl.glEnable(GL2ES1.GL_POINT_SMOOTH);
+		if (glyph == EValueGlyph.DOT) {
+			g.gl.glPushAttrib(GL2.GL_POINT_BIT);
+			g.pointSize(GLYPH_RADIUS * 2);
+			g.gl.glEnable(GL2ES1.GL_POINT_SMOOTH);
+		}
 		float o = markerOffset(w, h);
 		for (int i = 0; i < n; ++i) {
 			double v = normalize.apply(list.getPrimitive(i));
@@ -307,13 +330,15 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 				v = 1 - v;
 			if (dim.isHorizontal()) {
 				g.drawLine(w * (float) v, o, w * (float) v, h - o);
-				g.drawPoint(w * (float) v, h * 0.5f);
+				renderGlyph(g, w * (float) v, h * 0.5f);
 			} else {
 				g.drawLine(o, h * (float) v, w - o, h * (float) v);
-				g.drawPoint(w * 0.5f, h * (float) v);
+				renderGlyph(g, w * 0.5f, h * (float) v);
 			}
 		}
-		g.gl.glPopAttrib();
+		if (glyph == EValueGlyph.DOT) {
+			g.gl.glPopAttrib();
+		}
 
 		if (isRenderMarkers()) {
 			renderMarkers(g, w, h);
@@ -324,6 +349,40 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 		}
 
 		super.renderImpl(g, w, h);
+	}
+
+	/**
+	 * @param g
+	 * @param f
+	 * @param h
+	 */
+	private void renderGlyph(GLGraphics g, float x, float y) {
+		final float s = GLYPH_RADIUS;
+		switch (glyph) {
+		case NONE:
+			break;
+		case DOT:
+			g.drawPoint(x, y);
+			break;
+		case DIAMOND:
+			g.fillPolygon(v(x - s, y), v(x, y - s), v(x + s, y), v(x, y + s));
+			break;
+		case INVERTED_DIAMOND:
+			if (dim.isVertical())
+				g.fillPolygon(v(x - s, y - s), v(x, y), v(x - s, y + s)).fillPolygon(v(x + s, y - s), v(x + s, y + s),
+						v(x, y));
+			else
+				g.fillPolygon(v(x - s, y - s), v(x + s, y - s), v(x, y)).fillPolygon(v(x, y), v(x + s, y + s),
+						v(x - s, y + s));
+			break;
+		case RECT:
+			g.fillRect(x - s, y - s, s * 2, s * 2);
+			break;
+		}
+	}
+
+	private static Vec2f v(float x, float y) {
+		return new Vec2f(x, y);
 	}
 
 	private float markerOffset(float w, float h) {
@@ -423,7 +482,7 @@ public class SingleAxisElement extends GLElement implements MultiSelectionManage
 	}
 
 	private float[] determineMarkerStepsWidth(float size) {
-		if (this.markers >= 2) // externally specified
+		if (this.markers >= 1) // externally specified
 			return new float[] { size / (this.markers - 1), 0 };
 
 		if (size < 50)

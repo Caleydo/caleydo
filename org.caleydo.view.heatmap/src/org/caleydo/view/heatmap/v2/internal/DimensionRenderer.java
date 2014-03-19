@@ -254,6 +254,11 @@ public class DimensionRenderer {
 		hoveredID = id;
 	}
 
+	public void clear(SelectionType selection) {
+		select(selection, true, false);
+		hoveredID = null;
+	}
+
 	private void select(SelectionType selectionType, boolean clearExisting, boolean deSelect,
 			int... ids) {
 		SelectionManager m = getManager();

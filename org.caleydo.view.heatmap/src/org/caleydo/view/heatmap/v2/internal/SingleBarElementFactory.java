@@ -80,6 +80,7 @@ public class SingleBarElementFactory extends ASingleElementFactory {
 		value2bar = extractValue2Bar(context);
 		SingleBarPlotElement elem = new SingleBarPlotElement(data, detailLevel, dim, id2double, value2bar, id2color);
 		elem.setFrameColor(context.get("frameColor", Color.class, elem.getFrameColor()));
+		elem.setOutline(context.get("outline", Color.class, elem.getOutline()));
 		setSelectionStrategies(elem, context);
 		return elem;
 	}

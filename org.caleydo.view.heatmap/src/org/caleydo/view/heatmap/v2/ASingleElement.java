@@ -219,8 +219,6 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 	protected final void renderImpl(GLGraphics g, float w, float h) {
 		g.save();
 
-		if (frameColor != null)
-			g.color(frameColor).drawRect(0, 0, w, h);
 		render(g, w, h, renderer.getSpacing());
 
 		g.incZ();
@@ -230,6 +228,9 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 		}
 		g.lineWidth(1);
 		g.decZ();
+
+		if (frameColor != null)
+			g.color(frameColor).drawRect(0, 0, w, h);
 
 		g.restore();
 	}
@@ -330,7 +331,7 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 	@Override
 	protected final void onMouseOut(Pick pick) {
 		// clear all hovered elements
-		renderer.select(SelectionType.MOUSE_OVER, true, null);
+		renderer.clear(SelectionType.MOUSE_OVER);
 		repaint();
 	}
 

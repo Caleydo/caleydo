@@ -100,11 +100,14 @@ public class HistogramDistributionElement extends ADistributionElement {
 
 		g.save().move(HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW,
 				HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW + h - 1);
-		g.color(Color.DARK_GRAY).drawLine(0, 0, w, 0);
 
+		final Color border = RenderStyle.COLOR_BORDER;
+		boolean renderBorder = !g.isPickingPass() && border != null;
+		float borderBrightness = border == null ? 0 : getBrightness(border);
 		for (int i = 0; i < bins; ++i) {
 			DistributionEntry entry = entries.get(i);
-			g.color(toHighlight(entry.getColor(), i));
+			final Color c = toHighlight(entry.getColor(), i);
+			g.color(c);
 			float v = -h * entry.getValue();
 
 			if (v <= -1) {
@@ -112,22 +115,19 @@ public class HistogramDistributionElement extends ADistributionElement {
 				g.fillRect(x - lineWidthHalf, 0, lineWidth, v);
 				g.popName();
 			}
+			if (renderBorder) {
+				float b = getBrightness(c);
+				if (b > 0.5f && borderBrightness > 0.5f)
+					g.color(1 - border.r, 1 - border.g, 1 - border.b, border.a);
+				else
+					g.color(border);
+				g.drawRect(x - lineWidthHalf, 0, lineWidth, v);
+
+			}
 			x += delta;
 		}
 
 		if (!g.isPickingPass()) {
-			if (RenderStyle.COLOR_BORDER != null) {
-				g.color(RenderStyle.COLOR_BORDER);
-				x = delta / 2;
-				for (int i = 0; i < bins; ++i) {
-					DistributionEntry entry = entries.get(i);
-					float v = -h * entry.getValue();
-					if (v <= -1) {
-						g.drawRect(x - lineWidthHalf, 0, lineWidth, v);
-					}
-					x += delta;
-				}
-			}
 			g.lineWidth(2);
 			for (SelectionType selectionType : SELECTIONTYPES) {
 				Set<Integer> elements = data.getElements(selectionType);
@@ -147,8 +147,15 @@ public class HistogramDistributionElement extends ADistributionElement {
 				}
 			}
 		}
+		g.color(Color.DARK_GRAY).drawLine(0, 0, w, 0);
 
 		g.restore();
+	}
+
+	private static float getBrightness(Color c) {
+		final int[] rgba = c.getIntRGBA();
+		float[] hsb = java.awt.Color.RGBtoHSB(rgba[0], rgba[1], rgba[2], null);
+		return hsb[2];
 	}
 
 	@Override

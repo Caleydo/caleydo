@@ -7,11 +7,13 @@ package org.caleydo.view.parcoords.v2.internal;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.function.IDoubleList;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -23,6 +25,7 @@ import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
 import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory2;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.view.parcoords.v2.EValueGlyph;
 import org.caleydo.view.parcoords.v2.SingleAxisElement;
 
 import com.google.common.base.Function;
@@ -73,8 +76,28 @@ public class SingleAxisElementFactory implements IGLElementFactory2 {
 		else if (detailLevel == EDetailLevel.HIGH)
 			elem.setNumberMarkers();
 		elem.setInvertOrder(context.is("invertOrder"));
+		elem.setGlyph(toGlyph("valueGlyph", context, elem.getGlyph()));
 		return elem;
 
+	}
+
+	/**
+	 * @param string
+	 * @param context
+	 * @param glyph
+	 * @return
+	 */
+	private EValueGlyph toGlyph(String key, GLElementFactoryContext context, EValueGlyph default_) {
+		String v = context.get(key, String.class, null);
+		if (StringUtils.isBlank(v))
+			return default_;
+		try {
+			EValueGlyph g = EValueGlyph.valueOf(v.toUpperCase());
+			return g;
+		} catch (Exception e) {
+			Logger.create(SingleAxisElement.class).warn("invalid value glyph spec: " + v, e);
+		}
+		return default_;
 	}
 
 	/**

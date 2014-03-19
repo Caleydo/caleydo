@@ -370,7 +370,7 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 
 	/**
 	 * determine whether in automatic mode the outlines or something different should be shown
-	 * 
+	 *
 	 * @return
 	 */
 	static boolean shouldShowOutline(float w, float h, int cols, int rows) {
@@ -509,8 +509,8 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 	@Override
 	protected final void onMouseOut(Pick pick) {
 		// clear all hovered elements
-		dimension.select(SelectionType.MOUSE_OVER, true, null);
-		record.select(SelectionType.MOUSE_OVER, true, null);
+		dimension.clear(SelectionType.MOUSE_OVER);
+		record.clear(SelectionType.MOUSE_OVER);
 		repaint();
 	}
 
