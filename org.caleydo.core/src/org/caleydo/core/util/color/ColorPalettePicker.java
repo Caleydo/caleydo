@@ -105,7 +105,7 @@ public class ColorPalettePicker extends GLElementContainer implements ISelection
 
 		@Override
 		public IDragInfo startSWTDrag(IDragEvent event) {
-			return new TextDragInfo(label);
+			return new TextDragInfo(color.toString());
 		}
 
 		@Override

@@ -331,7 +331,7 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 	@Override
 	protected final void onMouseOut(Pick pick) {
 		// clear all hovered elements
-		renderer.select(SelectionType.MOUSE_OVER, true, null);
+		renderer.clear(SelectionType.MOUSE_OVER);
 		repaint();
 	}
 
