@@ -43,6 +43,15 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 	}
 
 	/**
+	 * @param backgroundColor
+	 *            setter, see {@link backgroundColor}
+	 */
+	public void setBackgroundColor(Color backgroundColor) {
+		this.backgroundColor = backgroundColor;
+		setRenderer(GLRenderers.fillRect(backgroundColor));
+	}
+
+	/**
 	 * Set the limits of the scale factor (default min=0.1, max=4).
 	 *
 	 * @param min
@@ -141,8 +150,8 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 		IGLLayoutElement baseLayer = children.get(0);
 
 		boolean needsRelayout = false;
-		if (!baseLayer.getSetSize().equals(originalSize)) {
-			originalSize.set(baseLayer.getSetSize());
+		if (!baseLayer.asElement().getMinSize().equals(originalSize)) {
+			originalSize.set(baseLayer.asElement().getMinSize());
 
 			needsRelayout = true;
 		}

@@ -7,11 +7,14 @@ package org.caleydo.core.view.opengl.layout2.basic;
 
 import gleem.linalg.Vec2f;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 
 import org.caleydo.core.data.collection.EDimension;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout2.AGLElementDecorator;
+import org.caleydo.core.view.opengl.layout2.AGLElementView;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -224,7 +227,6 @@ public class ScrollingDecorator extends AGLElementDecorator implements IScrollBa
 		layout.setSize(contentSize.x(), contentSize.y());
 	}
 
-
 	/**
 	 * @param layout
 	 * @return
@@ -332,6 +334,7 @@ public class ScrollingDecorator extends AGLElementDecorator implements IScrollBa
 			gl.glClipPlane(GL2ES1.GL_CLIP_PLANE1, clipPlane3, 0);
 			gl.glEnable(GL2ES1.GL_CLIP_PLANE0);
 			gl.glEnable(GL2ES1.GL_CLIP_PLANE1);
+
 		}
 		if (doVer) {
 			double[] clipPlane2 = new double[] { 0.0, 1.0, 0.0, 0 };
@@ -341,11 +344,26 @@ public class ScrollingDecorator extends AGLElementDecorator implements IScrollBa
 			gl.glEnable(GL2ES1.GL_CLIP_PLANE2);
 			gl.glEnable(GL2ES1.GL_CLIP_PLANE3);
 		}
+		gl.glEnable(GL.GL_SCISSOR_TEST);
+		IGLCanvas canvas = findParent(AGLElementView.class).getParentGLCanvas();
+		int height = canvas.toRawPixel(canvas.getDIPHeight());
+		// gl.glScissor(0, 0, 100, 100);
+
+		int locx = canvas.toRawPixel(getAbsoluteLocation().x());
+		int locy = canvas.toRawPixel(getAbsoluteLocation().y());
+		int pixelW = canvas.toRawPixel(w);
+		int pixelH = canvas.toRawPixel(h);
+
+		gl.glScissor(locx, height - locy - pixelH + (doHor ? canvas.toRawPixel(scrollBarWidth) : 0), pixelW
+				- (doVer ? canvas.toRawPixel(scrollBarWidth) : 0), pixelH
+				- (doHor ? canvas.toRawPixel(scrollBarWidth) : 0));
+
 		if (pick)
 			renderPickContent(g, w, h);
 		else
 			content.render(g);
 
+		gl.glDisable(GL.GL_SCISSOR_TEST);
 		if (doVer || doHor) {
 			gl.glPopAttrib();
 		}
@@ -402,7 +420,6 @@ public class ScrollingDecorator extends AGLElementDecorator implements IScrollBa
 	protected boolean needVer() {
 		return vertical != null && vertical.needIt;
 	}
-
 
 	@Override
 	public boolean moved(GLElement child) {

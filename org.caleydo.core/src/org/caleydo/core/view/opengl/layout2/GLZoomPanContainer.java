@@ -7,6 +7,7 @@ package org.caleydo.core.view.opengl.layout2;
 
 import gleem.linalg.Vec2f;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator;
@@ -63,6 +64,14 @@ public class GLZoomPanContainer extends ScrollingDecorator {
 				}
 			}
 		});
+	}
+
+	public void setScaleLimits(float min, float max) {
+		elementStack.setScaleLimits(min, max);
+	}
+
+	public void setBackgroundColor(Color color) {
+		elementStack.setBackgroundColor(color);
 	}
 
 	/**
