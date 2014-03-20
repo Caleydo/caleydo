@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy.ISpacingLayout;
 import org.caleydo.view.heatmap.v2.internal.DimensionRenderer;
@@ -47,7 +48,8 @@ import com.google.common.base.Suppliers;
  * @author Samuel Gratzl
  *
  */
-public class HeatMapElementBase extends PickableGLElement implements IHasMinSize, IDataChangedCallback {
+public class HeatMapElementBase extends PickableGLElement implements IHasMinSize, IDataChangedCallback,
+		IPickingLabelProvider {
 	private static final int TEXT_OFFSET = 5;
 	/**
 	 * maximum pixel size of a text
@@ -460,6 +462,14 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 	}
 
 	@Override
+	public String getLabel(Pick pick) {
+		Pair<IndexedId, IndexedId> ids = toDimensionRecordIds(pick);
+		if (ids == null || ids.getFirst() == null || ids.getSecond() == null)
+			return "";
+		return this.data.getLabel(ids.getSecond().getId(), ids.getFirst().getId());
+	}
+
+	@Override
 	protected void onDragDetected(Pick pick) {
 		if (!pick.isAnyDragging())
 			pick.setDoDragging(true);
@@ -552,7 +562,7 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-
+		onPick(context.getSWTLayer().createTooltip(this));
 		updateRenderer();
 	}
 

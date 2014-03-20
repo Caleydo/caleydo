@@ -72,18 +72,17 @@ public class HeatMapElementFactory implements IGLElementFactory2 {
 		@SuppressWarnings("unchecked")
 		Function2<Integer, Integer, Color> colorer = context.get(Function2.class, null);
 		@SuppressWarnings("unchecked")
-		Function2<Integer, Integer, Float> toRaw = context.get("cell2double", Function2.class, null);
+		Function2<Integer, Integer, String> cell2label = context.get("cell2label", Function2.class, null);
 
 		HeatMapElementBase elem;
 		TablePerspective data = context.getData();
 		if (data != null) {
 			if (colorer == null)
 				colorer = new BasicBlockColorer(data.getDataDomain());
-			if (toRaw == null)
-				toRaw = BasicBlockColorer.toRaw(data.getDataDomain());
-			elem = new HeatMapElement(data, colorer, toRaw, detailLevel, forceTextures);
+			elem = new HeatMapElement(data, colorer, detailLevel, forceTextures);
 		} else {
-			IHeatMapDataProvider datap = new ListDataProvider(toData(context, "records"), toData(context, "dimensions"));
+			IHeatMapDataProvider datap = new ListDataProvider(toData(context, "records"),
+					toData(context, "dimensions"), cell2label);
 			IHeatMapRenderer renderer = new HeatMapRenderer(detailLevel, forceTextures, colorer);
 			elem = new HeatMapElementBase(datap, renderer, detailLevel);
 		}

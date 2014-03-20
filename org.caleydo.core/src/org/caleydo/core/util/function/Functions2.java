@@ -5,6 +5,7 @@
  *******************************************************************************/
 package org.caleydo.core.util.function;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Table;
 
 /**
@@ -31,7 +32,7 @@ public class Functions2 {
 
 	/**
 	 * wrapper for swapping arguments
-	 * 
+	 *
 	 * @param f
 	 * @return
 	 */
@@ -40,6 +41,24 @@ public class Functions2 {
 			@Override
 			public T apply(F2 input1, F1 input2) {
 				return f.apply(input2, input1);
+			}
+		};
+	}
+
+	public static <F1, F2, T> Function<F1, T> partial(final Function2<F1, F2, T> f, final F2 value) {
+		return new Function<F1, T>() {
+			@Override
+			public T apply(F1 input) {
+				return f.apply(input, value);
+			}
+		};
+	}
+
+	public static <F1, F2, T> Function<F2, T> partial2(final Function2<F1, F2, T> f, final F1 value) {
+		return new Function<F2, T>() {
+			@Override
+			public T apply(F2 input) {
+				return f.apply(value, input);
 			}
 		};
 	}

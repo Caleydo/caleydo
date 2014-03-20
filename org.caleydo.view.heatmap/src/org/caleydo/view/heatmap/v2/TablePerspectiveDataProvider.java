@@ -16,6 +16,7 @@ import org.caleydo.core.data.selection.TablePerspectiveSelectionMixin;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.Function2;
 import org.caleydo.core.view.opengl.layout2.layout.IHasGLLayoutData;
 import org.caleydo.view.heatmap.v2.internal.IHeatMapDataProvider;
@@ -56,7 +57,19 @@ public class TablePerspectiveDataProvider implements IHeatMapDataProvider,
 	}
 
 	@Override
-	public Double apply(Integer dimensionID, Integer recordID) {
+	public String getLabel(Integer recordId, Integer dimensionId) {
+		Table table = getDataDomain().getTable();
+		Object raw = table.getRaw(dimensionId, recordId);
+		if (raw == null)
+			return "";
+		if (raw instanceof Number) {
+			return Formatter.formatNumber(((Number) raw).doubleValue());
+		}
+		return raw.toString();
+	}
+
+	@Override
+	public Double apply(Integer recordID, Integer dimensionID) {
 		return (double) getNormalized(dimensionID, recordID);
 	}
 

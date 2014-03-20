@@ -15,7 +15,6 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.DoubleFunctions;
-import org.caleydo.core.util.function.Function2;
 import org.caleydo.core.util.function.Functions2;
 import org.caleydo.core.util.function.IDoubleFunction;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -58,13 +57,11 @@ public class SingleBarElementFactory extends ASingleElementFactory {
 			data = d;
 			dim = EDimension.get(context.getData().getNrRecords() == 1);
 			final Integer id = d.getData(dim.opposite()).get(0);
-			final Function2<Integer, Integer, Double> getter = dim.isDimension() ? d : Functions2.swap(d);
-			id2double = new Function<Integer, Double>() {
-				@Override
-				public Double apply(Integer input) {
-					return getter.apply(input, id);
-				}
-			};
+			if (dim.isDimension()) {
+				id2double = Functions2.partial(d, id);
+			} else {
+				id2double = Functions2.partial2(d, id);
+			}
 		} else {
 			dim = context.get(EDimension.class, EDimension.RECORD);
 			IDType idType = context.get(IDType.class, null);
@@ -72,7 +69,8 @@ public class SingleBarElementFactory extends ASingleElementFactory {
 			DimensionData d = new DimensionData(list, Functions.constant("UnNamed"), Collections.<Group> emptyList(),
 					idType);
 			//define data
-			data = new ListDataProvider(dim.select(null, d), dim.select(d, null));
+			data = new ListDataProvider(dim.select(null, d), dim.select(d, null),
+					SingleHeatMapElementFactory.toId2label(context, dim));
 			id2double = context.get("id2double", Function.class, null);
 		}
 		id2color = context.get("id2color", Function.class,

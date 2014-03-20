@@ -13,6 +13,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.function.Function2;
 import org.caleydo.view.heatmap.v2.internal.IHeatMapDataProvider;
 
 import com.google.common.base.Function;
@@ -27,18 +28,28 @@ public class ListDataProvider implements IHeatMapDataProvider,
 	private final MultiSelectionManagerMixin selections;
 	private final DimensionData record;
 	private final DimensionData dimension;
+	private final Function2<? super Integer, ? super Integer, String> cell2label;
 
 	private IDataChangedCallback callback;
 
 
-	public ListDataProvider(DimensionData record, DimensionData dimension) {
+	public ListDataProvider(DimensionData record, DimensionData dimension,
+			Function2<? super Integer, ? super Integer, String> cell2label) {
 		this.record = record;
 		this.dimension = dimension;
+		this.cell2label = cell2label;
 		selections = new MultiSelectionManagerMixin(this);
 		if (dimension != null && dimension.idType != null)
 			selections.add(new SelectionManager(dimension.idType));
 		if (record != null && record.idType != null)
 			selections.add(new SelectionManager(record.idType));
+	}
+
+	@Override
+	public String getLabel(Integer recordID, Integer dimensionID) {
+		if (cell2label == null)
+			return "";
+		return cell2label.apply(recordID, dimensionID);
 	}
 
 	@Override

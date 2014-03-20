@@ -54,13 +54,11 @@ public class SingleHeatMapElementFactory extends ASingleElementFactory {
 			dim = EDimension.get(context.getData().getNrRecords() == 1);
 			final Integer id = d.getData(dim.opposite()).get(0);
 			BasicBlockColorer c = new BasicBlockColorer(d.getDataDomain());
-			final Function2<Integer, Integer, Color> getter = dim.isDimension() ? c : Functions2.swap(c);
-			id2color = new Function<Integer, Color>() {
-				@Override
-				public Color apply(Integer input) {
-					return getter.apply(input, id);
-				}
-			};
+			if (dim.isDimension()) {
+				id2color = Functions2.partial(c, id);
+			} else {
+				id2color = Functions2.partial2(c, id);
+			}
 		} else {
 			dim = context.get(EDimension.class, EDimension.RECORD);
 			IDType idType = context.get(IDType.class, null);
@@ -68,12 +66,33 @@ public class SingleHeatMapElementFactory extends ASingleElementFactory {
 			DimensionData d = new DimensionData(list, Functions.constant("UnNamed"), Collections.<Group> emptyList(),
 					idType);
 			//define data
-			data = new ListDataProvider(dim.select(null, d), dim.select(d, null));
+			data = new ListDataProvider(dim.select(null, d), dim.select(d, null), toId2label(context, dim));
 			id2color = context.get("id2color", Function.class, null);
 		}
 		SingleHeatMapPlotElement elem = new SingleHeatMapPlotElement(data, detailLevel, dim, id2color);
 		setSelectionStrategies(elem, context);
 		return elem;
+	}
+
+	/**
+	 * @param context
+	 * @return
+	 */
+	static Function2<? super Integer, ? super Integer, String> toId2label(GLElementFactoryContext context,
+			final EDimension dim) {
+		@SuppressWarnings("unchecked")
+		final Function<? super Integer, String> base = context.get("id2label", Function.class, null);
+		if (base == null)
+			return null;
+		return new Function2<Integer, Integer, String>() {
+			@Override
+			public String apply(Integer recordID, Integer dimensionID) {
+				if (dim.isHorizontal())
+					return base.apply(dimensionID);
+				else
+					return base.apply(recordID);
+			}
+		};
 	}
 
 	@Override

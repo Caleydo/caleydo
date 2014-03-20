@@ -35,4 +35,6 @@ public interface IHeatMapDataProvider {
 	List<Group> getGroups(EDimension dim);
 
 	int indexOf(EDimension dim, Integer id);
+
+	String getLabel(Integer recordId, Integer dimensionId);
 }

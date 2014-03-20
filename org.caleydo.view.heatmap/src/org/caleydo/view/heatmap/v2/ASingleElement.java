@@ -20,10 +20,12 @@ import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
+import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy.ISpacingLayout;
 import org.caleydo.view.heatmap.v2.internal.DimensionRenderer;
@@ -41,7 +43,8 @@ import com.google.common.base.Suppliers;
  * @author Samuel Gratzl
  *
  */
-public abstract class ASingleElement extends PickableGLElement implements IHasMinSize, IDataChangedCallback {
+public abstract class ASingleElement extends PickableGLElement implements IHasMinSize, IDataChangedCallback,
+		IPickingLabelProvider {
 	protected final DimensionRenderer renderer;
 	@DeepScan
 	protected final IHeatMapDataProvider data;
@@ -139,6 +142,12 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 	 */
 	public ESelectionStrategy getSelectionSelectedStrategy() {
 		return selectionSelectedStrategy;
+	}
+
+	@Override
+	protected void init(IGLElementContext context) {
+		super.init(context);
+		onPick(context.getSWTLayer().createTooltip(this));
 	}
 
 	@Override
@@ -305,6 +314,17 @@ public abstract class ASingleElement extends PickableGLElement implements IHasMi
 		}
 		if (repaint)
 			repaint();
+	}
+
+	@Override
+	public String getLabel(Pick pick) {
+		IndexedId id = toId(pick);
+		if (id == null)
+			return "";
+		if (dim.isRecord())
+			return this.data.getLabel(id.getId(), -1);
+		else
+			return this.data.getLabel(-1, id.getId());
 	}
 
 	@Override

@@ -19,13 +19,11 @@ import org.caleydo.view.heatmap.v2.internal.HeatMapRenderer;
  */
 public class HeatMapElement extends HeatMapElementBase {
 	public HeatMapElement(TablePerspective tablePerspective) {
-		this(tablePerspective, new BasicBlockColorer(tablePerspective.getDataDomain()), BasicBlockColorer
-				.toRaw(tablePerspective.getDataDomain()), EDetailLevel.HIGH, false);
+		this(tablePerspective, new BasicBlockColorer(tablePerspective.getDataDomain()), EDetailLevel.HIGH, false);
 	}
 
 	public HeatMapElement(TablePerspective tablePerspective, Function2<Integer, Integer, Color> blockColorer,
-			Function2<Integer, Integer, Float> toRaw, EDetailLevel detailLevel,
- boolean forceTextures) {
+			EDetailLevel detailLevel, boolean forceTextures) {
 		super(new TablePerspectiveDataProvider(tablePerspective), new HeatMapRenderer(detailLevel, forceTextures,
 				blockColorer), detailLevel);
 	}

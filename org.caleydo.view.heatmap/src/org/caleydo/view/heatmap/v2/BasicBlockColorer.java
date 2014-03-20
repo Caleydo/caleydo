@@ -8,6 +8,7 @@ package org.caleydo.view.heatmap.v2;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.Function2;
 
 /**
@@ -49,17 +50,22 @@ public class BasicBlockColorer implements Function2<Integer, Integer, Color> {
 	 * @param dataDomain
 	 * @return
 	 */
-	public static Function2<Integer, Integer, Float> toRaw(final ATableBasedDataDomain dataDomain) {
+	public static Function2<Integer, Integer, String> toLabel(final ATableBasedDataDomain dataDomain) {
 		final Table table = dataDomain.getTable();
-		return new Function2<Integer, Integer, Float>() {
+		return new Function2<Integer, Integer, String>() {
 			@Override
-			public Float apply(Integer recordID, Integer dimensionID) {
+			public String apply(Integer recordID, Integer dimensionID) {
 				if (isInvalid(recordID) || isInvalid(dimensionID))
-					return Float.NaN;
+					return "";
 				// get value
 				Object v = table.getRaw(dimensionID, recordID);
 				// to a color
-				return v instanceof Number ? ((Number)v).floatValue() : Float.NaN;
+				if (v == null)
+					return "";
+				if (v instanceof Number) {
+					return Formatter.formatNumber(((Number) v).doubleValue());
+				}
+				return v.toString();
 			}
 		};
 	}
