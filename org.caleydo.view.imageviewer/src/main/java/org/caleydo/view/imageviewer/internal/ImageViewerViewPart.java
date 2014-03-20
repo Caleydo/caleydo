@@ -79,11 +79,18 @@ public class ImageViewerViewPart extends ARcpGLElementViewPart {
 		}
 
 		public ImageDataDomain getSelectedDomain() {
-			return (ImageDataDomain) getDomains().get(domainCombo.getSelectionIndex());
+			List<IDataDomain> domains = getDomains();
+			int selectionIndex = domainCombo.getSelectionIndex();
+			if( selectionIndex < 0 || selectionIndex >= domains.size() )
+				return null;
+			return (ImageDataDomain) domains.get(selectionIndex);
 		}
 
 		public LayeredImage getSelectedImage() {
-			return getSelectedDomain().getImageSet().getImage(imageCombo.getText());
+			ImageDataDomain dataDomain = getSelectedDomain();
+			if( dataDomain == null )
+				return null;
+			return dataDomain.getImageSet().getImage(imageCombo.getText());
 		}
 
 		public void onDomainChange() {
@@ -91,6 +98,9 @@ public class ImageViewerViewPart extends ARcpGLElementViewPart {
 			imageCombo.setEnabled(true);
 
 			ImageDataDomain imageSet = getSelectedDomain();
+			if( imageSet == null )
+				return;
+
 			for (String name : imageSet.getImageSet().getImageNames())
 				imageCombo.add(name);
 			imageCombo.select(0);
