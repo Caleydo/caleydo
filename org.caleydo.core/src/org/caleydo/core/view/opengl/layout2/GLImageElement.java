@@ -5,6 +5,8 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
+import gleem.linalg.Vec2f;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
@@ -45,6 +47,14 @@ public class GLImageElement extends GLElement {
 
 	public void setAlphaThreshold(float minAlpha) {
 		alphaTestThreshold = minAlpha;
+	}
+
+	@Override
+	public Vec2f getMinSize() {
+		if( texture != null )
+			return new Vec2f(texture.getWidth(), texture.getHeight());
+		else
+			return new Vec2f(32, 32);
 	}
 
 	@Override

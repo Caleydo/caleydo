@@ -5,8 +5,6 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
-import gleem.linalg.Vec2f;
-
 import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL;
@@ -18,6 +16,7 @@ import org.caleydo.core.view.opengl.canvas.Units;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.eclipse.swt.graphics.Point;
 
 /**
  * Show an image with some layers on top of it. Layers are pickable using the
@@ -32,7 +31,7 @@ public class GLImageViewer extends GLZoomPanContainer {
 	/**
 	 * Position of last mouse event.
 	 */
-	protected Vec2f mousePos = new Vec2f(-1, -1);
+	protected Point mousePos = new Point(-1, -1);
 
 	/**
 	 * Element the cursor is currently hovering.
@@ -58,8 +57,8 @@ public class GLImageViewer extends GLZoomPanContainer {
 				if (pick.getPickingMode() == PickingMode.MOUSE_OUT) {
 					hoverElement = null;
 				} else if (pick.getPickingMode() != PickingMode.DRAGGED) {
-					mousePos.set(pick.getPickedPoint(Units.PX));
-					mousePos.setY(canvas.getHeight(Units.PX) - mousePos.y());
+					mousePos.x = canvas.toRawPixel(pick.getPickedPoint(Units.DIP).x());
+					mousePos.y = canvas.toRawPixel(canvas.getDIPHeight() - pick.getPickedPoint(Units.DIP).y());
 				}
 
 				if (hoverElement != lastElement) {
@@ -150,15 +149,15 @@ public class GLImageViewer extends GLZoomPanContainer {
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
 
-		if (mousePos.x() < 0 || mousePos.y() < 0)
+		if (mousePos.x < 0 || mousePos.y < 0)
 			return;
 
 		hoverElement = null;
 
 		// Check the depth at the mouse position
 		FloatBuffer winZ = FloatBuffer.allocate(1);
-		g.gl.glReadPixels((int) mousePos.x(), (int) mousePos.y(), 1, 1, GL2.GL_DEPTH_COMPONENT, GL.GL_FLOAT, winZ);
-		mousePos.setX(-1);
+		g.gl.glReadPixels(mousePos.x, mousePos.y, 1, 1, GL2.GL_DEPTH_COMPONENT, GL.GL_FLOAT, winZ);
+		mousePos.x = -1;
 
 		float[] m = new float[16];
 		g.gl.glGetFloatv(GL2.GL_PROJECTION_MATRIX, m, 0);
