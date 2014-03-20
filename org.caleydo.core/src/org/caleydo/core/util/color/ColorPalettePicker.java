@@ -5,7 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.util.color;
 
-import java.util.List;
+import java.util.Comparator;
+import java.util.Locale;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -13,8 +14,6 @@ import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
-import org.caleydo.core.view.opengl.layout2.basic.GLComboBox;
-import org.caleydo.core.view.opengl.layout2.basic.GLComboBox.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.dnd.IDragGLSource;
 import org.caleydo.core.view.opengl.layout2.dnd.IDragInfo;
@@ -24,42 +23,52 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.Pick;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSortedSet;
 
-/**
- * This product includes color specifications and designs developed by Cynthia Brewer (http://org/).
- *
- * @author Samuel Gratzl
- *
- */
-public class ColorPalettePicker extends GLElementContainer implements ISelectionCallback<IColorPalette> {
-	private final GLComboBox<IColorPalette> selector;
-	private final GLElementContainer body;
 
+public class ColorPalettePicker extends GLElementContainer {
 	public ColorPalettePicker() {
-		setLayout(GLLayouts.flowVertical(2));
-		ImmutableList.Builder<IColorPalette> b = ImmutableList.builder();
+		setLayout(GLLayouts.flowVertical(10));
+		ImmutableSortedSet.Builder<IColorPalette> b = ImmutableSortedSet.orderedBy(new Comparator<IColorPalette>() {
+			@Override
+			public int compare(IColorPalette o1, IColorPalette o2) {
+				int c;
+				if ((c = o1.getType().compareTo(o2.getType())) != 0)
+					return c;
+				c = o1.getSizes().last() - o2.getSizes().last();
+				if (c != 0)
+					return -c;
+				return String.CASE_INSENSITIVE_ORDER.compare(o1.getLabel(), o2.getLabel());
+			}
+		});
 		b.add(ColorBrewer.values());
 		b.add(AlexColorPalette.values());
 
-		this.selector = new GLComboBox<IColorPalette>(b.build(), GLComboBox.DEFAULT,
-				GLRenderers.fillRect(Color.WHITE));
-		selector.setSize(-1, 14);
-		this.selector.setCallback(this);
-		this.add(selector);
+		final ImmutableList<IColorPalette> l = b.build().asList();
+		GLElementContainer c = new GLElementContainer(GLLayouts.flowHorizontal(2));
+		for (IColorPalette p : l.subList(0, l.size() / 2))
+			c.add(new ColorPalette(p));
+		this.add(c);
+		c = new GLElementContainer(GLLayouts.flowHorizontal(2));
+		for (IColorPalette p : l.subList(l.size() / 2, l.size()))
+			c.add(new ColorPalette(p));
+		this.add(c);
 
-		this.body = new GLElementContainer(GLLayouts.flowHorizontal(1));
-		this.add(body);
-		selector.setSelected(0);
 	}
 
-	@Override
-	public void onSelectionChanged(GLComboBox<? extends IColorPalette> widget, IColorPalette item) {
-		body.clear();
-		if (item == null)
-			return;
-		List<Color> colors = item.get(item.getSizes().last().intValue());
-		for (Color c : colors)
-			body.add(new ColorPicker("#" + c.getHEX(), c));
+	private static class ColorPalette extends GLElementContainer {
+
+		/**
+		 * @param p
+		 */
+		public ColorPalette(IColorPalette p) {
+			setLayout(GLLayouts.flowVertical(1));
+			add(new GLElement(GLRenderers.drawText(p.getLabel(),VAlign.CENTER)).setSize(-1, 10));
+			for (Color c : p.get(p.getSizes().last())) {
+				this.add(new ColorPicker("#" + c.getHEX(), c).setSize(-1, 25));
+			}
+		}
+
 	}
 
 	private static class ColorPicker extends PickableGLElement implements IDragGLSource {
@@ -105,7 +114,9 @@ public class ColorPalettePicker extends GLElementContainer implements ISelection
 
 		@Override
 		public IDragInfo startSWTDrag(IDragEvent event) {
-			return new TextDragInfo(color.toString());
+			Locale.setDefault(Locale.ENGLISH);
+			return new TextDragInfo(String.format("<r>%f</r><g>%f</g><b>%f</b><a>%f</a>", color.r, color.g, color.b,
+					color.a)); // color.toString());
 		}
 
 		@Override
