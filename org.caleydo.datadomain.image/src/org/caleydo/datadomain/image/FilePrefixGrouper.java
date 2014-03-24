@@ -61,10 +61,13 @@ public class FilePrefixGrouper {
 			return;
 
 		String ext = file.getName().substring(ext_sep + 1).toLowerCase();
-		if (!LoadImageSetPage.EXTENSIONS.contains(ext))
+		String base_name = file.getName().substring(0, ext_sep);
+
+		if (LoadImageSetPage.EXTENSIONS_CFG.contains(ext))
+			base_name += "_" + ext;
+		else if (!LoadImageSetPage.EXTENSIONS_IMG.contains(ext))
 			return;
 
-		String base_name = file.getName().substring(0, ext_sep);
 		System.out.println("add " + ext + " (" + base_name + ") "
 				+ file.getAbsolutePath());
 		files.put(base_name, file);
@@ -116,6 +119,13 @@ public class FilePrefixGrouper {
 
 		for (String name : ungrouped)
 			groups.put(name, new TreeSet<String>());
+	}
+
+	public static String stringSuffix(String str, char separator) {
+		int suffixStart = str.lastIndexOf('_');
+		if (suffixStart < 0 || suffixStart >= str.length())
+			return "";
+		return str.substring(suffixStart + 1);
 	}
 
 }

@@ -66,7 +66,12 @@ public class LoadImageSetPage
 	/**
 	 * Allowed image extensions.
 	 */
-	public static final List<String> EXTENSIONS = Arrays.asList("png", "jpg", "jpeg");
+	public static final List<String> EXTENSIONS_IMG = Arrays.asList("png", "jpg", "jpeg");
+
+	/**
+	 * Allowed config file extensions.
+	 */
+	public static final List<String> EXTENSIONS_CFG = Arrays.asList("url", "ini");
 
 	/**
 	 * Composite that is the parent of all gui elements of this dialog.
@@ -219,9 +224,9 @@ public class LoadImageSetPage
 				FileDialog fileDialog = new FileDialog(new Shell(), SWT.MULTI);
 				fileDialog.setText("Add File(s)");
 
-				String[] exts = new String[EXTENSIONS.size()];
+				String[] exts = new String[EXTENSIONS_IMG.size()];
 				for (int i = 0; i < exts.length; ++i)
-					exts[i] = "*." + EXTENSIONS.get(i);
+					exts[i] = "*." + EXTENSIONS_IMG.get(i);
 				fileDialog.setFilterExtensions(exts);
 
 				if (fileDialog.open() == null)

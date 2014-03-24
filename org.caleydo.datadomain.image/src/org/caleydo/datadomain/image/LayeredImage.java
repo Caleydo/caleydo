@@ -6,6 +6,9 @@
 package org.caleydo.datadomain.image;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -42,6 +45,7 @@ public class LayeredImage {
 
 	protected SortedMap<String, Layer> layers = new TreeMap<>();
 	protected Image base;
+	protected Properties props = new Properties();
 
 	public void setBaseImage(File img, File thumb) {
 		base = new Image(img, thumb);
@@ -55,6 +59,15 @@ public class LayeredImage {
 		addLayer(name, img, thumb, null, null);
 	}
 
+	public void addConfig(File cfg) throws IOException {
+		FileReader reader = new FileReader(cfg);
+		try {
+			props.load(reader);
+		} finally {
+			reader.close();
+		}
+	}
+
 	public Image getBaseImage() {
 		return base;
 	}
@@ -65,5 +78,9 @@ public class LayeredImage {
 
 	public SortedMap<String, Layer> getLayers() {
 		return layers;
+	}
+
+	public Properties getConfig() {
+		return props;
 	}
 }

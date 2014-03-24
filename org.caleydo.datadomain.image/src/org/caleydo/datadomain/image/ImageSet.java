@@ -6,7 +6,9 @@
 package org.caleydo.datadomain.image;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedMap;
@@ -16,6 +18,7 @@ import java.util.TreeMap;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
+import org.caleydo.datadomain.image.wizard.LoadImageSetPage;
 
 
 /**
@@ -82,8 +85,19 @@ public class ImageSet extends FilePrefixGrouper {
 			img.setBaseImage(baseImage, baseThumb);
 
 			for (String file : group.getValue()) {
-				if (file.endsWith("_thumb") || file.endsWith("_border"))
+				String suffix = stringSuffix(file, '_');
+
+				if ( Arrays.asList("thumb", "border").contains(suffix) )
 					continue;
+
+				if ( LoadImageSetPage.EXTENSIONS_CFG.contains(suffix) ) {
+					try {
+						img.addConfig(files.get(file));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					continue;
+				}
 
 				String borderName = file.substring(0, file.lastIndexOf("_highlight")) + "_border";
 

@@ -45,6 +45,8 @@ public class ImageViewerElement extends GLImageViewer {
 	public void setImage(LayeredImage img) {
 		clear();
 		setBaseImage(img.getBaseImage().image.getPath());
+		System.out.println("URL = "
+				+ img.getConfig().getProperty("URL", "http://caleydo.org"));
 
 		for (Entry<String, LayeredImage.Layer> layer : img.getLayers().entrySet()) {
 			Image highlight = layer.getValue().highlight;
