@@ -97,7 +97,8 @@ public class BoxAndWhiskersElementFactory implements IGLElementFactory2 {
 
 		boolean showOutliers = context.is("showOutliers");
 		EDimension split = context.get("splitGroups", EDimension.class, null);
-		EDimension direction = context.get(EDimension.class, EDimension.DIMENSION);
+		boolean vertical = context.is("vertical", context.get(EDimension.class, EDimension.DIMENSION).isRecord());
+		EDimension direction = EDimension.get(!vertical);
 
 		GLPadding padding = context.get(GLPadding.class, GLPadding.ZERO);
 

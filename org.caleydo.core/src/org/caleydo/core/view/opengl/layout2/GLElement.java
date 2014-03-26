@@ -530,6 +530,8 @@ public class GLElement implements IHasGLLayoutData, IHasMinSize {
 	 * @return
 	 */
 	public final Vec2f toRelative(Vec2f absolute) {
+		if (parent == null)
+			return absolute;
 		absolute = parent.toRelative(absolute);
 		absolute.sub(getLocation());
 		return absolute;
