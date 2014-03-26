@@ -381,8 +381,8 @@ public class VirtualArray implements Iterable<Integer>, Cloneable, IUniqueObject
 		ArrayList<Group> resultGroups = new ArrayList<Group>(1);
 		List<Integer> indices = indicesOf(id);
 
-		if (indices.size() > 1)
-			System.out.println("wu");
+		// if (indices.size() > 1)
+		// System.out.println("wu");
 
 		for (Integer index : indices) {
 			Group group = groupList.getGroupOfVAIndex(index);

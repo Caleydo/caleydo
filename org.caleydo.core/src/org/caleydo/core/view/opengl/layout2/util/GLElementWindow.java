@@ -24,6 +24,7 @@ import gleem.linalg.Vec2f;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -36,7 +37,6 @@ import org.caleydo.core.view.opengl.layout2.layout.GLMinSizeProviders;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
-import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 
 /**
  * @author Christian
@@ -105,14 +105,15 @@ public class GLElementWindow extends GLElementContainer {
 			this.labelProvider = labelProvider;
 			setSize(Float.NaN, TITLE_BAR_HEIGHT);
 			setLayout(new GLSizeRestrictiveFlowLayout(true, 2, new GLPadding(3, 2)));
-			setRenderer(new IGLRenderer() {
-
-				@Override
-				public void render(GLGraphics g, float w, float h, GLElement parent) {
-					g.drawText(GLTitleBar.this.labelProvider, 0, -2, w, h);
-
-				}
-			});
+			setRenderer(GLRenderers.drawText(labelProvider.getLabel(), VAlign.LEFT, new GLPadding(2, 0, 0, 4)));
+			// setRenderer(new IGLRenderer() {
+			//
+			// @Override
+			// public void render(GLGraphics g, float w, float h, GLElement parent) {
+			// g.drawText(GLTitleBar.this.labelProvider, 0, -2, w, h);
+			//
+			// }
+			// });
 			spacingElement = new GLElement();
 			add(spacingElement);
 			closeButton = new GLButton(EButtonMode.BUTTON);
