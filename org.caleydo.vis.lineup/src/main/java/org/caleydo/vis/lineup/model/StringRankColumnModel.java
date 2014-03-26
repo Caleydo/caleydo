@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -21,10 +22,12 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.vis.lineup.internal.event.FilterEvent;
+import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.event.SearchEvent;
+import org.caleydo.vis.lineup.internal.event.SearchEvent.SearchResult;
 import org.caleydo.vis.lineup.internal.ui.StringFilterDialog;
 import org.caleydo.vis.lineup.internal.ui.StringSearchDialog;
+import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.lineup.model.mixin.IRankColumnModel;
@@ -45,7 +48,7 @@ import com.google.common.base.Function;
  *
  */
 public class StringRankColumnModel extends ABasicFilterableRankColumnModel implements IGrabRemainingHorizontalSpace,
-		IFilterColumnMixin, IRankableColumnMixin, ISearchableColumnMixin {
+		IFilterColumnMixin, IRankableColumnMixin, ISearchableColumnMixin, IDataBasedColumnMixin {
 	/**
 	 * different strategies for filter modi
 	 *
@@ -137,6 +140,14 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		return new StringRankColumnModel(this);
 	}
 
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	@Override
+	public Function<IRow, String> getData() {
+		return data;
+	}
+
 	@Override
 	public GLElement createSummary(boolean interactive) {
 		return new MyElement(interactive);
@@ -149,7 +160,15 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 	@Override
 	public int compare(IRow o1, IRow o2) {
-		return String.CASE_INSENSITIVE_ORDER.compare(data.apply(o1), data.apply(o2));
+		String s1 = data.apply(o1);
+		String s2 = data.apply(o2);
+		if (Objects.equals(s1, s2))
+			return 0;
+		if (s1 == null)
+			return 1;
+		if (s2 == null)
+			return -1;
+		return String.CASE_INSENSITIVE_ORDER.compare(s1, s2);
 	}
 
 	@Override
@@ -169,7 +188,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				StringFilterDialog dialog = new StringFilterDialog(canvas.getShell(), getTitle(), filterStrategy
+				StringFilterDialog dialog = new StringFilterDialog(canvas.getShell(), getLabel(), filterStrategy
 						.getHint(), summary, filter, StringRankColumnModel.this, getTable().hasSnapshots(), loc);
 				dialog.open();
 			}
@@ -183,7 +202,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				StringSearchDialog dialog = new StringSearchDialog(canvas.getShell(), getTitle(), filterStrategy
+				StringSearchDialog dialog = new StringSearchDialog(canvas.getShell(), getLabel(), filterStrategy
 						.getHint(), summary, filter, loc);
 				dialog.open();
 			}
@@ -194,58 +213,59 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	 * @param search
 	 * @param isForward
 	 */
-	public void onSearch(String search, boolean wrapSearch, boolean isForward) {
+	public void onSearch(String search, boolean wrapSearch, boolean isForward, ICallback<SearchResult> callback) {
 		if (search == null || search.trim().isEmpty())
 			return;
-		String prepared = filterStrategy.prepare(search);
-		ColumnRanker ranker = getMyRanker();
+		final ColumnRanker ranker = getMyRanker();
+		final RankTableModel table = ranker.getTable();
+		final int[] order = ranker.getOrder();
+		final int size = ranker.size();
 		final int selected = ranker.getSelectedRank();
-		int[] order = ranker.getOrder();
-		RankTableModel table = ranker.getTable();
+		BitSet matching = searchAll(search, table, order);
 
+		int toSelect = -1;
 		if (isForward) {
-			int start = Math.min(selected < 0 ? 0 : selected + 1, order.length - 1);
+			int start = Math.min(selected < 0 ? 0 : selected + 1, size - 1);
 			// from start to end
-			for (int i = start; i < order.length; ++i) {
-				IRow row = table.getDataItem(order[i]);
-				if (filterStrategy.apply(prepared, this.data.apply(row))) {
-					table.setSelectedRow(row);
-					return;
-				}
-			}
-			if (wrapSearch) {
-				// from 0 to start-1
-				for (int i = 0; i < start - 1; ++i) {
-					IRow row = table.getDataItem(order[i]);
-					if (filterStrategy.apply(prepared, this.data.apply(row))) {
-						table.setSelectedRow(row);
-						return;
-					}
-				}
+			toSelect = matching.nextSetBit(start);
+			if (toSelect < 0 && wrapSearch) {
+				toSelect = matching.nextSetBit(0);
+				if (toSelect >= start)
+					toSelect = -1;
 			}
 		} else {
 			int start = Math.max(selected < 0 ? order.length - 1 : selected - 1, 0);
 			// from start to 0
-			for (int i = start; i >= 0; --i) {
-				IRow row = table.getDataItem(order[i]);
-				if (filterStrategy.apply(prepared, this.data.apply(row))) {
-					table.setSelectedRow(row);
-					return;
-				}
-			}
-			if (wrapSearch) {
-				// from end to start+1
-				for (int i = order.length - 1; i >= start + 1; --i) {
-					IRow row = table.getDataItem(order[i]);
-					if (filterStrategy.apply(prepared, this.data.apply(row))) {
-						table.setSelectedRow(row);
-						return;
-					}
-				}
+			toSelect = matching.previousSetBit(start - 1);
+			if (toSelect < 0 && wrapSearch) {
+				toSelect = matching.previousSetBit(matching.length());
+				if (toSelect <= start)
+					toSelect = -1;
 			}
 		}
-		// nothing found
-		table.setSelectedRow(null);
+		if (toSelect >= 0)
+			table.setSelectedRow(table.getDataItem(order[toSelect]));
+		else
+			table.setSelectedRow(null);
+		if (callback != null)
+			callback.on(new SearchResult(matching.cardinality()));
+	}
+
+	/**
+	 * @param order
+	 * @param table
+	 * @param preparedFilter
+	 * @return
+	 */
+	private BitSet searchAll(String search, final RankTableModel table, final int[] order) {
+		String preparedFilter = filterStrategy.prepare(search);
+
+		BitSet r = new BitSet(order.length);
+		for (int i = 0; i < order.length; ++i) {
+			IRow row = table.getDataItem(order[i]);
+			r.set(i, filterStrategy.apply(preparedFilter, this.data.apply(row)));
+		}
+		return r;
 	}
 
 	public void setFilter(String filter, boolean isFilterGlobally, boolean isRankIndependentFilter) {
@@ -264,6 +284,13 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	@Override
 	public boolean isFiltered() {
 		return filter != null;
+	}
+
+	/**
+	 * @return the filter, see {@link #filter}
+	 */
+	public String getFilter() {
+		return filter;
 	}
 
 	@Override
@@ -321,14 +348,14 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 		@ListenTo(sendToMe = true)
 		private void onSetSearch(SearchEvent event) {
-			onSearch((String) event.getSearch(), event.isWrapSearch(), event.isForward());
+			onSearch((String) event.getSearch(), event.isWrapSearch(), event.isForward(), event.getCallback());
 		}
 
 	}
 
 	class MyValueElement extends ValueElement {
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 			if (h < 5 || (w - 7) < 10)
 				return;
 			String value = getTooltip();
@@ -340,7 +367,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 		@Override
 		public String getTooltip() {
-			return data.apply(getLayoutDataAs(IRow.class, null));
+			return data.apply(getRow());
 		}
 	}
 }

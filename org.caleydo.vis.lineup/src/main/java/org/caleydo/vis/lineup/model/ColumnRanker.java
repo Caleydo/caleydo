@@ -586,7 +586,7 @@ public class ColumnRanker implements Iterable<IRow> {
 	@Override
 	public String toString() {
 		if (model != null)
-			return model.getTitle();
+			return model.getLabel();
 		return "defaultOne";
 	}
 

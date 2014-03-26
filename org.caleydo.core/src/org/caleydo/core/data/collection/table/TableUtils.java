@@ -144,14 +144,16 @@ public class TableUtils {
 	 *            will be used.
 	 * @param targetDimensionIDType
 	 *            same as targetRecordIDType for dimensions
-	 * @param includeClusterInfo
-	 *            true if you want to add information about the clustering to the file, else false
+	 * @param includeRecordClusterInfo
+	 *            true if you want to add information about the clustering of records to the file, else false
+	 * @param includeDimensionClusterInfo
+	 *            true if you want to add information about the clustering of dimensions to the file, else false
 	 *
 	 * @return true if export was successful, else false.
 	 */
 	public static boolean export(ATableBasedDataDomain dataDomain, String fileName, Perspective recordPerspective,
 			Perspective dimensionPerspective, IDType targetRecordIDType, IDType targetDimensionIDType,
-			boolean includeClusterInfo) {
+			boolean includeRecordClusterInfo, boolean includeDimensionClusterInfo) {
 
 		if (targetRecordIDType == null)
 			targetRecordIDType = dataDomain.getRecordIDCategory().getHumanReadableIDType();
@@ -168,24 +170,24 @@ public class TableUtils {
 		VirtualArray rowVA;
 		VirtualArray colVA;
 
-		if (dataDomain.isColumnDimension()) {
-			rowVA = recordPerspective.getVirtualArray();
-			colVA = dimensionPerspective.getVirtualArray();
-			rowTargetIDType = targetRecordIDType;
-			colTargetIDType = targetDimensionIDType;
+		// if (dataDomain.isColumnDimension()) {
+		rowVA = recordPerspective.getVirtualArray();
+		colVA = dimensionPerspective.getVirtualArray();
+		rowTargetIDType = targetRecordIDType;
+		colTargetIDType = targetDimensionIDType;
 
-			rowSourceIDType = dataDomain.getRecordIDType();
-			colSourceIDType = dataDomain.getDimensionIDType();
+		rowSourceIDType = dataDomain.getRecordIDType();
+		colSourceIDType = dataDomain.getDimensionIDType();
 
-		} else {
-			rowVA = dimensionPerspective.getVirtualArray();
-			colVA = recordPerspective.getVirtualArray();
-			rowTargetIDType = targetDimensionIDType;
-			colTargetIDType = targetRecordIDType;
-
-			rowSourceIDType = dataDomain.getDimensionIDType();
-			colSourceIDType = dataDomain.getRecordIDType();
-		}
+		// } else {
+		// rowVA = dimensionPerspective.getVirtualArray();
+		// colVA = recordPerspective.getVirtualArray();
+		// rowTargetIDType = targetDimensionIDType;
+		// colTargetIDType = targetRecordIDType;
+		//
+		// rowSourceIDType = dataDomain.getDimensionIDType();
+		// colSourceIDType = dataDomain.getRecordIDType();
+		// }
 
 		if (rowVA == null || colVA == null)
 			throw new IllegalArgumentException("VAs in perspectives were null");
@@ -196,82 +198,16 @@ public class TableUtils {
 		try {
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
 
-			// Writing dimension labels
-
-			// first cell
-			out.print("Identifier \t");
-
-			for (Integer colID : colVA) {
-				Set<Object> colTargetIDs = colIDMappingManager.getIDAsSet(colSourceIDType, colTargetIDType, colID);
-				String id = "";
-				for (Object colTargetID : colTargetIDs) {
-					id = colTargetID.toString();
-					// here we only use the first id
-					break;
-				}
-				out.print(id + "\t");
-			}
-
-			if (includeClusterInfo && rowVA.getGroupList() != null)
-				out.print("Cluster_Number\tCluster_Repr\t");
-
-			out.println();
-
 			int cnt = -1;
 			int cluster = 0;
 			int example = 0;
 			int offset = 0;
-			String id;
-			for (Integer rowID : rowVA) {
-
-				Set<Object> rowTargetIDs = rowIDMappingManager.getIDAsSet(rowSourceIDType, rowTargetIDType, rowID);
-				id = "";
-				for (Object rowTargetID : rowTargetIDs) {
-					id = rowTargetID.toString();
-					// here we only use the first id
-					break;
-				}
-				out.print(id + "\t");
-
-				for (Integer colID : colVA) {
-					if (dataDomain.isColumnDimension()) {
-						out.print(dataDomain.getTable().getRawAsString(colID, rowID));
-					} else {
-						out.print(dataDomain.getTable().getRawAsString(rowID, colID));
-					}
-
-					out.print("\t");
-				}
-
-				if (includeClusterInfo) {
-					// export cluster info for rows
-					if (rowVA.getGroupList() != null) {
-						if (cnt == rowVA.getGroupList().get(cluster).getSize() - 1) {
-							offset = offset + rowVA.getGroupList().get(cluster).getSize();
-							cluster++;
-							cnt = 0;
-						} else {
-							cnt++;
-						}
-
-						example = rowVA.getGroupList().get(cluster).getRepresentativeElementIndex();
-
-						out.print(cluster + "\t" + example + "\t");
-					}
-				}
-				out.println();
-			}
-
-			if (!includeClusterInfo) {
-				out.close();
-				return true;
-			}
 
 			// export cluster info for cols
-			if (colVA.getGroupList() != null) {
+			if (includeDimensionClusterInfo && colVA.getGroupList() != null) {
 
-				String clusterNr = "Cluster\t";
-				String clusterRep = "Representative Element\t";
+				String clusterNr = "Cluster\t" + (includeRecordClusterInfo ? "\t\t" : "");
+				String clusterRep = "Representative Element\t" + (includeRecordClusterInfo ? "\t\t" : "");
 
 				cluster = 0;
 				cnt = -1;
@@ -298,6 +234,73 @@ public class TableUtils {
 				out.print(clusterNr);
 				out.print(clusterRep);
 
+			}
+
+			// Writing dimension labels
+
+			if (includeRecordClusterInfo && rowVA.getGroupList() != null)
+				out.print("Cluster_Number\tCluster_Repr\t");
+
+			// first cell
+			out.print("Identifier \t");
+
+			for (Integer colID : colVA) {
+				Set<Object> colTargetIDs = colIDMappingManager.getIDAsSet(colSourceIDType, colTargetIDType, colID);
+				String id = "";
+				for (Object colTargetID : colTargetIDs) {
+					id = colTargetID.toString();
+					// here we only use the first id
+					break;
+				}
+				out.print(id + "\t");
+			}
+
+			out.println();
+
+			cnt = -1;
+			cluster = 0;
+			example = 0;
+			offset = 0;
+			String id;
+			for (Integer rowID : rowVA) {
+
+				if (includeRecordClusterInfo) {
+					// export cluster info for rows
+					if (rowVA.getGroupList() != null) {
+						if (cnt == rowVA.getGroupList().get(cluster).getSize() - 1) {
+							offset = offset + rowVA.getGroupList().get(cluster).getSize();
+							cluster++;
+							cnt = 0;
+						} else {
+							cnt++;
+						}
+
+						example = rowVA.getGroupList().get(cluster).getRepresentativeElementIndex();
+
+						out.print(cluster + "\t" + example + "\t");
+					}
+				}
+
+				Set<Object> rowTargetIDs = rowIDMappingManager.getIDAsSet(rowSourceIDType, rowTargetIDType, rowID);
+				id = "";
+				for (Object rowTargetID : rowTargetIDs) {
+					id = rowTargetID.toString();
+					// here we only use the first id
+					break;
+				}
+				out.print(id + "\t");
+
+				for (Integer colID : colVA) {
+					// if (dataDomain.isColumnDimension()) {
+					out.print(dataDomain.getTable().getRawAsString(colID, rowID));
+					// } else {
+					// out.print(dataDomain.getTable().getRawAsString(rowID, colID));
+					// }
+
+					out.print("\t");
+				}
+
+				out.println();
 			}
 
 			out.close();

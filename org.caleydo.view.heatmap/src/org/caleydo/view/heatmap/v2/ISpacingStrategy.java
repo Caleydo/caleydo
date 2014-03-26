@@ -5,7 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.heatmap.v2;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
+import java.util.List;
+
 import org.caleydo.core.data.selection.SelectionManager;
 
 /**
@@ -28,7 +29,7 @@ public interface ISpacingStrategy {
 	 *            available dip size
 	 * @return
 	 */
-	ISpacingLayout apply(Perspective perspective, SelectionManager manager, boolean hideHidden, float size);
+	ISpacingLayout apply(List<Integer> ids, SelectionManager manager, float size);
 
 	/**
 	 * returns the minimum size of this dimension according to the given information

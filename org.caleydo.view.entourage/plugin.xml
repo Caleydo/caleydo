@@ -8,7 +8,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.core.views"
-            class="org.caleydo.view.entourage.RcpGLSubGraphView"
+            class="org.caleydo.view.entourage.RcpGLEntourageView"
             icon="resources/icons/icon.png"
             id="org.caleydo.view.entourage"
             name="Entourage">
@@ -94,11 +94,17 @@
          <pathway
                embeddingID="org.caleydo.view.entourage.pathway.multiform.level4"
                icon="resources/icons/pathway_lv4.png">
-            <rendererCreator
+            <creator
                   class="org.caleydo.view.entourage.PathwayLevel4Creator">
-            </rendererCreator>
+            </creator>
          </pathway>
       </parent>
+   </extension>
+   <extension
+         point="org.caleydo.datadomain.pathway.PathwayAction">
+      <factory
+            class="org.caleydo.view.entourage.contextmenu.AddPathwayActionFactory">
+      </factory>
    </extension>
 
 </plugin>

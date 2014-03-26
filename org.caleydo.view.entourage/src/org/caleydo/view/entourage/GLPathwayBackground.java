@@ -22,6 +22,7 @@ package org.caleydo.view.entourage;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.layout2.util.GLElementWindow;
 import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
@@ -34,10 +35,10 @@ public class GLPathwayBackground extends PickableGLElement {
 
 	public static final Color DEFAULT_COLOR = new Color(0.95f, 0.95f, 0.95f, 1f);
 	// protected boolean hovered = false;
-	protected final GLWindow parentWindow;
+	protected final GLElementWindow parentWindow;
 	protected Color color = DEFAULT_COLOR;
 
-	public GLPathwayBackground(GLWindow parentWindow) {
+	public GLPathwayBackground(GLElementWindow parentWindow) {
 		this.parentWindow = parentWindow;
 	}
 

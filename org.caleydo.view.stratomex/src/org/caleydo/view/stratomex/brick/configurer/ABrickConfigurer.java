@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex.brick.configurer;
 
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -17,8 +18,7 @@ import org.caleydo.view.stratomex.brick.GLBrick;
  */
 public abstract class ABrickConfigurer implements IBrickConfigurer {
 
-	protected void configureBrick(MultiFormRenderer multiFormRenderer, final GLBrick brick,
-			int compactRendererID) {
+	protected void configureBrick(MultiFormRenderer multiFormRenderer, final GLBrick brick, int compactRendererID) {
 		MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer,
 				brick.getStratomex());
 
@@ -43,6 +43,11 @@ public abstract class ABrickConfigurer implements IBrickConfigurer {
 		brick.setViewSwitchingBar(viewSwitchingBar);
 		brick.setCompactRendererID(compactRendererID);
 		multiFormRenderer.addChangeListener(brick);
+	}
+
+	@Override
+	public void addDataSpecificContextMenuEntries(ContextMenuCreator creator, GLBrick brick) {
+		// do nothing by default
 	}
 
 }

@@ -19,17 +19,17 @@
  *******************************************************************************/
 package org.caleydo.view.entourage;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
-import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
-import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
-import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
+import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 
@@ -79,29 +79,61 @@ public class Level4PathwayRenderer extends ALayoutRenderer implements IPathwayRe
 	}
 
 	@Override
-	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
+	public Rect getVertexRepBounds(PathwayVertexRep vertexRep) {
 		if (pathway.containsVertex(vertexRep))
-			return new Rectangle2D.Float();
+			return new Rect();
 		return null;
 	}
 
 	@Override
-	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
+	public List<Rect> getVertexRepsBounds(PathwayVertexRep vertexRep) {
 		if (pathway.containsVertex(vertexRep)) {
-			List<Rectangle2D> list = new ArrayList<>(1);
-			list.add(new Rectangle2D.Float());
+			List<Rect> list = new ArrayList<>(1);
+			list.add(new Rect());
 			return list;
 		}
 		return null;
 	}
 
 	@Override
-	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
+	public void addVertexRepSelectionListener(IVertexRepSelectionListener listener) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
-	public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
-
+	public Rect getPathwayBounds() {
+		return new Rect(0, 0, 0, 0);
 	}
+
+	@Override
+	public GLElement asGLElement() {
+		return null;
+	}
+
+	@Override
+	public AGLView asAGLView() {
+		return null;
+	}
+
+	@Override
+	public ALayoutRenderer asLayoutRenderer() {
+		return this;
+	}
+
+	@Override
+	public float getMinWidth() {
+		return getMinWidthPixels();
+	}
+
+	@Override
+	public float getMinHeight() {
+		return getMinHeightPixels();
+	}
+
+	// @Override
+	// public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
+	//
+	// }
 
 }

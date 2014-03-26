@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package gleem.linalg.open;
 
@@ -7,7 +7,7 @@ import gleem.linalg.Veci;
 
 /**
  * Container for 3 integer values.
- * 
+ *
  * @author Michael Kalkusch
  */
 public class Vec3i extends Veci {
@@ -15,7 +15,7 @@ public class Vec3i extends Veci {
 	// protected int[] data;
 
 	/**
-	 * 
+	 *
 	 */
 	public Vec3i() {
 
@@ -23,7 +23,7 @@ public class Vec3i extends Veci {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public Vec3i(Veci source) {
 
@@ -46,7 +46,7 @@ public class Vec3i extends Veci {
 				assert false : "access size of internal array; ignore other values";
 				return;
 			}
-			this.set(i, source.get(i));
+			this.setComponent(i, source.get(i));
 		}
 	}
 
@@ -56,7 +56,7 @@ public class Vec3i extends Veci {
 				assert false : "access size of internal array; ignore other values";
 				return;
 			}
-			this.set(i, data[i]);
+			this.setComponent(i, data[i]);
 		}
 	}
 

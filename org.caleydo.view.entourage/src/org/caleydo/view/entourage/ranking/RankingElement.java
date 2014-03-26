@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.entourage.ranking;
 
+import gleem.linalg.Vec2f;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -29,13 +30,19 @@ import java.util.Collections;
 import java.util.List;
 
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
+import org.caleydo.core.view.opengl.canvas.GLThreadListenerWrapper;
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBarCompatibility;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.layout2.util.GLElementWindow;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -43,7 +50,6 @@ import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.entourage.EEmbeddingID;
 import org.caleydo.view.entourage.GLEntourage;
-import org.caleydo.view.entourage.GLWindow;
 import org.caleydo.vis.lineup.config.IRankTableUIConfig;
 import org.caleydo.vis.lineup.config.RankTableConfigBase;
 import org.caleydo.vis.lineup.config.RankTableUIConfigBase;
@@ -56,6 +62,7 @@ import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.StringRankColumnModel;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
+import org.caleydo.vis.lineup.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.lineup.ui.RenderStyle;
 import org.caleydo.vis.lineup.ui.TableUI;
 
@@ -66,13 +73,21 @@ import com.google.common.base.Function;
  *
  */
 public class RankingElement extends GLElementContainer {
+	private final static int PATHWAY_NAME_COLUMN_WIDTH = 140;
+	private final static int PATHWAY_DATABASE_COLUMN_WIDTH = 70;
+	private final static int RANK_COLUMN_WIDTH = 50;
+
 	private final RankTableModel table;
 	private final GLEntourage view;
 	private IPathwayFilter filter = PathwayFilters.NONE;
 	// private IPathwayRanking ranking = PathwayRankings.SIZE;
 	private ARankColumnModel currentRankColumnModel;
-	private StringRankColumnModel textColumn;
-	private GLWindow window;
+	private StringRankColumnModel pathwayNameColumn;
+	private CategoricalRankColumnModel<?> pathwayDataBaseColumn;
+	private GLElementWindow window;
+	private TableUI tableUI;
+	private IGLMouseListener mouseListener;
+
 	private final PropertyChangeListener onSelectRow = new PropertyChangeListener() {
 
 		@Override
@@ -87,16 +102,29 @@ public class RankingElement extends GLElementContainer {
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (window == null || window.getSize().x() < 2)
 				return;
-			if (hasScoreColumn()) {
-				if (window.getSize().x() != 220)
-					window.setSize(220, Float.NaN);
-			} else {
-				if (window.getSize().y() != 170)
-					window.setSize(170, Float.NaN);
+			((AnimatedGLElementContainer) window.getParent()).resizeChild(window, getRequiredWidth(), Float.NaN);
+			if (!hasScoreColumn())
 				setFilter(PathwayFilters.NONE);
-			}
 		}
 	};
+
+	private final PropertyChangeListener onCollapseColumn = new PropertyChangeListener() {
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			((AnimatedGLElementContainer) window.getParent()).resizeChild(window, getRequiredWidth(), Float.NaN);
+			// window.setSize(getRequiredWidth(), Float.NaN);
+		}
+	};
+
+	public float getRequiredWidth() {
+		float width = pathwayNameColumn.getWidth() + pathwayDataBaseColumn.getWidth()
+				+ (hasScoreColumn() ? currentRankColumnModel.getWidth() : 0) + 10;
+		// + (pathwayDataBaseColumn.isCollapsed() ? COLLAPSED_COLUMN_WIDTH : PATHWAY_DATABASE_COLUMN_WIDTH)
+		// + ( (currentRankColumnModel.isCollapsed() ? COLLAPSED_COLUMN_WIDTH
+		// : RANK_COLUMN_WIDTH) : 0);
+		return width;
+	}
 
 	public boolean hasScoreColumn() {
 		return table.getColumns().size() > 2;
@@ -104,6 +132,24 @@ public class RankingElement extends GLElementContainer {
 
 	public RankingElement(final GLEntourage view) {
 		this.view = view;
+		mouseListener = GLThreadListenerWrapper.wrap(new GLMouseAdapter() {
+
+			@Override
+			public void mouseWheelMoved(IMouseEvent mouseEvent) {
+				Vec2f location = getAbsoluteLocation();
+				Vec2f size = getSize();
+				Vec2f wheelPosition = mouseEvent.getPoint();
+				if (wheelPosition.x() >= location.x() && wheelPosition.x() <= location.x() + size.x()
+						&& wheelPosition.y() >= location.y() && wheelPosition.y() <= location.y() + size.y()) {
+					tableUI.getBody().scroll(-mouseEvent.getWheelRotation());
+				}
+
+			}
+
+		});
+		view.getParentGLCanvas().addMouseListener(mouseListener);
+		view.getEventListenerManager().register(mouseListener);
+
 		this.table = new RankTableModel(new RankTableConfigBase());
 		table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, onSelectRow);
 		table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, onModifyColumn);
@@ -128,9 +174,9 @@ public class RankingElement extends GLElementContainer {
 			}
 
 			@Override
-			public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
+			public void renderRowBackground(GLGraphics g, Rect rect, boolean even, IRow row,
 					IRow selected) {
-				renderRowBackgroundImpl(g, x, y, w, h, even, row, selected);
+				renderRowBackgroundImpl(g, rect.x(), rect.y(), rect.width(), rect.height(), even, row, selected);
 			}
 
 			@Override
@@ -144,7 +190,7 @@ public class RankingElement extends GLElementContainer {
 			}
 		};
 
-		TableUI tableUI = new TableUI(table, config, RowHeightLayouts.UNIFORM);
+		tableUI = new TableUI(table, config, RowHeightLayouts.UNIFORM);
 		this.add(tableUI);
 		tableUI.getBody().addOnRowPick(new IPickingListener() {
 			@Override
@@ -234,24 +280,29 @@ public class RankingElement extends GLElementContainer {
 	 */
 	private void initTable(RankTableModel table) {
 		// add columns
-		textColumn = new StringRankColumnModel(GLRenderers.drawText("Pathway", VAlign.CENTER),
+		pathwayNameColumn = new StringRankColumnModel(GLRenderers.drawText("Pathway", VAlign.CENTER),
 				StringRankColumnModel.DEFAULT, Color.GRAY, new Color(.95f, .95f, .95f),
 				StringRankColumnModel.FilterStrategy.SUBSTRING);
-		textColumn.setWidth(140);
-		table.add(textColumn);
+		pathwayNameColumn.setWidth(PATHWAY_NAME_COLUMN_WIDTH);
+		pathwayNameColumn.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, onCollapseColumn);
+		table.add(pathwayNameColumn);
 
 		Collection<String> dbtypes = new ArrayList<>(2);
-		for(EPathwayDatabaseType type : EPathwayDatabaseType.values()) {
+		for (EPathwayDatabaseType type : EPathwayDatabaseType.values()) {
 			dbtypes.add(type.getName());
 		}
-		table.add(CategoricalRankColumnModel.createSimple(GLRenderers.drawText("Pathway Type", VAlign.CENTER),
-				new Function<IRow, String>() {
+		pathwayDataBaseColumn = CategoricalRankColumnModel.createSimple(
+				GLRenderers.drawText("Pathway Type", VAlign.CENTER), new Function<IRow, String>() {
 					@Override
 					public String apply(IRow in) {
 						PathwayRow r = (PathwayRow) in;
 						return r.getPathway().getType().getName();
 					}
-				}, dbtypes).setCollapsed(true));
+				}, dbtypes);
+		pathwayDataBaseColumn.setWidth(PATHWAY_DATABASE_COLUMN_WIDTH);
+		pathwayDataBaseColumn.setCollapsed(true);
+		pathwayDataBaseColumn.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, onCollapseColumn);
+		table.add(pathwayDataBaseColumn);
 
 		// IFloatFunction<IRow> pathwaySize = new AFloatFunction<IRow>() {
 		// @Override
@@ -287,8 +338,8 @@ public class RankingElement extends GLElementContainer {
 	 */
 	public void setFilter(IPathwayFilter filter) {
 		this.filter = filter;
-		if (textColumn.isFiltered())
-			textColumn.setFilter(null, false, false);
+		if (pathwayNameColumn.isFiltered())
+			pathwayNameColumn.setFilter(null, false, false);
 		applyFilter();
 	}
 
@@ -298,21 +349,23 @@ public class RankingElement extends GLElementContainer {
 	 */
 	public void setRanking(IPathwayRanking ranking) {
 		// this.ranking = ranking;
-		DoubleRankColumnModel newRankModel = createDefaultFloatRankColumnModel(ranking);
+		ARankColumnModel prevRankModel = currentRankColumnModel;
+		currentRankColumnModel = createDefaultFloatRankColumnModel(ranking);
+		currentRankColumnModel.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, onCollapseColumn);
+		currentRankColumnModel.setWidth(RANK_COLUMN_WIDTH);
 		if (table.getColumns().size() > 2) {
-			table.replace(currentRankColumnModel, newRankModel);
+			table.replace(prevRankModel, currentRankColumnModel);
 		} else {
-			table.add(newRankModel);
+			table.add(currentRankColumnModel);
 		}
-		newRankModel.orderByMe();
-		currentRankColumnModel = newRankModel;
+		((DoubleRankColumnModel) currentRankColumnModel).orderByMe();
 	}
 
 	/**
 	 * @param window
 	 *            setter, see {@link window}
 	 */
-	public void setWindow(GLWindow window) {
+	public void setWindow(GLElementWindow window) {
 		this.window = window;
 	}
 }

@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.id;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Function;
@@ -19,6 +21,8 @@ public interface IIDTypeMapper<K, V> extends Function<K, Set<V>> {
 	IDType getSource();
 
 	IDType getTarget();
+
+	List<MappingType> getPath();
 
 	/**
 	 * maps the given set of ids at once
@@ -35,4 +39,8 @@ public interface IIDTypeMapper<K, V> extends Function<K, Set<V>> {
 	 * @return
 	 */
 	boolean isMapAble(K sourceId);
+
+	Collection<Set<V>> applySeq(Collection<K> sourceIDs);
+
+	boolean isOne2OneMapping();
 }

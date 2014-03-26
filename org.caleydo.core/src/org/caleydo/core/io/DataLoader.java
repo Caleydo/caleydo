@@ -118,6 +118,28 @@ public class DataLoader {
 		if (monitor != null)
 			monitor.subTask("Loading data");
 
+		ATableBasedDataDomain dataDomain = createDataDomain(dataSetDescription);
+		// dataDomain.init();
+
+		boolean createDefaultRecordPerspective = true;
+
+		try {
+			// the place the matrix is stored:
+			TableUtils.loadData(dataDomain, dataSetDescription, true, createDefaultRecordPerspective);
+		} catch (Exception e) {
+			Logger.log(new Status(IStatus.ERROR, "DataLoader", "Failed to load data for dataset "
+					+ dataSetDescription.getDataSetName(), e));
+			DataDomainManager.get().unregister(dataDomain);
+			throw new IllegalStateException(e.getMessage(), e);
+		}
+		if (monitor != null)
+			monitor.worked(1);
+
+		return dataDomain;
+
+	}
+
+	private static ATableBasedDataDomain createDataDomain(DataSetDescription dataSetDescription) {
 		ATableBasedDataDomain dataDomain;
 
 		IDSpecification columnIDSpecification = dataSetDescription.getColumnIDSpecification();
@@ -141,24 +163,7 @@ public class DataLoader {
 					"org.caleydo.datadomain.generic", dataSetDescription);
 
 		}
-		// dataDomain.init();
-
-		boolean createDefaultRecordPerspective = true;
-
-		try {
-			// the place the matrix is stored:
-			TableUtils.loadData(dataDomain, dataSetDescription, true, createDefaultRecordPerspective);
-		} catch (Exception e) {
-			Logger.log(new Status(IStatus.ERROR, "DataLoader", "Failed to load data for dataset "
-					+ dataSetDescription.getDataSetName(), e));
-			DataDomainManager.get().unregister(dataDomain);
-			throw new IllegalStateException(e.getMessage(), e);
-		}
-		if (monitor != null)
-			monitor.worked(1);
-
 		return dataDomain;
-
 	}
 
 	/**

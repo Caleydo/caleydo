@@ -53,6 +53,8 @@ public class WikiPathwaysParser implements IPathwayParser, IRunnableWithProgress
 	 */
 	private Map<String, String> dbNameMap = new HashMap<>();
 
+	StringBuilder idMappingErrors = new StringBuilder();
+
 	public WikiPathwaysParser() {
 		dbNameMap.put("Ensembl Mouse", "ENSEMBL_GENE_ID");
 		dbNameMap.put("Entrez Gene", "ENTREZ_GENE_ID");
@@ -88,6 +90,11 @@ public class WikiPathwaysParser implements IPathwayParser, IRunnableWithProgress
 				createPathwayGraph(pathway, tokens[0].substring(0, tokens[0].length() - 5), Integer.valueOf(tokens[1])
 						.intValue(), Integer.valueOf(tokens[2]).intValue(), baseDir);
 
+			}
+			if (idMappingErrors.length() > 0) {
+				String message = "Failed to parse the following IDs while parsing Wikipathways:\n "
+						+ idMappingErrors.toString();
+				Logger.log(new Status(IStatus.INFO, this.toString(), message));
 			}
 		} catch (IOException | ConverterException e) {
 			throw new IllegalStateException("Error reading pathway list file");
@@ -192,8 +199,7 @@ public class WikiPathwaysParser implements IPathwayParser, IRunnableWithProgress
 						}
 
 						if (davidIDs == null) {
-							Logger.log(new Status(IStatus.INFO, this.toString(), "No david mapping for " + idType
-									+ " ID: " + xref.getId()));
+							idMappingErrors.append(xref.getId() + "(" + idType + ");");
 							createVertexWithoutDavidID(pathwayGraph, element, vertexReps, vertexGroupReps);
 							continue;
 						}
@@ -214,7 +220,6 @@ public class WikiPathwaysParser implements IPathwayParser, IRunnableWithProgress
 				createVertexWithoutDavidID(pathwayGraph, element, vertexReps, vertexGroupReps);
 			}
 		}
-
 		for (PathwayElement element : typeToElements.get(ObjectType.LINE)) {
 			String startGraphRef = element.getStartGraphRef();
 			String endGraphRef = element.getEndGraphRef();
@@ -224,6 +229,7 @@ public class WikiPathwaysParser implements IPathwayParser, IRunnableWithProgress
 				PathwayVertexRep endVertexRep = vertexReps.get(endGraphRef);
 				if (startVertexRep != null && endVertexRep != null) {
 					pathwayGraph.addEdge(startVertexRep, endVertexRep);
+					pathwayManager.addEdgesToRootPathway(startVertexRep, endVertexRep);
 				}
 			}
 		}

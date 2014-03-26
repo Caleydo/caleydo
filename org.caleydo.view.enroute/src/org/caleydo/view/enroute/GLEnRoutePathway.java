@@ -5,7 +5,6 @@
  ******************************************************************************/
 package org.caleydo.view.enroute;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -46,24 +45,26 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
-import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
+import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
-import org.caleydo.view.enroute.event.ShowContextElementSelectionDialogEvent;
 import org.caleydo.view.enroute.event.ShowGroupSelectionDialogEvent;
-import org.caleydo.view.enroute.mappeddataview.ChooseContextDataDialog;
 import org.caleydo.view.enroute.mappeddataview.ChooseGroupsDialog;
 import org.caleydo.view.enroute.mappeddataview.MappedDataRenderer;
 import org.caleydo.view.enroute.path.EnRoutePathRenderer;
@@ -110,8 +111,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	private ArrayList<TablePerspective> resolvedTablePerspectives = new ArrayList<TablePerspective>();
 
-	/** A contextual perspective which has the same column ID Type but a different row ID Type */
-	private TablePerspective contextualPerspective = null;
+	/** Contextual perspectives which has the same column ID Type but a different row ID Type */
+	private List<TablePerspective> contextualTablePerspectives = new ArrayList<>();
+	// private TablePerspective contextualPerspective = null;
 
 	/**
 	 * The {@link IDataDomain}s for which data is displayed in this view.
@@ -150,7 +152,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	private IDType columnIDType;
 
 	/** The id type for the rows for contextual data */
-	private IDType contextRowIDTYpe;
+	// private IDType contextRowIDTYpe;
 
 	private EventBasedSelectionManager geneSelectionManager;
 	private EventBasedSelectionManager metaboliteSelectionManager;
@@ -171,6 +173,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	private int minHeight = 0;
 
+	private boolean useColorMapping = false;
+
 	/**
 	 * Constructor.
 	 *
@@ -181,6 +185,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public GLEnRoutePathway(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 
 		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
+
+		textureManager = new TextureManager(new ResourceLoader(Activator.getResourceLocator()));
 
 		geneSelectionManager = new EventBasedSelectionManager(this, primaryRowIDType);
 
@@ -413,7 +419,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 			// System.out.println("setting min width:" + minViewWidth);
 			if (fitToViewWidth) {
-				minWidth = pathRenderer.getMinWidthPixels() + DATA_COLUMN_WIDTH_PIXELS;
+				minWidth = pixelGLConverter.getPixelWidthForGLWidth((viewFrustum.getWidth()));
+				// minWidth = pathRenderer.getMinWidthPixels() + DATA_COLUMN_WIDTH_PIXELS;
 			} else {
 				minWidth = updateWidth ? minViewWidth + 3 : pathRenderer.getMinWidthPixels() + DATA_COLUMN_WIDTH_PIXELS;
 			}
@@ -516,40 +523,44 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * {@link #resolvedTablePerspectives}
 	 */
 	private void updateContextualPerspectives() {
-		if (contextualPerspective == null) {
+		if (contextualTablePerspectives.isEmpty()) {
 			mappedDataRenderer.setContextualTablePerspectives(null);
 			return;
 		}
 
-		ATableBasedDataDomain contextualDataDomain = contextualPerspective.getDataDomain();
-		// Perspective contextualColumnPerspective = contextualPerspective.getPerspective();
-		Perspective contextualRowPerspective = contextualPerspective.getPerspective(contextRowIDTYpe);
+		List<List<TablePerspective>> contextTablePerspectives = new ArrayList<>();
+		for (TablePerspective contextualPerspective : contextualTablePerspectives) {
+			ATableBasedDataDomain contextualDataDomain = contextualPerspective.getDataDomain();
+			// Perspective contextualColumnPerspective = contextualPerspective.getPerspective();
+			Perspective contextualRowPerspective = contextualPerspective.getOppositePerspective(columnIDType);
+			List<TablePerspective> resolvedContextTablePerspectives = new ArrayList<>(resolvedTablePerspectives.size());
+			contextTablePerspectives.add(resolvedContextTablePerspectives);
 
-		ArrayList<TablePerspective> contextTablePerspectives = new ArrayList<>();
-		for (TablePerspective resolvedGeneTablePerspective : resolvedTablePerspectives) {
+			for (TablePerspective resolvedGeneTablePerspective : resolvedTablePerspectives) {
 
-			Perspective primaryColumnPerspective = resolvedGeneTablePerspective.getPerspective(columnIDType);
+				Perspective primaryColumnPerspective = resolvedGeneTablePerspective.getPerspective(columnIDType);
 
-			Perspective contextualColumnPerspective = contextualDataDomain
-					.convertForeignPerspective(primaryColumnPerspective);
+				Perspective contextualColumnPerspective = contextualDataDomain
+						.convertForeignPerspective(primaryColumnPerspective);
 
-			if (contextualColumnPerspective == null) {
-				Logger.log(new Status(IStatus.ERROR, this.toString(),
-						"Failed to convert the primary to the contex perspective"));
-			} else {
-				TablePerspective resolvedContextTablePerspective;
-
-				if (contextualDataDomain.getDimensionIDType().equals(contextRowIDTYpe)) {
-					resolvedContextTablePerspective = new TablePerspective(contextualDataDomain,
-							contextualColumnPerspective, contextualRowPerspective);
-				} else if (contextualDataDomain.getRecordIDType().equals(contextRowIDTYpe)) {
-					resolvedContextTablePerspective = new TablePerspective(contextualDataDomain,
-							contextualColumnPerspective, contextualRowPerspective);
+				if (contextualColumnPerspective == null) {
+					Logger.log(new Status(IStatus.ERROR, this.toString(),
+							"Failed to convert the primary to the contex perspective"));
 				} else {
-					throw new IllegalStateException("Context DD and IDTypes don't match up.");
+					TablePerspective resolvedContextTablePerspective;
 
+					if (contextualDataDomain.getDimensionIDType().equals(contextualRowPerspective.getIdType())) {
+						resolvedContextTablePerspective = new TablePerspective(contextualDataDomain,
+								contextualColumnPerspective, contextualRowPerspective);
+					} else if (contextualDataDomain.getRecordIDType().equals(contextualRowPerspective.getIdType())) {
+						resolvedContextTablePerspective = new TablePerspective(contextualDataDomain,
+								contextualColumnPerspective, contextualRowPerspective);
+					} else {
+						throw new IllegalStateException("Context DD and IDTypes don't match up.");
+
+					}
+					resolvedContextTablePerspectives.add(resolvedContextTablePerspective);
 				}
-				contextTablePerspectives.add(resolvedContextTablePerspective);
 			}
 		}
 
@@ -581,16 +592,17 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			}
 			if (!newTablePerspective.getDataDomain().hasIDCategory(primaryRowIDType)) {
 
-				contextRowIDTYpe = newTablePerspective.getDataDomain().getOppositeIDType(columnIDType);
-				if (mappedDataRenderer.getContextRowIDs() == null || mappedDataRenderer.getContextRowIDs().isEmpty()) {
-					// if this is the first time we select the compound
-					ShowContextElementSelectionDialogEvent contextEvent = new ShowContextElementSelectionDialogEvent(
-							newTablePerspective.getPerspective(contextRowIDTYpe));
-					eventPublisher.triggerEvent(contextEvent);
-
-				}
+				// contextRowIDTYpe = newTablePerspective.getDataDomain().getOppositeIDType(columnIDType);
+				// if (mappedDataRenderer.getContextRowIDs() == null || mappedDataRenderer.getContextRowIDs().isEmpty())
+				// {
+				// // if this is the first time we select the compound
+				// ShowContextElementSelectionDialogEvent contextEvent = new ShowContextElementSelectionDialogEvent(
+				// newTablePerspective.getPerspective(contextRowIDTYpe));
+				// eventPublisher.triggerEvent(contextEvent);
+				//
+				// }
 				// true for contextual perspective
-				contextualPerspective = newTablePerspective;
+				contextualTablePerspectives.add(newTablePerspective);
 
 				tpIterator.remove();
 			}
@@ -686,8 +698,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	@Override
 	public void removeTablePerspective(TablePerspective tablePerspective) {
-		if (tablePerspective == contextualPerspective)
-			contextualPerspective = null;
+		if (contextualTablePerspectives.contains(tablePerspective)) {
+			contextualTablePerspectives.remove(tablePerspective);
+		}
 
 		for (TablePerspective t : tablePerspectives) {
 			if (t == tablePerspective) {
@@ -773,7 +786,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public void updatePerspective(PerspectiveUpdatedEvent event) {
 		checkAndUpdatePerspectives(event, resolvedTablePerspectives);
 		checkAndUpdatePerspectives(event, tablePerspectives);
-		checkAndUpdatePerspectives(event, mappedDataRenderer.getContextualTablePerspectives());
+		List<List<TablePerspective>> ctps = mappedDataRenderer.getContextualTablePerspectives();
+		if (ctps != null) {
+			for (List<TablePerspective> resolvedContextTablePerspectives : mappedDataRenderer
+					.getContextualTablePerspectives())
+				checkAndUpdatePerspectives(event, resolvedContextTablePerspectives);
+		}
 
 	}
 
@@ -866,49 +884,49 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	@Override
-	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
+	public Rect getVertexRepBounds(PathwayVertexRep vertexRep) {
 		if (pathRenderer != null)
 			return pathRenderer.getVertexRepBounds(vertexRep);
 		return null;
 	}
 
 	@Override
-	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
+	public List<Rect> getVertexRepsBounds(PathwayVertexRep vertexRep) {
 		if (pathRenderer != null)
 			return pathRenderer.getVertexRepsBounds(vertexRep);
 		return null;
 	}
 
-	@Override
+	// @Override
 	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
 		if (pathRenderer != null)
 			pathRenderer.addVertexRepBasedContextMenuItem(item);
 
 	}
 
-	@ListenTo
-	public void showContextSelectionDialog(final ShowContextElementSelectionDialogEvent event) {
-
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				Shell shell = new Shell();
-				ChooseContextDataDialog dialog = new ChooseContextDataDialog(shell, event.getPerspective());
-				dialog.create();
-				dialog.setBlockOnOpen(true);
-
-				if (dialog.open() == IStatus.OK) {
-
-					// FIXME this might not be thread-safe
-					List<Integer> selectedItems = dialog.getSelectedItems();
-					mappedDataRenderer.setContextRowIDs(selectedItems);
-					setLayoutDirty();
-
-				}
-			}
-
-		});
-	}
+	// @ListenTo
+	// public void showContextSelectionDialog(final ShowContextElementSelectionDialogEvent event) {
+	//
+	// Display.getDefault().asyncExec(new Runnable() {
+	// @Override
+	// public void run() {
+	// Shell shell = new Shell();
+	// ChooseContextDataDialog dialog = new ChooseContextDataDialog(shell, event.getPerspective());
+	// dialog.create();
+	// dialog.setBlockOnOpen(true);
+	//
+	// if (dialog.open() == IStatus.OK) {
+	//
+	// // FIXME this might not be thread-safe
+	// List<Integer> selectedItems = dialog.getSelectedItems();
+	// mappedDataRenderer.setContextRowIDs(selectedItems);
+	// setLayoutDirty();
+	//
+	// }
+	// }
+	//
+	// });
+	// }
 
 	@ListenTo
 	public void showGroupSelectionDialog(final ShowGroupSelectionDialogEvent event) {
@@ -944,11 +962,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		});
 	}
 
-	@Override
-	public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
-		if (pathRenderer != null)
-			pathRenderer.addVertexRepBasedSelectionEvent(eventFactory, pickingMode);
-	}
+	// @Override
+	// public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
+	// if (pathRenderer != null)
+	// pathRenderer.addVertexRepBasedSelectionEvent(eventFactory, pickingMode);
+	// }
 
 	@ListenTo
 	public void clearGroupSelection(ClearGroupSelectionEvent event) {
@@ -958,6 +976,71 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		mappedDataRenderer.setGeneTablePerspectives(resolvedTablePerspectives);
 		setLayoutDirty();
 
+	}
+
+	public boolean isShowCenteredDataLineInRowCenter() {
+		if (mappedDataRenderer == null)
+			return false;
+		return mappedDataRenderer.isShowCenteredDataLineInRowCenter();
+	}
+
+	public void setShowCenteredDataLineInRowCenter(boolean showCenteredDataLineInRowCenter) {
+		if (mappedDataRenderer != null)
+			mappedDataRenderer.setShowCenteredDataLineInRowCenter(showCenteredDataLineInRowCenter);
+	}
+
+	/**
+	 * @param useColorMapping
+	 *            setter, see {@link useColorMapping}
+	 */
+	public void setUseColorMapping(boolean useColorMapping) {
+		this.useColorMapping = useColorMapping;
+	}
+
+	/**
+	 * @return the useColorMapping, see {@link #useColorMapping}
+	 */
+	public boolean isUseColorMapping() {
+		return useColorMapping;
+	}
+
+	@Override
+	public void addVertexRepSelectionListener(IVertexRepSelectionListener listener) {
+		if (pathRenderer != null)
+			pathRenderer.addVertexRepSelectionListener(listener);
+
+	}
+
+	@Override
+	public Rect getPathwayBounds() {
+
+		return new Rect(0, 0, pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()),
+				pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight()));
+	}
+
+	@Override
+	public GLElement asGLElement() {
+		return null;
+	}
+
+	@Override
+	public AGLView asAGLView() {
+		return this;
+	}
+
+	@Override
+	public ALayoutRenderer asLayoutRenderer() {
+		return null;
+	}
+
+	@Override
+	public float getMinWidth() {
+		return getMinPixelWidth();
+	}
+
+	@Override
+	public float getMinHeight() {
+		return getMinPixelHeight();
 	}
 
 }

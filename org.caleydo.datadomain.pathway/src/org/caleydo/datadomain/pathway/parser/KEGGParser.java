@@ -97,6 +97,8 @@ public class KEGGParser implements IRunnableWithProgress {
 		// File folder = new File(sXMLPath);
 		// File[] arFiles = folder.listFiles();
 
+		StringBuilder idMappingErrors = new StringBuilder();
+
 		final String organismKey = toKEGGOrganism(GeneticMetaData.getOrganism());
 		final IProgressMonitor monitor = new NullProgressMonitor();
 
@@ -146,7 +148,7 @@ public class KEGGParser implements IRunnableWithProgress {
 				// to check external DTDs.
 				reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 
-				KgmlSaxHandler kgmlParser = new KgmlSaxHandler(imageFile);
+				KgmlSaxHandler kgmlParser = new KgmlSaxHandler(imageFile, idMappingErrors);
 				reader.setEntityResolver(kgmlParser);
 				reader.setContentHandler(kgmlParser);
 
@@ -161,17 +163,22 @@ public class KEGGParser implements IRunnableWithProgress {
 				int iImageHeight = currentPathwayGraph.getHeight();
 
 				if (iImageWidth == -1 || iImageHeight == -1) {
-					log.info("Pathway texture width=" + iImageWidth	+ " / height=" + iImageHeight);
+					log.info("Pathway texture width=" + iImageWidth + " / height=" + iImageHeight);
 				}
 			} catch (java.lang.NumberFormatException e) {
 				log.error("ID Parsing error in " + pathwayName, e);
 			} catch (SAXException e) {
-				log.error("SAXParser-error during parsing file "+ pathwayName + ".\n SAX error: " + e.toString(), e);
+				log.error("SAXParser-error during parsing file " + pathwayName + ".\n SAX error: " + e.toString(), e);
 			} catch (FileNotFoundException e) {
 				log.error("kgml file not found: " + kgmlFile, e);
 			} catch (IOException e) {
 				log.error("kgml file read error: " + kgmlFile, e);
 			}
+		}
+		if (idMappingErrors.length() > 0) {
+			String message = "Failed to parse the following Entrez IDs while parsing KEGG:\n "
+					+ idMappingErrors.toString();
+			log.info(message);
 		}
 		log.info("Finished parsing " + pathwayDatabase.getName() + " pathways.");
 	}

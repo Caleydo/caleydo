@@ -12,6 +12,11 @@ import java.util.Iterator;
  *
  */
 public interface IDoubleIterator extends Iterator<Double> {
+	/**
+	 * primitive version of {@link #next()}
+	 * 
+	 * @return
+	 */
 	double nextPrimitive();
 }
 

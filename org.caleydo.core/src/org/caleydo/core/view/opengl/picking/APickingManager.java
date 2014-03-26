@@ -32,6 +32,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 
+import com.google.common.collect.ImmutableList;
 import com.jogamp.common.nio.Buffers;
 
 /**
@@ -131,11 +132,13 @@ public abstract class APickingManager<T extends APickingEntry> {
 			List<PickHit> data = cache.get(key);
 
 			if (event.getSecond() == PickingMode.MOUSE_OUT && !mouseIn.isEmpty()) {
+				// clean up by finally sending a mouse out
 				if (data == null) {
 					data = doPickingImpl(key.x, key.y, gl, toRender);
 					cache.put(key, data);
 				}
 				fireListeners(data, PickingMode.MOUSE_OUT, mouseEvent);
+				mouseIn.clear(); // no no one is in anymore -> clean up for the next time
 			} else if (converted != null) {
 				if (data == null) {
 					data = doPickingImpl(key.x, key.y, gl, toRender);
@@ -156,8 +159,12 @@ public abstract class APickingManager<T extends APickingEntry> {
 			return PickingMode.CLICKED;
 		if (type == PickingMode.CLICKED && event.getButton() == RIGHT_MOUSE_BUTTON)
 			return PickingMode.RIGHT_CLICKED;
-		if (type == PickingMode.MOUSE_MOVED || type == PickingMode.MOUSE_RELEASED || type == PickingMode.MOUSE_WHEEL)
+		if (type == PickingMode.MOUSE_OVER)
+			return PickingMode.MOUSE_MOVED;
+		if (EnumSet.of(PickingMode.MOUSE_MOVED, PickingMode.MOUSE_RELEASED, PickingMode.MOUSE_WHEEL,
+				PickingMode.DRAG_DETECTED).contains(type))
 			return type;
+
 		return null;
 	}
 
@@ -175,13 +182,23 @@ public abstract class APickingManager<T extends APickingEntry> {
 
 		EnumSet<PickingMode> has = EnumSet.noneOf(PickingMode.class); // type already seen
 
+		PickingMode prev = null;
 		// back to front
 		for (Iterator<Pair<IMouseEvent, PickingMode>> it = events.descendingIterator(); it.hasNext();) {
 			Pair<IMouseEvent, PickingMode> elem = it.next();
 			// just the last one of every type
-			if (has.contains(elem.getSecond()))
+			PickingMode mode = elem.getSecond();
+			if (has.contains(mode))
 				continue;
-			has.add(elem.getSecond());
+			// annhiliate out - over
+			if (prev == PickingMode.MOUSE_OVER && mode == PickingMode.MOUSE_OUT) {
+				has.remove(PickingMode.MOUSE_OVER);
+				result.removeFirst();
+				prev = null;
+				continue;
+			}
+			has.add(mode);
+			prev = mode;
 			// add to first to keep order of events
 			result.addFirst(elem);
 		}
@@ -225,8 +242,10 @@ public abstract class APickingManager<T extends APickingEntry> {
 		BitSet wasMouseIn = new BitSet();
 
 		// first send mouse out
-		for (Iterator<T> it = this.mouseIn.iterator(); it.hasNext();) {
-			T entry = it.next();
+		ImmutableList<T> local = ImmutableList.copyOf(this.mouseIn);
+		for (T entry : local) {
+			if (!this.mouseIn.contains(entry))
+				continue;
 			if (picked.contains(entry.pickingId)) { //again picked
 				wasMouseIn.set(entry.pickingId);
 			} else if ((entry.isDragging() && (mode == PickingMode.MOUSE_RELEASED || mode == PickingMode.DRAGGED))) {

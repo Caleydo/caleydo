@@ -6,6 +6,7 @@
 package org.caleydo.core.view.contextmenu;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -48,6 +49,10 @@ public class ContextMenuCreator implements Iterable<AContextMenuItem> {
 	public void addAll(Iterable<Pair<String, ? extends AEvent>> events) {
 		for (Pair<String, ? extends AEvent> event : events)
 			add(event.getFirst(), event.getSecond());
+	}
+
+	public synchronized void addAll(Collection<? extends AContextMenuItem> items) {
+		menuItems.addAll(items);
 	}
 
 	public synchronized void addContextMenuItemContainer(AContextMenuItemContainer menuItemContainer) {

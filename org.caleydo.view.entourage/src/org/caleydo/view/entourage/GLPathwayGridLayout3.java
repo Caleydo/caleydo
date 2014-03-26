@@ -272,10 +272,10 @@ public class GLPathwayGridLayout3 implements IGLLayout {
 		for (PathwayColumn column : copyColumns) {
 			float columnWidth = 0;
 			if (minTotalLevel1Size == 0) {
-				columnWidth = ((float) column.getMinWidth() / (float) totalFixedSize) * getFreeHorizontalSpace(w);
+				columnWidth = (column.getMinWidth() / totalFixedSize) * getFreeHorizontalSpace(w);
 			} else {
 				if (level1Columns.contains(column)) {
-					columnWidth = ((float) column.getMinWidth() / (float) minTotalLevel1Size)
+					columnWidth = (column.getMinWidth() / minTotalLevel1Size)
 							* (getFreeHorizontalSpace(w) - totalFixedSize);
 				} else {
 					columnWidth = column.getMinWidth();
@@ -603,8 +603,8 @@ public class GLPathwayGridLayout3 implements IGLLayout {
 
 		@Override
 		public int compare(PathwayMultiFormInfo o1, PathwayMultiFormInfo o2) {
-			boolean hasPath1 = view.hasPathPathway(o1.pathway);
-			boolean hasPath2 = view.hasPathPathway(o2.pathway);
+			boolean hasPath1 = view.getPath().hasPathway(o1.pathway);
+			boolean hasPath2 = view.getPath().hasPathway(o2.pathway);
 			if (hasPath1 && !hasPath2)
 				return -1;
 			if (hasPath2 && !hasPath1)
@@ -638,10 +638,10 @@ public class GLPathwayGridLayout3 implements IGLLayout {
 			return minHeight;
 		}
 
-		public int getMinWidth() {
-			int maxMinWidth = 0;
+		public float getMinWidth() {
+			float maxMinWidth = 0;
 			for (GLPathwayWindow window : windows) {
-				int minWidth = window.getMinWidth();
+				float minWidth = window.getMinWidth();
 				if (minWidth > maxMinWidth)
 					maxMinWidth = minWidth;
 			}
@@ -678,8 +678,8 @@ public class GLPathwayGridLayout3 implements IGLLayout {
 				float windowHeight = 0;
 
 				if (window.info.getCurrentEmbeddingID() == EEmbeddingID.PATHWAY_LEVEL1) {
-					int minHeight = window.getMinHeight();
-					float factor = (float) minHeight / (float) totalLevel1MinSize;
+					float minHeight = window.getMinHeight();
+					float factor = minHeight / totalLevel1MinSize;
 					windowHeight = factor * (freeSpaceVertical - totalOtherLevelMinSize);
 				} else {
 					windowHeight = window.getMinHeight();

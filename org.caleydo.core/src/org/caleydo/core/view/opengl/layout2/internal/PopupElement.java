@@ -19,6 +19,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IPopupLayer.IPopupElement;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
@@ -37,7 +38,8 @@ import org.eclipse.swt.SWT;
  * @author Samuel Gratzl
  *
  */
-class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer, GLButton.ISelectionCallback {
+class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer, GLButton.ISelectionCallback,
+		IPopupElement {
 	private static final int FLAG_HAS_HEADER = FLAG_MOVEABLE | FLAG_COLLAPSABLE;
 	private final GLElement content;
 	private final int flags;
@@ -72,10 +74,16 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		this.add(resize);
 
 		if (bounds != null) {
-			this.setSize(bounds.width(), bounds.height() + (isFlagSet(FLAG_HAS_HEADER) ? 8 : 0));
+			setContentSize(bounds.width(), bounds.height());
 			this.setLayoutData(bounds.xy()); // store the encoded location within the layout data
 		}
 		setVisibility(EVisibility.PICKABLE); // as a barrier to the underlying
+	}
+
+	@Override
+	public void setContentSize(float w, float h) {
+		this.setSize(w, h + (isFlagSet(FLAG_HAS_HEADER) ? 8 : 0));
+		relayout();
 	}
 
 	@Override
@@ -124,7 +132,7 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 				toggleCollapsed();
 			}
 			break;
-		case CLICKED:
+		case DRAG_DETECTED:
 			pick.setDoDragging(true);
 			break;
 		case MOUSE_OUT:
@@ -149,6 +157,8 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+		if (children.size() < 3) // something strange happened
+			return;
 		IGLLayoutElement body = children.get(0);
 		boolean hasHeader = isFlagSet(FLAG_HAS_HEADER);
 		float offset = 0; // isFlagSet(FLAG_BORDER) ? 1 : 0;
@@ -227,6 +237,17 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		relayout();
 	}
 
+	@Override
+	public void shift(float dx, float dy) {
+		Vec2f xy = getLocation();
+		setLocation(xy.x() + dx, xy.y() + dy);
+	}
+
+	@Override
+	public void hide() {
+		findParent(PopupLayer.class).remove(this);
+	}
+
 	class Resize extends PickableGLElement {
 		public Resize() {
 			setPicker(GLRenderers.DUMMY);
@@ -247,7 +268,7 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		}
 
 		@Override
-		protected void onClicked(Pick pick) {
+		protected void onDragDetected(Pick pick) {
 			if (pick.isAnyDragging())
 				return;
 			pick.setDoDragging(true);

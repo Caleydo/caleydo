@@ -25,8 +25,9 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.vis.lineup.internal.event.FilterEvent;
+import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.ui.CatFilterDalog;
+import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
@@ -42,10 +43,8 @@ import com.google.common.base.Functions;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicates;
 import com.google.common.collect.HashMultiset;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 
 /**
@@ -56,10 +55,11 @@ import com.google.common.collect.Multiset;
  */
 public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> extends
 		ABasicFilterableRankColumnModel implements IFilterColumnMixin, IGrabRemainingHorizontalSpace,
-		IRankableColumnMixin {
+		IRankableColumnMixin, IDataBasedColumnMixin {
 	private final Function<IRow, Set<CATEGORY_TYPE>> data;
 	private final Set<CATEGORY_TYPE> selection = new HashSet<>();
-	private final Map<CATEGORY_TYPE, String> metaData;
+	private final Set<CATEGORY_TYPE> categories;
+	private final Function<? super CATEGORY_TYPE, String> cat2label;
 	private final String labelNA;
 	private boolean filterNA = false;
 
@@ -68,40 +68,64 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 		this(header, data, metaData, Color.GRAY, new Color(.95f, .95f, .95f), labelNA);
 	}
 
-	public static MultiCategoricalRankColumnModel<String> createSimple(IGLRenderer header,
-			final Function<IRow, Set<String>> data, Collection<String> items, String none) {
-		ImmutableMap<String, String> map = Maps.uniqueIndex(items, Functions.<String> identity());
-		return new MultiCategoricalRankColumnModel<>(header, data, map, none);
+	public MultiCategoricalRankColumnModel(IGLRenderer header, final Function<IRow, Set<CATEGORY_TYPE>> data,
+			Function<? super CATEGORY_TYPE, String> cat2label, Set<CATEGORY_TYPE> categories, String labelNA) {
+		this(header, data, cat2label, categories, Color.GRAY, new Color(.95f, .95f, .95f), labelNA);
 	}
+
+	public static MultiCategoricalRankColumnModel<String> createSimple(IGLRenderer header,
+			final Function<IRow, Set<String>> data, Set<String> items, String none) {
+		return new MultiCategoricalRankColumnModel<String>(header, data, Functions.<String> identity(), items, none);
+	}
+
 
 	public MultiCategoricalRankColumnModel(IGLRenderer header, final Function<IRow, Set<CATEGORY_TYPE>> data,
 			Map<CATEGORY_TYPE, String> metaData, Color color, Color bgColor, String labelNA) {
+		this(header, data, Functions.forMap(metaData, null), metaData.keySet(), color, bgColor, labelNA);
+
+	}
+
+	public MultiCategoricalRankColumnModel(IGLRenderer header, Function<IRow, Set<CATEGORY_TYPE>> data,
+			Function<? super CATEGORY_TYPE, String> cat2label, Set<CATEGORY_TYPE> categories, Color color,
+			Color bgColor,
+			String labelNA) {
 		super(color, bgColor);
 		setHeaderRenderer(header);
 		this.data = data;
-		this.metaData = metaData;
-		this.selection.addAll(metaData.keySet());
+		this.cat2label = cat2label;
+		this.categories = categories;
+		this.selection.addAll(categories);
 		this.labelNA = labelNA;
-
 	}
 
 	public MultiCategoricalRankColumnModel(MultiCategoricalRankColumnModel<CATEGORY_TYPE> copy) {
 		super(copy);
 		setHeaderRenderer(getHeaderRenderer());
 		this.data = copy.data;
-		this.metaData = copy.metaData;
+		this.cat2label = copy.cat2label;
+		this.categories = copy.categories;
 		this.selection.addAll(copy.selection);
 		this.filterNA = copy.filterNA;
 		this.labelNA = copy.labelNA;
 	}
-
 	@Override
 	public MultiCategoricalRankColumnModel<CATEGORY_TYPE> clone() {
 		return new MultiCategoricalRankColumnModel<>(this);
 	}
 
-	public Map<CATEGORY_TYPE, String> getMetaData() {
-		return metaData;
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	@Override
+	public Function<IRow, Set<CATEGORY_TYPE>> getData() {
+		return data;
+	}
+
+	/**
+	 * @return the categories, see {@link #categories}
+	 */
+	public Set<CATEGORY_TYPE> getCategories() {
+		return categories;
 	}
 
 	@Override
@@ -109,7 +133,7 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 		Set<CATEGORY_TYPE> value = getCatValue(row);
 		if (value == null || value.isEmpty())
 			return labelNA;
-		return StringUtils.join(Iterators.transform(value.iterator(), Functions.forMap(metaData, null)), ',');
+		return StringUtils.join(Iterators.transform(value.iterator(), cat2label), ',');
 	}
 
 	@Override
@@ -129,8 +153,9 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				CatFilterDalog<CATEGORY_TYPE> dialog = new CatFilterDalog<>(canvas.getShell(), getTitle(), summary,
-						metaData, selection, MultiCategoricalRankColumnModel.this, getTable().hasSnapshots(), loc,
+				CatFilterDalog<CATEGORY_TYPE> dialog = new CatFilterDalog<>(canvas.getShell(), getLabel(), summary,
+						categories, cat2label, selection, MultiCategoricalRankColumnModel.this, getTable()
+								.hasSnapshots(), loc,
 						filterNA, labelNA);
 				dialog.open();
 			}
@@ -153,7 +178,7 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 
 	@Override
 	public boolean isFiltered() {
-		return selection.size() < metaData.size() || filterNA;
+		return selection.size() < categories.size() || filterNA;
 	}
 
 	/**
@@ -212,7 +237,7 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 	 * @return
 	 */
 	public Multiset<CATEGORY_TYPE> getHist() {
-		Multiset<CATEGORY_TYPE> hist = HashMultiset.create(metaData.size());
+		Multiset<CATEGORY_TYPE> hist = HashMultiset.create(categories.size());
 		for (IRow r : getMyRanker()) {
 			Set<CATEGORY_TYPE> vs = getCatValue(r);
 			if (vs == null) // TODO nan
@@ -251,7 +276,7 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 			g.drawText("Filter:", 4, 2, w - 4, 12);
 			String t = "<None>";
 			if (isFiltered())
-				t = selection.size() + " out of " + metaData.size();
+				t = selection.size() + " out of " + categories.size();
 			g.drawText(t, 4, 18, w - 4, 12);
 		}
 
@@ -269,7 +294,7 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 		}
 
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 			if (h < 5)
 				return;
 			String info = getTooltip();
@@ -283,7 +308,7 @@ public class MultiCategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CA
 
 		@Override
 		public String getTooltip() {
-			return getValue(getLayoutDataAs(IRow.class, null));
+			return getValue(getRow());
 		}
 	}
 

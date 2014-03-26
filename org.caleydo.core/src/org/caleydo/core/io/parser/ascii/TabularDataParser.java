@@ -62,14 +62,14 @@ public class TabularDataParser extends ATextParser {
 	/** The {@link ATableBasedDataDomain} for which the file is loaded */
 	private ATableBasedDataDomain dataDomain;
 
-	/** The {@link DataSetDescription} on which the loading of the file is based */
+	/** The metadata about the file to parse */
 	private DataSetDescription dataSetDescription;
 
 	/**
 	 * Constructor.
 	 */
 	public TabularDataParser(ATableBasedDataDomain dataDomain, DataSetDescription dataSetDescription) {
-		super(dataSetDescription.getDataSourcePath());
+		super(dataSetDescription.getDataSourcePath(), dataSetDescription);
 
 		this.dataDomain = dataDomain;
 		this.dataSetDescription = dataSetDescription;
@@ -86,7 +86,7 @@ public class TabularDataParser extends ATextParser {
 	 * </p>
 	 */
 	@SuppressWarnings("unchecked")
-	private void initializTables() {
+	private void initializeTables() {
 
 		Table table = dataDomain.getTable();
 
@@ -221,6 +221,7 @@ public class TabularDataParser extends ATextParser {
 				GenericContainer<String> container = new GenericContainer<>(numberOfDataLines);
 				targetRawContainer.add(container);
 				GenericColumn<String> column = new GenericColumn<>(dataDescription);
+				container.setDataType(column.getRawDataType());
 				column.setRawData(container);
 				columnID = table.addColumn(column);
 				break;
@@ -232,7 +233,11 @@ public class TabularDataParser extends ATextParser {
 			if (headers != null) {
 				String idString = headers[columnDescription.getColumn()];
 				idString = convertID(idString, parsingRules);
-				columnIDMappingManager.addMapping(mappingType, columnID, idString);
+				if (sourceColumnIDType.getDataType() == EDataType.INTEGER) {
+					columnIDMappingManager.addMapping(mappingType, columnID, Integer.parseInt(idString));
+				} else {
+					columnIDMappingManager.addMapping(mappingType, columnID, idString);
+				}
 			} else {
 				columnIDMappingManager.addMapping(mappingType, columnID, "Column " + columnID);
 			}
@@ -244,7 +249,7 @@ public class TabularDataParser extends ATextParser {
 
 		SubMonitor monitor = GeneralManager.get().createSubProgressMonitor();
 		monitor.beginTask("Loading data for: " + dataSetDescription.getDataSetName(), calculateNumberOfLinesInFile());
-		initializTables();
+		initializeTables();
 
 		// Init progress bar
 		for (int countHeaderLines = 0; countHeaderLines < dataSetDescription.getNumberOfHeaderLines(); countHeaderLines++) {
@@ -291,12 +296,16 @@ public class TabularDataParser extends ATextParser {
 		while ((line = reader.readLine()) != null) {
 			// && lineInFile <= stopParsingAtLine) {
 
-			String splitLine[] = line.split(dataSetDescription.getDelimiter());
+			String splitLine[] = line.split(dataSetDescription.getDelimiter(), -1);
 
 			// id mapping
 			String id = splitLine[columnOfRowIDs];
 			id = convertID(id, parsingRules);
-			rowIDMappingManager.addMapping(mappingType, id, lineCounter);
+			if (fromIDType.getDataType() == EDataType.INTEGER) {
+				rowIDMappingManager.addMapping(mappingType, Integer.parseInt(id), lineCounter);
+			} else {
+				rowIDMappingManager.addMapping(mappingType, id, lineCounter);
+			}
 
 			for (int count = 0; count < parsingPattern.size(); count++) {
 
@@ -304,7 +313,15 @@ public class TabularDataParser extends ATextParser {
 				if (columnDescription.getDataDescription() != null) {
 					dataDescription = columnDescription.getDataDescription();
 				}
-				String cellContent = splitLine[columnDescription.getColumn()];
+				int columnIndex = columnDescription.getColumn();
+				String cellContent = null;
+				if (columnIndex >= splitLine.length) {
+					cellContent = "NA";
+					Logger.log(new Status(IStatus.WARNING, this.toString(), "Not enough cells specified in line: "
+							+ lineCounter + ". Adding NA."));
+				} else {
+					cellContent = splitLine[columnIndex];
+				}
 
 				try {
 					switch (dataDescription.getRawDataType())

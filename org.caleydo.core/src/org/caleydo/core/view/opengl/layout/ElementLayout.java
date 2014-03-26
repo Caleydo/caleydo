@@ -588,14 +588,14 @@ public class ElementLayout implements Comparable<ElementLayout> {
 		absoluteSizeX = Float.NaN;
 		ratioSizeX = 1;
 		pixelSizeX = Integer.MIN_VALUE;
-		dynamicSizeUnitsX = 0;
+		dynamicSizeUnitsX = Integer.MIN_VALUE;
 	}
 
 	private void resetY() {
 		absoluteSizeY = Float.NaN;
 		ratioSizeY = 1;
 		pixelSizeY = Integer.MIN_VALUE;
-		dynamicSizeUnitsY = 0;
+		dynamicSizeUnitsY = Integer.MIN_VALUE;
 	}
 
 	void render(GL2 gl) {
@@ -670,7 +670,7 @@ public class ElementLayout implements Comparable<ElementLayout> {
 			sizeScaledX = layoutManager.getPixelGLConverter().getGLWidthForPixelWidth(pixelSizeX);
 		else if (!Float.isNaN(absoluteSizeX))
 			sizeScaledX = absoluteSizeX;
-		else if (numberOfDynamicSizeUnitsX > 0 && dynamicSizeUnitsX > 0)
+		else if (numberOfDynamicSizeUnitsX > 0 && dynamicSizeUnitsX >= 0)
 			sizeScaledX = (float) dynamicSizeUnitsX / numberOfDynamicSizeUnitsX * totalWidth;
 		else
 			sizeScaledX = ratioSizeX * totalWidth;
@@ -679,7 +679,7 @@ public class ElementLayout implements Comparable<ElementLayout> {
 			sizeScaledY = layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(pixelSizeY);
 		else if (!Float.isNaN(absoluteSizeY))
 			sizeScaledY = absoluteSizeY;
-		else if (numberOfDynamicSizeUnitsY > 0 && dynamicSizeUnitsY > 0)
+		else if (numberOfDynamicSizeUnitsY > 0 && dynamicSizeUnitsY >= 0)
 			sizeScaledY = (float) dynamicSizeUnitsY / numberOfDynamicSizeUnitsY * totalHeight;
 		else
 			sizeScaledY = ratioSizeY * totalHeight;

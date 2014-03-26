@@ -39,7 +39,10 @@ public class CategoricalHistogram extends Histogram {
 			int index = classDescription.indexOf(categoryType);
 			if (index > unknownIndex)
 				index--;
-			add(index, objectID);
+			if (index < 0)
+				addNAN(objectID);
+			else
+				add(index, objectID);
 		}
 	}
 

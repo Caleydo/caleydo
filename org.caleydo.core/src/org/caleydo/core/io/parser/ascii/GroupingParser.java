@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDMappingManager;
@@ -40,7 +41,7 @@ public class GroupingParser extends ATextParser {
 	private ArrayList<PerspectiveInitializationData> perspectiveInitializationDatas;
 
 	public GroupingParser(GroupingParseSpecification groupingSpecifications, IDType targetIDType) {
-		super(groupingSpecifications.getDataSourcePath());
+		super(groupingSpecifications.getDataSourcePath(), groupingSpecifications);
 		this.groupingSpecifications = groupingSpecifications;
 		this.targetIDType = targetIDType;
 	}
@@ -154,8 +155,13 @@ public class GroupingParser extends ATextParser {
 				String originalID = columns[groupingSpecifications.getColumnOfRowIds()];
 
 				originalID = convertID(originalID, parsingRules);
+				Integer mappedID;
+				if (sourceIDType.getDataType() == EDataType.INTEGER) {
+					mappedID = idMappingManager.getID(sourceIDType, targetIDType, Integer.parseInt(originalID));
+				} else {
+					mappedID = idMappingManager.getID(sourceIDType, targetIDType, originalID);
+				}
 
-				Integer mappedID = idMappingManager.getID(sourceIDType, targetIDType, originalID);
 				if (mappedID == null) {
 					Logger.log(new Status(IStatus.WARNING, this.toString(), "Could not map id: " + originalID));
 					continue;

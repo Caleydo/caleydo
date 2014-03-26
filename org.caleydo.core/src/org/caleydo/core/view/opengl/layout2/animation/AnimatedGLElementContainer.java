@@ -36,6 +36,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout2;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
+import com.google.common.base.Supplier;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 /**
@@ -342,11 +343,17 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 				child.getLayoutDataAs(IInTransition.class, defaultInTransition));
 	}
 
+	public final void add(int index, GLElement child, int duration) {
+		add(index, child, asDuration(duration), child.getLayoutDataAs(IInTransition.class, defaultInTransition));
+	}
+
 	public final void add(int index, GLElement child, Duration duration, IInTransition animation) {
 		if (child.getParent() == this) {
 			int from = indexOf(child);
 			if (from < index) // as we remove before we insert
 				index--;
+			if (index < 0) // index can be -1 if the child was removed and added again immediately
+				index = 0;
 		}
 		// we want to add this child now but smooth it in, so we are interested in its final position in the future at
 		// the future state
@@ -439,8 +446,12 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	 * @param h
 	 */
 	public final void resizeChild(GLElement child, float w, float h) {
+		resizeChild(child, w, h, child.getLayoutDataAs(Duration.class, defaultDuration));
+	}
+
+	public final void resizeChild(GLElement child, float w, float h, Duration duration) {
 		final IMoveTransition animation = child.getLayoutDataAs(IMoveTransition.class, defaultMoveTransition);
-		final Duration duration = child.getLayoutDataAs(Duration.class, defaultDuration);
+		// final Duration duration = child.getLayoutDataAs(Duration.class, defaultDuration);
 		ManualMoveAnimation anim = new ManualMoveAnimation(duration.getDuration(), animation, child.getBounds());
 		child.setSize(w, h);
 		layoutAnimations.put(GLElementAccessor.asLayoutElement(child), anim);
@@ -513,7 +524,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 
 	@Override
 	protected boolean hasPickAbles() {
-		return !children.isEmpty(); // may have pickables
+		return super.hasPickAbles() || !children.isEmpty(); // may have pickables
 	}
 
 	@Override
@@ -558,6 +569,11 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 
 		@Override
 		public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+			return wrappee.getLayoutDataAs(clazz, default_);
+		}
+
+		@Override
+		public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
 			return wrappee.getLayoutDataAs(clazz, default_);
 		}
 

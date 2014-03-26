@@ -48,4 +48,10 @@
             name="Bookmark">
       </command>
    </extension>
+   <extension
+         point="org.caleydo.datadomain.TypedIDActions">
+      <factory
+            class="org.caleydo.view.bookmark.internal.TypedIDActions">
+      </factory>
+   </extension>
 </plugin>

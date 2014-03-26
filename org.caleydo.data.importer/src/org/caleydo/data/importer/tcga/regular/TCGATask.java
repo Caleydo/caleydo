@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -31,6 +32,7 @@ import org.caleydo.view.tourguide.api.external.ScoreParseSpecification;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.api.score.Scores;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -43,24 +45,28 @@ import com.google.gson.JsonObject;
  *
  */
 public class TCGATask extends ATCGATask {
-	private static final Logger log = Logger.getLogger(TCGATask.class.getSimpleName());
+	private static final Logger log = Logger.getLogger(TCGATask.class.getName());
 	private static final long serialVersionUID = 7378867458430247164L;
 
 	private final TumorType tumorType;
 	private final Date analysisRun;
 	private final Date dataRun;
 	private final TCGASettings settings;
+	private final String id;
 
 	public TCGATask(TumorType tumorType, Date analysisRun, Date dataRun, TCGASettings settings) {
 		this.tumorType = tumorType;
 		this.analysisRun = analysisRun;
 		this.dataRun = dataRun;
 		this.settings = settings;
+
+		this.id = String.format("%s@%s", tumorType, Settings.format(analysisRun));
 	}
 
 	@Override
 	protected JsonElement compute() {
-		log.info("Downloading data for tumor type " + tumorType + " for analysis run " + analysisRun);
+		Stopwatch w = new Stopwatch().start();
+		log.info(id + " start downloading");
 
 		String run = Settings.format(analysisRun);
 		String runSpecificOutputPath = settings.getDataDirectory(run);
@@ -68,28 +74,33 @@ public class TCGATask extends ATCGATask {
 		TCGADataSets project = new TCGADataSetGenerator(tumorType, settings.createFirehoseProvider(tumorType,
 				analysisRun, dataRun), settings).invoke();
 
-		if (project.isEmpty())
-			return null;
-
-		if (settings.isDownloadOnly())
-			return null;
-
-		log.info("Building project file for tumor type " + tumorType + " for analysis run " + run);
-
-		Collection<ATableBasedDataDomain> dataDomains = loadProject(project);
-		if (dataDomains.isEmpty()) {
-			log.warning("No Data Domains loaded for tumor type " + tumorType + " for analysis run " + run
-					+ " -> skipping rest");
+		if (project.isEmpty()) {
+			log.warning(id + " no datasets were created, skipping");
 			return null;
 		}
 
-		log.info("Post Processing project file for tumor type " + tumorType + " for analysis run " + run);
+		if (settings.isDownloadOnly()) {
+			log.fine(id + " no project generation just downloading data");
+			return null;
+		}
+
+		log.info(id + " loading project");
+
+		Collection<ATableBasedDataDomain> dataDomains = loadProject(project);
+		if (dataDomains.isEmpty()) {
+			log.severe(id + " no datadomains were loaded, skipping");
+			return null;
+		}
+
+		log.fine(id + " start post processing");
 		for (TCGADataSet set : project) {
 			new TCGAPostprocessingTask(set).invoke();
 		}
 
-		if (project.getMutsigParser() != null)
+		if (project.getMutsigParser() != null) {
+			log.info(id + " start loading mutsig scores");
 			loadExternalScores(project.getMutsigParser(), dataDomains);
+		}
 
 		final String projectOutputPath = runSpecificOutputPath + run + "_" + tumorType + ".cal";
 
@@ -101,27 +112,25 @@ public class TCGATask extends ATCGATask {
 		metaData.set("Tumor", tumorType.getLabel());
 		metaData.set("Report URL", settings.getReportUrl(analysisRun, tumorType));
 
+		log.info(id + " saving project");
 		if (!saveProject(dataDomains, projectOutputPath, metaData)) {
-			log.severe("Saving Project failed for tumor type " + tumorType + " for analysis run " + run);
+			log.severe(id + " saving error, skipping");
 			return null;
 		}
 
 		saveProjectSpecificReport(dataDomains, tumorType, runSpecificOutputPath, run);
 
-		log.info("Built project file for tumor type " + tumorType + " for analysis run " + run);
 
 		project = null;
 
 		String projectRemoteOutputURL = settings.getTcgaServerURL() + run + "/" + run + "_" + tumorType + ".cal";
 
-		String jnlpFileName = run + "_" + tumorType + ".jnlp";
-
-		generateJNLP(new File(settings.getJNLPOutputDirectory(), jnlpFileName), projectRemoteOutputURL);
-
 		JsonObject report = generateTumorReportLine(dataDomains, tumorType, analysisRun, projectRemoteOutputURL);
 
+		log.fine(id + " cleanup up datadomains: " + dataDomains);
 		cleanUp(dataDomains);
 
+		log.info(id + " done in " + w);
 		return report;
 	}
 
@@ -137,7 +146,7 @@ public class TCGATask extends ATCGATask {
 			}
 		}
 		if (target == null) {
-			System.err.println("skipping loading mutsig values as there is no mutation data domain");
+			log.warning(id + " skipping loading mutsig values as there is no mutation data domain");
 			return;
 		}
 
@@ -147,6 +156,7 @@ public class TCGATask extends ATCGATask {
 		for (ISerializeableScore score : scores) {
 			s.addPersistentScoreIfAbsent(score);
 		}
+		log.fine(id + " loaded external scores: " + scores);
 	}
 
 	protected void saveProjectSpecificReport(Collection<ATableBasedDataDomain> dataDomains, TumorType tumorType,
@@ -165,7 +175,7 @@ public class TCGATask extends ATCGATask {
 		try {
 			Files.write(projectReport, new File(outputPath, fileName), Charset.defaultCharset());
 		} catch (IOException e) {
-			log.warning("Could not save project report to " + outputPath + "/" + fileName);
+			log.log(Level.WARNING, id + "Could not save project report to " + outputPath + "/" + fileName, e);
 		}
 	}
 
@@ -181,8 +191,6 @@ public class TCGATask extends ATCGATask {
 		AdditionalInfo addInfoCopyNumber = null;
 		AdditionalInfo addInfoMethylation = null;
 		AdditionalInfo addInfoRPPA = null;
-
-		String jnlpURL = settings.getJNLPURL(Settings.format(analysisRun), tumor);
 
 		String firehoseReportURL = settings.getReportUrl(analysisRun, tumor);
 
@@ -232,8 +240,6 @@ public class TCGATask extends ATCGATask {
 			report.add("nonGenomic", nonGenomic);
 			nonGenomic.add("Clinical", gson.toJsonTree(addInfoClinical));
 		}
-
-		report.addProperty("Caleydo JNLP", jnlpURL);
 		report.addProperty("Caleydo Project", projectOutputPath);
 		report.addProperty("Firehose Report", firehoseReportURL);
 

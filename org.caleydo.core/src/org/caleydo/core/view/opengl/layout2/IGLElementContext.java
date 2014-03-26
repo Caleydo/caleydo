@@ -60,6 +60,7 @@ public interface IGLElementContext {
 	IPopupLayer getPopupLayer();
 
 	/**
+	 * returns the corresponding {@link ISWTLayer}
 	 * 
 	 * @return
 	 */
@@ -67,7 +68,7 @@ public interface IGLElementContext {
 
 	/**
 	 * chance for a context to initialize an added element
-	 * 
+	 *
 	 * @param element
 	 */
 	void init(GLElement element);

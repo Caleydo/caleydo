@@ -30,6 +30,8 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
+ * a {@link ButtonBarBuilder} is used for creating the visualization switching button bars
+ *
  * @author Samuel Gratzl
  *
  */
@@ -50,20 +52,43 @@ public class ButtonBarBuilder {
 		}
 	};
 
-	public final GLElementFactorySwitcher switcher;
+	/**
+	 * size of the buttons, by default 16
+	 */
 	private int size = 16;
 	private IGLRenderer renderer = BUTTON_RENDERER;
 	private IGLRenderer hoverEffect = null;
 	private IGLLayout2 layout = GLLayouts.flowHorizontal(2);
 
+	private final GLElementFactorySwitcher switcher;
+	/**
+	 * prepended elements to render
+	 */
 	private final Collection<GLElement> prepend = new ArrayList<>(0);
+	/**
+	 * appended elements to render
+	 */
 	private final Collection<GLElement> append = new ArrayList<>(0);
+
+	/**
+	 * a custom callback to be notified during a change
+	 */
+	private ISelectionCallback custom;
 
 	/**
 	 *
 	 */
+	public ButtonBarBuilder() {
+		this(null);
+	}
+
 	public ButtonBarBuilder(GLElementFactorySwitcher switcher) {
 		this.switcher = switcher;
+	}
+
+	public ButtonBarBuilder customCallback(ISelectionCallback callback) {
+		this.custom = callback;
+		return this;
 	}
 
 	public ButtonBarBuilder prepend(GLElement elem) {
@@ -100,10 +125,21 @@ public class ButtonBarBuilder {
 		return layoutUsing(layout);
 	}
 
-	public GLElement build() {
-		return new ButtonBar(this);
+	public GLElement build(Iterable<GLElementSupplier> suppliers, String initialID) {
+		return new ButtonBar(this, suppliers, initialID);
 	}
 
+	public GLElement build() {
+		assert switcher != null;
+		return new ButtonBar(this, switcher, switcher, null);
+	}
+
+	/**
+	 * special button bar layouts including fancy circular and sliding ones
+	 *
+	 * @author Samuel Gratzl
+	 *
+	 */
 	public static enum EButtonBarLayout implements IGLLayout2 {
 		HORIZONTAL, VERTICAL, SLIDE_LEFT, SLIDE_RIGHT, SLIDE_DOWN, HOVER_BLOCK_3x3;
 
@@ -262,20 +298,34 @@ public class ButtonBarBuilder {
 		// }
 	}
 
+	/**
+	 * result of the bulder
+	 *
+	 * @author Samuel Gratzl
+	 *
+	 */
 	private static class ButtonBar extends AnimatedGLElementContainer implements ISelectionCallback,
 			IActiveChangedCallback, IPickingListener {
 		private final EButtonBarLayout layout;
 		private final RadioController controller = new RadioController(this);
-		final GLElementFactorySwitcher switcher;
-		final int prepended;
+		private final ISelectionCallback custom;
+		final int prepended; // for right counting the buttons
 
 		boolean hovered;
 
-		public ButtonBar(ButtonBarBuilder builder) {
+		private final GLElementFactorySwitcher switcher;
+		private final String initialID;
+
+		public ButtonBar(ButtonBarBuilder builder, Iterable<GLElementSupplier> suppliers, String initialID) {
+			this(builder, null, suppliers, initialID);
+		}
+
+		public ButtonBar(ButtonBarBuilder builder, GLElementFactorySwitcher switcher,
+				Iterable<GLElementSupplier> suppliers, String initialID) {
+			this.initialID = initialID;
 			setLayout(builder.layout);
-			this.switcher = builder.switcher;
-			this.switcher.onActiveChanged(this);
 			layout = toButtonBarLayout(builder.layout);
+			this.switcher = switcher;
 
 			if (layout != null) {
 				setAnimateByDefault(true);
@@ -288,15 +338,16 @@ public class ButtonBarBuilder {
 
 			prepended = builder.prepend.size();
 			addAll(builder.prepend);
-			addButtons(builder);
+			addButtons(builder, suppliers);
 			addAll(builder.append);
+			this.custom = builder.custom;
 		}
 
 		/**
 		 * @return
 		 */
 		public int getActive() {
-			return switcher.getActive() + prepended;
+			return controller.getSelected() + prepended;
 		}
 
 		private static EButtonBarLayout toButtonBarLayout(IGLLayout2 layout) {
@@ -306,9 +357,9 @@ public class ButtonBarBuilder {
 			return l.isAnimated() ? l : null;
 		}
 
-		private void addButtons(ButtonBarBuilder builder) {
+		private void addButtons(ButtonBarBuilder builder, Iterable<GLElementSupplier> suppliers) {
 			int i = 0;
-			for (GLElementSupplier sup : builder.switcher) {
+			for (GLElementSupplier sup : suppliers) {
 				GLButton b = new GLButton();
 				b.setPickingObjectId(i++);
 				b.setTooltip(sup.getLabel());
@@ -318,6 +369,7 @@ public class ButtonBarBuilder {
 					b.setHoverEffect(builder.hoverEffect);
 				controller.add(b);
 				b.setSize(builder.size, builder.size);
+				b.setzDelta(0.5f);
 				this.add(b, 0);
 			}
 		}
@@ -369,24 +421,50 @@ public class ButtonBarBuilder {
 		@Override
 		protected void init(IGLElementContext context) {
 			super.init(context);
-			switcher.onActiveChanged(this);
-			controller.setSelected(switcher.getActive());
+			String target = initialID;
+			if (switcher != null) {
+				switcher.onActiveChanged(this);
+				target = switcher.getActiveId();
+			}
+			if (target != null) {
+				int i = 0;
+				for (GLButton b : controller) {
+					if (target.equals(b.getLayoutDataAs(GLElementSupplier.class, null).getId())) {
+						controller.setCallback(null);
+						controller.setSelected(i);
+						controller.setCallback(this);
+						break;
+					}
+					i++;
+				}
+			}
 		}
 
 		@Override
 		protected void takeDown() {
-			switcher.removeOnActiveChanged(this);
+			if (switcher != null)
+				switcher.removeOnActiveChanged(this);
 			super.takeDown();
 		}
 
 		@Override
 		public void onSelectionChanged(GLButton button, boolean selected) {
-			switcher.setActive(button.getPickingObjectId());
+			if (switcher != null)
+				switcher.setActive(button.getPickingObjectId());
+			if (custom != null)
+				custom.onSelectionChanged(button, selected);
 		}
 
 		@Override
 		public void onActiveChanged(int active) {
-			controller.setSelected(active);
+			int i = 0;
+			for (GLButton b : controller) {
+				if (b.getPickingObjectId() == active) {
+					controller.setSelected(i);
+					break;
+				}
+				i++;
+			}
 			relayout();
 		}
 

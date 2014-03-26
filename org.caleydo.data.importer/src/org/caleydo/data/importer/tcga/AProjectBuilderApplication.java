@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveAction;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
@@ -28,9 +30,18 @@ import org.kohsuke.args4j.CmdLineParser;
 public abstract class AProjectBuilderApplication<S extends Settings>
 	implements IApplication {
 
+	private static final Logger log;
+
+	static {
+		System.setProperty("java.util.logging.config.file", "logging.properties");
+		log = Logger.getLogger(AProjectBuilderApplication.class.getName());
+	}
+
 	@Override
 	public final Object start(IApplicationContext context) throws Exception {
+		log.info("start");
 		S settings = parseArgs(context);
+		log.info("settings:\n" + settings);
 
 		GeneralManager.get().setDryMode(true);
 
@@ -53,7 +64,7 @@ public abstract class AProjectBuilderApplication<S extends Settings>
 				System.exit(1);
 			}
 		} catch (CmdLineException e) {
-			System.err.println("Error parsing arguments: " + e.getMessage());
+			log.log(Level.SEVERE, "parsing argument error: " + e.getMessage(), e);
 			parser.printUsage(System.err);
 			System.exit(1);
 		}

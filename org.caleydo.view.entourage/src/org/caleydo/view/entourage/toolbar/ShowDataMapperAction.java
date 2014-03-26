@@ -6,6 +6,8 @@
 package org.caleydo.view.entourage.toolbar;
 
 import org.caleydo.core.gui.SimpleAction;
+import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.view.entourage.Activator;
 import org.caleydo.view.entourage.datamapping.DataMappers;
 
 /**
@@ -14,13 +16,13 @@ import org.caleydo.view.entourage.datamapping.DataMappers;
  */
 public class ShowDataMapperAction extends SimpleAction {
 	public static final String LABEL = "Show data assignment view";
-	public static final String ICON = "resources/icons/view/pathway/data_mapping.png";
+	public static final String ICON = "resources/icons/data_mapping.png";
 
 	/**
 	 * Constructor.
 	 */
 	public ShowDataMapperAction() {
-		super(LABEL, ICON);
+		super(LABEL, ICON, new ResourceLoader(Activator.getResourceLocator()));
 		setChecked(false);
 	}
 

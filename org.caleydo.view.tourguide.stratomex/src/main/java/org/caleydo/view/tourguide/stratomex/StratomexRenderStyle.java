@@ -28,6 +28,7 @@ public class StratomexRenderStyle {
 	public static final URL ICON_CANCEL = icon("cancel.png");
 	public static final URL ICON_ACCEPT = icon("accept.png");
 	public static final URL ICON_ACCEPT_DISABLED = icon("accept_disabled.png");
+	public static final URL ICON_STRATOMEX = icon("icon.png");
 
 	public static Color stratomexHitGroup() {
 		return STRATOMEX_HIT_GROUP;

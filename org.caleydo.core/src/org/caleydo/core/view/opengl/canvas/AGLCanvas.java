@@ -10,6 +10,7 @@ import gleem.linalg.Vec2f;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -18,9 +19,12 @@ import javax.media.opengl.GLRunnable;
 
 import org.apache.commons.lang.SystemUtils;
 import org.caleydo.core.internal.MyPreferences;
+import org.caleydo.core.view.opengl.canvas.internal.DnDAdapter;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -34,6 +38,7 @@ import com.google.common.base.Function;
  */
 public abstract class AGLCanvas implements IGLCanvas {
 	private float scale;
+	private final DnDAdapter dnd;
 
 	/**
 	 * volatile for better multi thread access
@@ -72,7 +77,39 @@ public abstract class AGLCanvas implements IGLCanvas {
 			s = 1;
 		scale = s;
 		drawable.addGLEventListener(new ReshapeOnScaleChange());
+
+		this.dnd = new DnDAdapter(this, new Iterable<IGLMouseListener>() {
+			@Override
+			public Iterator<IGLMouseListener> iterator() {
+				return mouseListeners();
+			}
+		});
 	}
+
+	@Override
+	public void addDragListener(DragSourceListener l) {
+		dnd.addDragListener(l);
+	}
+
+	@Override
+	public void addDropListener(DropTargetListener l) {
+		dnd.addDropListener(l);
+	}
+
+	@Override
+	public boolean removeDragListener(DragSourceListener l) {
+		return dnd.removeDragListener(l);
+	}
+
+	@Override
+	public boolean removeDropListener(DropTargetListener l) {
+		return dnd.removeDropListener(l);
+	}
+
+	/**
+	 * @return
+	 */
+	protected abstract Iterator<IGLMouseListener> mouseListeners();
 
 	/**
 	 *
@@ -92,6 +129,7 @@ public abstract class AGLCanvas implements IGLCanvas {
 		// add a listener to the whole chain to the top as setVisible doesn't propagate down
 		c.addListener(SWT.Show, showHide);
 		c.addListener(SWT.Hide, showHide);
+		dnd.init();
 	}
 
 	/**
@@ -142,6 +180,7 @@ public abstract class AGLCanvas implements IGLCanvas {
 		return dip(value_px);
 	}
 
+	@Override
 	public final Vec2f toDIP(Point point) {
 		return new Vec2f(dip(point.x), dip(point.y));
 	}

@@ -134,7 +134,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		selectRowListener.add(new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
-				config.onRowClick(table, pick.getPickingMode(), toRow(pick), false);
+				config.onRowClick(table, pick, toRow(pick), false, context);
 			}
 
 			protected IRow toRow(Pick pick) {
@@ -171,6 +171,24 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		return selectedRowListener;
 	}
 
+	public ARankColumnModel toModelByAbs(float x_abs) {
+		return toModel(toRelative(new Vec2f(x_abs, 0)).x());
+	}
+
+	public ARankColumnModel toModel(float x) {
+		GLElement r = null;
+		for (GLElement g : this) {
+			Vec2f loc = g.getLocation();
+			if (loc.x() > x) // last one is the correct one
+				break;
+			r = g;
+		}
+		if (r instanceof ITableColumnUI) {
+			return ((ITableColumnUI) r).getModel();
+		}
+		return null;
+	}
+
 	/**
 	 * @param pick
 	 */
@@ -193,7 +211,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		default:
 			break;
 		}
-		config.onRowClick(table, pick.getPickingMode(), table.getSelectedRow(), true);
+		config.onRowClick(table, pick, table.getSelectedRow(), true, context);
 	}
 
 	@ListenTo(sendToMe = true)
@@ -639,7 +657,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 					g.popName();
 				}
 			}
-			config.renderRowBackground(g, x, bounds.y(), w, bounds.w(), even, rankedRow, selected);
+			config.renderRowBackground(g, new Rect(x, bounds.y(), w, bounds.w()), even, rankedRow, selected);
 		}
 	}
 

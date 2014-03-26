@@ -46,7 +46,6 @@ public final class PathwayFilters {
 		}
 	};
 
-
 	/**
 	 * Selects only pathways that contain a specified {@link PathwayVertexRep}.
 	 *
@@ -113,5 +112,26 @@ public final class PathwayFilters {
 		public boolean showPathway(PathwayGraph pathway) {
 			return !view.hasPathway(pathway);
 		}
+	}
+
+	/**
+	 * Specify a set of pathways that should be present.
+	 *
+	 * @author Christian
+	 *
+	 */
+	public static class PathwaySetFilter implements IPathwayFilter {
+
+		private final Set<PathwayGraph> pathways;
+
+		public PathwaySetFilter(Set<PathwayGraph> pathways) {
+			this.pathways = pathways;
+		}
+
+		@Override
+		public boolean showPathway(PathwayGraph pathway) {
+			return pathways.contains(pathway);
+		}
+
 	}
 }

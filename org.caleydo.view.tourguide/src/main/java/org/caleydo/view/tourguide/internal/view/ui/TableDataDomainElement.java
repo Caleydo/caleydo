@@ -36,11 +36,13 @@ public class TableDataDomainElement extends ADataDomainElement {
 		super.createContextMenu(creator);
 		Collection<Perspective> dims = getModel().getDimensionPerspectives();
 		if (!dims.isEmpty()) {
-			Perspective dim = getModel().getDimensionSelection();
-			GroupContextMenuItem item = new GroupContextMenuItem("Used Dimension Perspective");
+			Perspective dim = getModel().getOppositeSelection();
+			GroupContextMenuItem item = new GroupContextMenuItem("Used " + getModel().getOppositeIDType() + " View");
 			creator.addContextMenuItem(item);
 			for (Perspective d : dims)
-				item.add(new GenericContextMenuItem(d.getLabel(), EContextMenuType.CHECK,
+				item.add(new GenericContextMenuItem(String.format("%s (%d items)", d.getLabel(), d.getVirtualArray()
+						.size()),
+						EContextMenuType.CHECK,
 						new SelectDimensionSelectionEvent(d).to(this)).setState(d == dim));
 			creator.addSeparator();
 		}
@@ -49,7 +51,7 @@ public class TableDataDomainElement extends ADataDomainElement {
 	@ListenTo(sendToMe = true)
 	private void onSelectionDimension(final SelectDimensionSelectionEvent e) {
 		Perspective d = e.getDim();
-		getModel().setDimensionSelection(d);
+		getModel().setOppositeSelection(d);
 	}
 
 	@Override
@@ -75,7 +77,7 @@ public class TableDataDomainElement extends ADataDomainElement {
 		@Override
 		public void create() {
 			super.create();
-			getShell().setText("Edit Filter of " + model.getDataDomain().getLabel());
+			getShell().setText("Edit Filter of " + model.getLabel());
 			this.setBlockOnOpen(false);
 		}
 

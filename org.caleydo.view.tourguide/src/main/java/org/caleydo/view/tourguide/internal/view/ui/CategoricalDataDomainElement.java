@@ -67,7 +67,7 @@ public class CategoricalDataDomainElement extends ADataDomainElement {
 		@Override
 		public void create() {
 			super.create();
-			getShell().setText("Edit Filter of " + model.getDataDomain().getLabel());
+			getShell().setText("Edit Filter of " + model.getLabel());
 			this.setBlockOnOpen(false);
 		}
 

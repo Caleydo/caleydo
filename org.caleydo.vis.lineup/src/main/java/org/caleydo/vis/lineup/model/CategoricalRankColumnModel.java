@@ -24,8 +24,9 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.vis.lineup.internal.event.FilterEvent;
+import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.ui.CatFilterDalog;
+import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
@@ -47,7 +48,7 @@ import com.google.common.collect.Multiset;
 public final class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> extends
 		ABasicFilterableRankColumnModel implements
  IFilterColumnMixin, IGrabRemainingHorizontalSpace, Cloneable,
-		IRankableColumnMixin {
+		IRankableColumnMixin, IDataBasedColumnMixin {
 	private final Function<IRow, CATEGORY_TYPE> data;
 	private final Set<CATEGORY_TYPE> selection = new HashSet<>();
 	private final String labelNA;
@@ -103,6 +104,14 @@ public final class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<C
 		return metaData;
 	}
 
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	@Override
+	public Function<IRow, CATEGORY_TYPE> getData() {
+		return data;
+	}
+
 	@Override
 	public String getValue(IRow row) {
 		CATEGORY_TYPE value = getCatValue(row);
@@ -128,7 +137,7 @@ public final class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<C
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				CatFilterDalog<CATEGORY_TYPE> dialog = new CatFilterDalog<>(canvas.getShell(), getTitle(), summary,
+				CatFilterDalog<CATEGORY_TYPE> dialog = new CatFilterDalog<>(canvas.getShell(), getLabel(), summary,
 						metaData, selection, CategoricalRankColumnModel.this, getTable().hasSnapshots(), loc, filterNA,
 						labelNA);
 				dialog.open();
@@ -136,7 +145,7 @@ public final class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<C
 		});
 	}
 
-	protected void setFilter(Collection<CATEGORY_TYPE> filter, boolean isFilterNA, boolean isGlobalFilter,
+	public void setFilter(Collection<CATEGORY_TYPE> filter, boolean isFilterNA, boolean isGlobalFilter,
 			boolean isRankIndependentFilter) {
 		if (filter.equals(selection) && isFilterNA == this.filterNA && this.isGlobalFilter == isGlobalFilter
 				&& this.isRankIndependentFilter == isRankIndependentFilter)
@@ -153,6 +162,13 @@ public final class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<C
 	@Override
 	public boolean isFiltered() {
 		return selection.size() < metaData.size();
+	}
+
+	/**
+	 * @return the selection, see {@link #selection}
+	 */
+	public Set<CATEGORY_TYPE> getSelection() {
+		return selection;
 	}
 
 	/**
@@ -252,7 +268,7 @@ public final class CategoricalRankColumnModel<CATEGORY_TYPE extends Comparable<C
 		}
 
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 			if (h < 5)
 				return;
 			String info = getTooltip();

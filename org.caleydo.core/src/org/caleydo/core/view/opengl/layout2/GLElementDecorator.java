@@ -8,6 +8,7 @@ package org.caleydo.core.view.opengl.layout2;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
+ * simple implementation of a {@link AGLElementDecorator}, that uses the whole size for the decorated element
  *
  * @author Samuel Gratzl
  *

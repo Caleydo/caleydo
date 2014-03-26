@@ -25,9 +25,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
@@ -964,8 +962,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			@Override
 			public void rightClicked(Pick pick) {
 
-				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getObjectID(), true));
-				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getObjectID(), false));
+				getContextMenuCreator().addContextMenuItem(new SplitBrickItem(pick.getObjectID(), true));
+				getContextMenuCreator().addContextMenuItem(new SplitBrickItem(pick.getObjectID(), false));
 			}
 
 		}, EPickingType.BRICK_CONNECTION_BAND.name());
@@ -1342,20 +1340,25 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		if (tablePerspective instanceof PathwayTablePerspective) {
 			brickConfigurer = new PathwayDataConfigurer();
 		} else if (tablePerspective.getNrDimensions() == 1) {
-
-			Object description = tablePerspective
-					.getDataDomain()
-					.getTable()
-					.getDataClassSpecificDescription(
-							tablePerspective.getDimensionPerspective().getVirtualArray().get(0),
-							tablePerspective.getRecordPerspective().getVirtualArray().get(0));
-
-			if (DataDomainOracle.isClinical(tablePerspective.getDataDomain())
-					&& !(description instanceof CategoricalClassDescription<?>)) {
-				brickConfigurer = new ClinicalDataConfigurer();
-			} else {
+			boolean homogenous = DataSupportDefinitions.homogenousTables.apply(tablePerspective);
+			boolean isCategory = DataSupportDefinitions.categoricalColumns.apply(tablePerspective);
+			// Object description = tablePerspective
+			// .getDataDomain()
+			// .getTable()
+			// .getDataClassSpecificDescription(
+			// tablePerspective.getDimensionPerspective().getVirtualArray().get(0),
+			// tablePerspective.getRecordPerspective().getVirtualArray().get(0));
+			if (isCategory)
 				brickConfigurer = new CategoricalDataConfigurer(tablePerspective);
-			}
+			else if (homogenous)
+				brickConfigurer = new NumericalDataConfigurer(tablePerspective);
+			else
+				// if (DataDomainOracle.isClinical(tablePerspective.getDataDomain())
+				// && !(description instanceof CategoricalClassDescription<?>)) {
+				brickConfigurer = new ClinicalDataConfigurer();
+			// } else {
+
+			// }
 		} else {
 			brickConfigurer = new NumericalDataConfigurer(tablePerspective);
 		}

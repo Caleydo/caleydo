@@ -11,11 +11,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.data.datadomain.TablePerspectiveActions;
+import org.caleydo.core.data.perspective.table.TableDoubleLists;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.function.IDoubleIterator;
+import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.ViewManager;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -23,6 +28,7 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
+import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.view.stratomex.EEmbeddingID;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
@@ -55,6 +61,12 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 
 	private IBrickSortingStrategy sortingStrategy = new NoSortingSortingStrategy();
 
+	/**
+	 *
+	 */
+	public ClinicalDataConfigurer() {
+	}
+
 	public static ClinicalDataConfigurer create(GLStratomex handler, TablePerspective underlying,
 			TablePerspective kaplan) {
 		ClinicalDataConfigurer dataConfigurer = null;
@@ -74,8 +86,10 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 
 	@Override
 	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {
-		layoutTemplate.setHeaderBarElements(createHeaderBarElements(layoutTemplate));
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate);
 
+		layoutTemplate.setHeaderBarElements(createHeaderBarElements(layoutTemplate));
+		layoutTemplate.setToolBarElements(toolBarElements);
 		layoutTemplate.showFooterBar(false);
 		layoutTemplate.showToolBar(true);
 
@@ -88,6 +102,7 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 
 	@Override
 	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate) {
+
 		layoutTemplate.setHeaderBarElements(createHeaderBarElements(layoutTemplate));
 
 		layoutTemplate.showFooterBar(true);
@@ -100,15 +115,15 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 
 	@Override
 	public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
-		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate);
 
 		List<Pair<String, Integer>> pickingIDs = new ArrayList<>();
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK.name(), layoutTemplate.getBrick().getID()));
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
-		toolBarElements.add(createCaptionLayout(layoutTemplate, pickingIDs, layoutTemplate.getBrick().getBrickColumn()
-				.getStratomexView()));
-		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
+//		toolBarElements.add(createCaptionLayout(layoutTemplate, pickingIDs, layoutTemplate.getBrick().getBrickColumn()
+//				.getStratomexView()));
+//		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setToolBarElements(toolBarElements);
 
@@ -117,15 +132,9 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 
 	@Override
 	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
-		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
-		ElementLayout leftPaddingLayout = new ElementLayout("padding");
-		leftPaddingLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-		toolBarElements.add(leftPaddingLayout);
-
-		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate);
 
 		layoutTemplate.setToolBarElements(toolBarElements);
-
 		layoutTemplate.showFooterBar(false);
 	}
 
@@ -173,13 +182,17 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 
 	@Override
 	public void setBrickViews(GLBrick brick, ABrickLayoutConfiguration brickLayout) {
-
+		List<TablePerspective> tablePerspectives = brick.getTablePerspectives();
+		boolean hasMixedValues = hasMixedValues(tablePerspectives);
 		EEmbeddingID embeddingID;
 		if (brick.isHeaderBrick()) {
-			embeddingID = EEmbeddingID.CLINICAL_HEADER_BRICK;
+			embeddingID = hasMixedValues ? EEmbeddingID.CLINICAL_NUMERICAL_HEADER_BRICK
+					: EEmbeddingID.CLINICAL_HEADER_BRICK;
 		} else {
-			embeddingID = EEmbeddingID.CLINICAL_SEGMENT_BRICK;
+			embeddingID = hasMixedValues ? EEmbeddingID.CLINICAL_NUMERICAL_SEGMENT_BRICK
+					: EEmbeddingID.CLINICAL_SEGMENT_BRICK;
 		}
+
 		Set<String> remoteRenderedViewIDs = ViewManager.get().getRemotePlugInViewIDs(GLStratomex.VIEW_TYPE,
 				embeddingID.id());
 
@@ -187,7 +200,6 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 		Collections.sort(viewIDs);
 
 		MultiFormRenderer multiFormRenderer = new MultiFormRenderer(brick.getStratomex(), true);
-		List<TablePerspective> tablePerspectives = brick.getTablePerspectives();
 
 		int globalRendererID = 0;
 		int localRendererID = -1;
@@ -225,6 +237,42 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 		// multiFormRenderer.addChangeListener(brick);
 	}
 
+	/**
+	 * checks whether the data behind the first {@link TablePerspective} has positive as well as negative raw values
+	 *
+	 * @param tablePerspectives
+	 * @return
+	 */
+	private static boolean hasMixedValues(List<TablePerspective> tablePerspectives) {
+		if (tablePerspectives.isEmpty())
+			return false;
+		TablePerspective p = tablePerspectives.get(0);
+		if (p.getParentTablePerspective() != null)
+			p = p.getParentTablePerspective();
+		boolean hasNegative = false;
+		boolean hasPositive = false;
+		IDoubleList list = TableDoubleLists.asRawList(p);
+		for (IDoubleIterator it = list.iterator(); it.hasNext();) {
+			double d = it.nextPrimitive();
+			hasNegative = hasNegative || d < 0;
+			hasPositive = hasPositive || d >= 0;
+			if (hasNegative && hasPositive) // early abort
+				return true;
+		}
+		return false;
+	}
+
+	protected ArrayList<ElementLayout> createToolBarElements(ABrickLayoutConfiguration layoutTemplate) {
+
+		final GLBrick brick = layoutTemplate.getBrick();
+		MultiFormViewSwitchingBar viewSwitchingBar = brick.getViewSwitchingBar();
+		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
+
+		toolBarElements.add(viewSwitchingBar);
+
+		return toolBarElements;
+	}
+
 	@Override
 	public IBrickSortingStrategy getBrickSortingStrategy() {
 
@@ -252,6 +300,11 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 	@Override
 	public boolean distributeBricksUniformly() {
 		return true;
+	}
+
+	@Override
+	public void addDataSpecificContextMenuEntries(ContextMenuCreator creator, GLBrick brick) {
+		TablePerspectiveActions.add(creator, brick.getTablePerspective(), this, true);
 	}
 
 }

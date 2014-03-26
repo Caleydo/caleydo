@@ -14,7 +14,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
-import org.caleydo.view.pathway.GLPathway;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -37,16 +36,16 @@ public class DatasetSelectionBox extends ControlContribution {
 
 	private IDataDomain mappingDataDomain;
 
-	private final GLPathway pathwayView;
+	private final String eventSpace;
 
 	/**
 	 * constructor as requested by ControlContribution
 	 *
 	 */
-	public DatasetSelectionBox(IDataDomain mappingDataDomain, GLPathway pathwayView) {
+	public DatasetSelectionBox(IDataDomain mappingDataDomain, String eventSpace) {
 		super("Select Data");
 		this.mappingDataDomain = mappingDataDomain;
-		this.pathwayView = pathwayView;
+		this.eventSpace = eventSpace;
 	}
 
 	@Override
@@ -84,7 +83,8 @@ public class DatasetSelectionBox extends ControlContribution {
 				// if (view instanceof GLPathway) {
 				// GLPathway pwView = (GLPathway) view;
 				AddTablePerspectivesEvent addTablePerspectivesEvent = new AddTablePerspectivesEvent();
-				addTablePerspectivesEvent.to(pathwayView);
+				addTablePerspectivesEvent.setEventSpace(eventSpace);
+				// addTablePerspectivesEvent.to(receiver);
 				TablePerspective tablePerspective = null;
 				if (dataSetChooser.getSelectionIndex() != 0) {
 					GeneticDataDomain dataDomain = candidateDataDomains.get(dataSetChooser.getSelectionIndex() - 1);
@@ -96,13 +96,15 @@ public class DatasetSelectionBox extends ControlContribution {
 					GeneralManager.get().getEventPublisher().triggerEvent(addTablePerspectivesEvent);
 					PathwayMappingEvent event = new PathwayMappingEvent(tablePerspective);
 					event.setSender(this);
-					event.to(pathwayView);
+					event.setEventSpace(eventSpace);
+					// event.to(receiver);
 					GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 				} else {
 					PathwayMappingEvent event = new PathwayMappingEvent();
 					event.setSender(this);
-					event.to(pathwayView);
+					event.setEventSpace(eventSpace);
+					// event.to(receiver);
 					GeneralManager.get().getEventPublisher().triggerEvent(event);
 				}
 

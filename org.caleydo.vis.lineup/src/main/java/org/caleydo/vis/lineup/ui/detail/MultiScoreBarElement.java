@@ -38,7 +38,7 @@ public class MultiScoreBarElement extends ScoreBarElement {
 		StringBuilder b = new StringBuilder();
 
 		for (ARankColumnModel child : mmodel) {
-			b.append(child.getTitle()).append(": ").append(getText(r, child, v.values[i], inferreds[i]));
+			b.append(child.getLabel()).append(": ").append(getText(r, child, v.values[i], inferreds[i]));
 			if (i == v.repr)
 				b.append(" MAX");
 			b.append("\n");
@@ -49,8 +49,8 @@ public class MultiScoreBarElement extends ScoreBarElement {
 	}
 
 	@Override
-	public void renderImpl(GLGraphics g, float w, float h) {
-		final IRow r = getLayoutDataAs(IRow.class, null);
+	public void renderImpl(GLGraphics g, float w, float h, IRow row) {
+		final IRow r = row;
 		IMultiColumnMixin mmodel = (IMultiColumnMixin) model;
 		MultiDouble v = mmodel.getSplittedValue(r);
 		if (v.repr < 0)

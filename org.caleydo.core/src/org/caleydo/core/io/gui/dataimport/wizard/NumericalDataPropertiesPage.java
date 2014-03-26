@@ -9,14 +9,15 @@
 package org.caleydo.core.io.gui.dataimport.wizard;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.gui.dataimport.widget.DataTranspositionWidget;
-import org.caleydo.core.io.gui.dataimport.widget.NumericalDataPropertiesWidget;
+import org.caleydo.core.io.gui.dataimport.widget.numerical.NumericalDataPropertiesCollectionWidget;
+import org.caleydo.core.io.gui.dataimport.widget.numerical.NumericalDataPropertiesCollectionWidget.ENumericalDataProperties;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -31,7 +32,7 @@ import org.eclipse.swt.widgets.Listener;
  * @author Christian Partl
  *
  */
-public class NumericalDataPropertiesPage extends AImportDataPage implements Listener {
+public class NumericalDataPropertiesPage extends AImportDataPage<DataImportWizard> implements Listener {
 
 	public static final String PAGE_NAME = "Numerical Dataset Properties";
 
@@ -41,9 +42,9 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 	 */
 	protected Composite parentComposite;
 
-	protected NumericalDataPropertiesWidget numericalDataPropertiesWidget;
+	protected NumericalDataPropertiesCollectionWidget numericalDataPropertiesWidget;
 
-	protected DataTranspositionWidget dataTranspositionWidget;
+	// protected DataTranspositionWidget dataTranspositionWidget;
 
 	/**
 	 * Determines whether this page should init its widgets from the {@link DataDescription} .
@@ -61,10 +62,13 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(1, true));
 
-		numericalDataPropertiesWidget = new NumericalDataPropertiesWidget(parentComposite, this);
+		numericalDataPropertiesWidget = new NumericalDataPropertiesCollectionWidget(parentComposite, this, EnumSet.of(
+				ENumericalDataProperties.CLIPPING, ENumericalDataProperties.DATA_CENTER,
+				ENumericalDataProperties.SCALING, ENumericalDataProperties.IMPUTATION,
+				ENumericalDataProperties.Z_SCORE_NORMALIZATION));
 
-		dataTranspositionWidget = new DataTranspositionWidget(parentComposite, getWizard(),
-				dataSetDescription.isTransposeMatrix());
+		// dataTranspositionWidget = new DataTranspositionWidget(parentComposite, getWizard(),
+		// dataSetDescription.isTransposeMatrix());
 	}
 
 	@Override
@@ -84,7 +88,7 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 		DataDescription dataDescription = new DataDescription(dataType == EDataType.FLOAT ? EDataClass.REAL_NUMBER
 				: EDataClass.NATURAL_NUMBER, dataType, numericalDataPropertiesWidget.getNumericalProperties());
 		dataSetDescription.setDataDescription(dataDescription);
-		dataSetDescription.setTransposeMatrix(dataTranspositionWidget.isTransposition());
+		// dataSetDescription.setTransposeMatrix(dataTranspositionWidget.isTransposition());
 
 		ArrayList<ColumnDescription> inputPattern = new ArrayList<ColumnDescription>();
 		DataImportWizard wizard = getWizard();
@@ -108,9 +112,11 @@ public class NumericalDataPropertiesPage extends AImportDataPage implements List
 			numericalDataPropertiesWidget.setDataType(dataSetDescription.getDataDescription().getRawDataType());
 			initFromDataDescription = false;
 		}
+		numericalDataPropertiesWidget.dataSetDescriptionUpdated(dataSetDescription);
+
 		getWizard().setChosenDataTypePage(this);
 		getWizard().getContainer().updateButtons();
-		dataTranspositionWidget.update();
+		// dataTranspositionWidget.update();
 
 	}
 

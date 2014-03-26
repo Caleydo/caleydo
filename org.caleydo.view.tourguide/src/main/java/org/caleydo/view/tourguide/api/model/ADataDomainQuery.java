@@ -13,8 +13,11 @@ import java.util.Objects;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
+import org.caleydo.core.view.opengl.util.gleem.IColored;
 import org.caleydo.view.tourguide.internal.model.OffsetList;
 import org.caleydo.view.tourguide.internal.view.ui.ADataDomainElement;
 import org.caleydo.vis.lineup.model.RankTableModel;
@@ -27,8 +30,9 @@ import com.google.common.base.Predicate;
  * @author Samuel Gratzl
  *
  */
-public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
+public abstract class ADataDomainQuery implements Predicate<AScoreRow>, ILabeled, IColored {
 	public static final String PROP_ACTIVE = "active";
+	public static final String PROP_ENABLED = "enabled";
 	public static final String PROP_MASK = "mask";
 	public static final String PROP_MIN_CLUSTER_SIZE_FILTER = "minSize";
 	protected final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
@@ -47,6 +51,10 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 	 * is the list currently visible
 	 */
 	private boolean active = false;
+	/**
+	 * whether this data domain query is currently possible to select
+	 */
+	private boolean enabled = true;
 
 	/**
 	 * minimum group size to be considered for computation
@@ -84,6 +92,16 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 		return dataDomain;
 	}
 
+	@Override
+	public String getLabel() {
+		return dataDomain == null ? "NoName" : dataDomain.getLabel();
+	}
+
+	@Override
+	public Color getColor() {
+		return dataDomain == null ? Color.NEUTRAL_GREY : dataDomain.getColor();
+	}
+
 	public final boolean isInitialized() {
 		return data != null;
 	}
@@ -107,6 +125,21 @@ public abstract class ADataDomainQuery implements Predicate<AScoreRow> {
 		if (this.active == active)
 			return;
 		propertySupport.firePropertyChange(PROP_ACTIVE, this.active, this.active = active);
+	}
+
+	public final void setEnabled(boolean enabled) {
+		if (this.enabled == enabled)
+			return;
+		if (!enabled)
+			setActive(false);
+		propertySupport.firePropertyChange(PROP_ENABLED, this.enabled, this.enabled = enabled);
+	}
+
+	/**
+	 * @return the enabled, see {@link #enabled}
+	 */
+	public boolean isEnabled() {
+		return enabled;
 	}
 
 	public final void setJustActive(boolean active) {

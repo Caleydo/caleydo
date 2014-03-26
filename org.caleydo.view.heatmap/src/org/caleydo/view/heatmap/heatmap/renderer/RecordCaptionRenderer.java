@@ -8,12 +8,13 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class RecordCaptionRenderer extends AHeatMapRenderer {
 
-	float fontScaling = HeatMapRenderStyle.SMALL_FONT_SCALING_FACTOR;
+	float fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 	int fontSize = 24;
 	float spacing = 0;
 

@@ -5,6 +5,8 @@
  *******************************************************************************/
 package org.caleydo.core.util.function;
 
+import com.google.common.base.Function;
+
 /**
  * @author Samuel Gratzl
  *
@@ -36,4 +38,17 @@ public class Utils {
 			return 0;
 		}
 	};
+
+	public static Function<Integer, Double> list2function(final IDoubleList l) {
+		return new Function<Integer, Double>() {
+			@Override
+			public Double apply(Integer input) {
+				return l.get(input.intValue());
+			}
+			@Override
+			public String toString() {
+				return "lookup(" + l + ")";
+			}
+		};
+	}
 }

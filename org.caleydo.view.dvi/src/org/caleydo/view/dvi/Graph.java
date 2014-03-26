@@ -15,6 +15,7 @@ import java.util.Vector;
 import org.caleydo.view.dvi.node.IDVINode;
 
 public class Graph {
+	private static int lastEdgeID = 0;
 	Vector<IDVINode> nodes = null;
 	Map<IDVINode, Set<Edge>> nodeConnections = null;
 	Set<Edge> edges;
@@ -78,7 +79,7 @@ public class Graph {
 
 	/**
 	 * Removes the edge specified by the nodes.
-	 * 
+	 *
 	 * @param node1
 	 * @param node2
 	 * @return True, if the edge was removed, false, if no edge was found.
@@ -91,7 +92,7 @@ public class Graph {
 
 		boolean edgeRemoved = false;
 		Set<Edge> edgesCopy = new HashSet<Edge>(edges);
-		
+
 		for (Edge edge : edgesCopy) {
 			if ((edge.getNode1() == node1 && edge.getNode2() == node2)
 					|| (edge.getNode1() == node2 && edge.getNode2() == node1)) {
@@ -121,7 +122,7 @@ public class Graph {
 		}
 
 		if (!edgeExists) {
-			newEdge = new Edge(node1, node2);
+			newEdge = new Edge(node1, node2, getNewEdgeID());
 			edges.add(newEdge);
 
 			Set<Edge> node1Edges = nodeConnections.get(node1);
@@ -144,8 +145,31 @@ public class Graph {
 		return newEdge;
 	}
 
+	private int getNewEdgeID() {
+		boolean idExists;
+		do {
+			lastEdgeID++;
+			idExists = false;
+			for (Edge e : edges) {
+				if (e.getId() == lastEdgeID) {
+					idExists = true;
+					break;
+				}
+			}
+		} while (idExists);
+		return lastEdgeID;
+	}
+
 	public Set<Edge> getAllEdges() {
 		return edges;
+	}
+
+	public Edge getEdge(int id) {
+		for (Edge e : edges) {
+			if (e.getId() == id)
+				return e;
+		}
+		return null;
 	}
 
 	public void removeNode(IDVINode node) {
@@ -154,8 +178,7 @@ public class Graph {
 
 		if (nodeEdges != null) {
 			for (Edge edge : nodeEdges) {
-				IDVINode neighbor = edge.getNode1() == node ? edge.getNode2() : edge
-						.getNode1();
+				IDVINode neighbor = edge.getNode1() == node ? edge.getNode2() : edge.getNode1();
 				Set<Edge> neighborEdges = nodeConnections.get(neighbor);
 				if (neighborEdges != null) {
 					neighborEdges.remove(edge);

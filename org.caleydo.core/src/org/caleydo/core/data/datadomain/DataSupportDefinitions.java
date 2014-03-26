@@ -80,7 +80,7 @@ public final class DataSupportDefinitions {
 			public boolean apply(TablePerspective in) {
 				if (in == null)
 					return false;
-				if (numericalTables.apply(in)) {
+				if (homogenousTables.apply(in)) {
 					return type
 							.contains(in.getDataDomain().getDataSetDescription().getDataDescription().getDataClass());
 				}
@@ -123,6 +123,8 @@ public final class DataSupportDefinitions {
 	protected static EDataClass getSingleColumnDataClass(TablePerspective in) {
 		if (in.getDimensionPerspective().getVirtualArray().size() != 1)
 			return null; // multi column
+		if (in.getRecordPerspective().getVirtualArray().size() <= 0)
+			return null; // no data
 		int dimensionId = in.getDimensionPerspective().getVirtualArray().get(0);
 		int recordId = in.getRecordPerspective().getVirtualArray().get(0);
 		return in.getDataDomain().getTable().getDataClass(dimensionId, recordId);

@@ -70,19 +70,21 @@ public class AdvancedDoubleStatistics extends DoubleStatistics {
 
 	private static AdvancedDoubleStatistics ofImpl(double[] data) {
 		Arrays.sort(data);
+		int nans = countNans(data);
+		// observation nans are always as the right side
+		final int length = data.length - nans;
+		double median = median(data, length);
 
-		double median = median(data);
+		double quartile25 = percentile(data, length, 0.25f);
+		double quartile75 = percentile(data, length, 0.75f);
 
-		double quartile25 = percentile(data, 0.25f);
-		double quartile75 = percentile(data, 0.75f);
-
-		double[] medianDeltas = new double[data.length];
-		for (int i = 0; i < data.length; i++) {
+		double[] medianDeltas = new double[length];
+		for (int i = 0; i < length; i++) {
 			medianDeltas[i] = Math.abs(data[i] - median);
 		}
 		Arrays.sort(medianDeltas);
 
-		double medianAbsoluteDeviation = MEDIAN_ABSOLUTE_DEVIATION_CONSTANT * median(medianDeltas);
+		double medianAbsoluteDeviation = MEDIAN_ABSOLUTE_DEVIATION_CONSTANT * median(medianDeltas, length);
 
 		AdvancedDoubleStatistics result = new AdvancedDoubleStatistics(median, quartile25, quartile75,
 				medianAbsoluteDeviation);
@@ -90,11 +92,24 @@ public class AdvancedDoubleStatistics extends DoubleStatistics {
 		return result;
 	}
 
+	/**
+	 * @param data
+	 * @return
+	 */
+	private static int countNans(double[] data) {
+		// observation nans are always as the right side
+		for (int i = data.length - 1; i >= 0; --i)
+			if (!Double.isNaN(data[i]))
+				return data.length - i - 1;
+		return data.length;
+	}
+
 	/*
 	 * assumes sorted data
 	 */
-	private static double median(double[] data) {
-		final int n = data.length;
+	private static double median(double[] data, int n) {
+		if (n == 0)
+			return Double.NaN;
 
 		int middle = n / 2;
 
@@ -111,8 +126,9 @@ public class AdvancedDoubleStatistics extends DoubleStatistics {
 	/*
 	 * assumes sorted data
 	 */
-	private static double percentile(double[] data, double percentile) {
-		final int n = data.length;
+	private static double percentile(double[] data, int n, double percentile) {
+		if (n == 0)
+			return Double.NaN;
 
 		double k = (n - 1) * percentile;
 		int f = (int) Math.floor(k);

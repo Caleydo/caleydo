@@ -5,10 +5,10 @@
  ******************************************************************************/
 package org.caleydo.datadomain.pathway.toolbar;
 
-import java.util.ArrayList;
-
 import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.datadomain.pathway.Activator;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 
@@ -21,7 +21,7 @@ import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 public class ClearPathAction extends SimpleAction {
 
 	public static final String LABEL = "Clear path";
-	public static final String ICON = "resources/icons/view/pathway/clear_path.png";
+	public static final String ICON = "resources/icons/clear_path_2.png";
 
 	private String eventSpace;
 
@@ -29,7 +29,7 @@ public class ClearPathAction extends SimpleAction {
 	 * Constructor.
 	 */
 	public ClearPathAction(String eventSpace) {
-		super(LABEL, ICON);
+		super(LABEL, ICON, new ResourceLoader(Activator.getResourceLocator()));
 		setChecked(false);
 		this.eventSpace = eventSpace;
 	}
@@ -48,7 +48,7 @@ public class ClearPathAction extends SimpleAction {
 		// //pathSegments.set(pathSeg, element)
 		// }
 
-		pathEvent.setPathSegments(new ArrayList<PathwayPath>());
+		pathEvent.setPath(new PathwayPath());
 		pathEvent.setSender(this);
 		pathEvent.setEventSpace(eventSpace);
 		GeneralManager.get().getEventPublisher().triggerEvent(pathEvent);

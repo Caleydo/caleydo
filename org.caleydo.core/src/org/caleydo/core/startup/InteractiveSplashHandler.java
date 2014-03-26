@@ -51,7 +51,8 @@ public class InteractiveSplashHandler extends BasicSplashHandler {
 
 		GeneralManager.get().setSplashProgressMonitor(monitor);
 
-		Application.get().runStartup();
+		if (Application.get() != null)
+			Application.get().runStartup();
 	}
 
 	private int getPXHeight(Shell splash, FontData fd) {

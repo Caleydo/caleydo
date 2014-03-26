@@ -1,0 +1,116 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ *******************************************************************************/
+package org.caleydo.view.heatmap.v2.internal;
+
+import java.util.Collections;
+import java.util.List;
+
+import org.caleydo.core.data.collection.EDimension;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.function.Function2;
+import org.caleydo.core.util.function.Functions2;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
+import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc.DescBuilder;
+import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
+import org.caleydo.view.heatmap.v2.BasicBlockColorer;
+import org.caleydo.view.heatmap.v2.ListDataProvider;
+import org.caleydo.view.heatmap.v2.ListDataProvider.DimensionData;
+import org.caleydo.view.heatmap.v2.SingleHeatMapPlotElement;
+import org.caleydo.view.heatmap.v2.TablePerspectiveDataProvider;
+
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
+
+/**
+ * @author Samuel Gratzl
+ *
+ */
+public class SingleHeatMapElementFactory extends ASingleElementFactory {
+
+	@Override
+	public String getId() {
+		return "sheatmap";
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public GLElement create(GLElementFactoryContext context) {
+		EDetailLevel detailLevel = context.get(EDetailLevel.class, EDetailLevel.LOW);
+
+		IHeatMapDataProvider data;
+		EDimension dim;
+		Function<? super Integer, Color> id2color;
+
+		if (hasTablePerspective(context)) {
+			final TablePerspectiveDataProvider d = new TablePerspectiveDataProvider(context.getData());
+			data = d;
+			dim = EDimension.get(context.getData().getNrRecords() == 1);
+			final Integer id = d.getData(dim.opposite()).get(0);
+			BasicBlockColorer c = new BasicBlockColorer(d.getDataDomain());
+			if (dim.isDimension()) {
+				id2color = Functions2.partial(c, id);
+			} else {
+				id2color = Functions2.partial2(c, id);
+			}
+		} else {
+			dim = context.get(EDimension.class, EDimension.RECORD);
+			IDType idType = context.get(IDType.class, null);
+			List<Integer> list = context.get(List.class, null);
+			DimensionData d = new DimensionData(list, Functions.constant("UnNamed"), Collections.<Group> emptyList(),
+					idType);
+			//define data
+			data = new ListDataProvider(dim.select(null, d), dim.select(d, null), toId2label(context, dim));
+			id2color = context.get("id2color", Function.class, null);
+		}
+		SingleHeatMapPlotElement elem = new SingleHeatMapPlotElement(data, detailLevel, dim, id2color);
+		setSelectionStrategies(elem, context);
+		return elem;
+	}
+
+	/**
+	 * @param context
+	 * @return
+	 */
+	static Function2<? super Integer, ? super Integer, String> toId2label(GLElementFactoryContext context,
+			final EDimension dim) {
+		@SuppressWarnings("unchecked")
+		final Function<? super Integer, String> base = context.get("id2label", Function.class, null);
+		if (base == null)
+			return null;
+		return new Function2<Integer, Integer, String>() {
+			@Override
+			public String apply(Integer recordID, Integer dimensionID) {
+				if (dim.isHorizontal())
+					return base.apply(dimensionID);
+				else
+					return base.apply(recordID);
+			}
+		};
+	}
+
+	@Override
+	public boolean apply(GLElementFactoryContext context) {
+		if (context.get(List.class, null) != null && context.get("id2color", Function.class, null) != null
+				&& context.get(IDType.class, null) != null)
+			return true;
+		return hasTablePerspective(context);
+	}
+
+	@Override
+	protected DescBuilder fixDesc() {
+		return GLElementDimensionDesc.newFix(20).inRange(20, 20);
+	}
+
+	@Override
+	public GLElement createParameters(GLElement elem) {
+		return null;
+	}
+}
+

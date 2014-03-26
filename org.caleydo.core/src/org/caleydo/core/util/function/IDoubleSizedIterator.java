@@ -5,10 +5,17 @@
  *******************************************************************************/
 package org.caleydo.core.util.function;
 
+import java.util.Iterator;
+
 /**
+ * an {@link Iterator} with a size
+ *
  * @author Samuel Gratzl
  *
  */
 public interface IDoubleSizedIterator extends IDoubleIterator {
+	/**
+	 * @return the number of items in this iterator
+	 */
 	int size();
 }

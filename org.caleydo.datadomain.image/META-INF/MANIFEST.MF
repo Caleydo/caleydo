@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Image Data Domain
+Bundle-SymbolicName: org.caleydo.datadomain.image;singleton:=true
+Bundle-Version: 3.1.3.qualifier
+Bundle-Activator: org.caleydo.datadomain.image.Activator
+Bundle-Vendor: www.caleydo.org
+Require-Bundle: org.caleydo.core;bundle-version="3.1.3.qualifier",
+ org.caleydo.datadomain.genetic;bundle-version="3.1.3.qualifier",
+ org.eclipse.jface,
+ org.eclipse.swt
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: org.caleydo.datadomain.image

@@ -13,7 +13,7 @@ import org.eclipse.equinox.app.IApplicationContext;
 
 /**
  * This class controls all aspects of the application's execution
- * 
+ *
  * @author Alexander Lex
  * @author Marc Streit
  * @author Nils Gehlenborg
@@ -23,7 +23,6 @@ public class Application
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
-
 		XMLToProjectBuilder projectBuilder = new XMLToProjectBuilder();
 
 		String[] programArguments = (String[]) context.getArguments().get("application.args");

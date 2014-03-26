@@ -7,6 +7,7 @@ package org.caleydo.view.tourguide.spi.compute;
 
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.spi.algorithm.IComputeElement;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeScoreFilter;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IGroupBasedScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;

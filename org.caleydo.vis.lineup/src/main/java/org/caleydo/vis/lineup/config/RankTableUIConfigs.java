@@ -7,8 +7,10 @@ package org.caleydo.vis.lineup.config;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
-import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.RankTableModel;
@@ -100,9 +102,9 @@ public class RankTableUIConfigs {
 		}
 
 		@Override
-		public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
+		public void renderRowBackground(GLGraphics g, Rect rect, boolean even, IRow row,
 				IRow selected) {
-			wrappee.renderRowBackground(g, x, y, w, h, even, row, selected);
+			wrappee.renderRowBackground(g, rect, even, row, selected);
 		}
 
 		@Override
@@ -121,8 +123,9 @@ public class RankTableUIConfigs {
 		}
 
 		@Override
-		public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected) {
-			wrappee.onRowClick(table, pickingMode, row, isSelected);
+		public void onRowClick(RankTableModel table, Pick pick, IRow row, boolean isSelected,
+				IGLElementContext context) {
+			wrappee.onRowClick(table, pick, row, isSelected, context);
 		}
 	}
 

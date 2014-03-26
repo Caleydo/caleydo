@@ -20,6 +20,11 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
  */
 public interface IScrollBar extends IGLRenderer, IPickingListener {
 
+	/**
+	 * set the width of the item
+	 *
+	 * @param w
+	 */
 	void setWidth(float w);
 
 	float getWidth();
@@ -44,6 +49,25 @@ public interface IScrollBar extends IGLRenderer, IPickingListener {
 	float getWindow();
 
 	float getSize();
+
+	/**
+	 * Set begin of content to the given position
+	 * 
+	 * @note This method changes the position of the content not the scrollbar
+	 *       itself.
+	 * @param pos
+	 *            Offset from content origin
+	 */
+	void moveTo(float pos);
+
+	/**
+	 * Move content by given delta
+	 *
+	 * @note This method changes the position of the content not the scrollbar
+	 *       itself.
+	 * @param delta
+	 */
+	void move(float delta);
 
 	void setCallback(IScrollBarCallback callback);
 

@@ -28,13 +28,17 @@ import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ZipUtils;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.core.util.system.RemoteFile;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.genetic.GeneticMetaData;
 import org.caleydo.datadomain.genetic.Organism;
+import org.caleydo.datadomain.pathway.graph.PathSegment;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.parser.PathwayImageMap;
@@ -47,7 +51,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.jgrapht.DirectedGraph;
+import org.jgrapht.GraphPath;
 import org.jgrapht.Graphs;
+import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -182,6 +188,25 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		return rootPathwayGraph;
 	}
 
+	/**
+	 * Adds edges between all from-to pairs of the associated {@link PathwayVertex} objects of the specified
+	 * {@link PathwayVertexRep}s to the root pathway. Edges are only added for vertices that already exist in the root
+	 * pathway.
+	 *
+	 * @param from
+	 * @param to
+	 */
+	public void addEdgesToRootPathway(PathwayVertexRep from, PathwayVertexRep to) {
+
+		for (PathwayVertex fromVertex : from.getPathwayVertices()) {
+			for (PathwayVertex toVertex : to.getPathwayVertices()) {
+				if (getRootPathway().containsVertex(fromVertex) && getRootPathway().containsVertex(toVertex)) {
+					getRootPathway().addEdge(fromVertex, toVertex);
+				}
+			}
+		}
+	}
+
 	@Override
 	public Collection<PathwayGraph> getAllItems() {
 		waitUntilPathwayLoadingIsFinished();
@@ -276,8 +301,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 		throw new IllegalStateException("Unknown pathway database " + type);
 	}
-
-
 
 	/**
 	 * Returns all pathways where a specific gene is contained at least once.
@@ -571,6 +594,113 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		return vertexReps;
 	}
 
+	public List<PathwayPath> getShortestPaths(final PathwayVertex from, final PathwayVertex to) {
+
+		Thread t = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				DirectedGraph<PathwayVertex, DefaultEdge> rootPathway = getRootPathway();
+				// KShortestPaths<PathwayVertex, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertex, DefaultEdge>(
+				// rootPathway, from, 3, 5);
+				// List<GraphPath<PathwayVertex, DefaultEdge>> paths = pathAlgo.getPaths(to);
+				DijkstraShortestPath<PathwayVertex, DefaultEdge> pathAlgo = new DijkstraShortestPath<>(rootPathway,
+						from, to);
+
+				GraphPath<PathwayVertex, DefaultEdge> vertexPath = pathAlgo.getPath();
+
+				if (vertexPath != null) {
+					PathwayPath path = new PathwayPath();
+
+					// GraphPath<PathwayVertex, DefaultEdge> vertexPath = paths.get(0);
+
+					StringBuilder b = new StringBuilder();
+					PathSegment currentSegment = null;
+
+					for (DefaultEdge edge : vertexPath.getEdgeList()) {
+						PathwayVertex source = rootPathway.getEdgeSource(edge);
+						PathwayVertex target = rootPathway.getEdgeTarget(edge);
+
+						if (currentSegment == null) {
+							Pair<PathwayVertexRep, PathwayVertexRep> vertexReps = getConnectedVertexRepsFromVertices(
+									source, target, null);
+							if (vertexReps == null) {
+								Logger.log(new Status(IStatus.ERROR, "Path determination failed!",
+										"Could not find connected vertex reps."));
+								return;
+							}
+							currentSegment = new PathSegment();
+							path.add(currentSegment);
+
+							currentSegment.add(vertexReps.getFirst());
+							currentSegment.add(vertexReps.getSecond());
+
+						} else {
+							// Test if the next vertex rep is directly connected to the previous vertex rep
+							PathwayVertexRep lastVertexRep = currentSegment.get(currentSegment.size() - 1);
+							PathwayVertexRep nextVertexRep = getConnectedVertexRep(lastVertexRep, target);
+							if (nextVertexRep != null) {
+								currentSegment.add(nextVertexRep);
+							} else {
+								// Try to find an equivalent node that connects to the next one within the same pathway
+								// -> new path segment
+								currentSegment = new PathSegment();
+								path.add(currentSegment);
+								Pair<PathwayVertexRep, PathwayVertexRep> vertexReps = getConnectedVertexRepsFromVertices(
+										source, target, lastVertexRep.getPathway());
+								if (vertexReps == null) {
+									// Try to find an equivalent node that connects to the next one in any pathway
+									vertexReps = getConnectedVertexRepsFromVertices(source, target, null);
+									if (vertexReps == null) {
+										Logger.log(new Status(IStatus.ERROR, "Path determination failed!",
+												"Could not find connected vertex reps."));
+										return;
+									}
+								}
+
+								currentSegment.add(vertexReps.getFirst());
+								currentSegment.add(vertexReps.getSecond());
+							}
+						}
+
+						b.append(source.getHumanReadableName()).append(" - ").append(target.getHumanReadableName())
+								.append(" , ");
+					}
+					System.out.println(b);
+					System.out.println(path.toString());
+				}
+
+			}
+		});
+
+		t.start();
+
+		return null;
+	}
+
+	protected Pair<PathwayVertexRep, PathwayVertexRep> getConnectedVertexRepsFromVertices(PathwayVertex from,
+			PathwayVertex to, PathwayGraph pathway) {
+		for (PathwayVertexRep fromVertexRep : from.getPathwayVertexReps()) {
+			PathwayGraph fromPathway = fromVertexRep.getPathway();
+			if (pathway == null || fromPathway == pathway) {
+				PathwayVertexRep toVertexRep = getConnectedVertexRep(fromVertexRep, to);
+				if (toVertexRep != null) {
+					return Pair.make(fromVertexRep, toVertexRep);
+				}
+			}
+		}
+		return null;
+	}
+
+	protected PathwayVertexRep getConnectedVertexRep(PathwayVertexRep from, PathwayVertex to) {
+		for (PathwayVertexRep toVertexRep : to.getPathwayVertexReps()) {
+			if (from.getPathway() == toVertexRep.getPathway() && from.getPathway().containsEdge(from, toVertexRep)) {
+				return toVertexRep;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * @param monitor
 	 * @param wikipathways
@@ -590,8 +720,8 @@ public class PathwayManager extends AManager<PathwayGraph> {
 				FileOperations.deleteDirectory(unpacked);
 			}
 
-			File localZip = zip.getOrLoad(true, monitor,
-					"Caching Pathways (this may take a while): Downloading " + type.getName() + " pathways (%2$d MB)");
+			File localZip = zip.getOrLoad(false, monitor, "Caching Pathways (this may take a while): Downloading "
+					+ type.getName() + " pathways (%2$d MB)");
 			if (localZip == null || !localZip.exists()) {
 				log.error("can't download: " + url);
 				return null;
@@ -605,5 +735,36 @@ public class PathwayManager extends AManager<PathwayGraph> {
 			log.error("can't download: " + url);
 			return null;
 		}
+	}
+
+	/**
+	 * Gets all mapped gene ids for a specified pathway
+	 *
+	 * @param pathway
+	 * @param idType
+	 *            The gene id type of the result set.
+	 * @return
+	 */
+	public Set<Object> getPathwayGeneIDs(PathwayGraph pathway, IDType idType) {
+		Set<Object> ids = new HashSet<>();
+		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idType);
+		IIDTypeMapper<Object, Object> mapper = idMappingManager.getIDTypeMapper(
+				IDType.getIDType(EGeneIDTypes.DAVID.name()), idType);
+		if (mapper == null)
+			return ids;
+
+		for (PathwayVertexRep v : pathway.vertexSet()) {
+			ArrayList<Integer> vertexIDs = v.getDavidIDs();
+			if (vertexIDs != null) {
+				for (int davidID : vertexIDs) {
+					Set<Object> mappedIDs = mapper.apply(davidID);
+					if (mappedIDs != null) {
+						ids.addAll(mappedIDs);
+					}
+				}
+			}
+		}
+
+		return ids;
 	}
 }

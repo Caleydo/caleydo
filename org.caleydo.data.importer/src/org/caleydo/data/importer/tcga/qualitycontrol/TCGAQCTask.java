@@ -5,7 +5,6 @@
  ******************************************************************************/
 package org.caleydo.data.importer.tcga.qualitycontrol;
 
-import java.io.File;
 import java.util.Collection;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -41,8 +40,6 @@ public class TCGAQCTask extends ATCGATask {
 
 	@Override
 	public JsonElement compute() {
-		String jnlpOutputFolder = settings.getJNLPOutputDirectory();
-
 		String projectOutputPath = settings.getDataDirectory(dataSetType.name()) + dataSetType + "_" + tumor
 				+ ".cal";
 
@@ -69,10 +66,7 @@ public class TCGAQCTask extends ATCGATask {
 		String projectRemoteOutputURL = settings.getTcgaServerURL() + dataSetType + "/" + dataSetType + "_" + tumor
 				+ ".cal";
 
-		String jnlpFileName = dataSetType + "_" + tumor + ".jnlp";
 		JsonElement report = generateTumorReportLine(dataDomains, projectRemoteOutputURL);
-
-		generateJNLP(new File(jnlpOutputFolder, jnlpFileName), projectRemoteOutputURL);
 
 		cleanUp(dataDomains);
 
@@ -81,9 +75,6 @@ public class TCGAQCTask extends ATCGATask {
 
 	protected JsonElement generateTumorReportLine(Collection<ATableBasedDataDomain> dataDomains,
 			String projectOutputPath) {
-
-		String jnlpURL = settings.getJNLPURL(dataSetType.toString(), tumor);
-
 		JsonObject report = new JsonObject();
 		report.addProperty("tumorAbbreviation", tumor.getName());
 		report.addProperty("tumorName", tumor.getLabel());
@@ -97,8 +88,6 @@ public class TCGAQCTask extends ATCGATask {
 				report.add(analysisRunName, gson.toJsonTree(new AdditionalInfo(dataDomain)));
 			}
 		}
-
-		report.addProperty("Caleydo JNLP", jnlpURL);
 		report.addProperty("Caleydo Project", projectOutputPath);
 
 		return report;

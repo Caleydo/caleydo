@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.util.color.Color;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Color mapping. The class is initialized with a list of inflection points and an associated color. A color mapping for
@@ -283,7 +283,7 @@ public class ColorMapper {
 
 			int[] color = markerPoints.get(iCount - 1).getColor().getIntRGBA();
 
-			alColor[iCount - 1] = new org.eclipse.swt.graphics.Color(PlatformUI.getWorkbench().getDisplay(), color[0],
+			alColor[iCount - 1] = new org.eclipse.swt.graphics.Color(Display.getDefault(), color[0],
 					color[1], color[2]);
 		}
 

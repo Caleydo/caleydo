@@ -7,10 +7,8 @@ package org.caleydo.view.stratomex.brick;
 
 import gleem.linalg.Vec2f;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +19,6 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.collection.table.Table;
-import org.caleydo.core.data.collection.table.TableUtils;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -65,6 +62,7 @@ import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitching
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.ATimedMouseOutPickingListener;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
@@ -73,7 +71,6 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
-import org.caleydo.view.stratomex.brick.contextmenu.ExportBrickDataItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RemoveColumnItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RenameBrickItem;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
@@ -86,20 +83,14 @@ import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
 import org.caleydo.view.stratomex.brick.ui.RectangleCoordinates;
 import org.caleydo.view.stratomex.brick.ui.RelationIndicatorRenderer;
 import org.caleydo.view.stratomex.column.BrickColumn;
-import org.caleydo.view.stratomex.event.ExportBrickDataEvent;
 import org.caleydo.view.stratomex.event.MergeBricksEvent;
 import org.caleydo.view.stratomex.event.RenameEvent;
 import org.caleydo.view.stratomex.event.SelectDimensionSelectionEvent;
-import org.caleydo.view.stratomex.listener.ExportBrickDataEventListener;
 import org.caleydo.view.stratomex.listener.RelationsUpdatedListener;
 import org.caleydo.view.stratomex.listener.RenameListener;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -223,7 +214,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	private RelationsUpdatedListener relationsUpdateListener;
 	private RenameListener renameListener;
-	private ExportBrickDataEventListener exportBrickDataEventListener;
 
 	private BrickState expandedBrickState;
 
@@ -251,6 +241,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	private APickingListener pickingListener;
 
 	private ATimedMouseOutPickingListener brickPickingListener;
+	private IPickingListener brickClickPickingListener;
 
 	public GLBrick(IGLCanvas glCanvas, ViewFrustum viewFrustum) {
 		super(glCanvas, viewFrustum, VIEW_TYPE, VIEW_NAME);
@@ -437,13 +428,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		gl.glEnd();
 		gl.glPopName();
 
-
 		// The full brick content will not be rendered with DetailLevel.LOW
 		if (brickColumn.getDetailLevel() != EDetailLevel.LOW || isHeaderBrick)
 			layoutManager.render(gl);
 
 		gl.glPopName();
-
 
 		// gl.glCallList(baseDisplayListIndex);
 
@@ -723,10 +712,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		renameListener.setHandler(this);
 		eventPublisher.addListener(RenameEvent.class, renameListener);
 
-		exportBrickDataEventListener = new ExportBrickDataEventListener();
-		exportBrickDataEventListener.setHandler(this);
-		eventPublisher.addListener(ExportBrickDataEvent.class, exportBrickDataEventListener);
-
 	}
 
 	@Override
@@ -761,11 +746,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		// .getViewRenderer());
 		// }
 
-		if (exportBrickDataEventListener != null) {
-			eventPublisher.removeListener(exportBrickDataEventListener);
-			exportBrickDataEventListener = null;
-		}
-
 		listeners.unregisterAll();
 
 		unregisterPickingListeners();
@@ -773,7 +753,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	private void registerPickingListeners() {
 
-		APickingListener pickingListener = new APickingListener() {
+		this.brickClickPickingListener = new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -847,10 +827,48 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				event.setSender(this);
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}
+		};
+
+		stratomex.addIDPickingListener(brickClickPickingListener, EPickingType.BRICK.name(), getID());
+		if (isHeaderBrick) {
+			stratomex.addIDPickingListener(brickClickPickingListener, EPickingType.DIMENSION_GROUP.name(),
+					brickColumn.getID());
+		}
+
+		stratomex.addIDPickingTooltipListener(this, EPickingType.BRICK_TITLE.name(), getID());
+
+		addIDPickingListener(new APickingListener() {
+			@Override
+			public void clicked(Pick pick) {
+				isBrickResizeActive = true;
+			}
+		}, EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
+
+		brickPickingListener = new ATimedMouseOutPickingListener() {
 
 			@Override
-			public void rightClicked(Pick pick) {
+			public void mouseOver(Pick pick) {
+				super.mouseOver(pick);
+				if (pick.getObjectID() == getID())
+					showWidgets(true);
+				else
+					showWidgets(false);
 
+			}
+
+			@Override
+			protected void timedMouseOut(Pick pick) {
+				// TODO Auto-generated method stub
+				if (pick.getObjectID() == getID())
+					showWidgets(false);
+			}
+		};
+
+		getStratomex().addTypePickingListener(brickPickingListener, EPickingType.BRICK_PENETRATING.name());
+
+		stratomex.addIDPickingListener(new APickingListener() {
+			@Override
+			protected void rightClicked(Pick pick) {
 				// Differentiate between cases where user selects header brick
 				// or a brick
 				ContextMenuCreator contextMenuCreator = stratomex.getContextMenuCreator();
@@ -858,9 +876,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
 				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(stratomex, getBrickColumn()
 						.getTablePerspective()));
-
-				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, false));
-				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, true));
 
 				if (brickColumn.getTablePerspective() == tablePerspective) {
 					// header brick
@@ -895,54 +910,24 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 						contextMenuCreator.add(new GenericContextMenuItem("Merge selected bricks", event));
 					}
 
+
 					// FIXME: if added, this line causes the context menu on the bricks to not appear
 					// selectElementsByGroup();
 				}
+
+				brickConfigurer.addDataSpecificContextMenuEntries(stratomex.getContextMenuCreator(), GLBrick.this);
 			}
-		};
-
-		stratomex.addIDPickingListener(pickingListener, EPickingType.BRICK.name(), getID());
-		if (isHeaderBrick) {
-			stratomex.addIDPickingListener(pickingListener, EPickingType.DIMENSION_GROUP.name(), brickColumn.getID());
-		}
-
-		stratomex.addIDPickingTooltipListener(this, EPickingType.BRICK_TITLE.name(), getID());
-
-		addIDPickingListener(new APickingListener() {
-			@Override
-			public void clicked(Pick pick) {
-				isBrickResizeActive = true;
-			}
-		}, EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
-
-		brickPickingListener = new ATimedMouseOutPickingListener() {
-
-			@Override
-			public void mouseOver(Pick pick) {
-				super.mouseOver(pick);
-				if (pick.getObjectID() == getID())
-					showWidgets(true);
-				else
-					showWidgets(false);
-
-			}
-
-			@Override
-			protected void timedMouseOut(Pick pick) {
-				// TODO Auto-generated method stub
-				if (pick.getObjectID() == getID())
-					showWidgets(false);
-			}
-		};
-
-		getStratomex().addTypePickingListener(brickPickingListener, EPickingType.BRICK_PENETRATING.name());
+		}, EPickingType.BRICK_PENETRATING.name(), getID());
 	}
 
 	private void unregisterPickingListeners() {
 		stratomex.removeTypePickingListener(brickPickingListener, EPickingType.BRICK_PENETRATING.name());
 		stratomex.removeAllIDPickingListeners(EPickingType.BRICK.name(), getID());
 		if (isHeaderBrick) {
-			stratomex.removeAllIDPickingListeners(EPickingType.DIMENSION_GROUP.name(), brickColumn.getID());
+			// remove just me not all as multiple headers (detail header + header) can exist
+			stratomex.removeIDPickingListener(brickClickPickingListener, EPickingType.DIMENSION_GROUP.name(),
+					brickColumn.getID());
+			brickClickPickingListener = null;
 		}
 		stratomex.removeAllIDPickingListeners(EPickingType.BRICK_TITLE.name(), getID());
 		stratomex.removeAllIDPickingListeners(EPickingType.MOVE_VERTICALLY_HANDLE.name(), getID());
@@ -1303,45 +1288,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	public void setTablePerspective(TablePerspective tablePerspective) {
 		super.setTablePerspective(tablePerspective);
 		label = tablePerspective.getLabel();
-	}
-
-	public void exportData(final boolean exportIdentifiersOnly) {
-		Display.getDefault().asyncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				FileDialog fileDialog = new FileDialog(new Shell(), SWT.SAVE);
-				fileDialog.setText("Save");
-				String[] filterExt = { "*.csv", "*.txt", "*.*" };
-				fileDialog.setFilterExtensions(filterExt);
-
-				fileDialog.setFileName("caleydo_export_" + new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())
-						+ ".csv");
-				String fileName = fileDialog.open();
-
-				if (fileName != null) {
-					if (exportIdentifiersOnly) {
-						Perspective dimensionPerspective = new Perspective();
-						dimensionPerspective.setVirtualArray(new VirtualArray(dataDomain.getDimensionIDType()));
-						// Perspective recordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
-						// PerspectiveInitializationData recordPerspectiveInitData = new
-						// PerspectiveInitializationData();
-						// List<Integer> allIDs = new ArrayList<>(tablePerspective.getRecordPerspective()
-						// .getVirtualArray().getIDs());
-						// recordPerspectiveInitData.setData(allIDs);
-						// recordPerspective.init(recordPerspectiveInitData);
-						// TableUtils.export(dataDomain, fileName, recordPerspective, dimensionPerspective, null, null,
-						// false);
-						TableUtils.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
-								dimensionPerspective, null, null, false);
-					} else {
-						TableUtils.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
-								tablePerspective.getDimensionPerspective(), null, null, false);
-					}
-				}
-			}
-		});
-
 	}
 
 	/**

@@ -59,7 +59,8 @@ public class GeneralManager {
 	public static final String DATA_URL_PREFIX = "http://data.icg.tugraz.at/caleydo/download/" + VERSION.getMajor()
 			+ "." + VERSION.getMinor() + "/";
 
-	public static final String HELP_URL = "http://help.caleydo.org";
+	public static final String HELP_URL = "http://help.caleydo.org/" + VERSION.getMajor() + "." + VERSION.getMinor()
+			+ "/index.html#!";
 
 	/**
 	 * General manager as a singleton
@@ -215,7 +216,9 @@ public class GeneralManager {
 		if (caleydoVersion == null)
 			return false;
 		Version tocheck = Version.parseVersion(caleydoVersion);
-		return VERSION.getMajor() == tocheck.getMajor() && VERSION.getMinor() == tocheck.getMinor();
+		if (VERSION.getMajor() != tocheck.getMajor())
+			return false;
+		return VERSION.getMinor() >= tocheck.getMinor();
 	}
 
 	public void setSplashProgressMonitor(IProgressMonitor splashProgressMonitor) {

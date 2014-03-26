@@ -7,7 +7,6 @@ package org.caleydo.view.enroute.path;
 
 import gleem.linalg.Vec3f;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,16 +29,18 @@ import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
-import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
+import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
+import org.caleydo.datadomain.pathway.graph.PathSegment;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
@@ -83,7 +84,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	/**
 	 * The list of path segments that are a list of {@link PathwayVertexRep}s.
 	 */
-	protected List<List<PathwayVertexRep>> pathSegments = new ArrayList<>();
+	protected PathwayPath pathSegments = new PathwayPath();
 
 	/**
 	 * List of renderable nodes for the path.
@@ -168,7 +169,9 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	/**
 	 * Events that should be triggered when selecting a node.
 	 */
-	protected Map<PickingMode, List<IVertexRepBasedEventFactory>> nodeEvents = new HashMap<>();
+	// protected Map<PickingMode, List<IVertexRepBasedEventFactory>> nodeEvents = new HashMap<>();
+
+	protected List<IVertexRepSelectionListener> vertexListeners = new ArrayList<>();
 
 	protected TablePerspective mappedPerspective;
 
@@ -220,7 +223,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 *            first node of segment n+1 must be equivalent (i.e. they must refer to the same {@link PathwayVertex}
 	 *            objects).
 	 */
-	public void setPath(List<List<PathwayVertexRep>> pathSegments) {
+	public void setPath(PathwayPath pathSegments) {
 		this.pathSegments = pathSegments;
 
 		createNodes(pathSegments);
@@ -246,14 +249,14 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	@Override
 	protected abstract boolean permitsWrappingDisplayLists();
 
-	protected void createNodes(List<List<PathwayVertexRep>> pathSegments) {
+	protected void createNodes(PathwayPath pathSegments) {
 
 		destroyNodes();
 		pathNodes.clear();
-		for (List<PathwayVertexRep> vertexReps : pathSegments) {
+		for (PathSegment segment : pathSegments) {
 			List<ALinearizableNode> currentNodes = new ArrayList<>();
-			if (pathway == null || (vertexReps.size() > 0 && vertexReps.get(0).getPathway() == pathway)) {
-				createNodesForList(currentNodes, vertexReps);
+			if (pathway == null || (segment.size() > 0 && segment.get(0).getPathway() == pathway)) {
+				createNodesForList(currentNodes, segment);
 				appendNodes(pathNodes, currentNodes);
 			}
 		}
@@ -565,7 +568,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	public void selectBranch(ALinearizableNode node) {
 
-		List<List<PathwayVertexRep>> newPathSegments = getBranchPath(node);
+		PathwayPath newPathSegments = getBranchPath(node);
 
 		if (updateStrategy.isPathChangePermitted(newPathSegments)) {
 			setExpandedBranchSummaryNode(null);
@@ -582,7 +585,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 *            The branch node.
 	 * @return
 	 */
-	protected List<List<PathwayVertexRep>> getBranchPath(ALinearizableNode branchNode) {
+	protected PathwayPath getBranchPath(ALinearizableNode branchNode) {
 		ALinearizableNode linearizedNode = branchNodesToLinearizedNodesMap.get(branchNode);
 		BranchSummaryNode summaryNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(linearizedNode);
 
@@ -611,15 +614,15 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		int segmentIndex = indexPair.getFirst();
 		int vertexRepIndex = indexPair.getSecond();
 
-		List<PathwayVertexRep> newSegment = null;
-		List<List<PathwayVertexRep>> newPathSegments = new ArrayList<>();
+		PathSegment newSegment = null;
+		PathwayPath newPathSegments = new PathwayPath();
 		List<PathwayVertexRep> branchPath = PathwayManager.get().determineDirectionalPath(branchVertexRep,
 				!isIncomingBranch, MAX_BRANCH_SWITCHING_PATH_LENGTH);
 
 		if (isIncomingBranch) {
 			// insert above linearized node
 			Collections.reverse(branchPath);
-			newSegment = new ArrayList<>(pathSegments.get(segmentIndex).subList(vertexRepIndex,
+			newSegment = new PathSegment(pathSegments.get(segmentIndex).subList(vertexRepIndex,
 					pathSegments.get(segmentIndex).size()));
 			newSegment.addAll(0, branchPath);
 			newPathSegments.add(newSegment);
@@ -629,7 +632,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		} else {
 			// insert below linearized node
 
-			newSegment = new ArrayList<>(pathSegments.get(segmentIndex).subList(0, vertexRepIndex + 1));
+			newSegment = new PathSegment(pathSegments.get(segmentIndex).subList(0, vertexRepIndex + 1));
 			newSegment.addAll(branchPath);
 			if (segmentIndex > 0)
 				newPathSegments.addAll(new ArrayList<>(pathSegments.subList(0, segmentIndex)));
@@ -673,9 +676,9 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	public void removeNodeFromPath(ALinearizableNode node) {
 
 		// Create deep copy of pathSegments
-		List<List<PathwayVertexRep>> segments = new ArrayList<>(pathSegments.size());
-		for (List<PathwayVertexRep> segment : pathSegments) {
-			segments.add(new ArrayList<>(segment));
+		PathwayPath segments = new PathwayPath(pathSegments.size());
+		for (PathSegment segment : pathSegments) {
+			segments.add(new PathSegment(segment));
 		}
 
 		Pair<Integer, Integer> indices = determinePathSegmentAndIndexOfPathNode(node, node.getPrimaryPathwayVertexRep());
@@ -711,8 +714,8 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		}
 	}
 
-	private void removeVertexRep(List<List<PathwayVertexRep>> segments, int segmentIndex, int vertexIndex) {
-		List<PathwayVertexRep> segment = segments.get(segmentIndex);
+	private void removeVertexRep(PathwayPath segments, int segmentIndex, int vertexIndex) {
+		PathSegment segment = segments.get(segmentIndex);
 		PathwayVertexRep vertexRep = segment.get(vertexIndex);
 		if (segment.size() == 1) {
 			segment.remove(vertexIndex);
@@ -726,17 +729,17 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			segment.remove(vertexIndex);
 			removeEquivalentVertexOfNextSegment(segments, segmentIndex, vertexRep);
 		} else {
-			List<PathwayVertexRep> firstSegment = segment.subList(0, vertexIndex);
-			List<PathwayVertexRep> secondSegment = segment.subList(vertexIndex + 1, segment.size());
+			PathSegment firstSegment = new PathSegment(segment.subList(0, vertexIndex));
+			PathSegment secondSegment = new PathSegment(segment.subList(vertexIndex + 1, segment.size()));
 			segments.set(segmentIndex, firstSegment);
 			segments.add(segmentIndex + 1, secondSegment);
 		}
 	}
 
-	private void removeEquivalentVertexOfNextSegment(List<List<PathwayVertexRep>> segments, int segmentIndex,
+	private void removeEquivalentVertexOfNextSegment(PathwayPath segments, int segmentIndex,
 			PathwayVertexRep vertexRep) {
 		if (segmentIndex < segments.size() - 1) {
-			List<PathwayVertexRep> nextSegment = segments.get(segmentIndex + 1);
+			PathSegment nextSegment = segments.get(segmentIndex + 1);
 			PathwayVertexRep nextVertexRep = nextSegment.get(0);
 			if (PathwayManager.get().areVerticesEquivalent(nextVertexRep, vertexRep)) {
 				removeVertexRep(segments, segmentIndex + 1, 0);
@@ -744,10 +747,10 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		}
 	}
 
-	private void removeEquivalentVertexOfPreviousSegment(List<List<PathwayVertexRep>> segments, int segmentIndex,
+	private void removeEquivalentVertexOfPreviousSegment(PathwayPath segments, int segmentIndex,
 			PathwayVertexRep vertexRep) {
 		if (segmentIndex > 0) {
-			List<PathwayVertexRep> previousSegment = segments.get(segmentIndex - 1);
+			PathSegment previousSegment = segments.get(segmentIndex - 1);
 			PathwayVertexRep previousVertexRep = previousSegment.get(previousSegment.size() - 1);
 			if (PathwayManager.get().areVerticesEquivalent(previousVertexRep, vertexRep)) {
 				removeVertexRep(segments, segmentIndex - 1, previousSegment.size() - 1);
@@ -913,11 +916,11 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	}
 
 	@Override
-	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
+	public Rect getVertexRepBounds(PathwayVertexRep vertexRep) {
 		for (ALinearizableNode node : pathNodes) {
 			for (PathwayVertexRep vertexRepOfNode : node.getVertexReps()) {
 				if (vertexRepOfNode == vertexRep) {
-					Rectangle2D bounds = getLeftTopAlignedNodeBounds(node);
+					Rect bounds = getLeftTopAlignedNodeBounds(node);
 					if (bounds != null)
 						return bounds;
 				}
@@ -926,7 +929,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		return null;
 	}
 
-	protected Rectangle2D getLeftTopAlignedNodeBounds(ALinearizableNode node) {
+	protected Rect getLeftTopAlignedNodeBounds(ALinearizableNode node) {
 		Vec3f glNodePosition = node.getPosition();
 		if (glNodePosition == null)
 			return null;
@@ -935,17 +938,17 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		int posY = pixelGLConverter.getPixelHeightForGLHeight(y - glNodePosition.y())
 				- (int) (node.getHeightPixels() / 2.0f);
 
-		return new Rectangle2D.Float(posX, posY, node.getWidthPixels(), node.getHeightPixels());
+		return new Rect(posX, posY, node.getWidthPixels(), node.getHeightPixels());
 	}
 
 	@Override
-	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
-		List<Rectangle2D> boundsList = new ArrayList<>();
+	public List<Rect> getVertexRepsBounds(PathwayVertexRep vertexRep) {
+		List<Rect> boundsList = new ArrayList<>();
 
 		for (ALinearizableNode node : pathNodes) {
 			for (PathwayVertexRep vertexRepOfNode : node.getVertexReps()) {
 				if (vertexRepOfNode == vertexRep) {
-					Rectangle2D bounds = getLeftTopAlignedNodeBounds(node);
+					Rect bounds = getLeftTopAlignedNodeBounds(node);
 					if (bounds != null)
 						boundsList.add(bounds);
 				}
@@ -954,7 +957,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		return boundsList;
 	}
 
-	@Override
+	// @Override
 	public synchronized void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
 		nodeContextMenuItems.add(item);
 	}
@@ -990,28 +993,28 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		protected void clicked(Pick pick) {
 			if (!node.isPickable() || branchNodesToLinearizedNodesMap.keySet().contains(node))
 				return;
-			triggerEvents(pick.getPickingMode());
+			notifyVertexListeners(pick);
 		}
 
 		@Override
 		protected void mouseOver(Pick pick) {
 			if (!node.isPickable())
 				return;
-			triggerEvents(pick.getPickingMode());
+			notifyVertexListeners(pick);
 		}
 
 		@Override
 		protected void mouseOut(Pick pick) {
 			if (!node.isPickable())
 				return;
-			triggerEvents(pick.getPickingMode());
+			notifyVertexListeners(pick);
 		}
 
 		@Override
 		protected void rightClicked(Pick pick) {
 			if (!node.isPickable())
 				return;
-			triggerEvents(pick.getPickingMode());
+			notifyVertexListeners(pick);
 			addContextMenuItems(nodeContextMenuItems);
 			if (allowBranchPathExtraction && branchNodesToLinearizedNodesMap.keySet().contains(node)) {
 				ShowPathEvent event = new ShowPathEvent(getBranchPath(node));
@@ -1020,13 +1023,16 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			}
 		}
 
-		private void triggerEvents(PickingMode pickingMode) {
-			List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
-			if (factories != null) {
-				for (IVertexRepBasedEventFactory factory : factories) {
-					factory.triggerEvent(node.getPrimaryPathwayVertexRep());
-				}
+		private void notifyVertexListeners(Pick pick) {
+			for (IVertexRepSelectionListener listener : vertexListeners) {
+				listener.onSelect(node.getPrimaryPathwayVertexRep(), pick);
 			}
+			// List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
+			// if (factories != null) {
+			// for (IVertexRepBasedEventFactory factory : factories) {
+			// factory.triggerEvent(node.getPrimaryPathwayVertexRep());
+			// }
+			// }
 		}
 
 		private void addContextMenuItems(List<VertexRepBasedContextMenuItem> items) {
@@ -1038,14 +1044,19 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		}
 	}
 
+	// @Override
+	// public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
+	// List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
+	// if (factories == null) {
+	// factories = new ArrayList<>();
+	// nodeEvents.put(pickingMode, factories);
+	// }
+	// factories.add(eventFactory);
+	// }
+
 	@Override
-	public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
-		List<IVertexRepBasedEventFactory> factories = nodeEvents.get(pickingMode);
-		if (factories == null) {
-			factories = new ArrayList<>();
-			nodeEvents.put(pickingMode, factories);
-		}
-		factories.add(eventFactory);
+	public void addVertexRepSelectionListener(IVertexRepSelectionListener listener) {
+		vertexListeners.add(listener);
 	}
 
 	/**
@@ -1152,7 +1163,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	/**
 	 * @return the pathSegments, see {@link #pathSegments}
 	 */
-	public List<List<PathwayVertexRep>> getPathSegments() {
+	public PathwayPath getPathSegments() {
 		return pathSegments;
 	}
 }

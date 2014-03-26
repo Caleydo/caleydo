@@ -63,14 +63,14 @@ public class PathwayLinkRankColumnModel extends StringRankColumnModel {
 			setPicker(null);
 		}
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 			if (h < 5)
 				return;
-			String link = getLink(getRow());
-			if (getTable().getSelectedRow() != getRow())
+			String link = getLink(row);
+			if (getTable().getSelectedRow() != row)
 				link = null;
 			if (w > 30 || (link == null && w > 20)) {
-				String value = getValue(getRow());
+				String value = getValue(row);
 				if (value == null)
 					return;
 				float hi = Math.min(h, 19);

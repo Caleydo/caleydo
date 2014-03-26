@@ -32,6 +32,8 @@ public interface ITourGuideView {
 	 */
 	void clearSelection();
 
+	void removeAllSimpleFilter();
+
 	/**
 	 * returns the currently selected row or null if none is selected
 	 *
@@ -43,6 +45,6 @@ public interface ITourGuideView {
 
 	List<ADataDomainQuery> getQueries();
 
-	void updateQueryUIStates();
+	void updateBound2ViewState();
 
 }

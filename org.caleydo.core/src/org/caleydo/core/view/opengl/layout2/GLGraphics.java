@@ -8,13 +8,21 @@ package org.caleydo.core.view.opengl.layout2;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2ES1;
+import javax.media.opengl.GL2ES2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.base.ILabeled;
@@ -32,6 +40,8 @@ import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.caleydo.data.loader.StackedResourceLocator;
 
+import com.google.common.io.CharStreams;
+import com.jogamp.opengl.util.glsl.ShaderUtil;
 import com.jogamp.opengl.util.texture.Texture;
 
 /**
@@ -242,6 +252,11 @@ public class GLGraphics {
 			return color(rgba[0], rgba[1], rgba[2], rgba[3]);
 	}
 
+	public Color getColor() {
+		float[] rgba = new float[4];
+		gl.glGetFloatv(GL2ES1.GL_CURRENT_COLOR, rgba, 0);
+		return new Color(rgba);
+	}
 
 	public GLGraphics textColor(Color color) {
 		text.setColor(color);
@@ -269,6 +284,11 @@ public class GLGraphics {
 
 	public GLGraphics lineWidth(float lineWidth) {
 		gl.glLineWidth(lineWidth);
+		return this;
+	}
+
+	public GLGraphics pointSize(float pointSize) {
+		gl.glPointSize(pointSize);
 		return this;
 	}
 
@@ -300,6 +320,75 @@ public class GLGraphics {
 		return this;
 	}
 
+	public int compileShader(String vertexShader, String FragmentShader) {
+		if (!ShaderUtil.isShaderCompilerAvailable(gl)) {
+			System.err.println("no shader available!");
+			return -1;
+		}
+
+		int vs = gl.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
+		gl.glShaderSource(vs, 1, new String[] {vertexShader}, (int[]) null, 0);
+		gl.glCompileShader(vs);
+
+		ByteArrayOutputStream slog = new ByteArrayOutputStream();
+		PrintStream slog_print = new PrintStream(slog);
+
+		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, slog_print)) {
+			gl.glDeleteShader(vs);
+			System.err.println("can't compile vertex shader: " + slog.toString());
+			return -1;
+		} else {
+			System.out.println("compiling vertex shader warnings: " + ShaderUtil.getShaderInfoLog(gl, vs));
+		}
+
+		int fs = gl.glCreateShader(GL2ES2.GL_FRAGMENT_SHADER);
+		gl.glShaderSource(fs, 1, new String[] {FragmentShader}, (int[]) null, 0);
+		gl.glCompileShader(fs);
+		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, slog_print)) {
+			gl.glDeleteShader(vs);
+			gl.glDeleteShader(fs);
+			System.err.println("can't compile fragment shader: " + slog.toString());
+			return -1;
+		} else {
+			System.out.println("compiling fragment shader warnings: " + ShaderUtil.getShaderInfoLog(gl, fs));
+		}
+
+		int programId = gl.glCreateProgram();
+		gl.glAttachShader(programId, vs);
+		gl.glAttachShader(programId, fs);
+		gl.glLinkProgram(programId);
+		gl.glValidateProgram(programId);
+
+		// Mark shaders for deletion (they will not be freed as long as they
+		// are attached to a program)
+		gl.glDeleteShader(vs);
+		gl.glDeleteShader(fs);
+
+		if (!ShaderUtil.isProgramLinkStatusValid(gl, programId, slog_print)) {
+			gl.glDeleteProgram(programId);
+			System.err.println("can't link program: " + slog.toString());
+			return -1;
+		} else {
+			System.out.println("linking program warnings: " + ShaderUtil.getProgramInfoLog(gl, programId));
+		}
+
+		return programId;
+	}
+
+	/**
+	 * Load and compile vertex and fragment shader
+	 * @param vertexShader
+	 * @param fragmentShader
+	 * @return
+	 * @throws IOException
+	 */
+	public int loadShader( InputStream vertexShader,
+						   InputStream fragmentShader ) throws IOException {
+		String vsrc = CharStreams.toString(new InputStreamReader(vertexShader));
+		String fsrc = CharStreams.toString(new InputStreamReader(fragmentShader));
+		return compileShader(vsrc, fsrc);
+	}
+
 	/**
 	 * renders a filled rect
 	 */
@@ -314,7 +403,7 @@ public class GLGraphics {
 		return fillRect(bounds.x(), bounds.y(), bounds.width(), bounds.height());
 	}
 
-	public GLGraphics renderRect(boolean fill, float x, float y, float w, float h) {
+	private GLGraphics renderRect(boolean fill, float x, float y, float w, float h) {
 		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
 			return this;
 		stats.incRect();
@@ -471,42 +560,56 @@ public class GLGraphics {
 	}
 
 	public GLGraphics drawText(String text, float x, float y, float w, float h, VAlign valign, ETextStyle style) {
-		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
+		return drawRotatedText(text, x, y, w, h, valign, style, 0);
+	}
+
+	public GLGraphics drawRotatedText(String text, float x, float y, float textWidth, float textHeight, VAlign valign, ETextStyle style,
+			float angle) {
+		if (isInvalidOrZero(textWidth) || isInvalidOrZero(textHeight) || isInvalid(x) || isInvalid(y))
 			return this;
 		if (text == null || text.trim().isEmpty())
 			return this;
 		if (text.indexOf('\n') < 0) {
-			return drawSingleTextLine(text, x, y, w, h, valign, style);
+			if (angle == 0) {
+				return drawSingleTextLine(text, x, y, textWidth, textHeight, valign, style);
+			} else {
+				save().move(x, y);
+				gl.glRotatef(angle, 0, 0, 1);
+				drawSingleTextLine(text, 0, 0, textWidth, textHeight, valign, style);
+				restore();
+				return this;
+			}
 		} else {
-			return drawText(Arrays.asList(text.split("\n")), x, y, w, h, 0, valign, style);
+			return drawRotatedText(Arrays.asList(text.split("\n")), x, y, textWidth, textHeight, 0, valign, style, angle);
 		}
 	}
 
-	private GLGraphics drawSingleTextLine(String text, float x, float y, float w, float h, VAlign valign,
+
+	private GLGraphics drawSingleTextLine(String text, float x, float y, float textWidth, float textHeight, VAlign valign,
 			ETextStyle style) {
 		stats.incText(text.length());
-		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
+		if (isInvalidOrZero(textWidth) || isInvalidOrZero(textHeight) || isInvalid(x) || isInvalid(y))
 			return this;
 		ITextRenderer font = selectFont(style);
 		if (originInTopLeft && !font.isOriginTopLeft()) {
 			gl.glPushMatrix();
-			gl.glTranslatef(0, y + h, 0);
+			gl.glTranslatef(0, y + textHeight, 0);
 			y = 0;
 			gl.glScalef(1, -1, 1);
 		}
-		float hi = h;
+		float hi = textHeight;
 		float xi = x;
 		switch (valign) {
 		case CENTER:
-			xi += w * 0.5f - Math.min(font.getTextWidth(text, hi), w) * 0.5f;
+			xi += textWidth * 0.5f - Math.min(font.getTextWidth(text, hi), textWidth) * 0.5f;
 			break;
 		case RIGHT:
-			xi += w - Math.min(font.getTextWidth(text, hi), w);
+			xi += textWidth - Math.min(font.getTextWidth(text, hi), textWidth);
 			break;
 		default:
 			break;
 		}
-		font.renderTextInBounds(gl, text, xi, y, z + 0.25f, w, hi);
+		font.renderTextInBounds(gl, text, xi, y, z + 0.25f, textWidth, hi);
 
 		if (font.isDirty())
 			stats.dirtyTextTexture();
@@ -518,6 +621,11 @@ public class GLGraphics {
 
 	public GLGraphics drawText(List<String> lines, float x, float y, float w, float h, float lineSpace, VAlign valign,
 			ETextStyle style) {
+		return drawTextImpl(lines, x, y, w, h, lineSpace, valign, style);
+	}
+
+	private GLGraphics drawTextImpl(List<String> lines, float x, float y, float w, float h, float lineSpace,
+			VAlign valign, ETextStyle style) {
 		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y) || isInvalid(lineSpace))
 			return this;
 		if (lines == null || lines.isEmpty())
@@ -553,6 +661,19 @@ public class GLGraphics {
 
 		if (originInTopLeft && !font.isOriginTopLeft())
 			gl.glPopMatrix();
+		return this;
+	}
+
+	public GLGraphics drawRotatedText(List<String> lines, float x, float y, float w, float h, float lineSpace,
+			VAlign valign, ETextStyle style, float angle) {
+		if (angle == 0) {
+			return drawTextImpl(lines, x, y, w, h, lineSpace, valign, style);
+		} else {
+			save();
+			gl.glRotatef(angle, 0, 0, 1);
+			drawTextImpl(lines, x, y, w, h, lineSpace, valign, style);
+			restore();
+		}
 		return this;
 	}
 
@@ -644,7 +765,7 @@ public class GLGraphics {
 	}
 
 	/**
-	 * returns a set of points as lines
+	 * renders a set of points as lines
 	 *
 	 * @param points
 	 * @param closed
@@ -655,6 +776,13 @@ public class GLGraphics {
 		return render(closed ? GL.GL_LINE_LOOP : GL.GL_LINE_STRIP, points);
 	}
 
+	/**
+	 * see {@link #drawPath(Iterable, boolean)} but with varargs
+	 *
+	 * @param closed
+	 * @param points
+	 * @return
+	 */
 	public GLGraphics drawPath(boolean closed, Vec2f... points) {
 		return render(closed ? GL.GL_LINE_LOOP : GL.GL_LINE_STRIP, Arrays.asList(points));
 	}
@@ -665,7 +793,47 @@ public class GLGraphics {
 		return this;
 	}
 
+	/**
+	 * draws a single point
+	 *
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public GLGraphics drawPoint(float x, float y) {
+		if (isInvalid(x) || isInvalid(y))
+			return this;
+		gl.glBegin(GL.GL_POINTS);
+		gl.glVertex3f(x, y, z);
+		gl.glEnd();
+		return this;
+	}
+
+	/**
+	 * draws a set of points, see {@link #drawPoints(Iterable)} with varargs
+	 *
+	 * @param points
+	 * @return
+	 */
+	public GLGraphics drawPoints(Vec2f... points) {
+		if (points.length == 0)
+			return this;
+		return render(GL.GL_POINTS, Arrays.asList(points));
+	}
+
+	/**
+	 * draws a set of points
+	 *
+	 * @param points
+	 * @return
+	 */
+	public GLGraphics drawPoints(Iterable<Vec2f> points) {
+		return render(GL.GL_POINTS, points);
+	}
+
 	private GLGraphics render(int mode, Iterable<Vec2f> points) {
+		if (points instanceof Collection && ((Collection<?>) points).isEmpty())
+			return this;
 		int count = 0;
 		gl.glBegin(mode);
 		for (Vec2f p : points) {
@@ -726,7 +894,6 @@ public class GLGraphics {
 
 	/**
 	 * shortcut to {@link GL2#glTranslatef(float, float, float)
-
 	 */
 	public GLGraphics move(float x, float y) {
 		if (x != 0 || y != 0)
@@ -769,6 +936,30 @@ public class GLGraphics {
 		save();
 		renderer.render(this, w, h, parent);
 		restore();
+		return this;
+	}
+
+	/**
+	 *
+	 */
+	public GLGraphics lineStippled(boolean enable) {
+		return lineStippled(enable ? 2 : -1, 0xAAAA);
+	}
+
+	/**
+	 *
+	 * @param factor
+	 *            <= 0 to disable
+	 * @param pattern
+	 * @return
+	 */
+	public GLGraphics lineStippled(int factor, int pattern) {
+		if (factor > 0) {
+			gl.glEnable(GL2.GL_LINE_STIPPLE);
+			gl.glLineStipple(factor, (short) pattern);
+		} else {
+			gl.glDisable(GL2.GL_LINE_STIPPLE);
+		}
 		return this;
 	}
 }

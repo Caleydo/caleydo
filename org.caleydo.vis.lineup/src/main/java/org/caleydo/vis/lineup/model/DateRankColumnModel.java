@@ -23,8 +23,9 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.vis.lineup.internal.event.FilterEvent;
+import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.ui.DateFilterDialog;
+import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.lineup.ui.GLPropertyChangeListeners;
@@ -40,7 +41,7 @@ import com.google.common.base.Function;
  *
  */
 public final class DateRankColumnModel extends ABasicFilterableRankColumnModel implements IRankableColumnMixin,
-		IFilterColumnMixin, Cloneable {
+		IFilterColumnMixin, Cloneable, IDataBasedColumnMixin {
 	private final Function<IRow, Date> data;
 
 	public enum DateMode {
@@ -113,6 +114,14 @@ public final class DateRankColumnModel extends ABasicFilterableRankColumnModel i
 		return new DateRankColumnModel(this);
 	}
 
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	@Override
+	public Function<IRow, Date> getData() {
+		return data;
+	}
+
 	@Override
 	public GLElement createSummary(boolean interactive) {
 		return new MyHeaderElement(interactive);
@@ -131,7 +140,7 @@ public final class DateRankColumnModel extends ABasicFilterableRankColumnModel i
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				DateFilterDialog dialog = new DateFilterDialog(canvas.getShell(), getTitle(), summary, from, to,
+				DateFilterDialog dialog = new DateFilterDialog(canvas.getShell(), getLabel(), summary, from, to,
 						DateRankColumnModel.this, getTable().hasSnapshots(), loc, mode);
 				dialog.open();
 			}
@@ -155,14 +164,17 @@ public final class DateRankColumnModel extends ABasicFilterableRankColumnModel i
 	}
 
 	/**
-	 * @param first
-	 * @param second
-	 * @param filterGlobally
-	 * @param filterRankIndendent
+	 * @return the from, see {@link #from}
 	 */
-	public void setFilter(Date first, Date second, boolean filterGlobally, boolean filterRankIndendent) {
-		// TODO Auto-generated method stub
+	public Calendar getFrom() {
+		return from;
+	}
 
+	/**
+	 * @return the to, see {@link #to}
+	 */
+	public Calendar getTo() {
+		return to;
 	}
 
 	@Override
@@ -214,12 +226,11 @@ public final class DateRankColumnModel extends ABasicFilterableRankColumnModel i
 
 	class MyElement extends ValueElement {
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 			if (h < 5)
 				return;
-			super.renderImpl(g, w, h);
 			float hi = Math.min(h, 16);
-			Date f = getDate(getLayoutDataAs(IRow.class, null));
+			Date f = getDate(row);
 			g.drawText(formatter == null ? f + "" : formatter.format(f), 1, 1 + (h - hi) * 0.5f, w - 2,
 						hi - 2);
 		}

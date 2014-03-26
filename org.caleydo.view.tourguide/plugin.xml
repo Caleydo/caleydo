@@ -49,25 +49,6 @@
       </addon>
    </extension>
    <extension
-         point="org.caleydo.tourguide.scorefactory">
-      <factory
-            class="org.caleydo.view.tourguide.impl.AdjustedRandScoreFactory"
-            name="Adjusted Rank Score">
-      </factory>
-      <factory
-            class="org.caleydo.view.tourguide.impl.SetSimilarityScoreFactory"
-            name="Jaccard Index Score">
-      </factory>
-      <factory
-            class="org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory"
-            name="Gene Set Enrichment Analysis">
-      </factory>
-      <factory
-            class="org.caleydo.view.tourguide.impl.LogRankMetricFactory"
-            name="Log Rank Score">
-      </factory>
-   </extension>
-   <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
             class="org.caleydo.view.tourguide.api.prefs.MyPreferences">

@@ -128,14 +128,14 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IPathwayHandler 
 		toolBarManager.add(sampleSelectionMode);
 
 		DatasetSelectionBox dataSelectionBox = new DatasetSelectionBox(DataDomainManager.get().getDataDomainByID(
-				((SerializedPathwayView) serializedView).getDataDomainID()), (GLPathway) view);
+				((SerializedPathwayView) serializedView).getDataDomainID()),
+				((GLPathway) view).getPathwayPathEventSpace());
 		toolBarManager.add(dataSelectionBox);
 
 		PathwaySearchBox pathwaySearchBox = new PathwaySearchBox((GLPathway) view);
 		toolBarManager.add(pathwaySearchBox);
 
-		toolBarManager.add(new OpenOnlineHelpAction(
-GeneralManager.HELP_URL + "/views/enroute.md#Pathway_View", false));
+		toolBarManager.add(new OpenOnlineHelpAction(GeneralManager.HELP_URL + "views/pathway/pathway.md", false));
 
 	}
 

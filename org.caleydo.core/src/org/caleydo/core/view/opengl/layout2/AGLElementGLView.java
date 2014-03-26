@@ -18,11 +18,15 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
+
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 
 /**
  * a {@link GLElement} based view using a {@link AGLView} for compatibility
@@ -74,11 +78,21 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	}
 
 	@Override
+	public final <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		return getLayoutDataAs(clazz, Suppliers.ofInstance(default_));
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
+		return GLLayouts.resolveLayoutDatas(clazz, default_, this.parentGLCanvas, this.local);
+	}
+
+	@Override
 	public void init(GL2 gl) {
 		IResourceLocator locator = createLocator();
 		this.local = new GLContextLocal(this.getTextRenderer(), this.getTextureManager(), locator);
 
-		this.root = new WindowGLElement(createRoot());
+		this.root = new WindowGLElement(createRoot(), getParentGLCanvas());
 
 		this.root.setParent(this);
 		this.root.init(this);

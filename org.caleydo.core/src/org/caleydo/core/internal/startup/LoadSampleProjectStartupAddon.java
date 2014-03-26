@@ -36,6 +36,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -53,12 +54,12 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 	private URL selectedChoice = null;
 
 	@Override
-	public Composite create(Composite parent, final WizardPage page) {
+	public Composite create(Composite parent, final WizardPage page, Listener listener) {
 		SelectionListener l = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectedChoice = (URL) ((Button) e.getSource()).getData();
-				page.setPageComplete(true);
+				// page.setPageComplete(true);
 			}
 		};
 
@@ -77,9 +78,9 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 					StringUtils.removeEnd(GeneralManager.DATA_URL_PREFIX, "/"));
 			String description = elem.getAttribute("description");
 			if (first == null)
-				first = createSample(url, name, description, g, l, true);
+				first = createSample(url, name, description, g, l, true, listener);
 			else
-				createSample(url, name, description, g, l, false);
+				createSample(url, name, description, g, l, false, listener);
 		}
 		if (selectedChoice == null && first != null) {
 			first.setSelection(true);
@@ -93,7 +94,7 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 	}
 
 	private Button createSample(String url, String name, String description, Composite g, SelectionListener l,
-			boolean first) {
+			boolean first, Listener listener) {
 		try {
 			URL u = new URL(url);
 			Button button = new Button(g, SWT.RADIO);
@@ -102,6 +103,7 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 
 			button.setData(u);
 			button.addSelectionListener(l);
+			button.addListener(SWT.Selection, listener);
 			GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 			gd.verticalIndent = first ? 0 : 20;
 			button.setLayoutData(gd);
@@ -127,9 +129,33 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 
 	@Override
 	public boolean validate() {
-		if (this.selectedChoice == null)
-			return false;
+		return selectedChoice != null;
+		// if (this.selectedChoice == null)
+		// return false;
 		// Try to download the file with interruption
+		// RemoteFile file = RemoteFile.of(this.selectedChoice);
+		// if (!file.inCache(true)) {
+		// file.delete();
+		// try {
+		// new ProgressMonitorDialog(new Shell()).run(true, true, file);
+		// } catch (InvocationTargetException | InterruptedException e) {
+		// Status status = new Status(IStatus.ERROR, this.getClass().getSimpleName(), "Error during downloading: "
+		// + selectedChoice, e);
+		// ErrorDialog.openError(null, "Download Error", "Error during downloading: " + selectedChoice, status);
+		// Logger.log(status);
+		// }
+		// }
+		// return file.inCache(false);
+	}
+
+	@Override
+	public boolean init() {
+		return false;
+	}
+
+	@Override
+	public IStartupProcedure create() {
+		MyPreferences.setLastChosenSampleProject(selectedChoice.toString());
 		RemoteFile file = RemoteFile.of(this.selectedChoice);
 		if (!file.inCache(true)) {
 			file.delete();
@@ -142,17 +168,8 @@ public class LoadSampleProjectStartupAddon implements IStartupAddon {
 				Logger.log(status);
 			}
 		}
-		return file.inCache(false);
-	}
-
-	@Override
-	public boolean init() {
-		return false;
-	}
-
-	@Override
-	public IStartupProcedure create() {
-		MyPreferences.setLastChosenSampleProject(selectedChoice.toString());
+		if (!file.inCache(false))
+			return null;
 		return new LoadProjectStartupProcedure(RemoteFile.of(selectedChoice).getFile().getAbsolutePath(), false);
 	}
 

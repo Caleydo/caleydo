@@ -58,6 +58,10 @@ public class GLMouseAdapter implements IGLMouseListener {
 
 	}
 
+	@Override
+	public void mouseDragDetected(IMouseEvent mouseEvent) {
+
+	}
 
 
 }

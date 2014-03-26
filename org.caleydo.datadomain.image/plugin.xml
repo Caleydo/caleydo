@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="org.caleydo.datadomain.image"
+         name="ImageDataDomain"
+         point="org.caleydo.datadomain.DataDomain">
+      <DataDomain
+          class="org.caleydo.datadomain.image.ImageDataDomain" />
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.file"
+               label="File">
+            <menu
+                  id="org.caleydo.menu.file.import"
+                  label="Import">
+               <command
+                     commandId="org.caleydo.datadomain.image.import"
+                     label="Import Images"
+                     style="push">
+               </command>
+            </menu>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.datadomain.image.ImportImageHandler"
+            id="org.caleydo.datadomain.image.import"
+            name="Import Images">
+      </command>
+   </extension>
+   <extension
+         point="org.caleydo.serialize.addon">
+      <addon
+            class="org.caleydo.datadomain.image.ImageSerializationAddon">
+      </addon>
+   </extension>
+</plugin>

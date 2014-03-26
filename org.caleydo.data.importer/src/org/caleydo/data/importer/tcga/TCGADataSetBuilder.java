@@ -6,13 +6,17 @@
 package org.caleydo.data.importer.tcga;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 import java.util.logging.Level;
@@ -25,7 +29,6 @@ import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
-import org.caleydo.core.io.FileUtil;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -48,7 +51,7 @@ import org.caleydo.data.importer.tcga.model.TCGADataSet;
 import org.caleydo.datadomain.genetic.TCGADefinitions;
 
 public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
-	private static final Logger log = Logger.getLogger(TCGADataSetBuilder.class.getSimpleName());
+	private static final Logger log = Logger.getLogger(TCGADataSetBuilder.class.getName());
 	private static final long serialVersionUID = 6468622325177694143L;
 
 	private final String dataSetName;
@@ -58,6 +61,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 	private final FirehoseProvider fileFinder;
 
 	private final Settings settings;
+	private final String id;
 
 	private TCGADataSetBuilder(EDataSetType datasetType, String dataSetName, FirehoseProvider fileProvider,
 			boolean loadSampledGenes, Settings settings) {
@@ -66,6 +70,8 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		this.loadFullGenes = !loadSampledGenes;
 		this.fileFinder = fileProvider;
 		this.settings = settings;
+
+		this.id = String.format("%s(%s)[%s] %s", dataSetType, dataSetName, loadFullGenes ? "F" : "S", fileProvider);
 
 	}
 
@@ -81,6 +87,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 	@Override
 	public TCGADataSet compute() {
+		log.info(id + " start");
 		final IDSpecification sampleID = TCGADefinitions.createSampleIDSpecification(true);
 
 		// TCGA SAMPLE IDs look different for seq data (an "-01" is attached)
@@ -136,18 +143,23 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			desc = setUpCopyNumberData(geneRowID, sampleID);
 			break;
 		}
-		if (desc == null)
+		if (desc == null) {
+			log.warning(id + " invalid data description");
 			return null;
+		}
 		return new TCGADataSet(desc, this.dataSetType);
 	}
 
 	private DataSetDescription setUpClusteredMatrixData(EDataSetType type, IDSpecification rowIDSpecification,
 			IDSpecification columnIDSpecification, Pair<TCGAFileInfo, Boolean> pair) {
-		if (pair == null || pair.getFirst() == null)
+		if (pair == null || pair.getFirst() == null) {
+			log.warning(id + " no data found");
 			return null;
+		}
 		TCGAFileInfo fileInfo = pair.getFirst();
 		final File matrixFile = fileInfo.getFile();
 		final boolean loadFullGenes = pair.getSecond();
+		log.fine(id + " data found: " + (loadFullGenes ? "F" : "S") + " " + matrixFile);
 
 		MetaDataElement metaData = new MetaDataElement();
 		DataSetDescription dataSet = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
@@ -161,20 +173,28 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		addDataSourceMetaData(dataset, fileInfo);
 		dataset.addAttribute("Full Genes", new Boolean(loadFullGenes).toString());
 
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setParseUntilEnd(true);
+		parsingRule.setColumnDescripton(new ColumnDescription());
+
 		if (!loadFullGenes) {
-			// the gct files have 3 header lines and are centered<
+			// the first column contains the gene ids and the second column contains additional (or the same) identifiers
+			parsingRule.setFromColumn(2);
+
+			// the gct files have 3 header lines and are centered
 			dataSet.setNumberOfHeaderLines(3);
 			dataSet.getDataDescription().getNumericalProperties().setDataCenter(0d);
 		} else {
+			// full matrices don't have the extra column before the actual data that gct files have
+			parsingRule.setFromColumn(1);
+
 			// the files with all the genes have the ids in the first row, then a row with "signal" and then the data
-			dataSet.setNumberOfHeaderLines(2);
+			// NG: I can't confirm the above and I found counter examples, e.g. in mRNA-seq for THCA
+			// in the 2014 run, there is a new additional row in the data
+			dataSet.setNumberOfHeaderLines(this.fileFinder.is2014Run() ? 2 : 1);
 			dataSet.setRowOfColumnIDs(0);
 		}
 
-		ParsingRule parsingRule = new ParsingRule();
-		parsingRule.setFromColumn(2);
-		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription());
 		dataSet.addParsingRule(parsingRule);
 		dataSet.setTransposeMatrix(true);
 
@@ -187,6 +207,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 		TCGAFileInfo cnmfGroupingFile = fileFinder.findCNMFGroupingFile(type);
 		if (cnmfGroupingFile != null) {
+			log.fine(id + " add CNMF grouping file " + cnmfGroupingFile);
 			GroupingParseSpecification grouping = new GroupingParseSpecification(cnmfGroupingFile.getFile().getPath());
 			grouping.setContainsColumnIDs(false);
 			grouping.setRowIDSpecification(columnIDSpecification);
@@ -197,11 +218,12 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			addDataSourceMetaData(cnmfClustering, cnmfGroupingFile);
 			columnGroupings.addElement(cnmfClustering);
 		} else {
-			System.out.println("Warning: Can't find CNMF grouping file");
+			log.warning(id + " can't find CNMF grouping file");
 		}
 
 		TCGAFileInfo hierarchicalGroupingFile = fileFinder.findHiearchicalGrouping(type);
 		if (hierarchicalGroupingFile != null) {
+			log.fine(id + " add hierarchical grouping file " + hierarchicalGroupingFile);
 			GroupingParseSpecification grouping = new GroupingParseSpecification(hierarchicalGroupingFile.getFile()
 					.getPath());
 			grouping.setContainsColumnIDs(false);
@@ -213,7 +235,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			addDataSourceMetaData(hierarchicalClustering, hierarchicalGroupingFile);
 			columnGroupings.addElement(hierarchicalClustering);
 		} else {
-			System.out.println("Warning: Can't find hierarchical grouping file");
+			log.warning(id + " can't find hierarchical grouping file");
 		}
 
 		if (!columnGroupings.getElements().isEmpty()) {
@@ -233,19 +255,21 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			break;
 		case AFFINITY:
 			AffinityClusterConfiguration affinityAlgo = new AffinityClusterConfiguration();
-			Integer clusterFactor = 9;
+			int clusterFactor = 9;
+			log.fine(id + " add affinity clustering with factor " + clusterFactor);
 			affinityAlgo.setClusterFactor(clusterFactor);
 			affinityAlgo.setCacheVectors(true);
 			clusterConfiguration.setClusterAlgorithmConfiguration(affinityAlgo);
 			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 
 			MetaDataElement affinityCluster = new MetaDataElement("Affinity Clustering");
-			affinityCluster.addAttribute("Cluster Factor", clusterFactor.toString());
+			affinityCluster.addAttribute("Cluster Factor", String.valueOf(clusterFactor));
 			rowGroupings.addElement(affinityCluster);
 			break;
 		case KMEANS:
 			KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
 			Integer numClusters = 5;
+			log.fine(id + " add kmeans clustering with factor " + numClusters);
 			kMeansAlgo.setNumberOfClusters(numClusters);
 			kMeansAlgo.setCacheVectors(true);
 			clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
@@ -258,6 +282,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		case TREE:
 			TreeClusterConfiguration treeAlgo = new TreeClusterConfiguration();
 			ETreeClustererAlgo algo = ETreeClustererAlgo.AVERAGE_LINKAGE;
+			log.fine(id + " add tree clustering using " + algo);
 			treeAlgo.setTreeClustererAlgo(algo);
 			clusterConfiguration.setClusterAlgorithmConfiguration(treeAlgo);
 			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
@@ -267,7 +292,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			rowGroupings.addElement(treeCluster);
 			break;
 		default:
-			log.log(Level.ALL, "Did not recognize option " + settings.getCluster());
+			log.severe(id + " unknown cluster specificiation: " + settings.getCluster());
 			break;
 		}
 
@@ -276,7 +301,6 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		}
 
 		if (loadFullGenes) {
-
 			NumericalProperties numProp = dataSet.getDataDescription().getNumericalProperties();
 			// run z-score normalization on the rows
 			numProp.setzScoreNormalization(NumericalProperties.ZSCORE_ROWS);
@@ -287,6 +311,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			Integer numRowsInSample = 1500;
 			dataProcessingDescription.setNrRowsInSample(numRowsInSample);
 
+			log.fine(id + " add preprocessing steps: z-normalization, clipping, sampling, imputation");
 			MetaDataElement processing = new MetaDataElement("Data Pre-Processing");
 			processing
 					.addElement(new MetaDataElement("Z-Score Normalization per " + rowIDSpecification.getIdCategory()));
@@ -311,8 +336,10 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		TCGAFileInfo mutationFile = p.getFirst();
 
 		if (mutationFile == null) {
+			log.warning(id + " invalid file");
 			return null;
 		}
+		log.fine(id + " data found: (startColumn " + startColumn + ") + mutationFile");
 		MetaDataElement metaData = new MetaDataElement();
 		DataSetDescription dataSet = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
 		dataSet.setDataSetName(dataSetName);
@@ -371,8 +398,11 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 	private DataSetDescription setUpCopyNumberData(IDSpecification rwoIDSpecification,
 			IDSpecification sampleIDSpecification) {
 		TCGAFileInfo copyNumberFile = fileFinder.findCopyNumberFile();
-		if (copyNumberFile == null)
+		if (copyNumberFile == null) {
+			log.warning(id + " invalid file");
 			return null;
+		}
+		log.fine(id + " data found: " + copyNumberFile);
 
 		MetaDataElement metaData = new MetaDataElement();
 		DataSetDescription dataSet = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
@@ -424,13 +454,20 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 	private DataSetDescription setUpClinicalData(IDSpecification rowIdSpecification,
 			IDSpecification columnIdSpecification) {
 		TCGAFileInfo clinicalFileInfo = fileFinder.findClinicalDataFile();
-		if (clinicalFileInfo == null)
+		if (clinicalFileInfo == null) {
+			log.warning(id + " invalid file");
 			return null;
+		}
+		log.fine(id + " data found: " + clinicalFileInfo);
 		File clinicalFile = clinicalFileInfo.getFile();
 
-		File out = new File(clinicalFile.getParentFile(), "T" + clinicalFile.getName());
+		// new key for force an update
+		File out = new File(clinicalFile.getParentFile(), "TR" + clinicalFile.getName());
 
-		transposeCSV(clinicalFile.getPath(), out.getPath());
+		Collection<String> toInclude = settings.getClinicalVariables();
+
+		transposeCSV(clinicalFile.getPath(), out.getPath(), ClinicalMapping.getAliasMap(toInclude));
+		log.fine(id + " transposed file to " + out);
 
 		MetaDataElement metaData = new MetaDataElement();
 
@@ -453,13 +490,17 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		assert header != null;
 		List<String> columns = Arrays.asList(header.split("\t"));
 
-		if (columns.contains("patient.bcrpatientbarcode"))
-			dataSet.setColumnOfRowIds(columns.indexOf("patient.bcrpatientbarcode")); // "patient.bcrpatientbarcode"
-		else
+		final String idColumnLabel = "patient.bcrpatientbarcode";
+		if (columns.contains(idColumnLabel)) {
+			int index = columns.indexOf(idColumnLabel);
+			log.info(id + " found id column: " + idColumnLabel + " at index " + index);
+			dataSet.setColumnOfRowIds(index); // "patient.bcrpatientbarcode"
+		} else {
+			log.warning(id + " can't find column: " + idColumnLabel + " assuming ids are at column 12");
 			dataSet.setColumnOfRowIds(12);
+		}
 
 		int counter = 0;
-		Collection<String> toInclude = settings.getClinicalVariables();
 		for (int i = 2; i < columns.size(); ++i) {
 			String name = columns.get(i).toLowerCase();
 			boolean found = toInclude.isEmpty();
@@ -472,10 +513,11 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			if (found) {
 				ClinicalMapping mapping = ClinicalMapping.byName(name);
 				if (mapping == null && !toInclude.isEmpty()) {
-					log.warning("activly selected clinicial variable: " + name + " is not known using default");
+					log.warning(id + " activly selected clinicial variable: " + name + " is not known using default");
 					dataSet.addParsingPattern(ClinicalMapping.createDefault(i));
 					counter++;
 				} else if (mapping != null) {
+					log.info(id + " adding clinicial variable: " + name);
 					dataSet.addParsingPattern(mapping.create(i));
 					counter++;
 				} else {
@@ -483,14 +525,18 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 				}
 			}
 		}
-		if (counter == 0) // empty file
+		if (counter == 0) {// empty file
+			log.warning(id + " no defined columns, skipping dataset");
 			return null;
+		} else {
+			log.fine(id + " added " + counter + " clinicial variables");
+		}
 
 		return dataSet;
 	}
 
 	private void addDataSourceMetaData(MetaDataElement metaData, TCGAFileInfo fileInfo) {
-		metaData.addAttribute("Archive", fileInfo.getArchiveURL(), AttributeType.URL);
+		metaData.addAttribute("Archive", fileInfo.getArchiveURL().toExternalForm(), AttributeType.URL);
 		metaData.addAttribute("Source File", fileInfo.getSourceFileName());
 	}
 
@@ -505,47 +551,58 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		return null;
 	}
 
-	private void transposeCSV(String fileName, String fileNameOut) {
-		log.info("tranposing: " + fileName);
+	private void transposeCSV(String fileName, String fileNameOut, Map<String, String> lookupMap) {
 		// File in = new File(fileName);
 		File out = new File(fileNameOut);
 
 		if (out.exists() && !settings.isCleanCache())
 			return;
 
-		FileUtil.transposeCSV(fileName, fileNameOut, "\t");
-		//
-		// List<String> data;
-		// try {
-		// data = Files.readAllLines(in.toPath(), Charset.forName("UTF-8"));
-		// } catch (IOException e2) {
-		// e2.printStackTrace();
+		transposeCSV(fileName, fileNameOut, "\t", lookupMap);
+	}
+
+	public static void transposeCSV(String fileName, String fileNameOut, String delimiter, Map<String, String> lookupMap) {
+		// log.info("tranposing: " + fileName);
+		File in = new File(fileName);
+		File out = new File(fileNameOut);
+
+		// if (out.exists() && !settings.isCleanCache())
 		// return;
-		// }
-		// // split into parts
-		// String[][] parts = new String[data.size()][];
-		// int maxCol = -1;
-		// for (int i = 0; i < data.size(); ++i) {
-		// parts[i] = data.get(i).split("\t");
-		// if (parts[i].length > maxCol)
-		// maxCol = parts[i].length;
-		// }
-		// data = null;
-		//
-		// try (BufferedWriter writer = Files.newBufferedWriter(out.toPath(), Charset.forName("UTF-8"))) {
-		// for (int c = 0; c < maxCol; ++c) {
-		// for (int i = 0; i < parts.length; ++i) {
-		// if (i > 0)
-		// writer.append('\t');
-		// String[] p = parts[i];
-		// if (p.length > c)
-		// writer.append(p[c]);
-		// }
-		// writer.newLine();
-		// }
-		// } catch (IOException e1) {
-		// // TODO Auto-generated catch block
-		// e1.printStackTrace();
-		// }
+
+		List<String> data;
+		try {
+			data = Files.readAllLines(in.toPath(), Charset.forName("UTF-8"));
+		} catch (IOException e2) {
+			log.log(Level.SEVERE, "can' read all of " + in, e2);
+			return;
+		}
+		// split into parts
+		String[][] parts = new String[data.size()][];
+		int maxCol = -1;
+		for (int i = 0; i < data.size(); ++i) {
+			parts[i] = data.get(i).split(delimiter, -1);
+			if (parts[i].length > maxCol)
+				maxCol = parts[i].length;
+		}
+		data = null;
+
+		try (BufferedWriter writer = Files.newBufferedWriter(out.toPath(), Charset.forName("UTF-8"))) {
+			for (int c = 0; c < maxCol; ++c) {
+				for (int i = 0; i < parts.length; ++i) {
+					if (i > 0)
+						writer.append(delimiter);
+					String[] p = parts[i];
+					if (p.length > c) {
+						String v = p[c];
+						if (lookupMap.containsKey(v))
+							v = lookupMap.get(v);
+						writer.append(v);
+					}
+				}
+				writer.newLine();
+			}
+		} catch (IOException e1) {
+			log.log(Level.SEVERE, "can' write all of " + in + " to " + out, e1);
+		}
 	}
 }

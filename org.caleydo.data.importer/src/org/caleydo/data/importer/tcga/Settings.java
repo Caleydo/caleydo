@@ -18,8 +18,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.importer.tcga.model.TumorType;
 import org.kohsuke.args4j.Argument;
@@ -41,9 +43,6 @@ public class Settings {
 	public static enum ClusterOptions {
 		NONE, AFFINITY, KMEANS, TREE;
 	}
-
-	private static String CALEYDO_JNLP_GENERATOR_URL = "http://data.icg.tugraz.at/caleydo/download/webstart_"
-			+ GeneralManager.VERSION + "/{0}_{1}.jnlp"; // jnlpgenerator.php?date={0}&tumor={1}";
 
 	private static final String BASE_URL = "http://gdac.broadinstitute.org/runs/";
 	/**
@@ -127,10 +126,10 @@ public class Settings {
 	@Option(name = "--downloadOnly", usage = "if enabled only the files will be downloaded")
 	private boolean downloadOnly = false;
 
-	@Option(name = "--username", usage = "the username to use for authentication")
+	@Option(name = "--username", usage = "the username to use for authentication, use PROMPT for interactive prompting")
 	private String username = null;
 
-	@Option(name = "--password", usage = "the password to use for authentication")
+	@Option(name = "--password", usage = "the password to use for authentication, use PROMPT for interactive prompting")
 	private String password = null;
 
 	private Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().setDateFormat("yyyy_MM_dd")
@@ -149,6 +148,8 @@ public class Settings {
 			numThreads = Runtime.getRuntime().availableProcessors();
 
 		if (username != null && password != null) {
+			username = fixPrompt(username, "Enter the username: ");
+			password = fixPrompt(password, "Enter the password: ");
 			// set Authenticator for following urls
 			Authenticator.setDefault(new Authenticator() {
 				@Override
@@ -179,21 +180,30 @@ public class Settings {
 	}
 
 	/**
+	 * @param username2
+	 * @param string
+	 * @return
+	 */
+	private static String fixPrompt(String var, String prompt) {
+		if ("PROMPT".equals(var)) {
+			System.out.print(prompt);
+			try (Scanner s = new Scanner(System.in)) {
+				String l = s.nextLine();
+				if (StringUtils.isBlank(l)) {
+					System.err.println("Aborting");
+					System.exit(1);
+				}
+				return l;
+			}
+		}
+		return var;
+	}
+
+	/**
 	 * @return the downloadOnly, see {@link #downloadOnly}
 	 */
 	public boolean isDownloadOnly() {
 		return downloadOnly;
-	}
-
-	public String getJNLPOutputDirectory() {
-		if (this.flatOutput)
-			return ensureExistingDir(outputPath);
-		else
-			return ensureExistingDir(new File(outputPath, "jnlp" + GeneralManager.VERSION));
-	}
-
-	public String getJNLPURL(String declare, TumorType tumor) {
-		return MessageFormat.format(CALEYDO_JNLP_GENERATOR_URL, declare, tumor);
 	}
 
 	private static String ensureExistingDir(File f) {
@@ -341,4 +351,50 @@ public class Settings {
 	public Gson getGson() {
 		return gson;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Settings [analysisRuns=");
+		builder.append(analysisRuns);
+		builder.append(", dataRuns=");
+		builder.append(dataRuns);
+		builder.append(", tumorTypes=");
+		builder.append(tumorTypes);
+		builder.append(", cluster=");
+		builder.append(cluster);
+		builder.append(", awgGroup=");
+		builder.append(awgGroup);
+		builder.append(", clinicalVariables=");
+		builder.append(clinicalVariables);
+		builder.append(", outputPath=");
+		builder.append(outputPath);
+		builder.append(", flatOutput=");
+		builder.append(flatOutput);
+		builder.append(", cleanCache=");
+		builder.append(cleanCache);
+		builder.append(", numThreads=");
+		builder.append(numThreads);
+		builder.append(", batchSize=");
+		builder.append(batchSize);
+		builder.append(", analysisPattern=");
+		builder.append(analysisPattern);
+		builder.append(", filePattern=");
+		builder.append(filePattern);
+		builder.append(", dataPattern=");
+		builder.append(dataPattern);
+		builder.append(", dataFilePattern=");
+		builder.append(dataFilePattern);
+		builder.append(", reportPattern=");
+		builder.append(reportPattern);
+		builder.append(", downloadOnly=");
+		builder.append(downloadOnly);
+		builder.append(", username=");
+		builder.append(username);
+		builder.append(", password=");
+		builder.append(password);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

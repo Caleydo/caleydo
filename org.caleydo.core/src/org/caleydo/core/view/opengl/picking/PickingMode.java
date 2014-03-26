@@ -15,6 +15,11 @@ public enum PickingMode {
 	 * when the mouse enters the element
 	 */
 	MOUSE_OVER,
+
+	/**
+	 * better methods to detect drag starts, supported just by {@link SimplePickingManager} and {@link PickingManager2}
+	 */
+	DRAG_DETECTED,
 	/**
 	 * aka MOUSE_DRAGGED_MOVED
 	 */

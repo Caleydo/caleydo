@@ -23,8 +23,8 @@ public class BrowseNumericalAndStratificationState extends BrowseOtherState impl
 
 	private TablePerspective numerical;
 
-	public BrowseNumericalAndStratificationState() {
-		super("Select a numerical value in the LineUp and select a strafication to refer to.");
+	public BrowseNumericalAndStratificationState(String adapter) {
+		super(adapter, "Select a numerical value in the LineUp and select a strafication to refer to.");
 	}
 
 	@Override

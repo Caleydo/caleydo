@@ -28,7 +28,9 @@ import org.eclipse.swt.widgets.Composite;
  * @author Christian Partl
  *
  */
-public abstract class AImportDataPage extends WizardPage implements IPageChangedListener {
+public abstract class AImportDataPage<WizardType extends AWizard<WizardType>>
+	extends WizardPage
+	implements IPageChangedListener {
 
 	/**
 	 * The {@link DataSetDescription} for which data is defined in subclasses.
@@ -133,13 +135,14 @@ public abstract class AImportDataPage extends WizardPage implements IPageChanged
 	@Override
 	public void performHelp() {
 		// super.performHelp();
-		BrowserUtils.openURL(GeneralManager.HELP_URL + "/data.md");
+		BrowserUtils.openURL(GeneralManager.HELP_URL + "data.md");
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public DataImportWizard getWizard() {
-		return (DataImportWizard) super.getWizard();
+	public WizardType getWizard() {
+		return (WizardType) super.getWizard();
 	}
 
 }

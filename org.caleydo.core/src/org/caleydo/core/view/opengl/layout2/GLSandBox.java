@@ -47,6 +47,9 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
+import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
@@ -54,6 +57,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 
 /**
  * acts as a sandbox for elements, just use {@link GLSandBox#main(String[], GLElement)} and provide a element, and run the
@@ -67,6 +73,35 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementContext {
+	private static PreferenceStore store = new PreferenceStore();
+
+	@SafeVarargs
+	public static IPreferenceStore prefs(Class<? extends AbstractPreferenceInitializer>... initializers) {
+		for (final Class<? extends AbstractPreferenceInitializer> init : initializers) {
+			runInitializer(init);
+		}
+		return store;
+	}
+
+	private static void runInitializer(final Class<? extends AbstractPreferenceInitializer> init) {
+		// just once
+		if (store.getBoolean("init.done.for." + init.getCanonicalName()))
+			return;
+		store.setValue("init.done.for." + init.getCanonicalName(), true);
+		Display.getDefault().syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					init.newInstance().initializeDefaultPreferences();
+				} catch (InstantiationException | IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
 	private final GLAnimatorControl animator;
 	private final WindowGLElement root;
 
@@ -129,7 +164,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 			}
 		});
-		this.root = new WindowGLElement(root);
+		this.root = new WindowGLElement(root, canvas);
 
 		animator.start();
 	}
@@ -144,6 +179,11 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 	@Override
 	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		return getLayoutDataAs(clazz, Suppliers.ofInstance(default_));
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
 		return GLLayouts.resolveLayoutDatas(clazz, default_, canvas, this.local);
 	}
 
@@ -401,7 +441,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 			// use my class for library loading
 			System.setProperty("jnlp.launcher.class", SandBoxLibraryLoader.class.getCanonicalName());
 			try {
-				Display display = new Display();
+				Display display = Display.getDefault();
 				final Shell splash = createSplash(display);
 				final Shell content = new Shell(display);
 				splash.open();

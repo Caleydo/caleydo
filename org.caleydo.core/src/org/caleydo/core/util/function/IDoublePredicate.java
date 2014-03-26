@@ -14,6 +14,12 @@ import com.google.common.base.Predicate;
  *
  */
 public interface IDoublePredicate extends Predicate<Double> {
-	public boolean apply(double in);
+	/**
+	 * primitive version of {@link #apply(Double)}
+	 * 
+	 * @param in
+	 * @return
+	 */
+	boolean apply(double in);
 }
 

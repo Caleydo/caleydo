@@ -65,8 +65,9 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 
 		// create a bunch of ID Types
 		for (EGeneIDTypes type : Arrays.asList(EGeneIDTypes.DAVID, EGeneIDTypes.GENE_SYMBOL, EGeneIDTypes.GENE_NAME,
-				EGeneIDTypes.REFSEQ_MRNA,
-				EGeneIDTypes.ENSEMBL_GENE_ID, EGeneIDTypes.ENTREZ_GENE_ID)) {
+				EGeneIDTypes.REFSEQ_MRNA, EGeneIDTypes.ENSEMBL_GENE_ID, EGeneIDTypes.ENTREZ_GENE_ID
+
+		/* , EGeneIDTypes.COMPOUND_ID, EGeneIDTypes.INTERACTION_ID */)) {
 			IDType.registerType(type.name(), geneIDCategory, type.getDataType());
 		}
 
@@ -90,14 +91,24 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 
 		final IDType david = IDType.getIDType(EGeneIDTypes.DAVID.name());
 
-		IDMappingParser.loadMapping(toFile(base,"DAVID2REFSEQ_MRNA.txt"), 0, -1, david,
+		IDMappingParser.loadMapping(toFile(base, "DAVID2REFSEQ_MRNA.txt"), 0, -1, david,
 				IDType.getIDType(EGeneIDTypes.REFSEQ_MRNA.name()), "\t", geneIDCategory, true, true, false, null, null);
-		IDMappingParser.loadMapping(toFile(base,"DAVID2ENTREZ_GENE_ID.txt"), 0, -1, david,
+		IDMappingParser.loadMapping(toFile(base, "DAVID2ENTREZ_GENE_ID.txt"), 0, -1, david,
 				IDType.getIDType(EGeneIDTypes.ENTREZ_GENE_ID.name()), "\t", geneIDCategory, false, true, false, null,
 				null);
-		IDMappingParser.loadMapping(toFile(base,"DAVID2GENE_SYMBOL.txt"), 0, -1, david,
+		IDMappingParser
+				.loadMapping(toFile(base, "DAVID2GENE_SYMBOL.txt"), 0, -1, david,
 						IDType.getIDType(EGeneIDTypes.GENE_SYMBOL.name()), "\t", geneIDCategory, false, true, false,
 						null, null);
+
+		// IDMappingParser.loadMapping(toFile(base, "INTERACTION_ID2COMPOUND_ID.txt"), 0, -1,
+		// IDType.getIDType(EGeneIDTypes.INTERACTION_ID.name()),
+		// IDType.getIDType(EGeneIDTypes.COMPOUND_ID.name()), "\t", geneIDCategory, true, true, false, null, null);
+		//
+		// IDMappingParser.loadMapping(toFile(base, "INTERACTION_ID2ENTREZ_GENE_ID.txt"), 0, -1,
+		// IDType.getIDType(EGeneIDTypes.INTERACTION_ID.name()),
+		// IDType.getIDType(EGeneIDTypes.ENTREZ_GENE_ID.name()), "\t", geneIDCategory, true, true, false, null,
+		// null);
 		// IDMappingParser.loadMapping(toFile(base,"DAVID2GENE_NAME.txt"), 0, -1, david,
 		// IDType.getIDType(EGeneIDTypes.GENE_NAME.name()), "\t", geneIDCategory, false, true, false, null, null);
 
@@ -109,7 +120,7 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 			// This is indirection via REFSEQ_MRNA instead of DAVID is needed as
 			// we currently do not have a mapping file DAVID2ENSEMBL for home
 			// sapiens
-			IDMappingParser.loadMapping(toFile(base,"ENSEMBL_GENE_ID_2_REFSEQ_MRNA.txt"), 0, -1,
+			IDMappingParser.loadMapping(toFile(base, "ENSEMBL_GENE_ID_2_REFSEQ_MRNA.txt"), 0, -1,
 					IDType.getIDType(EGeneIDTypes.ENSEMBL_GENE_ID.name()),
 					IDType.getIDType(EGeneIDTypes.REFSEQ_MRNA.name()), ";", geneIDCategory, true, true, true,
 					IDType.getIDType(EGeneIDTypes.ENSEMBL_GENE_ID.name()), david);

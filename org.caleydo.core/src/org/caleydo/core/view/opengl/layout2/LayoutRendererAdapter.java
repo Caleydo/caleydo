@@ -17,10 +17,14 @@ import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
+
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 
 /**
  * adapter between {@link ALayoutRenderer} and {@link GLElement}, such that {@link GLElement} can be as an
@@ -59,7 +63,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 
 	public LayoutRendererAdapter(AGLView view, IResourceLocator locator, GLElement root, String eventSpace) {
 		this.view = view;
-		this.root = new WindowGLElement(root);
+		this.root = new WindowGLElement(root, view.getParentGLCanvas());
 		this.eventListeners = EventListenerManagers.createQueued();
 		this.eventSpace = eventSpace;
 
@@ -70,8 +74,33 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	}
 
 	@Override
+	public int getMinHeightPixels() {
+		return (int) getMinSize().y();
+	}
+
+	/**
+	 * @return
+	 */
+	private Vec2f getMinSize() {
+		GLElement r = this.root.getRoot();
+		if (r instanceof IHasMinSize)
+			return ((IHasMinSize) r).getMinSize();
+		return r.getLayoutDataAs(Vec2f.class, new Vec2f(0, 0));
+	}
+
+	@Override
+	public int getMinWidthPixels() {
+		return (int) getMinSize().x();
+	}
+
+	@Override
 	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
-		return GLLayouts.resolveLayoutDatas(clazz, default_, view, this.local);
+		return getLayoutDataAs(clazz, Suppliers.ofInstance(default_));
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
+		return GLLayouts.resolveLayoutDatas(clazz, default_, view, view.getParentGLCanvas(), this.local);
 	}
 
 	@Override
@@ -118,6 +147,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 
 		if (dirty) {
 			root.setBounds(0, 0, w, h);
+			root.relayout();
 			dirty = false;
 		}
 
@@ -152,6 +182,12 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	@Override
 	public void relayout() {
 		dirty = true;
+	}
+
+	@Override
+	public void setLimits(float x, float y) {
+		super.setLimits(x, y);
+		relayout();
 	}
 
 	@Override

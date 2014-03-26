@@ -5,8 +5,9 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.renderer;
 
-
 import java.net.URL;
+
+import javax.media.opengl.GL;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -14,6 +15,8 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.util.text.ETextStyle;
+
+import com.jogamp.opengl.util.texture.Texture;
 
 /**
  * factory class for {@link IGLRenderer}
@@ -48,6 +51,7 @@ public final class GLRenderers {
 	public static IGLRenderer drawRoundedRect(Color color) {
 		return new SimpleRenderer(EWhat.DRAW_ROUNDED_RECT, color);
 	}
+
 	/**
 	 * renders a full sized rect with the specified color
 	 *
@@ -74,6 +78,7 @@ public final class GLRenderers {
 	public static IGLRenderer drawText(final String text, final VAlign valign) {
 		return drawText(text, valign, GLPadding.ZERO);
 	}
+
 	public static IGLRenderer drawText(final String text, final VAlign valign, final GLPadding padding) {
 		return drawText(text, valign, padding, ETextStyle.PLAIN);
 	}
@@ -107,11 +112,34 @@ public final class GLRenderers {
 		};
 	}
 
+	public static IGLRenderer fillImage(final Texture image) {
+		return new IGLRenderer() {
+			@Override
+			public void render(GLGraphics g, float w, float h, GLElement parent) {
+				g.fillImage(image, 0, 0, w, h);
+			}
+		};
+	}
+
 	public static IGLRenderer fillImage(final URL image) {
 		return new IGLRenderer() {
 			@Override
 			public void render(GLGraphics g, float w, float h, GLElement parent) {
 				g.fillImage(image, 0, 0, w, h);
+			}
+		};
+	}
+
+	public static IGLRenderer pushedImage(final Texture image) {
+		return new IGLRenderer() {
+			@Override
+			public void render(GLGraphics g, float w, float h, GLElement parent) {
+				g.fillImage(image, 0, 0, w, h);
+				g.gl.glEnable(GL.GL_BLEND);
+				g.gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+				g.gl.glEnable(GL.GL_LINE_SMOOTH);
+				g.color(new Color(1, 1, 1, 0.5f)).fillRoundedRect(0, 0, w, h, Math.min(w, h) * 0.25f);
+				g.gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			}
 		};
 	}

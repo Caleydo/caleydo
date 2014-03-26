@@ -6,7 +6,10 @@
 package org.caleydo.vis.lineup.internal.ui;
 
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.util.base.ICallback;
 import org.caleydo.vis.lineup.internal.event.SearchEvent;
+import org.caleydo.vis.lineup.internal.event.SearchEvent.SearchResult;
+import org.caleydo.vis.lineup.ui.AFilterDialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
@@ -19,6 +22,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -28,7 +32,7 @@ import org.eclipse.swt.widgets.Text;
  * @author Samuel Gratzl
  *
  */
-public class StringSearchDialog extends AFilterDialog {
+public class StringSearchDialog extends AFilterDialog implements ICallback<SearchResult> {
 	private final String filter;
 	private Text text;
 
@@ -36,6 +40,7 @@ public class StringSearchDialog extends AFilterDialog {
 
 	private Button backward;
 	private Button wrapSearch;
+	private ControlDecoration deco;
 
 	public StringSearchDialog(Shell parentShell, String title, String hint, Object receiver, String filter, Point loc) {
 		super(parentShell, "Search in " + title, receiver, null, false, loc);
@@ -52,6 +57,7 @@ public class StringSearchDialog extends AFilterDialog {
 		gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		gd.widthHint = getCharWith(composite, 20);
 		text.setLayoutData(gd);
+		text.setMessage(hint);
 		text.setText(filter == null ? "" : filter);
 //		text.addModifyListener(new ModifyListener() {
 //			@Override
@@ -79,16 +85,10 @@ public class StringSearchDialog extends AFilterDialog {
 		text.selectAll();
 		text.setFocus();
 
-		final ControlDecoration deco = new ControlDecoration(text, SWT.TOP | SWT.RIGHT);
-
-		// Re-use an existing image
-		Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION)
-				.getImage();
-		// Set description and image
-		deco.setDescriptionText("Search String " + hint);
-		deco.setImage(image);
-		// Hide deco if not in focus
+		this.deco = new ControlDecoration(text, SWT.TOP | SWT.RIGHT);
+		deco.setImage(getImage(FieldDecorationRegistry.DEC_INFORMATION));
 		deco.setShowOnlyOnFocus(true);
+		deco.hide();
 
 		addFindButton(composite, false);
 		{
@@ -103,6 +103,10 @@ public class StringSearchDialog extends AFilterDialog {
 			backward = new Button(s, SWT.CHECK);
 			backward.setText("&Backward");
 		}
+	}
+
+	private Image getImage(String what) {
+		return FieldDecorationRegistry.getDefault().getFieldDecoration(what).getImage();
 	}
 
 	protected final void addFindButton(Composite composite, boolean spanOverTwoColumns) {
@@ -131,6 +135,37 @@ public class StringSearchDialog extends AFilterDialog {
 		String t = text.getText();
 		t = t.trim();
 		t = t.isEmpty() ? null : t;
-		EventPublisher.trigger(new SearchEvent(t, wrapSearch.getSelection(), !backward.getSelection()).to(receiver));
+		if (t == null)
+			deco.hide();
+		EventPublisher.trigger(new SearchEvent(t, wrapSearch.getSelection(), !backward.getSelection(), this)
+				.to(receiver));
+	}
+
+	/**
+	 * @param data
+	 */
+	protected void onSearchResult(SearchResult data) {
+		final boolean notFound = data.getHits() == 0;
+		if (notFound) {
+			deco.setImage(getImage(FieldDecorationRegistry.DEC_WARNING));
+			deco.setDescriptionText("No matches found");
+			deco.show();
+			deco.showHoverText("No matches found");
+		} else {
+			deco.show();
+			deco.hideHover();
+			deco.setImage(getImage(FieldDecorationRegistry.DEC_INFORMATION));
+			deco.setDescriptionText(data.getHits() + " matches found");
+		}
+	}
+
+	@Override
+	public void on(final SearchResult data) {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				onSearchResult(data);
+			}
+		});
 	}
 }

@@ -8,8 +8,10 @@ package org.caleydo.view.stratomex.brick.configurer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.data.datadomain.TablePerspectiveActions;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
@@ -49,8 +51,8 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 
 	protected TablePerspective tablePerspective;
 
-	public ATableBasedDataConfigurer(TablePerspective dimensionGroupData) {
-		this.tablePerspective = dimensionGroupData;
+	public ATableBasedDataConfigurer(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 
 	protected ArrayList<ElementLayout> createHeaderBarElements(HeaderBrickLayoutTemplate layoutTemplate) {
@@ -73,8 +75,7 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 
 		ITextRenderer textRenderer = layoutTemplate.getBrick().getTextRenderer();
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup().getStratomexView(),
-				textRenderer,
-				layoutTemplate.getBrick(), pickingIDs);
+				textRenderer, layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -98,8 +99,7 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup().getStratomexView(),
-				layoutTemplate.getBrick().getTextRenderer(),
-				layoutTemplate.getBrick(), pickingIDs);
+				layoutTemplate.getBrick().getTextRenderer(), layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -151,8 +151,7 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 
 		ITextRenderer textRenderer = layoutTemplate.getBrick().getTextRenderer();
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup().getStratomexView(),
-				textRenderer,
-				layoutTemplate.getBrick(), pickingIDs);
+				textRenderer, layoutTemplate.getBrick(), pickingIDs);
 
 		captionLayout.setRenderer(captionRenderer);
 
@@ -254,4 +253,10 @@ public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 
 		return new NoSortingSortingStrategy();
 	}
+
+	@Override
+	public void addDataSpecificContextMenuEntries(ContextMenuCreator creator, GLBrick brick) {
+		TablePerspectiveActions.add(creator, brick.getTablePerspective(), this, true);
+	}
+
 }

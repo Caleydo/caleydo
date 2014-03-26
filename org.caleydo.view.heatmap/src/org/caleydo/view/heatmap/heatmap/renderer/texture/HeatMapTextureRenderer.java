@@ -10,6 +10,7 @@ import java.nio.FloatBuffer;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
+import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -187,7 +188,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		if (groupIndex != -1)
 			gl.glPushName(pickingManager.getPickingID(viewID, PickingType.HEAT_MAP_RECORD_GROUP, groupIndex));
 
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glTexCoord2d(texCoords.left(), texCoords.top());
 		gl.glVertex3f(x, y, 0);
 		gl.glTexCoord2d(texCoords.left(), texCoords.bottom());

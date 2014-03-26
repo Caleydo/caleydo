@@ -114,6 +114,11 @@ public class EventListenerManager implements DisposeListener {
 	}
 
 	protected boolean scan(Object root, Object listener, String eventSpace, Predicate<? super Class<?>> scanWhile) {
+		if (listener instanceof IRetrictedToEventSpace) {
+			String _newEventSpace = ((IRetrictedToEventSpace) listener).getEventSpace();
+			if (_newEventSpace != null)
+				eventSpace = _newEventSpace;
+		}
 		final Class<?> clazz = listener.getClass();
 		if (nothingFounds.contains(clazz.getCanonicalName())) // avoid scanning useless objects again
 			return false;
@@ -158,17 +163,20 @@ public class EventListenerManager implements DisposeListener {
 				Collection<Object> r = (Collection<Object>) field;
 				scanAll(root, r, eventSpace, scanWhile);
 				scanAgain = true; // collections may change
-			} else if (field instanceof Map<?, ?>) {
+			}
+			if (field instanceof Map<?, ?>) {
 				@SuppressWarnings("unchecked")
 				Map<?, Object> r = (Map<?, Object>) field;
 				scanAll(root, r.values(), eventSpace, scanWhile);
 				scanAgain = true; // collections may change
-			} else if (field instanceof Multimap<?, ?>) {
+			}
+			if (field instanceof Multimap<?, ?>) {
 				@SuppressWarnings("unchecked")
 				Multimap<?, Object> r = (Multimap<?, Object>) field;
 				scanAll(root, r.values(), eventSpace, scanWhile);
 				scanAgain = true; // collections may change
-			} else { // primitive
+			}
+			{ // primitive always scan
 				boolean hasFieldOne = scan(root, field, eventSpace, scanWhile);
 				scanAgain = scanAgain || hasFieldOne;
 			}
@@ -227,7 +235,7 @@ public class EventListenerManager implements DisposeListener {
 	 *
 	 * @param listener
 	 */
-	public final void unregister(Object listener) {
+	public final <T> T unregister(T listener) {
 		for (Iterator<AEventListener<?>> it = listeners.iterator(); it.hasNext();) {
 			AEventListener<?> e = it.next();
 			if (e instanceof AnnotationBasedEventListener) {
@@ -239,6 +247,7 @@ public class EventListenerManager implements DisposeListener {
 				}
 			}
 		}
+		return listener;
 	}
 
 	/**
@@ -275,6 +284,21 @@ public class EventListenerManager implements DisposeListener {
 	@Target(ElementType.FIELD)
 	public @interface DeepScan {
 
+	}
+
+	/**
+	 * interface to provide a event space for {@link ListenTo#restrictToEventSpace()}
+	 *
+	 * @author Samuel Gratzl
+	 *
+	 */
+	public interface IRetrictedToEventSpace {
+		/**
+		 * return the event space to use
+		 *
+		 * @return
+		 */
+		String getEventSpace();
 	}
 
 	private static class AnnotationBasedEventListener extends AEventListener<IListenerOwner> {

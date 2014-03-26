@@ -45,6 +45,9 @@ public abstract class APickingListener
 		case MOUSE_WHEEL:
 			mouseWheel(pick);
 			break;
+		case DRAG_DETECTED:
+			dragDetected(pick);
+			break;
 		}
 	}
 
@@ -122,10 +125,19 @@ public abstract class APickingListener
 
 	/**
 	 * Called, when the mouse wheel was moved within the object
-	 * 
+	 *
 	 * @param pick
 	 */
 	protected void mouseWheel(Pick pick) {
+
+	}
+
+	/**
+	 * Called, when a drag operation is detected
+	 *
+	 * @param pick
+	 */
+	protected void dragDetected(Pick pick) {
 
 	}
 

@@ -89,6 +89,21 @@ default: 10
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="scaleType">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="fix">
+                  </enumeration>
+                  <enumeration value="dataDependent">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
       </complexType>
    </element>
 

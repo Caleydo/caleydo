@@ -6,8 +6,10 @@
 package org.caleydo.core.view.opengl.layout2.basic;
 
 /**
+ * standard icons for a radio button and a checkbox
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public enum EButtonIcon {
 	RADIO, CHECKBOX;

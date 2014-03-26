@@ -34,7 +34,7 @@ public abstract class AGLElementDecorator extends GLElement implements IGLElemen
 		if (this.content != null) {
 			this.content.setParent(null);
 			if (context != null)
-				content.takeDown();
+				this.content.takeDown();
 		}
 		this.content = content;
 		if (this.content != null) {

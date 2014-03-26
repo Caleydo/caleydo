@@ -14,6 +14,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.kohsuke.args4j.Option;
 
 /**
@@ -33,10 +34,9 @@ public class LoadGenericStartupAddon implements IStartupAddon {
 		return false;
 	}
 
-
 	@Override
-	public Composite create(Composite parent, WizardPage page) {
-		page.setPageComplete(true);
+	public Composite create(Composite parent, WizardPage page, Listener listener) {
+		// page.setPageComplete(true);
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(1, false));
@@ -53,6 +53,7 @@ public class LoadGenericStartupAddon implements IStartupAddon {
 		buttonNewProject.setText("Load data from file (CSV, TXT)");
 		buttonNewProject.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		buttonNewProject.setSelection(true);
+		buttonNewProject.addListener(SWT.Selection, listener);
 
 		return composite;
 	}
@@ -63,8 +64,8 @@ public class LoadGenericStartupAddon implements IStartupAddon {
 	}
 
 	@Override
-    public IStartupProcedure create() {
+	public IStartupProcedure create() {
 		return new GenericGUIStartupProcedure();
-    }
+	}
 
 }

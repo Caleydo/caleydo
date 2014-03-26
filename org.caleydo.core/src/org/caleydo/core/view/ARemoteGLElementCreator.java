@@ -18,12 +18,13 @@ public abstract class ARemoteGLElementCreator implements IRemoteRendererCreator 
 	@Override
 	public final ALayoutRenderer createRemoteView(AGLView remoteRenderingView,
 			List<TablePerspective> tablePerspectives, String embeddingEventSpace) {
-		GLElement elem = create(tablePerspectives);
+		GLElement elem = create(remoteRenderingView, tablePerspectives, embeddingEventSpace);
 		if (elem == null)
 			return null;
 		return new LayoutRendererAdapter(remoteRenderingView, ResourceLocators.DATA_CLASSLOADER, elem,
 				embeddingEventSpace);
 	}
 
-	protected abstract GLElement create(List<TablePerspective> tablePerspectives);
+	protected abstract GLElement create(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
+			String embeddingEventSpace);
 }

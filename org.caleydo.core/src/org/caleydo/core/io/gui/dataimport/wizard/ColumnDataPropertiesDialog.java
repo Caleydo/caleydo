@@ -5,14 +5,17 @@
  ******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.wizard;
 
+import java.util.EnumSet;
 import java.util.List;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.io.DataDescriptionUtil;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.gui.dataimport.widget.CategoricalDataPropertiesWidget;
-import org.caleydo.core.io.gui.dataimport.widget.NumericalDataPropertiesWidget;
+import org.caleydo.core.io.gui.dataimport.widget.numerical.NumericalDataPropertiesCollectionWidget;
+import org.caleydo.core.io.gui.dataimport.widget.numerical.NumericalDataPropertiesCollectionWidget.ENumericalDataProperties;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -40,13 +43,13 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 
 	private NumericalProperties numericalProperties;
 
-	private boolean isNumericalData;
-
 	private Button numericalDataButton;
 
 	private Button categoricalDataButton;
 
-	private NumericalDataPropertiesWidget numericalDataPropertiesWidget;
+	private Button uniqueDataButton;
+
+	private NumericalDataPropertiesCollectionWidget numericalDataPropertiesWidget;
 
 	private CategoricalDataPropertiesWidget categoricalDataPropertiesWidget;
 
@@ -57,6 +60,7 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 	private int columnIndex;
 
 	private EDataType dataType = EDataType.FLOAT;
+	private EDataClass dataClass;
 
 	private ScrolledComposite scrolledComposite;
 
@@ -145,12 +149,24 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 			}
 		});
 
+		uniqueDataButton = new Button(group, SWT.RADIO);
+		uniqueDataButton.setText("Unique Strings");
+		uniqueDataButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				showUniqueDataWidgets();
+			}
+		});
+
 		if (numericalProperties != null) {
 			numericalDataButton.setSelection(true);
 			showNumericalDataWidgets();
-		} else {
+		} else if (categoricalClassDescription != null) {
 			categoricalDataButton.setSelection(true);
 			showCategoricalDataWidgets();
+		} else {
+			uniqueDataButton.setSelection(true);
+			showUniqueDataWidgets();
 		}
 
 		scrolledComposite.setMinSize(850, 700);
@@ -185,7 +201,9 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 
 		if (numericalDataPropertiesWidget == null) {
 			numericalDataButton.setSelection(true);
-			numericalDataPropertiesWidget = new NumericalDataPropertiesWidget(parentComposite, this);
+			numericalDataPropertiesWidget = new NumericalDataPropertiesCollectionWidget(parentComposite, this,
+					EnumSet.of(ENumericalDataProperties.CLIPPING, ENumericalDataProperties.DATA_CENTER,
+							ENumericalDataProperties.SCALING));
 			if (numericalProperties != null) {
 				numericalDataPropertiesWidget.updateNumericalProperties(numericalProperties);
 				numericalDataPropertiesWidget.setDataType(dataType);
@@ -223,17 +241,43 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 		// parentComposite.pack();
 	}
 
+	private void showUniqueDataWidgets() {
+		// clear both
+		if (numericalDataPropertiesWidget != null) {
+			// temporarily save settings
+			dataType = numericalDataPropertiesWidget.getDataType();
+			numericalProperties = numericalDataPropertiesWidget.getNumericalProperties();
+			numericalDataPropertiesWidget.dispose();
+			parentComposite.layout(true);
+			numericalDataPropertiesWidget = null;
+		}
+
+		if (categoricalDataPropertiesWidget != null) {
+			// temporarily save settings
+			categoricalClassDescription = categoricalDataPropertiesWidget.getCategoricalClassDescription();
+			categoricalDataPropertiesWidget.dispose();
+			parentComposite.layout(true);
+			categoricalDataPropertiesWidget = null;
+		}
+		// parentComposite.pack();
+	}
+
 	@Override
 	protected void okPressed() {
 		if (numericalDataButton.getSelection()) {
-			isNumericalData = true;
 			dataType = numericalDataPropertiesWidget.getDataType();
+			dataClass = dataType == EDataType.FLOAT ? EDataClass.REAL_NUMBER : EDataClass.NATURAL_NUMBER;
 			numericalProperties = numericalDataPropertiesWidget.getNumericalProperties();
 			categoricalClassDescription = null;
-		} else {
-			isNumericalData = false;
+		} else if (categoricalDataButton.getSelection()) {
+			dataClass = EDataClass.CATEGORICAL;
 			categoricalClassDescription = categoricalDataPropertiesWidget.getCategoricalClassDescription();
 			numericalProperties = null;
+		} else {
+			assert (uniqueDataButton.getSelection());
+			numericalProperties = null;
+			categoricalClassDescription = null;
+			dataClass = EDataClass.UNIQUE_OBJECT;
 		}
 		super.okPressed();
 	}
@@ -245,13 +289,9 @@ public class ColumnDataPropertiesDialog extends Dialog implements Listener {
 		return dataType;
 	}
 
-	/**
-	 * @return the isNumericalData, see {@link #isNumericalData}
-	 */
-	public boolean isNumericalData() {
-		return isNumericalData;
+	public EDataClass getDataClass() {
+		return dataClass;
 	}
-
 	/**
 	 * @return the categoricalClassDescription, see {@link #categoricalClassDescription}
 	 */

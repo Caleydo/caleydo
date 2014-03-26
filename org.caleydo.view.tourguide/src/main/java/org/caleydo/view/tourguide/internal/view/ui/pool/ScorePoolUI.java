@@ -8,31 +8,31 @@ package org.caleydo.view.tourguide.internal.view.ui.pool;
 import static org.caleydo.vis.lineup.ui.RenderStyle.LABEL_HEIGHT;
 import gleem.linalg.Vec2f;
 
-import org.caleydo.core.util.color.Color;
-
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Objects;
 
-import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.dnd.EDnDType;
+import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
+import org.caleydo.core.view.opengl.layout2.dnd.IDragInfo;
+import org.caleydo.core.view.opengl.layout2.dnd.IDropGLTarget;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
 import org.caleydo.vis.lineup.config.IRankTableUIConfig;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
+import org.caleydo.vis.lineup.model.ColumnDragInfo;
 import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.mixin.IHideableColumnMixin;
-
-import com.google.common.collect.Iterables;
 
 /**
  * simple visualization of the pool of hidden columns
@@ -65,6 +65,40 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 	};
 	private boolean armed;
 
+	private IDropGLTarget dropTarget = new IDropGLTarget() {
+
+		@Override
+		public void onItemChanged(IDnDItem input) {
+
+		}
+
+		@Override
+		public void onDrop(IDnDItem input) {
+			ARankColumnModel model = ((ColumnDragInfo) input.getInfo()).getModel();
+			model.hide();
+			armed = false;
+			repaint();
+		}
+
+		@Override
+		public boolean canSWTDrop(IDnDItem input) {
+			IDragInfo info = input.getInfo();
+			if (!(info instanceof ColumnDragInfo))
+				return false;
+			ARankColumnModel model = ((ColumnDragInfo) info).getModel();
+			if (!(model instanceof IHideableColumnMixin) || model.isHidden() || !model.isHideAble())
+				return false;
+			armed = true;
+			repaint();
+			return true;
+		}
+
+		@Override
+		public EDnDType defaultSWTDnDType(IDnDItem item) {
+			return EDnDType.MOVE;
+		}
+	};
+
 	public ScorePoolUI(RankTableModel table, IRankTableUIConfig config, GLTourGuideView view) {
 		this.table = table;
 		table.addPropertyChangeListener(RankTableModel.PROP_POOL, listener);
@@ -74,6 +108,7 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 		this.add(new PaperBasket(table));
 
 		this.add(new SerialFactoryPoolElem(table));
+		this.add(new SeparatorFactoryPoolElem(table));
 
 		// final EDataDomainQueryMode mode = view.getMode();
 		// for(Map.Entry<String,IScoreFactory> factory : ScoreFactories.getFactories().entrySet()) {
@@ -132,33 +167,14 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 	}
 
 	protected void onDropPick(Pick pick) {
-		if (!pick.isAnyDragging() || !context.getMouseLayer().hasDraggable(IHideableColumnMixin.class))
-			return;
-		Pair<GLElement, IHideableColumnMixin> pair = context.getMouseLayer().getFirstDraggable(
-					IHideableColumnMixin.class);
-		if (pair.getSecond().isHidden())
-			return;
 		switch(pick.getPickingMode()) {
 		case MOUSE_OVER:
-			if (!pair.getSecond().isHideAble())
-				return;
-			this.armed = true;
-			context.getMouseLayer().setDropable(IHideableColumnMixin.class, true);
-			repaint();
+			context.getMouseLayer().addDropTarget(dropTarget);
 			break;
 		case MOUSE_OUT:
+			context.getMouseLayer().removeDropTarget(dropTarget);
 			if (this.armed) {
-				context.getMouseLayer().setDropable(IHideableColumnMixin.class, true);
 				this.armed = false;
-				repaint();
-			}
-			break;
-		case MOUSE_RELEASED:
-			if (armed) {
-				context.getMouseLayer().removeDraggable(pair.getFirst());
-				pair.getSecond().hide();
-				context.getSWTLayer().setCursor(-1);
-				armed = false;
 				repaint();
 			}
 			break;
@@ -202,10 +218,5 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 				}
 			}
 		}
-	}
-
-	public void updateMode(EDataDomainQueryMode mode) {
-		for (ScoreFactoryPoolElem elem : Iterables.filter(this, ScoreFactoryPoolElem.class))
-			elem.setMode(mode);
 	}
 }

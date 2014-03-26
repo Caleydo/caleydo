@@ -504,10 +504,10 @@ public class GLRadialHierarchy extends ATableBasedView {
 								+ dataDomain.getRecordLabel(dataDomain.getRecordIDType(),
 										externalID), dataDomain.getRecordIDType(),
  externalID);
-						contextMenuCreator.addContextMenuItem(menuItem);
+						getContextMenuCreator().addContextMenuItem(menuItem);
 					} else {
 						AContextMenuItem menuItem = new DetailOutsideItem(externalID);
-						contextMenuCreator.addContextMenuItem(menuItem);
+						getContextMenuCreator().addContextMenuItem(menuItem);
 					}
 
 					break;

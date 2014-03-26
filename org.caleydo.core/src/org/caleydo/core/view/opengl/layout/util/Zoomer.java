@@ -20,6 +20,7 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -33,7 +34,7 @@ import org.caleydo.core.view.opengl.util.scrollbar.IScrollBarUpdateHandler;
 import org.caleydo.core.view.opengl.util.scrollbar.ScrollBar;
 import org.caleydo.core.view.opengl.util.scrollbar.ScrollBarRenderer;
 
-public final class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler {
+public final class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler, IGLKeyListener {
 
 	private final PixelGLConverter pixelGLConverter;
 	private final AGLView parentView;
@@ -65,6 +66,8 @@ public final class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler
 
 	private ElementLayout parentLayout;
 
+	private boolean isControlPressed = false;
+
 	private Set<IZoomListener> listeners = new HashSet<>();
 
 	public Zoomer(AGLView parentView, ElementLayout parentLayout) {
@@ -72,6 +75,7 @@ public final class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler
 		this.parentLayout = parentLayout;
 		this.glMouseListener = parentView.getGLMouseListener();
 		parentView.registerMouseWheelListener(this);
+		parentView.getParentGLCanvas().addKeyListener(this);
 
 		pixelGLConverter = parentView.getPixelGLConverter();
 		scrollBarDragAndDropController = new DragAndDropController(parentView);
@@ -81,6 +85,7 @@ public final class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler
 
 	public void destroy() {
 		parentView.unregisterRemoteViewMouseWheelListener(this);
+		parentView.getParentGLCanvas().removeKeyListener(this);
 	}
 
 	private void initScrollBars() {
@@ -295,6 +300,8 @@ public final class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler
 
 	@Override
 	public void handleMouseWheel(int wheelAmount, Vec2f mousePos_dip) {
+		if (!isControlPressed)
+			return;
 		float mouse_x = mousePos_dip.x();
 		float mouse_y = parentView.getParentGLCanvas().getDIPHeight() - mousePos_dip.y(); // as we start from the bottom
 		if (viewArea_dip != null && viewArea_dip.contains(mouse_x, mouse_y)) {
@@ -363,5 +370,17 @@ public final class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler
 
 	public boolean isZoomed() {
 		return Float.compare(1.0f, currentZoomScale) != 0;
+	}
+
+	@Override
+	public void keyPressed(IKeyEvent e) {
+
+		isControlPressed = e.isControlDown();
+	}
+
+	@Override
+	public void keyReleased(IKeyEvent e) {
+		isControlPressed = e.isControlDown();
+
 	}
 }

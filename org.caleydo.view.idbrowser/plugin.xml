@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.idbrowser.internal.IDBrowserViewPart"
+            icon="resources/icons/icon.png"
+            id="org.caleydo.view.idbrowser"
+            name="Template">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.caleydo.menu.view.visualization">
+         <command
+               commandId="org.caleydo.view.idbrowser.command.open"
+               icon="resources/icons/icon.png"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.idbrowser.internal.OpenViewHandler"
+            id="org.caleydo.view.idbrowser.command.open"
+            name="ID Browser">
+      </command>
+   </extension>
+</plugin>

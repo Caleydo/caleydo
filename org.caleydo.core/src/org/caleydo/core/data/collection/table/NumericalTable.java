@@ -10,8 +10,10 @@ import java.util.concurrent.ForkJoinPool;
 
 import javax.naming.OperationNotSupportedException;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.column.AColumn;
 import org.caleydo.core.data.collection.column.NumericalColumn;
+import org.caleydo.core.data.collection.column.container.IntContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.KNNImputeDescription;
@@ -447,7 +449,10 @@ public class NumericalTable extends Table {
 		for (AColumn<?, ?> column : columns) {
 			NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
 			for (int rowCount = 0; rowCount < getNrRows(); rowCount++) {
-				stats.add((Float) nColumn.getRaw(rowCount));
+				Number n = nColumn.getRaw(rowCount);
+				if (nColumn.getDataClass() == EDataClass.NATURAL_NUMBER && n.intValue() == IntContainer.UNKNOWN_VALUE)
+					n = Double.NaN;
+				stats.add(n.doubleValue());
 			}
 		}
 		return stats.build();
@@ -457,7 +462,10 @@ public class NumericalTable extends Table {
 		DoubleStatistics.Builder stats = DoubleStatistics.builder();
 		for (AColumn<?, ?> column : columns) {
 			NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
-			stats.add((Float) nColumn.getRaw(row));
+			Number n = nColumn.getRaw(row);
+			if (nColumn.getDataClass() == EDataClass.NATURAL_NUMBER && n.intValue() == IntContainer.UNKNOWN_VALUE)
+				n = Double.NaN;
+			stats.add(n.doubleValue());
 		}
 		return stats.build();
 	}

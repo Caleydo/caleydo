@@ -16,6 +16,7 @@ import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.AColumn;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
+import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -27,6 +28,7 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.function.AdvancedDoubleStatistics;
 import org.caleydo.core.util.logging.Logger;
@@ -271,6 +273,8 @@ public class Table {
 			rowID = dimensionID;
 		}
 
+		if (columnID < 0 || columnID >= columns.size())
+			return null;
 		return (RAW_DATA_TYPE) columns.get(columnID).getRaw(rowID);
 	}
 
@@ -291,10 +295,20 @@ public class Table {
 				CategoricalClassDescription<?> specific = (CategoricalClassDescription<?>) getDataClassSpecificDescription(
 						dimensionID, recordID);
 				Object category = getRaw(dimensionID, recordID);
+				if (category == null)
+					return Color.NOT_A_NUMBER_COLOR.getRGBA();
+				CategoryProperty<?> p = specific.getCategoryProperty(category);
+				if (p == null)
+					return Color.NOT_A_NUMBER_COLOR.getRGBA();
 				return specific.getCategoryProperty(category).getColor().getRGBA();
 			} else {
+				// simple implementation just gray scale
+				Float v = getNormalizedValue(dimensionID, recordID);
+				if (v == null || v.isNaN())
+					return Color.NOT_A_NUMBER_COLOR.getRGBA();
+				return new Color(v.floatValue()).getRGBA();
 				// not implemented
-				throw new IllegalStateException("not implemented");
+				// throw new IllegalStateException("not implemented");
 			}
 		}
 
@@ -568,6 +582,10 @@ public class Table {
 			columnID = dimensionID;
 
 		return columns.get(columnID).getDataClassSpecificDescription();
+	}
+
+	public Object getDataClassSpecificDescription(Integer dimensionID) {
+		return columns.get(dimensionID).getDataClassSpecificDescription();
 	}
 
 	/**

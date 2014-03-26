@@ -15,7 +15,7 @@ import org.caleydo.core.util.color.Color;
  * @author Samuel Gratzl
  *
  */
-public class ColoredVec2f extends Vec2f {
+public class ColoredVec2f extends Vec2f implements IColored {
 	private Color color = Color.NEUTRAL_GREY;
 
 	public ColoredVec2f() {
@@ -49,6 +49,7 @@ public class ColoredVec2f extends Vec2f {
 	/**
 	 * @return the color, see {@link #color}
 	 */
+	@Override
 	public Color getColor() {
 		return color;
 	}

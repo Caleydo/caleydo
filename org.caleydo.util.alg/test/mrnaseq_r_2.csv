@@ -1,0 +1,256 @@
+GS;SIZE;SOURCE;ES;NES;NOM p-val;FDR q-val;FWER p-val;Tag \%;Gene \%;Signal;FDR (median);glob.p.val
+Amyotrophic lateral sclerosis (ALS);53;Amyotrophic lateral sclerosis (ALS);-0.45761;2.38;0;0;0;0.509;0.273;0.371;0;0
+Glycosaminoglycan biosynthesis - chondroitin sulfate / dermatan sulfate;15;Glycosaminoglycan biosynthesis - chondroitin sulfate / dermatan sulfate;-0.64453;2.2919;0;0;0;0.667;0.232;0.513;0;0
+Arachidonic acid metabolism;54;Arachidonic acid metabolism;-0.32043;1.9906;0;0.037374;0.1;0.463;0.241;0.352;0;0
+alpha-Linolenic acid metabolism;18;alpha-Linolenic acid metabolism;-0.53638;1.9879;0;0.02803;0.1;0.556;0.24;0.423;0;0
+Phagosome;141;Phagosome;-0.33938;1.889;0;0.022424;0.1;0.355;0.223;0.278;0;0
+Rheumatoid arthritis;82;Rheumatoid arthritis;-0.35728;1.8017;0;0.11688;0.3;0.427;0.283;0.307;0;0
+Pathogenic Escherichia coli infection;52;Pathogenic Escherichia coli infection;-0.41479;1.7976;0;0.10018;0.3;0.442;0.214;0.349;0;0
+Oocyte meiosis;103;Oocyte meiosis;-0.31682;1.7971;0;0.087659;0.3;0.456;0.307;0.318;0;0
+Glycosphingolipid biosynthesis - globo series;14;Glycosphingolipid biosynthesis - globo series;-0.44034;1.7557;0;0.12733;0.3;0.357;0.0996;0.322;0;0
+Cell cycle;122;Cell cycle;-0.376;1.6903;0;0.12616;0.4;0.344;0.2;0.277;0;0
+Glycosphingolipid biosynthesis - ganglio series;15;Glycosphingolipid biosynthesis - ganglio series;-0.50384;1.6404;0;0.1619;0.5;0.667;0.256;0.496;0.038007;0
+Prion diseases;31;Prion diseases;-0.4105;1.635;0;0.16709;0.5;0.516;0.244;0.391;0.03484;0
+Other types of O-glycan biosynthesis;28;Other types of O-glycan biosynthesis;-0.47756;1.5973;0;0.17275;0.6;0.286;0.101;0.257;0.076631;0
+Pyrimidine metabolism;96;Pyrimidine metabolism;-0.37683;1.5894;0.25;0.16041;0.6;0.302;0.171;0.252;0.071157;0
+Basal cell carcinoma;54;Basal cell carcinoma;-0.36905;1.5639;0;0.19647;0.6;0.296;0.124;0.26;0.066414;0
+Vibrio cholerae infection;51;Vibrio cholerae infection;-0.4335;1.5343;0;0.21431;0.7;0.51;0.244;0.387;0.068703;0
+Legionellosis;53;Legionellosis;-0.34159;1.5138;0;0.24546;0.7;0.472;0.323;0.32;0.11049;0
+Salmonella infection;78;Salmonella infection;-0.31644;1.5081;0;0.24729;0.7;0.231;0.123;0.203;0.10436;0
+Shigellosis;59;Shigellosis;-0.32601;1.5022;0;0.24458;0.7;0.339;0.207;0.27;0.12087;0
+Epithelial cell signaling in Helicobacter pylori infection;66;Epithelial cell signaling in Helicobacter pylori infection;-0.30935;1.4924;0;0.24627;0.7;0.364;0.252;0.273;0.11482;0
+Ribosome;126;Ribosome;-0.5316;1.4613;0.25;0.2629;0.7;0.675;0.342;0.447;0.16423;0
+Hedgehog signaling pathway;49;Hedgehog signaling pathway;-0.31406;1.4222;0;0.3512;0.8;0.592;0.389;0.362;0.2078;0
+Glycosaminoglycan biosynthesis - heparan sulfate / heparin;23;Glycosaminoglycan biosynthesis - heparan sulfate / heparin;-0.46602;1.4215;0;0.33593;0.8;0.348;0.151;0.296;0.19876;0
+p53 signaling pathway;65;p53 signaling pathway;-0.4369;1.4209;0;0.32193;0.8;0.523;0.304;0.365;0.19048;0
+Protein processing in endoplasmic reticulum;154;Protein processing in endoplasmic reticulum;-0.37919;1.4201;0.1667;0.30905;0.8;0.494;0.323;0.337;0.18286;0
+Purine metabolism;160;Purine metabolism;-0.31417;1.398;0;0.36073;0.8;0.262;0.171;0.219;0.25001;0
+Cardiac muscle contraction;64;Cardiac muscle contraction;-0.38262;1.394;0.3333;0.36183;0.8;0.406;0.237;0.311;0.24075;0
+DNA replication;35;DNA replication;-0.47607;1.392;0.25;0.35615;0.9;0.429;0.251;0.322;0.23216;0
+Homologous recombination;28;Homologous recombination;-0.50065;1.3796;0;0.38465;1;0.357;0.215;0.281;0.24409;0
+Complement and coagulation cascades;63;Complement and coagulation cascades;-0.44383;1.3793;0;0.37863;1;0.524;0.246;0.397;0.256;0
+Pentose phosphate pathway;25;Pentose phosphate pathway;-0.39653;1.3778;0.25;0.37593;1;0.24;0.102;0.216;0.24775;0
+Regulation of actin cytoskeleton;190;Regulation of actin cytoskeleton;-0.29741;1.3568;0;0.39614;1;0.347;0.24;0.267;0.24;0
+Pancreatic secretion;79;Pancreatic secretion;-0.31909;1.3556;0;0.38729;1;0.405;0.259;0.301;0.23273;0
+Fc gamma R-mediated phagocytosis;85;Fc gamma R-mediated phagocytosis;-0.30599;1.3211;0;0.45635;1;0.435;0.274;0.318;0.29798;0
+Sulfur metabolism;15;Sulfur metabolism;-0.50016;1.3154;0.1429;0.46007;1;0.4;0.151;0.34;0.30436;0
+Calcium signaling pathway;167;Calcium signaling pathway;-0.30014;1.3153;0.2;0.44729;1;0.359;0.25;0.272;0.2959;0
+Systemic lupus erythematosus;72;Systemic lupus erythematosus;-0.46239;1.3092;0;0.45773;1;0.486;0.313;0.335;0.30199;0
+Pertussis;66;Pertussis;-0.37419;1.3047;0.3333;0.47675;1;0.379;0.229;0.293;0.30299;0.1
+Linoleic acid metabolism;26;Linoleic acid metabolism;-0.34821;1.2997;0;0.47093;1;0.462;0.24;0.351;0.29522;0.1
+Lysosome;120;Lysosome;-0.44761;1.2497;0.3333;0.62135;1;0.458;0.25;0.346;0.35334;0.3
+Tuberculosis;159;Tuberculosis;-0.2643;1.2494;0;0.6062;1;0.346;0.267;0.256;0.34472;0.3
+Mucin type O-Glycan biosynthesis;28;Mucin type O-Glycan biosynthesis;-0.35004;1.2448;0.2;0.61942;1;0.286;0.168;0.238;0.3646;0.3
+Other glycan degradation;16;Other glycan degradation;-0.50111;1.2407;0.25;0.61292;1;0.25;0.0788;0.23;0.36957;0.3
+Glycosaminoglycan biosynthesis - keratan sulfate;15;Glycosaminoglycan biosynthesis - keratan sulfate;-0.56157;1.225;0.3333;0.63037;1;0.467;0.101;0.42;0.39649;0.3
+RNA degradation;64;RNA degradation;-0.31963;1.2237;0;0.62005;1;0.297;0.25;0.224;0.38768;0.3
+Hypertrophic cardiomyopathy (HCM);77;Hypertrophic cardiomyopathy (HCM);-0.2887;1.2098;0.25;0.68154;1;0.377;0.238;0.288;0.47684;0.3
+Long-term potentiation;64;Long-term potentiation;-0.31132;1.1834;0.2;0.73634;1;0.391;0.266;0.288;0.56365;0.3
+Synaptic vesicle cycle;61;Synaptic vesicle cycle;-0.26226;1.1832;0.4;0.721;1;0.426;0.286;0.305;0.55191;0.3
+Amoebiasis;98;Amoebiasis;-0.38658;1.1788;0.3333;0.72029;1;0.398;0.252;0.299;0.55245;0.3
+Arrhythmogenic right ventricular cardiomyopathy (ARVC);70;Arrhythmogenic right ventricular cardiomyopathy (ARVC);-0.31155;1.1779;0.2;0.71135;1;0.386;0.238;0.295;0.5414;0.3
+N-Glycan biosynthesis;47;N-Glycan biosynthesis;-0.42944;1.1707;0.3333;0.7089;1;0.574;0.355;0.372;0.54154;0.3
+Endocrine and other factor-regulated calcium reabsorption;43;Endocrine and other factor-regulated calcium reabsorption;-0.2996;1.1672;0;0.7123;1;0.372;0.25;0.28;0.56374;0.3
+Mismatch repair;23;Mismatch repair;-0.45758;1.1626;0.2;0.72395;1;0.391;0.217;0.307;0.56518;0.3
+ECM-receptor interaction;85;ECM-receptor interaction;-0.42784;1.1613;0;0.71054;1;0.459;0.211;0.364;0.55471;0.3
+Bacterial invasion of epithelial cells;74;Bacterial invasion of epithelial cells;-0.32202;1.139;0.3333;0.73928;1;0.257;0.144;0.221;0.59426;0.3
+Proteasome;43;Proteasome;-0.61714;1.1388;0;0.72608;1;0.651;0.251;0.489;0.58365;0.3
+Drug metabolism - other enzymes;46;Drug metabolism - other enzymes;-0.30144;1.1355;0.25;0.72539;1;0.261;0.128;0.228;0.57341;0.3
+Staphylococcus aureus infection;47;Staphylococcus aureus infection;-0.39821;1.1146;0.3333;0.78373;1;0.489;0.337;0.326;0.60819;0.3
+Glutamatergic synapse;108;Glutamatergic synapse;-0.28712;1.1104;0.2;0.78417;1;0.389;0.249;0.294;0.60068;0.3
+Amino sugar and nucleotide sugar metabolism;49;Amino sugar and nucleotide sugar metabolism;-0.36912;1.092;0.5;0.82148;1;0.327;0.179;0.269;0.65372;0.3
+HTLV-I infection;247;HTLV-I infection;-0.24407;1.088;0.3333;0.8111;1;0.324;0.268;0.24;0.65154;0.3
+Ubiquitin mediated proteolysis;132;Ubiquitin mediated proteolysis;-0.28303;1.0856;0.3333;0.80252;1;0.341;0.295;0.242;0.64103;0.3
+Glycerophospholipid metabolism;73;Glycerophospholipid metabolism;-0.22369;1.0817;0.1667;0.80572;1;0.301;0.24;0.23;0.64831;0.3
+VEGF signaling pathway;57;VEGF signaling pathway;-0.24136;1.0809;0.25;0.79313;1;0.386;0.266;0.284;0.63818;0.3
+Aminoacyl-tRNA biosynthesis;41;Aminoacyl-tRNA biosynthesis;-0.35673;1.0723;0.2857;0.7997;1;0.195;0.0845;0.179;0.64439;0.3
+Oxidative phosphorylation;113;Oxidative phosphorylation;-0.44541;1.068;0.75;0.79621;1;0.681;0.374;0.429;0.64339;0.3
+Melanogenesis;93;Melanogenesis;-0.27132;1.062;0.25;0.79457;1;0.237;0.124;0.208;0.65797;0.3
+Taste transduction;34;Taste transduction;-0.44014;1.0594;0.3333;0.78845;1;0.559;0.375;0.35;0.6483;0.3
+Fat digestion and absorption;33;Fat digestion and absorption;-0.28974;1.0403;0.25;0.81564;1;0.515;0.264;0.38;0.70345;0.3
+Neuroactive ligand-receptor interaction;215;Neuroactive ligand-receptor interaction;-0.20764;1.0255;0.2;0.86228;1;0.302;0.25;0.229;0.84962;0.3
+Steroid biosynthesis;18;Steroid biosynthesis;-0.39515;1.0239;0.4;0.85919;1;0.389;0.259;0.288;0.86862;0.3
+Base excision repair;33;Base excision repair;-0.46531;1.0204;0.5;0.85335;1;0.697;0.426;0.4;0.86459;0.3
+Wnt signaling pathway;138;Wnt signaling pathway;-0.25722;1.0183;0.6667;0.84166;1;0.319;0.231;0.247;0.85274;0.3
+NF-kappa B signaling pathway;84;NF-kappa B signaling pathway;-0.32424;1.0165;0.6667;0.83636;1;0.381;0.252;0.286;0.84122;0.3
+Progesterone-mediated oocyte maturation;81;Progesterone-mediated oocyte maturation;-0.28665;1.0031;0.5;0.87191;1;0.21;0.126;0.184;0.85425;0.3
+Dilated cardiomyopathy;85;Dilated cardiomyopathy;-0.2869;0.99488;0.6667;0.89297;1;0.376;0.244;0.286;0.86378;0.3
+Focal adhesion;196;Focal adhesion;-0.24957;0.99317;0.25;0.88682;1;0.372;0.26;0.279;0.87982;0.3
+MAPK signaling pathway;233;MAPK signaling pathway;-0.22455;0.99235;0.6667;0.88077;1;0.253;0.216;0.201;0.86854;0.3
+Fanconi anemia pathway;51;Fanconi anemia pathway;-0.31346;0.98368;0.4;0.88614;1;0.392;0.259;0.291;0.89125;0.3
+Hepatitis B;129;Hepatitis B;-0.22029;0.98001;0.75;0.88418;1;0.271;0.203;0.218;0.88011;0.3
+Protein digestion and absorption;80;Protein digestion and absorption;-0.2815;0.96334;0.4;0.92338;1;0.375;0.208;0.298;0.91639;0.3
+Glutathione metabolism;42;Glutathione metabolism;-0.26116;0.94042;0.5;0.96113;1;0.214;0.151;0.182;0.9645;0.5
+Pathways in cancer;309;Pathways in cancer;-0.22619;0.93821;0.6667;0.95465;1;0.272;0.215;0.217;0.96613;0.5
+Cytosolic DNA-sensing pathway;47;Cytosolic DNA-sensing pathway;-0.30857;0.93229;1;0.9608;1;0.426;0.312;0.294;0.98128;0.5
+Glycosaminoglycan degradation;17;Glycosaminoglycan degradation;-0.50175;0.9274;0.6667;0.95821;1;0.529;0.231;0.407;0.97586;0.5
+Galactose metabolism;28;Galactose metabolism;-0.35509;0.92402;0.5;0.9566;1;0.393;0.17;0.327;0.97058;0.5
+Intestinal immune network for IgA production;41;Intestinal immune network for IgA production;-0.29632;0.92198;0.6667;0.95284;1;0.39;0.341;0.258;0.9714;0.4
+Axon guidance;125;Axon guidance;-0.2948;0.91969;0.6667;0.9493;1;0.192;0.0951;0.175;0.97238;0.5
+Primary immunodeficiency;36;Primary immunodeficiency;-0.30417;0.9195;0.6667;0.93864;1;0.639;0.455;0.349;0.96145;0.4
+Alzheimer's disease;154;Alzheimer's disease;-0.33271;0.91878;0.6667;0.92821;1;0.584;0.383;0.364;0.95077;0.4
+Long-term depression;53;Long-term depression;-0.29041;0.91811;0.5;0.91801;1;0.377;0.242;0.287;0.94032;0.4
+Alcoholism;116;Alcoholism;-0.23258;0.91713;0.6667;0.90803;1;0.336;0.268;0.248;0.9301;0.3
+RNA transport;149;RNA transport;-0.28177;0.91618;0.3333;0.89917;1;0.389;0.325;0.265;0.9201;0.3
+Parkinson's disease;111;Parkinson's disease;-0.36789;0.91389;0.75;0.89049;1;0.631;0.383;0.392;0.91031;0.3
+Mineral absorption;45;Mineral absorption;-0.26336;0.90258;0.4286;0.90728;1;0.356;0.191;0.288;0.9117;0.3
+mRNA surveillance pathway;83;mRNA surveillance pathway;-0.19149;0.89927;0.6667;0.90626;1;0.277;0.27;0.203;0.90763;0.3
+Steroid hormone biosynthesis;51;Steroid hormone biosynthesis;-0.25836;0.87814;0.6667;0.95475;1;0.137;0.0427;0.132;0.94141;0.4
+Serotonergic synapse;94;Serotonergic synapse;-0.22909;0.8683;0.6;0.96089;1;0.351;0.249;0.265;0.95322;0.4
+Viral carcinogenesis;165;Viral carcinogenesis;-0.22349;0.86253;1;0.96551;1;0.309;0.268;0.228;0.9648;0.4
+Collecting duct acid secretion;26;Collecting duct acid secretion;-0.39363;0.86037;1;0.96308;1;0.5;0.241;0.38;0.95515;0.4
+Nicotine addiction;34;Nicotine addiction;-0.22696;0.85703;0.6;0.96081;1;0.353;0.27;0.258;0.95085;0.4
+Biosynthesis of amino acids;65;Biosynthesis of amino acids;-0.26037;0.84749;0.3333;0.98098;1;0.308;0.233;0.237;0.98255;0.4
+Gap junction;80;Gap junction;-0.23142;0.84432;0.75;0.9733;1;0.35;0.244;0.266;0.97301;0.4
+Epstein-Barr virus infection;188;Epstein-Barr virus infection;-0.21092;0.83476;1;0.99621;1;0.207;0.198;0.168;1;0.5
+Hippo signaling pathway;152;Hippo signaling pathway;-0.19807;0.82513;1;1;1;0.178;0.126;0.156;1;0.5
+Riboflavin metabolism;11;Riboflavin metabolism;-0.40221;0.82389;1;0.99546;1;0.455;0.197;0.365;0.99902;0.5
+Toxoplasmosis;108;Toxoplasmosis;-0.19869;0.82295;0.5;0.98723;1;0.204;0.207;0.163;0.98968;0.5
+Olfactory transduction;69;Olfactory transduction;-0.24746;0.82275;1;0.97809;1;0.58;0.441;0.325;0.98052;0.5
+Huntington's disease;167;Huntington's disease;-0.29196;0.82115;0.75;0.97022;1;0.365;0.271;0.269;0.97152;0.4
+Salivary secretion;72;Salivary secretion;-0.21195;0.80866;0.6667;0.98609;1;0.306;0.244;0.232;0.98757;0.4
+Transcriptional misregulation in cancer;153;Transcriptional misregulation in cancer;-0.23153;0.79583;0.6667;0.99709;1;0.275;0.229;0.213;1;0.5
+Hematopoietic cell lineage;80;Hematopoietic cell lineage;-0.24193;0.78399;0.5;1;1;0.162;0.112;0.145;1;0.5
+PI3K-Akt signaling pathway;296;PI3K-Akt signaling pathway;-0.19647;0.77252;1;1;1;0.25;0.212;0.2;1;0.5
+Ribosome biogenesis in eukaryotes;69;Ribosome biogenesis in eukaryotes;-0.2812;0.77243;0.6667;1;1;0.304;0.257;0.227;0.99889;0.5
+Thyroid hormone synthesis;64;Thyroid hormone synthesis;-0.20627;0.77217;0.8571;1;1;0.312;0.244;0.237;0.99021;0.5
+Porphyrin and chlorophyll metabolism;39;Porphyrin and chlorophyll metabolism;-0.23357;0.76901;1;1;1;0.333;0.24;0.254;1;0.5
+Malaria;45;Malaria;-0.28018;0.76264;1;0.99564;1;0.289;0.206;0.23;0.99626;0.5
+2-Oxocarboxylic acid metabolism;17;2-Oxocarboxylic acid metabolism;-0.28241;0.75536;0.5;0.99964;1;0.588;0.356;0.379;1;0.5
+Protein export;22;Protein export;-0.32735;0.75387;0.75;0.99486;1;0.591;0.418;0.344;1;0.5
+Small cell lung cancer;83;Small cell lung cancer;-0.1951;0.75083;0.8;0.99385;1;0.241;0.205;0.192;1;0.6
+Leishmaniasis;63;Leishmaniasis;-0.22279;0.74609;0.6667;0.99466;1;0.46;0.391;0.281;1;0.5
+B cell receptor signaling pathway;71;B cell receptor signaling pathway;-0.20463;0.73375;1;1;1;0.338;0.267;0.249;1;0.5
+Cytokine-cytokine receptor interaction;231;Cytokine-cytokine receptor interaction;-0.22074;0.72151;1;1;1;0.377;0.303;0.266;1;0.6
+Toll-like receptor signaling pathway;89;Toll-like receptor signaling pathway;-0.18551;0.72107;0.6667;1;1;0.292;0.266;0.215;1;0.5
+Proteoglycans in cancer;78;Proteoglycans in cancer;-0.2589;0.71685;1;0.99875;1;0.321;0.245;0.243;1;0.6
+Nucleotide excision repair;44;Nucleotide excision repair;-0.2426;0.71368;0.6;0.99596;1;0.364;0.358;0.234;1;0.5
+Apoptosis;82;Apoptosis;-0.19533;0.71135;1;0.99587;1;0.341;0.291;0.243;0.99802;0.5
+Viral myocarditis;64;Viral myocarditis;-0.19655;0.70398;0.6667;1;1;0.281;0.295;0.199;1;0.6
+Phototransduction;23;Phototransduction;-0.21586;0.69933;1;1;1;0.348;0.281;0.25;1;0.5
+Cell adhesion molecules (CAMs);131;Cell adhesion molecules (CAMs);-0.19189;0.68945;0.75;0.99998;1;0.16;0.141;0.139;1;0.6
+Inflammatory bowel disease;56;Inflammatory bowel disease;-0.1966;0.68929;0.75;0.99235;1;0.286;0.286;0.205;1;0.5
+Asthma;23;Asthma;-0.31511;0.6891;1;0.98727;1;0.087;0.0412;0.0835;0.99879;0.5
+Antigen processing and presentation;64;Antigen processing and presentation;-0.196;0.64559;0.5;1;1;0.297;0.351;0.193;1;0.8
+African trypanosomiasis;29;African trypanosomiasis;-0.25624;0.63649;0.75;1;1;0.345;0.286;0.247;1;0.8
+Glycosylphosphatidylinositol(GPI)-anchor biosynthesis;25;Glycosylphosphatidylinositol(GPI)-anchor biosynthesis;-0.22343;0.63151;1;1;1;0.08;0.03;0.0777;1;0.8
+Acute myeloid leukemia;54;Acute myeloid leukemia;-0.21136;0.62468;1;1;1;0.185;0.122;0.163;1;0.7
+Chemokine signaling pathway;171;Chemokine signaling pathway;-0.17814;0.62306;1;1;1;0.287;0.271;0.211;1;0.6
+GnRH signaling pathway;80;GnRH signaling pathway;-0.18412;0.61853;0.8;1;1;0.275;0.244;0.209;1;0.6
+RNA polymerase;30;RNA polymerase;-0.25961;0.61612;1;0.99293;1;0.333;0.312;0.23;1;0.6
+Chagas disease (American trypanosomiasis);100;Chagas disease (American trypanosomiasis);-0.15776;0.60871;1;0.98869;1;0.21;0.207;0.167;1;0.5
+Type I diabetes mellitus;37;Type I diabetes mellitus;-0.25419;0.60069;1;0.98167;1;0.216;0.263;0.16;1;0.5
+Influenza A;149;Influenza A;-0.15429;0.6004;1;0.97476;1;0.282;0.291;0.202;0.99309;0.5
+Measles;118;Measles;-0.18164;0.59847;1;0.96794;1;0.322;0.297;0.228;0.98614;0.4
+Osteoclast differentiation;130;Osteoclast differentiation;-0.17507;0.59397;1;0.96202;1;0.292;0.281;0.212;0.9793;0.2
+Basal transcription factors;42;Basal transcription factors;-0.1595;0.54871;1;0.98159;1;0.19;0.224;0.148;0.99011;0.4
+Biosynthesis of unsaturated fatty acids;20;Biosynthesis of unsaturated fatty acids;-0.23233;0.54252;1;0.97858;1;0.1;0.0299;0.0971;0.99275;0.3
+Natural killer cell mediated cytotoxicity;111;Natural killer cell mediated cytotoxicity;-0.1977;0.5042;1;0.98126;1;0.324;0.28;0.235;0.98887;0.3
+Spliceosome;115;Spliceosome;-0.16559;0.49212;1;0.9768;1;0.357;0.326;0.242;0.98382;0.3
+Circadian rhythm;27;Circadian rhythm;0.49807;-2.3065;0;0;0;0.519;0.181;0.425;0;0
+Propanoate metabolism;32;Propanoate metabolism;0.63829;-2.1907;0;0;0;0.5;0.131;0.436;0;0
+Glycine, serine and threonine metabolism;37;Glycine, serine and threonine metabolism;0.50452;-2.1363;0;0;0;0.27;0.0708;0.252;0;0
+Histidine metabolism;27;Histidine metabolism;0.66095;-2.001;0;0.014459;0.1;0.556;0.135;0.481;0;0
+Valine, leucine and isoleucine degradation;44;Valine, leucine and isoleucine degradation;0.62147;-1.9669;0;0.011568;0.1;0.5;0.145;0.429;0;0
+Fatty acid metabolism;41;Fatty acid metabolism;0.64514;-1.8426;0;0.052654;0.3;0.512;0.132;0.446;0;0
+Phenylalanine metabolism;18;Phenylalanine metabolism;0.46074;-1.7695;0;0.07104;0.3;0.278;0.0787;0.256;0;0
+Tryptophan metabolism;37;Tryptophan metabolism;0.60859;-1.7612;0;0.079849;0.4;0.432;0.135;0.375;0;0
+PPAR signaling pathway;66;PPAR signaling pathway;0.51485;-1.7443;0;0.077694;0.4;0.348;0.124;0.306;0;0
+One carbon pool by folate;18;One carbon pool by folate;0.48977;-1.7166;0;0.11091;0.6;0.389;0.0725;0.361;0.069449;0
+Butanoate metabolism;26;Butanoate metabolism;0.4783;-1.6502;0;0.15624;0.8;0.5;0.174;0.414;0.11204;0
+Bile secretion;64;Bile secretion;0.41682;-1.5947;0;0.18847;0.8;0.359;0.164;0.302;0.12524;0
+Pentose and glucuronate interconversions;31;Pentose and glucuronate interconversions;0.47749;-1.4847;0;0.35189;0.9;0.258;0.0495;0.246;0.25182;0
+beta-Alanine metabolism;28;beta-Alanine metabolism;0.59552;-1.4845;0;0.32675;0.9;0.536;0.131;0.467;0.23383;0
+Ascorbate and aldarate metabolism;25;Ascorbate and aldarate metabolism;0.53407;-1.4442;0;0.43977;0.9;0.4;0.149;0.341;0.36021;0.1
+Adipocytokine signaling pathway;67;Adipocytokine signaling pathway;0.35243;-1.4093;0;0.51215;0.9;0.254;0.142;0.219;0.37798;0.2
+Renin-angiotensin system;16;Renin-angiotensin system;0.56435;-1.3944;0;0.51465;1;0.625;0.23;0.482;0.38105;0.2
+Retinol metabolism;57;Retinol metabolism;0.38295;-1.391;0.2;0.49245;1;0.456;0.228;0.353;0.37578;0.2
+Drug metabolism - cytochrome P450;63;Drug metabolism - cytochrome P450;0.38015;-1.3876;0.3333;0.47882;1;0.238;0.128;0.208;0.356;0.1
+Glycerolipid metabolism;47;Glycerolipid metabolism;0.39495;-1.3809;0.1667;0.47103;1;0.298;0.131;0.26;0.37425;0.1
+Peroxisome;74;Peroxisome;0.45864;-1.3703;0.3333;0.46663;1;0.419;0.176;0.347;0.40439;0.1
+Tyrosine metabolism;36;Tyrosine metabolism;0.35029;-1.3376;0;0.53229;1;0.25;0.127;0.219;0.38601;0.2
+Glycolysis / Gluconeogenesis;59;Glycolysis / Gluconeogenesis;0.37971;-1.3151;0.1667;0.57546;1;0.271;0.149;0.232;0.44653;0.1
+Proximal tubule bicarbonate reclamation;21;Proximal tubule bicarbonate reclamation;0.53626;-1.2986;0;0.58765;1;0.476;0.134;0.413;0.45888;0.1
+Lysine degradation;49;Lysine degradation;0.36175;-1.2807;0;0.61609;1;0.286;0.179;0.235;0.47549;0.1
+Alanine, aspartate and glutamate metabolism;31;Alanine, aspartate and glutamate metabolism;0.4072;-1.2733;0.3333;0.62616;1;0.323;0.0848;0.296;0.49081;0.1
+Cocaine addiction;48;Cocaine addiction;0.31051;-1.2625;0.2;0.62487;1;0.375;0.216;0.295;0.48323;0.1
+Carbohydrate digestion and absorption;37;Carbohydrate digestion and absorption;0.39973;-1.2427;0.2;0.67684;1;0.27;0.14;0.233;0.55464;0.2
+Metabolism of xenobiotics by cytochrome P450;68;Metabolism of xenobiotics by cytochrome P450;0.33206;-1.2404;0.25;0.66107;1;0.176;0.0619;0.166;0.53552;0.2
+Terpenoid backbone biosynthesis;21;Terpenoid backbone biosynthesis;0.41576;-1.2353;0.25;0.64367;1;0.429;0.255;0.319;0.53118;0.1
+Glyoxylate and dicarboxylate metabolism;23;Glyoxylate and dicarboxylate metabolism;0.51371;-1.203;0.3333;0.73169;1;0.522;0.207;0.414;0.64602;0.2
+Fructose and mannose metabolism;35;Fructose and mannose metabolism;0.31437;-1.1964;0.3333;0.74447;1;0.171;0.0561;0.162;0.71539;0.2
+Renal cell carcinoma;64;Renal cell carcinoma;0.32889;-1.1789;0.3333;0.78743;1;0.328;0.159;0.277;0.7816;0.2
+Pantothenate and CoA biosynthesis;17;Pantothenate and CoA biosynthesis;0.48043;-1.1786;0.5;0.76427;1;0.235;0.0361;0.227;0.75861;0.2
+Prostate cancer;85;Prostate cancer;0.30634;-1.1705;0.3333;0.76378;1;0.353;0.18;0.291;0.76213;0.2
+Starch and sucrose metabolism;50;Starch and sucrose metabolism;0.32806;-1.1435;0.25;0.84345;1;0.16;0.0495;0.152;0.87008;0.2
+Notch signaling pathway;44;Notch signaling pathway;0.33878;-1.1284;0.375;0.88068;1;0.318;0.185;0.26;0.90906;0.3
+HIF-1 signaling pathway;97;HIF-1 signaling pathway;0.29505;-1.1251;0.4;0.86347;1;0.237;0.137;0.206;0.89273;0.3
+Adherens junction;72;Adherens junction;0.32723;-1.1099;0.4;0.88499;1;0.361;0.162;0.304;0.88927;0.3
+Pyruvate metabolism;40;Pyruvate metabolism;0.39535;-1.1067;0.5;0.87579;1;0.225;0.0696;0.21;0.86704;0.3
+TGF-beta signaling pathway;80;TGF-beta signaling pathway;0.27373;-1.103;0.25;0.86696;1;0.412;0.22;0.323;0.85306;0.3
+Retrograde endocannabinoid signaling;90;Retrograde endocannabinoid signaling;0.27508;-1.0999;0.2;0.84925;1;0.167;0.114;0.148;0.83975;0.2
+Nitrogen metabolism;22;Nitrogen metabolism;0.32858;-1.0959;0.5;0.85737;1;0.318;0.219;0.249;0.84073;0.3
+Prolactin signaling pathway;68;Prolactin signaling pathway;0.30534;-1.0842;0.2;0.87725;1;0.309;0.177;0.255;0.90067;0.3
+Type II diabetes mellitus;44;Type II diabetes mellitus;0.29579;-1.0751;0.2;0.88197;1;0.205;0.0933;0.186;0.89372;0.3
+Aldosterone-regulated sodium reabsorption;36;Aldosterone-regulated sodium reabsorption;0.32404;-1.0707;0.5;0.87643;1;0.333;0.146;0.285;0.90304;0.2
+Arginine and proline metabolism;53;Arginine and proline metabolism;0.38811;-1.0665;0.6667;0.8631;1;0.34;0.146;0.291;0.88382;0.2
+Tight junction;120;Tight junction;0.27257;-1.0618;0.4;0.86315;1;0.275;0.147;0.236;0.87527;0.1
+Maturity onset diabetes of the young;20;Maturity onset diabetes of the young;0.38573;-1.0535;0.6667;0.87205;1;0.5;0.23;0.385;0.88073;0.2
+Vasopressin-regulated water reabsorption;43;Vasopressin-regulated water reabsorption;0.39584;-1.048;0.3333;0.87336;1;0.349;0.18;0.287;0.87064;0.2
+Neurotrophin signaling pathway;113;Neurotrophin signaling pathway;0.29079;-1.0451;0.5714;0.86596;1;0.257;0.177;0.213;0.86479;0.2
+Ether lipid metabolism;31;Ether lipid metabolism;0.29784;-1.034;0.6;0.88483;1;0.161;0.0455;0.154;0.89942;0.2
+mTOR signaling pathway;53;mTOR signaling pathway;0.29536;-1.0169;0.5;0.90709;1;0.245;0.159;0.207;0.91481;0.3
+Insulin secretion;75;Insulin secretion;0.25647;-1.0066;0.2;0.92517;1;0.293;0.191;0.238;0.92908;0.3
+Nicotinate and nicotinamide metabolism;25;Nicotinate and nicotinamide metabolism;0.30743;-1.0033;0.6667;0.91954;1;0.28;0.202;0.224;0.92619;0.3
+Hepatitis C;112;Hepatitis C;0.25337;-0.98639;0.4286;0.95086;1;0.366;0.26;0.272;0.97747;0.4
+Ovarian steroidogenesis;43;Ovarian steroidogenesis;0.25351;-0.97386;0.4;0.95893;1;0.233;0.134;0.202;0.97036;0.4
+Chemical carcinogenesis;69;Chemical carcinogenesis;0.25159;-0.96975;0.25;0.94893;1;0.188;0.129;0.165;0.96037;0.3
+Thyroid cancer;27;Thyroid cancer;0.27635;-0.94529;0.5;0.99958;1;0.333;0.159;0.281;0.99335;0.5
+Endometrial cancer;50;Endometrial cancer;0.2746;-0.92961;0.6;1;1;0.42;0.232;0.323;1;0.5
+Non-small cell lung cancer;51;Non-small cell lung cancer;0.26765;-0.92872;0.5;1;1;0.373;0.225;0.29;0.99789;0.5
+Amphetamine addiction;64;Amphetamine addiction;0.22953;-0.92789;0.4;0.98862;1;0.25;0.191;0.203;0.98179;0.4
+Insulin signaling pathway;124;Insulin signaling pathway;0.24084;-0.92335;0.75;0.98826;1;0.25;0.177;0.207;0.97587;0.4
+Dorso-ventral axis formation;24;Dorso-ventral axis formation;0.35052;-0.91977;0.3333;0.98043;1;0.5;0.225;0.388;0.96062;0.4
+ABC transporters;43;ABC transporters;0.30753;-0.90688;0.6667;0.98721;1;0.326;0.174;0.269;0.97392;0.4
+Pancreatic cancer;66;Pancreatic cancer;0.29817;-0.89092;0.8333;1;1;0.288;0.164;0.242;1;0.5
+ErbB signaling pathway;83;ErbB signaling pathway;0.21419;-0.88744;0.6;1;1;0.253;0.191;0.206;0.99079;0.4
+Folate biosynthesis;12;Folate biosynthesis;0.40397;-0.87907;0.5;1;1;0.583;0.31;0.403;1;0.6
+Sphingolipid metabolism;42;Sphingolipid metabolism;0.26986;-0.87028;0.8;1;1;0.405;0.235;0.31;1;0.6
+Selenocompound metabolism;16;Selenocompound metabolism;0.30088;-0.84717;0.5;1;1;0.188;0.0626;0.176;1;0.7
+SNARE interactions in vesicular transport;35;SNARE interactions in vesicular transport;0.24454;-0.83656;0.8333;1;1;0.229;0.158;0.193;1;0.7
+Cysteine and methionine metabolism;34;Cysteine and methionine metabolism;0.21176;-0.81835;1;1;1;0.118;0.0787;0.109;1;0.7
+Inositol phosphate metabolism;58;Inositol phosphate metabolism;0.25264;-0.8167;0.3333;1;1;0.155;0.108;0.139;1;0.7
+Phosphatidylinositol signaling system;74;Phosphatidylinositol signaling system;0.22403;-0.8065;0.8333;1;1;0.176;0.11;0.157;1;0.8
+TNF signaling pathway;105;TNF signaling pathway;0.24266;-0.80155;0.8333;1;1;0.248;0.18;0.204;1;0.7
+Endocytosis;182;Endocytosis;0.18496;-0.79007;0.7143;1;1;0.269;0.214;0.214;1;0.8
+Fc epsilon RI signaling pathway;62;Fc epsilon RI signaling pathway;0.24539;-0.78873;0.6667;1;1;0.258;0.177;0.213;1;0.8
+Gastric acid secretion;65;Gastric acid secretion;0.22479;-0.76836;0.8333;1;1;0.185;0.134;0.16;1;0.8
+RIG-I-like receptor signaling pathway;57;RIG-I-like receptor signaling pathway;0.22193;-0.76223;0.7143;1;1;0.316;0.248;0.238;1;0.8
+Glycosphingolipid biosynthesis - lacto and neolacto series;26;Glycosphingolipid biosynthesis - lacto and neolacto series;0.26854;-0.76217;0.8;1;1;0.308;0.169;0.256;1;0.8
+Bladder cancer;35;Bladder cancer;0.24912;-0.73466;0.8333;1;1;0.343;0.183;0.281;1;0.8
+Vascular smooth muscle contraction;105;Vascular smooth muscle contraction;0.2447;-0.7284;0.8;1;1;0.21;0.161;0.177;1;0.8
+Fatty acid elongation;22;Fatty acid elongation;0.31719;-0.72538;0.6667;1;1;0.364;0.221;0.284;1;0.8
+Cholinergic synapse;103;Cholinergic synapse;0.19784;-0.71379;1;1;1;0.107;0.0709;0.0998;1;0.8
+Citrate cycle (TCA cycle);29;Citrate cycle (TCA cycle);0.32111;-0.71051;0.75;1;1;0.345;0.226;0.267;1;0.8
+Colorectal cancer;62;Colorectal cancer;0.22983;-0.7069;1;1;1;0.177;0.089;0.162;1;0.8
+GABAergic synapse;79;GABAergic synapse;0.17325;-0.70406;0.8571;1;1;0.114;0.0989;0.103;1;0.8
+Melanoma;61;Melanoma;0.1952;-0.70032;1;1;1;0.115;0.0728;0.107;1;0.8
+Morphine addiction;81;Morphine addiction;0.21268;-0.67644;1;1;1;0.123;0.0989;0.112;1;0.8
+Leukocyte transendothelial migration;106;Leukocyte transendothelial migration;0.23433;-0.67343;1;1;1;0.245;0.184;0.201;1;0.8
+Carbon metabolism;86;Carbon metabolism;0.20196;-0.6702;0.8;1;1;0.302;0.229;0.234;1;0.8
+Dopaminergic synapse;118;Dopaminergic synapse;0.16751;-0.66204;1;1;1;0.237;0.216;0.187;1;0.8
+Regulation of autophagy;22;Regulation of autophagy;0.20267;-0.65051;1;1;1;0.227;0.183;0.186;1;0.8
+Chronic myeloid leukemia;70;Chronic myeloid leukemia;0.21953;-0.6488;1;1;1;0.257;0.177;0.213;1;0.8
+Non-homologous end-joining;13;Non-homologous end-joining;0.28655;-0.648;1;1;1;0.308;0.289;0.219;1;0.7
+Vitamin digestion and absorption;20;Vitamin digestion and absorption;0.24887;-0.62604;1;1;1;0.15;0.0577;0.141;1;0.8
+Primary bile acid biosynthesis;17;Primary bile acid biosynthesis;0.25288;-0.61705;1;1;1;0.294;0.195;0.237;1;0.7
+Estrogen signaling pathway;91;Estrogen signaling pathway;0.18456;-0.59021;1;1;1;0.275;0.225;0.214;1;0.8
+Circadian entrainment;86;Circadian entrainment;0.17933;-0.58642;1;1;1;0.093;0.0598;0.0879;1;0.8
+NOD-like receptor signaling pathway;52;NOD-like receptor signaling pathway;0.20469;-0.57948;0.75;1;1;0.154;0.137;0.133;1;0.8
+Jak-STAT signaling pathway;133;Jak-STAT signaling pathway;0.17168;-0.56779;0.8333;1;1;0.105;0.074;0.0982;1;0.8
+Herpes simplex infection;159;Herpes simplex infection;0.16072;-0.49596;1;1;1;0.201;0.188;0.165;1;1
+Glioma;58;Glioma;0.17225;-0.48887;1;1;1;0.224;0.177;0.185;1;1
+T cell receptor signaling pathway;103;T cell receptor signaling pathway;0.13443;-0.35923;1;1;1;0.155;0.177;0.129;1;1
+Allograft rejection;31;Allograft rejection;0.15883;-0.3579;0.875;1;1;1;0.841;0.159;1;1
+Autoimmune thyroid disease;34;Autoimmune thyroid disease;0.13645;-0.31718;1;1;1;1;0.864;0.136;1;0.9
+Graft-versus-host disease;33;Graft-versus-host disease;0.11942;-0.27891;1;0.99947;1;0.636;0.421;0.369;1;0.9

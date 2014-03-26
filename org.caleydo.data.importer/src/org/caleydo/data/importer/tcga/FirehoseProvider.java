@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -22,23 +23,28 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.lang.SystemUtils;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.data.importer.tcga.model.TumorType;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Table;
 import com.google.common.collect.TreeBasedTable;
+import com.google.common.io.Closeables;
 
 public final class FirehoseProvider {
-	private static final Logger log = Logger.getLogger(FirehoseProvider.class.getSimpleName());
+	private static final Logger log = Logger.getLogger(FirehoseProvider.class.getName());
 	private static final int LEVEL = 4;
 
 	private final TumorType tumor;
@@ -88,6 +94,13 @@ public final class FirehoseProvider {
 		return tumor.toString();
 	}
 
+	/**
+	 * @return
+	 */
+	public boolean is2014Run() {
+		return relevantDate.get(Calendar.YEAR) >= 2014;
+	}
+
 	private String getFileName(String suffix) {
 		return tumorSample + suffix;
 	}
@@ -99,8 +112,7 @@ public final class FirehoseProvider {
 		else {
 			runId = Settings.formatClean(run);
 		}
-		return new File(tmpOutputDirectory + runId + System.getProperty("file.separator")
-				+ tumor + System.getProperty("file.separator"));
+		return new File(tmpOutputDirectory + runId + SystemUtils.FILE_SEPARATOR + tumor + SystemUtils.FILE_SEPARATOR);
 	}
 
 	private Pair<TCGAFileInfo, Boolean> findStandardSampledClusteredFile(EDataSetType type) {
@@ -134,17 +146,102 @@ public final class FirehoseProvider {
 						"mRNAseq_Preprocess", LEVEL);
 			if (r == null)
 				r = extractDataRunFile(".mRNAseq_RPKM_log2.txt", "mRNAseq_Preprocess", LEVEL);
-			if (r != null)
+			if (r != null) {
+				r = filterColumns(r, findStandardSampledClusteredFile(EDataSetType.mRNAseq));
 				return Pair.make(r, true);
+			}
 		}
 		return findStandardSampledClusteredFile(EDataSetType.mRNAseq);
+	}
+
+	private TCGAFileInfo filterColumns(TCGAFileInfo full, Pair<TCGAFileInfo, Boolean> sampled) {
+		File in = full.getFile();
+		File out = new File(in.getParentFile(), "F" + in.getName());
+		TCGAFileInfo r = new TCGAFileInfo(out, full.getArchiveURL(), full.getSourceFileName());
+		if (out.exists() && !settings.isCleanCache())
+			return r;
+		assert full != null;
+		if (sampled == null || sampled.getFirst() == null) {
+			log.severe("can't filter the full gene file: " + in + " - sampled not found");
+			return full;
+		}
+		// full: 1row, 2col
+		// sampled: 3row, 3col
+		Set<String> good = readGoodSamples(sampled.getFirst().getFile());
+		if (good == null)
+			return full;
+		try (BufferedReader fin = new BufferedReader(new FileReader(in)); PrintWriter w = new PrintWriter(out)) {
+			String[] header = fin.readLine().split("\t");
+			BitSet bad = filterCols(header, good);
+			{
+				StringBuilder b = new StringBuilder();
+				for (int i = bad.nextSetBit(0); i >= 0; i = bad.nextSetBit(i + 1))
+					b.append(' ').append(header[i]);
+				log.warning("remove bad samples of " + in + ":" + b);
+			}
+			w.append(header[0]);
+			for (int i = 1; i < header.length; ++i) {
+				if (bad.get(i))
+					continue;
+				w.append('\t').append(header[i]);
+			}
+			String line;
+			while ((line = fin.readLine()) != null) {
+				w.println();
+				int t = line.indexOf('\t');
+				w.append(line.subSequence(0, t));
+				int prev = t;
+				int i = 1;
+				for (t = line.indexOf('\t', t + 1); t >= 0; t = line.indexOf('\t', t + 1), ++i) {
+					if (!bad.get(i))
+						w.append(line.subSequence(prev, t));
+					prev = t;
+				}
+				if (!bad.get(i))
+					w.append(line.subSequence(prev, line.length()));
+
+			}
+		} catch (IOException e) {
+			log.log(Level.SEVERE, "can't filter full file: " + in, e);
+		}
+
+		return r;
+	}
+
+	/**
+	 * @param header
+	 * @param good
+	 * @return
+	 */
+	private static BitSet filterCols(String[] header, Set<String> good) {
+		BitSet r = new BitSet(header.length);
+		for (int i = 0; i < header.length; ++i)
+			if (!good.contains(header[i]))
+				r.set(i);
+		return r;
+	}
+
+	private static Set<String> readGoodSamples(File file) {
+		// sampled: 3row, >=3col
+		try (BufferedReader r = new BufferedReader(new FileReader(file))) {
+			r.readLine();
+			r.readLine();
+			String line = r.readLine();
+			String[] samples = line.split("\t");
+			return ImmutableSet.copyOf(Arrays.copyOfRange(samples, 2, samples.length));
+		} catch (IOException e) {
+			log.log(Level.SEVERE, "can't read sample header from: " + file, e);
+		}
+		return null;
 	}
 
 	public Pair<TCGAFileInfo, Boolean> findmicroRNAMatrixFile(boolean loadFullGenes) {
 		if (loadFullGenes) {
 			TCGAFileInfo r = extractDataRunFile(".miR_expression.txt", "miR_Preprocess", LEVEL);
-			if (r != null)
+			if (r != null) {
+				r = filterColumns(r, findStandardSampledClusteredFile(EDataSetType.microRNA));
 				return Pair.make(r, true);
+			}
 		}
 		return findStandardSampledClusteredFile(EDataSetType.microRNA);
 	}
@@ -157,8 +254,10 @@ public final class FirehoseProvider {
 			if (r == null)
 				r = extractAnalysisRunFile(getFileName(".miRseq_RPKM_log2.txt"), "miRseq_Preprocess",
 						LEVEL);
-			if (r != null)
+			if (r != null) {
+				r = filterColumns(r, findStandardSampledClusteredFile(EDataSetType.microRNA));
 				return Pair.make(r, true);
+			}
 		}
 		return findStandardSampledClusteredFile(EDataSetType.microRNAseq);
 	}
@@ -248,22 +347,26 @@ public final class FirehoseProvider {
 
 			return extractFileFromTarGzArchive(url, fileName, outputDir, hasTumor);
 		} catch (MalformedURLException e) {
-			throw new RuntimeException("can't extract " + fileName + " from " + label, e);
+			log.log(Level.SEVERE, "invalid url generated from: " + id + " " + tumor + " " + tumorSample + " "
+					+ pipelineName + " " + level);
+			return null;
 		}
 	}
 
 	private TCGAFileInfo extractFileFromTarGzArchive(URL inUrl, String fileToExtract, File outputDirectory,
 			boolean hasTumor) {
-		log.info("downloading: " + inUrl);
+		log.info(inUrl + " download and extract: " + fileToExtract);
 		File targetFile = new File(outputDirectory, fileToExtract);
 
 		// use cached
-		if (targetFile.exists() && !settings.isCleanCache())
-			return new TCGAFileInfo(targetFile, inUrl.toString(), fileToExtract);
+		if (targetFile.exists() && !settings.isCleanCache()) {
+			log.fine(inUrl+" cache hit");
+			return new TCGAFileInfo(targetFile, inUrl, fileToExtract);
+		}
 
 		File notFound = new File(outputDirectory, fileToExtract + "-notfound");
 		if (notFound.exists() && !settings.isCleanCache()) {
-			log.warning("file not found in a previous run: " + inUrl);
+			log.warning(inUrl+" marked as not found");
 			return null;
 		}
 
@@ -276,7 +379,6 @@ public final class FirehoseProvider {
 		TarArchiveInputStream tarIn = null;
 		OutputStream out = null;
 		try {
-			System.out.println("I: Extracting " + fileToExtract + " from " + inUrl + ".");
 			InputStream in = new BufferedInputStream(inUrl.openStream());
 
 			// ok we have the file
@@ -290,7 +392,6 @@ public final class FirehoseProvider {
 			if (act == null) // no entry found
 				throw new FileNotFoundException("no entry named: " + fileToExtract + " found");
 
-			log.info("extracting: " + fileToExtract + " from " + inUrl);
 			byte[] buf = new byte[4096];
 			int n;
 			targetFile.getParentFile().mkdirs();
@@ -301,35 +402,25 @@ public final class FirehoseProvider {
 				out.write(buf, 0, n);
 			out.close();
 			Files.move(new File(tmpFile).toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-			System.out.println("I: Extracted " + fileToExtract + " from " + inUrl + ".");
-			return new TCGAFileInfo(targetFile, inUrl.toString(), fileToExtract);
+
+			log.info(inUrl+" extracted "+fileToExtract);
+			return new TCGAFileInfo(targetFile, inUrl, fileToExtract);
 		} catch (FileNotFoundException e) {
-			log.warning("Unable to extract " + fileToExtract + " from " + inUrl + ". " + "file not found");
+			log.log(Level.WARNING, inUrl + " can't extract" + fileToExtract + ": file not found", e);
 			// file was not found, create a marker to remember this for quicker checks
 			notFound.getParentFile().mkdirs();
 			try {
 				notFound.createNewFile();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				log.log(Level.WARNING, inUrl + " can't create not-found marker", e);
 			}
 			return null;
 		} catch (Exception e) {
-			log.warning("Unable to extract " + fileToExtract + " from " + inUrl + ". " + e.getMessage());
+			log.log(Level.SEVERE, inUrl + " can't extract" + fileToExtract + ": " + e.getMessage(), e);
 			return null;
 		} finally {
-			if (tarIn != null)
-				try {
-					tarIn.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			if (out != null)
-				try {
-					out.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			Closeables.closeQuietly(tarIn);
+			Closeables.closeQuietly(out);
 		}
 	}
 
@@ -338,7 +429,7 @@ public final class FirehoseProvider {
 		File out = new File(maf.getParentFile(), "P" + maf.getName());
 		if (out.exists())
 			return out;
-		System.out.println("parsing maf file " + maf.getAbsolutePath());
+		log.fine(maf.getAbsolutePath() + " parsing maf file");
 		final String TAB = "\t";
 
 		try (BufferedReader reader = Files.newBufferedReader(maf.toPath(), Charset.forName("UTF-8"))) {
@@ -362,7 +453,6 @@ public final class FirehoseProvider {
 			}
 			w.println();
 			Set<String> rows = mutated.rowKeySet();
-			System.out.println(mutated.size() + " " + rows.size() + " " + cols.size());
 			for (String gene : rows) {
 				w.append(gene);
 				for (String sample : cols) {
@@ -372,11 +462,12 @@ public final class FirehoseProvider {
 			}
 			w.close();
 			Files.move(tmp.toPath(), out.toPath(), StandardCopyOption.REPLACE_EXISTING);
-			System.out.println("parsed " + maf.getAbsolutePath());
+
+			log.fine(maf.getAbsolutePath() + " parsed maf file stats: " + mutated.size() + " " + rows.size() + " "
+					+ cols.size());
 			return out;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.log(Level.SEVERE, maf.getAbsolutePath() + " maf parsing error: " + e.getMessage(), e);
 		}
 		return null;
 	}
@@ -387,5 +478,21 @@ public final class FirehoseProvider {
 		file = parseMAF(file);
 
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("FirehoseProvider[");
+		builder.append(tumor);
+		builder.append("/");
+		builder.append(tumorSample);
+		builder.append("@");
+		builder.append(Settings.format(analysisRun));
+		builder.append(",");
+		builder.append(Settings.format(dataRun));
+		builder.append("]");
+		return builder.toString();
+	}
+
 
 }

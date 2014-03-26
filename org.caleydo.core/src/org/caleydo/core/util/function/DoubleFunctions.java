@@ -18,6 +18,35 @@ public final class DoubleFunctions {
 
 	}
 
+	public static Double applyPrimitive(IDoubleFunction f, Double in) {
+		if (in == null)
+			in = Double.NaN;
+		return Double.valueOf(f.apply(in.doubleValue()));
+	}
+
+	public static final IInvertableDoubleFunction IDENTITY = new IInvertableDoubleFunction() {
+		@Override
+		public double apply(double in) {
+			return in;
+		}
+
+		@Override
+		public String toString() {
+			return "identity";
+		}
+
+		@Override
+		public Double apply(Double input) {
+			return applyPrimitive(this, input);
+		}
+
+		@Override
+		public double unapply(double v) {
+			return v;
+		}
+
+	};
+
 	/**
 	 * clamps the given value between 0 and 1
 	 */
@@ -44,9 +73,9 @@ public final class DoubleFunctions {
 	 * @param max
 	 * @return
 	 */
-	public static IDoubleFunction normalize(final double min, double max) {
+	public static IInvertableDoubleFunction normalize(final double min, double max) {
 		final double delta = max - min;
-		return new ADoubleFunction() {
+		return new IInvertableDoubleFunction() {
 			@Override
 			public double apply(double in) {
 				return (in - min) / delta;
@@ -55,6 +84,16 @@ public final class DoubleFunctions {
 			@Override
 			public String toString() {
 				return String.format("normalize[%f,%f]", min, min + delta);
+			}
+
+			@Override
+			public Double apply(Double input) {
+				return applyPrimitive(this, input);
+			}
+
+			@Override
+			public double unapply(double in) {
+				return delta * in + min;
 			}
 		};
 	}
@@ -66,9 +105,9 @@ public final class DoubleFunctions {
 	 * @param max
 	 * @return
 	 */
-	public static IDoubleFunction unnormalize(final double min, double max) {
+	public static IInvertableDoubleFunction unnormalize(final double min, double max) {
 		final double delta = max - min;
-		return new ADoubleFunction() {
+		return new IInvertableDoubleFunction() {
 			@Override
 			public double apply(double in) {
 				return delta * in + min;
@@ -77,6 +116,16 @@ public final class DoubleFunctions {
 			@Override
 			public String toString() {
 				return String.format("unnormalize[%f,%f]", min, min + delta);
+			}
+
+			@Override
+			public Double apply(Double input) {
+				return applyPrimitive(this, input);
+			}
+
+			@Override
+			public double unapply(double in) {
+				return (in - min) / delta;
 			}
 		};
 	}
@@ -95,6 +144,26 @@ public final class DoubleFunctions {
 			@Override
 			public String toString() {
 				return f.toString();
+			}
+		};
+	}
+
+	public static IInvertableDoubleFunction invert(final IInvertableDoubleFunction f) {
+		return new IInvertableDoubleFunction() {
+
+			@Override
+			public Double apply(Double input) {
+				return applyPrimitive(this, input);
+			}
+
+			@Override
+			public double apply(double v) {
+				return f.unapply(v);
+			}
+
+			@Override
+			public double unapply(double in) {
+				return f.apply(in);
 			}
 		};
 	}

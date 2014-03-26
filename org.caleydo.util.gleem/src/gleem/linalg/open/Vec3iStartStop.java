@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package gleem.linalg.open;
 
@@ -15,7 +15,7 @@ public final class Vec3iStartStop extends Vec3i {
 	public static final int SOURCE_INDEX = 2;
 
 	/**
-	 * 
+	 *
 	 */
 	public Vec3iStartStop() {
 
@@ -44,18 +44,18 @@ public final class Vec3iStartStop extends Vec3i {
 
 	public final void setStartStopSourceId(final int iStartIndex, final int iStopIndex,
 			final int iSourceId) {
-		this.set(START_INDEX, iStartIndex);
-		this.set(STOP_INDEX, iStopIndex);
-		this.set(SOURCE_INDEX, iSourceId);
+		this.setComponent(START_INDEX, iStartIndex);
+		this.setComponent(STOP_INDEX, iStopIndex);
+		this.setComponent(SOURCE_INDEX, iSourceId);
 	}
 
 	public final void setStartStop(final int iStartIndex, final int iStopIndex) {
-		this.set(START_INDEX, iStartIndex);
-		this.set(STOP_INDEX, iStopIndex);
+		this.setComponent(START_INDEX, iStartIndex);
+		this.setComponent(STOP_INDEX, iStopIndex);
 	}
 
 	public final void setStartStop(final Vec3iStartStop source) {
-		this.set(START_INDEX, source.getStartIndex());
-		this.set(STOP_INDEX, source.getStopIndex());
+		this.setComponent(START_INDEX, source.getStartIndex());
+		this.setComponent(STOP_INDEX, source.getStopIndex());
 	}
 }

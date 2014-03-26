@@ -36,6 +36,8 @@ import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 
 /**
  * a {@link IGLView} based on {@link GLElement}s its NOT a {@link AGLView}
@@ -72,7 +74,12 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	}
 
 	@Override
-	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+	public final <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		return getLayoutDataAs(clazz, Suppliers.ofInstance(default_));
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
 		return GLLayouts.resolveLayoutDatas(clazz, default_, canvas, this.local);
 	}
 
@@ -152,7 +159,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	}
 
 	protected void initScene() {
-		this.root = new WindowGLElement(createRoot());
+		this.root = new WindowGLElement(createRoot(), canvas);
 		this.root.setParent(this);
 		this.root.init(this);
 	}

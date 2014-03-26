@@ -37,13 +37,14 @@ import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.api.state.ABrowseState;
 import org.caleydo.view.tourguide.api.state.IReactions;
 import org.caleydo.view.tourguide.api.state.ISelectGroupState;
 import org.caleydo.view.tourguide.api.state.ISelectStratificationState;
 import org.caleydo.view.tourguide.api.state.IState;
 import org.caleydo.view.tourguide.api.state.ITransition;
+import org.caleydo.view.tourguide.api.state.RootState;
 import org.caleydo.view.tourguide.api.state.SimpleTransition;
 import org.caleydo.view.tourguide.api.vis.ITourGuideView;
 import org.caleydo.view.tourguide.api.vis.TourGuideUtils;
@@ -53,7 +54,6 @@ import org.caleydo.view.tourguide.stratomex.event.UpdateNumericalPreviewEvent;
 import org.caleydo.view.tourguide.stratomex.event.UpdatePathwayPreviewEvent;
 import org.caleydo.view.tourguide.stratomex.event.UpdateStratificationPreviewEvent;
 import org.caleydo.view.tourguide.stratomex.event.WizardEndedEvent;
-import org.caleydo.view.tourguide.stratomex.state.SelectStateState;
 
 
 /**
@@ -199,8 +199,8 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions, IPi
 		Collection<ITransition> dependent = new ArrayList<>(transitions.size());
 		Collection<ITransition> rest = new ArrayList<>(transitions.size());
 		for (ITransition t : transitions)
-			if (t instanceof SimpleTransition && (((SimpleTransition) t).getTarget() instanceof SelectStateState)
-					&& ((SelectStateState) ((SimpleTransition) t).getTarget()).getMode().isDependent())
+			if (t instanceof SimpleTransition && (((SimpleTransition) t).getTarget() instanceof RootState)
+					&& !TourGuideDataModes.areStratificatins(((RootState) ((SimpleTransition) t).getTarget()).getMode()))
 				dependent.add(t);
 			else
 				rest.add(t);
@@ -332,12 +332,11 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions, IPi
 	}
 
 	@Override
-	public void addScoreToTourGuide(EDataDomainQueryMode mode, IScore... scores) {
-		ITourGuideView tourGuide = TourGuideUtils.showTourGuide(mode);
+	public void addScoreToTourGuide(IScore... scores) {
+		ITourGuideView tourGuide = TourGuideUtils.showTourGuide(stateMachine.findNearestRoot().getAdapter());
 		tourGuide.removeLeadingScoreColumns();
 		tourGuide.addColumns(scores);
 	}
-
 
 	public void done(boolean confirmed) {
 		EventPublisher.trigger(new WizardEndedEvent());
@@ -369,7 +368,7 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions, IPi
 	@Override
 	public void replaceOtherTemplate(Perspective underlying, TablePerspective numerical, boolean extra,
 			boolean highlight) {
-		if (numerical == null) {
+		if (underlying == null) {
 			ClinicalDataConfigurer clinicalDataConfigurer = new ClinicalDataConfigurer();
 			clinicalDataConfigurer.setSortingStrategy(new NoSortingSortingStrategy());
 			replaceTemplate(numerical, clinicalDataConfigurer, true);

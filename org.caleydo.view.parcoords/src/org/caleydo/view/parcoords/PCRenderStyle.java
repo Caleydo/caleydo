@@ -21,10 +21,10 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 public class PCRenderStyle extends GeneralRenderStyle {
 
 	public class PolyLineState {
-		float lineWidth;
-		float zDepth;
-		float[] color;
-		SelectionType selectionType;
+		public final float lineWidth;
+		public final float zDepth;
+		public final float[] color;
+		public final SelectionType selectionType;
 
 		PolyLineState(SelectionType selectionType, int nrElements) {
 			this.selectionType = selectionType;

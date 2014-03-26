@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Label;
  * @author Christian Partl
  *
  */
-public class InhomogeneousDataPropertiesPage extends AImportDataPage {
+public class InhomogeneousDataPropertiesPage extends AImportDataPage<DataImportWizard> {
 
 	public static final String PAGE_NAME = "Inhomogeneous Dataset Properties";
 
@@ -108,19 +108,23 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage {
 		int status = dialog.open();
 
 		if (status == Window.OK) {
-			if (dialog.isNumericalData()) {
+			switch (dialog.getDataClass()) {
+			case NATURAL_NUMBER:
+			case REAL_NUMBER:
 				NumericalProperties numericalProperties = dialog.getNumericalProperties();
 				EDataType dataType = dialog.getDataType();
-				columnDescription.setDataDescription(new DataDescription(
-						dataType == EDataType.FLOAT ? EDataClass.REAL_NUMBER : EDataClass.NATURAL_NUMBER, dataType,
+				columnDescription.setDataDescription(new DataDescription(dialog.getDataClass(), dataType,
 						numericalProperties));
-			} else {
+				break;
+			case CATEGORICAL:
 				CategoricalClassDescription<String> categoricalClassDescription = dialog
 						.getCategoricalClassDescription();
 				columnDescription.setDataDescription(new DataDescription(EDataClass.CATEGORICAL, EDataType.STRING,
 						categoricalClassDescription));
+				break;
+			case UNIQUE_OBJECT:
+				columnDescription.setDataDescription(new DataDescription(EDataClass.UNIQUE_OBJECT, EDataType.STRING));
 			}
-
 			table.update();
 		}
 

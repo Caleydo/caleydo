@@ -33,9 +33,12 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.id.IDMappingDescription;
+import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IDTypeInitializer;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.FileUtil;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
@@ -102,6 +105,9 @@ public final class ProjectManager {
 
 	/** meta data file name se {@link ProjectMetaData} */
 	private static final String METADATA_FILE = "metadata.xml";
+
+	/** File name of file where list of user defined id mappings are to be stored */
+	private static final String ID_MAPPING_FILE = "idmapping.xml";
 
 	/**
 	 * Loads the project from a directory
@@ -182,14 +188,24 @@ public final class ProjectManager {
 		SubMonitor monitor = GeneralManager.get().createSubProgressMonitor();
 		monitor.beginTask("Loading Data", dataDomainList.getDataDomains().size() * 10);
 
+		// 1. init datadomains
 		for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
-			DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
-
 			// FIXME hack
 			if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
 				DataDomainManager.get().initalizeDataDomain("org.caleydo.datadomain.genetic");
+		}
 
-			IDTypeInitializer.initIDs(dataSetDescription);
+		// 2. load extra mappings
+		// load mappings before the data, as we possibly want to load some mapping such that we can load the data
+		loadIDMappings(dirName);
+
+		// 3. load the real data
+		for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
+			DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
+
+			// Not every data domain has got a dataSetDescription
+			if (dataSetDescription != null)
+				IDTypeInitializer.initIDs(dataSetDescription);
 			dataDomain.init();
 			// Register data domain by hand because it restored from the
 			// serialization and not created via the
@@ -272,6 +288,29 @@ public final class ProjectManager {
 		return serializationData;
 	}
 
+	private static void loadIDMappings(String dirName) throws JAXBException {
+
+		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
+		Unmarshaller unmarshaller = serializationManager.getProjectContext().createUnmarshaller();
+
+		File idMapping = new File(dirName, ID_MAPPING_FILE);
+
+		if (!idMapping.exists())
+			return;
+		IDMappingList idMappingList = (IDMappingList) unmarshaller.unmarshal(idMapping);
+		if (idMappingList == null || idMappingList.getIDMappingDescriptions() == null)
+			return;
+		for (IDMappingDescription desc : idMappingList.getIDMappingDescriptions()) {
+
+			String fileNameOnly = FileUtil.exctractFileName(desc.getFileName());
+			// Update to correct file name
+			desc.setFileName(dirName + fileNameOnly);
+
+			desc.addMapping();
+			IDMappingManager.addIDMappingDescription(desc);
+		}
+	}
+
 	/**
 	 * Load trees as specified in loadDataParameters and write them to the table. FIXME: this is not aware of possibly
 	 * alternative {@link RecordVAType}s or {@link DimensionVAType}s
@@ -292,7 +331,11 @@ public final class ProjectManager {
 	 *            name of the file to save the project in.
 	 */
 	public static IRunnableWithProgress save(String fileName) {
-		return save(fileName, false, DataDomainManager.get().getDataDomains(), GeneralManager.get().getMetaData()
+		return save(fileName, false);
+	}
+
+	public static IRunnableWithProgress save(String fileName, boolean onlyData) {
+		return save(fileName, onlyData, DataDomainManager.get().getDataDomains(), GeneralManager.get().getMetaData()
 				.cloneForSaving());
 	}
 
@@ -328,6 +371,10 @@ public final class ProjectManager {
 					saveData(tempDir, dataDomains, monitor, metaData);
 					log.info("Stored Data");
 
+					log.info("Storing Mappings");
+					saveIDMappings(tempDir, monitor);
+					log.info("Stored Mappings");
+
 					monitor.subTask("Packing Project Data");
 					ZipUtils.zipDirectory(tempDir, fileName);
 					monitor.worked(1);
@@ -346,6 +393,40 @@ public final class ProjectManager {
 				}
 			}
 		};
+
+	}
+
+	private static void saveIDMappings(final String dirName, IProgressMonitor monitor) throws JAXBException {
+		List<IDMappingDescription> descriptions = IDMappingManager.getIdMappingDescriptions();
+		IDMappingList mappingList = new IDMappingList();
+		mappingList.setMappingDescriptions(descriptions);
+
+		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
+		JAXBContext projectContext = serializationManager.getProjectContext();
+
+		Marshaller marshaller = projectContext.createMarshaller();
+
+		File idMappingFile = new File(dirName + ID_MAPPING_FILE);
+		marshaller.marshal(mappingList, idMappingFile);
+
+		for (IDMappingDescription desc : descriptions) {
+			String fileName = FileUtil.exctractFileName(desc.getFileName());
+			monitor.subTask("Persisting ID Mapping File: " + desc.getFileName());
+
+			String extendedDirName = dirName + fileName;
+
+			try {
+				FileOperations.writeInputStreamToFile(extendedDirName, GeneralManager.get().getResourceLoader()
+						.getResource(desc.getFileName()));
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+				throw new IllegalStateException("Error Saving Project File", e);
+			}
+
+			monitor.worked(1);
+		}
+
+		monitor.worked(1);
 
 	}
 

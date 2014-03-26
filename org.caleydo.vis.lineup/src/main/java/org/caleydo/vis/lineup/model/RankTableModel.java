@@ -668,7 +668,7 @@ public final class RankTableModel implements IRankColumnParent, Cloneable {
 	}
 
 	@Override
-	public String getTitle() {
+	public String getLabel() {
 		return "RankTable";
 	}
 

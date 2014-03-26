@@ -106,6 +106,9 @@ public class GLThreadListenerWrapper {
 			case 7:
 				adaptee.mouseExited(mouseEvent);
 				break;
+			case 8:
+				adaptee.mouseDragDetected(mouseEvent);
+				break;
 			default:
 				throw new IllegalStateException();
 			}
@@ -153,6 +156,11 @@ public class GLThreadListenerWrapper {
 		@Override
 		public void mouseExited(IMouseEvent mouseEvent) {
 			fire(7, mouseEvent);
+		}
+
+		@Override
+		public void mouseDragDetected(IMouseEvent mouseEvent) {
+			fire(8, mouseEvent);
 		}
 
 	}

@@ -7,6 +7,8 @@ package org.caleydo.core.io.gui.dataimport.widget.table;
 
 import java.util.List;
 
+import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.util.base.IntegerCallback;
 import org.eclipse.nebula.widgets.nattable.NatTable;
@@ -79,10 +81,19 @@ public class ColumnConfigTable {
 				return "Set Properties";
 			} else if (rowIndex == 1) {
 				ColumnDescription columnDescription = columnDescriptions.get(columnIndex);
-				if (columnDescription.getDataDescription().getCategoricalClassDescription() != null) {
-					return "Categorical";
-				} else {
-					return "Numerical";
+				switch (columnDescription.getDataDescription().getDataClass()) {
+				case CATEGORICAL:
+					if (columnDescription.getDataDescription().getCategoricalClassDescription().getCategoryType() == ECategoryType.NOMINAL)
+						return "Categorical (Nominal)";
+					return "Categorical (Ordinal)";
+				case NATURAL_NUMBER:
+				case REAL_NUMBER:
+					if (columnDescription.getDataDescription().getRawDataType() == EDataType.FLOAT)
+						return "Numerical (Float)";
+					// String is not possible for numerical
+					return "Numerical (Integer)";
+				default:
+					return "Unique Object (String)";
 				}
 			} else {
 				return rowOfColumnIDs.get(columnIndex);
@@ -155,11 +166,11 @@ public class ColumnConfigTable {
 			this.table = null;
 		}
 
-		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider, 120, 20);
+		final DataLayer bodyDataLayer = new DataLayer(bodyDataProvider, 130, 20);
 		selectionLayer = new SelectionLayer(bodyDataLayer);
 		ViewportLayer bodyLayer = new ViewportLayer(selectionLayer);
 
-		final DataLayer columnDataLayer = new DataLayer(columnDataProvider, 120, 25);
+		final DataLayer columnDataLayer = new DataLayer(columnDataProvider, 130, 25);
 		ColumnHeaderLayer columnHeaderLayer = new ColumnHeaderLayer(columnDataLayer, bodyLayer, selectionLayer);
 
 		DataLayer rowDataLayer = new DataLayer(rowDataProvider);
@@ -194,7 +205,8 @@ public class ColumnConfigTable {
 
 			@Override
 			public void run(NatTable natTable, MouseEvent event) {
-				onSetColumnProperties.on(natTable.getColumnPositionByX(event.x) - 1);
+				int columnIndex = natTable.getColumnIndexByPosition(natTable.getColumnPositionByX(event.x));
+				onSetColumnProperties.on(columnIndex);
 			}
 		});
 

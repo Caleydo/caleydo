@@ -5,13 +5,13 @@
  ******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import org.caleydo.core.util.color.Color;
-
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.spi.adapter.ITourGuideDataMode;
+import org.caleydo.view.tourguide.spi.algorithm.IComputeScoreFilter;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
-import org.caleydo.view.tourguide.spi.compute.IComputeScoreFilter;
 import org.caleydo.view.tourguide.spi.compute.IComputedReferenceStratificationScore;
 
 /**
@@ -36,8 +36,8 @@ public class DefaultComputedReferenceStratificationScore extends AReferenceStrat
 	}
 
 	@Override
-	public boolean supports(EDataDomainQueryMode mode) {
-		return mode == EDataDomainQueryMode.STRATIFICATIONS;
+	public boolean supports(ITourGuideDataMode mode) {
+		return TourGuideDataModes.areStratificatins(mode);
 	}
 
 	@Override

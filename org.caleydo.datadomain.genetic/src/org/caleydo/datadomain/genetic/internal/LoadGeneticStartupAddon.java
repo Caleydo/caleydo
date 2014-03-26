@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Listener;
 import org.kohsuke.args4j.Option;
 
 /**
@@ -51,10 +52,9 @@ public class LoadGeneticStartupAddon implements IStartupAddon {
 		return false;
 	}
 
-
 	@Override
-	public Composite create(Composite parent, final WizardPage page) {
-		page.setPageComplete(true);
+	public Composite create(Composite parent, final WizardPage page, Listener listener) {
+		// page.setPageComplete(true);
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(1, false));
@@ -62,8 +62,8 @@ public class LoadGeneticStartupAddon implements IStartupAddon {
 		GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 
 		Group groupOrganism = new Group(composite, SWT.NONE);
-		groupOrganism.setText("Select organism");
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		groupOrganism.setText("Select Organism");
+		gridData = new GridData(SWT.FILL, SWT.TOP, true, false);
 		groupOrganism.setLayoutData(gridData);
 		groupOrganism.setLayout(new GridLayout(1, false));
 
@@ -71,7 +71,7 @@ public class LoadGeneticStartupAddon implements IStartupAddon {
 		label.setText("Please choose whether the data you want to load is for humans or mice. "
 				+ "Other organisms are currently not supported.\n");
 		label.setBackground(composite.getBackground());
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData = new GridData(SWT.FILL, SWT.TOP, true, false);
 		gridData.widthHint = WIDTH;
 		label.setLayoutData(gridData);
 
@@ -89,40 +89,53 @@ public class LoadGeneticStartupAddon implements IStartupAddon {
 			b.setText(o.getLabel());
 			b.setEnabled(true);
 			b.setData(o);
-			b.setSelection(organism == o);
+			if (organism != null) {
+				b.setSelection(organism == o);
+			} else {
+				organism = o;
+			}
 			b.addSelectionListener(onChange);
+			b.addListener(SWT.Selection, listener);
 		}
 
-		Button buttonNewProject = new Button(composite, SWT.RADIO);
+		Group groupDataset = new Group(composite, SWT.NONE);
+		groupDataset.setText("Select Dataset");
+		gridData = new GridData(SWT.FILL, SWT.TOP, true, false);
+		groupDataset.setLayoutData(gridData);
+		groupDataset.setLayout(new GridLayout(1, false));
+
+		Button buttonNewProject = new Button(groupDataset, SWT.RADIO);
 		buttonNewProject.setText("Load data from file (CSV, TXT)");
 		buttonNewProject.setLayoutData(gridData);
 		buttonNewProject.setSelection(true);
+		buttonNewProject.addListener(SWT.Selection, listener);
 
-		Label desc = new Label(composite, SWT.WRAP);
+		Label desc = new Label(groupDataset, SWT.WRAP);
 		desc.setText("Load tabular data wich contains identifiers to one of the following types of IDs: "
 				+ "DAVID IDs, gene names, RefSeq IDs, ENSEMBL IDs or ENTREZ IDs \n \n"
 				+ "Other identifiers are currently not supported. Use the \"Load Other Data\" "
 				+ "option if you have other identifiers.\n");
-		desc.setBackground(composite.getBackground());
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		desc.setBackground(groupDataset.getBackground());
+		gridData = new GridData(SWT.FILL, SWT.TOP, true, false);
 		gridData.widthHint = WIDTH;
 		desc.setLayoutData(gridData);
 
-		final Button btnSampleData = new Button(composite, SWT.RADIO);
+		final Button btnSampleData = new Button(groupDataset, SWT.RADIO);
 		btnSampleData.setText("Start with sample gene expression data");
 		// buttonSampleDataMode.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
-		btnSampleData.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		btnSampleData.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		btnSampleData.addListener(SWT.Selection, listener);
 
-		Link link = new Link(composite, SWT.NULL);
+		Link link = new Link(groupDataset, SWT.NULL);
 		link.setText("This option loads a single sample mRNA expression dataset with samples for hepatocellular carcinoma (about 4000 genes and 39 experiments) through the standard loading dialog. The dataset is made available by the Institute of Pathology at the Medical University of Graz.\n\nDataset: <a href=\""
 				+ HCC_SAMPLE_DATASET_PAPER_LINK + "\">" + HCC_SAMPLE_DATASET_PAPER_LINK + "</a>");
-		link.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		link.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		link.addSelectionListener(BrowserUtils.LINK_LISTENER);
 
 		btnSampleData.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				page.setPageComplete(true);
+				// page.setPageComplete(true);
 				loadSampleGeneData = btnSampleData.getSelection();
 			}
 		});
@@ -136,9 +149,9 @@ public class LoadGeneticStartupAddon implements IStartupAddon {
 	}
 
 	@Override
-    public IStartupProcedure create() {
+	public IStartupProcedure create() {
 		MyPreferences.setLastChosenOrganism(organism);
 		return new GeneticGUIStartupProcedure(organism, loadSampleGeneData);
-    }
+	}
 
 }

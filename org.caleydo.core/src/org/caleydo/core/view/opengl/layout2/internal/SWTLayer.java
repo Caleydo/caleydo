@@ -15,8 +15,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 /**
+ * implementation of the {@link ISWTLayer}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class SWTLayer implements ISWTLayer {
 	private final IGLCanvas canvas;

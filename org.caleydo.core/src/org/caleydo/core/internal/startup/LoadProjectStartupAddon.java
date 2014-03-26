@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.serialize.ProjectManager;
@@ -26,12 +27,13 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
@@ -52,7 +54,7 @@ public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentL
 	@Option(name = "-loadRecent")
 	private boolean loadRecentProject;
 
-	private Text projectLocationUI;
+	private Combo projectLocationUI;
 
 	private Button recentProject;
 
@@ -102,7 +104,7 @@ public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentL
 	}
 
 	@Override
-	public Composite create(Composite parent, final WizardPage page) {
+	public Composite create(Composite parent, final WizardPage page, Listener listener) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
 
@@ -143,7 +145,7 @@ public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentL
 		// singleCellGD.widthHint = 100;
 		chooseProjectFile.setLayoutData(singleCellGD);
 
-		projectLocationUI = new Text(composite, SWT.BORDER);
+		projectLocationUI = new Combo(composite, SWT.BORDER);
 		projectLocationUI.setEnabled(false);
 		singleCellGD = new GridData(SWT.FILL, SWT.TOP, true, false);
 		singleCellGD.grabExcessHorizontalSpace = true;
@@ -155,37 +157,46 @@ public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentL
 			public void widgetSelected(SelectionEvent e) {
 				chooseProjectFile.setEnabled(false);
 				projectLocationUI.setEnabled(false);
-				page.setPageComplete(true);
+				// page.setPageComplete(true);
 			}
 		});
+		recentProject.addListener(SWT.Selection, listener);
 
 		loadProject.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				projectLocationUI.setEnabled(true);
 				chooseProjectFile.setEnabled(true);
-				if (projectLocationUI.getText() != null && !projectLocationUI.getText().isEmpty()) {
-					page.setPageComplete(true);
-				} else {
-					page.setPageComplete(false);
-				}
+				// if (projectLocationUI.getText() != null && !projectLocationUI.getText().isEmpty()) {
+				// page.setPageComplete(true);
+				// } else {
+				// page.setPageComplete(false);
+				// }
 			}
 		});
+		recentProject.addListener(SWT.Selection, listener);
 
 		String lastProjectFileName = MyPreferences.getLastManuallyChosenProject();
-		if ("recent".equalsIgnoreCase(lastProjectFileName)) {
+		boolean recentProjectChosen = MyPreferences.wasRecentProjectChosenLastly();
+
+		if (lastProjectFileName != null && !lastProjectFileName.trim().isEmpty() && validatePath(lastProjectFileName)) {
+			projectLocationUI.setText(lastProjectFileName);
+			List<String> lastChosenProjects = MyPreferences.getLastManuallyChosenProjects();
+			projectLocationUI.setItems(lastChosenProjects.toArray(new String[lastChosenProjects.size()]));
+			projectLocationUI.select(0);
+		}
+
+		if (recentProjectChosen) {
 			recentProject.setSelection(true);
-		} else if (lastProjectFileName != null && !lastProjectFileName.trim().isEmpty()
-				&& validatePath(lastProjectFileName)) {
+		} else {
 			loadProject.setSelection(true);
 			projectLocationUI.setEnabled(true);
-			projectLocationUI.setText(lastProjectFileName);
 			chooseProjectFile.setEnabled(true);
-			if (projectLocationUI.getText() != null && !projectLocationUI.getText().isEmpty()) {
-				page.setPageComplete(true);
-			} else {
-				page.setPageComplete(false);
-			}
+			// if (projectLocationUI.getText() != null && !projectLocationUI.getText().isEmpty()) {
+			// page.setPageComplete(true);
+			// } else {
+			// page.setPageComplete(false);
+			// }
 		}
 
 		chooseProjectFile.addSelectionListener(new SelectionAdapter() {
@@ -199,15 +210,17 @@ public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentL
 				String fileName = fileDialog.open();
 				if (fileName != null) {
 					projectLocationUI.setText(fileName);
-					page.setPageComplete(true);
+					// page.setPageComplete(true);
 				}
 			}
 		});
+		chooseProjectFile.addListener(SWT.Selection, listener);
+
 		projectLocationUI.addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (projectLocationUI.getText().length() > 0 && validatePath(projectLocationUI.getText()))
-					page.setPageComplete(true);
+				// if (projectLocationUI.getText().length() > 0 && validatePath(projectLocationUI.getText()))
+				// page.setPageComplete(true);
 			}
 
 			@Override
@@ -215,6 +228,7 @@ public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentL
 
 			}
 		});
+		projectLocationUI.addListener(SWT.Modify, listener);
 
 		return composite;
 	}
@@ -256,16 +270,16 @@ public class LoadProjectStartupAddon implements IStartupAddon, IStartUpDocumentL
 	@Override
 	public IStartupProcedure create() {
 		if (loadRecentProject || (recentProject != null && recentProject.getSelection())) {
-			MyPreferences.setLastManuallyChosenProject("recent");
+			MyPreferences.setRecentProjectChosenLastly(true);
 			return new LoadProjectStartupProcedure(ProjectManager.RECENT_PROJECT_FOLDER, true);
 		}
-
 
 		String path;
 		if (projectLocation != null)
 			path = projectLocation.getAbsolutePath();
 		else
 			path = projectLocationUI.getText();
+		MyPreferences.setRecentProjectChosenLastly(false);
 		MyPreferences.setLastManuallyChosenProject(path);
 		return new LoadProjectStartupProcedure(path, false);
 	}

@@ -11,6 +11,7 @@ import gleem.linalg.Vec4f;
 import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
+import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.AGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
@@ -20,9 +21,12 @@ import org.caleydo.core.view.opengl.layout2.layout.IHasGLLayoutData;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 
 /**
  * basic layouting element
@@ -30,14 +34,14 @@ import com.google.common.base.Predicate;
  * @author Samuel Gratzl
  *
  */
-public class GLElement implements IHasGLLayoutData {
+public class GLElement implements IHasGLLayoutData, IHasMinSize {
 	/**
 	 * the visibility state of this element
 	 *
 	 * @author Samuel Gratzl
 	 *
 	 */
-	public enum EVisibility {
+	public enum EVisibility implements Predicate<GLElement> {
 		/**
 		 * will just be drawn (default)
 		 */
@@ -57,6 +61,11 @@ public class GLElement implements IHasGLLayoutData {
 
 		public boolean doRender() {
 			return this == VISIBLE || this == PICKABLE;
+		}
+
+		@Override
+		public boolean apply(GLElement input) {
+			return input.getVisibility() == this;
 		}
 	}
 
@@ -111,7 +120,7 @@ public class GLElement implements IHasGLLayoutData {
 	/**
 	 * the picking ID to use, automatically resolved by settings the visibility mode to {@link EVisibility#PICKABLE)
 	 */
-	private int pickingID = -1;
+	protected int pickingID = -1;
 	/**
 	 * the renderer to use for picking, default: a full sized rect
 	 */
@@ -119,7 +128,7 @@ public class GLElement implements IHasGLLayoutData {
 	/**
 	 * the list of picking listeners, set by {@link #onPick(IPickingListener)}
 	 */
-	private final PickingListenerComposite pickingListener = new PickingListenerComposite(1);
+	protected final PickingListenerComposite pickingListener = new PickingListenerComposite(1);
 
 	/**
 	 * indicator whether the layouting should run next time
@@ -133,6 +142,11 @@ public class GLElement implements IHasGLLayoutData {
 	 * the z value to add before the value should be rendered
 	 */
 	private float zDelta = 0;
+
+	/**
+	 * if set, {@link #getMinSize()} will return by default the minSize of this provider
+	 */
+	private IHasMinSize minSizeProvider;
 
 	public GLElement() {
 
@@ -169,7 +183,12 @@ public class GLElement implements IHasGLLayoutData {
 	}
 
 	@Override
-	public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+	public final <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		return getLayoutDataAs(clazz, Suppliers.ofInstance(default_));
+	}
+
+	@Override
+	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
 		if (clazz.isInstance(this))
 			return clazz.cast(this);
 		return GLLayouts.resolveLayoutData(clazz, layoutData, default_);
@@ -370,7 +389,7 @@ public class GLElement implements IHasGLLayoutData {
 		if (old == EVisibility.NONE || new_ == EVisibility.NONE)
 			relayoutParent();
 		if (old == EVisibility.PICKABLE) {
-			//not longer pickable
+			// not longer pickable
 			if (pickingID >= 0) {
 				context.unregisterPickingListener(pickingID);
 				pickingID = -1;
@@ -384,6 +403,8 @@ public class GLElement implements IHasGLLayoutData {
 		onVisibilityChanged(old, new_);
 
 		repaint();
+		if (old == EVisibility.PICKABLE || new_ == EVisibility.PICKABLE)
+			repaintPick();
 		return this;
 	}
 
@@ -412,6 +433,15 @@ public class GLElement implements IHasGLLayoutData {
 	}
 
 	/**
+	 * Forward pick event to listeners
+	 *
+	 * @param pick
+	 */
+	public final void handlePick(Pick pick) {
+		pickingListener.pick(pick);
+	}
+
+	/**
 	 * @return the visibility, see {@link #visibility}
 	 */
 	public final EVisibility getVisibility() {
@@ -426,7 +456,8 @@ public class GLElement implements IHasGLLayoutData {
 	 * @return
 	 */
 	public final GLElement setSize(float w, float h) {
-		if (equals(this.bounds_layout.width(), w) && equals(this.bounds_layout.height(), h) && equals(this.bounds_set.width(), w) && equals(this.bounds_set.height(), h))
+		if (equals(this.bounds_layout.width(), w) && equals(this.bounds_layout.height(), h)
+				&& equals(this.bounds_set.width(), w) && equals(this.bounds_set.height(), h))
 			return this;
 		this.bounds_set.width(w);
 		this.bounds_layout.width(w);
@@ -435,9 +466,9 @@ public class GLElement implements IHasGLLayoutData {
 		relayoutParent();
 		return this;
 	}
-	
+
 	private static boolean equals(float a, float b) {
-		return Float.compare(a,b) == 0;
+		return Float.compare(a, b) == 0;
 	}
 
 	/**
@@ -448,7 +479,8 @@ public class GLElement implements IHasGLLayoutData {
 	 * @return
 	 */
 	public final GLElement setLocation(float x, float y) {
-		if (equals(this.bounds_layout.x(), x) && equals(this.bounds_layout.y(), y) && equals(this.bounds_set.x(), x) && equals(this.bounds_set.y(), y))
+		if (equals(this.bounds_layout.x(), x) && equals(this.bounds_layout.y(), y) && equals(this.bounds_set.x(), x)
+				&& equals(this.bounds_set.y(), y))
 			return this;
 		this.bounds_set.x(x);
 		this.bounds_layout.x(x);
@@ -607,7 +639,7 @@ public class GLElement implements IHasGLLayoutData {
 	protected final IGLElementParent findParent(Predicate<IGLElementParent> satisfies) {
 		IGLElementParent act = parent;
 		while (act != null && !(satisfies.apply(act))) {
-			act = parent.getParent();
+			act = act.getParent();
 		}
 		return act;
 	}
@@ -621,13 +653,14 @@ public class GLElement implements IHasGLLayoutData {
 	protected final <T> T findParent(Class<T> isInstanceOf) {
 		IGLElementParent act = parent;
 		while (act != null && !(isInstanceOf.isInstance(act))) {
-			act = parent.getParent();
+			act = act.getParent();
 		}
 		return isInstanceOf.cast(act);
 	}
 
 	/**
 	 * setup method, when adding a child to a parent
+	 *
 	 * @param context
 	 */
 	protected void init(IGLElementContext context) {
@@ -726,6 +759,11 @@ public class GLElement implements IHasGLLayoutData {
 		}
 
 		@Override
+		public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
+			return GLElement.this.getLayoutDataAs(clazz, default_);
+		}
+
+		@Override
 		public GLElement asElement() {
 			return GLElement.this;
 		}
@@ -740,8 +778,26 @@ public class GLElement implements IHasGLLayoutData {
 			return bounds_set.bounds();
 		}
 	}
+
+	@Override
+	public Vec2f getMinSize() {
+		if (minSizeProvider == null)
+			return new Vec2f(0, 0);
+		return minSizeProvider.getMinSize();
+	}
+
+	/**
+	 * @param minSizeProvider
+	 *            setter, see {@link minSizeProvider}
+	 */
+	public void setMinSizeProvider(IHasMinSize minSizeProvider) {
+		this.minSizeProvider = minSizeProvider;
+	}
+
+	/**
+	 * @return the dirtyLayout, see {@link #dirtyLayout}
+	 */
+	boolean isDirtyLayout() {
+		return dirtyLayout;
+	}
 }
-
-
-
-

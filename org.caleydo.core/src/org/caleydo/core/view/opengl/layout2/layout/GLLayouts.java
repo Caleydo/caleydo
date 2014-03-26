@@ -10,6 +10,8 @@ import java.util.List;
 import org.caleydo.core.view.opengl.layout.ColumnLayout;
 import org.caleydo.core.view.opengl.layout.RowLayout;
 
+import com.google.common.base.Supplier;
+
 /**
  * factory class for {@link IGLLayout}s
  *
@@ -88,6 +90,14 @@ public class GLLayouts {
 		return new GLFlowLayout(false, gap, GLPadding.ZERO);
 	}
 
+	public static IGLLayout2 sizeRestrictiveFlowHorizontal(float gap) {
+		return new GLSizeRestrictiveFlowLayout(true, gap, GLPadding.ZERO);
+	}
+
+	public static IGLLayout2 sizeRestrictiveFlowVertical(float gap) {
+		return new GLSizeRestrictiveFlowLayout(false, gap, GLPadding.ZERO);
+	}
+
 	/**
 	 * returns the default value if the value to check is lower than 0 or NaN
 	 *
@@ -124,13 +134,13 @@ public class GLLayouts {
 	 *            the default value
 	 * @return
 	 */
-	public static <T> T resolveLayoutData(Class<T> clazz, Object value, T default_) {
+	public static <T> T resolveLayoutData(Class<T> clazz, Object value, Supplier<? extends T> default_) {
 		if (clazz.isInstance(value))
 			return clazz.cast(value);
 		if (value instanceof IHasGLLayoutData) {
 			return ((IHasGLLayoutData) value).getLayoutDataAs(clazz, default_);
 		}
-		return default_;
+		return default_ == null ? null : default_.get();
 	}
 
 	/**
@@ -144,7 +154,7 @@ public class GLLayouts {
 	 *            the default value
 	 * @return
 	 */
-	public static <T> T resolveLayoutDatas(Class<T> clazz, T default_, Object... values) {
+	public static <T> T resolveLayoutDatas(Class<T> clazz, Supplier<? extends T> default_, Object... values) {
 		for (Object value : values) {
 			if (clazz.isInstance(value))
 				return clazz.cast(value);
@@ -154,6 +164,6 @@ public class GLLayouts {
 					return r;
 			}
 		}
-		return default_;
+		return default_ == null ? null : default_.get();
 	}
 }

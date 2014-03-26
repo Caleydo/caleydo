@@ -24,11 +24,10 @@ public class CategoricalScoreBarElement extends ScoreBarElement {
 	}
 
 	@Override
-	protected void renderImpl(GLGraphics g, float w, float h) {
-		final IRow r = getLayoutDataAs(IRow.class, null); // current row
-		double v = model.applyPrimitive(r);
-		boolean inferred = model.isValueInferred(r);
-		Color color = ((CategoricalRankRankColumnModel<?>) model).getColor(r);
-		renderValue(g, w, h, r, v, inferred, false, color, color);
+	protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
+		double v = model.applyPrimitive(row);
+		boolean inferred = model.isValueInferred(row);
+		Color color = ((CategoricalRankRankColumnModel<?>) model).getColor(row);
+		renderValue(g, w, h, row, v, inferred, false, color, color);
 	}
 }
