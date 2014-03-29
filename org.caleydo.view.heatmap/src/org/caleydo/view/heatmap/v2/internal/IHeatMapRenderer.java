@@ -7,6 +7,7 @@ package org.caleydo.view.heatmap.v2.internal;
 
 import java.util.List;
 
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy.ISpacingLayout;
@@ -21,7 +22,7 @@ public interface IHeatMapRenderer {
 	 */
 	void takeDown();
 
-	void update(IGLElementContext context, List<Integer> dimensions, List<Integer> records);
+	void update(IGLElementContext context, List<Integer> dimensions, List<Integer> records, GLElement parent);
 
 	void render(GLGraphics g, float w, float h, ISpacingLayout recordSpacing, ISpacingLayout dimensionSpacing);
 

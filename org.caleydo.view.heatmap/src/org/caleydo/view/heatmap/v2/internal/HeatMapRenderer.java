@@ -7,9 +7,11 @@ package org.caleydo.view.heatmap.v2.internal;
 
 import java.util.List;
 
+import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.Function2;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy.ISpacingLayout;
@@ -19,6 +21,7 @@ import org.caleydo.view.heatmap.v2.ISpacingStrategy.ISpacingLayout;
  *
  */
 public class HeatMapRenderer implements IHeatMapRenderer {
+	@DeepScan
 	private final HeatMapTextureRenderer textureRenderer;
 
 	private final Function2<Integer, Integer, Color> colorer;
@@ -41,11 +44,11 @@ public class HeatMapRenderer implements IHeatMapRenderer {
 	}
 
 	@Override
-	public void update(IGLElementContext context, List<Integer> dimensions, List<Integer> records) {
+	public void update(IGLElementContext context, List<Integer> dimensions, List<Integer> records, GLElement parent) {
 		this.dimensions = dimensions;
 		this.records = records;
 		if (textureRenderer != null) {
-			textureRenderer.create(context, dimensions, records, colorer);
+			textureRenderer.create(context, dimensions, records, colorer, parent);
 		}
 
 	}

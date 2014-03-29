@@ -86,7 +86,7 @@ public class SingleHeatMapPlotElement extends ASingleElement implements Function
 		EDimension dim = getDimension();
 		List<Integer> data = getData();
 		List<Integer> simple = ImmutableList.of(-1);
-		hRenderer.update(context, dim.select(data, simple), dim.select(simple, data));
+		hRenderer.update(context, dim.select(data, simple), dim.select(simple, data), this);
 	}
 
 	private static final class SimpleSpacing implements ISpacingLayout {
