@@ -36,7 +36,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-import com.google.common.base.Stopwatch;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.jogamp.opengl.GLExtensions;
@@ -403,7 +402,7 @@ public class HeatMapTextureRenderer {
 					r.add(createNow(buffer, tile));
 			} else {
 				int groupCount = Math.max(bufferSize * tiles.size() / MAX_TEMP_BUFFER_SIZE, 3);
-				System.out.println("tile loading group count: " + groupCount);
+				// System.out.println("tile loading group count: " + groupCount);
 				for (int i = 0; i < tiles.size(); i += groupCount) {
 					int last = Math.min(i + groupCount, tiles.size());
 					Deque<Rectangle> sub = new ArrayDeque<>(tiles.subList(i, last));
@@ -469,10 +468,10 @@ public class HeatMapTextureRenderer {
 
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
-			Stopwatch w = new Stopwatch().start();
+			// Stopwatch w = new Stopwatch().start();
 			FloatBuffer b = buffer.get();
 			loader.load(b, tile, monitor);
-			System.out.println("done in " + w);
+			// System.out.println("done in " + w);
 			if (!monitor.isCanceled()) {
 				TileLoaderJob next = null;
 				if (!tileQueue.isEmpty()) {
