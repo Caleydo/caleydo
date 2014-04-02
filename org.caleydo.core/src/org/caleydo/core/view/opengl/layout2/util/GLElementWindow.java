@@ -94,7 +94,7 @@ public class GLElementWindow extends GLElementContainer {
 		protected final GLButton closeButton;
 		protected Color barColor = DEFAULT_COLOR;
 		protected boolean isHighlight = false;
-		protected GLElement spacingElement;
+		protected GLElement captionElement;
 
 		public GLTitleBar(String text) {
 			this(new DefaultLabelProvider(text));
@@ -104,8 +104,8 @@ public class GLElementWindow extends GLElementContainer {
 			super();
 			this.labelProvider = labelProvider;
 			setSize(Float.NaN, TITLE_BAR_HEIGHT);
-			setLayout(new GLSizeRestrictiveFlowLayout(true, 2, new GLPadding(3, 2)));
-			setRenderer(GLRenderers.drawText(labelProvider.getLabel(), VAlign.LEFT, new GLPadding(2, 0, 0, 4)));
+			setLayout(new GLSizeRestrictiveFlowLayout(true, 2, new GLPadding(3, 2, 3, 1)));
+			// setRenderer(GLRenderers.drawText(labelProvider.getLabel(), VAlign.LEFT, new GLPadding(2, 0, 0, 4)));
 			// setRenderer(new IGLRenderer() {
 			//
 			// @Override
@@ -114,8 +114,10 @@ public class GLElementWindow extends GLElementContainer {
 			//
 			// }
 			// });
-			spacingElement = new GLElement();
-			add(spacingElement);
+
+			captionElement = new GLElement(GLRenderers.drawText(labelProvider.getLabel(), VAlign.LEFT, new GLPadding(2,
+					0, 0, 3)));
+			add(captionElement);
 			closeButton = new GLButton(EButtonMode.BUTTON);
 			closeButton.setSize(16, 16);
 			closeButton.setTooltip("Close");
@@ -192,13 +194,13 @@ public class GLElementWindow extends GLElementContainer {
 	}
 
 	public void addTitleElement(GLElement element, boolean left) {
-		int index = left ? titleBar.indexOf(titleBar.spacingElement) : titleBar.indexOf(titleBar.spacingElement) + 1;
+		int index = left ? titleBar.indexOf(titleBar.captionElement) : titleBar.indexOf(titleBar.captionElement) + 1;
 		titleBar.add(index, element);
 	}
 
 	public void clearTitleElements() {
 		for (GLElement element : titleBar) {
-			if (element != titleBar.spacingElement && element != titleBar.closeButton) {
+			if (element != titleBar.captionElement && element != titleBar.closeButton) {
 				titleBar.remove(element);
 			}
 		}
