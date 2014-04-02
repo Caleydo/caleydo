@@ -571,7 +571,7 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 	 */
 	protected final void updateRenderer() {
 		if (context != null)
-			renderer.update(context, getData(EDimension.DIMENSION), getData(EDimension.RECORD));
+			renderer.update(context, getData(EDimension.DIMENSION), getData(EDimension.RECORD), this);
 	}
 
 }

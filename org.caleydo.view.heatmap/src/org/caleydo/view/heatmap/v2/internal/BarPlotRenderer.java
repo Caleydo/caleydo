@@ -17,6 +17,7 @@ import org.caleydo.core.util.function.DoubleFunctions;
 import org.caleydo.core.util.function.DoubleStatistics;
 import org.caleydo.core.util.function.Function2;
 import org.caleydo.core.util.function.IDoubleFunction;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.view.heatmap.v2.EScalingMode;
@@ -97,7 +98,7 @@ public class BarPlotRenderer implements IHeatMapRenderer {
 	}
 
 	@Override
-	public void update(IGLElementContext context, List<Integer> dimensions, List<Integer> records) {
+	public void update(IGLElementContext context, List<Integer> dimensions, List<Integer> records, GLElement parent) {
 		this.dimensions = dimensions;
 		this.records = records;
 

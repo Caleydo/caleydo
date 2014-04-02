@@ -57,7 +57,7 @@ public abstract class ADistributionBarElementFactory implements IGLElementFactor
 			String[] labels = context.get("labels", String[].class,
 					context.get("distribution.labels", String[].class, null));
 			@SuppressWarnings("unchecked")
-			List<Integer> ids = context.get("data", List.class, null);
+			List<Integer> ids = context.get(List.class, null);
 			Histogram hist = context.get(Histogram.class,null);
 			IDType idType = context.get("idType", IDType.class,null);
 

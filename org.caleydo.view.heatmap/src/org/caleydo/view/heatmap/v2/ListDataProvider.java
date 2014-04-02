@@ -17,6 +17,7 @@ import org.caleydo.core.util.function.Function2;
 import org.caleydo.view.heatmap.v2.internal.IHeatMapDataProvider;
 
 import com.google.common.base.Function;
+import com.jogamp.common.util.IntIntHashMap;
 
 /**
  * @author Samuel Gratzl
@@ -68,7 +69,7 @@ public class ListDataProvider implements IHeatMapDataProvider,
 
 	@Override
 	public int indexOf(EDimension dim, Integer id) {
-		return getData(dim).indexOf(id);
+		return get(dim).indexOf(id);
 	}
 
 	@Override
@@ -99,6 +100,7 @@ public class ListDataProvider implements IHeatMapDataProvider,
 
 	public static class DimensionData {
 		private final List<Integer> data;
+		private final IntIntHashMap toIndex;
 		private final Function<? super Integer, String> labels;
 		private final List<Group> groups;
 		private final IDType idType;
@@ -109,6 +111,38 @@ public class ListDataProvider implements IHeatMapDataProvider,
 			this.labels = labels;
 			this.groups = groups;
 			this.idType = idType;
+
+			if (data.size() > 2048) {
+				toIndex = buildCache(data);
+			} else
+				toIndex = null;
+		}
+
+		/**
+		 * @param data2
+		 * @return
+		 */
+		private IntIntHashMap buildCache(List<Integer> ids) {
+			IntIntHashMap m = new IntIntHashMap(ids.size());
+			for (int i = ids.size() - 1; i >= 0; --i) {
+				Integer id = ids.get(i);
+				if (id == null)
+					continue;
+				m.put(id.intValue(), i);
+			}
+			return m;
+		}
+
+		/**
+		 * @param id
+		 * @return
+		 */
+		public int indexOf(Integer id) {
+			if (toIndex == null)
+				return data.indexOf(id);
+			if (id == null)
+				return -1;
+			return toIndex.get(id.intValue());
 		}
 	}
 }

@@ -33,4 +33,13 @@ public class HeatMapElement extends HeatMapElementBase {
 		return "Heat map";
 	}
 
+	// public static void main(String[] args) {
+	// MockDataDomain m = MockDataDomain.createNumerical(1000, 1000, MockDataDomain.RANDOM);
+	//
+	// GLSandBox.main(
+	// args,
+	// new HeatMapElement(m.getDefaultTablePerspective(), new BasicBlockColorer(m),
+	// EDetailLevel.HIGH, true));
+	// }
+
 }

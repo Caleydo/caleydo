@@ -103,7 +103,7 @@ public class HistogramDistributionElement extends ADistributionElement {
 
 		final Color border = RenderStyle.COLOR_BORDER;
 		boolean renderBorder = !g.isPickingPass() && border != null;
-		// float borderBrightness = border == null ? 0 : getBrightness(border);
+		float borderBrightness = border == null ? 0 : getBrightness(border);
 		for (int i = 0; i < bins; ++i) {
 			DistributionEntry entry = entries.get(i);
 			final Color c = toHighlight(entry.getColor(), i);
@@ -116,10 +116,10 @@ public class HistogramDistributionElement extends ADistributionElement {
 				g.popName();
 			}
 			if (renderBorder) {
-				//float b = getBrightness(c);
-				// if (b > 0.5f && borderBrightness > 0.5f)
-				// g.color(1 - border.r, 1 - border.g, 1 - border.b, border.a);
-				// else
+				float b = getBrightness(c);
+				if (b > 0.5f && borderBrightness > 0.5f)
+					g.color(1 - border.r, 1 - border.g, 1 - border.b, border.a);
+				else
 					g.color(border);
 				g.drawRect(x - lineWidthHalf, 0, lineWidth, v);
 

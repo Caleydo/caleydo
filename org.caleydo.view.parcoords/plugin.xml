@@ -72,7 +72,7 @@
       <factory
             factory="org.caleydo.view.parcoords.v2.internal.SingleAxisElementFactory"
             icon="resources/icons/icon_axis.png"
-            name="Axis"
+            name="1D Scatterplot"
             scaleType="fix">
       </factory>
    </extension>
