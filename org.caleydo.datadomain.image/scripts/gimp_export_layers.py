@@ -588,7 +588,7 @@ def export_layers( run_mode,
       layer_copy = _copy_layer(image_new, layer)
       pdb.gimp_equalize(layer_copy, False)
       pdb.plug_in_gauss_iir(image_new, layer_copy, 5, 1, 1)
-      _writeLayerWithThumb(layer_copy, "_highlight")
+      _writeLayerWithThumb(layer_copy, "_area")
 
     else:
       layer_copy = _copy_layer(image_new, layer)
