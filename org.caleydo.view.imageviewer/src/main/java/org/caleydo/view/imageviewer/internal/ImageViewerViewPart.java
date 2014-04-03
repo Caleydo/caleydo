@@ -109,8 +109,14 @@ public class ImageViewerViewPart extends ARcpGLElementViewPart {
 		}
 
 		public void onImageChange() {
-			EventPublisher.trigger(new SelectImageEvent(getSelectedImage()).to(((ImageViewerView) getView())
-					.getImageViewer()));
+			LayeredImage img = getSelectedImage();
+			if( img == null )
+				return;
+			EventPublisher.trigger(
+				new SelectImageEvent(img).to(
+					((ImageViewerView) getView()).getImageViewer()
+				)
+			);
 		}
 
 		@Override

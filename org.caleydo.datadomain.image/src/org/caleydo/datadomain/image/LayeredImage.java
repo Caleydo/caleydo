@@ -43,9 +43,18 @@ public class LayeredImage {
 		}
 	}
 
+	protected String name;
 	protected SortedMap<String, Layer> layers = new TreeMap<>();
 	protected Image base;
 	protected Properties props = new Properties();
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
 
 	public void setBaseImage(File img, File thumb) {
 		base = new Image(img, thumb);
