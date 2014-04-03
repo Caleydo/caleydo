@@ -79,6 +79,78 @@ public class ImageSet extends FilePrefixGrouper {
 
 		images.clear();
 
+		// Naming scheme for images and layers:
+		//
+		// imageName: <name>[-<suffix] (if <name> is not unique, than a <suffix>
+		//                              has to be used such that <name>-<suffix>
+		//                              is unique)
+		//
+		// layerName: <imageName>_<layerId>[_border|_area]
+		//
+		// The resulting structure is a LayeredImage with name = <name>-<suffix>
+		// and layers named <name>-<layerId>.
+		//
+		// If an image has no layers, it can be named like a layer, which
+		// results in a LayerImage still named <name>-<suffix>, but with an
+		// empty layer named <name>-<layerId>. This allows also images without
+		// layers to be retrieved with ImageSet::getImageForLayer.
+		//
+		// Every image can also have the suffix _thumb, which denotes the
+		// thumbnail for this image.
+		//
+		//
+		// Example 1:
+		//
+		//  Importing the following images
+		//
+		//   K229-OR.png
+		//   K229-OR_thumb.png
+		//   K229-OR_32_border.png
+		//   K229-OR_32_area.png
+		//   K229-OR_33_border.png
+		//   K229-OR_33_area.png
+		//
+		//  results in the following structure:
+		//
+		//  LayeredImage: {
+		//    name: K229-OR,
+		//    base: {
+		//      file: K229-OR.png,
+		//      thumbnail: K220-OR_thumb.png
+		//    }
+		//    layers: {
+		//      K229-32: {
+		//        border: K229-OR_32_border.png,
+		//        area: K229-OR_32_area.png
+		//      }
+		//      K229-33: {
+		//        border: K229-OR_33_border.png,
+		//        area: K229-OR_33_area.png
+		//      }
+		//    }
+		//  }
+		//
+		//
+		// Example 2:
+		//
+		//  Importing the following images
+		//
+		//   K229-TU1_35.png
+		//   K229-TU1_35_thumb.png
+		//
+		//  results in the following structure
+		//
+		//  LayeredImage: {
+		//    name: K229-TU1,
+		//    base: {
+		//      file: K229-TU1_35.png,
+		//      thumbnail: K229-TU1_35_thumb.png
+		//    }
+		//    layers: {
+		//      K229-35: null
+		//    }
+		//  }
+
 		for (Entry<String, SortedSet<String>> group : groups.entrySet()) {
 			String name = group.getKey();
 			LayeredImage img = new LayeredImage();
@@ -109,16 +181,16 @@ public class ImageSet extends FilePrefixGrouper {
 					continue;
 				}
 
-				String layerBaseName = file.substring(0, file.lastIndexOf("_highlight"));
+				String layerBaseName = file.substring(0, file.lastIndexOf("_area"));
 				String borderName = layerBaseName + "_border";
 				String layerName = layerBaseName.substring(layerBaseName.indexOf('_') + 1);
 
-				File layerImage = files.get(borderName);
-				File layerThumb = files.get(borderName + "_thumb");
-				File maskImage = files.get(file);
-				File maskThumb = files.get(file + "_thumb");
+				File borderImage = files.get(borderName);
+				File borderThumb = files.get(borderName + "_thumb");
+				File areaImage = files.get(file);
+				File areaThumb = files.get(file + "_thumb");
 
-				img.addLayer(layerPrefix + layerName, layerImage, layerThumb, maskImage, maskThumb);
+				img.addLayer(layerPrefix + layerName, borderImage, borderThumb, areaImage, areaThumb);
 			}
 
 			if( img.getLayers().isEmpty() ) {
@@ -130,7 +202,7 @@ public class ImageSet extends FilePrefixGrouper {
 					String dummyLayerName = name.substring(layerNamePos + 1);
 					name = name.substring(0, layerNamePos);
 
-					img.addLayer(layerPrefix + dummyLayerName, null, null);
+					img.addEmptyLayer(layerPrefix + dummyLayerName);
 				}
 			}
 

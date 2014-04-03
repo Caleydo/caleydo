@@ -440,8 +440,7 @@ def _export_layer(run_mode, overwrite_mode, image, layer, filename):
     pdb.gimp_file_save( image, 
                         layer,
                         filename,
-                        os.path.basename(filename),
-                        run_mode = run_mode )
+                        os.path.basename(filename) )
   except RuntimeError as e:
     # HACK: Since RuntimeError could indicate anything including pdb.gimp_file_save
     # failure, this is the only plausible way to intercept Cancel operation.
@@ -589,7 +588,7 @@ def export_layers( run_mode,
       layer_copy = _copy_layer(image_new, layer)
       pdb.gimp_equalize(layer_copy, False)
       pdb.plug_in_gauss_iir(image_new, layer_copy, 5, 1, 1)
-      _writeLayerWithThumb(layer_copy, "_highlight")
+      _writeLayerWithThumb(layer_copy, "_area")
 
     else:
       layer_copy = _copy_layer(image_new, layer)

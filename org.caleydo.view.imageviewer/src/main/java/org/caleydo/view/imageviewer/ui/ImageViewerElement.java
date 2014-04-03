@@ -49,8 +49,8 @@ public class ImageViewerElement extends GLImageViewer {
 				+ img.getConfig().getProperty("URL", "http://caleydo.org"));
 
 		for (Entry<String, LayeredImage.Layer> layer : img.getLayers().entrySet()) {
-			Image highlight = layer.getValue().highlight;
-			Image mask = layer.getValue().mask;
+			Image highlight = layer.getValue().border;
+			Image mask = layer.getValue().area;
 
 			String highlightPath = "", maskPath = "";
 

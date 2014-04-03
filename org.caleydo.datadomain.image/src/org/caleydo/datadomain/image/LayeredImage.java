@@ -24,22 +24,30 @@ public class LayeredImage {
 		public Image(File img, File thumb) {
 			image = img;
 			thumbnail = thumb;
+
+			// Ensure an image is available
+			if( image == null ) {
+				image = thumbnail;
+				thumbnail = null;
+			}
+
+			assert(image != null);
 		}
 	}
 
 	public class Layer {
-		/** Highlight (usually just outline) */
-		public Image highlight;
+		/** Border (just outline) */
+		public Image border;
 
 		/** Full region (filled, can be used for picking) */
-		public Image mask;
+		public Image area;
 
-		public Layer(File highlightImg, File highlightThumb, File maskImg, File maskThumb) {
-			if (highlightImg != null && highlightThumb != null)
-				highlight = new Image(highlightImg, highlightThumb);
+		public Layer(File borderImg, File borderThumb, File areaImg, File areaThumb) {
+			if (borderImg != null || borderThumb != null)
+				border = new Image(borderImg, borderThumb);
 
-			if (maskImg != null && maskThumb != null)
-				mask = new Image(maskImg, maskThumb);
+			if (areaImg != null || areaThumb != null)
+				area = new Image(areaImg, areaThumb);
 		}
 	}
 
@@ -60,12 +68,12 @@ public class LayeredImage {
 		base = new Image(img, thumb);
 	}
 
-	public void addLayer(String name, File img, File thumb, File maskImg, File maskThumb) {
-		layers.put(name, new Layer(img, thumb, maskImg, maskThumb));
+	public void addLayer(String name, File border, File borderThumb, File areaImg, File areaThumb) {
+		layers.put(name, new Layer(border, borderThumb, areaImg, areaThumb));
 	}
 
-	public void addLayer(String name, File img, File thumb) {
-		addLayer(name, img, thumb, null, null);
+	public void addEmptyLayer(String name) {
+		layers.put(name, null);
 	}
 
 	public void addConfig(File cfg) throws IOException {
