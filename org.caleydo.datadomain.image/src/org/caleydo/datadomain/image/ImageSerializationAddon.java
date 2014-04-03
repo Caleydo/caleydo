@@ -45,10 +45,11 @@ public class ImageSerializationAddon implements ISerializationAddon {
 		// Add all files from the matching data directory
 		List<IDataDomain> domains = DataDomainManager.get()
 				.getDataDomainsByType(ImageDataDomain.DATA_DOMAIN_TYPE);
-		for(IDataDomain dataDomain: domains)
-			((ImageDataDomain) dataDomain).getImageSet().add(
-				new File(dirName, dataDomain.getDataDomainID())
-			);
+		for(IDataDomain dataDomain: domains) {
+			ImageSet imageSet = ((ImageDataDomain) dataDomain).getImageSet();
+			imageSet.add(new File(dirName, dataDomain.getDataDomainID()));
+			imageSet.refreshGroups();
+		}
 	}
 
 	@Override
