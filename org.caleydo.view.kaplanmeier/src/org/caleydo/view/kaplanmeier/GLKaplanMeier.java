@@ -261,7 +261,7 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
 		if (!showKMPlot) {
-			renderEmptyViewText(gl, emptyViewText);
+			renderEmptyViewText(gl, 12, emptyViewText);
 			gl.glEndList();
 			return;
 		}
