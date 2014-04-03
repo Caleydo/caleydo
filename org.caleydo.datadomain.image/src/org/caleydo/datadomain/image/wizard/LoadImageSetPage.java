@@ -285,6 +285,17 @@ public class LoadImageSetPage
 		TreeItem[] selections = fileTree.getTree().getSelection();
 		if (selections.length > 0)
 			imgFile = imageGroups.getFiles().get(selections[0].getData());
+		Image src = null;
+
+		if (imgFile != null) {
+			try {
+				src = new Image(Display.getDefault(), imgFile.getAbsolutePath());
+			}
+			catch (Exception e) {
+				imgFile = null;
+			}
+		}
+
 		if (imgFile == null) {
 			previewImage.setImage(null);
 			previewImage.setText("Preview");
@@ -292,7 +303,7 @@ public class LoadImageSetPage
 			return;
 		}
 
-		Image src = new Image(Display.getDefault(), imgFile.getAbsolutePath());
+
 		Image dst = new Image(Display.getDefault(), s.x, s.y);
 		GC gc = new GC(dst);
 
