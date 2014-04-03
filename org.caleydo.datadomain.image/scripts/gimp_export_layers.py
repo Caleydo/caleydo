@@ -440,8 +440,7 @@ def _export_layer(run_mode, overwrite_mode, image, layer, filename):
     pdb.gimp_file_save( image, 
                         layer,
                         filename,
-                        os.path.basename(filename),
-                        run_mode = run_mode )
+                        os.path.basename(filename) )
   except RuntimeError as e:
     # HACK: Since RuntimeError could indicate anything including pdb.gimp_file_save
     # failure, this is the only plausible way to intercept Cancel operation.
