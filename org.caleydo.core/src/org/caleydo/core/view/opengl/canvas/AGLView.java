@@ -1370,7 +1370,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 	 */
 	protected void renderEmptyViewText(GL2 gl, String... lines) {
 
-		float textHeight = pixelGLConverter.getGLHeightForPixelHeight(EMPTY_VIEW_TEXT_HEIGHT_PIXELS);
+		float textHeight = pixelGLConverter.getGLHeightForPixelHeight(11);
 		float safetySpacing = pixelGLConverter.getGLHeightForPixelHeight(3);
 		textRenderer.setColor(0, 0, 0, 1);
 		float linePositionY = viewFrustum.getHeight() / 2.0f + textHeight * lines.length / 2.0f;
@@ -1378,7 +1378,8 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 			float requiredWidth = textRenderer.getRequiredTextWidth(line, textHeight);
 			float linePositionX = viewFrustum.getWidth() / 2.0f - requiredWidth / 2.0f;
 
-			textRenderer.renderTextInBounds(gl, line, linePositionX, linePositionY, 0, requiredWidth + safetySpacing,
+			textRenderer.renderTextInBounds(gl, line, linePositionX, linePositionY - textHeight, 0, requiredWidth
+					+ safetySpacing,
 					textHeight);
 			linePositionY -= textHeight;
 		}
