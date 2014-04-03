@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -84,6 +85,13 @@ public class ImageSet extends FilePrefixGrouper {
 			File baseThumb = files.get(name + "_thumb");
 			img.setBaseImage(baseImage, baseThumb);
 
+			String layerPrefix;
+			int sepPos = name.indexOf('-');
+			if( sepPos < 0 )
+				layerPrefix = name;
+			else
+				layerPrefix = name.substring(0, sepPos + 1);
+
 			for (String file : group.getValue()) {
 				String suffix = stringSuffix(file, '_');
 
@@ -99,15 +107,32 @@ public class ImageSet extends FilePrefixGrouper {
 					continue;
 				}
 
-				String borderName = file.substring(0, file.lastIndexOf("_highlight")) + "_border";
+				String layerBaseName = file.substring(0, file.lastIndexOf("_highlight"));
+				String borderName = layerBaseName + "_border";
+				String layerName = layerBaseName.substring(layerBaseName.indexOf('_') + 1);
 
 				File layerImage = files.get(borderName);
 				File layerThumb = files.get(borderName + "_thumb");
 				File maskImage = files.get(file);
 				File maskThumb = files.get(file + "_thumb");
-				img.addLayer(file, layerImage, layerThumb, maskImage, maskThumb);
+
+				img.addLayer(layerPrefix + layerName, layerImage, layerThumb, maskImage, maskThumb);
 			}
 
+			if( img.getLayers().isEmpty() ) {
+				if( sepPos < 0 )
+					sepPos = 0;
+				int layerNamePos = name.indexOf('_', sepPos);
+
+				if( layerNamePos >= 0 ) {
+					String dummyLayerName = name.substring(layerNamePos + 1);
+					name = name.substring(0, layerNamePos);
+
+					img.addLayer(layerPrefix + dummyLayerName, null, null);
+				}
+			}
+
+			img.setName(name);
 			images.put(name, img);
 		}
 	}
@@ -118,11 +143,32 @@ public class ImageSet extends FilePrefixGrouper {
 	 * @return
 	 */
 	public List<String> getImageNames() {
-		return new ArrayList<>(getGroups().keySet());
+		return new ArrayList<>(images.keySet());
 	}
 
+	/**
+	 * Get the image with the given name
+	 *
+	 * @param name
+	 * @return
+	 */
 	public LayeredImage getImage(String name) {
 		return images.get(name);
+	}
+
+	/**
+	 * Get the first image which contains a layer with the given name
+	 *
+	 * @param name
+	 * @return
+	 */
+	public LayeredImage getImageForLayer(String name) {
+		for(Map.Entry<String, LayeredImage> img: images.entrySet()) {
+			if( img.getValue().getLayer(name) != null )
+				return img.getValue();
+		}
+
+		return null;
 	}
 
 	/**
