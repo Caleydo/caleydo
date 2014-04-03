@@ -66,6 +66,10 @@ public class GLZoomPanContainer extends ScrollingDecorator {
 		});
 	}
 
+	public void scaleToFit() {
+		elementStack.scaleToFit();
+	}
+
 	public void setScaleLimits(float min, float max) {
 		elementStack.setScaleLimits(min, max);
 	}

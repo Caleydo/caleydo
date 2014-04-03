@@ -35,7 +35,7 @@ public class GLScaleStack extends GLElementContainer implements IGLLayout2 {
 
 	protected Color backgroundColor = new Color(.3f, .3f, .3f, 1f);
 
-	protected boolean scaleToFit = true;
+	protected boolean scaleToFit = false;
 
 	public GLScaleStack() {
 		setLayout(this);

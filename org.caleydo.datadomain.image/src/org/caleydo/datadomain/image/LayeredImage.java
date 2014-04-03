@@ -73,7 +73,7 @@ public class LayeredImage {
 	}
 
 	public void addEmptyLayer(String name) {
-		layers.put(name, null);
+		layers.put(name, new Layer(null, null, null, null));
 	}
 
 	public void addConfig(File cfg) throws IOException {
