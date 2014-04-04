@@ -33,6 +33,15 @@ public class AdvancedPick extends Pick implements IMouseEvent {
 		this.event = event;
 	}
 
+	public AdvancedPick(Pick rhs, Object obj, PickingMode ePickingMode) {
+		super(rhs, obj, ePickingMode);
+
+		if( rhs instanceof AdvancedPick )
+			event = ((AdvancedPick) rhs).event;
+		else
+			event = null;
+	}
+
 	@Override
 	public Vec2f getPoint() {
 		return event.getPoint();
