@@ -452,7 +452,13 @@ public class IDCategory {
 
 		@Override
 		public IDCategory unmarshal(IDCategoryData category) {
-			return registerCategoryIfAbsent(category.name);
+			IDCategory cat = getIDCategory(category.name);
+			if( cat == null ) {
+				cat = registerCategoryIfAbsent(category.name);
+				cat.initialize();
+			}
+			
+			return cat;
 		}
 
 		@Override
