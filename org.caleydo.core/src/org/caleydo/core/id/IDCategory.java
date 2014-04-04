@@ -13,6 +13,9 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.collection.Pair;
@@ -44,6 +47,7 @@ import com.google.common.base.Preconditions;
  *
  * @author Alexander Lex
  */
+@XmlJavaTypeAdapter(IDCategory.SerializeAdapter.class)
 public class IDCategory {
 
 	private static final ConcurrentMap<String, IDCategory> registeredCategories = new ConcurrentHashMap<>();
@@ -438,4 +442,26 @@ public class IDCategory {
 			return new IDCategory(categoryName);
 		}
 	}
+
+	protected static class IDCategoryData {
+		public String name;
+	}
+
+	protected static class SerializeAdapter extends
+			XmlAdapter<IDCategoryData, IDCategory> {
+
+		@Override
+		public IDCategory unmarshal(IDCategoryData category) {
+			return registerCategoryIfAbsent(category.name);
+		}
+
+		@Override
+		public IDCategoryData marshal(IDCategory category) {
+			IDCategoryData categoryData = new IDCategoryData();
+			categoryData.name = category.categoryName;
+			return categoryData;
+		}
+	}
 }
+
+
