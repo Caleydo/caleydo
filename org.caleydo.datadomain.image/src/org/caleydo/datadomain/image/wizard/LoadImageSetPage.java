@@ -224,10 +224,36 @@ public class LoadImageSetPage
 				FileDialog fileDialog = new FileDialog(new Shell(), SWT.MULTI);
 				fileDialog.setText("Add File(s)");
 
-				String[] exts = new String[EXTENSIONS_IMG.size()];
-				for (int i = 0; i < exts.length; ++i)
-					exts[i] = "*." + EXTENSIONS_IMG.get(i);
+				String[] exts = new String[3];
+				String[] names = new String[exts.length];
+
+				names[0] = "All (";
+				exts[1] = "";
+				names[1] = "Image (";
+				for (int i = 0; i < EXTENSIONS_IMG.size(); ++i) {
+					exts[1] += "*." + EXTENSIONS_IMG.get(i) + ";"
+							+  "*." + EXTENSIONS_IMG.get(i).toUpperCase() + ";";
+					String name = (i > 0 ? ", " : "") + "*." + EXTENSIONS_IMG.get(i);
+					names[0] += name;
+					names[1] += name;
+				}
+				names[1] += ")";
+
+				exts[2] = "";
+				names[2] = "Config (";
+				for (int i = 0; i < EXTENSIONS_CFG.size(); ++i) {
+					exts[2] += "*." + EXTENSIONS_CFG.get(i) + ";"
+							+  "*." + EXTENSIONS_CFG.get(i).toUpperCase() + ";";
+					String name = "*." + EXTENSIONS_CFG.get(i);
+					names[0] += ", " + name;
+					names[2] += (i > 0 ? ", " : "") + name;
+				}
+				names[2] += ")";
+				names[0] += ")";
+				exts[0] = exts[1] + exts[2];
+
 				fileDialog.setFilterExtensions(exts);
+				fileDialog.setFilterNames(names);
 
 				if (fileDialog.open() == null)
 					return;
@@ -259,6 +285,17 @@ public class LoadImageSetPage
 		TreeItem[] selections = fileTree.getTree().getSelection();
 		if (selections.length > 0)
 			imgFile = imageGroups.getFiles().get(selections[0].getData());
+		Image src = null;
+
+		if (imgFile != null) {
+			try {
+				src = new Image(Display.getDefault(), imgFile.getAbsolutePath());
+			}
+			catch (Exception e) {
+				imgFile = null;
+			}
+		}
+
 		if (imgFile == null) {
 			previewImage.setImage(null);
 			previewImage.setText("Preview");
@@ -266,7 +303,7 @@ public class LoadImageSetPage
 			return;
 		}
 
-		Image src = new Image(Display.getDefault(), imgFile.getAbsolutePath());
+
 		Image dst = new Image(Display.getDefault(), s.x, s.y);
 		GC gc = new GC(dst);
 

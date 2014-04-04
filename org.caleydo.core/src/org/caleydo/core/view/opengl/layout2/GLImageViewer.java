@@ -13,6 +13,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.Units;
+import org.caleydo.core.view.opengl.picking.AdvancedPick;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -63,10 +64,10 @@ public class GLImageViewer extends GLZoomPanContainer {
 
 				if (hoverElement != lastElement) {
 					if (lastElement != null)
-						lastElement.handlePick(new Pick(pick, lastElement, PickingMode.MOUSE_OUT));
+						lastElement.handlePick(new AdvancedPick(pick, lastElement, PickingMode.MOUSE_OUT));
 
 					if (hoverElement != null)
-						hoverElement.handlePick(new Pick(pick, hoverElement, PickingMode.MOUSE_OVER));
+						hoverElement.handlePick(new AdvancedPick(pick, hoverElement, PickingMode.MOUSE_OVER));
 
 					lastElement = hoverElement;
 				}
