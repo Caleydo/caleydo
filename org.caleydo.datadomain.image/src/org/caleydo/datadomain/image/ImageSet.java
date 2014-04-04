@@ -32,36 +32,32 @@ public class ImageSet extends FilePrefixGrouper {
 
 	protected String name;
 
-	protected String idCategoryImage;
-	protected String idTypeImage;
+	protected IDCategory idCategoryImage;
+	protected IDType idTypeImage;
 
-	protected String idCategoryLayer;
-	protected String idTypeLayer;
+	protected IDCategory idCategoryLayer;
+	protected IDType idTypeLayer;
 
 	protected SortedMap<String, LayeredImage> images;
 
 	public ImageSet() {
-		IDCategory idCategoryImage = IDCategory.registerCategoryIfAbsent("Tissue Slice");
+		idCategoryImage = IDCategory.registerCategoryIfAbsent("Tissue Slice");
+		idCategoryLayer = IDCategory.registerCategoryIfAbsent("Marker");
 		idCategoryImage.initialize();
-		IDCategory idCategoryLayer = IDCategory.registerCategoryIfAbsent("Marker");
 		idCategoryLayer.initialize();
-		IDType idTypeImage = IDType.registerType("Tissue Slice", idCategoryImage, EDataType.STRING);
-		IDType idTypeLayer = IDType.registerType("Marker", idCategoryLayer, EDataType.STRING);
+		idTypeImage = IDType.registerType("Tissue Slice", idCategoryImage, EDataType.STRING);
+		idTypeLayer = IDType.registerType("Marker", idCategoryLayer, EDataType.STRING);
 
-		this.idCategoryImage = idCategoryImage.getCategoryName();
-		this.idCategoryLayer = idCategoryLayer.getCategoryName();
-		this.idTypeImage = idTypeImage.getTypeName();
-		this.idTypeLayer = idTypeLayer.getTypeName();
 		images = new TreeMap<>();
 	}
 
 	public ImageSet(ImageSet other) {
 		super(other);
 		name = new String(other.name);
-		idCategoryImage = new String(other.idCategoryImage);
-		idTypeImage = new String(other.idTypeImage);
-		idCategoryLayer = new String(other.idCategoryLayer);
-		idTypeLayer = new String(other.idTypeLayer);
+		idCategoryImage = other.idCategoryImage;
+		idTypeImage = other.idTypeImage;
+		idCategoryLayer = other.idCategoryLayer;
+		idTypeLayer = other.idTypeLayer;
 		images = new TreeMap<>(other.images);
 	}
 
@@ -248,56 +244,56 @@ public class ImageSet extends FilePrefixGrouper {
 	/**
 	 * @return the idCategoryImage, see {@link #idCategoryImage}
 	 */
-	public String getIdCategoryImage() {
+	public IDCategory getIDCategoryImage() {
 		return idCategoryImage;
 	}
 
 	/**
 	 * @param idCategoryImage setter, see {@link idCategoryImage}
 	 */
-	public void setIdCategoryImage(String idCategoryImage) {
+	public void setIDCategoryImage(IDCategory idCategoryImage) {
 		this.idCategoryImage = idCategoryImage;
 	}
 
 	/**
 	 * @return the idTypeImage, see {@link #idTypeImage}
 	 */
-	public String getIdTypeImage() {
+	public IDType getIDTypeImage() {
 		return idTypeImage;
 	}
 
 	/**
 	 * @param idTypeImage setter, see {@link idTypeImage}
 	 */
-	public void setIdTypeImage(String idTypeImage) {
+	public void setIDTypeImage(IDType idTypeImage) {
 		this.idTypeImage = idTypeImage;
 	}
 
 	/**
 	 * @return the idCategoryLayer, see {@link #idCategoryLayer}
 	 */
-	public String getIDCategoryLayer() {
+	public IDCategory getIDCategoryLayer() {
 		return idCategoryLayer;
 	}
 
 	/**
 	 * @param idCategoryLayer setter, see {@link idCategoryLayer}
 	 */
-	public void setIDCategoryLayer(String idCategoryLayer) {
+	public void setIDCategoryLayer(IDCategory idCategoryLayer) {
 		this.idCategoryLayer = idCategoryLayer;
 	}
 
 	/**
 	 * @return the idTypeLayer, see {@link #idTypeLayer}
 	 */
-	public String getIDTypeLayer() {
+	public IDType getIDTypeLayer() {
 		return idTypeLayer;
 	}
 
 	/**
 	 * @param idTypeLayer setter, see {@link idTypeLayer}
 	 */
-	public void setIDTypeLayer(String idTypeLayer) {
+	public void setIDTypeLayer(IDType idTypeLayer) {
 		this.idTypeLayer = idTypeLayer;
 	}
 

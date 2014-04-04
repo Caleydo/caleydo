@@ -86,16 +86,24 @@ public class LoadImageSetPage
 	/**
 	 * Combo box to specify the {@link IDCategory} for the columns of the dataset.
 	 */
-	protected Combo imageIDCategoryCombo;
+	public Combo imageIDCategoryCombo;
 
 	/**
 	 * Combo box to specify the column ID Type.
 	 */
-	protected Combo imageIDTypeCombo;
+	public Combo imageIDTypeCombo;
 
-	protected Combo layerIDCategoryCombo;
+	public Combo layerIDCategoryCombo;
 
-	protected Combo layerIDTypeCombo;
+	public Combo layerIDTypeCombo;
+
+	public Button imageCreateIDCategoryButton;
+
+	public Button imageCreateIDTypeButton;
+
+	public Button layerCreateIDCategoryButton;
+
+	public Button layerCreateIDTypeButton;
 
 	/**
 	 * TreeViewer for all files being imported
@@ -121,9 +129,13 @@ public class LoadImageSetPage
 
 	protected FileTree files = new FileTree();
 
+	protected LoadImageSetPageMediator mediator;
+
 	public LoadImageSetPage() {
 		super(PAGE_NAME, null);
 		setDescription(PAGE_DESCRIPTION);
+
+		mediator = new LoadImageSetPageMediator(this);
 	}
 
 	@Override
@@ -348,7 +360,7 @@ public class LoadImageSetPage
 
 	private void createConfigPart( Composite parent,
 								   String title,
-								   boolean isImage ) {
+								   final boolean isImage ) {
 		Group group = new Group(parent, SWT.NONE);
 		group.setText(title + " Configuration");
 		group.setLayout(new GridLayout(2, false));
@@ -365,21 +377,31 @@ public class LoadImageSetPage
 		rightGroup.setLayout(new GridLayout(2, false));
 		rightGroup.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false));
 
-		createNewIDCategoryButton(rightGroup).addSelectionListener(new SelectionAdapter() {
+		Button createIDCategoryButton = createNewIDCategoryButton(rightGroup);
+		createIDCategoryButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// TODO
+				mediator.createIDCategory(isImage);
 			}
 		});
-		createNewIDTypeButton(rightGroup).addSelectionListener(new SelectionAdapter() {
+		Button createIDTypeButton = createNewIDTypeButton(rightGroup);
+		createIDTypeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// TODO
+				mediator.createIDType(isImage);
 			}
 		});
+
+		if( isImage ) {
+			imageCreateIDCategoryButton = createIDCategoryButton;
+			imageCreateIDTypeButton = createIDTypeButton;
+		} else {
+			layerCreateIDCategoryButton = createIDCategoryButton;
+			layerCreateIDTypeButton = createIDTypeButton;
+		}
 	}
 
-	private void createIDTypeGroup(Composite parent, boolean isImage) {
+	private void createIDTypeGroup(Composite parent, final boolean isImage) {
 		Label idTypeLabel = new Label(parent, SWT.SHADOW_ETCHED_IN);
 		idTypeLabel.setText("Identifier");
 
@@ -392,7 +414,7 @@ public class LoadImageSetPage
 		combo.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-			// TODO
+				mediator.idTypeComboModified(isImage);
 			}
 		});
 
@@ -402,7 +424,7 @@ public class LoadImageSetPage
 			layerIDTypeCombo = combo;
 	}
 
-	private void createIDCategoryGroup(Composite parent, boolean isImage) {
+	private void createIDCategoryGroup(Composite parent, final boolean isImage) {
 		Label idCategoryLabel = new Label(parent, SWT.SHADOW_ETCHED_IN);
 		idCategoryLabel.setText("Type");
 
@@ -414,7 +436,7 @@ public class LoadImageSetPage
 		combo.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				// TODO
+				mediator.idCategoryComboModified(isImage);
 			}
 		});
 
@@ -465,11 +487,7 @@ public class LoadImageSetPage
 		files.fileGrouper = imageGroups;
 		updateTree();
 
-		resetCombo(imageIDCategoryCombo, img.getIdCategoryImage());
-		resetCombo(imageIDTypeCombo, img.getIdTypeImage());
-		resetCombo(layerIDCategoryCombo, img.getIDCategoryLayer());
-		resetCombo(layerIDTypeCombo, img.getIDTypeLayer());
-
+		mediator.guiCreated();
 		getWizard().getContainer().updateButtons();
 	}
 
@@ -478,12 +496,6 @@ public class LoadImageSetPage
 	 */
 	public String getDataSetName() {
 		return nameText.getText();
-	}
-
-	protected void resetCombo(Combo combo, String entry) {
-		combo.removeAll();
-		combo.add(entry);
-		combo.select(0);
 	}
 
 }
