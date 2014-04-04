@@ -46,18 +46,28 @@ public class LoadImageSetPageMediator extends ALoadDataPageMediator {
 	@Override
 	public void guiCreated() {
 		refreshRegisteredCategories();
+		
+		// Ensure we use the set value (and not a value possibly changed by one
+		// of the fillXXXCombo members)
+		IDCategory idCategoryImage = getIDCategoryImage();
+		IDCategory idCategoryLayer = getIDCategoryLayer();
+		IDType idTypeImage = getIDTypeImage();
+		IDType idTypeLayer = getIDTypeLayer();
 
 		fillIDCategoryCombo(page.imageIDCategoryCombo);
 		fillIDCategoryCombo(page.layerIDCategoryCombo);
 
-		comboSelect(page.imageIDCategoryCombo, getIDCategoryImage());
-		comboSelect(page.layerIDCategoryCombo, getIDCategoryLayer());
+		comboSelect(page.imageIDCategoryCombo, idCategoryImage.getCategoryName());
+		comboSelect(page.layerIDCategoryCombo, idCategoryLayer.getCategoryName());
 
-		fillIDTypeCombo(IDCategory.getIDCategory(getIDCategoryImage()), imageIDTypes, page.imageIDTypeCombo);
+		fillIDTypeCombo(idCategoryImage, imageIDTypes, page.imageIDTypeCombo);
+		fillIDTypeCombo(idCategoryLayer, layerIDTypes, page.layerIDTypeCombo);
+		
 		page.imageIDTypeCombo.setEnabled(page.imageIDCategoryCombo.getSelectionIndex() != -1);
-
-		fillIDTypeCombo(IDCategory.getIDCategory(getIDCategoryLayer()), layerIDTypes, page.layerIDTypeCombo);
 		page.layerIDTypeCombo.setEnabled(page.layerIDCategoryCombo.getSelectionIndex() != -1);
+		
+		comboSelect(page.imageIDTypeCombo, idTypeImage.getTypeName());
+		comboSelect(page.layerIDTypeCombo, idTypeLayer.getTypeName());
 	}
 
 	/**
@@ -125,12 +135,12 @@ public class LoadImageSetPageMediator extends ALoadDataPageMediator {
 			fillIDCategoryCombo(page.layerIDCategoryCombo);
 			if (isImage) {
 				getImageSet().setIDCategoryImage(newIDCategory);
-				comboSelect(page.imageIDCategoryCombo, getIDCategoryImage());
-				fillIDTypeCombo(IDCategory.getIDCategory(getIDCategoryImage()), imageIDTypes, page.imageIDTypeCombo);
+				comboSelect(page.imageIDCategoryCombo, getIDCategoryImage().getCategoryName());
+				fillIDTypeCombo(getIDCategoryImage(), imageIDTypes, page.imageIDTypeCombo);
 			} else {
 				getImageSet().setIDCategoryLayer(newIDCategory);
-				comboSelect(page.layerIDCategoryCombo, getIDCategoryLayer());
-				fillIDTypeCombo(IDCategory.getIDCategory(getIDCategoryLayer()), layerIDTypes, page.layerIDTypeCombo);
+				comboSelect(page.layerIDCategoryCombo, getIDCategoryLayer().getCategoryName());
+				fillIDTypeCombo(getIDCategoryLayer(), layerIDTypes, page.layerIDTypeCombo);
 			}
 		}
 	}
@@ -140,8 +150,8 @@ public class LoadImageSetPageMediator extends ALoadDataPageMediator {
 	 * is set to the newly created category.
 	 */
 	public void createIDType(boolean isImage) {
-		IDCategory categoryImage = IDCategory.getIDCategory(getIDCategoryImage());
-		IDCategory categoryLayer = IDCategory.getIDCategory(getIDCategoryLayer());
+		IDCategory categoryImage = getImageSet().getIDCategoryImage();
+		IDCategory categoryLayer = getImageSet().getIDCategoryLayer();
 		IDCategory category = isImage ? categoryImage : categoryLayer;
 
 		CreateIDTypeDialog dialog =
@@ -169,19 +179,19 @@ public class LoadImageSetPageMediator extends ALoadDataPageMediator {
 		return page.getWizard().getImageSet();
 	}
 
-	public String getIDCategoryImage() {
-		return getImageSet().getIDCategoryImage().getCategoryName();
+	public IDCategory getIDCategoryImage() {
+		return getImageSet().getIDCategoryImage();
 	}
 
-	public String getIDTypeImage() {
-		return getImageSet().getIDTypeImage().getTypeName();
+	public IDType getIDTypeImage() {
+		return getImageSet().getIDTypeImage();
 	}
 
-	public String getIDCategoryLayer() {
-		return getImageSet().getIDCategoryLayer().getCategoryName();
+	public IDCategory getIDCategoryLayer() {
+		return getImageSet().getIDCategoryLayer();
 	}
 
-	public String getIDTypeLayer() {
-		return getImageSet().getIDTypeLayer().getTypeName();
+	public IDType getIDTypeLayer() {
+		return getImageSet().getIDTypeLayer();
 	}
 }
