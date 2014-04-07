@@ -230,7 +230,7 @@ public class ImageSet extends FilePrefixGrouper {
 	 * Get the first image which contains a layer with the given name
 	 *
 	 * @param name
-	 * @return
+	 * @return First matching image (null, if no match)
 	 */
 	public LayeredImage getImageForLayer(String name) {
 		for(Map.Entry<String, LayeredImage> img: images.entrySet()) {
@@ -239,6 +239,23 @@ public class ImageSet extends FilePrefixGrouper {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Get a list of all images which have a layer with the given name
+	 *
+	 * @param name
+	 * @return List of matching images (empty, if no match)
+	 */
+	public List<LayeredImage> getAllImagesForLayer(String name) {
+		List<LayeredImage> imageList = new ArrayList<>();
+
+		for(Map.Entry<String, LayeredImage> img: images.entrySet()) {
+			if( img.getValue().getLayer(name) != null )
+				imageList.add(img.getValue());
+		}
+
+		return imageList;
 	}
 
 	/**
