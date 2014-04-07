@@ -119,6 +119,51 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		// desc.setFromDataType(EDataType.INTEGER);
 		// desc.setToDataType(EDataType.INTEGER);
 		// IDMappingManager.addIDMappingDescription(desc);
+
+		// IDMappingDescription desc = new IDMappingDescription();
+		// desc.setParsingStartLine(1);
+		// desc.setParsingStopLine(-1);
+		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/MUTATION_SAMPLE2GENE_SYMBOL.txt");
+		// desc.setDelimiter("\t");
+		// desc.setFromIDType(EGeneIDTypes.MUTATION_SAMPLE.name());
+		// desc.setToIDType(EGeneIDTypes.GENE_SYMBOL.name());
+		// desc.setIdCategory(EGeneIDTypes.GENE.name());
+		// desc.setMultiMapping(true);
+		// desc.setCreateReverseMapping(true);
+		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
+		// desc.setFromDataType(EDataType.INTEGER);
+		// desc.setToDataType(EDataType.STRING);
+		// IDMappingManager.addIDMappingDescription(desc);
+		//
+		// desc = new IDMappingDescription();
+		// desc.setParsingStartLine(1);
+		// desc.setParsingStopLine(-1);
+		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/MUTATION_SAMPLE2VCF_SAMPLE.txt");
+		// desc.setDelimiter("\t");
+		// desc.setFromIDType(EGeneIDTypes.MUTATION_SAMPLE.name());
+		// desc.setToIDType(EGeneIDTypes.VCF_SAMPLE.name());
+		// desc.setIdCategory(EGeneIDTypes.GENE.name());
+		// desc.setMultiMapping(true);
+		// desc.setCreateReverseMapping(true);
+		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
+		// desc.setFromDataType(EDataType.INTEGER);
+		// desc.setToDataType(EDataType.STRING);
+		// IDMappingManager.addIDMappingDescription(desc);
+		//
+		// desc = new IDMappingDescription();
+		// desc.setParsingStartLine(1);
+		// desc.setParsingStopLine(-1);
+		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/PATIENT2VCF_SAMPLE.txt");
+		// desc.setDelimiter("\t");
+		// desc.setFromIDType(EGeneIDTypes.PATIENT.name());
+		// desc.setToIDType(EGeneIDTypes.VCF_SAMPLE.name());
+		// desc.setIdCategory(EGeneIDTypes.GENE.name());
+		// desc.setMultiMapping(true);
+		// desc.setCreateReverseMapping(true);
+		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
+		// desc.setFromDataType(EDataType.STRING);
+		// desc.setToDataType(EDataType.STRING);
+		// IDMappingManager.addIDMappingDescription(desc);
 	}
 
 	@Override

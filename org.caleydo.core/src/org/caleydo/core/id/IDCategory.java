@@ -164,6 +164,7 @@ public class IDCategory {
 	/** Private constructor, created through the static instances */
 	private IDCategory(String categoryName) {
 		this.categoryName = categoryName;
+		setDenomination(categoryName.toLowerCase());
 	}
 
 	/**
@@ -455,9 +456,9 @@ public class IDCategory {
 			IDCategory cat = getIDCategory(category.name);
 			if( cat == null ) {
 				cat = registerCategoryIfAbsent(category.name);
-				cat.initialize();
+				// cat.initialize();
 			}
-			
+
 			return cat;
 		}
 
