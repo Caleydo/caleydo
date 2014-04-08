@@ -15,6 +15,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
  */
 public class MyPreferences extends AbstractPreferenceInitializer {
 	public static final String MIN_CLUSTER_SIZE = "minClusterSize";
+	public static final String JUMP_TO_SELECTED_ROW = "jumpToSelectedRow";
 
 	public static IPreferenceStore prefs() {
 		return Activator.getDefault().getPreferenceStore();
@@ -24,6 +25,7 @@ public class MyPreferences extends AbstractPreferenceInitializer {
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = prefs();
 		store.setDefault(MIN_CLUSTER_SIZE, 0);
+		store.setDefault(JUMP_TO_SELECTED_ROW, true);
 	}
 
 	/**
@@ -31,6 +33,10 @@ public class MyPreferences extends AbstractPreferenceInitializer {
 	 */
 	public static int getMinClusterSize() {
 		return prefs().getInt(MIN_CLUSTER_SIZE);
+	}
+
+	public static boolean isJumpToSelectedRow() {
+		return prefs().getBoolean(JUMP_TO_SELECTED_ROW);
 	}
 
 }

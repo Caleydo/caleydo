@@ -101,4 +101,9 @@ public interface IRankTableUIConfig {
 	 */
 	boolean isFastFiltering();
 
+	/**
+	 * @return
+	 */
+	boolean isAutoJumpingToSelectedRow();
+
 }

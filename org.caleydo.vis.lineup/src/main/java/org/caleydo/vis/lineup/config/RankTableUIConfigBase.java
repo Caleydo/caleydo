@@ -133,4 +133,9 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 	public boolean isFastFiltering() {
 		return false;
 	}
+
+	@Override
+	public boolean isAutoJumpingToSelectedRow() {
+		return true;
+	}
 }

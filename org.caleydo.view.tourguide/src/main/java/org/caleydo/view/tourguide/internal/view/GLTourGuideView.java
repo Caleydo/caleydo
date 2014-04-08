@@ -52,6 +52,7 @@ import org.caleydo.view.tourguide.api.external.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.api.model.AScoreRow;
 import org.caleydo.view.tourguide.api.model.CategoricalDataDomainQuery;
+import org.caleydo.view.tourguide.api.prefs.MyPreferences;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.score.Scores;
@@ -895,6 +896,11 @@ public class GLTourGuideView extends AGLElementView implements ITourGuideView {
 		@Override
 		public boolean isFastFiltering() {
 			return true;
+		}
+
+		@Override
+		public boolean isAutoJumpingToSelectedRow() {
+			return MyPreferences.isJumpToSelectedRow();
 		}
 	}
 }

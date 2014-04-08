@@ -127,6 +127,11 @@ public class RankTableUIConfigs {
 				IGLElementContext context) {
 			wrappee.onRowClick(table, pick, row, isSelected, context);
 		}
+
+		@Override
+		public boolean isAutoJumpingToSelectedRow() {
+			return wrappee.isAutoJumpingToSelectedRow();
+		}
 	}
 
 }

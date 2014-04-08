@@ -6,6 +6,7 @@
 package org.caleydo.view.tourguide.internal.prefs;
 
 import org.caleydo.view.tourguide.api.prefs.MyPreferences;
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -26,6 +27,7 @@ public class MyPreferencePage extends FieldEditorPreferencePage implements IWork
 		final Composite parent = getFieldEditorParent();
 
 		addField(new IntegerFieldEditor(MyPreferences.MIN_CLUSTER_SIZE, "Default minimal set size", parent));
+		addField(new BooleanFieldEditor(MyPreferences.JUMP_TO_SELECTED_ROW, "Jump to selected row", parent));
 	}
 
 	@Override
