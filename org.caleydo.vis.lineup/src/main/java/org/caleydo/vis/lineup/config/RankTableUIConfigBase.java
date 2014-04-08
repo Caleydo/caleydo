@@ -123,11 +123,18 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 
 	@Override
 	public void onRowClick(RankTableModel table, Pick pick, IRow row, boolean isSelected,
-			IGLElementContext context) {
+ IGLElementContext context,
+			ARankColumnModel model) {
+		onRowClick(table, pick, row, isSelected, context);
+	}
+
+	public void onRowClick(RankTableModel table, Pick pick, IRow row, boolean isSelected,
+ IGLElementContext context) {
 		if (!isSelected && pick.getPickingMode() == PickingMode.CLICKED) {
 			table.setSelectedRow(row);
 		}
 	}
+
 
 	@Override
 	public boolean isFastFiltering() {

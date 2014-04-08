@@ -94,7 +94,8 @@ public interface IRankTableUIConfig {
 	 * @param pick
 	 */
 	void onRowClick(RankTableModel table, Pick pick, IRow row, boolean isSelected,
-			IGLElementContext context);
+ IGLElementContext context,
+			ARankColumnModel model);
 
 	/**
 	 * @return

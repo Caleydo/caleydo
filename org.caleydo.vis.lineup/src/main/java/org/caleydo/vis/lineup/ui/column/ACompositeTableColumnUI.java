@@ -20,6 +20,7 @@ import java.util.List;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.lineup.model.ACompositeRankColumnModel;
@@ -190,6 +191,18 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 				return (ITableColumnUI) get(i);
 		}
 		return null;
+	}
+
+	public ITableColumnUI getColumn(float f) {
+		for (ITableColumnUI r : Iterables.filter(this, ITableColumnUI.class)) {
+			Rect loc = r.asGLElement().getRectBounds();
+			if (loc.x2() > f) {// last one is the correct one
+				if (r instanceof ACompositeTableColumnUI<?>)
+					return ((ACompositeTableColumnUI<?>) r).getColumn(f - loc.x());
+				return r;
+			}
+		}
+		return this;
 	}
 
 	@Override
