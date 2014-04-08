@@ -43,8 +43,8 @@ public class ImageSet extends FilePrefixGrouper {
 	public ImageSet() {
 		idCategoryImage = IDCategory.registerCategoryIfAbsent("Tissue Slice");
 		idCategoryLayer = IDCategory.registerCategoryIfAbsent("Marker");
-		idCategoryImage.initialize();
-		idCategoryLayer.initialize();
+		// idCategoryImage.setDenominationPlural("Tissue Slices");
+		// idCategoryLayer.setDenominationPlural("Markers");
 		idTypeImage = IDType.registerType("Tissue Slice", idCategoryImage, EDataType.STRING);
 		idTypeLayer = IDType.registerType("Marker", idCategoryLayer, EDataType.STRING);
 
