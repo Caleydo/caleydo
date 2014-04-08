@@ -54,6 +54,11 @@ public class PaperBasket extends APoolElem implements IDropGLTarget {
 	}
 
 	@Override
+	public void onDropLeave() {
+
+	}
+
+	@Override
 	public void onDrop(IDnDItem info) {
 		ARankColumnModel model = ((ColumnDragInfo) info.getInfo()).getModel();
 		table.removeFromPool(model);

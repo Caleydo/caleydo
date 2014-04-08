@@ -19,7 +19,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.core.view.opengl.layout2.dnd.EDnDType;
+import org.caleydo.core.view.opengl.layout2.dnd.ADropGLTarget;
 import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.dnd.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.dnd.IDropGLTarget;
@@ -65,12 +65,7 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 	};
 	private boolean armed;
 
-	private IDropGLTarget dropTarget = new IDropGLTarget() {
-
-		@Override
-		public void onItemChanged(IDnDItem input) {
-
-		}
+	private IDropGLTarget dropTarget = new ADropGLTarget() {
 
 		@Override
 		public void onDrop(IDnDItem input) {
@@ -91,11 +86,6 @@ public class ScorePoolUI extends GLElementContainer implements IGLLayout {
 			armed = true;
 			repaint();
 			return true;
-		}
-
-		@Override
-		public EDnDType defaultSWTDnDType(IDnDItem item) {
-			return EDnDType.MOVE;
 		}
 	};
 

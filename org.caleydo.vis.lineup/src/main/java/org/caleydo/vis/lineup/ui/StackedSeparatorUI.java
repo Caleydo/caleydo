@@ -133,6 +133,11 @@ public class StackedSeparatorUI extends SeparatorUI implements IDropGLTarget, ID
 	}
 
 	@Override
+	public void onDropLeave() {
+
+	}
+
+	@Override
 	protected void onMouseOut(Pick pick) {
 		context.getMouseLayer().removeDropTarget(this);
 		context.getMouseLayer().removeDragSource(this);

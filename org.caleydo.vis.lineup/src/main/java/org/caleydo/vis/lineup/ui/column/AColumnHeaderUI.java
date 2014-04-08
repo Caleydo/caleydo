@@ -160,6 +160,11 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		public EDnDType defaultSWTDnDType(IDnDItem item) {
 			return EDnDType.MOVE;
 		}
+
+		@Override
+		public void onDropLeave() {
+
+		}
 	};
 
 	private final IDragGLSource dragSource = new IDragGLSource() {

@@ -21,6 +21,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
+import org.caleydo.core.view.opengl.layout2.dnd.ADropGLTarget;
 import org.caleydo.core.view.opengl.layout2.dnd.EDnDType;
 import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.dnd.IDragInfo;
@@ -72,7 +73,7 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 
 	private final IRankTableUIConfig config;
 
-	private IDropGLTarget dropTarget = new IDropGLTarget() {
+	private IDropGLTarget dropTarget = new ADropGLTarget() {
 
 		@Override
 		public boolean canSWTDrop(IDnDItem input) {
@@ -88,21 +89,11 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 		}
 
 		@Override
-		public void onItemChanged(IDnDItem input) {
-
-		}
-
-		@Override
 		public void onDrop(IDnDItem info) {
 			ARankColumnModel model = ((ColumnDragInfo) info.getInfo()).getModel();
 			model.hide();
 			armed = false;
 			repaint();
-		}
-
-		@Override
-		public EDnDType defaultSWTDnDType(IDnDItem item) {
-			return EDnDType.MOVE;
 		}
 	};
 
@@ -305,6 +296,10 @@ public class ColumnPoolUI extends GLElementContainer implements IGLLayout {
 		@Override
 		public EDnDType defaultSWTDnDType(IDnDItem item) {
 			return EDnDType.MOVE;
+		}
+
+		@Override
+		public void onDropLeave() {
 		}
 
 		@Override
