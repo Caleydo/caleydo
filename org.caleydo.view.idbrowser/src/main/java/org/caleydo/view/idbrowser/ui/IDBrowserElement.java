@@ -179,6 +179,11 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 				else
 					super.renderRowBackground(g, rect, even, row, selected);
 			}
+
+			@Override
+			public boolean isAutoJumpingToSelectedRow() {
+				return false;
+			}
 		});
 
 		ScrollingDecorator sc = new ScrollingDecorator(this.tableUI, new ScrollBar(true), null,

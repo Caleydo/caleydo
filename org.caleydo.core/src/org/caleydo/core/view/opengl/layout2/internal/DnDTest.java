@@ -30,7 +30,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
  * @author Samuel Gratzl
  *
  */
-public class Test extends PickableGLElement implements IDragGLSource {
+public class DnDTest extends PickableGLElement implements IDragGLSource {
 	private Color color = Color.BLUE;
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
@@ -73,7 +73,7 @@ public class Test extends PickableGLElement implements IDragGLSource {
 
 	public static void main(String[] args) {
 		GLElementContainer c = new GLElementContainer(GLLayouts.flowHorizontal(10));
-		c.add(new Test());
+		c.add(new DnDTest());
 		c.add(new TestDrop());
 		GLSandBox.main(args, c);
 	}
@@ -137,6 +137,10 @@ public class Test extends PickableGLElement implements IDragGLSource {
 		public void onItemChanged(IDnDItem input) {
 		}
 
+		@Override
+		public void onDropLeave() {
+			System.out.println("drop leave");
+		}
 	}
 
 	public static class TransferAbleData implements IUIDragInfo, Serializable {

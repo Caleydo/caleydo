@@ -5,6 +5,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.dnd;
 
+import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 
 
 /**
@@ -40,9 +41,17 @@ public interface IDropGLTarget {
 
 	/**
 	 * determine the default {@link EDnDType} for a given {@link IDnDItem} item
-	 * 
+	 *
 	 * @param item
 	 * @return
 	 */
 	EDnDType defaultSWTDnDType(IDnDItem item);
+
+	/**
+	 * triggered when the dragged item moves out of the bounds of this drop target, i.e. if the drop targets gets
+	 * removed but was the active one
+	 * 
+	 * called within {@link IMouseLayer#removeDropTarget(IDropGLTarget)}
+	 */
+	void onDropLeave();
 }

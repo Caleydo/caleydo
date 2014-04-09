@@ -80,7 +80,7 @@ public class PearsonCorrelation
 		final double b_mean = mean(b.iterator());
 
 		final IDoubleSizedIterator a_it = a.iterator();
-		final IDoubleSizedIterator b_it = a.iterator();
+		final IDoubleSizedIterator b_it = b.iterator();
 
 		int n = 0;
 		double sum_sq_x = 0;

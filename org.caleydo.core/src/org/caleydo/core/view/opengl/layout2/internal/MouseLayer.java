@@ -482,6 +482,8 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	public void removeDropTarget(IDropGLTarget dropTarget) {
 		this.dropTargets.remove(dropTarget);
 		if (activeDropTarget == dropTarget) {
+			// was the active one
+			dropTarget.onDropLeave();
 			activeDropTarget = null;
 		}
 	}

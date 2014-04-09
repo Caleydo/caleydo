@@ -215,5 +215,4 @@ public final class GLRenderers {
 				g.lineWidth(1);
 		}
 	}
-
 }

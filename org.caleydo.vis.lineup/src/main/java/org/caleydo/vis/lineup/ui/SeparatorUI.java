@@ -9,7 +9,7 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
-import org.caleydo.core.view.opengl.layout2.dnd.EDnDType;
+import org.caleydo.core.view.opengl.layout2.dnd.ADropGLTarget;
 import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
 import org.caleydo.core.view.opengl.layout2.dnd.IDropGLTarget;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -26,7 +26,7 @@ public class SeparatorUI extends PickableGLElement {
 	protected int index;
 	protected boolean armed = false;
 	private final IMoveHereChecker model;
-	private IDropGLTarget dropTarget = new IDropGLTarget() {
+	private IDropGLTarget dropTarget = new ADropGLTarget() {
 
 		@Override
 		public boolean canSWTDrop(IDnDItem input) {
@@ -41,21 +41,11 @@ public class SeparatorUI extends PickableGLElement {
 		}
 
 		@Override
-		public void onItemChanged(IDnDItem input) {
-
-		}
-
-		@Override
 		public void onDrop(IDnDItem input) {
 			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();
 			context.getSWTLayer().setCursor(-1);
 			armed = false;
 			model.moveHere(index, info.getModel(), RenderStyle.isCloneDragging(input));
-		}
-
-		@Override
-		public EDnDType defaultSWTDnDType(IDnDItem item) {
-			return EDnDType.MOVE;
 		}
 	};
 

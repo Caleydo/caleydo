@@ -124,8 +124,13 @@ public class RankTableUIConfigs {
 
 		@Override
 		public void onRowClick(RankTableModel table, Pick pick, IRow row, boolean isSelected,
-				IGLElementContext context) {
-			wrappee.onRowClick(table, pick, row, isSelected, context);
+				IGLElementContext context, ARankColumnModel model) {
+			wrappee.onRowClick(table, pick, row, isSelected, context, model);
+		}
+
+		@Override
+		public boolean isAutoJumpingToSelectedRow() {
+			return wrappee.isAutoJumpingToSelectedRow();
 		}
 	}
 

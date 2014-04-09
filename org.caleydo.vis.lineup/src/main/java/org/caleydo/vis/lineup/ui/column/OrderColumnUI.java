@@ -39,6 +39,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		IScrollBar.IScrollBarCallback {
 	private final ColumnRanker ranker;
 	private final OrderColumn model;
+	private final IRankTableUIConfig config;
 	private int scrollBarPickingId = -1;
 	private IRowHeightLayout rowLayout;
 	private IRowLayoutInstance rowLayoutInstance;
@@ -55,6 +56,7 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		this.model = model;
 		this.rowLayout = rowLayout;
 		this.scrollBar = config.createScrollBar(false);
+		this.config = config;
 		this.scrollBar.setCallback(this);
 		this.scrollBar.setWidth(RenderStyle.SCROLLBAR_WIDTH);
 		ranker.addPropertyChangeListener(ColumnRanker.PROP_ORDER, this);
@@ -159,8 +161,9 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 		if (!becauseOfSelectedRow)
 			rowLayoutInstance = null;
 		becauseOfSelectedRow = false;
+		boolean autoJump = config.isAutoJumpingToSelectedRow();
 		rowLayoutInstance = rowLayout.layout(ranker, getSize().y(), ranker.getTable().getDataSize(), scrollOffset,
-				isScrollingUpdate, rowLayoutInstance);
+				isScrollingUpdate || !autoJump, rowLayoutInstance);
 		isScrollingUpdate = false;
 		scrollOffset = rowLayoutInstance.getOffset();
 		scrollBar.setBounds(rowLayoutInstance.getOffset(), rowLayoutInstance.getNumVisibles(),
