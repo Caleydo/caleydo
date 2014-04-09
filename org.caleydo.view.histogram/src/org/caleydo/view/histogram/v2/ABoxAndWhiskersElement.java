@@ -10,8 +10,6 @@ import gleem.linalg.Vec2f;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.base.ILabeled;
@@ -229,7 +227,7 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 		h -= vert;
 		g.save().move(padding.left, padding.top);
 		if (direction.isRecord()) {
-			g.save().move(w, 0).gl.glRotatef(90, 0, 0, 1);
+			g.save().move(w, 0).asAdvanced().rotate(90);
 			renderBoxAndWhiskers(g, h, w);
 			g.restore();
 		} else
@@ -275,14 +273,12 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 		renderOutliers(g, w, hi, center, normalize);
 
 		if (showMinMax) {
-			g.gl.glPushAttrib(GL2.GL_POINT_BIT);
-			g.gl.glPointSize(2f);
+			g.pointSize(2f);
 			g.color(0f, 0f, 0f, 1f);
 			float min = (float) normalize.apply(stats.getMin()) * w;
 			float max = (float) normalize.apply(stats.getMax()) * w;
-			g.drawPoint(min, center);
-			g.drawPoint(max, center);
-			g.gl.glPopAttrib();
+			g.drawPoints(new Vec2f(min, center), new Vec2f(max, center));
+			g.pointSize(1f);
 		}
 
 	}
@@ -292,14 +288,15 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 			return;
 
 		g.color(0.2f, 0.2f, 0.2f, outlierAlhpa(outliers.size()));
-		g.gl.glPushAttrib(GL2.GL_POINT_BIT);
-		g.gl.glPointSize(2f);
+		g.pointSize(2f);
 
+		List<Vec2f> points = new ArrayList<Vec2f>(outliers.size());
 		for (IDoubleIterator it = outliers.iterator(); it.hasNext();) {
 			float v = (float) normalize.apply(it.nextPrimitive()) * w;
-			g.drawPoint(v, center);
+			points.add(new Vec2f(v, center));
 		}
-		g.gl.glPopAttrib();
+		g.drawPoints(points);
+		g.pointSize(1f);
 	}
 
 	private float outlierAlhpa(int size) {

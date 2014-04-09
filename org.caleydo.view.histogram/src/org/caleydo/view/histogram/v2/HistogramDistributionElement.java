@@ -77,7 +77,7 @@ public class HistogramDistributionElement extends ADistributionElement {
 			renderHistImpl(g, w, h);
 		else {
 			g.save();
-			g.gl.glRotatef(90, 0, 0, 1);
+			g.asAdvanced().rotate(90);
 			g.move(0, -w);
 			renderHistImpl(g, h, w);
 			g.restore();

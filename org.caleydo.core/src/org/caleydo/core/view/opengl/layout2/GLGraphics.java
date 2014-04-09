@@ -579,7 +579,7 @@ public final class GLGraphics {
 		return renderCircle(true, x, y, radius, numSlices);
 	}
 
-	protected GLGraphics renderCircle(boolean fill, float x, float y, float radius, int numSlices) {
+	private GLGraphics renderCircle(boolean fill, float x, float y, float radius, int numSlices) {
 		if (isInvalidOrZero(radius) || isInvalid(x) || isInvalid(y))
 			return this;
 		tracer.renderCircle(fill, x, y, radius, numSlices);

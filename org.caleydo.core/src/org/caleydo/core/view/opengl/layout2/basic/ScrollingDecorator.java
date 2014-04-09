@@ -304,9 +304,9 @@ public class ScrollingDecorator extends AGLElementDecorator implements IScrollBa
 		final boolean doVer = needVer();
 		final GL2 gl = g.gl;
 
-		if (doVer || doHor) {
-			gl.glPushAttrib(GL2.GL_ENABLE_BIT);
-		}
+		// backup enable, clipping planes, and scissor
+		gl.glPushAttrib(GL2.GL_ENABLE_BIT | GL2.GL_TRANSFORM_BIT | GL2.GL_SCISSOR_BIT);
+
 		if (doHor) {
 			g.move(0, h - scrollBarWidth);
 			g.pushName(horizontal.pickingId);
@@ -364,9 +364,7 @@ public class ScrollingDecorator extends AGLElementDecorator implements IScrollBa
 			content.render(g);
 
 		gl.glDisable(GL.GL_SCISSOR_TEST);
-		if (doVer || doHor) {
-			gl.glPopAttrib();
-		}
+		gl.glPopAttrib();
 	}
 
 	private void renderPickContent(GLGraphics g, float w, float h) {

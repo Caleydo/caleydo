@@ -211,7 +211,7 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions, IPi
 			Collection<ITransition> transitions, float hi, float y, int i) {
 		g.incZ();
 		// if in the first step split in dependent and independent data
-		g.gl.glLineStipple(1, (short)0xAAAA);
+
 
 		for (ITransition t : transitions) {
 			g.pushName(getPickingID(i));
@@ -226,10 +226,10 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions, IPi
 			g.popName();
 			drawMultiLineText(g, t, gap, h - y - hi, w - 2 * gap, hi, !t.isEnabled());
 			if (!t.isEnabled())
-				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
+				g.lineStippled(1, 0xAAAA);
 			g.drawRect(gap, h - y - hi, w - 2 * gap, hi);
 			if (!t.isEnabled())
-				g.gl.glDisable(GL2.GL_LINE_STIPPLE);
+				g.lineStippled(false);
 			y += hi + gap;
 			i++;
 		}
