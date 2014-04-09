@@ -313,7 +313,7 @@ public class HeatMapElementBase extends PickableGLElement implements IHasMinSize
 			final EShowLabels label = dimension.getLabel();
 
 			g.save();
-			g.gl.glRotatef(-90, 0, 0, 1);
+			g.asAdvanced().rotate(-90);
 			for (int i = 0; i < data.size(); ++i) {
 				Integer dimensionID = data.get(i);
 				String l = getLabel(EDimension.DIMENSION, dimensionID);

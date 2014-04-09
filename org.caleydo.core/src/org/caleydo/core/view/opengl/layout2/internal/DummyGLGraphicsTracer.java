@@ -122,6 +122,16 @@ public class DummyGLGraphicsTracer implements IGLGraphicsTracer {
 	}
 
 	@Override
+	public void rotate(float angle) {
+
+	}
+
+	@Override
+	public void scale(float x, float y) {
+
+	}
+
+	@Override
 	public void save() {
 
 	}

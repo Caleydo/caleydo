@@ -224,7 +224,7 @@ public class HeatMapTextureRenderer {
 
 		g.save();
 		//scale to be able to use pixel rendering
-		g.gl.glScalef(wScale, hScale, 1.0f);
+		g.asAdvanced().scale(wScale, hScale);
 
 		g.gl.glEnable(GL.GL_TEXTURE_2D);
 		for(Tile tile : tiles)

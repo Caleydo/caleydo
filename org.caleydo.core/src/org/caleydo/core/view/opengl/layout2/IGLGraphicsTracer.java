@@ -60,6 +60,10 @@ public interface IGLGraphicsTracer {
 
 	void move(float x, float y);
 
+	void scale(float x, float y);
+
+	void rotate(float angle);
+
 	void save();
 
 	void restore();
@@ -75,5 +79,6 @@ public interface IGLGraphicsTracer {
 	public interface IFactory {
 		IGLGraphicsTracer create(IView view);
 	}
+
 
 }

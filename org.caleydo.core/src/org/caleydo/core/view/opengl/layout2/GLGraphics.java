@@ -971,6 +971,10 @@ public final class GLGraphics {
 		return this;
 	}
 
+	public AdvancedGraphics asAdvanced() {
+		return new AdvancedGraphics();
+	}
+
 	/**
 	 * runs the given {@link IRenderProcedure} a moved environment by x and y
 	 *
@@ -1009,5 +1013,19 @@ public final class GLGraphics {
 		renderer.render(this, w, h, parent);
 		restore();
 		return this;
+	}
+
+	public class AdvancedGraphics {
+		public AdvancedGraphics scale(float x, float y) {
+			tracer.scale(x, y);
+			gl.glScalef(x, y, 1);
+			return this;
+		}
+
+		public AdvancedGraphics rotate(float angle) {
+			tracer.rotate(angle);
+			gl.glRotatef(angle, 0, 0, 1);
+			return this;
+		}
 	}
 }
