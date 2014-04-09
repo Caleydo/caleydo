@@ -74,7 +74,6 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		pathwayElement.addForegroundAugmentation(new StdDevBarConsideringVertexHighlightAugmentation(pathwayElement));
 		pathwayElement.addForegroundAugmentation(new CompoundAugmentation(pathwayElement.getPathwayRepresentation()));
 
-
 		// IDMappingDescription desc = new IDMappingDescription();
 		// desc.setParsingStartLine(0);
 		// desc.setParsingStopLine(-1);
@@ -120,6 +119,7 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		// desc.setToDataType(EDataType.INTEGER);
 		// IDMappingManager.addIDMappingDescription(desc);
 
+		// HTI
 		// IDMappingDescription desc = new IDMappingDescription();
 		// desc.setParsingStartLine(1);
 		// desc.setParsingStopLine(-1);
@@ -163,6 +163,21 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
 		// desc.setFromDataType(EDataType.STRING);
 		// desc.setToDataType(EDataType.STRING);
+		// IDMappingManager.addIDMappingDescription(desc);
+		//
+		// desc = new IDMappingDescription();
+		// desc.setParsingStartLine(1);
+		// desc.setParsingStopLine(-1);
+		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/MUTATION_SAMPLE2MUTATION_ID.txt");
+		// desc.setDelimiter("\t");
+		// desc.setFromIDType(EGeneIDTypes.MUTATION_SAMPLE.name());
+		// desc.setToIDType(EGeneIDTypes.MUTATION_ID.name());
+		// desc.setIdCategory(EGeneIDTypes.GENE.name());
+		// desc.setMultiMapping(true);
+		// desc.setCreateReverseMapping(true);
+		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
+		// desc.setFromDataType(EDataType.INTEGER);
+		// desc.setToDataType(EDataType.INTEGER);
 		// IDMappingManager.addIDMappingDescription(desc);
 	}
 
