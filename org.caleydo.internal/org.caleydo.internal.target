@@ -30,6 +30,9 @@
 <unit id="org.apache.commons.compress" version="1.4.1.v201301140946"/>
 <unit id="org.apache.commons.logging" version="1.1.1.v201101211721"/>
 <unit id="org.eclipse.e4.ui.workbench.addons.swt" version="1.0.2.v20131129-1621"/>
+<unit id="org.apache.batik.svggen" version="1.6.0.v201011041432"/>
+<unit id="org.apache.batik.dom.svg" version="1.6.0.v201011041432"/>
+
 <repository location="http://dev.caleydo.org/nexus/content/groups/public-p2"/>
 <repository location="http://dev.caleydo.org/nexus/content/repositories/eclipse2"/>
 </location>

@@ -24,7 +24,9 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLView;
+import org.caleydo.core.view.opengl.layout2.IGLGraphicsTracer.ERenderPass;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
+import org.caleydo.core.view.opengl.layout2.internal.GLGraphicsTracers;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.util.GLSanityCheck;
@@ -208,6 +210,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 //
 //		wi.reset().start();
 
+		g.switchTo(ERenderPass.PICKING);
 		pickingPass(g);
 
 //		b.append(wi).append('\t');
@@ -218,10 +221,13 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 //		b.append(wi).append('\t');
 //		wi.reset().start();
 
+		g.switchTo(ERenderPass.RENDERING);
 		renderPass(g);
 
 //		b.append(wi).append('\t').append(w);
 //		 System.out.println(b);
+
+		g.switchTo(ERenderPass.DONE);
 	}
 
 	private GLGraphics prepareFrame(GLAutoDrawable drawable, final int deltaTimeMs) {
@@ -241,7 +247,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		gl.glLoadIdentity();
 		gl.glTranslatef(0.375f, 0.375f, 0);
 
-		final GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs);
+		final GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs, createTracer());
 		g.clearError();
 
 		float paddedWidth = getWidth();
@@ -253,6 +259,13 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 			dirtyLayout = false;
 		}
 		return g;
+	}
+
+	/**
+	 * @return
+	 */
+	private IGLGraphicsTracer createTracer() {
+		return GLGraphicsTracers.create(this);
 	}
 
 	private void renderPass(final GLGraphics g) {

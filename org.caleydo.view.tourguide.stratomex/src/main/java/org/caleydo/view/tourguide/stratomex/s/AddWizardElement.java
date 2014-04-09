@@ -147,7 +147,7 @@ public class AddWizardElement extends ALayoutRenderer implements IReactions, IPi
 
 	@Override
 	protected void renderContent(GL2 gl) {
-		final GLGraphics g = new GLGraphics(gl, contextLocal, false, 0);
+		final GLGraphics g = new GLGraphics(gl, contextLocal, false, 0, null);
 		final float w = x;
 		final float h = y;
 

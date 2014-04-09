@@ -16,6 +16,7 @@ import java.io.PrintStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -28,7 +29,9 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout2.IGLGraphicsTracer.ERenderPass;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
+import org.caleydo.core.view.opengl.layout2.internal.GLGraphicsTracers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
@@ -40,6 +43,7 @@ import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.caleydo.data.loader.StackedResourceLocator;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.io.CharStreams;
 import com.jogamp.opengl.util.glsl.ShaderUtil;
 import com.jogamp.opengl.util.texture.Texture;
@@ -50,7 +54,7 @@ import com.jogamp.opengl.util.texture.Texture;
  * @author Samuel Gratzl
  *
  */
-public class GLGraphics {
+public final class GLGraphics {
 	private static final float DEFAULT_Z_INC = 0.1f;
 	/**
 	 * direct access to {@link GL2}
@@ -71,7 +75,7 @@ public class GLGraphics {
 	/**
 	 * the stack of {@link IResourceLocator}s
 	 */
-	private final StackedResourceLocator locator = new StackedResourceLocator();
+	protected final StackedResourceLocator locator = new StackedResourceLocator();
 
 	/**
 	 * simple statistics
@@ -90,27 +94,40 @@ public class GLGraphics {
 
 	private final Vec3f[] pool = { new Vec3f(), new Vec3f(), new Vec3f(), new Vec3f() };
 
-	public GLGraphics(GL2 gl, GLContextLocal local, boolean originInTopLeft, int deltaTimeMs) {
+	private final IGLGraphicsTracer tracer;
+
+	public GLGraphics(GL2 gl, GLContextLocal local, boolean originInTopLeft, int deltaTimeMs, IGLGraphicsTracer tracer) {
 		this.gl = gl;
 		this.local = local;
 		this.text = local.getText();
 		this.deltaTimeMs = deltaTimeMs;
-		textColor(Color.BLACK);
 		this.locator.push(local.getLoader());
 		this.originInTopLeft = originInTopLeft;
+		this.tracer = tracer == null ? GLGraphicsTracers.DUMMY : tracer;
+
+		textColor(Color.BLACK);
 	}
+
+	void switchTo(ERenderPass pass) {
+		tracer.switchTo(pass);
+	}
+
+	boolean forceNoCache() {
+		return tracer.forceRepaint();
+	}
+
 
 	/**
 	 * @return the deltaTimeMs, see {@link #deltaTimeMs}
 	 */
-	public int getDeltaTimeMs() {
+	public final int getDeltaTimeMs() {
 		return deltaTimeMs;
 	}
 
 	/**
 	 * @return the stats, see {@link #stats}
 	 */
-	GLGraphicsStats getStats() {
+	final GLGraphicsStats getStats() {
 		return stats;
 	}
 
@@ -119,7 +136,7 @@ public class GLGraphics {
 	 *
 	 * @return whether an error was found
 	 */
-	public boolean checkError() {
+	public final boolean checkError() {
 		return checkErrorImpl("");
 	}
 
@@ -130,11 +147,11 @@ public class GLGraphics {
 	 *            description message
 	 * @return whether an error was found
 	 */
-	public boolean checkError(String text) {
+	public final boolean checkError(String text) {
 		return checkErrorImpl(text);
 	}
 
-	private boolean checkErrorImpl(String text) {
+	private final boolean checkErrorImpl(String text) {
 		int error = gl.glGetError();
 		if (error > 0) {
 			StackTraceElement[] stackTrace = new Throwable().fillInStackTrace().getStackTrace();
@@ -150,7 +167,7 @@ public class GLGraphics {
 	 *
 	 * @return whether an error was found
 	 */
-	public boolean clearError() {
+	public final boolean clearError() {
 		return clearError(gl);
 	}
 
@@ -189,7 +206,7 @@ public class GLGraphics {
 	 *
 	 * @return
 	 */
-	public boolean isPickingPass() {
+	public final boolean isPickingPass() {
 		return isPickingPass(gl);
 	}
 
@@ -207,7 +224,7 @@ public class GLGraphics {
 	 * @param locator
 	 * @return
 	 */
-	public GLGraphics pushResourceLocator(IResourceLocator locator) {
+	public final GLGraphics pushResourceLocator(IResourceLocator locator) {
 		this.locator.push(locator);
 		return this;
 	}
@@ -217,63 +234,65 @@ public class GLGraphics {
 	 *
 	 * @return
 	 */
-	public GLGraphics popResourceLocator() {
+	public final GLGraphics popResourceLocator() {
 		locator.pop();
 		return this;
 	}
 
 	// ############## color setters
 
-	public GLGraphics color(Color color) {
+	public final GLGraphics color(Color color) {
 		return color(color.r, color.g, color.b, color.a);
 	}
 
-	public GLGraphics color(float gray) {
+	public final GLGraphics color(float gray) {
 		return color(gray, gray, gray);
 	}
 
-	public GLGraphics color(float r, float g, float b) {
+	public final GLGraphics color(float r, float g, float b) {
 		return color(r, g, b, 1);
 	}
 
 	public GLGraphics color(float r, float g, float b, float a) {
+		tracer.color(r, g, b, a);
 		gl.glColor4f(r, g, b, a);
 		return this;
 	}
 
-	public GLGraphics color(String hex) {
+	public final GLGraphics color(String hex) {
 		return color(new Color(hex));
 	}
 
-	public GLGraphics color(float[] rgba) {
+	public final GLGraphics color(float[] rgba) {
 		if (rgba.length == 3)
 			return color(rgba[0], rgba[1], rgba[2], 1);
 		else
 			return color(rgba[0], rgba[1], rgba[2], rgba[3]);
 	}
 
-	public Color getColor() {
+	public final Color getColor() {
 		float[] rgba = new float[4];
 		gl.glGetFloatv(GL2ES1.GL_CURRENT_COLOR, rgba, 0);
 		return new Color(rgba);
 	}
 
 	public GLGraphics textColor(Color color) {
+		tracer.textColor(color);
 		text.setColor(color);
 		local.getText_bold().setColor(color);
 		local.getText_italic().setColor(color);
 		return this;
 	}
 
-	public GLGraphics textColor(float r, float g, float b) {
+	public final GLGraphics textColor(float r, float g, float b) {
 		return textColor(r, g, b, 1);
 	}
 
-	public GLGraphics textColor(float r, float g, float b, float a) {
+	public final GLGraphics textColor(float r, float g, float b, float a) {
 		return textColor(new Color(r, g, b, a));
 	}
 
-	public GLGraphics textColor(float[] rgba) {
+	public final GLGraphics textColor(float[] rgba) {
 		if (rgba.length == 3)
 			return textColor(rgba[0], rgba[1], rgba[2], 1);
 		else
@@ -283,12 +302,36 @@ public class GLGraphics {
 	// ######### attribute setters
 
 	public GLGraphics lineWidth(float lineWidth) {
+		tracer.lineWidth(lineWidth);
 		gl.glLineWidth(lineWidth);
 		return this;
 	}
 
 	public GLGraphics pointSize(float pointSize) {
+		tracer.pointSize(pointSize);
 		gl.glPointSize(pointSize);
+		return this;
+	}
+
+	public final GLGraphics lineStippled(boolean enable) {
+		return lineStippled(enable ? 2 : -1, 0xAAAA);
+	}
+
+	/**
+	 *
+	 * @param factor
+	 *            <= 0 to disable
+	 * @param pattern
+	 * @return
+	 */
+	public GLGraphics lineStippled(int factor, int pattern) {
+		if (factor > 0) {
+			gl.glEnable(GL2.GL_LINE_STIPPLE);
+			gl.glLineStipple(factor, (short) pattern);
+		} else {
+			gl.glDisable(GL2.GL_LINE_STIPPLE);
+		}
+		tracer.lineStippled(factor, pattern);
 		return this;
 	}
 
@@ -313,14 +356,14 @@ public class GLGraphics {
 	 *            the thing to run within the pushed name environment
 	 * @return
 	 */
-	public GLGraphics withName(int id, IGLRenderer renderer, float w, float h, GLElement parent) {
+	public final GLGraphics withName(int id, IGLRenderer renderer, float w, float h, GLElement parent) {
 		pushName(id);
 		renderer.render(this, w, h, parent);
 		popName();
 		return this;
 	}
 
-	public int compileShader(String vertexShader, String FragmentShader) {
+	public final int compileShader(String vertexShader, String FragmentShader) {
 		if (!ShaderUtil.isShaderCompilerAvailable(gl)) {
 			System.err.println("no shader available!");
 			return -1;
@@ -382,7 +425,7 @@ public class GLGraphics {
 	 * @return
 	 * @throws IOException
 	 */
-	public int loadShader( InputStream vertexShader,
+	public final int loadShader(InputStream vertexShader,
 						   InputStream fragmentShader ) throws IOException {
 		String vsrc = CharStreams.toString(new InputStreamReader(vertexShader));
 		String fsrc = CharStreams.toString(new InputStreamReader(fragmentShader));
@@ -392,20 +435,21 @@ public class GLGraphics {
 	/**
 	 * renders a filled rect
 	 */
-	public GLGraphics fillRect(float x, float y, float w, float h) {
+	public final GLGraphics fillRect(float x, float y, float w, float h) {
 		return renderRect(true, x, y, w, h);
 	}
 
 	/**
 	 * renders a filled rect
 	 */
-	public GLGraphics fillRect(Rect bounds) {
+	public final GLGraphics fillRect(Rect bounds) {
 		return fillRect(bounds.x(), bounds.y(), bounds.width(), bounds.height());
 	}
 
-	private GLGraphics renderRect(boolean fill, float x, float y, float w, float h) {
+	protected GLGraphics renderRect(boolean fill, float x, float y, float w, float h) {
 		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
 			return this;
+		tracer.renderRect(fill, x, y, w, h);
 		stats.incRect();
 		gl.glBegin(fill ? GL2.GL_POLYGON : GL.GL_LINE_LOOP);
 		gl.glVertex3f(x, y, z);
@@ -416,7 +460,7 @@ public class GLGraphics {
 		return this;
 	}
 
-	public GLGraphics fillRoundedRect(float x, float y, float w, float h, float radius) {
+	public final GLGraphics fillRoundedRect(float x, float y, float w, float h, float radius) {
 		int segments;
 		if (radius < 4)
 			segments = 0;
@@ -430,6 +474,8 @@ public class GLGraphics {
 	public GLGraphics fillRoundedRect(float x, float y, float w, float h, float radius, int segments) {
 		if (isInvalidOrZero(w) || isInvalidOrZero(h))
 			return this;
+		tracer.renderRoundedRect(true, x, y, w, h, radius, segments);
+
 		int count = RoundedRectRenderer.render(this, x, y, w, h, radius, segments, RoundedRectRenderer.FLAG_FILL
 				| RoundedRectRenderer.FLAG_ALL);
 		stats.incRoundedRect(count);
@@ -440,28 +486,30 @@ public class GLGraphics {
 	 * renders a texture within the given rect
 	 */
 	public GLGraphics fillImage(String texture, float x, float y, float w, float h) {
-		return fillImage(getTexture(texture), x, y, w, h);
+		tracer.fillImage(texture, locator, x, y, w, h);
+		return fillImageImpl(getTexture(texture), x, y, w, h, Color.WHITE);
 	}
 
 	/**
 	 * renders a texture within the given rect
 	 */
 	public GLGraphics fillImage(URL texture, float x, float y, float w, float h) {
-		return fillImage(getTexture(texture), x, y, w, h);
+		tracer.fillImage(texture, x, y, w, h);
+		return fillImageImpl(getTexture(texture), x, y, w, h, Color.WHITE);
 	}
 
-	public Texture getTexture(String texture) {
+	public final Texture getTexture(String texture) {
 		return local.getTextures().get(texture, new ResourceLoader(locator));
 	}
 
-	public Texture getTexture(URL texture) {
+	public final Texture getTexture(URL texture) {
 		return local.getTextures().get(texture);
 	}
 
 	/**
 	 * see {@link #fillImage(String, float, float, float, float)} for a texture object
 	 */
-	public GLGraphics fillImage(Texture texture, float x, float y, float w, float h) {
+	public final GLGraphics fillImage(Texture texture, float x, float y, float w, float h) {
 		return fillImage(texture, x, y, w, h, Color.WHITE);
 	}
 
@@ -472,6 +520,11 @@ public class GLGraphics {
 	 * @return
 	 */
 	public GLGraphics fillImage(Texture texture, float x, float y, float w, float h, Color color) {
+		tracer.fillImage(texture, x, y, w, h, color);
+		return fillImageImpl(texture, x, y, w, h, color);
+	}
+
+	private GLGraphics fillImageImpl(Texture texture, float x, float y, float w, float h, Color color) {
 		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
 			return this;
 		stats.incImage();
@@ -494,39 +547,41 @@ public class GLGraphics {
 		return this;
 	}
 
-	public GLGraphics fillPolygon(Vec2f... points) {
+	public final GLGraphics fillPolygon(Vec2f... points) {
 		if (points.length <= 0)
 			return this;
 		return fillPolygon(Arrays.asList(points));
 	}
 
-	public GLGraphics fillPolygon(Iterable<Vec2f> points) {
+	public final GLGraphics fillPolygon(Iterable<Vec2f> points) {
 		return render(GL2.GL_POLYGON, points);
 	}
 
 	public GLGraphics fillPolygon(ITesselatedPolygon polygon) {
 		if (polygon.size() <= 0)
 			return this;
+		tracer.renderPolygon(true, polygon);
 		stats.incPath(polygon.size());
 		polygon.fill(this, local.getTesselationRenderer());
 		return this;
 	}
 
-	public GLU glu() {
+	public final GLU glu() {
 		return local.getGlu();
 	}
 
-	public GLGraphics fillCircle(float x, float y, float radius) {
+	public final GLGraphics fillCircle(float x, float y, float radius) {
 		return fillCircle(x, y, radius, 16);
 	}
 
-	public GLGraphics fillCircle(float x, float y, float radius, int numSlices) {
+	public final GLGraphics fillCircle(float x, float y, float radius, int numSlices) {
 		return renderCircle(true, x, y, radius, numSlices);
 	}
 
-	private GLGraphics renderCircle(boolean fill, float x, float y, float radius, int numSlices) {
+	protected GLGraphics renderCircle(boolean fill, float x, float y, float radius, int numSlices) {
 		if (isInvalidOrZero(radius) || isInvalid(x) || isInvalid(y))
 			return this;
+		tracer.renderCircle(fill, x, y, radius, numSlices);
 		stats.incCircle(numSlices);
 		gl.glTranslatef(x, y, z);
 		if (fill)
@@ -537,33 +592,34 @@ public class GLGraphics {
 		return this;
 	}
 
-	public GLGraphics drawCircle(float x, float y, float radius) {
+	public final GLGraphics drawCircle(float x, float y, float radius) {
 		return drawCircle(x, y, radius, 16);
 	}
 
-	public GLGraphics drawCircle(float x, float y, float radius, int numSlices) {
+	public final GLGraphics drawCircle(float x, float y, float radius, int numSlices) {
 		return renderCircle(false, x, y, radius, numSlices);
 	}
 
 	/**
 	 * draws the given text within the given bounds
 	 */
-	public GLGraphics drawText(String text, float x, float y, float w, float h) {
+	public final GLGraphics drawText(String text, float x, float y, float w, float h) {
 		return drawText(text, x, y, w, h, VAlign.LEFT);
 	}
 
 	/**
 	 * see {@link #drawText(String, float, float, float, float)} with a dedicated horizontal alignment
 	 */
-	public GLGraphics drawText(String text, float x, float y, float w, float h, VAlign valign) {
+	public final GLGraphics drawText(String text, float x, float y, float w, float h, VAlign valign) {
 		return drawText(text, x, y, w, h, valign, ETextStyle.PLAIN);
 	}
 
-	public GLGraphics drawText(String text, float x, float y, float w, float h, VAlign valign, ETextStyle style) {
+	public final GLGraphics drawText(String text, float x, float y, float w, float h, VAlign valign, ETextStyle style) {
 		return drawRotatedText(text, x, y, w, h, valign, style, 0);
 	}
 
-	public GLGraphics drawRotatedText(String text, float x, float y, float textWidth, float textHeight, VAlign valign, ETextStyle style,
+	public final GLGraphics drawRotatedText(String text, float x, float y, float textWidth, float textHeight,
+			VAlign valign, ETextStyle style,
 			float angle) {
 		if (isInvalidOrZero(textWidth) || isInvalidOrZero(textHeight) || isInvalid(x) || isInvalid(y))
 			return this;
@@ -571,8 +627,11 @@ public class GLGraphics {
 			return this;
 		if (text.indexOf('\n') < 0) {
 			if (angle == 0) {
+				tracer.drawText(Collections.singletonList(text), x, y, textWidth, textHeight, 0, valign, style);
 				return drawSingleTextLine(text, x, y, textWidth, textHeight, valign, style);
 			} else {
+				tracer.drawRotatedText(Collections.singletonList(text), x, y, textWidth, textHeight, 0, valign, style,
+						angle);
 				save().move(x, y);
 				gl.glRotatef(angle, 0, 0, 1);
 				drawSingleTextLine(text, 0, 0, textWidth, textHeight, valign, style);
@@ -619,17 +678,19 @@ public class GLGraphics {
 		return this;
 	}
 
-	public GLGraphics drawText(List<String> lines, float x, float y, float w, float h, float lineSpace, VAlign valign,
+	public final GLGraphics drawText(List<String> lines, float x, float y, float w, float h, float lineSpace,
+			VAlign valign,
 			ETextStyle style) {
 		return drawTextImpl(lines, x, y, w, h, lineSpace, valign, style);
 	}
 
-	private GLGraphics drawTextImpl(List<String> lines, float x, float y, float w, float h, float lineSpace,
+	protected GLGraphics drawTextImpl(List<String> lines, float x, float y, float w, float h, float lineSpace,
 			VAlign valign, ETextStyle style) {
 		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y) || isInvalid(lineSpace))
 			return this;
 		if (lines == null || lines.isEmpty())
 			return this;
+		tracer.drawText(lines, x, y, w, h, lineSpace, valign, style);
 		ITextRenderer font = selectFont(style);
 		if (originInTopLeft && !font.isOriginTopLeft()) {
 			gl.glPushMatrix();
@@ -669,6 +730,7 @@ public class GLGraphics {
 		if (angle == 0) {
 			return drawTextImpl(lines, x, y, w, h, lineSpace, valign, style);
 		} else {
+			tracer.drawRotatedText(lines, x, y, w, h, lineSpace, valign, style, angle);
 			save();
 			gl.glRotatef(angle, 0, 0, 1);
 			drawTextImpl(lines, x, y, w, h, lineSpace, valign, style);
@@ -705,7 +767,7 @@ public class GLGraphics {
 	/**
 	 * see {@link #drawText(String, float, float, float, float)}
 	 */
-	public GLGraphics drawText(ILabeled text, float x, float y, float w, float h) {
+	public final GLGraphics drawText(ILabeled text, float x, float y, float w, float h) {
 		if (text == null)
 			return this;
 		return drawText(text.getLabel(), x, y, w, h);
@@ -714,11 +776,11 @@ public class GLGraphics {
 	/**
 	 * render an empty rect, i.e. just the frame
 	 */
-	public GLGraphics drawRect(float x, float y, float w, float h) {
+	public final GLGraphics drawRect(float x, float y, float w, float h) {
 		return renderRect(false, x, y, w, h);
 	}
 
-	public GLGraphics drawRoundedRect(float x, float y, float w, float h, float radius) {
+	public final GLGraphics drawRoundedRect(float x, float y, float w, float h, float radius) {
 		return drawRoundedRect(x, y, w, h, radius, guessRoundedSegments(radius));
 	}
 
@@ -740,6 +802,7 @@ public class GLGraphics {
 	}
 
 	public GLGraphics drawRoundedRect(float x, float y, float w, float h, float radius, int segments) {
+		tracer.renderRoundedRect(false, x, y, w, h, radius, segments);
 		int count = RoundedRectRenderer.render(this, x, y, w, h, radius, segments, RoundedRectRenderer.FLAG_ALL);
 		stats.incRoundedRect(count);
 		return this;
@@ -749,6 +812,7 @@ public class GLGraphics {
 	 * renders a line between the two given points
 	 */
 	public GLGraphics drawLine(float x, float y, float x2, float y2) {
+		tracer.drawLine(x, y, x2, y2);
 		stats.incLine();
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(x, y, z);
@@ -760,7 +824,7 @@ public class GLGraphics {
 	/**
 	 * renders the diagonal line within the given rect
 	 */
-	public GLGraphics drawDiagonalLine(float x, float y, float w, float h) {
+	public final GLGraphics drawDiagonalLine(float x, float y, float w, float h) {
 		return drawLine(x, y, x + w, y + h);
 	}
 
@@ -772,7 +836,7 @@ public class GLGraphics {
 	 *            close the path?
 	 * @return
 	 */
-	public GLGraphics drawPath(Iterable<Vec2f> points, boolean closed) {
+	public final GLGraphics drawPath(Iterable<Vec2f> points, boolean closed) {
 		return render(closed ? GL.GL_LINE_LOOP : GL.GL_LINE_STRIP, points);
 	}
 
@@ -783,12 +847,13 @@ public class GLGraphics {
 	 * @param points
 	 * @return
 	 */
-	public GLGraphics drawPath(boolean closed, Vec2f... points) {
+	public final GLGraphics drawPath(boolean closed, Vec2f... points) {
 		return render(closed ? GL.GL_LINE_LOOP : GL.GL_LINE_STRIP, Arrays.asList(points));
 	}
 
 	public GLGraphics drawPath(ITesselatedPolygon polygon) {
 		stats.incPath(polygon.size());
+		tracer.renderPolygon(false, polygon);
 		polygon.draw(this);
 		return this;
 	}
@@ -803,6 +868,8 @@ public class GLGraphics {
 	public GLGraphics drawPoint(float x, float y) {
 		if (isInvalid(x) || isInvalid(y))
 			return this;
+		tracer.render(GL.GL_POINTS, ImmutableList.of(new Vec2f(x, y)));
+
 		gl.glBegin(GL.GL_POINTS);
 		gl.glVertex3f(x, y, z);
 		gl.glEnd();
@@ -815,7 +882,7 @@ public class GLGraphics {
 	 * @param points
 	 * @return
 	 */
-	public GLGraphics drawPoints(Vec2f... points) {
+	public final GLGraphics drawPoints(Vec2f... points) {
 		if (points.length == 0)
 			return this;
 		return render(GL.GL_POINTS, Arrays.asList(points));
@@ -827,13 +894,14 @@ public class GLGraphics {
 	 * @param points
 	 * @return
 	 */
-	public GLGraphics drawPoints(Iterable<Vec2f> points) {
+	public final GLGraphics drawPoints(Iterable<Vec2f> points) {
 		return render(GL.GL_POINTS, points);
 	}
 
-	private GLGraphics render(int mode, Iterable<Vec2f> points) {
+	protected GLGraphics render(int mode, Iterable<Vec2f> points) {
 		if (points instanceof Collection && ((Collection<?>) points).isEmpty())
 			return this;
+		tracer.render(mode, points);
 		int count = 0;
 		gl.glBegin(mode);
 		for (Vec2f p : points) {
@@ -854,7 +922,7 @@ public class GLGraphics {
 	 *
 	 * @return
 	 */
-	public GLGraphics incZ() {
+	public final GLGraphics incZ() {
 		return incZ(DEFAULT_Z_INC);
 	}
 
@@ -864,7 +932,8 @@ public class GLGraphics {
 	 * @param zDelta
 	 * @return
 	 */
-	public GLGraphics incZ(float zDelta) {
+	public final GLGraphics incZ(float zDelta) {
+		tracer.incZ(zDelta);
 		this.z += zDelta;
 		return this;
 	}
@@ -874,21 +943,21 @@ public class GLGraphics {
 	 *
 	 * @return
 	 */
-	public GLGraphics decZ() {
+	public final GLGraphics decZ() {
 		return incZ(-DEFAULT_Z_INC);
 	}
 
 	/**
 	 * @return returns the current z value
 	 */
-	public float z() {
+	public final float z() {
 		return z;
 	}
 
 	/**
 	 * see {@link #move(float, float)}
 	 */
-	public GLGraphics move(Vec2f xy) {
+	public final GLGraphics move(Vec2f xy) {
 		return move(xy.x(), xy.y());
 	}
 
@@ -896,6 +965,7 @@ public class GLGraphics {
 	 * shortcut to {@link GL2#glTranslatef(float, float, float)
 	 */
 	public GLGraphics move(float x, float y) {
+		tracer.move(x, y);
 		if (x != 0 || y != 0)
 			gl.glTranslatef(x, y, 0);
 		return this;
@@ -906,7 +976,7 @@ public class GLGraphics {
 	 *
 	 * @return
 	 */
-	public GLGraphics withMove(float x, float y, IGLRenderer renderer, float w, float h, GLElement parent) {
+	public final GLGraphics withMove(float x, float y, IGLRenderer renderer, float w, float h, GLElement parent) {
 		move(x, y);
 		renderer.render(this, w, h, parent);
 		move(-x, -y);
@@ -917,6 +987,7 @@ public class GLGraphics {
 	 * shortcut to {@link GL2#glPushMatrix()}
 	 */
 	public GLGraphics save() {
+		tracer.save();
 		gl.glPushMatrix();
 		return this;
 	}
@@ -925,6 +996,7 @@ public class GLGraphics {
 	 * shortcut to {@link GL2#glPopMatrix()}
 	 */
 	public GLGraphics restore() {
+		tracer.restore();
 		gl.glPopMatrix();
 		return this;
 	}
@@ -932,34 +1004,10 @@ public class GLGraphics {
 	/**
 	 * runs the given procedure, in a save-restore environment
 	 */
-	public GLGraphics withSaveRestore(IGLRenderer renderer, float w, float h, GLElement parent) {
+	public final GLGraphics withSaveRestore(IGLRenderer renderer, float w, float h, GLElement parent) {
 		save();
 		renderer.render(this, w, h, parent);
 		restore();
-		return this;
-	}
-
-	/**
-	 *
-	 */
-	public GLGraphics lineStippled(boolean enable) {
-		return lineStippled(enable ? 2 : -1, 0xAAAA);
-	}
-
-	/**
-	 *
-	 * @param factor
-	 *            <= 0 to disable
-	 * @param pattern
-	 * @return
-	 */
-	public GLGraphics lineStippled(int factor, int pattern) {
-		if (factor > 0) {
-			gl.glEnable(GL2.GL_LINE_STIPPLE);
-			gl.glLineStipple(factor, (short) pattern);
-		} else {
-			gl.glDisable(GL2.GL_LINE_STIPPLE);
-		}
 		return this;
 	}
 }

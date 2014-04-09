@@ -17,6 +17,7 @@ import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout2.IGLGraphicsTracer.ERenderPass;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
@@ -157,17 +158,21 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 			deltaTimeMs = local.getDeltaTimeMs();
 		}
 
-		GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs);
+		GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs, null);
 		g.checkError("pre render");
 
 		if (isPickingRun) {
+			g.switchTo(ERenderPass.PICKING);
 			// 1. pick passes
 			root.renderPick(g);
+			g.switchTo(ERenderPass.DONE);
 		} else {
 			// 2. pass layouting
 			root.layout(deltaTimeMs);
+			g.switchTo(ERenderPass.RENDERING);
 			// 3. pass render pass
 			root.render(g);
+			g.switchTo(ERenderPass.DONE);
 		}
 		g.checkError("post render");
 
