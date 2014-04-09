@@ -11,9 +11,6 @@ import gleem.linalg.Vec4f;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.media.opengl.GL;
-import javax.media.opengl.GL2;
-
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -416,24 +413,16 @@ public class OrderColumnUI extends GLElement implements PropertyChangeListener, 
 			y += (h - 10) * 0.5f;
 			h = 10;
 		}
-		GL2 gl = g.gl;
-		gl.glBegin(GL.GL_LINES);
 		if (h > 6) {
-			gl.glVertex3f(x + 3, y + 1, g.z());
-			gl.glVertex3f(x + 3, y + h - 1, g.z());
+			g.drawLine(x + 3, y + 1, x + 3, y + h - 1);
 		}
 		if (up) {
-			gl.glVertex3f(x + 1, y + 4, g.z());
-			gl.glVertex3f(x + 3, y + 1, g.z());
-			gl.glVertex3f(x + 5, y + 4, g.z());
-			gl.glVertex3f(x + 3, y + 1, g.z());
+			g.drawLine(x + 1, y + 4, x + 3, y + 1);
+			g.drawLine(x + 5, y + 4, x + 3, y + 1);
 		} else {
-			gl.glVertex3f(x + 1, y + h - 4, g.z());
-			gl.glVertex3f(x + 3, y + h, g.z());
-			gl.glVertex3f(x + 5, y + h - 4, g.z());
-			gl.glVertex3f(x + 3, y + h, g.z());
+			g.drawLine(x + 1, y + h - 4, x + 3, y + h);
+			g.drawLine(x + 5, y + h - 4, x + 3, y + h);
 		}
-		gl.glEnd();
 		// g.drawLine(-1, left.y() + left.w() * 0.5f, w, right.y() + right.w() * 0.5f);
 	}
 

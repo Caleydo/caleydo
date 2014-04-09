@@ -6,20 +6,17 @@
 package org.caleydo.vis.lineup.ui.detail;
 
 
-import javax.media.opengl.GL;
-import javax.media.opengl.GL2;
-import javax.media.opengl.GL2GL3;
-
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.GLGraphics.AdvancedGraphics;
+import org.caleydo.core.view.opengl.layout2.GLGraphics.ETextureWrappingMode;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.StarsRankColumnModel;
 import org.caleydo.vis.lineup.ui.IColumnRenderInfo;
 import org.caleydo.vis.lineup.ui.RenderStyle;
-
-import com.jogamp.opengl.util.texture.Texture;
 
 /**
  * @author Samuel Gratzl
@@ -62,52 +59,16 @@ public class StarsValueElement extends ValueElement {
 	}
 
 	private void renderStars(GLGraphics g, float v, float w, float h, boolean fullStars) {
-		GL2 gl = g.gl;
-		float z = g.z();
-
+		final AdvancedGraphics ga = g.asAdvanced();
 		g.color(Color.WHITE);
-
-		Texture tex;
-
 		if (fullStars && v < 1) {
-			tex = g.getTexture(RenderStyle.ICON_STAR_DISABLED);
-			tex.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
-
-			tex.enable(gl);
-			tex.bind(gl);
-
-			gl.glBegin(GL2GL3.GL_QUADS);
-			gl.glTexCoord2f(-(1 - v) * model.getStars(), 0);
-			gl.glVertex3f(w * v, 0, z);
-			gl.glTexCoord2f(0, 0);
-			gl.glVertex3f(w, 0, z);
-			gl.glTexCoord2f(0, 1);
-			gl.glVertex3f(w, h, z);
-			gl.glTexCoord2f(-(1 - v) * model.getStars(), 1);
-			gl.glVertex3f(w * v, h, z);
-			gl.glEnd();
-
-			tex.disable(gl);
+			ga.fillImage(RenderStyle.ICON_STAR_DISABLED, new Rect(w * v, 0, w * (1 - v), h),
+					new Rect(-(1 - v) * model.getStars(), 0, (1 - v) * model.getStars(), 1),
+					ETextureWrappingMode.REPEAT, ETextureWrappingMode.CLAMP_TO_EDGE);
 		}
 
-		tex = g.getTexture(RenderStyle.ICON_STAR);
-		tex.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
-
-		tex.enable(gl);
-		tex.bind(gl);
-
-		gl.glBegin(GL2GL3.GL_QUADS);
-		gl.glTexCoord2f(0, 0);
-		gl.glVertex3f(0, 0, z);
-		gl.glTexCoord2f(v * model.getStars(), 0);
-		gl.glVertex3f(w * v, 0, z);
-		gl.glTexCoord2f(v * model.getStars(), 1);
-		gl.glVertex3f(w * v, h, z);
-		gl.glTexCoord2f(0, 1);
-		gl.glVertex3f(0, h, z);
-		gl.glEnd();
-
-		tex.disable(gl);
+		ga.fillImage(RenderStyle.ICON_STAR, new Rect(0, 0, w * v, h), new Rect(0, 0, v * model.getStars(), 1),
+				ETextureWrappingMode.REPEAT, ETextureWrappingMode.CLAMP_TO_EDGE);
 	}
 
 	@Override

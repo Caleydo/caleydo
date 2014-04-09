@@ -36,6 +36,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.core.view.opengl.util.gleem.ColoredVec2f;
+import org.caleydo.core.view.opengl.util.gleem.TexturedVec2f;
 import org.caleydo.core.view.opengl.util.spline.ITesselatedPolygon;
 import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
@@ -908,6 +909,11 @@ public final class GLGraphics {
 			count++;
 			if (p instanceof ColoredVec2f)
 				color(((ColoredVec2f) p).getColor());
+			if (p instanceof TexturedVec2f) {
+				Vec2f t = ((TexturedVec2f) p).getTexCoords();
+				if (t != null)
+					gl.glTexCoord2f(t.x(), t.y());
+			}
 			gl.glVertex3f(p.x(), p.y(), z);
 		}
 		gl.glEnd();
@@ -1027,5 +1033,39 @@ public final class GLGraphics {
 			gl.glRotatef(angle, 0, 0, 1);
 			return this;
 		}
+
+		public void fillImage(URL texture, Rect pos, Rect texel, ETextureWrappingMode wrapS,
+ ETextureWrappingMode wrapT) {
+			Texture tex = getTexture(texture);
+			gl.glPushAttrib(GL2.GL_TEXTURE_BIT);
+			tex.enable(gl);
+			tex.bind(gl);
+			tex.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_S, wrapS.asOpenGL());
+			tex.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_T, wrapT.asOpenGL());
+			fillPolygon(new TexturedVec2f(pos.xy(), texel.xy()), new TexturedVec2f(pos.x2y(), texel.x2y()),
+					new TexturedVec2f(pos.x2y2(), texel.x2y2()), new TexturedVec2f(pos.xy2(), texel.xy2()));
+			tex.disable(gl);
+			gl.glPopAttrib();
+		}
+	}
+
+	public enum ETextureWrappingMode {
+		REPEAT, MIRROR_REPEAT, CLAMP_TO_EDGE;
+
+		/**
+		 * @return
+		 */
+		public int asOpenGL() {
+			switch (this) {
+			case REPEAT:
+				return GL.GL_REPEAT;
+			case MIRROR_REPEAT:
+				return GL2.GL_MIRRORED_REPEAT;
+			case CLAMP_TO_EDGE:
+				return GL2.GL_CLAMP_TO_EDGE;
+			}
+			throw new IllegalStateException("unknown this");
+		}
+
 	}
 }

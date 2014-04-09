@@ -7,14 +7,12 @@ package org.caleydo.vis.lineup.ui.detail;
 
 
 
-import javax.media.opengl.GL;
-import javax.media.opengl.GL2;
-import javax.media.opengl.GL2GL3;
-
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.GLGraphics.ETextureWrappingMode;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
@@ -22,8 +20,6 @@ import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankColumnModel;
 import org.caleydo.vis.lineup.ui.IColumnRenderInfo;
 import org.caleydo.vis.lineup.ui.RenderStyle;
-
-import com.jogamp.opengl.util.texture.Texture;
 
 /**
  * a simple {@link IGLRenderer} for rendering a score bar
@@ -98,31 +94,12 @@ public class ScoreBarElement extends ValueElement {
 	}
 
 	private void renderHatchedValue(GLGraphics g, float x, float y, float w, float h) {
-		Texture tex;
-		GL2 gl = g.gl;
-		float z = g.z();
-
-		tex = g.getTexture(RenderStyle.ICON_COMPLEX_MAPPING);
-		tex.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
-
-		tex.enable(gl);
-		tex.bind(gl);
-
 		float widthPerRepeat = 16;
 		float repeated = w / widthPerRepeat;
+		g.asAdvanced().fillImage(RenderStyle.ICON_COMPLEX_MAPPING, new Rect(x, y, w, h),
+ new Rect(0, 0, repeated, 1),
+				ETextureWrappingMode.REPEAT, ETextureWrappingMode.CLAMP_TO_EDGE);
 
-		gl.glBegin(GL2GL3.GL_QUADS);
-		gl.glTexCoord2f(0, 0);
-		gl.glVertex3f(x, y, z);
-		gl.glTexCoord2f(repeated, 0);
-		gl.glVertex3f(x + w, y, z);
-		gl.glTexCoord2f(repeated, 1);
-		gl.glVertex3f(x + w, y + h, z);
-		gl.glTexCoord2f(0, 1);
-		gl.glVertex3f(x, y + h, z);
-		gl.glEnd();
-
-		tex.disable(gl);
 	}
 
 	private boolean useHatching(IDoubleRankableColumnMixin model) {

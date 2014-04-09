@@ -15,9 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import javax.media.opengl.GL;
-import javax.media.opengl.GL2;
-
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
@@ -349,30 +346,24 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 
 	protected void renderMapping(GLGraphics g, float w, float h, boolean cross, boolean isNormalLeftTop) {
 		g.color(.3f, .3f, .3f, .3f);
-		GL2 gl = g.gl;
-		final float z = g.z();
-		gl.glBegin(GL.GL_LINES);
 		for (IDoubleIterator it = sampled.iterator(); it.hasNext();)
-			renderLine(w, h, gl, z, it.nextPrimitive(), cross, isNormalLeftTop);
-		gl.glEnd();
+			renderLine(w, h, g, it.nextPrimitive(), cross, isNormalLeftTop);
+
 	}
 
-	private void renderLine(float w, float h, GL2 gl, final float z, double v, boolean cross, boolean isNormalLeftTop) {
+	private void renderLine(float w, float h, GLGraphics g, double v, boolean cross, boolean isNormalLeftTop) {
 		if (cross) {
 			float x = (float) normalizeRaw(v) * w;
 			float y = (float) (1 - model.apply(v)) * h;
-			gl.glVertex3f(x, h, z);
-			gl.glVertex3f(isNormalLeftTop ? 0 : w, y, z);
+			g.drawLine(x, h, isNormalLeftTop ? 0 : w, y);
 		} else if (isNormalLeftTop) { // horizontal parallel
 			float x = (float) normalizeRaw(v) * w;
 			float y = (float) model.apply(v) * w;
-			gl.glVertex3f(x, h, z);
-			gl.glVertex3f(y, 0, z);
+			g.drawLine(x, h, y, 0);
 		} else { // vertical parallel
 			float x = (float) (1 - normalizeRaw(v)) * h;
 			float y = (float) (1 - model.apply(v)) * h;
-			gl.glVertex3f(0, x, z);
-			gl.glVertex3f(w, y, z);
+			g.drawLine(0, x, w, y);
 		}
 	}
 

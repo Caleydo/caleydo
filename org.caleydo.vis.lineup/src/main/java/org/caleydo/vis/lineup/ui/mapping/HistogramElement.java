@@ -34,7 +34,7 @@ class HistogramElement extends GLElement {
 
 		if (vertical) {
 			g.save();
-			g.gl.glRotatef(-90, 0, 0, 1);
+			g.asAdvanced().rotate(-90);
 			g.move(-h, histy);
 			float tmp = w;
 			w = h;
