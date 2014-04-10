@@ -123,16 +123,16 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		// IDMappingDescription desc = new IDMappingDescription();
 		// desc.setParsingStartLine(1);
 		// desc.setParsingStopLine(-1);
-		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/MUTATION_SAMPLE2GENE_SYMBOL.txt");
+		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/MUTATION_ID2GENE_SYMBOL.txt");
 		// desc.setDelimiter("\t");
-		// desc.setFromIDType(EGeneIDTypes.MUTATION_SAMPLE.name());
+		// desc.setFromIDType(EGeneIDTypes.MUTATION_ID.name());
 		// desc.setToIDType(EGeneIDTypes.GENE_SYMBOL.name());
 		// desc.setIdCategory(EGeneIDTypes.GENE.name());
 		// desc.setMultiMapping(true);
 		// desc.setCreateReverseMapping(true);
 		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
-		// desc.setFromDataType(EDataType.INTEGER);
-		// desc.setToDataType(EDataType.STRING);
+		// desc.setFromDataType(EGeneIDTypes.MUTATION_ID.getDataType());
+		// desc.setToDataType(EGeneIDTypes.GENE_SYMBOL.getDataType());
 		// IDMappingManager.addIDMappingDescription(desc);
 		//
 		// desc = new IDMappingDescription();
@@ -146,8 +146,8 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		// desc.setMultiMapping(true);
 		// desc.setCreateReverseMapping(true);
 		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
-		// desc.setFromDataType(EDataType.INTEGER);
-		// desc.setToDataType(EDataType.STRING);
+		// desc.setFromDataType(EGeneIDTypes.MUTATION_SAMPLE.getDataType());
+		// desc.setToDataType(EGeneIDTypes.VCF_SAMPLE.getDataType());
 		// IDMappingManager.addIDMappingDescription(desc);
 		//
 		// desc = new IDMappingDescription();
@@ -161,8 +161,8 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		// desc.setMultiMapping(true);
 		// desc.setCreateReverseMapping(true);
 		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
-		// desc.setFromDataType(EDataType.STRING);
-		// desc.setToDataType(EDataType.STRING);
+		// desc.setFromDataType(EGeneIDTypes.PATIENT.getDataType());
+		// desc.setToDataType(EGeneIDTypes.VCF_SAMPLE.getDataType());
 		// IDMappingManager.addIDMappingDescription(desc);
 		//
 		// desc = new IDMappingDescription();
@@ -176,8 +176,8 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		// desc.setMultiMapping(true);
 		// desc.setCreateReverseMapping(true);
 		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
-		// desc.setFromDataType(EDataType.INTEGER);
-		// desc.setToDataType(EDataType.INTEGER);
+		// desc.setFromDataType(EGeneIDTypes.MUTATION_SAMPLE.getDataType());
+		// desc.setToDataType(EGeneIDTypes.MUTATION_ID.getDataType());
 		// IDMappingManager.addIDMappingDescription(desc);
 	}
 
