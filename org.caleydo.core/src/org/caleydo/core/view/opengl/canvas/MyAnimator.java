@@ -154,6 +154,11 @@ public class MyAnimator implements GLAnimatorControl, Runnable {
 		return true;
 	}
 
+	public void shutdown() {
+		stop();
+		executor.shutdown();
+	}
+
 	@Override
 	public boolean pause() {
 		return animating.cancel(true);
