@@ -179,6 +179,36 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		// desc.setFromDataType(EGeneIDTypes.MUTATION_SAMPLE.getDataType());
 		// desc.setToDataType(EGeneIDTypes.MUTATION_ID.getDataType());
 		// IDMappingManager.addIDMappingDescription(desc);
+		//
+		// desc = new IDMappingDescription();
+		// desc.setParsingStartLine(1);
+		// desc.setParsingStopLine(-1);
+		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/MUTATION_ID2DBSNP.txt");
+		// desc.setDelimiter("\t");
+		// desc.setFromIDType(EGeneIDTypes.MUTATION_ID.name());
+		// desc.setToIDType(EGeneIDTypes.DBSNP.name());
+		// desc.setIdCategory(EGeneIDTypes.GENE.name());
+		// desc.setMultiMapping(true);
+		// desc.setCreateReverseMapping(true);
+		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
+		// desc.setFromDataType(EGeneIDTypes.MUTATION_ID.getDataType());
+		// desc.setToDataType(EGeneIDTypes.DBSNP.getDataType());
+		// IDMappingManager.addIDMappingDescription(desc);
+		//
+		// desc = new IDMappingDescription();
+		// desc.setParsingStartLine(1);
+		// desc.setParsingStopLine(-1);
+		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/MUTATION_ID2COSMIC.txt");
+		// desc.setDelimiter("\t");
+		// desc.setFromIDType(EGeneIDTypes.MUTATION_ID.name());
+		// desc.setToIDType(EGeneIDTypes.COSMIC.name());
+		// desc.setIdCategory(EGeneIDTypes.GENE.name());
+		// desc.setMultiMapping(true);
+		// desc.setCreateReverseMapping(true);
+		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
+		// desc.setFromDataType(EGeneIDTypes.MUTATION_ID.getDataType());
+		// desc.setToDataType(EGeneIDTypes.COSMIC.getDataType());
+		// IDMappingManager.addIDMappingDescription(desc);
 	}
 
 	@Override

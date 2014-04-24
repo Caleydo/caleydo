@@ -34,6 +34,8 @@ public enum EGeneIDTypes {
 	// MUTATION_SAMPLE(EDataType.INTEGER),
 	// MUTATION_ID(EDataType.INTEGER),
 	// PATIENT(EDataType.STRING),
+	// DBSNP(EDataType.STRING),
+	// COSMIC(EDataType.STRING),
 
 	PATHWAY(EDataType.INTEGER),
 	PATHWAY_VERTEX(EDataType.INTEGER),
