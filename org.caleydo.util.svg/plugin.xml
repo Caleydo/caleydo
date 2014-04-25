@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.caleydo.ui.tracer">
+      <factory
+            class="org.caleydo.util.svg.SVGGraphicsTracerFactory">
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.util.svg.ExportSVGHandler"
+            id="org.caleydo.util.svg.export"
+            name="Export SVG">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.caleydo.menu.window">
+         <command
+               commandId="org.caleydo.util.svg.export"
+               label="Export to SVG"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   
+</plugin>

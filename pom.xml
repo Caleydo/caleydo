@@ -20,6 +20,7 @@
 		<module>org.caleydo.util.gleem</module>
 		<module>org.caleydo.util.bubblesets</module>
 		<module>org.caleydo.util.alg</module>
+		<module>org.caleydo.util.svg</module>
 		
 		<module>org.caleydo.datadomain.generic</module>
 		<module>org.caleydo.datadomain.genetic</module>
