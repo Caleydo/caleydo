@@ -12,15 +12,13 @@ import org.caleydo.core.data.filter.MetaFilter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.filter.event.RemoveFilterEvent;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.gui.toolbar.action.UseRandomSamplingAction;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
-import org.caleydo.view.filter.listener.FilterUpdateListener;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuAdapter;
@@ -34,38 +32,31 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Filter view showing a pipeline of filters for a data table.
  *
  * @author Marc Streit
  */
-public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner {
-
-	public static String VIEW_TYPE = "org.caleydo.view.filter";
+public class RcpFilterView extends CaleydoRCPViewPart {
+	public static final String VIEW_TYPE = "org.caleydo.view.filter";
 
 	private ATableBasedDataDomain dataDomain;
 
 	private Tree tree;
-
 	private Menu contextMenu;
 
-	private EventPublisher eventPublisher;
-
-	private FilterUpdateListener filterUpdateListener;
-
 	private String recordPerspectiveID;
-
 	private String dimensionPerspectiveID;
+
+	private final EventListenerManager listeners = EventListenerManagers.createSWTDirect();
 
 	/**
 	 * Constructor.
 	 */
 	public RcpFilterView() {
 		super(SerializedFilterView.class);
-		eventPublisher = GeneralManager.get().getEventPublisher();
-		registerEventListeners();
+		listeners.register(this);
 	}
 
 	@Override
@@ -195,17 +186,6 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		determineDataConfiguration(serializedView);
 	}
 
-	@Override
-	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
-			final AEvent event) {
-		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				listener.handleEvent(event);
-			}
-		});
-	}
-
 	private void addRemoveContextMenuItem() {
 		MenuItem removeItem = new MenuItem(contextMenu, SWT.NONE);
 		removeItem.setText("Remove");
@@ -219,7 +199,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 					filterEvent.setEventSpace(dataDomain.getDataDomainID());
 					filterEvent.setFilter((Filter) selectedTreeItem.getData());
 					selectedTreeItem.dispose();
-					eventPublisher.triggerEvent(filterEvent);
+					EventPublisher.trigger(filterEvent);
 				}
 			}
 		});
@@ -245,25 +225,11 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 	@Override
 	public void dispose() {
 		super.dispose();
-		unregisterEventListeners();
+		listeners.unregisterAll();
 	}
 
-	@Override
-	public void registerEventListeners() {
-		filterUpdateListener = new FilterUpdateListener();
-		filterUpdateListener.setHandler(this);
-		eventPublisher.addListener(FilterUpdatedEvent.class, filterUpdateListener);
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-		if (filterUpdateListener != null) {
-			eventPublisher.removeListener(filterUpdateListener);
-			filterUpdateListener = null;
-		}
-	}
-
-	public void handleFilterUpdatedEvent() {
+	@ListenTo
+	private void onFilterUpdated(FilterUpdatedEvent event) {
 		tree.dispose();
 		updateTree();
 		parentComposite.layout();
