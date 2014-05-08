@@ -264,12 +264,16 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 			// Whiskers
 			g.color(0, 0, 0);
 			// line to whiskers
-			g.drawLine(iqrMin, center, firstQuantrileBoundary, center);
-			g.drawLine(iqrMax, center, thirdQuantrileBoundary, center);
+			if (iqrMin <= firstQuantrileBoundary)
+				g.drawLine(iqrMin, center, firstQuantrileBoundary, center);
+			if (iqrMax >= thirdQuantrileBoundary)
+				g.drawLine(iqrMax, center, thirdQuantrileBoundary, center);
 
 			float h_whiskers = hi * LINE_TAIL_HEIGHT_PERCENTAGE;
-			g.drawLine(iqrMin, center - h_whiskers * 0.5f, iqrMin, center + h_whiskers * 0.5f);
-			g.drawLine(iqrMax, center - h_whiskers * 0.5f, iqrMax, center + h_whiskers * 0.5f);
+			if (iqrMin <= firstQuantrileBoundary)
+				g.drawLine(iqrMin, center - h_whiskers * 0.5f, iqrMin, center + h_whiskers * 0.5f);
+			if (iqrMax >= thirdQuantrileBoundary)
+				g.drawLine(iqrMax, center - h_whiskers * 0.5f, iqrMax, center + h_whiskers * 0.5f);
 		}
 
 		renderOutliers(g, w, hi, center, normalize);
@@ -327,8 +331,7 @@ public abstract class ABoxAndWhiskersElement extends PickableGLElement implement
 		g.drawText(Formatter.formatNumber(normalize.unapply(0)), 1, hi, delta, textHeight);
 		for (int i = 1; i < ticks; ++i) {
 			g.drawText(Formatter.formatNumber(normalize.unapply(v_delta * i)), delta * i - delta * 0.5f, hi, delta,
-					textHeight,
-					VAlign.CENTER);
+					textHeight, VAlign.CENTER);
 		}
 		g.drawText(Formatter.formatNumber(normalize.unapply(1)), w - delta - 1, hi, delta - 1, textHeight, VAlign.RIGHT);
 	}

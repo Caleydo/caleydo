@@ -9,17 +9,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.serialize.ISerializationAddon;
 import org.caleydo.core.serialize.SerializationData;
-
-import com.google.common.io.Files;
 
 /**
  * @author Thomas Geymayer
@@ -43,29 +39,30 @@ public class ImageSerializationAddon implements ISerializationAddon {
 							 SerializationData data) {
 
 		// Add all files from the matching data directory
-		List<IDataDomain> domains = DataDomainManager.get()
-				.getDataDomainsByType(ImageDataDomain.DATA_DOMAIN_TYPE);
-		for(IDataDomain dataDomain: domains) {
-			ImageSet imageSet = ((ImageDataDomain) dataDomain).getImageSet();
-			imageSet.add(new File(dirName, dataDomain.getDataDomainID()));
-			imageSet.refreshGroups();
-		}
+		// TODO
+//		List<IDataDomain> domains = DataDomainManager.get()
+//				.getDataDomainsByType(ImageDataDomain.DATA_DOMAIN_TYPE);
+//		for(IDataDomain dataDomain: domains) {
+//			ImageSet imageSet = ((ImageDataDomain) dataDomain).getImageSet();
+//			imageSet.add(new File(dirName, dataDomain.getDataDomainID()));
+//			imageSet.refreshGroups();
+//		}
 	}
 
 	@Override
 	public void serialize( Collection<? extends IDataDomain> toSave,
 						   Marshaller marshaller,
 						   String dirName ) throws IOException {
-		for(IDataDomain dataDomain: toSave)
-			if( dataDomain instanceof ImageDataDomain) {
-				File savePath = new File(dirName, dataDomain.getDataDomainID());
-				savePath.mkdirs();
-				for(File img: ((ImageDataDomain)dataDomain).getImageSet()
-														   .getFiles()
-														   .values()) {
-					Files.copy(img, new File(savePath, img.getName()));
-				}
+		for(IDataDomain dataDomain: toSave) {
+			if (!(dataDomain instanceof ImageDataDomain))
+				continue;
+
+			ImageDataDomain domain = (ImageDataDomain)dataDomain;
+			File domainPath = new File(dirName, domain.getDataDomainID());
+			for (LayeredImage img : domain.getImageSet().getImages()) {
+				img.export(new File(domainPath, img.getName()));
 			}
+		}
 	}
 
 	@Override
