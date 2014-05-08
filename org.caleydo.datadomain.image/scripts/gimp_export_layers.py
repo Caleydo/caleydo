@@ -721,6 +721,7 @@ class ExportLayersGui(object):
     base_name = self.image.layers[-1].name.translate(None, delete_table)
     ini = open(os.path.join(output_directory, base_name + ".ini"), "w")
 
+    ini.write("[base]\n")
     ini.write("name="+base_name+"\n")
 
     url = self.url_entry.get_text()
