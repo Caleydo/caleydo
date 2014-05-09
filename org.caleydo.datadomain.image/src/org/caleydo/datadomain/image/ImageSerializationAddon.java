@@ -9,10 +9,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.serialize.ISerializationAddon;
 import org.caleydo.core.serialize.SerializationData;
@@ -39,14 +41,12 @@ public class ImageSerializationAddon implements ISerializationAddon {
 							 SerializationData data) {
 
 		// Add all files from the matching data directory
-		// TODO
-//		List<IDataDomain> domains = DataDomainManager.get()
-//				.getDataDomainsByType(ImageDataDomain.DATA_DOMAIN_TYPE);
-//		for(IDataDomain dataDomain: domains) {
-//			ImageSet imageSet = ((ImageDataDomain) dataDomain).getImageSet();
-//			imageSet.add(new File(dirName, dataDomain.getDataDomainID()));
-//			imageSet.refreshGroups();
-//		}
+		List<IDataDomain> domains = DataDomainManager.get()
+				.getDataDomainsByType(ImageDataDomain.DATA_DOMAIN_TYPE);
+		for(IDataDomain dataDomain: domains) {
+			ImageSet imageSet = ((ImageDataDomain) dataDomain).getImageSet();
+			imageSet.importFrom(new File(dirName, dataDomain.getDataDomainID()));
+		}
 	}
 
 	@Override

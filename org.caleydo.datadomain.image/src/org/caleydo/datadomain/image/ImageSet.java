@@ -5,7 +5,9 @@
  *******************************************************************************/
 package org.caleydo.datadomain.image;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -33,6 +35,11 @@ public class ImageSet {
 	protected IDType idTypeLayer;
 
 	protected SortedMap<String, LayeredImage> images;
+
+	/**
+	 * Allowed config file extensions.
+	 */
+	public static final List<String> EXTENSIONS_CFG = Arrays.asList("ini");
 
 	public ImageSet() {
 		idCategoryImage = IDCategory.registerCategoryIfAbsent("Tissue Slice");
@@ -72,6 +79,35 @@ public class ImageSet {
 
 	public void removeImage(LayeredImage img) {
 		images.remove(img.getName());
+	}
+
+	/**
+	 * Import a single INI file or recursively all INI files from the given
+	 * directory.
+	 *
+	 * @param path INI file or directory
+	 */
+	public void importFrom(File path) {
+		if (path.isDirectory()) {
+			for (File child: path.listFiles())
+				importFrom(child);
+		}
+
+		int ext_sep = path.getName().lastIndexOf('.');
+		if(ext_sep < 0)
+			return;
+
+		String ext = path.getName().substring(ext_sep + 1).toLowerCase();
+
+		if (!ImageSet.EXTENSIONS_CFG.contains(ext))
+			return;
+
+		LayeredImage img = LayeredImage.fromINI(path);
+		if (img != null) {
+			addImage(img);
+		} else {
+			System.err.println("Failed to import: " + path);
+		}
 	}
 
 //	public void refreshGroups() {
