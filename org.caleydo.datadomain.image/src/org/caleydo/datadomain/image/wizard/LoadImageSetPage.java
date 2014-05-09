@@ -282,8 +282,11 @@ public class LoadImageSetPage
 			Object selection = selections[0].getData();
 			if (selection instanceof LayeredImage)
 				imgFile = ((LayeredImage)selection).getBaseImage().image;
-			else if(selection instanceof LayeredImage.Layer)
-				imgFile = ((LayeredImage.Layer)selection).area.image;
+			else if(selection instanceof LayeredImage.Layer) {
+				LayeredImage.Image img = ((LayeredImage.Layer)selection).area;
+				if (img != null)
+					imgFile = img.image;
+			}
 		}
 		Image src = null;
 
