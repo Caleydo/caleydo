@@ -379,4 +379,18 @@ public class DataImportWizard extends AWizard<DataImportWizard> {
 		this.columnOfRowIDs = columnOfRowIDs;
 	}
 
+	/**
+	 * @param dataSetDescription
+	 *            setter, see {@link dataSetDescription}
+	 */
+	public void setDataSetDescription(DataSetDescription dataSetDescription) {
+		this.dataSetDescription = dataSetDescription;
+		loadDataSetPage.setDataSetDescription(dataSetDescription);
+		dataSetTypePage.setDataSetDescription(dataSetDescription);
+		numericalDataPage.setDataSetDescription(dataSetDescription);
+		categoricalDataPage.setDataSetDescription(dataSetDescription);
+		inhomogeneousDataPropertiesPage.setDataSetDescription(dataSetDescription);
+		addGroupingsPage.setDataSetDescription(dataSetDescription);
+	}
+
 }

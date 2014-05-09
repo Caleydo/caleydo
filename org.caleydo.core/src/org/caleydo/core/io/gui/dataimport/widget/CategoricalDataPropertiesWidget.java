@@ -388,13 +388,13 @@ public class CategoricalDataPropertiesWidget implements ITableDataChangeListener
 
 		updateNeutralCategoryWidget();
 
-		if (nominalButton.getSelection()) {
-			applyColorScheme(DEFAULT_QUALITATIVE_COLOR_SCHEME);
-		} else if (isNeutralColorSelected()) {
-			applyColorScheme(DEFAULT_DIVERGING_COLOR_SCHEME);
-		} else {
-			applyColorScheme(DEFAULT_SEQUENTIAL_COLOR_SCHEME);
-		}
+		// if (nominalButton.getSelection()) {
+		// applyColorScheme(DEFAULT_QUALITATIVE_COLOR_SCHEME);
+		// } else if (isNeutralColorSelected()) {
+		// applyColorScheme(DEFAULT_DIVERGING_COLOR_SCHEME);
+		// } else {
+		// applyColorScheme(DEFAULT_SEQUENTIAL_COLOR_SCHEME);
+		// }
 
 		categoriesGroup.pack();
 	}

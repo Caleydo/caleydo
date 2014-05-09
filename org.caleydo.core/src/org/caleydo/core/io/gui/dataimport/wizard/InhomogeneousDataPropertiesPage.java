@@ -137,6 +137,12 @@ public class InhomogeneousDataPropertiesPage extends AImportDataPage<DataImportW
 	}
 
 	@Override
+	public void setDataSetDescription(DataSetDescription dataSetDescription) {
+		super.setDataSetDescription(dataSetDescription);
+		initColumnDescriptions = false;
+	}
+
+	@Override
 	public void pageActivated() {
 		DataImportWizard wizard = getWizard();
 

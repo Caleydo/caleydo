@@ -67,7 +67,7 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 		for (EGeneIDTypes type : Arrays.asList(EGeneIDTypes.DAVID, EGeneIDTypes.GENE_SYMBOL, EGeneIDTypes.GENE_NAME,
 				EGeneIDTypes.REFSEQ_MRNA, EGeneIDTypes.ENSEMBL_GENE_ID, EGeneIDTypes.ENTREZ_GENE_ID
 
-//				EGeneIDTypes.PATIENT, EGeneIDTypes.VCF_SAMPLE, EGeneIDTypes.MUTATION_SAMPLE, EGeneIDTypes.MUTATION_ID,
+//				EGeneIDTypes.PATIENT, EGeneIDTypes.VCF_SAMPLE, EGeneIDTypes.VARIANT_CALL_ID, EGeneIDTypes.VARIANT_ID,
 //				EGeneIDTypes.COSMIC, EGeneIDTypes.DBSNP
 		/* , EGeneIDTypes.COMPOUND_ID, EGeneIDTypes.INTERACTION_ID */)) {
 			IDType.registerType(type.name(), geneIDCategory, type.getDataType());
