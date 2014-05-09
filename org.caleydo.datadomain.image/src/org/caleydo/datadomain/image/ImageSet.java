@@ -5,21 +5,15 @@
  *******************************************************************************/
 package org.caleydo.datadomain.image;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.SortedMap;
-import java.util.SortedSet;
 import java.util.TreeMap;
 
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
-import org.caleydo.datadomain.image.wizard.LoadImageSetPage;
 
 
 /**
@@ -28,7 +22,7 @@ import org.caleydo.datadomain.image.wizard.LoadImageSetPage;
  * @author Thomas Geymayer
  *
  */
-public class ImageSet extends FilePrefixGrouper {
+public class ImageSet {
 
 	protected String name;
 
@@ -52,7 +46,6 @@ public class ImageSet extends FilePrefixGrouper {
 	}
 
 	public ImageSet(ImageSet other) {
-		super(other);
 		name = new String(other.name);
 		idCategoryImage = other.idCategoryImage;
 		idTypeImage = other.idTypeImage;
@@ -69,142 +62,155 @@ public class ImageSet extends FilePrefixGrouper {
 		this.name = name;
 	}
 
-	@Override
-	public void refreshGroups() {
-		super.refreshGroups();
+	/**
+	 * Add a new image (an image with the same name will be replaced)
+	 * @param img
+	 */
+	public void addImage(LayeredImage img) {
+		images.put(img.getName(), img);
+	}
 
-		images.clear();
+	public void removeImage(LayeredImage img) {
+		images.remove(img.getName());
+	}
 
-		// Naming scheme for images and layers:
-		//
-		// imageName: <name>[-<suffix] (if <name> is not unique, than a <suffix>
-		//                              has to be used such that <name>-<suffix>
-		//                              is unique)
-		//
-		// layerName: <imageName>_<layerId>[_border|_area]
-		//
-		// The resulting structure is a LayeredImage with name = <name>-<suffix>
-		// and layers named <name>-<layerId>.
-		//
-		// If an image has no layers, it can be named like a layer, which
-		// results in a LayerImage still named <name>-<suffix>, but with an
-		// empty layer named <name>-<layerId>. This allows also images without
-		// layers to be retrieved with ImageSet::getImageForLayer.
-		//
-		// Every image can also have the suffix _thumb, which denotes the
-		// thumbnail for this image.
-		//
-		//
-		// Example 1:
-		//
-		//  Importing the following images
-		//
-		//   K229-OR.png
-		//   K229-OR_thumb.png
-		//   K229-OR_32_border.png
-		//   K229-OR_32_area.png
-		//   K229-OR_33_border.png
-		//   K229-OR_33_area.png
-		//
-		//  results in the following structure:
-		//
-		//  LayeredImage: {
-		//    name: K229-OR,
-		//    base: {
-		//      file: K229-OR.png,
-		//      thumbnail: K220-OR_thumb.png
-		//    }
-		//    layers: {
-		//      K229-32: {
-		//        border: K229-OR_32_border.png,
-		//        area: K229-OR_32_area.png
-		//      }
-		//      K229-33: {
-		//        border: K229-OR_33_border.png,
-		//        area: K229-OR_33_area.png
-		//      }
-		//    }
-		//  }
-		//
-		//
-		// Example 2:
-		//
-		//  Importing the following images
-		//
-		//   K229-TU1_35.png
-		//   K229-TU1_35_thumb.png
-		//
-		//  results in the following structure
-		//
-		//  LayeredImage: {
-		//    name: K229-TU1,
-		//    base: {
-		//      file: K229-TU1_35.png,
-		//      thumbnail: K229-TU1_35_thumb.png
-		//    }
-		//    layers: {
-		//      K229-35: null
-		//    }
-		//  }
+//	public void refreshGroups() {
+//		images.clear();
+//
+//		// Naming scheme for images and layers:
+//		//
+//		// imageName: <name>[-<suffix] (if <name> is not unique, than a <suffix>
+//		//                              has to be used such that <name>-<suffix>
+//		//                              is unique)
+//		//
+//		// layerName: <imageName>_<layerId>[_border|_area]
+//		//
+//		// The resulting structure is a LayeredImage with name = <name>-<suffix>
+//		// and layers named <name>-<layerId>.
+//		//
+//		// If an image has no layers, it can be named like a layer, which
+//		// results in a LayerImage still named <name>-<suffix>, but with an
+//		// empty layer named <name>-<layerId>. This allows also images without
+//		// layers to be retrieved with ImageSet::getImageForLayer.
+//		//
+//		// Every image can also have the suffix _thumb, which denotes the
+//		// thumbnail for this image.
+//		//
+//		//
+//		// Example 1:
+//		//
+//		//  Importing the following images
+//		//
+//		//   K229-OR.png
+//		//   K229-OR_thumb.png
+//		//   K229-OR_32_border.png
+//		//   K229-OR_32_area.png
+//		//   K229-OR_33_border.png
+//		//   K229-OR_33_area.png
+//		//
+//		//  results in the following structure:
+//		//
+//		//  LayeredImage: {
+//		//    name: K229-OR,
+//		//    base: {
+//		//      file: K229-OR.png,
+//		//      thumbnail: K220-OR_thumb.png
+//		//    }
+//		//    layers: {
+//		//      K229-32: {
+//		//        border: K229-OR_32_border.png,
+//		//        area: K229-OR_32_area.png
+//		//      }
+//		//      K229-33: {
+//		//        border: K229-OR_33_border.png,
+//		//        area: K229-OR_33_area.png
+//		//      }
+//		//    }
+//		//  }
+//		//
+//		//
+//		// Example 2:
+//		//
+//		//  Importing the following images
+//		//
+//		//   K229-TU1_35.png
+//		//   K229-TU1_35_thumb.png
+//		//
+//		//  results in the following structure
+//		//
+//		//  LayeredImage: {
+//		//    name: K229-TU1,
+//		//    base: {
+//		//      file: K229-TU1_35.png,
+//		//      thumbnail: K229-TU1_35_thumb.png
+//		//    }
+//		//    layers: {
+//		//      K229-35: null
+//		//    }
+//		//  }
+//
+//		for (Entry<String, SortedSet<String>> group : groups.entrySet()) {
+//			String name = group.getKey();
+//			LayeredImage img = new LayeredImage();
+//
+//			File baseImage = files.get(name);
+//			File baseThumb = files.get(name + "_thumb");
+//			img.setBaseImage(baseImage, baseThumb);
+//
+//			String layerPrefix;
+//			int sepPos = name.indexOf('-');
+//			if( sepPos < 0 )
+//				layerPrefix = name;
+//			else
+//				layerPrefix = name.substring(0, sepPos + 1);
+//
+//			for (String file : group.getValue()) {
+//				String suffix = stringSuffix(file, '_');
+//
+//				if ( Arrays.asList("thumb", "border").contains(suffix) )
+//					continue;
+//
+//				if ( LoadImageSetPage.EXTENSIONS_CFG.contains(suffix) ) {
+//					try {
+//						img.addConfig(files.get(file));
+//					} catch (IOException e) {
+//						e.printStackTrace();
+//					}
+//					continue;
+//				}
+//
+//				String layerBaseName = file.substring(0, file.lastIndexOf("_area"));
+//				String borderName = layerBaseName + "_border";
+//				String layerName = layerBaseName.substring(layerBaseName.indexOf('_') + 1);
+//
+//				File borderImage = files.get(borderName);
+//				File borderThumb = files.get(borderName + "_thumb");
+//				File areaImage = files.get(file);
+//				File areaThumb = files.get(file + "_thumb");
+//
+//				img.addLayer(layerPrefix + layerName, borderImage, borderThumb, areaImage, areaThumb);
+//			}
+//
+//			if( img.getLayers().isEmpty() ) {
+//				if( sepPos < 0 )
+//					sepPos = 0;
+//				int layerNamePos = name.indexOf('_', sepPos);
+//
+//				if( layerNamePos >= 0 ) {
+//					String dummyLayerName = name.substring(layerNamePos + 1);
+//					name = name.substring(0, layerNamePos);
+//
+//					img.addEmptyLayer(layerPrefix + dummyLayerName);
+//				}
+//			}
+//
+//			img.setName(name);
+//			images.put(name, img);
+//		}
+//	}
 
-		for (Entry<String, SortedSet<String>> group : groups.entrySet()) {
-			String name = group.getKey();
-			LayeredImage img = new LayeredImage();
-
-			File baseImage = files.get(name);
-			File baseThumb = files.get(name + "_thumb");
-			img.setBaseImage(baseImage, baseThumb);
-
-			String layerPrefix;
-			int sepPos = name.indexOf('-');
-			if( sepPos < 0 )
-				layerPrefix = name;
-			else
-				layerPrefix = name.substring(0, sepPos + 1);
-
-			for (String file : group.getValue()) {
-				String suffix = stringSuffix(file, '_');
-
-				if ( Arrays.asList("thumb", "border").contains(suffix) )
-					continue;
-
-				if ( LoadImageSetPage.EXTENSIONS_CFG.contains(suffix) ) {
-					try {
-						img.addConfig(files.get(file));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					continue;
-				}
-
-				String layerBaseName = file.substring(0, file.lastIndexOf("_area"));
-				String borderName = layerBaseName + "_border";
-				String layerName = layerBaseName.substring(layerBaseName.indexOf('_') + 1);
-
-				File borderImage = files.get(borderName);
-				File borderThumb = files.get(borderName + "_thumb");
-				File areaImage = files.get(file);
-				File areaThumb = files.get(file + "_thumb");
-
-				img.addLayer(layerPrefix + layerName, borderImage, borderThumb, areaImage, areaThumb);
-			}
-
-			if( img.getLayers().isEmpty() ) {
-				if( sepPos < 0 )
-					sepPos = 0;
-				int layerNamePos = name.indexOf('_', sepPos);
-
-				if( layerNamePos >= 0 ) {
-					String dummyLayerName = name.substring(layerNamePos + 1);
-					name = name.substring(0, layerNamePos);
-
-					img.addEmptyLayer(layerPrefix + dummyLayerName);
-				}
-			}
-
-			img.setName(name);
-			images.put(name, img);
-		}
+	public List<LayeredImage> getImages() {
+		return new ArrayList<>(images.values());
 	}
 
 	/**
