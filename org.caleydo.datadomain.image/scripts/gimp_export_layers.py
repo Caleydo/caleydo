@@ -575,6 +575,7 @@ def export_layers( run_mode,
     # Create highlights for all but the base layer
     if i > 1:
       ini.write("[layer" + str(i) + "]\n")
+      ini.write("name=" + base_name + "\n")
 
       # Region border
       #
@@ -597,6 +598,10 @@ def export_layers( run_mode,
     else:
       layer_copy = _copy_layer(image_new, layer)
       _writeLayerWithThumb(layer_copy, "")
+
+      if len(image.layers) == 1:
+        ini.write("[dummy-layer]\n")
+        ini.write("name=" + base_name + "\n")
 
   pdb.gimp_image_delete(image_new)
   pdb.gimp_image_delete(image_thumb)

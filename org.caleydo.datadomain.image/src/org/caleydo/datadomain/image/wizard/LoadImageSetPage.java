@@ -9,8 +9,6 @@
 package org.caleydo.datadomain.image.wizard;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
@@ -63,11 +61,6 @@ public class LoadImageSetPage
 	public static final String PAGE_NAME = "Load Images";
 
 	public static final String PAGE_DESCRIPTION = "Specify the images you want to load.";
-
-	/**
-	 * Allowed config file extensions.
-	 */
-	public static final List<String> EXTENSIONS_CFG = Arrays.asList("ini");
 
 	/**
 	 * Composite that is the parent of all gui elements of this dialog.
@@ -227,8 +220,7 @@ public class LoadImageSetPage
 				if (dir == null)
 					return;
 
-				// TODO
-				// imageGroups.add(new File(dir));
+				getWizard().getImageSet().importFrom(new File(dir));
 				updateTree();
 			}
 		});
@@ -246,10 +238,10 @@ public class LoadImageSetPage
 
 				exts[0] = "";
 				names[0] = "Image Set Description (";
-				for (int i = 0; i < EXTENSIONS_CFG.size(); ++i) {
-					exts[0] += "*." + EXTENSIONS_CFG.get(i) + ";"
-							+  "*." + EXTENSIONS_CFG.get(i).toUpperCase() + ";";
-					String name = "*." + EXTENSIONS_CFG.get(i);
+				for (int i = 0; i < ImageSet.EXTENSIONS_CFG.size(); ++i) {
+					exts[0] += "*." + ImageSet.EXTENSIONS_CFG.get(i) + ";"
+							+  "*." + ImageSet.EXTENSIONS_CFG.get(i).toUpperCase() + ";";
+					String name = "*." + ImageSet.EXTENSIONS_CFG.get(i);
 					names[0] += (i > 0 ? ", " : "") + name;
 				}
 				names[0] += ")";
@@ -263,11 +255,8 @@ public class LoadImageSetPage
 				String basePath = fileDialog.getFilterPath();
 
 				for (String file_name : fileDialog.getFileNames()) {
-					LayeredImage img = LayeredImage.fromINI(new File(basePath,
-							file_name.trim()));
-					if (img != null) {
-						getWizard().getImageSet().addImage(img);
-					}
+					getWizard().getImageSet().importFrom(
+							new File(basePath, file_name));
 				}
 				updateTree();
 			}
@@ -293,8 +282,11 @@ public class LoadImageSetPage
 			Object selection = selections[0].getData();
 			if (selection instanceof LayeredImage)
 				imgFile = ((LayeredImage)selection).getBaseImage().image;
-			else if(selection instanceof LayeredImage.Layer)
-				imgFile = ((LayeredImage.Layer)selection).area.image;
+			else if(selection instanceof LayeredImage.Layer) {
+				LayeredImage.Image img = ((LayeredImage.Layer)selection).area;
+				if (img != null)
+					imgFile = img.image;
+			}
 		}
 		Image src = null;
 

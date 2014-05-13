@@ -200,6 +200,97 @@ public class LayeredImage {
 		writer.close();
 	}
 
+	/** Import image from config file (INI)
+	 *
+	 * Naming scheme for images and layers:
+	 *
+	 * (all paths are relative to the path of the ini file)
+	 *
+	 * [base]
+	 * image=<image_path>
+	 * image_thumb=<thumbnail_path>
+	 * name=<unique_image_name>
+	 *
+	 * [layer<n>]
+	 * image_area=<image_path>
+	 * image_area_thumb=<thumbnail_path>
+	 * image_border=<image_path>
+	 * image_border_thumb=<thumbnail_path>
+	 * name=<layer_id>
+	 *
+	 * The resulting structure is a LayeredImage with name = <unique_image_name>
+	 * and layers named <layerId> (or layer<n> if name property of layer is not
+	 * given).
+	 *
+	 * If an image has no layers, an empty layer can be created (a layer without
+	 * any image assigned, but a layer_id set). This allows also images without
+	 * layers to be retrieved with ImageSet::getImageForLayer.
+	 *
+	 * Example 1:
+	 *
+	 *  Importing the following config file
+	 *
+	 *  [base]
+	 *  image=K229-OR.png
+	 *  image_thumb=K229-OR_thumb.png
+	 *  name=K229-OR
+	 *  [layer1]
+	 *  image_area=K229-OR_32_area.png
+	 *  image_border=K229-OR_32_border.png
+	 *  name=K229-32
+	 *  [layer2]
+	 *  image_area=K229-OR_33_area.png
+	 *  image_border=K229-OR_33_border.png
+	 *  name=K229-33
+	 *
+	 *  results in the following structure:
+	 *
+	 *  LayeredImage: {
+	 *    name: K229-OR,
+	 *    base: {
+	 *      file: K229-OR.png,
+	 *      thumbnail: K220-OR_thumb.png
+	 *    }
+	 *    layers: {
+	 *      K229-32: {
+	 *        border: K229-OR_32_border.png,
+	 *        area: K229-OR_32_area.png
+	 *      }
+	 *      K229-33: {
+	 *        border: K229-OR_33_border.png,
+	 *        area: K229-OR_33_area.png
+	 *      }
+	 *    }
+	 *  }
+	 *
+	 *
+	 * Example 2:
+	 *
+	 *  Importing the following images
+	 *
+	 *  [base]
+	 *  image=K229-TU1_35.png
+	 *  image_thumb=K229-TU1_35_thumb.png
+	 *  name=K229-TU1
+	 *  [layer1]
+	 *  name=K229-35
+	 *
+	 *  results in the following structure
+	 *
+	 *  LayeredImage: {
+	 *    name: K229-TU1,
+	 *    base: {
+	 *      file: K229-TU1_35.png,
+	 *      thumbnail: K229-TU1_35_thumb.png
+	 *    }
+	 *    layers: {
+	 *      K229-35: null
+	 *    }
+	 *  }
+	 *
+	 * @param cfg
+	 * @return
+	 */
 	public static LayeredImage fromINI(File cfg) {
 		try {
 			INIParser ini = new INIParser(cfg);
