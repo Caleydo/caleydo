@@ -94,6 +94,7 @@ import org.caleydo.view.entourage.SlideInElement.ESlideInElementPosition;
 import org.caleydo.view.entourage.datamapping.DataMappers;
 import org.caleydo.view.entourage.datamapping.DataMappingState;
 import org.caleydo.view.entourage.datamapping.DataMappingWizard;
+import org.caleydo.view.entourage.event.AddGeneEvent;
 import org.caleydo.view.entourage.event.AddPathwayEvent;
 import org.caleydo.view.entourage.event.AddPathwayEventFactory;
 import org.caleydo.view.entourage.event.ClearWorkspaceEvent;
@@ -491,20 +492,19 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		// } else {
 		setPathLevel(EEmbeddingID.PATH_LEVEL2);
 
-		createEnRouteSpecificButtons();
+		initEnRoute();
 		// }
 		augmentation.init(gl);
 		connectionBandRenderer.init(gl);
 		registerListeners();
 	}
 
-	private void createEnRouteSpecificButtons() {
+	private void initEnRoute() {
 
-		int rendererID = pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL1).get(0);
 		useCenterLineButton.setSize(16, 16);
-		// This is a bit hacky...
-		final GLEnRoutePathway enRoute = (GLEnRoutePathway) pathInfo.multiFormRenderer.getView(rendererID);
+		final GLEnRoutePathway enRoute = getEnRoute();
 		final IResourceLocator enrouteResourceLocator = org.caleydo.view.enroute.Activator.getResourceLocator();
+		enRoute.addContentUpdateListener(dataMappingWizard);
 		useCenterLineButton.setRenderer(GLRenderers.fillImage(new ResourceLoader(enrouteResourceLocator)
 				.getTexture("resources/icons/center_data_line.png")));
 		useCenterLineButton.setSelectedRenderer(GLRenderers.pushedImage(new ResourceLoader(enrouteResourceLocator)
@@ -1088,7 +1088,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	}
 
 	public void setPathLevel(EEmbeddingID embeddingID) {
-		if (embeddingID == null)
+		if (embeddingID == null || embeddingID == pathInfo.getCurrentEmbeddingID())
 			return;
 		if (embeddingID == EEmbeddingID.PATH_LEVEL1) {
 			enrouteSlideInElement.setCurrentWindowState(smallEnrouteState);
@@ -1240,6 +1240,11 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			pathways = new HashSet<>();
 		rankingElement.setFilter(new PathwayFilters.PathwaySetFilter(pathways));
 
+	}
+
+	@ListenTo
+	public void onAddGene(AddGeneEvent event) {
+		getEnRoute().addGeneID(event.getGeneID(), event.getIdType());
 	}
 
 	@ListenTo
@@ -1770,6 +1775,12 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	 */
 	public ESampleMappingMode getSampleMappingMode() {
 		return sampleMappingMode;
+	}
+
+	// This is a bit hacky...
+	public GLEnRoutePathway getEnRoute() {
+		int rendererID = pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL1).get(0);
+		return (GLEnRoutePathway) pathInfo.multiFormRenderer.getView(rendererID);
 	}
 
 }

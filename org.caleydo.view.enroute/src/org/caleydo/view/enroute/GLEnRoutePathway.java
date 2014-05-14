@@ -32,6 +32,9 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.view.SetMinViewSizeEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedMultiTablePerspectiveBasedView;
@@ -56,6 +59,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
@@ -64,6 +68,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
+import org.caleydo.view.enroute.event.RemoveGeneEvent;
 import org.caleydo.view.enroute.event.ShowGroupSelectionDialogEvent;
 import org.caleydo.view.enroute.mappeddataview.ChooseGroupsDialog;
 import org.caleydo.view.enroute.mappeddataview.MappedDataRenderer;
@@ -175,6 +180,18 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	private boolean useColorMapping = false;
 
+	private Set<IEnrouteContentUpdateListener> contentListeners = new HashSet<>();
+
+	/**
+	 * Listener for changes in context perspectives or additional genes.
+	 *
+	 * @author Christian
+	 *
+	 */
+	public static interface IEnrouteContentUpdateListener {
+		public void onEnrouteContentChanged(GLEnRoutePathway enRoute);
+	}
+
 	/**
 	 * Constructor.
 	 *
@@ -283,7 +300,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		}
 
 		layoutManager.render(gl);
-		if (pathRenderer.getPathNodes().isEmpty()) {
+		if (pathRenderer.getPathNodes().isEmpty() && mappedDataRenderer.getAdditionalDavidIDs().isEmpty()) {
 			if (isDisplayListDirty) {
 				renderEmptyViewInfo(gl, displayListIndex);
 				isDisplayListDirty = false;
@@ -370,7 +387,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		int minMappedDataRendererWidthPixels = mappedDataRenderer.getMinWidthPixels();
 
 		adaptViewSize(minMappedDataRendererWidthPixels + pathRenderer.getMinWidthPixels() + SIDE_SPACING_MAPPED_DATA,
-				pathRenderer.getMinHeightPixels());
+				pathRenderer.getMinHeightPixels() + mappedDataRenderer.getAdditionalDavidIDs().size()
+						* pathRenderer.getSizeConfig().getRowHeight());
 
 		mappedDataRenderer.updateLayout();
 	}
@@ -603,6 +621,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				// }
 				// true for contextual perspective
 				contextualTablePerspectives.add(newTablePerspective);
+				notifyContentUpdateListners();
 
 				tpIterator.remove();
 			}
@@ -700,6 +719,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public void removeTablePerspective(TablePerspective tablePerspective) {
 		if (contextualTablePerspectives.contains(tablePerspective)) {
 			contextualTablePerspectives.remove(tablePerspective);
+			notifyContentUpdateListners();
 		}
 
 		for (TablePerspective t : tablePerspectives) {
@@ -749,6 +769,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			pathRenderer.destroy(gl);
 		}
 		mappedDataRenderer.destroy(gl);
+		contentListeners.clear();
 	}
 
 	public void setLayoutDirty() {
@@ -780,6 +801,13 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			setLayoutDirty();
 			pathRendererChanged = true;
 		}
+	}
+
+	@ListenTo
+	public void onRemoveGene(RemoveGeneEvent event) {
+		mappedDataRenderer.removeDavidID(event.getDavidID());
+		setLayoutDirty();
+		notifyContentUpdateListners();
 	}
 
 	@ListenTo
@@ -904,30 +932,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	}
 
-	// @ListenTo
-	// public void showContextSelectionDialog(final ShowContextElementSelectionDialogEvent event) {
-	//
-	// Display.getDefault().asyncExec(new Runnable() {
-	// @Override
-	// public void run() {
-	// Shell shell = new Shell();
-	// ChooseContextDataDialog dialog = new ChooseContextDataDialog(shell, event.getPerspective());
-	// dialog.create();
-	// dialog.setBlockOnOpen(true);
-	//
-	// if (dialog.open() == IStatus.OK) {
-	//
-	// // FIXME this might not be thread-safe
-	// List<Integer> selectedItems = dialog.getSelectedItems();
-	// mappedDataRenderer.setContextRowIDs(selectedItems);
-	// setLayoutDirty();
-	//
-	// }
-	// }
-	//
-	// });
-	// }
-
 	@ListenTo
 	public void showGroupSelectionDialog(final ShowGroupSelectionDialogEvent event) {
 
@@ -1011,6 +1015,19 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	}
 
+	public void addGeneID(Object id, IDType idType) {
+		IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+				IDCategory.getIDCategory(EGeneIDTypes.GENE.name()));
+		Set<Object> davidIDs = mappingManager.getIDAsSet(idType, IDType.getIDType(EGeneIDTypes.DAVID.name()), id);
+		List<Integer> idList = new ArrayList<>(davidIDs.size());
+		for (Object davidID : davidIDs) {
+			idList.add((Integer) davidID);
+		}
+		mappedDataRenderer.addDavidIDs(idList);
+		setLayoutDirty();
+		notifyContentUpdateListners();
+	}
+
 	@Override
 	public Rect getPathwayBounds() {
 
@@ -1041,6 +1058,31 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	@Override
 	public float getMinHeight() {
 		return getMinPixelHeight();
+	}
+
+	public void addContentUpdateListener(IEnrouteContentUpdateListener listener) {
+		contentListeners.add(listener);
+	}
+
+	public void removeContentUpdateListener(IEnrouteContentUpdateListener listener) {
+		contentListeners.remove(listener);
+	}
+
+	private void notifyContentUpdateListners() {
+		for (IEnrouteContentUpdateListener l : contentListeners) {
+			l.onEnrouteContentChanged(this);
+		}
+	}
+
+	/**
+	 * @return the contextualTablePerspectives, see {@link #contextualTablePerspectives}
+	 */
+	public List<TablePerspective> getContextualTablePerspectives() {
+		return contextualTablePerspectives;
+	}
+
+	public List<Integer> getAddedGeneIDs() {
+		return mappedDataRenderer.getAdditionalDavidIDs();
 	}
 
 }

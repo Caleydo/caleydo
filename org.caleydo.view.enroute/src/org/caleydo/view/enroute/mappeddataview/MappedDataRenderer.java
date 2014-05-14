@@ -6,6 +6,7 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,10 +49,12 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.event.FitToViewWidthEvent;
+import org.caleydo.view.enroute.event.RemoveGeneEvent;
 import org.caleydo.view.enroute.path.PathSizeConfiguration;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ComplexNode;
@@ -141,6 +144,11 @@ public class MappedDataRenderer {
 
 	/** The mapping Type all samples understand */
 	IDType sampleIDType;
+
+	/**
+	 * Additional David IDs specifying gene rows that should be shown after the path.
+	 */
+	private List<Integer> additionalDavidIDs = new ArrayList<>();
 
 	// FIXME: This is pure hack
 	int selectedBucketNumber = 0;
@@ -263,7 +271,7 @@ public class MappedDataRenderer {
 		ElementLayout xSpacing = new ElementLayout();
 		xSpacing.setPixelSizeX(SPACING_PIXEL_WIDTH);
 
-		float[] color;
+		float[] color = null;
 		// baseRow.setDebug(true);
 		Column dataSetColumn = new Column("dataSetColumn");
 		dataSetColumn.setBottomUp(false);
@@ -495,36 +503,8 @@ public class MappedDataRenderer {
 
 			for (Integer davidID : subDavidIDs) {
 
-				Row row = new Row("Row " + davidID);
-				row.setAbsoluteSizeY(rowHeight);
-				// row.setDebug(true);
-				dataSetColumn.append(row);
-
-				for (int tablePerspectiveCount = 0; tablePerspectiveCount < geneTablePerspectives.size(); tablePerspectiveCount++) {
-
-					ElementLayout tablePerspectiveLayout = new ElementLayout("TablePerspective "
-							+ tablePerspectiveCount + " / " + idCount);
-					// tablePerspectiveRow.setPixelSizeX(5);
-					if (!isHighlightLayout) {
-						tablePerspectiveLayout.addBackgroundRenderer(new RowBackgroundRenderer(color));
-					}
-
-					row.append(tablePerspectiveLayout);
-					rowListForTablePerspectives.get(tablePerspectiveCount).add(tablePerspectiveLayout);
-					if (tablePerspectiveCount != geneTablePerspectives.size() - 1) {
-						row.append(xSpacing);
-					}
-				}
-				ElementLayout rowCaption = new ElementLayout();
-				rowCaption.setAbsoluteSizeY(rowHeight);
-
-				if (isHighlightLayout) {
-					RowCaptionRenderer captionRenderer = new RowCaptionRenderer(davidIDType, davidID, parentView, this,
-							color);
-					rowCaption.setRenderer(captionRenderer);
-				}
-
-				captionColumn.append(rowCaption);
+				Row row = addRowForDavidID(davidID, dataSetColumn, captionColumn, rowListForTablePerspectives,
+						isHighlightLayout, color);
 
 				if (!isHighlightLayout) {
 					if (relationShipRenderer == null) {
@@ -537,11 +517,21 @@ public class MappedDataRenderer {
 							relationShipRenderer.bottomRightLayout = row;
 					}
 				}
-
 				idCount++;
 			}
 
 		}
+
+		davidIDs.addAll(additionalDavidIDs);
+		for (Integer davidID : additionalDavidIDs) {
+			if (color == ODD_BACKGROUND_COLOR)
+				color = EVEN_BACKGROUND_COLOR;
+			else
+				color = ODD_BACKGROUND_COLOR;
+			addRowForDavidID(davidID, dataSetColumn, captionColumn, rowListForTablePerspectives, isHighlightLayout,
+					color);
+		}
+
 		ElementLayout ySpacing = new ElementLayout();
 		ySpacing.setPixelSizeY(5);
 		dataSetColumn.append(ySpacing);
@@ -617,6 +607,45 @@ public class MappedDataRenderer {
 		if (!parentView.isFitWidthToScreen() && viewFrustum.getWidth() < minWidth) {
 			viewFrustum.setRight(minWidth);
 		}
+	}
+
+	private Row addRowForDavidID(Integer davidID, Column dataSetColumn, Column captionColumn,
+			ArrayList<ArrayList<ElementLayout>> rowListForTablePerspectives, boolean isHighlightLayout,
+			float[] backgroundColor) {
+		IDType davidIDType = IDType.getIDType(EGeneIDTypes.DAVID.name());
+		ElementLayout xSpacing = new ElementLayout();
+		xSpacing.setPixelSizeX(SPACING_PIXEL_WIDTH);
+
+		Row row = new Row("Row " + davidID);
+		row.setAbsoluteSizeY(rowHeight);
+		// row.setDebug(true);
+		dataSetColumn.append(row);
+
+		for (int tablePerspectiveCount = 0; tablePerspectiveCount < geneTablePerspectives.size(); tablePerspectiveCount++) {
+
+			ElementLayout tablePerspectiveLayout = new ElementLayout("TablePerspective " + tablePerspectiveCount);
+			// tablePerspectiveRow.setPixelSizeX(5);
+			if (!isHighlightLayout) {
+				tablePerspectiveLayout.addBackgroundRenderer(new RowBackgroundRenderer(backgroundColor));
+			}
+
+			row.append(tablePerspectiveLayout);
+			rowListForTablePerspectives.get(tablePerspectiveCount).add(tablePerspectiveLayout);
+			if (tablePerspectiveCount != geneTablePerspectives.size() - 1) {
+				row.append(xSpacing);
+			}
+		}
+		ElementLayout rowCaption = new ElementLayout();
+		rowCaption.setAbsoluteSizeY(rowHeight);
+
+		if (isHighlightLayout) {
+			RowCaptionRenderer captionRenderer = new RowCaptionRenderer(davidIDType, davidID, parentView, this,
+					backgroundColor);
+			rowCaption.setRenderer(captionRenderer);
+		}
+
+		captionColumn.append(rowCaption);
+		return row;
 	}
 
 	private void calcMinWidthPixels() {
@@ -881,6 +910,12 @@ public class MappedDataRenderer {
 				AContextMenuItem sortByDimensionItem = new GenericContextMenuItem("Sort by this row ", sortEvents);
 
 				parentView.getContextMenuCreator().addContextMenuItem(sortByDimensionItem);
+
+				if (additionalDavidIDs.contains(pick.getObjectID())) {
+					AContextMenuItem removeGeneItem = new GenericContextMenuItem("Remove", new RemoveGeneEvent(pick
+							.getObjectID()));
+					parentView.getContextMenuCreator().addContextMenuItem(removeGeneItem);
+				}
 
 			}
 
@@ -1171,6 +1206,33 @@ public class MappedDataRenderer {
 	 */
 	public IDType getSampleIDType() {
 		return sampleIDType;
+	}
+
+	/**
+	 * @param additionalDavidIDs
+	 *            setter, see {@link additionalDavidIDs}
+	 */
+	public void setAdditionalDavidIDs(List<Integer> additionalDavidIDs) {
+		this.additionalDavidIDs = additionalDavidIDs;
+	}
+
+	public void addDavidIDs(Collection<Integer> davidIDs) {
+		additionalDavidIDs.addAll(davidIDs);
+	}
+
+	public void addDavidID(Integer davidID) {
+		additionalDavidIDs.add(davidID);
+	}
+
+	/**
+	 * @return the additionalDavidIDs, see {@link #additionalDavidIDs}
+	 */
+	public List<Integer> getAdditionalDavidIDs() {
+		return additionalDavidIDs;
+	}
+
+	public void removeDavidID(Integer davidID) {
+		additionalDavidIDs.remove(davidID);
 	}
 
 }

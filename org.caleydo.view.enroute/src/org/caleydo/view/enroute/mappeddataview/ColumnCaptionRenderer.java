@@ -18,6 +18,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -109,7 +110,7 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 		if (textWidth < x) {
 			textXOffset = (x - textWidth) / 2;
 		}
-
+		textRenderer.setColor(Color.BLACK);
 		textRenderer.renderTextInBounds(gl, label, textXOffset, (y - textHeight) / 2, 0.1f, x, textHeight);
 
 	}
