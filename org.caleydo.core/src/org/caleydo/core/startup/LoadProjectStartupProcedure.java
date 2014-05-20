@@ -8,6 +8,7 @@ package org.caleydo.core.startup;
 import static org.caleydo.core.manager.GeneralManager.CALEYDO_HOME_PATH;
 
 import java.io.File;
+import java.util.HashMap;
 
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.collection.table.TableUtils;
@@ -56,7 +57,7 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 			ZipUtils.unzipToDirectory(this.packedProjectLocation, this.unpackedProjectLocation);
 		}
 
-		if (!ProjectManager.checkCompatibility(this.unpackedProjectLocation)){
+		if (!ProjectManager.checkCompatibility(this.unpackedProjectLocation)) {
 			Logger.create(LoadProjectStartupProcedure.class).error(
 					"Incompatible Project: " + this.packedProjectLocation);
 			MessageDialog.openError(null, "Error Incompatible Project", "The project file:\n"
@@ -87,15 +88,22 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 
 				DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
 
-				TableUtils.loadData(tDataDomain, dataSetDescription, false, false);
+				HashMap<String, Perspective> recordPerspectives = dataSerializationData.getRecordPerspectiveMap();
+				HashMap<String, Perspective> dimensionPerspectives = dataSerializationData.getDimensionPerspectiveMap();
+				TableUtils.loadData(tDataDomain, dataSetDescription, dimensionPerspectives == null,
+						recordPerspectives == null);
 				Table table = tDataDomain.getTable();
-				for (Perspective perspective : dataSerializationData
-						.getRecordPerspectiveMap().values()) {
-					table.registerRecordPerspective(perspective);
+
+				if (recordPerspectives != null) {
+					for (Perspective perspective : recordPerspectives.values()) {
+						table.registerRecordPerspective(perspective);
+					}
 				}
-				for (Perspective perspective : dataSerializationData
-						.getDimensionPerspectiveMap().values()) {
-					table.registerDimensionPerspective(perspective);
+
+				if (dimensionPerspectives != null) {
+					for (Perspective perspective : dimensionPerspectives.values()) {
+						table.registerDimensionPerspective(perspective);
+					}
 				}
 				for (TablePerspective container : tDataDomain.getTablePerspectives().values()) {
 					container.postDesirialize();

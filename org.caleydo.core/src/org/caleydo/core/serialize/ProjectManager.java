@@ -231,46 +231,53 @@ public final class ProjectManager {
 				Set<String> recordPerspectiveIDs = ((ATableBasedDataDomain) dataDomain).getRecordPerspectiveIDs();
 				Set<String> dimensionPerspectiveIDs = ((ATableBasedDataDomain) dataDomain).getDimensionPerspectiveIDs();
 
-				int nrPerspectives = recordPerspectiveIDs.size() + dimensionPerspectiveIDs.size();
+				int nrPerspectives = (recordPerspectiveIDs != null ? recordPerspectiveIDs.size() : 0)
+						+ (dimensionPerspectiveIDs != null ? dimensionPerspectiveIDs.size() : 0);
 				SubMonitor dataDomainMonitor = monitor.newChild(10, SubMonitor.SUPPRESS_SUBTASK);
 				dataDomainMonitor.beginTask("Loading Groupings for: " + dataDomain.getLabel(), nrPerspectives);
 
-				for (String recordPerspectiveID : recordPerspectiveIDs) {
+				if (recordPerspectiveIDs != null) {
 
-					Perspective recordPerspective = (Perspective) unmarshaller.unmarshal(GeneralManager.get()
-							.getResourceLoader().getResource(extendedDirName + recordPerspectiveID + ".xml"));
-					recordPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
-					recordPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getRecordIDType());
-					recordPerspectives.put(recordPerspectiveID, recordPerspective);
+					for (String recordPerspectiveID : recordPerspectiveIDs) {
 
-					ClusterTree tree = loadTree(extendedDirName + recordPerspectiveID + "_tree.xml",
-							((ATableBasedDataDomain) dataDomain).getRecordIDType());
-					if (tree != null)
-						recordPerspective.setTree(tree);
+						Perspective recordPerspective = (Perspective) unmarshaller.unmarshal(GeneralManager.get()
+								.getResourceLoader().getResource(extendedDirName + recordPerspectiveID + ".xml"));
+						recordPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
+						recordPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getRecordIDType());
+						recordPerspectives.put(recordPerspectiveID, recordPerspective);
 
-					dataDomainMonitor.worked(1);
+						ClusterTree tree = loadTree(extendedDirName + recordPerspectiveID + "_tree.xml",
+								((ATableBasedDataDomain) dataDomain).getRecordIDType());
+						if (tree != null)
+							recordPerspective.setTree(tree);
+
+						dataDomainMonitor.worked(1);
+					}
+
+					dataInitializationData.setRecordPerspectiveMap(recordPerspectives);
 				}
 
-				dataInitializationData.setRecordPerspectiveMap(recordPerspectives);
+				if (dimensionPerspectiveIDs != null) {
 
-				HashMap<String, Perspective> dimensionPerspectives = new HashMap<String, Perspective>();
+					HashMap<String, Perspective> dimensionPerspectives = new HashMap<String, Perspective>();
 
-				for (String dimensionPerspectiveID : dimensionPerspectiveIDs) {
+					for (String dimensionPerspectiveID : dimensionPerspectiveIDs) {
 
-					Perspective dimensionPerspective = (Perspective) unmarshaller.unmarshal(GeneralManager.get()
-							.getResourceLoader().getResource(extendedDirName + dimensionPerspectiveID + ".xml"));
-					dimensionPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
-					dimensionPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getDimensionIDType());
-					dimensionPerspectives.put(dimensionPerspectiveID, dimensionPerspective);
+						Perspective dimensionPerspective = (Perspective) unmarshaller.unmarshal(GeneralManager.get()
+								.getResourceLoader().getResource(extendedDirName + dimensionPerspectiveID + ".xml"));
+						dimensionPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
+						dimensionPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getDimensionIDType());
+						dimensionPerspectives.put(dimensionPerspectiveID, dimensionPerspective);
 
-					ClusterTree tree = loadTree(extendedDirName + dimensionPerspectiveID + "_tree.xml",
-							((ATableBasedDataDomain) dataDomain).getDimensionIDType());
-					dimensionPerspective.setTree(tree);
+						ClusterTree tree = loadTree(extendedDirName + dimensionPerspectiveID + "_tree.xml",
+								((ATableBasedDataDomain) dataDomain).getDimensionIDType());
+						dimensionPerspective.setTree(tree);
 
-					dataDomainMonitor.worked(1);
+						dataDomainMonitor.worked(1);
+					}
+
+					dataInitializationData.setDimensionPerspectiveMap(dimensionPerspectives);
 				}
-
-				dataInitializationData.setDimensionPerspectiveMap(dimensionPerspectives);
 
 				serializationData.addDataDomainSerializationData(dataInitializationData);
 
