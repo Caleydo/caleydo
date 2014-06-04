@@ -264,6 +264,11 @@ public class Table {
 
 	}
 
+	public EDataClass getDataClass(Integer dimensionID) {
+		return columns.get(dimensionID).getDataClass();
+
+	}
+
 	@SuppressWarnings("unchecked")
 	public <RAW_DATA_TYPE> RAW_DATA_TYPE getRaw(Integer dimensionID, Integer recordID) {
 		Integer columnID = dimensionID;
