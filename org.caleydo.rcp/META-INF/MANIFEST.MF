@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Caleydo RCP Plug-in
+Bundle-SymbolicName: org.caleydo.rcp;singleton:=true
+Bundle-Version: 3.1.4.qualifier
+Bundle-ClassPath: .
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: www.caleydo.org

@@ -16,6 +16,8 @@
 	
 	<modules>
 		<module>org.caleydo.core</module>
+		<module>org.caleydo.ui</module>
+		<module>org.caleydo.rcp</module>
 		<module>org.caleydo.data</module>
 		<module>org.caleydo.util.gleem</module>
 		<module>org.caleydo.util.bubblesets</module>
