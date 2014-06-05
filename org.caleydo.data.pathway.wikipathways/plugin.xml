@@ -2,23 +2,24 @@
 <?eclipse version="3.4"?>
 <plugin>
   <extension
-        id="org.caleydo.data.pathway.wikipathways.WikiPathwaysResourceLoader"
-        name="WikiPathwaysResourceLoader"
-        point="org.caleydo.data.pathway.PathwayResourceLoader">
-        <PathwayResourceLoader
-          class="org.caleydo.data.pathway.wikipathways.WikiPathwaysResourceLoader" />
-  </extension>
-  <extension
-        point="org.caleydo.data.pathway.PathwayParser">
-     <PathwayParser
-           class="org.caleydo.data.pathway.wikipathways.WikiPathwaysParser">
-     </PathwayParser>
-  </extension>
-  <extension
         point="org.caleydo.core.CacheInitializer">
      <initializer
            class="org.caleydo.data.pathway.wikipathways.WikiPathwaysParser">
      </initializer>
+  </extension>
+  <extension
+        point="org.caleydo.data.pathway.Database">
+     <database
+           label="org.caleydo.data.pathway.wikipathways.database1"
+           loader="org.caleydo.data.pathway.wikipathways.WikiPathwaysParser"
+           name="WikiPathways"
+           url="www.wikipathways.org">
+        <renderer
+              fragmentShader="shader/fsTextOverlay.glsl"
+              renderBackground="true"
+              vertexShader="shader/vsTextOverlay.glsl">
+        </renderer>
+     </database>
   </extension>
 
 </plugin>

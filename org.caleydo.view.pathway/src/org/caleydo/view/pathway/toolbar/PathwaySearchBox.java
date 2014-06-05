@@ -128,13 +128,15 @@ public class PathwaySearchBox extends ControlContribution {
 	 * @return
 	 */
 	private boolean loadPathway(String entity) {
-		EPathwayDatabaseType ePathwayDatabaseType;
+		EPathwayDatabaseType ePathwayDatabaseType = null;
 
-		if (entity.contains(EPathwayDatabaseType.KEGG.getName())) {
-			ePathwayDatabaseType = EPathwayDatabaseType.KEGG;
-		} else if (entity.contains(EPathwayDatabaseType.WIKIPATHWAYS.getName())) {
-			ePathwayDatabaseType = EPathwayDatabaseType.WIKIPATHWAYS;
-		} else
+		for (EPathwayDatabaseType d : EPathwayDatabaseType.values()) {
+			if (entity.contains(d.getName())) {
+				ePathwayDatabaseType = d;
+				break;
+			}
+		}
+		if (ePathwayDatabaseType == null)
 			return false;
 
 		entity = entity.substring(0, entity.indexOf(" ("));

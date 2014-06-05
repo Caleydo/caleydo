@@ -24,8 +24,6 @@ import org.caleydo.datadomain.pathway.AVertexRepBasedEventFactory;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
-import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.entourage.EEmbeddingID;
 
 /**
@@ -45,8 +43,7 @@ public class AddPathwayEventFactory extends AVertexRepBasedEventFactory {
 	@Override
 	public AEvent create(PathwayVertexRep vertexRep) {
 		if (vertexRep != null && vertexRep.getType() == EPathwayVertexType.map) {
-			PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
-					EPathwayDatabaseType.KEGG);
+			PathwayGraph pathway = vertexRep.getPathway();
 			if (pathway != null) {
 				AddPathwayEvent event = new AddPathwayEvent(pathway, EEmbeddingID.PATHWAY_LEVEL2);
 				event.setEventSpace(eventSpace);

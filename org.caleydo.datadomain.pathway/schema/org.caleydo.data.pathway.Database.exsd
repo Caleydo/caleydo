@@ -3,10 +3,10 @@
 <schema targetNamespace="org.caleydo.datadomain.pathway" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.caleydo.datadomain.pathway" id="org.caleydo.data.pathway.PathwayParser" name="PathwayParser"/>
+         <meta.schema plugin="org.caleydo.datadomain.pathway" id="org.caleydo.data.pathway.Database" name="Pathway Database"/>
       </appinfo>
       <documentation>
-         Defines a parser for a certain type of pathways.
+         [Enter description of this extension point.]
       </documentation>
    </annotation>
 
@@ -17,8 +17,8 @@
          </appinfo>
       </annotation>
       <complexType>
-         <sequence>
-            <element ref="PathwayParser"/>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="database"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,16 +47,75 @@
       </complexType>
    </element>
 
-   <element name="PathwayParser">
+   <element name="database">
       <complexType>
-         <attribute name="class" type="string" use="required">
+         <choice>
+            <element ref="renderer"/>
+         </choice>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="url" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.caleydo.datadomain.pathway.IPathwayParser"/>
+                  <meta.attribute kind="resource"/>
                </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="loader" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.caleydo.datadomain.pathway.IPathwayLoader"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="renderer">
+      <complexType>
+         <attribute name="vertexShader" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="fragmentShader" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="renderBackground" type="boolean" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

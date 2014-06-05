@@ -49,7 +49,6 @@ public enum EIconTextures {
 	LOADING_CIRCLE("resources/loading/loading_circle.png"),
 
 	CM_SELECTION_RIGHT_EXTENSIBLE_BLACK("/resources/context_menu/submenue_black.png"),
-	CM_KEGG("/resources/context_menu/kegg.png"),
 
 
 	COMPARER_SHOW_HIDDEN("/resources/icons/view/compare/show_hidden_elements.png"),

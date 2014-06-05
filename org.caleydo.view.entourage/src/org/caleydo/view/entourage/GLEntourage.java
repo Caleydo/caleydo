@@ -49,7 +49,6 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElement.EVisibility;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
@@ -61,6 +60,7 @@ import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.util.GLElementWindow;
 import org.caleydo.core.view.opengl.layout2.util.GLElementWindow.ICloseWindowListener;
+import org.caleydo.core.view.opengl.layout2.util.GLGraphicsUtils;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -84,7 +84,6 @@ import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.SampleMappingModeEvent;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
 import org.caleydo.view.enroute.GLEnRoutePathway;
@@ -982,7 +981,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		if (isLayoutDirty)
 			updateAugmentation = true;
 
-		final boolean isPickingRun = GLGraphics.isPickingPass(gl);
+		final boolean isPickingRun = GLGraphicsUtils.isPickingPass(gl);
 		if (!isPickingRun) {
 			if (!contextMenuItemsToShow.isEmpty()) {
 				for (AContextMenuItem item : contextMenuItemsToShow) {
@@ -1461,7 +1460,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			for (PathwayVertexRep vertexRep : info.pathway.vertexSet()) {
 				if (vertexRep.getType() == EPathwayVertexType.map) {
 					PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
-							EPathwayDatabaseType.KEGG);
+							vertexRep.getPathway().getType());
 					PathwayMultiFormInfo target = getPathwayMultiFormInfo(pathway);
 					if (target != null) {
 						PortalHighlightRenderer renderer = new PortalHighlightRenderer(info, getPortalLocation(
@@ -1493,7 +1492,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	}
 
 	private boolean addPortalHighlightRenderer(PathwayVertexRep vertexRep, PathwayMultiFormInfo info) {
-		PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(), EPathwayDatabaseType.KEGG);
+		PathwayGraph pathway = vertexRep.getPathway();
 		boolean wasHighlighted = false;
 		if (pathway != null) {
 			PathwayMultiFormInfo windowInfo = getPathwayMultiFormInfo(pathway);

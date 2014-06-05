@@ -1,5 +1,4 @@
 uniform sampler2D pathwayTex;
-uniform int mode;
 varying vec2 texCoord;
 
 //https://github.com/ashi009/sc/blob/master/shader/fragment.glslf
@@ -53,29 +52,23 @@ void main(void)
 	vec4 texValue=texture2D(pathwayTex, texCoord);
 	if (texValue.a < 0.1)
 		discard;
-	if (mode == 1) {//wiki pathways
-		float threshold=0.8;
-		if((texValue.r>threshold && texValue.g>threshold && texValue.b>threshold)){
-			discard;
-		}
-	} else if (mode == 0) {//kegg
-		//rgb(191,255,191) or hsv(120,25,100) (hsv range: 360,100,100)
-		vec3 hsv = rgb2hsv(texValue.rgb);
-		float hDelta = abs(hsv.x - 120.);
-		float sDelta = abs(hsv.y - 0.25);
-		float vDelta = 1. - hsv.z;
-		if ((hDelta < 5. && sDelta < 0.15 && vDelta < 0.1)) // || (texValue.r > 0.95 && texValue.g > 0.95 && texValue.b > 0.95) ) //matching
-			discard;
-		else if (hDelta < 5. && vDelta > 0.1) { //fade to black
-			texValue.rgb = vec3(0,0,0);
-			texValue.a = vDelta;
-		} else if (vDelta < 0.2 && sDelta < 0.2 && hsv.x < 120.) { //fade to red
-			texValue.rgb = hsv2rgb(vec3(0,hsv.y,1));
-			texValue.a = 1.-hsv.x/120.;
-		} else if (vDelta < 0.2 && sDelta < 0.2 && hsv.x > 120. && hsv.x < 220.) { //fade to blue
-			texValue.rgb = hsv2rgb(vec3(210,1,1));
-			texValue.a = (hsv.x-120.)/(210.-120.);
-		}
+	
+	//rgb(191,255,191) or hsv(120,25,100) (hsv range: 360,100,100)
+	vec3 hsv = rgb2hsv(texValue.rgb);
+	float hDelta = abs(hsv.x - 120.);
+	float sDelta = abs(hsv.y - 0.25);
+	float vDelta = 1. - hsv.z;
+	if ((hDelta < 5. && sDelta < 0.15 && vDelta < 0.1)) // || (texValue.r > 0.95 && texValue.g > 0.95 && texValue.b > 0.95) ) //matching
+		discard;
+	else if (hDelta < 5. && vDelta > 0.1) { //fade to black
+		texValue.rgb = vec3(0,0,0);
+		texValue.a = vDelta;
+	} else if (vDelta < 0.2 && sDelta < 0.2 && hsv.x < 120.) { //fade to red
+		texValue.rgb = hsv2rgb(vec3(0,hsv.y,1));
+		texValue.a = 1.-hsv.x/120.;
+	} else if (vDelta < 0.2 && sDelta < 0.2 && hsv.x > 120. && hsv.x < 220.) { //fade to blue
+		texValue.rgb = hsv2rgb(vec3(210,1,1));
+		texValue.a = (hsv.x-120.)/(210.-120.);
 	}
 		
 	gl_FragColor = texValue;

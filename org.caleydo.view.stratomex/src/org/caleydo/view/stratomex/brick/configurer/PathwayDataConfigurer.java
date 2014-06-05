@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex.brick.configurer;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +23,6 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.PathwayActions;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -199,10 +199,7 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 				PathwayTablePerspective brickData = (PathwayTablePerspective) brick.getTablePerspective();
 				if (brickData.getPathway() != null) {
 					EPathwayDatabaseType dataBaseType = brickData.getPathway().getType();
-					EIconTextures texture = null;
-					if (dataBaseType == EPathwayDatabaseType.KEGG) {
-						texture = EIconTextures.CM_KEGG;
-					}
+					URL texture = dataBaseType.getIcon();
 
 					if (texture != null) {
 						ALayoutRenderer compactPathwayRenderer = new CompactPathwayRenderer(brick, brick

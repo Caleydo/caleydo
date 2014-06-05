@@ -19,6 +19,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.core.view.opengl.layout2.util.GLGraphicsUtils;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.PickingManager;
@@ -139,7 +140,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 			isLayoutDirty = false;
 		}
 
-		final boolean isPickingRun = GLGraphics.isPickingPass(gl);
+		final boolean isPickingRun = GLGraphicsUtils.isPickingPass(gl);
 		int deltaTimeMs = 0;
 		if (!isPickingRun) {
 			deltaTimeMs = local.getDeltaTimeMs();

@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.datadomain.pathway.parser;
+package org.caleydo.data.pathway.kegg;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -67,12 +67,14 @@ public class KgmlSaxHandler extends DefaultHandler {
 	private final File image;
 
 	StringBuilder idMappingErrors;
+	private final EPathwayDatabaseType type;
 
 	/**
 	 * Constructor.
 	 */
-	public KgmlSaxHandler(File image, StringBuilder idMappingErrors) {
+	public KgmlSaxHandler(EPathwayDatabaseType type, File image, StringBuilder idMappingErrors) {
 		super();
+		this.type = type;
 		this.idMappingErrors = idMappingErrors;
 		pathwayItemManager = PathwayItemManager.get();
 		pathwayManager = PathwayManager.get();
@@ -162,7 +164,7 @@ public class KgmlSaxHandler extends DefaultHandler {
 			title = "unknown title";
 		}
 
-		currentPathway = pathwayManager.createPathway(EPathwayDatabaseType.KEGG, name, title, image, externalLink);
+		currentPathway = pathwayManager.createPathway(type, name, title, image, externalLink);
 
 		hashKgmlEntryIdToVertexRep.clear();
 		hashKgmlReactionNameToVertexRep.clear();

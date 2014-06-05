@@ -8,6 +8,7 @@ package org.caleydo.datadomain.pathway;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
@@ -18,13 +19,13 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
  * @author Christian Partl
  *
  */
-public interface IPathwayParser {
+public interface IPathwayLoader {
 
 	/**
 	 * Creates all {@link PathwayGraph}s for a specific type of pathways, i.e., a pathway database. These graphs must be
 	 * created using the {@link PathwayManager} and {@link PathwayVertex}, {@link PathwayVertexRep}, etc. objects must
 	 * be created using the {@link PathwayItemManager}.
 	 */
-	public void parse();
+	public void parse(EPathwayDatabaseType type);
 
 }

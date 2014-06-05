@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.datadomain.pathway.parser;
+package org.caleydo.data.pathway.kegg;
 
 import java.awt.Dimension;
 import java.io.File;
@@ -25,9 +25,9 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.RemoteFile;
 import org.caleydo.datadomain.genetic.GeneticMetaData;
 import org.caleydo.datadomain.genetic.Organism;
+import org.caleydo.datadomain.pathway.IPathwayLoader;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
-import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
@@ -43,7 +43,7 @@ import com.google.common.io.Files;
  * @author Samuel Gratzl
  *
  */
-public class KEGGParser implements IRunnableWithProgress {
+public class KEGGParser implements IRunnableWithProgress, IPathwayLoader {
 	private static final Logger log = Logger.create(KEGGParser.class);
 
 	@Override
@@ -91,8 +91,8 @@ public class KEGGParser implements IRunnableWithProgress {
 		m.done();
 	}
 
-	public static void parse(PathwayDatabase pathwayDatabase) {
-		assert pathwayDatabase.getType() == EPathwayDatabaseType.KEGG;
+	@Override
+	public void parse(EPathwayDatabaseType type) {
 		// // Try reading list of files directly from local hard dist
 		// File folder = new File(sXMLPath);
 		// File[] arFiles = folder.listFiles();
@@ -109,7 +109,7 @@ public class KEGGParser implements IRunnableWithProgress {
 			log.error("can't load list data from: " + listRFile.getUrl());
 			return;
 		}
-		log.info("Start parsing " + pathwayDatabase.getName() + " pathways.");
+		log.info("Start parsing " + type.getName() + " pathways.");
 
 		List<String> lines;
 		try {
@@ -148,7 +148,7 @@ public class KEGGParser implements IRunnableWithProgress {
 				// to check external DTDs.
 				reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 
-				KgmlSaxHandler kgmlParser = new KgmlSaxHandler(imageFile, idMappingErrors);
+				KgmlSaxHandler kgmlParser = new KgmlSaxHandler(type, imageFile, idMappingErrors);
 				reader.setEntityResolver(kgmlParser);
 				reader.setContentHandler(kgmlParser);
 
@@ -180,7 +180,7 @@ public class KEGGParser implements IRunnableWithProgress {
 					+ idMappingErrors.toString();
 			log.info(message);
 		}
-		log.info("Finished parsing " + pathwayDatabase.getName() + " pathways.");
+		log.info("Finished parsing " + type.getName() + " pathways.");
 	}
 
 	/**

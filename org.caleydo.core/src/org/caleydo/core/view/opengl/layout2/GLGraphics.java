@@ -8,11 +8,6 @@ package org.caleydo.core.view.opengl.layout2;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,7 +17,6 @@ import java.util.ListIterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
-import javax.media.opengl.GL2ES2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.base.ILabeled;
@@ -31,6 +25,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
+import org.caleydo.core.view.opengl.layout2.util.GLGraphicsUtils;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.core.view.opengl.util.gleem.ColoredVec2f;
 import org.caleydo.core.view.opengl.util.spline.ITesselatedPolygon;
@@ -40,8 +35,6 @@ import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.caleydo.data.loader.StackedResourceLocator;
 
-import com.google.common.io.CharStreams;
-import com.jogamp.opengl.util.glsl.ShaderUtil;
 import com.jogamp.opengl.util.texture.Texture;
 
 /**
@@ -190,13 +183,7 @@ public class GLGraphics {
 	 * @return
 	 */
 	public boolean isPickingPass() {
-		return isPickingPass(gl);
-	}
-
-	public static boolean isPickingPass(GL2 gl) {
-		int[] r = new int[1];
-		gl.glGetIntegerv(GL2.GL_RENDER_MODE, r, 0);
-		return r[0] == GL2.GL_SELECT;
+		return GLGraphicsUtils.isPickingPass(gl);
 	}
 
 	// #############
@@ -318,75 +305,6 @@ public class GLGraphics {
 		renderer.render(this, w, h, parent);
 		popName();
 		return this;
-	}
-
-	public int compileShader(String vertexShader, String FragmentShader) {
-		if (!ShaderUtil.isShaderCompilerAvailable(gl)) {
-			System.err.println("no shader available!");
-			return -1;
-		}
-
-		int vs = gl.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
-		gl.glShaderSource(vs, 1, new String[] {vertexShader}, (int[]) null, 0);
-		gl.glCompileShader(vs);
-
-		ByteArrayOutputStream slog = new ByteArrayOutputStream();
-		PrintStream slog_print = new PrintStream(slog);
-
-		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, slog_print)) {
-			gl.glDeleteShader(vs);
-			System.err.println("can't compile vertex shader: " + slog.toString());
-			return -1;
-		} else {
-			System.out.println("compiling vertex shader warnings: " + ShaderUtil.getShaderInfoLog(gl, vs));
-		}
-
-		int fs = gl.glCreateShader(GL2ES2.GL_FRAGMENT_SHADER);
-		gl.glShaderSource(fs, 1, new String[] {FragmentShader}, (int[]) null, 0);
-		gl.glCompileShader(fs);
-		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, slog_print)) {
-			gl.glDeleteShader(vs);
-			gl.glDeleteShader(fs);
-			System.err.println("can't compile fragment shader: " + slog.toString());
-			return -1;
-		} else {
-			System.out.println("compiling fragment shader warnings: " + ShaderUtil.getShaderInfoLog(gl, fs));
-		}
-
-		int programId = gl.glCreateProgram();
-		gl.glAttachShader(programId, vs);
-		gl.glAttachShader(programId, fs);
-		gl.glLinkProgram(programId);
-		gl.glValidateProgram(programId);
-
-		// Mark shaders for deletion (they will not be freed as long as they
-		// are attached to a program)
-		gl.glDeleteShader(vs);
-		gl.glDeleteShader(fs);
-
-		if (!ShaderUtil.isProgramLinkStatusValid(gl, programId, slog_print)) {
-			gl.glDeleteProgram(programId);
-			System.err.println("can't link program: " + slog.toString());
-			return -1;
-		} else {
-			System.out.println("linking program warnings: " + ShaderUtil.getProgramInfoLog(gl, programId));
-		}
-
-		return programId;
-	}
-
-	/**
-	 * Load and compile vertex and fragment shader
-	 * @param vertexShader
-	 * @param fragmentShader
-	 * @return
-	 * @throws IOException
-	 */
-	public int loadShader( InputStream vertexShader,
-						   InputStream fragmentShader ) throws IOException {
-		String vsrc = CharStreams.toString(new InputStreamReader(vertexShader));
-		String fsrc = CharStreams.toString(new InputStreamReader(fragmentShader));
-		return compileShader(vsrc, fsrc);
 	}
 
 	/**
