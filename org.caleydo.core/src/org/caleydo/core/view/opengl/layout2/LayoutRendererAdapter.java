@@ -20,6 +20,7 @@ import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.core.view.opengl.layout2.util.GLGraphicsUtils;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 
@@ -151,7 +152,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 			dirty = false;
 		}
 
-		final boolean isPickingRun = GLGraphics.isPickingPass(gl);
+		final boolean isPickingRun = GLGraphicsUtils.isPickingPass(gl);
 		int deltaTimeMs = 0;
 		if (!isPickingRun) {
 			deltaTimeMs = local.getDeltaTimeMs();
