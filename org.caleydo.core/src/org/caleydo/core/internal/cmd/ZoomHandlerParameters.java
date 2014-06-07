@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.core.gui.command;
+package org.caleydo.core.internal.cmd;
 import java.util.Map;
 
 import org.eclipse.core.commands.IParameterValues;

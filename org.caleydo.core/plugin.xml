@@ -60,30 +60,38 @@
       <extension
             point="org.eclipse.ui.commands">
          <command
-               defaultHandler="org.caleydo.core.gui.command.FullScreenHandler"
+               defaultHandler="org.caleydo.core.internal.cmd.FullScreenHandler"
                id="org.caleydo.core.gui.fullscreen"
                name="Full Screen">
          </command>
          <command
-               defaultHandler="org.caleydo.core.gui.command.TakeSnapshotHandler"
+               defaultHandler="org.caleydo.core.internal.cmd.TakeSnapshotHandler"
                id="org.caleydo.core.io.gui.snapshot"
                name="Take Snapshot">
          </command>
          <command
-               defaultHandler="org.caleydo.core.gui.command.ClearSelectionsHandler"
+               defaultHandler="org.caleydo.core.internal.cmd.ClearSelectionsHandler"
                id="org.caleydo.core.startup.clearselections"
                name="Clear Selections">
          </command>
          <command
-               defaultHandler="org.caleydo.core.gui.command.ZoomHandler"
+               defaultHandler="org.caleydo.core.internal.cmd.ZoomHandler"
                id="org.caleydo.core.startup.zoom"
                name="Change Zoom Factor">
             <commandParameter
                   id="action"
                   name="Zooming action"
                   optional="true"
-                  values="org.caleydo.core.gui.command.ZoomHandlerParameters">
+                  values="org.caleydo.core.internal.cmd.ZoomHandlerParameters">
             </commandParameter>
          </command>
+      </extension>
+      <extension
+            point="org.eclipse.ui.preferencePages">
+         <page
+               class="org.caleydo.core.internal.ui.ViewPreferencePage"
+               id="org.caleydo.core.gui.preferences.views"
+               name="Views">
+         </page>
       </extension>
 </plugin>

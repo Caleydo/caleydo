@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex.command.handler;
 
-import org.caleydo.core.gui.command.AOpenViewHandler;
+import org.caleydo.core.internal.cmd.AOpenViewHandler;
 import org.caleydo.view.stratomex.GLStratomex;
 
 public class OpenStratomexHandler extends AOpenViewHandler {

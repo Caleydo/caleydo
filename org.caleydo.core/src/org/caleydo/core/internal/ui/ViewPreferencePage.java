@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.core.gui.preferences;
+package org.caleydo.core.internal.ui;
 
 import org.caleydo.core.gui.util.ScaleFieldEditor2;
 import org.caleydo.core.gui.util.SpinnerFieldEditor;

@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.info.dataset;
 
-import org.caleydo.core.gui.command.AOpenViewHandler;
+import org.caleydo.core.internal.cmd.AOpenViewHandler;
 
 public class OpenDatasetInfoHandler extends AOpenViewHandler {
 

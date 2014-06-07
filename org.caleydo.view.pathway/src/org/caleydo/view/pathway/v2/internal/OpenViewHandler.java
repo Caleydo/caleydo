@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.pathway.v2.internal;
 
-import org.caleydo.core.gui.command.AOpenViewHandler;
+import org.caleydo.core.internal.cmd.AOpenViewHandler;
 
 /**
  * simple command handler for opening this view

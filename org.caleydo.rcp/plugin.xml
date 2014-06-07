@@ -406,11 +406,6 @@
                   name="Visual Links">
             </page-->
             <page
-                  class="org.caleydo.core.gui.preferences.ViewPreferencePage"
-                  id="org.caleydo.core.gui.preferences.views"
-                  name="Views">
-            </page>
-            <page
 	            name="Keys"
 	            class="org.eclipse.ui.ExtensionFactory:keysPreferencePage"
 	            id="org.eclipse.ui.preferencePages.Keys"

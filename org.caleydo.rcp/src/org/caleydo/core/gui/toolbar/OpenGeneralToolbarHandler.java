@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.core.gui.toolbar;
 
-import org.caleydo.core.gui.command.AOpenViewHandler;
+import org.caleydo.core.internal.cmd.AOpenViewHandler;
 
 public class OpenGeneralToolbarHandler extends AOpenViewHandler {
 	public OpenGeneralToolbarHandler() {

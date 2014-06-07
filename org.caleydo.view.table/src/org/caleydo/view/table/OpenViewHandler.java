@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.table;
 
-import org.caleydo.core.gui.command.AOpenViewHandler;
+import org.caleydo.core.internal.cmd.AOpenViewHandler;
 
 public class OpenViewHandler extends AOpenViewHandler {
 	public OpenViewHandler() {
