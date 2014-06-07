@@ -22,15 +22,6 @@
    <extension-point id="org.caleydo.datadomain.TablePerspectiveActions" name="TablePerspectiveActions" schema="schema/org.caleydo.datadomain.TablePerspectiveActions.exsd"/>
    <extension-point id="org.caleydo.datadomain.TypedIDActions" name="TypedIDActions" schema="schema/org.caleydo.datadomain.TypedIDActions.exsd"/>
 
-   <extension
-         id="application"
-         point="org.eclipse.core.runtime.applications">
-      <application>
-         <run
-               class="org.caleydo.core.internal.Application">
-         </run>
-      </application>
-   </extension>
 
    <extension
          point="org.eclipse.ui.views">
@@ -39,72 +30,8 @@
             id="org.caleydo.core.views">
       </category>
 
-      <view
-            category="org.caleydo.core.views"
-            class="org.caleydo.core.gui.toolbar.RcpToolBarView"
-            icon="resources/icons/view/general.png"
-            id="org.caleydo.core.gui.toolbar.RcpToolBarView"
-            name="Tool Bar">
-      </view>
    </extension>
 
-   <extension
-         point="org.eclipse.ui.perspectives">
-      <perspective
-            name="Genome Perspective"  class="org.caleydo.core.gui.perspective.GenomePerspective"
-            id="org.caleydo.core.gui.perspective">
-
-      </perspective>
-   </extension>
-   <extension
-         id="product"
-         point="org.eclipse.core.runtime.products">
-          <product
-            application="org.caleydo.core.application"
-            name="Caleydo">
-         <property
-               name="appName"
-               value="%appName">
-         </property>
-         <property
-               name="aboutImage"
-               value="resources/icons/about.png">
-         </property>
-         <property
-               name="windowImages"
-               value="resources/icons/caleydo_16.png,resources/icons/caleydo_32.png,resources/icons/caleydo_48.png,resources/icons/caleydo_64.png,resources/icons/caleydo_128.png">
-         </property>
-         <property
-               name="preferenceCustomization"
-               value="plugin_customization.ini">
-         </property>
-         <property
-               name="aboutText"
-               value="%aboutText">
-         </property>
-         <property
-			    name="cssTheme"
-			    value="org.eclipse.e4.ui.css.theme.e4_default">
-			</property>
-		<property
-		    name="applicationCSSResources"
-		    value="platform:/plugin/org.eclipse.platform/images/">
-		</property>
-			         
-      </product>
-   </extension>
-   <extension
-         name="Caleydo"
-         point="org.eclipse.ui.splashHandlers">
-      <splashHandler
-            class="org.caleydo.core.startup.InteractiveSplashHandler"
-            id="org.caleydo.core.startup.progress">
-      </splashHandler>
-      <splashHandlerProductBinding
-            productId="org.caleydo.core.product"
-            splashId="org.caleydo.core.startup.progress">
-      </splashHandlerProductBinding>
-   </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command

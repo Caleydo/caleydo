@@ -131,7 +131,6 @@ Export-Package: org.caleydo.core.data.collection,
    org.eclipse.ui.part,
    org.eclipse.swt.widgets,
    org.eclipse.swt.layout",
- org.caleydo.core.gui.toolbar.action;uses:="org.eclipse.jface.action,org.caleydo.core.gui.toolbar,org.eclipse.swt.widgets",
  org.caleydo.core.gui.util;
   uses:="org.eclipse.jface.wizard,
    org.eclipse.swt.events,

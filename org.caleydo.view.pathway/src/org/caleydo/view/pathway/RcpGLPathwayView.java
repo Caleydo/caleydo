@@ -14,7 +14,7 @@ import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
+import org.caleydo.core.gui.OpenOnlineHelpAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.datadomain.pathway.IPathwayHandler;

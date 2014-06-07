@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.core.gui.toolbar.action;
+package org.caleydo.view.filter;
 
 import org.caleydo.core.event.view.UseRandomSamplingEvent;
 import org.caleydo.core.gui.SimpleAction;

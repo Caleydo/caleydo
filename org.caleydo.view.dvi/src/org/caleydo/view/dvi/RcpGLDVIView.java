@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.dvi;
 
-import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
+import org.caleydo.core.gui.OpenOnlineHelpAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.opengl.canvas.AGLView;
