@@ -6,6 +6,7 @@
 package org.caleydo.core.view.opengl.util.scrollbar;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -192,7 +193,7 @@ public class ScrollBarRenderer
 			scrollBar.getID()));
 
 		gl.glColor4fv(color.getRGBA(), 0);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glVertex3f(positionX, positionY, 1);
 		gl.glVertex3f(positionX + scrollBarWidth, positionY, 1);
 		gl.glVertex3f(positionX + scrollBarWidth, positionY + scrollBarHeight, 1);

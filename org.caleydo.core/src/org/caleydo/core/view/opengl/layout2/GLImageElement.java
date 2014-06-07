@@ -8,7 +8,7 @@ package org.caleydo.core.view.opengl.layout2;
 import gleem.linalg.Vec2f;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL2;
+import javax.media.opengl.GL2ES1;
 
 import org.caleydo.core.util.color.Color;
 
@@ -71,7 +71,7 @@ public class GLImageElement extends GLElement {
 		// Alpha test (required to use depth base picking)
 		g.gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 		g.gl.glAlphaFunc(GL.GL_GREATER, alphaTestThreshold);
-		g.gl.glEnable(GL2.GL_ALPHA_TEST);
+		g.gl.glEnable(GL2ES1.GL_ALPHA_TEST);
 
 		g.fillImage(texture, 0, 0, w, h, color);
 

@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
@@ -56,7 +57,7 @@ public class BorderedAreaRenderer extends APickableLayoutRenderer {
 	protected void renderContent(GL2 gl) {
 		gl.glColor3fv(color.getRGB(), 0);
 		pushNames(gl);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(x, 0, 0);
 		gl.glVertex3f(x, y, 0);

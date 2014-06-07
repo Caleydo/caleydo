@@ -7,6 +7,7 @@ package org.caleydo.core.view.opengl.layout.util;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
@@ -186,7 +187,7 @@ public class ColorRenderer extends APickableLayoutRenderer {
 		}
 		pushNames(gl);
 
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glColor4fv(color, 0);
 		gl.glVertex3f(0, 0, 0);
 		if (useGradient && isHorizontalGradient)

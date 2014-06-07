@@ -68,6 +68,7 @@ import java.util.concurrent.ExecutionException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES2;
+import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLContext;
 import javax.media.opengl.GLException;
 import javax.media.opengl.fixedfunc.GLPointerFunc;
@@ -1720,7 +1721,7 @@ public class MyTextRenderer {
 					gl.glTexCoordPointer(2, GL.GL_FLOAT, 0, mTexCoords);
                 }
 
-                gl.glDrawArrays(GL2.GL_QUADS, 0,
+                gl.glDrawArrays(GL2GL3.GL_QUADS, 0,
                                 mOutstandingGlyphsVerticesPipeline);
 
                 mVertCoords.rewind();
@@ -1742,7 +1743,7 @@ public class MyTextRenderer {
 				texture.enable(gl);
 				texture.bind(gl);
 
-                gl.glBegin(GL2.GL_QUADS);
+                gl.glBegin(GL2GL3.GL_QUADS);
 
                 try {
                     int numberOfQuads = mOutstandingGlyphsVerticesPipeline / 4;

@@ -15,6 +15,7 @@ import gleem.linalg.open.Vec2i;
 import java.util.List;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.color.Color;
@@ -166,7 +167,7 @@ public class LineLabelRenderer extends ARelativeLinePositionRenderer {
 		}
 
 		gl.glColor4fv(backGroundColor, 0);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glVertex3f(xPosition, yPosition, relativePositionOnLine.z());
 		gl.glVertex3f(xPosition + width, yPosition, relativePositionOnLine.z());
 		gl.glVertex3f(xPosition + width, yPosition + height, relativePositionOnLine.z());

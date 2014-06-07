@@ -9,6 +9,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.util.APickableLayoutRenderer;
@@ -213,7 +214,7 @@ public class ButtonRenderer extends APickableLayoutRenderer {
 		if (button.isSelected()) {
 
 			gl.glColor4f(0.7f, 0.7f, 0.7f, zCoordinate * 1.1f);
-			gl.glBegin(GL2.GL_QUADS);
+			gl.glBegin(GL2GL3.GL_QUADS);
 			gl.glVertex3f(0, 0, 0);
 			gl.glColor4f(0.55f, 0.55f, 0.55f, zCoordinate * 1.1f);
 			gl.glVertex3f(x, 0, 0);

@@ -89,7 +89,6 @@ public class FilterManager implements IListenerOwner {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	private void runFilter(Filter filter) {
 
 		if (!(filter instanceof MetaFilter)) {

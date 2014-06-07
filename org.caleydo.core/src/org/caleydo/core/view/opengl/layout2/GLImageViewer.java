@@ -8,7 +8,8 @@ package org.caleydo.core.view.opengl.layout2;
 import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL2;
+import javax.media.opengl.GL2ES2;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
@@ -157,11 +158,11 @@ public class GLImageViewer extends GLZoomPanContainer {
 
 		// Check the depth at the mouse position
 		FloatBuffer winZ = FloatBuffer.allocate(1);
-		g.gl.glReadPixels(mousePos.x, mousePos.y, 1, 1, GL2.GL_DEPTH_COMPONENT, GL.GL_FLOAT, winZ);
+		g.gl.glReadPixels(mousePos.x, mousePos.y, 1, 1, GL2ES2.GL_DEPTH_COMPONENT, GL.GL_FLOAT, winZ);
 		mousePos.x = -1;
 
 		float[] m = new float[16];
-		g.gl.glGetFloatv(GL2.GL_PROJECTION_MATRIX, m, 0);
+		g.gl.glGetFloatv(GLMatrixFunc.GL_PROJECTION_MATRIX, m, 0);
 		float zScale = m[10];
 
 		// TODO check the offset
