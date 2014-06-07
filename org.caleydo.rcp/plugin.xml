@@ -40,7 +40,7 @@
          id="product"
          point="org.eclipse.core.runtime.products">
           <product
-            application="org.caleydo.core.application"
+            application="org.caleydo.rcp.application"
             name="Caleydo">
          <property
                name="appName"
@@ -81,7 +81,7 @@
             id="org.caleydo.core.startup.progress">
       </splashHandler>
       <splashHandlerProductBinding
-            productId="org.caleydo.core.product"
+            productId="org.caleydo.rcp.product"
             splashId="org.caleydo.core.startup.progress">
       </splashHandlerProductBinding>
    </extension>
