@@ -29,8 +29,6 @@ public class MyPreferences extends AbstractPreferenceInitializer {
 	private static final String AUTO_PROJECT_LOAD = "autoload";
 	private static final int MAX_MANUALLY_CHOSEN_PROJECTS_TO_SAVE = 5;
 
-	public static final String VIEW_ZOOM_FACTOR = "view.zoomfactor";
-	public static final String FPS = "view.fps";
 	public static final String SAVE_RECENT_PROJECT = "saveRecentProject";
 
 	public static IPreferenceStore prefs() {
@@ -43,13 +41,7 @@ public class MyPreferences extends AbstractPreferenceInitializer {
 	@Override
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = prefs();
-		store.setDefault(VIEW_ZOOM_FACTOR, 100);
-		store.setDefault(FPS, 30);
 		store.setDefault(SAVE_RECENT_PROJECT, true);
-	}
-
-	public static float getViewZoomFactor() {
-		return prefs().getInt(VIEW_ZOOM_FACTOR) / 100.f;
 	}
 
 	public static boolean wasRecentProjectChosenLastly() {
@@ -120,16 +112,6 @@ public class MyPreferences extends AbstractPreferenceInitializer {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	/**
-	 * @return
-	 */
-	public static int getFPS() {
-		int fps = prefs().getInt(FPS);
-		if (fps <= 0)
-			fps = 30;
-		return fps;
 	}
 
 	/**

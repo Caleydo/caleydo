@@ -18,7 +18,7 @@ public class Activator
 	extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.caleydo.core";
+	public static final String PLUGIN_ID = "org.caleydo.rcp";
 
 	// The shared instance
 	private static Activator plugin;

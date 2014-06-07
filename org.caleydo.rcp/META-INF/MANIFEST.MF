@@ -8,4 +8,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: www.caleydo.org
 Require-Bundle: org.caleydo.core;bundle-version="3.1.4.qualifier"
-Export-Package: org.caleydo.core.gui.toolbar.action;uses:="org.eclipse.jface.action,org.caleydo.core.gui.toolbar,org.eclipse.swt.widgets"
+Bundle-Activator: org.caleydo.core.internal.Activator

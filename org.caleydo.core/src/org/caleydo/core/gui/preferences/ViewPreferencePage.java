@@ -5,26 +5,21 @@
  ******************************************************************************/
 package org.caleydo.core.gui.preferences;
 
+import org.caleydo.core.gui.util.ScaleFieldEditor2;
+import org.caleydo.core.gui.util.SpinnerFieldEditor;
 import org.caleydo.core.internal.Activator;
 import org.caleydo.core.internal.MyPreferences;
-import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.ScaleFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-/**
- * Preference page for heat map specific settings
- *
- * @author Alexander Lex
- */
-public class GeneralPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class ViewPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-	// private RadioGroupFieldEditor performanceLevelFE;
-
-	public GeneralPreferencePage() {
+	public ViewPreferencePage() {
 		super(GRID);
-		setDescription("General Preferences.");
+		setDescription("View Preferences");
 	}
 
 	/**
@@ -34,24 +29,15 @@ public class GeneralPreferencePage extends FieldEditorPreferencePage implements 
 	@Override
 	public void createFieldEditors() {
 		final Composite parent = getFieldEditorParent();
-		addField(new BooleanFieldEditor(MyPreferences.SAVE_RECENT_PROJECT, "Auto save project on close?", parent));
+		ScaleFieldEditor s = new ScaleFieldEditor2(MyPreferences.VIEW_ZOOM_FACTOR, "View scaling factor:", parent, 10,
+				300, 10, 20, ScaleFieldEditor2.PERCENT_FORMATTER);
+		addField(s);
+		addField(new SpinnerFieldEditor(MyPreferences.FPS, "Target frames per seconds (FPS)", parent, 5, 60, 5, 10));
 	}
 
 	@Override
 	public void init(IWorkbench workbench) {
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("General Preferences.");
+		setDescription("View Preferences.");
 	}
-
-	@Override
-	public boolean performOk() {
-		boolean bReturn = super.performOk();
-
-		// TODO
-
-		return bReturn;
-	}
-
-
-
 }

@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
-   <extension-point id="org.caleydo.serialize.addon" name="Serialization Addon" schema="schema/org.caleydo.serialize.addon.exsd"/>
-   <extension-point id="org.caleydo.core.StartupAddon" name="StartupAddon" schema="schema/org.caleydo.core.StartupAddon.exsd"/>
-   <extension-point id="org.caleydo.core.SampleProject" name="Sample Project Description" schema="schema/org.caleydo.core.SampleProject.exsd"/>
 
    <extension
          id="application"
@@ -97,11 +93,6 @@
             name="Exit">
       </command>
       <command
-            defaultHandler="org.caleydo.core.gui.command.FullScreenHandler"
-            id="org.caleydo.core.gui.fullscreen"
-            name="Full Screen">
-      </command>
-      <command
             defaultHandler="org.caleydo.core.io.gui.ExportDataHandler"
             id="org.caleydo.core.io.gui.export_data"
             name="Export Data">
@@ -110,11 +101,6 @@
             defaultHandler="org.caleydo.core.io.gui.ImportDataHandler"
             id="org.caleydo.core.io.gui.import_data"
             name="Import Data">
-      </command>
-      <command
-            defaultHandler="org.caleydo.core.gui.command.TakeSnapshotHandler"
-            id="org.caleydo.core.io.gui.snapshot"
-            name="Take Snapshot">
       </command>
       <command
             defaultHandler="org.caleydo.core.gui.command.SaveProjectHandler"
@@ -160,22 +146,6 @@
             defaultHandler="org.caleydo.core.internal.startup.OpenProjectCommand"
             id="org.caleydo.core.startup.open"
             name="Open Project">
-      </command>
-      <command
-            defaultHandler="org.caleydo.core.gui.command.ClearSelectionsHandler"
-            id="org.caleydo.core.startup.clearselections"
-            name="Clear Selections">
-      </command>
-      <command
-            defaultHandler="org.caleydo.core.gui.command.ZoomHandler"
-            id="org.caleydo.core.startup.zoom"
-            name="Change Zoom Factor">
-         <commandParameter
-               id="action"
-               name="Zooming action"
-               optional="true"
-               values="org.caleydo.core.gui.command.ZoomHandlerParameters">
-         </commandParameter>
       </command>
 
    </extension>

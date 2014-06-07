@@ -23,7 +23,6 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
-import org.caleydo.core.internal.ConsoleFlags;
 import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
@@ -101,7 +100,7 @@ public class ViewManager extends AManager<IView> {
 	private final IGLCanvasFactory canvasFactory;
 
 	{
-		String kind = ConsoleFlags.CANVAS_IMPLEMENTATION;
+		String kind = MyPreferences.CANVAS_IMPLEMENTATION;
 		if ("awt".equalsIgnoreCase(kind)) {
 			canvasFactory = new AWTGLCanvasFactory();
 		} else if ("swt".equalsIgnoreCase(kind)) {
