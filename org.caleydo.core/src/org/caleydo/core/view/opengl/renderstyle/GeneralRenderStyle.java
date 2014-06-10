@@ -137,7 +137,8 @@ public class GeneralRenderStyle {
 	}
 
 	private void sendSetMinSizeEvent(AGLView view) {
-		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		
+		EventPublisher eventPublisher = EventPublisher.INSTANCE;
 		SetMinViewSizeEvent event = new SetMinViewSizeEvent(view);
 		event.setMinViewSize(minViewWidth, minViewHeight);
 		eventPublisher.triggerEvent(event);

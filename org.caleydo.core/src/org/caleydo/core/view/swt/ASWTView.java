@@ -8,8 +8,8 @@ package org.caleydo.core.view.swt;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.AView;
+import org.caleydo.core.view.ViewManager;
 import org.eclipse.swt.widgets.Display;
 
 public abstract class ASWTView
@@ -23,7 +23,7 @@ public abstract class ASWTView
 	 */
 	public ASWTView(String viewType, String viewName) {
 		super(viewType, viewName);
-		GeneralManager.get().getViewManager().registerItem(this);
+		ViewManager.get().addView(this);
 	}
 
 	public abstract void draw();

@@ -49,7 +49,8 @@ public abstract class ASingleTablePerspectiveSWTView extends AView implements IS
 	@Override
 	public void initialize() {
 		eventListeners.register(this);
-		GeneralManager.get().getViewManager().registerView(this, true);
+		
+		ViewManager.get().registerView(this, true);
 	}
 
 	public void dispose() {

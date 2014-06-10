@@ -179,7 +179,8 @@ public class MappedDataRenderer {
 					.getSampleGroupIDType());
 
 			SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(abstractGroupType);
-			GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
+			
+			EventPublisher.INSTANCE.triggerEvent(selectionTypeEvent);
 
 		} else {
 			throw new IllegalStateException("No Valid Datadomain");

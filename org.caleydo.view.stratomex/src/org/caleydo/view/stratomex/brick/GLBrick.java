@@ -33,6 +33,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
@@ -385,7 +386,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		event.setSender(this);
 		SelectionDelta delta = recordSelectionManager.getDelta();
 		event.setSelectionDelta(delta);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.INSTANCE.triggerEvent(event);
 	}
 
 	@Override
@@ -825,7 +827,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 				DataSetSelectedEvent event = new DataSetSelectedEvent(tablePerspective);
 				event.setSender(this);
-				GeneralManager.get().getEventPublisher().triggerEvent(event);
+				
+				EventPublisher.INSTANCE.triggerEvent(event);
 			}
 		};
 

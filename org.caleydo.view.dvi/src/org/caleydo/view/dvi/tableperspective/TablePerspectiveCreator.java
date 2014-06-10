@@ -13,6 +13,7 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.ILabeled;
@@ -114,7 +115,8 @@ public class TablePerspectiveCreator implements ILabeled {
 
 			DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
 			event.setSender(this);
-			GeneralManager.get().getEventPublisher().triggerEvent(event);
+			
+			EventPublisher.INSTANCE.triggerEvent(event);
 		}
 		return tablePerspective;
 	}

@@ -21,15 +21,11 @@ import org.caleydo.core.internal.Activator;
 import org.caleydo.core.serialize.ProjectMetaData;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.data.loader.ResourceLoader;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.osgi.framework.Version;
@@ -80,9 +76,6 @@ public class GeneralManager {
 	 * Progress monitor of the splash. Only valid during startup.
 	 **/
 	private SubMonitor progressMonitor;
-
-
-	private IStatisticsPerformer rStatisticsPerformer;
 
 	private ProjectMetaData metaData = ProjectMetaData.createDefault();
 
@@ -150,45 +143,6 @@ public class GeneralManager {
 	 */
 	public ResourceLoader getResourceLoader() {
 		return resourceLoader;
-	}
-
-	public ViewManager getViewManager() {
-		return ViewManager.get();
-	}
-
-	public EventPublisher getEventPublisher() {
-		return EventPublisher.INSTANCE;
-	}
-
-	public IStatisticsPerformer getRStatisticsPerformer() {
-
-		if (rStatisticsPerformer == null) {
-			// Lazy creation
-			IExtensionRegistry reg = Platform.getExtensionRegistry();
-
-			IConfigurationElement[] ce = reg
-					.getConfigurationElementsFor("org.caleydo.util.statistics.StatisticsPerformer");
-			try {
-				rStatisticsPerformer = (IStatisticsPerformer) ce[0].createExecutableExtension("class");
-			} catch (Exception ex) {
-				throw new RuntimeException("Could not instantiate R Statistics Peformer", ex);
-			}
-		}
-
-		return rStatisticsPerformer;
-	}
-
-	/**
-	 * Obtains the {@link SerializationManager} responsible for xml-serialization related tasks
-	 *
-	 * @return the {@link SerializationManager} of this caleydo application
-	 */
-	public SerializationManager getSerializationManager() {
-		return SerializationManager.get();
-	}
-
-	public static DataDomainManager getDataDomainManagerInstance() {
-		return DataDomainManager.get();
 	}
 
 	/**

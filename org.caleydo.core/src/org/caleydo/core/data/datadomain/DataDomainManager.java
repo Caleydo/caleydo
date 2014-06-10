@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.caleydo.core.data.configuration.ChooseDataConfigurationDialog;
 import org.caleydo.core.data.datadomain.graph.DataDomainGraph;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.NewDataDomainEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.io.DataSetDescription;
@@ -231,7 +232,8 @@ public class DataDomainManager {
 
 		NewDataDomainEvent event = new NewDataDomainEvent(dataDomain);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.INSTANCE.triggerEvent(event);
 	}
 
 	/**
@@ -254,8 +256,9 @@ public class DataDomainManager {
 		ColorManager.get().markColor(ColorManager.QUALITATIVE_COLORS, color, false);
 
 		dataDomainGraph.removeDataDomain(dataDomain);
+		
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new RemoveDataDomainEvent(this, dataDomain));
+		EventPublisher.INSTANCE.triggerEvent(new RemoveDataDomainEvent(this, dataDomain));
 	}
 
 	/**

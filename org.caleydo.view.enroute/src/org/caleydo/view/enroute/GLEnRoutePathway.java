@@ -30,6 +30,7 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.SetMinViewSizeEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.id.IDCategory;
@@ -645,7 +646,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.INSTANCE.triggerEvent(event);
 		setLayoutDirty();
 	}
 
@@ -754,7 +756,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.INSTANCE.triggerEvent(event);
 
 		setLayoutDirty();
 	}

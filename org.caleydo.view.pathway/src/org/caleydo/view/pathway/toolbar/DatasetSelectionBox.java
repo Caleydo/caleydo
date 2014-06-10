@@ -10,6 +10,7 @@ import java.util.List;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -93,19 +94,22 @@ public class DatasetSelectionBox extends ControlContribution {
 					tablePerspective.setPrivate(false);
 
 					addTablePerspectivesEvent.addTablePerspective(tablePerspective);
-					GeneralManager.get().getEventPublisher().triggerEvent(addTablePerspectivesEvent);
+					
+					EventPublisher.INSTANCE.triggerEvent(addTablePerspectivesEvent);
 					PathwayMappingEvent event = new PathwayMappingEvent(tablePerspective);
 					event.setSender(this);
 					event.setEventSpace(eventSpace);
+					GeneralManager r1 = GeneralManager.get();
 					// event.to(receiver);
-					GeneralManager.get().getEventPublisher().triggerEvent(event);
+					EventPublisher.INSTANCE.triggerEvent(event);
 
 				} else {
 					PathwayMappingEvent event = new PathwayMappingEvent();
 					event.setSender(this);
 					event.setEventSpace(eventSpace);
+					
 					// event.to(receiver);
-					GeneralManager.get().getEventPublisher().triggerEvent(event);
+					EventPublisher.INSTANCE.triggerEvent(event);
 				}
 
 			}

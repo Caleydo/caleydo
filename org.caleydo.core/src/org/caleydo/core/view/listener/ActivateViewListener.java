@@ -7,6 +7,7 @@ package org.caleydo.core.view.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.data.BookmarkEvent;
 import org.caleydo.core.event.view.OpenViewEvent;
@@ -55,9 +56,10 @@ public class ActivateViewListener
 
 				// TODO only re-trigger event if view is initially opened
 				event.setSender(handler);
+				
 
 				// Re-trigger event so that the opened view receives it
-				GeneralManager.get().getEventPublisher().triggerEvent(event);
+				EventPublisher.INSTANCE.triggerEvent(event);
 			}
 			else if (event instanceof OpenViewEvent) {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()

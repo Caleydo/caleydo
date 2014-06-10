@@ -13,6 +13,7 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
@@ -110,7 +111,8 @@ public abstract class APathUpdateStrategy implements IListenerOwner {
 		event.setEventSpace(pathwayPathEventSpace);
 		event.setPath(path);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.INSTANCE.triggerEvent(event);
 	}
 
 	@ListenTo

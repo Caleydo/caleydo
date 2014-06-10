@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.treemap.actions;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.treemap.listener.ZoomInEvent;
@@ -29,8 +30,9 @@ public class ZoomInAction extends SimpleAction {
 	@Override
 	public void run() {
 		super.run();
+		
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new ZoomInEvent());
+		EventPublisher.INSTANCE.triggerEvent(new ZoomInEvent());
 		setChecked(false);
 	}
 }

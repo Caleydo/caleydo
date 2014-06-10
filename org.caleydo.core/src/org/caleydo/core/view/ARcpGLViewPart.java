@@ -76,7 +76,8 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	}
 
 	public void createPartControlGL() {
-		GeneralManager.get().getViewManager().registerRCPView(this, view);
+		
+		ViewManager.get().registerRCPView(this, view);
 
 		fillToolBar();
 	}
@@ -91,7 +92,8 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 
 	@Override
 	public void dispose() {
-		GeneralManager.get().getViewManager().unregisterRCPView(this, view);
+		
+		ViewManager.get().unregisterRCPView(this, view);
 		super.dispose();
 		view = null;
 		glCanvas = null;

@@ -49,6 +49,7 @@ import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.RCPViewInitializationData;
 import org.caleydo.core.view.RCPViewManager;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -192,7 +193,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		for (IDataDomain dataDomain : dataDomainGraph.getDataDomains()) {
 			addDataDomain(dataDomain);
 		}
-		for (IView view : GeneralManager.get().getViewManager().getAllViews()) {
+		
+		for (IView view : ViewManager.get().getAllViews()) {
 			addView(view);
 		}
 
@@ -553,8 +555,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 			isMinSizeApplied = false;
 			waitForMinSizeApplication = true;
+			
 
-			EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+			EventPublisher eventPublisher = EventPublisher.INSTANCE;
 			SetMinViewSizeEvent event = new SetMinViewSizeEvent(this);
 			event.setMinViewSize(minViewWidthPixels, minViewHeightPixels);
 			eventPublisher.triggerEvent(event);
@@ -824,7 +827,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	}
 
 	public void openView(final IView view) {
-		final CaleydoRCPViewPart viewPart = GeneralManager.get().getViewManager().getViewPartFromView(view);
+		
+		final CaleydoRCPViewPart viewPart = ViewManager.get().getViewPartFromView(view);
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override

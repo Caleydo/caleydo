@@ -119,7 +119,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	// private Set<String> remoteRenderedPathwayMultiformViewIDs;
 
-	private final String pathEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
+	private final String pathEventSpace = EventPublisher.INSTANCE.createUniqueEventSpace();
 
 	private AnimatedGLElementContainer baseContainer = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(
 			true, 10, GLPadding.ZERO));
@@ -683,7 +683,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 								boolean enable = !selectPathAction.isChecked();
 								EnablePathSelectionEvent event = new EnablePathSelectionEvent(enable);
 								event.setEventSpace(pathEventSpace);
-								GeneralManager.get().getEventPublisher().triggerEvent(event);
+								
+								EventPublisher.INSTANCE.triggerEvent(event);
 								selectPathAction.setChecked(enable);
 							}
 						});

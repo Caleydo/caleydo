@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.dvi.toolbar;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.dvi.event.ApplySpecificGraphLayoutEvent;
 import org.caleydo.view.dvi.layout.ForceDirectedGraphLayout;
@@ -26,7 +27,8 @@ public class ApplySpringBasedLayoutAction extends Action {
 		ApplySpecificGraphLayoutEvent event = new ApplySpecificGraphLayoutEvent();
 		event.setGraphLayoutClass(ForceDirectedGraphLayout.class);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.INSTANCE.triggerEvent(event);
 		setChecked(false);
 	}
 }

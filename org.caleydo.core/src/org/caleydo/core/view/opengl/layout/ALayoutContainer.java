@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionEvent;
 
@@ -314,7 +315,8 @@ public class ALayoutContainer extends ElementLayout implements Iterable<ElementL
 			LayoutSizeCollisionEvent event = new LayoutSizeCollisionEvent();
 			event.setToBigBy(toBigBy);
 			event.tableIDs(managingClassID, externalID);
-			GeneralManager.get().getEventPublisher().triggerEvent(event);
+			
+			EventPublisher.INSTANCE.triggerEvent(event);
 		}
 	}
 

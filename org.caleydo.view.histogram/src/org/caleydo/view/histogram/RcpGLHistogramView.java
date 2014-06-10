@@ -58,8 +58,9 @@ public class RcpGLHistogramView
 		GridLayout baseLayout = new GridLayout(1, false);
 		baseLayout.verticalSpacing = 2;
 		histoComposite.setLayout(baseLayout);
+		
 
-		ViewManager viewManager = GeneralManager.get().getViewManager();
+		ViewManager viewManager = ViewManager.get();
 		glCanvas = createGLCanvas(histoComposite);
 		parentComposite = glCanvas.asComposite();
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));

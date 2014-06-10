@@ -7,6 +7,7 @@ package org.caleydo.view.table;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.CaleydoRCPViewPart;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.view.table.action.SelectionOnlyAction;
 import org.caleydo.view.table.action.TableSettingsAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -34,14 +35,16 @@ public class RcpTableView extends CaleydoRCPViewPart {
 		view = new TableView(parentComposite, this);
 
 		initializeView();
-		GeneralManager.get().getViewManager().registerRCPView(this, view);
+		
+		ViewManager.get().registerRCPView(this, view);
 		fillToolBar();
 	}
 
 	@Override
 	public void dispose() {
 		((TableView) view).dispose();
-		GeneralManager.get().getViewManager().unregisterRCPView(this, view);
+		
+		ViewManager.get().unregisterRCPView(this, view);
 		super.dispose();
 		view = null;
 	}

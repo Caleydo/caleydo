@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -21,9 +22,9 @@ public class EntourageLevel1PathwayCreator implements IPathwayRepresentationCrea
 	public IPathwayRepresentation create(AGLView remoteRenderingView, PathwayGraph pathway,
 			List<TablePerspective> tablePerspectives, TablePerspective mappingTablePerspective,
 			String embeddingEventSpace) {
-		GLPathway pathwayView = (GLPathway) GeneralManager
-				.get()
-				.getViewManager()
+		GeneralManager r = GeneralManager
+						.get();
+		GLPathway pathwayView = (GLPathway) ViewManager.get()
 				.createGLView(GLPathway.class, remoteRenderingView.getParentGLCanvas(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
 

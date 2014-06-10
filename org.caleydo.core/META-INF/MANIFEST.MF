@@ -208,7 +208,6 @@ Export-Package: org.caleydo.core.data.collection,
  org.caleydo.core.util.format,
  org.caleydo.core.util.function,
  org.caleydo.core.util.logging;uses:="org.eclipse.core.runtime",
- org.caleydo.core.util.statistics;uses:="org.caleydo.core.data.perspective.table",
  org.caleydo.core.util.system,
  org.caleydo.core.view;
   uses:="org.caleydo.core.event,

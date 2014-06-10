@@ -133,7 +133,8 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public void initialize() {
 		super.initialize();
-		GeneralManager.get().getViewManager().registerView(this, true);
+		
+		ViewManager.get().registerView(this, true);
 		// already here after we are registered and before the maybe first time view
 		eventListeners.register(this);
 	}

@@ -7,6 +7,7 @@ package org.caleydo.view.pathway.toolbar;
 
 import java.util.Collection;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.util.SearchBox;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -149,8 +150,9 @@ public class PathwaySearchBox extends ControlContribution {
 		LoadPathwayEvent event = new LoadPathwayEvent();
 		event.setSender(this);
 		event.setPathwayID(pathway.getID());
+		
 
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		EventPublisher.INSTANCE.triggerEvent(event);
 
 		return true;
 	}

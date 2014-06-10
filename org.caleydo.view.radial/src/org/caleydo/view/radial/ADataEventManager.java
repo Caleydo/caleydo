@@ -35,7 +35,8 @@ public abstract class ADataEventManager implements ISelectionHandler {
 	 */
 	public ADataEventManager(GLRadialHierarchy radialHierarchy) {
 		this.radialHierarchy = radialHierarchy;
-		eventPublisher = GeneralManager.get().getEventPublisher();
+		
+		eventPublisher = EventPublisher.INSTANCE;
 	}
 
 	/**

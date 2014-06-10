@@ -29,6 +29,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
@@ -356,7 +357,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 	public void setPathway(final int iPathwayID) {
 
-		setPathway(pathwayManager.getItem(iPathwayID));
+		setPathway(pathwayManager.getPathway(iPathwayID));
 	}
 
 	@Override
@@ -389,7 +390,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		displayListIndex = gl.glGenLists(1);
 
 		// Check if pathway exists or if it's already loaded
-		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
+		if (pathway == null || !pathwayManager.hasPathway(pathway.getID()))
 			return;
 
 		initPathwayData(gl);
@@ -527,7 +528,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 						LoadPathwayEvent event = new LoadPathwayEvent();
 						event.setSender(this);
 						event.setPathwayID(pathway.getID());
-						GeneralManager.get().getEventPublisher().triggerEvent(event);
+						
+						EventPublisher.INSTANCE.triggerEvent(event);
 					}
 				}
 
@@ -716,7 +718,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	public void displayLocal(final GL2 gl) {
 
 		// Check if pathway exists or if it's already loaded
-		if (pathway == null || !pathwayManager.hasItem(pathway.getID())) {
+		if (pathway == null || !pathwayManager.hasPathway(pathway.getID())) {
 			if (isDisplayListDirty) {
 				gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 				renderEmptyViewText(gl, new String[] {

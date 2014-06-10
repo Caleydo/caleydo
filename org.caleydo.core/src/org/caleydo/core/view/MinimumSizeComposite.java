@@ -115,13 +115,15 @@ public class MinimumSizeComposite extends ScrolledComposite implements IListener
 	public void registerEventListeners() {
 		setMinSizeEventListener = new SetMinViewSizeEventListener();
 		setMinSizeEventListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(SetMinViewSizeEvent.class, setMinSizeEventListener);
+		
+		EventPublisher.INSTANCE.addListener(SetMinViewSizeEvent.class, setMinSizeEventListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		if (setMinSizeEventListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(setMinSizeEventListener);
+			
+			EventPublisher.INSTANCE.removeListener(setMinSizeEventListener);
 			setMinSizeEventListener = null;
 		}
 	}

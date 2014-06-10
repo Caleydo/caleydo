@@ -49,8 +49,9 @@ public class ExceptionHandler {
 
 		Logger.log(new Status(IStatus.ERROR, this.toString(), "Caught Exception: "
 				+ exception.getMessage(), exception));
+		
 
-		GeneralManager.get().getViewManager().unregisterGLCanvas(glEventListener.getParentGLCanvas());
+		ViewManager.get().unregisterGLCanvas(glEventListener.getParentGLCanvas());
 
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			@Override

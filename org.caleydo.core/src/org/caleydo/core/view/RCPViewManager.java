@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.data.BookmarkEvent;
 import org.caleydo.core.event.view.OpenViewEvent;
@@ -53,14 +54,17 @@ public class RCPViewManager implements IListenerOwner {
 	public void registerEventListeners() {
 		activateViewListener = new ActivateViewListener();
 		activateViewListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(OpenViewEvent.class, activateViewListener);
-		GeneralManager.get().getEventPublisher().addListener(BookmarkEvent.class, activateViewListener);
+		
+		EventPublisher.INSTANCE.addListener(OpenViewEvent.class, activateViewListener);
+		GeneralManager r1 = GeneralManager.get();
+		EventPublisher.INSTANCE.addListener(BookmarkEvent.class, activateViewListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		if (activateViewListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(activateViewListener);
+			
+			EventPublisher.INSTANCE.removeListener(activateViewListener);
 			activateViewListener = null;
 		}
 	}

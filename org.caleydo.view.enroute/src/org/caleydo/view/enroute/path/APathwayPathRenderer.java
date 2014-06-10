@@ -231,7 +231,8 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 		PathRendererChangedEvent event = new PathRendererChangedEvent(this);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.INSTANCE.triggerEvent(event);
 
 		updateLayout();
 
@@ -655,7 +656,8 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 			PathRendererChangedEvent event = new PathRendererChangedEvent(this);
 			event.setSender(this);
-			GeneralManager.get().getEventPublisher().triggerEvent(event);
+			
+			EventPublisher.INSTANCE.triggerEvent(event);
 			updateLayout();
 			// setDisplayListDirty(true);
 		}

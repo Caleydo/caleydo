@@ -24,7 +24,6 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.internal.MyPreferences;
-import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -64,7 +63,8 @@ import com.google.common.collect.Sets;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class ViewManager extends AManager<IView> {
+public class ViewManager {
+	private final Map<Integer, IView> views = new HashMap<Integer, IView>();
 
 	private final Map<Integer, IView> hashGLViewID2View = new HashMap<>();
 
@@ -129,9 +129,8 @@ public class ViewManager extends AManager<IView> {
 		return canvasFactory;
 	}
 
-	@Override
-	public boolean hasItem(int iItemId) {
-		if (hashItems.containsKey(iItemId))
+	public boolean contains(int iItemId) {
+		if (this.views.containsKey(iItemId))
 			return true;
 
 		if (hashGLViewID2View.containsKey(iItemId))
@@ -391,7 +390,7 @@ public class ViewManager extends AManager<IView> {
 	public void cleanup() {
 
 		hashGLViewID2View.clear();
-		hashItems.clear();
+		this.views.clear();
 	}
 
 	/**
@@ -839,5 +838,12 @@ public class ViewManager extends AManager<IView> {
 				}
 			});
 		}
+	}
+
+	/**
+	 * @param aswtView
+	 */
+	public void addView(IView view) {
+		this.views.put(view.getID(), view);
 	}
 }

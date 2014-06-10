@@ -10,6 +10,7 @@ import java.util.List;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.IRemoteViewCreator;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -24,9 +25,9 @@ public class enRouteViewCreator implements IRemoteViewCreator {
 	@Override
 	public AGLView createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
 			String embeddingEventSpace) {
-		GLEnRoutePathway enRoute = (GLEnRoutePathway) GeneralManager
-				.get()
-				.getViewManager()
+		GeneralManager r = GeneralManager
+						.get();
+		GLEnRoutePathway enRoute = (GLEnRoutePathway) ViewManager.get()
 				.createGLView(GLEnRoutePathway.class, remoteRenderingView.getParentGLCanvas(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
 

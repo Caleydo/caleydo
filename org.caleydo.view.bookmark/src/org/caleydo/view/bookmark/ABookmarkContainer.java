@@ -13,6 +13,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.BookmarkEvent;
 import org.caleydo.core.event.data.RemoveBookmarkEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
@@ -213,7 +214,8 @@ abstract class ABookmarkContainer
 			event.setSender(this);
 			event.setEventSpace(manager.getDataDomain().getDataDomainID());
 			event.setSelectionDelta(selectionDelta);
-			GeneralManager.get().getEventPublisher().triggerEvent(event);
+			
+			EventPublisher.INSTANCE.triggerEvent(event);
 			break;
 
 		case BOOKMARK_CONTAINER_HEADING:

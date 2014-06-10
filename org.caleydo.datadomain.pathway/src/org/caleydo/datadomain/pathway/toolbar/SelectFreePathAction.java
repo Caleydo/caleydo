@@ -5,6 +5,7 @@
  *******************************************************************************/
 package org.caleydo.datadomain.pathway.toolbar;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
@@ -44,14 +45,16 @@ public class SelectFreePathAction extends SimpleAction {
 		if (isChecked()) {
 			EnablePathSelectionEvent event = new EnablePathSelectionEvent(false);
 			event.setEventSpace(eventSpace);
-			GeneralManager.get().getEventPublisher().triggerEvent(event);
+			
+			EventPublisher.INSTANCE.triggerEvent(event);
 			if (selectPathAction != null)
 				selectPathAction.setChecked(false);
 		}
 
 		EnableFreePathSelectionEvent e = new EnableFreePathSelectionEvent(isChecked());
 		e.setEventSpace(eventSpace);
-		GeneralManager.get().getEventPublisher().triggerEvent(e);
+		
+		EventPublisher.INSTANCE.triggerEvent(e);
 	}
 
 	/**

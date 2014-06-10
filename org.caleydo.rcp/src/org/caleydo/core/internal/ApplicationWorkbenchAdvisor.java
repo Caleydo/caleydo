@@ -13,6 +13,7 @@ import org.caleydo.core.gui.perspective.PartListener;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.view.ViewManager;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -49,9 +50,10 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	@Override
 	public boolean preShutdown() {
 		super.preShutdown();
+		
 
 		// stop animating
-		GeneralManager.get().getViewManager().stopAnimator();
+		ViewManager.get().stopAnimator();
 		// GeneralManager.get().getViewManager().getDisplayLoopExecution()
 		// .stopMultipleExecution(autoSaver);
 		// autoSaver = null;

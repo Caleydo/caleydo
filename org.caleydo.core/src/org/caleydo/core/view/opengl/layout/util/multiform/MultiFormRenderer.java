@@ -429,7 +429,8 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 				AGLView view = ((ViewInfo) info).view;
 				if (view != null) {
 					// GeneralManager.get().getViewManager().unregisterGLView(view);
-					GeneralManager.get().getViewManager().destroyView(gl, view);
+					
+					ViewManager.get().destroyView(gl, view);
 				}
 			} else {
 				ALayoutRenderer renderer = ((LayoutRendererInfo) info).renderer;
@@ -806,7 +807,8 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 			if (info instanceof ViewInfo) {
 				AGLView view = ((ViewInfo) info).view;
 				if (view != null) {
-					GeneralManager.get().getViewManager().destroyView(gl, view);
+					
+					ViewManager.get().destroyView(gl, view);
 
 				}
 			} else {

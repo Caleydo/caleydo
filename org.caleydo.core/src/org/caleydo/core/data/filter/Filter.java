@@ -10,6 +10,7 @@ import org.caleydo.core.data.filter.event.NewFilterEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateFilterListEvent;
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
@@ -126,8 +127,9 @@ public class Filter {
 			filterEvent.setFilter(this);
 			filterEvent.setSender(this);
 			filterEvent.setEventSpace(dataDomain.getDataDomainID());
+			
 
-			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
+			EventPublisher.INSTANCE.triggerEvent(filterEvent);
 
 			isRegistered = true;
 		} else {
@@ -136,8 +138,9 @@ public class Filter {
 			// reevaluateEvent.addFilter(filter);
 			reevaluateEvent.setSender(this);
 			reevaluateEvent.setEventSpace(dataDomain.getDataDomainID());
+			
 
-			GeneralManager.get().getEventPublisher().triggerEvent(reevaluateEvent);
+			EventPublisher.INSTANCE.triggerEvent(reevaluateEvent);
 		}
 	}
 }

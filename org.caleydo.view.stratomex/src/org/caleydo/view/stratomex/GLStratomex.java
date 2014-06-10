@@ -46,6 +46,7 @@ import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.DeepScan;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
@@ -1293,7 +1294,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.INSTANCE.triggerEvent(event);
 
 		return added;
 	}
@@ -1304,9 +1306,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 * @return
 	 */
 	private BrickColumn createBrickColumn(IBrickConfigurer brickConfigurer, TablePerspective tablePerspective) {
-		BrickColumn brickColumn = (BrickColumn) GeneralManager
-				.get()
-				.getViewManager()
+		GeneralManager r = GeneralManager
+				.get();
+		BrickColumn brickColumn = (BrickColumn) ViewManager.get()
 				.createGLView(BrickColumn.class, getParentGLCanvas(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
 
@@ -1388,7 +1390,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		initLayouts();
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.INSTANCE.triggerEvent(event);
 	}
 
 	private void cleanUp(TablePerspective tablePerspective) {

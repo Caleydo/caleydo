@@ -25,7 +25,6 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
-import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ZipUtils;
 import org.caleydo.core.util.collection.Pair;
@@ -56,11 +55,12 @@ import org.jgrapht.graph.DefaultEdge;
  *
  * @author Marc Streit
  */
-public class PathwayManager extends AManager<PathwayGraph> {
+public class PathwayManager {
 	private static final Logger log = Logger.create(PathwayManager.class);
 
 	private volatile static PathwayManager pathwayManager = new PathwayManager();
 
+	private final Map<Integer, PathwayGraph> pathways = new HashMap<>();
 	private final Map<PathwayGraph, Boolean> hashPathwayToVisibilityState = new HashMap<PathwayGraph, Boolean>();
 
 	private final Map<EPathwayDatabaseType, Map<String, PathwayGraph>> mapPathwayDBToPathways = new HashMap<>();
@@ -95,7 +95,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 			final File image, final String sExternalLink) {
 		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, image, sExternalLink);
 
-		registerItem(pathway);
+		this.pathways.put(pathway.getID(), pathway);
 		Map<String, PathwayGraph> mapTitleToPathway = mapPathwayDBToPathways.get(type);
 		if (mapTitleToPathway == null) {
 			mapTitleToPathway = new HashMap<>();
@@ -162,11 +162,10 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		}
 	}
 
-	@Override
 	public Collection<PathwayGraph> getAllItems() {
 		waitUntilPathwayLoadingIsFinished();
 
-		return super.getAllItems();
+		return this.pathways.values();
 	}
 
 	public void setPathwayVisibilityState(final PathwayGraph pathway, final boolean bVisibilityState) {
@@ -680,5 +679,21 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		for(EPathwayDatabaseType type: EPathwayDatabaseType.values()) {
 			type.load();
 		}
+	}
+
+	/**
+	 * @param pathwayID
+	 * @return
+	 */
+	public PathwayGraph getPathway(int pathwayID) {
+		return this.pathways.get(pathwayID);
+	}
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	public boolean hasPathway(int pathwayID) {
+		return this.pathways.containsKey(pathwayID);
 	}
 }

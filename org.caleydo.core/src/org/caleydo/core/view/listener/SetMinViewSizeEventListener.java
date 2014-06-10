@@ -7,6 +7,7 @@ package org.caleydo.core.view.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.MinSizeAppliedEvent;
 import org.caleydo.core.event.view.SetMinViewSizeEvent;
 import org.caleydo.core.manager.GeneralManager;
@@ -21,7 +22,8 @@ public class SetMinViewSizeEventListener
 	@Override
 	public void handleEvent(AEvent event) {
 		if (handler.isDisposed()) {
-			GeneralManager.get().getEventPublisher().removeListener(this);
+			
+			EventPublisher.INSTANCE.removeListener(this);
 			return;
 		}
 
@@ -37,7 +39,8 @@ public class SetMinViewSizeEventListener
 				MinSizeAppliedEvent e = new MinSizeAppliedEvent();
 				e.setView(view);
 				e.setSender(this);
-				GeneralManager.get().getEventPublisher().triggerEvent(e);
+				
+				EventPublisher.INSTANCE.triggerEvent(e);
 			}
 		}
 	}

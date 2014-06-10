@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
@@ -43,7 +44,8 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 			public void clicked(Pick pick) {
 				DataSetSelectedEvent event = new DataSetSelectedEvent(dataDomain);
 				event.setSender(view);
-				GeneralManager.get().getEventPublisher().triggerEvent(event);
+				
+				EventPublisher.INSTANCE.triggerEvent(event);
 			}
 
 			@Override

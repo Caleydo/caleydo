@@ -8,6 +8,7 @@ package org.caleydo.core.data.filter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.UnRegisterListenersOnEvent;
@@ -28,7 +29,6 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
-import org.caleydo.core.manager.GeneralManager;
 
 /**
  * <p>
@@ -45,11 +45,9 @@ import org.caleydo.core.manager.GeneralManager;
 public class FilterManager implements IListenerOwner {
 
 	// private final IFilterFactory<FilterType> factory;
-	private ArrayList<Filter> filterPipe;
-	protected Perspective perspective;
-	protected IDataDomain dataDomain;
-
-	EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+	private final List<Filter> filterPipe = new ArrayList<Filter>();
+	private final Perspective perspective;
+	private final IDataDomain dataDomain;
 
 	private RemoveFilterListener removeDimensionFilterListener;
 	private MoveFilterListener moveDimensionFilterListener;
@@ -67,11 +65,8 @@ public class FilterManager implements IListenerOwner {
 	 */
 	public FilterManager(IDataDomain dataDomain, Perspective perspective) {
 		this.dataDomain = dataDomain;
-
 		this.perspective = perspective;
 		// this.factory = factory;
-		filterPipe = new ArrayList<Filter>();
-		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
 	}
 
@@ -102,7 +97,7 @@ public class FilterManager implements IListenerOwner {
 
 	@Override
 	public void registerEventListeners() {
-
+		EventPublisher eventPublisher = EventPublisher.INSTANCE;
 		unregisterListener = new UnRegisterListenersOnEvent(this, dataDomain);
 		eventPublisher.addListener(RemoveDataDomainEvent.class, unregisterListener);
 
@@ -131,7 +126,7 @@ public class FilterManager implements IListenerOwner {
 	@Override
 	public void unregisterEventListeners() {
 		if (unregisterListener != null)
-			eventPublisher.removeListener(RemoveDataDomainEvent.class, unregisterListener);
+			EventPublisher.INSTANCE.removeListener(RemoveDataDomainEvent.class, unregisterListener);
 		unregisterListener = null;
 	}
 
@@ -151,7 +146,7 @@ public class FilterManager implements IListenerOwner {
 	//
 	// FilterUpdatedEvent event = new FilterUpdatedEvent();
 	// event.setDataDomainID(dataDomain.getDataDomainID());
-	// eventPublisher.triggerEvent(event);
+	// EventPublisher.trigger(event);
 	// }
 
 	@Override
@@ -164,7 +159,7 @@ public class FilterManager implements IListenerOwner {
 	 *
 	 * @return a list of all filters
 	 */
-	public ArrayList<Filter> getFilterPipe() {
+	public List<Filter> getFilterPipe() {
 		return filterPipe;
 	}
 
@@ -233,7 +228,7 @@ public class FilterManager implements IListenerOwner {
 	private void triggerFilterUpdatedEvent() {
 		FilterUpdatedEvent event = new FilterUpdatedEvent();
 		event.setEventSpace(dataDomain.getDataDomainID());
-		eventPublisher.triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 
 	public void reEvaluateFilters() {
@@ -256,7 +251,7 @@ public class FilterManager implements IListenerOwner {
 		event.setSender(this);
 		event.setEventSpace(dataDomain.getDataDomainID());
 		event.setVirtualArrayDelta(delta);
-		eventPublisher.triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 
 }

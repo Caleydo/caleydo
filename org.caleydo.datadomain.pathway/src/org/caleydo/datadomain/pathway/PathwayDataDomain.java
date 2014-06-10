@@ -16,6 +16,7 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDCreator;
@@ -147,7 +148,8 @@ public class PathwayDataDomain extends ADataDomain {
 
 		DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.INSTANCE.triggerEvent(event);
 	}
 
 	public List<PathwayTablePerspective> getTablePerspectives() {
@@ -160,6 +162,7 @@ public class PathwayDataDomain extends ADataDomain {
 
 		DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.INSTANCE.triggerEvent(event);
 	}
 }

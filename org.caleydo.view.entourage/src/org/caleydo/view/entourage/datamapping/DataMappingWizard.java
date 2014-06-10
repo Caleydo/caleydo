@@ -6,6 +6,7 @@
 package org.caleydo.view.entourage.datamapping;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ViewManager;
@@ -79,7 +80,8 @@ public class DataMappingWizard extends GLElementContainer implements IEnrouteCon
 				if (pick.getPickingMode() == PickingMode.CLICKED) {
 					EnablePathSelectionEvent event = new EnablePathSelectionEvent(true);
 					event.setEventSpace(DataMappingWizard.this.entourage.getPathEventSpace());
-					GeneralManager.get().getEventPublisher().triggerEvent(event);
+					
+					EventPublisher.INSTANCE.triggerEvent(event);
 					Display.getDefault().asyncExec(new Runnable() {
 						@Override
 						public void run() {

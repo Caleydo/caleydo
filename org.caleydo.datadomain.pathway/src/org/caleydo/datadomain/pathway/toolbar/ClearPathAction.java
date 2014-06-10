@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.datadomain.pathway.toolbar;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
@@ -51,6 +52,7 @@ public class ClearPathAction extends SimpleAction {
 		pathEvent.setPath(new PathwayPath());
 		pathEvent.setSender(this);
 		pathEvent.setEventSpace(eventSpace);
-		GeneralManager.get().getEventPublisher().triggerEvent(pathEvent);
+		
+		EventPublisher.INSTANCE.triggerEvent(pathEvent);
 	}
 }

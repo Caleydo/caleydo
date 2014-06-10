@@ -22,6 +22,7 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
@@ -450,7 +451,8 @@ public class PickingManager {
 
 					if (viewID != pickedViewID && !processedViews.contains(viewID)) {
 
-						AGLView currentView = GeneralManager.get().getViewManager().getGLView(viewID);
+						
+						AGLView currentView = ViewManager.get().getGLView(viewID);
 
 						// Check if the views have the common gl canvas, i.e. if
 						// they are rendered remote in the same SWT view frame.
@@ -571,7 +573,8 @@ public class PickingManager {
 			Set<Integer> remoteRenderedViewIDs = new HashSet<Integer>();
 			for (int viewID : hashViewIDToPreviousViewSpecificHitListContainer.keySet()) {
 
-				AGLView currentView = GeneralManager.get().getViewManager().getGLView(viewID);
+				
+				AGLView currentView = ViewManager.get().getGLView(viewID);
 				if (currentView != null && currentView.getParentGLCanvas() == parentCanvas) {
 					remoteRenderedViewIDs.add(viewID);
 				}
@@ -617,8 +620,10 @@ public class PickingManager {
 	}
 
 	static boolean isParentViewOfView(int viewID, int parentViewID) {
-		AGLView view = GeneralManager.get().getViewManager().getGLView(viewID);
-		AGLView parentView = GeneralManager.get().getViewManager().getGLView(parentViewID);
+		
+		AGLView view = ViewManager.get().getGLView(viewID);
+		GeneralManager r1 = GeneralManager.get();
+		AGLView parentView = ViewManager.get().getGLView(parentViewID);
 		if (view == null || parentView == null)
 			return false;
 		AGLView realParentView = (AGLView) view.getRemoteRenderingGLView();

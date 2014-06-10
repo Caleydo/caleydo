@@ -5,6 +5,7 @@
  *******************************************************************************/
 package org.caleydo.core.data.selection;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.manager.GeneralManager;
 
@@ -24,13 +25,15 @@ public final class SelectionCommands {
 		command.setSelectionType(SelectionType.SELECTION);
 		SelectionCommandEvent commandEvent = new SelectionCommandEvent();
 		commandEvent.setSelectionCommand(command);
-		GeneralManager.get().getEventPublisher().triggerEvent(commandEvent);
+		
+		EventPublisher.INSTANCE.triggerEvent(commandEvent);
 
 		command = new SelectionCommand(ESelectionCommandType.CLEAR);
 		command.setSelectionType(SelectionType.MOUSE_OVER);
 		commandEvent = new SelectionCommandEvent();
 		commandEvent.setSelectionCommand(command);
-		GeneralManager.get().getEventPublisher().triggerEvent(commandEvent);
+		GeneralManager r1 = GeneralManager.get();
+		EventPublisher.INSTANCE.triggerEvent(commandEvent);
 	}
 
 }

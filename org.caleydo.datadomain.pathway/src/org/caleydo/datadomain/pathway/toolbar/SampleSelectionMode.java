@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.datadomain.pathway.toolbar;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.pathway.listener.ESampleMappingMode;
 import org.caleydo.datadomain.pathway.listener.SampleMappingModeEvent;
@@ -64,7 +65,8 @@ public class SampleSelectionMode
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				mappingMode = ESampleMappingMode.ALL;
-				GeneralManager.get().getEventPublisher()
+				
+				EventPublisher.INSTANCE
 						.triggerEvent(new SampleMappingModeEvent(ESampleMappingMode.ALL));
 			}
 		});
@@ -73,7 +75,8 @@ public class SampleSelectionMode
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				mappingMode = ESampleMappingMode.SELECTED;
-				GeneralManager.get().getEventPublisher()
+				
+				EventPublisher.INSTANCE
 						.triggerEvent(new SampleMappingModeEvent(ESampleMappingMode.SELECTED));
 			}
 		});

@@ -465,7 +465,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	private GLBrick createBrick(ElementLayout wrappingLayout, TablePerspective tablePerspective, boolean isHeaderBrick,
 			Class<? extends ABrickLayoutConfiguration> layoutTemplateClass) {
 		ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4, 4);
-		GLBrick brick = (GLBrick) GeneralManager.get().getViewManager()
+		
+		GLBrick brick = (GLBrick) ViewManager.get()
 				.createGLView(GLBrick.class, parentGLCanvas, brickFrustum);
 
 		brick.setDataDomain(dataDomain);

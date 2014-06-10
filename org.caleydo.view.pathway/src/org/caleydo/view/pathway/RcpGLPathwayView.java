@@ -100,7 +100,7 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IPathwayHandler 
 			return;
 		((GLPathway) view).setPathway(pathwayID);
 
-		final PathwayGraph pathway = PathwayManager.get().getItem(pathwayID);
+		final PathwayGraph pathway = PathwayManager.get().getPathway(pathwayID);
 		Display.getDefault().asyncExec(new Runnable() {
 
 			@Override
