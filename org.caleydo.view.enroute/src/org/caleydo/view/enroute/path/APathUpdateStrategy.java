@@ -15,7 +15,6 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
@@ -112,7 +111,7 @@ public abstract class APathUpdateStrategy implements IListenerOwner {
 		event.setPath(path);
 		event.setSender(this);
 		
-		EventPublisher.INSTANCE.triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 
 	@ListenTo

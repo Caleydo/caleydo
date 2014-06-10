@@ -6,7 +6,6 @@
 package org.caleydo.datadomain.pathway.toolbar;
 
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.pathway.listener.ESampleMappingMode;
 import org.caleydo.datadomain.pathway.listener.SampleMappingModeEvent;
 import org.eclipse.jface.action.ControlContribution;

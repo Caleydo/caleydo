@@ -7,7 +7,6 @@ package org.caleydo.view.treemap.actions;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SimpleAction;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.treemap.listener.ToggleLabelEvent;
 
 /**
@@ -34,6 +33,6 @@ public class ToggleLabelAction extends SimpleAction {
 		ToggleLabelEvent event = new ToggleLabelEvent();
 		event.setDrawLabel(isChecked());
 		
-		EventPublisher.INSTANCE.triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 }

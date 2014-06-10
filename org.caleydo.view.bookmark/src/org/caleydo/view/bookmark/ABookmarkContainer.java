@@ -215,7 +215,7 @@ abstract class ABookmarkContainer
 			event.setEventSpace(manager.getDataDomain().getDataDomainID());
 			event.setSelectionDelta(selectionDelta);
 			
-			EventPublisher.INSTANCE.triggerEvent(event);
+			EventPublisher.trigger(event);
 			break;
 
 		case BOOKMARK_CONTAINER_HEADING:

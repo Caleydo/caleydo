@@ -19,7 +19,6 @@ import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Wrapper for {@link SelectionManager} that integrates all the event handling
@@ -109,7 +108,7 @@ public class EventBasedSelectionManager extends SelectionManager implements
 		event.setSelectionDelta(getDelta());
 		event.setSender(this);
 		
-		EventPublisher.INSTANCE.triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 
 }

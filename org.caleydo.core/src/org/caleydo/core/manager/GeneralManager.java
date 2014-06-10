@@ -15,13 +15,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.internal.Activator;
 import org.caleydo.core.serialize.ProjectMetaData;
-import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.ViewManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;

@@ -11,7 +11,6 @@ import org.caleydo.core.data.filter.event.ReEvaluateFilterListEvent;
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Class for Filters. A Filter contains changes made to a virtual array. Sub-classes may additionally hold information
@@ -129,7 +128,7 @@ public class Filter {
 			filterEvent.setEventSpace(dataDomain.getDataDomainID());
 			
 
-			EventPublisher.INSTANCE.triggerEvent(filterEvent);
+			EventPublisher.trigger(filterEvent);
 
 			isRegistered = true;
 		} else {
@@ -140,7 +139,7 @@ public class Filter {
 			reevaluateEvent.setEventSpace(dataDomain.getDataDomainID());
 			
 
-			EventPublisher.INSTANCE.triggerEvent(reevaluateEvent);
+			EventPublisher.trigger(reevaluateEvent);
 		}
 	}
 }

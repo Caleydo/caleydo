@@ -6,7 +6,6 @@
 package org.caleydo.view.stratomex.toolbar;
 
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.stratomex.event.ConnectionsModeEvent;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
@@ -52,11 +51,7 @@ public class ConnectionsModeGUI extends ControlContribution {
 			public void handleEvent(Event event) {
 
 				slider.setEnabled(dynamicTrendHighlightButton.getSelection());
-				GeneralManager r = GeneralManager
-						.get();
-
-				EventPublisher.INSTANCE
-						.triggerEvent(
+				EventPublisher.trigger(
 								new ConnectionsModeEvent(radios[0].getSelection(),
 										dynamicTrendHighlightButton.getSelection(),
 										slider.getSelection() / 100f));

@@ -6,7 +6,6 @@
 package org.caleydo.view.treemap.actions;
 
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.treemap.listener.LevelHighlightingEvent;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
@@ -65,7 +64,7 @@ public class LevelHighlightingAction extends ControlContribution {
 				LevelHighlightingEvent event = new LevelHighlightingEvent();
 				event.setHierarchyLevel(scale.getSelection());
 				
-				EventPublisher.INSTANCE.triggerEvent(event);
+				EventPublisher.trigger(event);
 			}
 
 			@Override

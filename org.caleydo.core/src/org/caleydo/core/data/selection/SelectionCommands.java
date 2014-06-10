@@ -26,14 +26,14 @@ public final class SelectionCommands {
 		SelectionCommandEvent commandEvent = new SelectionCommandEvent();
 		commandEvent.setSelectionCommand(command);
 		
-		EventPublisher.INSTANCE.triggerEvent(commandEvent);
+		EventPublisher.trigger(commandEvent);
 
 		command = new SelectionCommand(ESelectionCommandType.CLEAR);
 		command.setSelectionType(SelectionType.MOUSE_OVER);
 		commandEvent = new SelectionCommandEvent();
 		commandEvent.setSelectionCommand(command);
 		GeneralManager r1 = GeneralManager.get();
-		EventPublisher.INSTANCE.triggerEvent(commandEvent);
+		EventPublisher.trigger(commandEvent);
 	}
 
 }

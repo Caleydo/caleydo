@@ -9,7 +9,6 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.radial.event.SetMaxDisplayedHierarchyDepthEvent;
 import org.caleydo.view.radial.event.UpdateDepthSliderPositionEvent;
 import org.eclipse.jface.action.ControlContribution;
@@ -107,8 +106,6 @@ public class DepthSlider extends ControlContribution implements
 	public void registerEventListeners() {
 		updateSliderPositionListener = new UpdateDepthSliderPositionListener();
 		updateSliderPositionListener.setHandler(this);
-		GeneralManager r = GeneralManager
-				.get();
 		EventPublisher.INSTANCE
 				.addListener(UpdateDepthSliderPositionEvent.class,
 						updateSliderPositionListener);

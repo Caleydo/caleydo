@@ -56,7 +56,6 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.base.IUniqueObject;
 import org.caleydo.core.util.collection.Pair;
@@ -1295,7 +1294,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
 		
-		EventPublisher.INSTANCE.triggerEvent(event);
+		EventPublisher.trigger(event);
 
 		return added;
 	}
@@ -1306,8 +1305,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 * @return
 	 */
 	private BrickColumn createBrickColumn(IBrickConfigurer brickConfigurer, TablePerspective tablePerspective) {
-		GeneralManager r = GeneralManager
-				.get();
 		BrickColumn brickColumn = (BrickColumn) ViewManager.get()
 				.createGLView(BrickColumn.class, getParentGLCanvas(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
@@ -1391,7 +1388,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
 		
-		EventPublisher.INSTANCE.triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 
 	private void cleanUp(TablePerspective tablePerspective) {

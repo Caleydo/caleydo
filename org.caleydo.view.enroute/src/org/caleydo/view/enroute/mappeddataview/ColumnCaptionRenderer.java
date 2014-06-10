@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -90,7 +91,7 @@ public class ColumnCaptionRenderer extends ALayoutRenderer implements ILabelProv
 
 		gl.glPushName(pickingID);
 
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glColor3fv(bottomBarColor, 0);
 		gl.glVertex3f(0, 0, backgroundZ);
 		gl.glColor3fv(bottomBarColor, 0);

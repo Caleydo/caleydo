@@ -10,7 +10,6 @@
   <extension
         point="org.caleydo.data.pathway.Database">
      <database
-           label="org.caleydo.data.pathway.wikipathways.database1"
            loader="org.caleydo.data.pathway.wikipathways.WikiPathwaysParser"
            name="WikiPathways"
            url="www.wikipathways.org">

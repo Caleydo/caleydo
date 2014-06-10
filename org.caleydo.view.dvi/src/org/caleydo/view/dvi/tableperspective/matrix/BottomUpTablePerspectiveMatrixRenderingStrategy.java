@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
@@ -139,7 +140,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 				// gl.glColor3f(1, 0, 0);
 				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
 						PickingType.GROUP.name() + node.getID(), row.id.hashCode()));
-				gl.glBegin(GL2.GL_QUADS);
+				gl.glBegin(GL2GL3.GL_QUADS);
 				gl.glVertex3f(currentPositionX, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + captionColumnWidth + captionSpacingX, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + captionColumnWidth + captionSpacingX, currentPositionY + rowHeight,
@@ -149,7 +150,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 				gl.glPopName();
 
 				gl.glColor4fv(getPerspectiveColor(), 0);
-				gl.glBegin(GL2.GL_QUADS);
+				gl.glBegin(GL2GL3.GL_QUADS);
 				gl.glVertex3f(currentPositionX, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + childIndent, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + childIndent, currentPositionY + rowHeight, 0.1f);
@@ -253,7 +254,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 				gl.glColor4fv(groupColor, 0);
 				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
 						PickingType.GROUP.name() + node.getID(), column.id.hashCode()));
-				gl.glBegin(GL2.GL_QUADS);
+				gl.glBegin(GL2GL3.GL_QUADS);
 				gl.glVertex3f(currentPositionX, captionRowHeight + captionSpacingY, 0.1f);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, captionRowHeight + captionSpacingY, 0.1f);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, 0, 0.1f);
@@ -263,7 +264,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveM
 
 				gl.glColor4fv(perspectiveColor, 0);
 
-				gl.glBegin(GL2.GL_QUADS);
+				gl.glBegin(GL2GL3.GL_QUADS);
 				gl.glVertex3f(currentPositionX, childIndent, 0.1f);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, childIndent, 0.1f);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, 0, 0.1f);

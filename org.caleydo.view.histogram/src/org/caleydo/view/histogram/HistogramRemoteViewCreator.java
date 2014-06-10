@@ -10,7 +10,6 @@ import java.util.List;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.IRemoteViewCreator;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
@@ -27,8 +26,6 @@ public class HistogramRemoteViewCreator implements IRemoteViewCreator {
 	@Override
 	public AGLView createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
 			String embeddingEventSpace) {
-		GeneralManager r = GeneralManager
-						.get();
 		GLHistogram histogramView = (GLHistogram) ViewManager.get()
 				.createGLView(GLHistogram.class, remoteRenderingView.getParentGLCanvas(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));

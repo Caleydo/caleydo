@@ -14,6 +14,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -178,15 +179,15 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 
 		// Render uncertainty line
 		if (filter.getUncertaintyOutput() == null)
-			renderShape(gl, GL2.GL_QUADS, color, Z_POS_BODY);
+			renderShape(gl, GL2GL3.GL_QUADS, color, Z_POS_BODY);
 		else {
 
 			// Render uncertain area
-			renderShape(gl, GL2.GL_QUADS, vPos, vSize.x(), 0, uncertaintyHeightRight - heightRight, heightLeft,
+			renderShape(gl, GL2GL3.GL_QUADS, vPos, vSize.x(), 0, uncertaintyHeightRight - heightRight, heightLeft,
 					heightRight, color, Z_POS_BODY);
 
 			// Render certain area
-			renderShape(gl, GL2.GL_QUADS, vPos, vSize.x(), heightLeft, uncertaintyHeightRight, 0, 0,
+			renderShape(gl, GL2GL3.GL_QUADS, vPos, vSize.x(), heightLeft, uncertaintyHeightRight, 0, 0,
 					renderStyle.FILTER_COLOR_UNCERTAINTY, Z_POS_BODY);
 
 			// Render delimiter line between certain and uncertain area
@@ -217,7 +218,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	protected void renderOutputBand(GL2 gl, float[] bottomLeft, float[] topLeft, float[] topRight, float[] bottomRight,
 			Color bodyColor, Color borderColor) {
 		gl.glColor4fv(bodyColor.getRGBA(), 0);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		{
 			gl.glVertex3fv(topLeft, 0);
 			gl.glVertex3fv(topRight, 0);

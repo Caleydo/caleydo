@@ -10,7 +10,6 @@ package org.caleydo.view.enroute.toolbar.actions;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SimpleAction;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.view.enroute.Activator;
 import org.caleydo.view.enroute.event.FitToViewWidthEvent;

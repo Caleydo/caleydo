@@ -7,7 +7,6 @@ package org.caleydo.core.gui;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 
 /**
@@ -33,7 +32,6 @@ public class SimpleEventAction extends SimpleAction {
 	@Override
 	public void run() {
 		super.run();
-		
-		EventPublisher.INSTANCE.triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 }

@@ -48,7 +48,7 @@ public class SelectedPathUpdateStrategy extends APathUpdateStrategy {
 		triggerPathUpdate(renderer.pathSegments);
 		MinSizeUpdateEvent event = new MinSizeUpdateEvent(renderer, renderer.minHeightPixels, renderer.minWidthPixels);
 		event.setEventSpace(pathwayPathEventSpace);
-		EventPublisher.INSTANCE.triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 
 	@Override

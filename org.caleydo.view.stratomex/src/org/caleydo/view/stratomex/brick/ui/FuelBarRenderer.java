@@ -6,6 +6,7 @@
 package org.caleydo.view.stratomex.brick.ui;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
@@ -57,7 +58,7 @@ public class FuelBarRenderer extends ALayoutRenderer {
 				EPickingType.BRICK_PENETRATING.name(), brick.getID()));
 		// gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 		// PickingType.BRICK, brick.getID()));
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 
 		// if (selectionManager.checkStatus(SelectionType.SELECTION,
 		// brick.getGroup()

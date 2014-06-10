@@ -27,7 +27,6 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.MinSizeUpdateEvent;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
@@ -662,7 +661,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 					ShowPortalsEvent event = new ShowPortalsEvent(!showPortalsButton.isChecked());
 					showPortalsButton.setChecked(!showPortalsButton.isChecked());
 					event.setEventSpace(pathEventSpace);
-					EventPublisher.INSTANCE.triggerEvent(event);
+					EventPublisher.trigger(event);
 				}
 				// highlightAllPortalsButton.setChecked(isOPressed);
 				boolean iswPressed = e.isKeyDown('w');
@@ -684,7 +683,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 								EnablePathSelectionEvent event = new EnablePathSelectionEvent(enable);
 								event.setEventSpace(pathEventSpace);
 								
-								EventPublisher.INSTANCE.triggerEvent(event);
+								EventPublisher.trigger(event);
 								selectPathAction.setChecked(enable);
 							}
 						});

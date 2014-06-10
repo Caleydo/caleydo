@@ -59,7 +59,6 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.Clusterers;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
@@ -293,7 +292,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 				DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
 				event.setSender(this);
 				
-				EventPublisher.INSTANCE.triggerEvent(event);
+				EventPublisher.trigger(event);
 			}
 		}
 

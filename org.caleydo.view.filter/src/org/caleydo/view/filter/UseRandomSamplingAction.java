@@ -8,7 +8,6 @@ package org.caleydo.view.filter;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.UseRandomSamplingEvent;
 import org.caleydo.core.gui.SimpleAction;
-import org.caleydo.core.manager.GeneralManager;
 
 public class UseRandomSamplingAction extends SimpleAction {
 
@@ -27,6 +26,6 @@ public class UseRandomSamplingAction extends SimpleAction {
 		super.run();
 		bFlag = !bFlag;
 		
-		EventPublisher.INSTANCE.triggerEvent(new UseRandomSamplingEvent(bFlag));
+		EventPublisher.trigger(new UseRandomSamplingEvent(bFlag));
 	}
 }

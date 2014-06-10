@@ -29,7 +29,6 @@ import org.caleydo.core.io.gui.dataimport.CreateIDTypeDialog;
 import org.caleydo.core.io.gui.dataimport.DefineIDParsingDialog;
 import org.caleydo.core.io.gui.dataimport.FilePreviewParser;
 import org.caleydo.core.io.parser.ascii.ATextParser;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.dialogs.MessageDialog;

@@ -17,7 +17,6 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.DataDomainSerializationData;
 import org.caleydo.core.serialize.ISerializationAddon;
 import org.caleydo.core.serialize.ProjectManager;

@@ -552,7 +552,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	private void triggerMinSizeUpdate() {
 		MinSizeUpdateEvent e = new MinSizeUpdateEvent(this, getMinWidthPixels(), getMinHeightPixels());
 		e.setEventSpace(eventSpace);
-		EventPublisher.INSTANCE.triggerEvent(e);
+		EventPublisher.trigger(e);
 	}
 
 	@Override

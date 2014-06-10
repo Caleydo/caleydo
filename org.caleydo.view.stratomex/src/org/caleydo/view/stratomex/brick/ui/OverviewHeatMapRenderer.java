@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.perspective.table.Average;
@@ -111,7 +112,7 @@ public class OverviewHeatMapRenderer extends ALayoutRenderer {
 			if (renderTriangles)
 				gl.glBegin(GL.GL_TRIANGLES);
 			else
-				gl.glBegin(GL2.GL_QUADS);
+				gl.glBegin(GL2GL3.GL_QUADS);
 
 			for (Float currentValue : heatMapValuesMeanMinusStdDev) {
 				if (currentValue > 1)
@@ -137,7 +138,7 @@ public class OverviewHeatMapRenderer extends ALayoutRenderer {
 
 			gl.glEnd();
 
-			gl.glBegin(GL2.GL_QUADS);
+			gl.glBegin(GL2GL3.GL_QUADS);
 
 			currentPositionX = 0;
 			currentPositionY += stdDevHeatMapElementHeight;
@@ -161,7 +162,7 @@ public class OverviewHeatMapRenderer extends ALayoutRenderer {
 			if (renderTriangles)
 				gl.glBegin(GL.GL_TRIANGLES);
 			else
-				gl.glBegin(GL2.GL_QUADS);
+				gl.glBegin(GL2GL3.GL_QUADS);
 
 			currentPositionX = 0;
 			currentPositionY += meanHeatMapElementHeight;
@@ -207,7 +208,7 @@ public class OverviewHeatMapRenderer extends ALayoutRenderer {
 			// gl.glVertex3f(x, stdDevHeatMapElementHeight + meanHeatMapElementHeight, 0);
 
 		} else {
-			gl.glBegin(GL2.GL_QUADS);
+			gl.glBegin(GL2GL3.GL_QUADS);
 
 			float currentPositionX = 0;
 			for (Float currentValue : heatMapValuesMean) {

@@ -7,7 +7,6 @@ package org.caleydo.view.treemap.actions;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SimpleAction;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.treemap.listener.ZoomOutEvent;
 
 /**
@@ -32,7 +31,7 @@ public class ZoomOutAction extends SimpleAction {
 		super.run();
 		
 
-		EventPublisher.INSTANCE.triggerEvent(new ZoomOutEvent());
+		EventPublisher.trigger(new ZoomOutEvent());
 		setChecked(false);
 	}
 }

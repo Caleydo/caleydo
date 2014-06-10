@@ -8,7 +8,6 @@ package org.caleydo.view.treemap.actions;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SimpleAction;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.treemap.listener.ToggleColoringModeEvent;
 
 /**
@@ -34,7 +33,7 @@ public class ToggleColoringModeAction extends SimpleAction {
 		ToggleColoringModeEvent event = new ToggleColoringModeEvent();
 		event.setCalculateColor(isChecked());
 		
-		EventPublisher.INSTANCE.triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 
 }

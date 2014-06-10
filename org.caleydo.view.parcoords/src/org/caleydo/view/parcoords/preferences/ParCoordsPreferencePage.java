@@ -7,7 +7,6 @@ package org.caleydo.view.parcoords.preferences;
 
 import static org.caleydo.view.parcoords.preferences.MyPreferences.NUM_RANDOM_SAMPLING_POINT;
 
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.parcoords.Activator;
@@ -54,7 +53,7 @@ public class ParCoordsPreferencePage extends FieldEditorPreferencePage implement
 	@Override
 	public boolean performOk() {
 		boolean bReturn = super.performOk();
-		
+
 
 		for (AGLView glView : ViewManager.get().getAllGLViews()) {
 			if (glView.getViewType().equals(GLParallelCoordinates.VIEW_TYPE)) {

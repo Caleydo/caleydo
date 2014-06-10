@@ -34,7 +34,6 @@ import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.ColorManager;
@@ -528,8 +527,8 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 						LoadPathwayEvent event = new LoadPathwayEvent();
 						event.setSender(this);
 						event.setPathwayID(pathway.getID());
-						
-						EventPublisher.INSTANCE.triggerEvent(event);
+
+						EventPublisher.trigger(event);
 					}
 				}
 
@@ -708,7 +707,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			// protected void mouseOver(Pick pick) {
 			// PathwayTextureSelectionEvent event = new PathwayTextureSelectionEvent(pathway);
 			// event.setEventSpace(pathwayPathEventSpace);
-			// EventPublisher.INSTANCE.triggerEvent(event);
+			// EventPublisher.trigger(event);
 			// }
 
 		}, EPickingType.PATHWAY_TEXTURE_SELECTION.name());

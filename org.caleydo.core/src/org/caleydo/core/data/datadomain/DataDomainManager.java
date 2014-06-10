@@ -18,7 +18,6 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.NewDataDomainEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorManager;
@@ -233,7 +232,7 @@ public class DataDomainManager {
 		NewDataDomainEvent event = new NewDataDomainEvent(dataDomain);
 		event.setSender(this);
 		
-		EventPublisher.INSTANCE.triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 
 	/**
@@ -258,7 +257,7 @@ public class DataDomainManager {
 		dataDomainGraph.removeDataDomain(dataDomain);
 		
 
-		EventPublisher.INSTANCE.triggerEvent(new RemoveDataDomainEvent(this, dataDomain));
+		EventPublisher.trigger(new RemoveDataDomainEvent(this, dataDomain));
 	}
 
 	/**

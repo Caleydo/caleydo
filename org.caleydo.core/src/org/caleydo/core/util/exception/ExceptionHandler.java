@@ -5,7 +5,6 @@
  ******************************************************************************/
 package org.caleydo.core.util.exception;
 
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.ViewManager;

@@ -25,7 +25,7 @@ public class ChangeColorModeAction extends SimpleAction {
 		super.run();
 		
 
-		EventPublisher.INSTANCE.triggerEvent(new ChangeColorModeEvent());
+		EventPublisher.trigger(new ChangeColorModeEvent());
 		setChecked(false);
 	}
 }

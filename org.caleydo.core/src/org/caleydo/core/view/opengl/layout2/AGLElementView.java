@@ -15,7 +15,6 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewManager;

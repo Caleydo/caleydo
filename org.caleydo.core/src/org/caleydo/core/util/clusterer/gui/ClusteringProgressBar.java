@@ -141,7 +141,7 @@ public class ClusteringProgressBar implements Runnable {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
-				EventPublisher.INSTANCE.triggerEvent(new ClustererCanceledEvent());
+				EventPublisher.trigger(new ClustererCanceledEvent());
 				shell.close();
 			}
 		});

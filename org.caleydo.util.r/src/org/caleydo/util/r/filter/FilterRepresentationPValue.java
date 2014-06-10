@@ -207,7 +207,7 @@ public class FilterRepresentationPValue extends
 		filterEvent.setEventSpace(filter.getDataDomain().getDataDomainID());
 		filterEvent.setFilter(filter);
 		
-		EventPublisher.INSTANCE.triggerEvent(filterEvent);
+		EventPublisher.trigger(filterEvent);
 	}
 
 	@Override

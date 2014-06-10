@@ -15,7 +15,6 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.gui.ClusterDialog;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
@@ -309,7 +308,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 										.getBrickColumn().getStratomexView(), newTablePerspective,
 										oldTablePerspective);
 								
-								EventPublisher.INSTANCE.triggerEvent(rEvent);
+								EventPublisher.trigger(rEvent);
 							}
 							// clusterConfiguration =
 							// dialog.getClusterConfiguration();
@@ -347,7 +346,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 								.getTablePerspective(), brick.getStratomex());
 						event.setSender(this);
 						
-						EventPublisher.INSTANCE.triggerEvent(event);
+						EventPublisher.trigger(event);
 					}
 				});
 			}

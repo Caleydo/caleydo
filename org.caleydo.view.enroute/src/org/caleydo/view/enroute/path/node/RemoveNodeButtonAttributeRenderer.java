@@ -16,7 +16,6 @@ import java.util.List;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.ATimedMouseOutPickingListener;
@@ -141,7 +140,7 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 					RemoveEnRouteNodeEvent event = new RemoveEnRouteNodeEvent((ALinearizableNode) node);
 					event.setSender(this);
 					
-					EventPublisher.INSTANCE.triggerEvent(event);
+					EventPublisher.trigger(event);
 					pathwayPathRenderer.removeNodeFromPath((ALinearizableNode) node);
 				}
 

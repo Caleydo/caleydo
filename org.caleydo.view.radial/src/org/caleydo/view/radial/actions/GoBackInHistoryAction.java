@@ -24,7 +24,7 @@ public class GoBackInHistoryAction extends SimpleAction {
 	public void run() {
 		super.run();
 		
-		EventPublisher.INSTANCE.triggerEvent(new GoBackInHistoryEvent());
+		EventPublisher.trigger(new GoBackInHistoryEvent());
 		setChecked(false);
 	}
 }

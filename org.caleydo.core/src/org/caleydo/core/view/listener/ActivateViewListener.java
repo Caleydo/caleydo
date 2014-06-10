@@ -11,7 +11,6 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.data.BookmarkEvent;
 import org.caleydo.core.event.view.OpenViewEvent;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
@@ -59,7 +58,7 @@ public class ActivateViewListener
 				
 
 				// Re-trigger event so that the opened view receives it
-				EventPublisher.INSTANCE.triggerEvent(event);
+				EventPublisher.trigger(event);
 			}
 			else if (event instanceof OpenViewEvent) {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()

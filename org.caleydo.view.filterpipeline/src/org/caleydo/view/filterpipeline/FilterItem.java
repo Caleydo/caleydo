@@ -15,7 +15,6 @@ import org.caleydo.core.data.filter.event.MoveFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveFilterEvent;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -101,7 +100,6 @@ public class FilterItem implements IRenderable, IDropArea {
 	 *
 	 * @param input
 	 */
-	@SuppressWarnings("unchecked")
 	public void setInput(VirtualArray input) {
 		this.input = input;
 		output = this.input.clone();
@@ -159,7 +157,7 @@ public class FilterItem implements IRenderable, IDropArea {
 		if (filterEvent != null) {
 			filterEvent.setEventSpace(filter.getDataDomain().getDataDomainID());
 			
-			EventPublisher.INSTANCE.triggerEvent(filterEvent);
+			EventPublisher.trigger(filterEvent);
 		}
 	}
 
@@ -172,7 +170,7 @@ public class FilterItem implements IRenderable, IDropArea {
 		filterEvent.setEventSpace(filter.getDataDomain().getDataDomainID());
 		filterEvent.setOffset(offset);
 		
-		EventPublisher.INSTANCE.triggerEvent(filterEvent);
+		EventPublisher.trigger(filterEvent);
 
 	}
 
@@ -218,7 +216,7 @@ public class FilterItem implements IRenderable, IDropArea {
 		if (filterEvent != null) {
 			filterEvent.setEventSpace(filter.getDataDomain().getDataDomainID());
 			
-			EventPublisher.INSTANCE.triggerEvent(filterEvent);
+			EventPublisher.trigger(filterEvent);
 		}
 	}
 

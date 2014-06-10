@@ -16,7 +16,6 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.IRemoteRendererCreator;
 import org.caleydo.core.view.IRemoteViewCreator;
 import org.caleydo.core.view.ViewManager;

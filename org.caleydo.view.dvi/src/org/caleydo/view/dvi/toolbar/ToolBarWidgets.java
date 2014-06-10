@@ -97,7 +97,7 @@ public class ToolBarWidgets extends ControlContribution {
 
 				e.setSender(this);
 				
-				EventPublisher.INSTANCE.triggerEvent(e);
+				EventPublisher.trigger(e);
 
 			}
 		};

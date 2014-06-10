@@ -22,7 +22,6 @@ import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Helper class that generates table perspectives for categorical datasets.
@@ -67,7 +66,7 @@ public class CategoricalTablePerspectiveCreator {
 		DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
 		event.setSender(this);
 		
-		EventPublisher.INSTANCE.triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 
 	/**

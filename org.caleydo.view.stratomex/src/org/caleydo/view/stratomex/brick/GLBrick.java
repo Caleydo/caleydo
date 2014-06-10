@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLAutoDrawable;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -38,7 +39,6 @@ import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.gui.util.RenameNameDialog;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
@@ -387,7 +387,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		SelectionDelta delta = recordSelectionManager.getDelta();
 		event.setSelectionDelta(delta);
 		
-		EventPublisher.INSTANCE.triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 
 	@Override
@@ -419,7 +419,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
 		gl.glTranslatef(0, 0, 0.1f);
 
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 
 		float zpos = 0f;
 
@@ -828,7 +828,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				DataSetSelectedEvent event = new DataSetSelectedEvent(tablePerspective);
 				event.setSender(this);
 				
-				EventPublisher.INSTANCE.triggerEvent(event);
+				EventPublisher.trigger(event);
 			}
 		};
 
@@ -1232,7 +1232,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	@Override
 	public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 0.5f);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glVertex3f(mouseCoordinateX - draggingMousePositionDeltaX, mouseCoordinateY - draggingMousePositionDeltaY, 2);
 		gl.glVertex3f(mouseCoordinateX - draggingMousePositionDeltaX + wrappingLayout.getSizeScaledX(),
 				mouseCoordinateY - draggingMousePositionDeltaY, 2);

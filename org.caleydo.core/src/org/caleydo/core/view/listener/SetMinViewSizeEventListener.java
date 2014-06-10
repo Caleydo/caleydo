@@ -10,7 +10,6 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.MinSizeAppliedEvent;
 import org.caleydo.core.event.view.SetMinViewSizeEvent;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.MinimumSizeComposite;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
@@ -40,7 +39,7 @@ public class SetMinViewSizeEventListener
 				e.setView(view);
 				e.setSender(this);
 				
-				EventPublisher.INSTANCE.triggerEvent(e);
+				EventPublisher.trigger(e);
 			}
 		}
 	}

@@ -11,7 +11,6 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.SetMinViewSizeEvent;
 import org.caleydo.core.event.view.ViewScrollEvent;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.listener.SetMinViewSizeEventListener;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.swt.SWT;

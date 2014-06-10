@@ -23,7 +23,6 @@ import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.MinSizeUpdateEvent;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -232,7 +231,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		PathRendererChangedEvent event = new PathRendererChangedEvent(this);
 		event.setSender(this);
 		
-		EventPublisher.INSTANCE.triggerEvent(event);
+		EventPublisher.trigger(event);
 
 		updateLayout();
 
@@ -657,7 +656,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			PathRendererChangedEvent event = new PathRendererChangedEvent(this);
 			event.setSender(this);
 			
-			EventPublisher.INSTANCE.triggerEvent(event);
+			EventPublisher.trigger(event);
 			updateLayout();
 			// setDisplayListDirty(true);
 		}
@@ -1087,7 +1086,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		this.minHeightPixels = minHeightPixels;
 		MinSizeUpdateEvent event = new MinSizeUpdateEvent(this, minHeightPixels, minWidthPixels);
 		event.setEventSpace(pathwayPathEventSpace);
-		EventPublisher.INSTANCE.triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 
 	/**
@@ -1100,7 +1099,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		this.minWidthPixels = minWidthPixels;
 		MinSizeUpdateEvent event = new MinSizeUpdateEvent(this, minHeightPixels, minWidthPixels);
 		event.setEventSpace(pathwayPathEventSpace);
-		EventPublisher.INSTANCE.triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 
 	/**

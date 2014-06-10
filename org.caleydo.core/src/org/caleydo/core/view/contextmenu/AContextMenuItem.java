@@ -102,7 +102,7 @@ public abstract class AContextMenuItem {
 	public void triggerEvent() {
 		if (events != null && events.size() > 0) {
 			for (AEvent event : events) {
-				EventPublisher.INSTANCE.triggerEvent(event);
+				EventPublisher.trigger(event);
 			}
 		}
 	}

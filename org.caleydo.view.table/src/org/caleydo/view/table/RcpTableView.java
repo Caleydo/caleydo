@@ -5,7 +5,6 @@
  ******************************************************************************/
 package org.caleydo.view.table;
 
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.view.table.action.SelectionOnlyAction;

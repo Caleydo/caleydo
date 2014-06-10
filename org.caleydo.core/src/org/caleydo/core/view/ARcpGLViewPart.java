@@ -8,7 +8,6 @@ package org.caleydo.core.view;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLView;

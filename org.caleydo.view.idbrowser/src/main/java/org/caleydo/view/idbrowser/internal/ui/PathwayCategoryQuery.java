@@ -5,7 +5,6 @@
  *******************************************************************************/
 package org.caleydo.view.idbrowser.internal.ui;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
