@@ -3,12 +3,12 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.core.internal.ui;
+package org.caleydo.core.view.internal.ui;
 
 import org.caleydo.core.gui.util.ScaleFieldEditor2;
 import org.caleydo.core.gui.util.SpinnerFieldEditor;
-import org.caleydo.core.internal.Activator;
-import org.caleydo.core.internal.MyPreferences;
+import org.caleydo.core.view.internal.Activator;
+import org.caleydo.core.view.internal.MyPreferences;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.ScaleFieldEditor;
 import org.eclipse.swt.widgets.Composite;

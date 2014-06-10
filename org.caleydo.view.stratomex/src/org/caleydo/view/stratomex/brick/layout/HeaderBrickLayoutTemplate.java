@@ -14,7 +14,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
+import org.caleydo.core.event.view.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.util.clusterer.gui.ClusterDialog;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;

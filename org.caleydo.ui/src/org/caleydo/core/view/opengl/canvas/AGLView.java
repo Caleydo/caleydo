@@ -253,7 +253,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	@Override
 	public void initialize() {
-		
+
 		ViewManager viewManager = ViewManager.get();
 		viewManager.registerView(this, !isRenderedRemote());
 		registerEventListeners();
@@ -692,7 +692,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 		}
 
 		if (contextMenuCreator.hasMenuItems()) {
-			contextMenuCreator.open(this);
+			this.getParentGLCanvas().showPopupMenu(contextMenuCreator);
 			contextMenuCreator.clear();
 		}
 	}

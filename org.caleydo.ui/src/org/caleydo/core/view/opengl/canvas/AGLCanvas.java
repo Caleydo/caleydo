@@ -18,7 +18,7 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLRunnable;
 
 import org.apache.commons.lang.SystemUtils;
-import org.caleydo.core.internal.MyPreferences;
+import org.caleydo.core.view.internal.MyPreferences;
 import org.caleydo.core.view.opengl.canvas.internal.DnDAdapter;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;

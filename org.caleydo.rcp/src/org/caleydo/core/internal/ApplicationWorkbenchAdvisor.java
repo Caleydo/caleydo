@@ -14,6 +14,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ViewManager;
+import org.caleydo.core.view.internal.MyPreferences;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;

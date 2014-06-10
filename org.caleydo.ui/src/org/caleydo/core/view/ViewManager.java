@@ -23,9 +23,9 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
-import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.view.internal.MyPreferences;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
@@ -99,8 +99,11 @@ public class ViewManager {
 
 	private final IGLCanvasFactory canvasFactory;
 
+	/**
+	 * chooses the implementation for the jogl canvas, possible values are: awt, swt (default) and newt
+	 */
 	{
-		String kind = MyPreferences.CANVAS_IMPLEMENTATION;
+		String kind = System.getProperty("org.caleydo.opengl", "swt");
 		if ("awt".equalsIgnoreCase(kind)) {
 			canvasFactory = new AWTGLCanvasFactory();
 		} else if ("swt".equalsIgnoreCase(kind)) {

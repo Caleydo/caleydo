@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.core.event.data;
+package org.caleydo.core.event.view;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.ADirectedEvent;

@@ -7,11 +7,11 @@ package org.caleydo.core.internal.gui;
 
 import java.util.Map;
 
-import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.internal.MyPreferences;
 import org.eclipse.jface.wizard.Wizard;
 
 /**

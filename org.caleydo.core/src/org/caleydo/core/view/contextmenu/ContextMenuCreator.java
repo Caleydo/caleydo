@@ -13,7 +13,6 @@ import java.util.List;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
-import org.caleydo.core.view.opengl.canvas.IGLView;
 
 import com.google.common.collect.Iterators;
 
@@ -61,10 +60,6 @@ public class ContextMenuCreator implements Iterable<AContextMenuItem> {
 
 	public synchronized boolean hasMenuItems() {
 		return !menuItems.isEmpty();
-	}
-
-	public synchronized void open(final IGLView view) {
-		view.getParentGLCanvas().showPopupMenu(menuItems);
 	}
 
 	@Override

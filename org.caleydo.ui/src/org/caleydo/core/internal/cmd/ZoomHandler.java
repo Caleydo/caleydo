@@ -6,7 +6,7 @@
 package org.caleydo.core.internal.cmd;
 
 import org.apache.commons.lang.StringUtils;
-import org.caleydo.core.internal.MyPreferences;
+import org.caleydo.core.view.internal.MyPreferences;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

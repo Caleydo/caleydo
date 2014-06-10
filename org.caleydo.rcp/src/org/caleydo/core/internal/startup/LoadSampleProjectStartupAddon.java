@@ -11,7 +11,6 @@ import java.net.URL;
 
 import org.apache.commons.lang.StringUtils;
 import org.caleydo.core.gui.util.FontUtil;
-import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
@@ -19,6 +18,7 @@ import org.caleydo.core.startup.LoadProjectStartupProcedure;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.BrowserUtils;
 import org.caleydo.core.util.system.RemoteFile;
+import org.caleydo.core.view.internal.MyPreferences;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.RegistryFactory;
