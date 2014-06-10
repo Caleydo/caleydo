@@ -332,7 +332,6 @@ Export-Package: org.caleydo.core.data.collection,
    org.caleydo.core.view.opengl.camera,
    gleem.linalg,
    javax.media.opengl",
- org.caleydo.core.view.opengl.util.animation;uses:="gleem.linalg",
  org.caleydo.core.view.opengl.util.button;
   uses:="org.caleydo.core.view.opengl.canvas,
    org.caleydo.core.view.opengl.util.texture,
