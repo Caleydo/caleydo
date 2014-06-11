@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.core.util.base;
+package org.caleydo.core.view.internal;
 
 import java.util.Arrays;
 
@@ -25,7 +25,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Samuel Gratzl
  *
  */
-class ShowAndAddToViewAction implements Runnable {
+public class ShowAndAddToViewAction implements Runnable {
 	private static final Logger log = Logger.create(ShowAndAddToViewAction.class);
 
 	private final String view;

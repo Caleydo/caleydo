@@ -6,6 +6,7 @@
 package org.caleydo.view.bookmark;
 
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.view.bookmark.toolbar.ExportDataAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
@@ -23,7 +24,7 @@ public class RcpBookmarkView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLBookmarkView(glCanvas, serializedView.getViewFrustum());
+		view = new GLBookmarkView(glCanvas, ViewFrustum.createDefault());
 		initializeView();
 		createPartControlGL();
 	}

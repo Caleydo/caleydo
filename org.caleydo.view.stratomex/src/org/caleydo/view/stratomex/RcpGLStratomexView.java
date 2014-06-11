@@ -8,6 +8,7 @@ package org.caleydo.view.stratomex;
 import org.caleydo.core.gui.OpenOnlineHelpAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.view.stratomex.toolbar.ConnectionsModeGUI;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
@@ -30,7 +31,7 @@ public class RcpGLStratomexView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		GLStratomex stratomex = new GLStratomex(glCanvas, serializedView.getViewFrustum());
+		GLStratomex stratomex = new GLStratomex(glCanvas, ViewFrustum.createDefault());
 		view = stratomex;
 		initializeView();
 

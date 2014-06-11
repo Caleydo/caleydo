@@ -12,12 +12,12 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.startup.IStartUpDocumentListener;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.startup.LoadProjectStartupProcedure;
-import org.caleydo.core.view.internal.MyPreferences;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;

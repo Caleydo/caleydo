@@ -3,11 +3,15 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.core.util.color;
+package org.caleydo.core.view.internal;
 
 import java.util.Comparator;
 import java.util.Locale;
 
+import org.caleydo.core.util.color.AlexColorPalette;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.ColorBrewer;
+import org.caleydo.core.util.color.IColorPalette;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;

@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.ui,
  org.caleydo.datadomain.pathway;bundle-version="3.1.4.qualifier",
  org.caleydo.datadomain.genetic;bundle-version="3.1.4.qualifier",
  org.caleydo.util.bubblesets;bundle-version="3.1.4.qualifier",
- org.caleydo.view.pathway;bundle-version="3.1.4.qualifier"
+ org.caleydo.view.pathway;bundle-version="3.1.4.qualifier",
+ org.caleydo.ui;bundle-version="3.1.4.qualifier"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: www.caleydo.org

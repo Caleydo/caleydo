@@ -17,7 +17,6 @@ import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.color.AlexColorPalette;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorBrewer;
-import org.caleydo.core.util.color.StyledColor;
 
 /**
  * Central access point for xml-serialization related tasks.
@@ -50,7 +49,7 @@ public class SerializationManager {
 		serializableTypes.add(Color.class);
 		serializableTypes.add(AlexColorPalette.AlexColorPaletteColor.class);
 		serializableTypes.add(ColorBrewer.ColorBrewerColor.class);
-		serializableTypes.add(StyledColor.class);
+		// serializableTypes.add(StyledColor.class);
 		serializableTypes.add(AttributeType.class);
 		serializableTypes.add(IDMappingList.class);
 

@@ -9,9 +9,9 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.caleydo.core.internal.Activator;
+import org.caleydo.core.internal.MyPreferences;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.internal.MyPreferences;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

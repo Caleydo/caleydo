@@ -8,6 +8,7 @@ package org.caleydo.view.enroute;
 import org.caleydo.core.gui.OpenOnlineHelpAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.enroute.toolbar.actions.FitToViewWidthAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -31,7 +32,7 @@ public class RcpGLEnRoutePathwayView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLEnRoutePathway(glCanvas, serializedView.getViewFrustum());
+		view = new GLEnRoutePathway(glCanvas, ViewFrustum.createDefault());
 		initializeView();
 		minSizeComposite.setView((AGLView) view);
 		createPartControlGL();

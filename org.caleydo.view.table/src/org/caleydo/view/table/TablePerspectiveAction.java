@@ -5,8 +5,8 @@
  *******************************************************************************/
 package org.caleydo.view.table;
 
-import static org.caleydo.core.util.base.Runnables.show;
 import static org.caleydo.core.util.base.Runnables.withinSWTThread;
+import static org.caleydo.core.view.util.UIRunnables.show;
 
 import java.util.ArrayList;
 import java.util.Collection;

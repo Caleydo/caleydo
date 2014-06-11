@@ -35,6 +35,10 @@ public class ViewFrustum {
 		projectionMode = CameraProjectionMode.ORTHOGRAPHIC;
 	}
 
+	public static ViewFrustum createDefault() {
+		return new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -20, 20);
+	}
+
 	/**
 	 * Constructor
 	 *

@@ -7,7 +7,8 @@ Bundle-Activator: org.caleydo.view.dvi.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.caleydo.core;bundle-version="3.1.4.qualifier",
- org.caleydo.datadomain.pathway;bundle-version="3.1.4.qualifier"
+ org.caleydo.datadomain.pathway;bundle-version="3.1.4.qualifier",
+ org.caleydo.ui;bundle-version="3.1.4.qualifier"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: www.caleydo.org

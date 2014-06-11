@@ -6,6 +6,7 @@
 package org.caleydo.view.kaplanmeier;
 
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -23,7 +24,7 @@ public class RcpGLKaplanMeierView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLKaplanMeier(glCanvas, serializedView.getViewFrustum());
+		view = new GLKaplanMeier(glCanvas, ViewFrustum.createDefault());
 		initializeView();
 		createPartControlGL();
 	}

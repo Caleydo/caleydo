@@ -6,7 +6,7 @@
 package org.caleydo.core.gui.preferences;
 
 import org.caleydo.core.internal.Activator;
-import org.caleydo.core.view.internal.MyPreferences;
+import org.caleydo.core.internal.MyPreferences;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.swt.widgets.Composite;

@@ -3,11 +3,13 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.core.util.color;
+package org.caleydo.core.view.util;
 
 import javax.media.opengl.GL2;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
+
+import org.caleydo.core.util.color.Color;
 
 /**
  * a color with advanced options, e.g. line options

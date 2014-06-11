@@ -6,6 +6,7 @@
 package org.caleydo.view.treemap;
 
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.view.treemap.actions.LevelHighlightingAction;
 import org.caleydo.view.treemap.actions.ToggleColoringModeAction;
 import org.caleydo.view.treemap.actions.ToggleLabelAction;
@@ -27,7 +28,7 @@ public class RcpGLTreeMapView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLHierarchicalTreeMap(glCanvas, serializedView.getViewFrustum());
+		view = new GLHierarchicalTreeMap(glCanvas, ViewFrustum.createDefault());
 		initializeView();
 		createPartControlGL();
 	}

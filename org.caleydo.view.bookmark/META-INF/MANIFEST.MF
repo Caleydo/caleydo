@@ -3,7 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Bookmark View
 Bundle-SymbolicName: org.caleydo.view.bookmark;singleton:=true
 Bundle-Version: 3.1.4.qualifier
-Require-Bundle: org.caleydo.core;bundle-version="3.1.4.qualifier"
+Require-Bundle: org.caleydo.core;bundle-version="3.1.4.qualifier",
+ org.caleydo.ui;bundle-version="3.1.4.qualifier"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.caleydo.view.bookmark
 Bundle-Vendor: www.caleydo.org

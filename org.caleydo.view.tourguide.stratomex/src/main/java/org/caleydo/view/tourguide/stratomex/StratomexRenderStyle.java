@@ -11,7 +11,7 @@ import java.net.URL;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.StyledColor;
+import org.caleydo.core.view.util.StyledColor;
 
 public class StratomexRenderStyle {
 	private static final Color STRATOMEX_HIT_GROUP = new StyledColor(SelectionType.SELECTION.getColor())

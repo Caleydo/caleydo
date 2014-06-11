@@ -20,9 +20,9 @@ import javax.media.opengl.glu.GLUtessellator;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.StyledColor;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
+import org.caleydo.core.view.util.StyledColor;
 
 /**
  * FIXME documentation

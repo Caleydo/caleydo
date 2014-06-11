@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  ******************************************************************************/
-package org.caleydo.core.util.exception;
+package org.caleydo.core.view.internal;
 
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.CaleydoRCPViewPart;

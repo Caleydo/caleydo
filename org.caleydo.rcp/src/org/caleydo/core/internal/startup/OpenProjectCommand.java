@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.core.internal.startup;
 
-import org.caleydo.core.view.internal.MyPreferences;
+import org.caleydo.core.internal.MyPreferences;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
