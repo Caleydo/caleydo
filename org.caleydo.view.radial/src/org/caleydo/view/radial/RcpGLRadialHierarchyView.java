@@ -6,6 +6,7 @@
 package org.caleydo.view.radial;
 
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.view.radial.actions.ChangeColorModeAction;
 import org.caleydo.view.radial.actions.GoBackInHistoryAction;
 import org.caleydo.view.radial.actions.GoForthInHistoryAction;
@@ -28,7 +29,7 @@ public class RcpGLRadialHierarchyView extends ARcpGLViewPart {
 
 		// minSizeComposite.setView(view);
 
-		view = new GLRadialHierarchy(glCanvas, serializedView.getViewFrustum());
+		view = new GLRadialHierarchy(glCanvas, ViewFrustum.createDefault());
 		initializeView();
 		createPartControlGL();
 	}

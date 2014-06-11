@@ -15,12 +15,12 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.selection.events.ClusterNodeSelectionListener;
 import org.caleydo.core.event.data.ClusterNodeSelectionEvent;
 import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
+import org.caleydo.view.radial.listener.ClusterNodeSelectionListener;
 
 /**
  * The ExperimentClusterDataEventManager is responsible for handling and
