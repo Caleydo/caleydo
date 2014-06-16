@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.core.internal.cmd.ZoomHandler"
+            id="org.caleydo.core.startup.zoom"
+            name="Change Zoom Factor">
+         <commandParameter
+               id="action"
+               name="Zooming action"
+               optional="true"
+               values="org.caleydo.core.internal.cmd.ZoomHandlerParameters">
+         </commandParameter>
+      </command>
+   </extension>
+
+</plugin>
