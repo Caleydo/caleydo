@@ -237,12 +237,10 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.9.0";visibility:=reex
  org.caleydo.util.gleem;bundle-version="3.1.4.qualifier";visibility:=reexport,
  com.google.guava;bundle-version="12.0.0";visibility:=reexport,
  org.apache.commons.lang;bundle-version="2.6.0";visibility:=reexport,
- org.kohsuke.args4j;bundle-version="2.0.21";visibility:=reexport,
  org.eclipse.nebula.widgets.nattable.core;bundle-version="1.0.1";visibility:=reexport,
  org.caleydo.thirdparty.jgrapht;bundle-version="0.8.3";visibility:=reexport,
  org.eclipse.jface,
- org.eclipse.ui.workbench,
- org.caleydo.thirdparty.jogl;bundle-version="2.1.3"
+ org.eclipse.ui.workbench
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

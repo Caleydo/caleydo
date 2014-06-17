@@ -6,7 +6,9 @@
 package org.caleydo.core.util.clusterer.algorithm;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -26,8 +28,6 @@ import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-
-import com.jogamp.common.util.IntIntHashMap;
 
 /**
  * Abstract base class for clusterers that handles external events
@@ -98,7 +98,7 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 	 *
 	 * @return an lookup clustersample -&gt; clusterIndex
 	 */
-	protected final IntIntHashMap sortClusters(List<Integer> clusterSamples) {
+	protected final Map<Integer, Integer> sortClusters(List<Integer> clusterSamples) {
 		SortHelper[] list = new SortHelper[clusterSamples.size()];
 		int index = 0;
 		for (Integer vaId : clusterSamples) {
@@ -113,7 +113,7 @@ public abstract class AClusterer implements SafeCallable<PerspectiveInitializati
 		}
 		Arrays.sort(list);
 
-		IntIntHashMap lookup = new IntIntHashMap(clusterSamples.size());
+		Map<Integer, Integer> lookup = new HashMap<>(clusterSamples.size());
 		for (int i = 0; i < list.length; ++i) {
 			lookup.put(clusterSamples.get(list[i].index), i);
 		}

@@ -63,8 +63,9 @@ import org.caleydo.core.view.opengl.layout2.util.GLGraphicsUtils;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.data.loader.ITextureLoader;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
+import org.caleydo.data.loader.TextureResourceLoader;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
@@ -503,9 +504,10 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		final GLEnRoutePathway enRoute = getEnRoute();
 		final IResourceLocator enrouteResourceLocator = org.caleydo.view.enroute.Activator.getResourceLocator();
 		enRoute.addContentUpdateListener(dataMappingWizard);
-		useCenterLineButton.setRenderer(GLRenderers.fillImage(new ResourceLoader(enrouteResourceLocator)
-				.getTexture("resources/icons/center_data_line.png")));
-		useCenterLineButton.setSelectedRenderer(GLRenderers.pushedImage(new ResourceLoader(enrouteResourceLocator)
+		final ITextureLoader loader = new TextureResourceLoader(enrouteResourceLocator);
+		useCenterLineButton
+				.setRenderer(GLRenderers.fillImage(loader.getTexture("resources/icons/center_data_line.png")));
+		useCenterLineButton.setSelectedRenderer(GLRenderers.pushedImage(loader
 				.getTexture("resources/icons/center_data_line.png")));
 		useCenterLineButton.setSelected(enRoute.isShowCenteredDataLineInRowCenter());
 
@@ -521,10 +523,9 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		useCenterLineButton.setTooltip("Toggle center line alignment for centered data.");
 
 		fitEnrouteToViewWidthButton.setSize(16, 16);
-		fitEnrouteToViewWidthButton.setRenderer(GLRenderers.fillImage(new ResourceLoader(enrouteResourceLocator)
+		fitEnrouteToViewWidthButton.setRenderer(GLRenderers.fillImage(loader
 				.getTexture("resources/icons/fit_to_width.png")));
-		fitEnrouteToViewWidthButton.setSelectedRenderer(GLRenderers.pushedImage(new ResourceLoader(
-				enrouteResourceLocator).getTexture("resources/icons/fit_to_width.png")));
+		fitEnrouteToViewWidthButton.setSelectedRenderer(GLRenderers.pushedImage(loader.getTexture("resources/icons/fit_to_width.png")));
 		fitEnrouteToViewWidthButton.setSelected(enRoute.isFitWidthToScreen());
 
 		fitEnrouteToViewWidthButton.onPick(new APickingListener() {
@@ -538,9 +539,9 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		fitEnrouteToViewWidthButton.setTooltip("Toggle fit to view width.");
 
 		useColorMappingButton.setSize(16, 16);
-		useColorMappingButton.setRenderer(GLRenderers.fillImage(new ResourceLoader(enrouteResourceLocator)
+		useColorMappingButton.setRenderer(GLRenderers.fillImage(loader
 				.getTexture("resources/icons/toggle_color.png")));
-		useColorMappingButton.setSelectedRenderer(GLRenderers.pushedImage(new ResourceLoader(enrouteResourceLocator)
+		useColorMappingButton.setSelectedRenderer(GLRenderers.pushedImage(loader
 				.getTexture("resources/icons/toggle_color.png")));
 		useColorMappingButton.setSelected(enRoute.isUseColorMapping());
 
@@ -682,7 +683,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 								boolean enable = !selectPathAction.isChecked();
 								EnablePathSelectionEvent event = new EnablePathSelectionEvent(enable);
 								event.setEventSpace(pathEventSpace);
-								
+
 								EventPublisher.trigger(event);
 								selectPathAction.setChecked(enable);
 							}

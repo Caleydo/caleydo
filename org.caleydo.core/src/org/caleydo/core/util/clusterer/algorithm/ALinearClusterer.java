@@ -8,11 +8,10 @@ package org.caleydo.core.util.clusterer.algorithm;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
-
-import com.jogamp.common.util.IntIntHashMap;
 
 
 /**
@@ -38,7 +37,7 @@ public abstract class ALinearClusterer extends AClusterer {
 	protected PerspectiveInitializationData postProcess(int[] assignments, List<Integer> alExamples) {
 		final int numClusters = alExamples.size();
 		// Sort cluster depending on their color values
-		IntIntHashMap order = sortClusters(alExamples);
+		Map<Integer, Integer> order = sortClusters(alExamples);
 		List<Integer> sampleElements = createSampleElements(alExamples, order);
 		AssignmentIndex[] sort = new AssignmentIndex[nrSamples];
 		for (int i = 0; i < nrSamples; ++i) {
@@ -72,7 +71,7 @@ public abstract class ALinearClusterer extends AClusterer {
 		return tempResult;
 	}
 
-	private List<Integer> createSampleElements(List<Integer> alExamples, IntIntHashMap order) {
+	private List<Integer> createSampleElements(List<Integer> alExamples, Map<Integer, Integer> order) {
 		List<Integer> sampleElements = new ArrayList<Integer>();
 		for (int i = 0; i < alExamples.size(); ++i)
 			sampleElements.add(null);

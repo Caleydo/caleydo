@@ -20,6 +20,8 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.data.loader.ITextureLoader;
+import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.data.loader.TextureResourceLoader;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -44,6 +46,10 @@ public final class TextureManager {
 	 */
 	public TextureManager() {
 		this(GeneralManager.get().getResourceLoader());
+	}
+
+	public TextureManager(ResourceLoader l) {
+		this(TextureResourceLoader.wrap(l));
 	}
 
 	public TextureManager(ITextureLoader loader) {

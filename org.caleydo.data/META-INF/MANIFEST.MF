@@ -9,5 +9,4 @@ Bundle-ClassPath: .,
  resources/
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.eclipse.jface,
- org.caleydo.thirdparty.jogl
+Require-Bundle: org.eclipse.jface;bundle-version="3.9.1"

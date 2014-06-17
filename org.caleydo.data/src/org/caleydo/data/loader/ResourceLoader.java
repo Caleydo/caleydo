@@ -11,28 +11,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import javax.media.opengl.GLProfile;
-
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.xml.sax.InputSource;
 
-import com.jogamp.opengl.util.texture.Texture;
-import com.jogamp.opengl.util.texture.TextureData;
-import com.jogamp.opengl.util.texture.TextureIO;
-
 /**
  * Utility classes to load resources within the Caleydo project.
  *
  * @author Marc Streit
  */
-public class ResourceLoader implements ITextureLoader {
+public class ResourceLoader {
 	private final IResourceLocator locator;
 
 	public ResourceLoader(IResourceLocator locator) {
 		this.locator = locator;
+	}
+
+	/**
+	 * @return the locator, see {@link #locator}
+	 */
+	public IResourceLocator getLocator() {
+		return locator;
 	}
 
 	private InputStream getChecked(String res) {
@@ -69,18 +70,5 @@ public class ResourceLoader implements ITextureLoader {
 
 	public final ImageDescriptor getImageDescriptor(Display display, String res) {
 		return ImageDescriptor.createFromImage(getImage(display, res));
-	}
-
-	@Override
-	public final Texture getTexture(String fileName) {
-		//use the real extension, not a guess
-		String extension = fileName.substring(fileName.lastIndexOf('.')+1);
-
-		try (InputStream in = getChecked(fileName)) {
-			TextureData data = TextureIO.newTextureData(GLProfile.getDefault(), in, true, extension);
-			return TextureIO.newTexture(data);
-		} catch (IOException e) {
-			throw cantFind(fileName, e);
-		}
 	}
 }

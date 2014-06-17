@@ -8,5 +8,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: www.caleydo.org
 Require-Bundle: org.caleydo.core;bundle-version="3.1.4.qualifier",
- org.caleydo.ui;bundle-version="3.1.4.qualifier"
+ org.caleydo.ui;bundle-version="3.1.4.qualifier",
+ org.kohsuke.args4j;bundle-version="2.0.21"
 Bundle-Activator: org.caleydo.core.internal.Activator

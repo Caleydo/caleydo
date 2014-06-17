@@ -31,9 +31,9 @@ import org.caleydo.core.view.opengl.util.gleem.ColoredVec2f;
 import org.caleydo.core.view.opengl.util.spline.ITesselatedPolygon;
 import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
-import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.caleydo.data.loader.StackedResourceLocator;
+import org.caleydo.data.loader.TextureResourceLoader;
 
 import com.jogamp.opengl.util.texture.Texture;
 
@@ -369,7 +369,7 @@ public class GLGraphics {
 	}
 
 	public Texture getTexture(String texture) {
-		return local.getTextures().get(texture, new ResourceLoader(locator));
+		return local.getTextures().get(texture, new TextureResourceLoader(locator));
 	}
 
 	public Texture getTexture(URL texture) {
