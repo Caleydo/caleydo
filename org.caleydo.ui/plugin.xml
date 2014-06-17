@@ -15,5 +15,19 @@
          </commandParameter>
       </command>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.caleydo.core.view.internal.ui.ViewPreferencePage"
+            id="org.caleydo.core.gui.preferences.views"
+            name="Views">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.caleydo.core.view.internal.MyPreferences">
+      </initializer>
+   </extension>
 
 </plugin>

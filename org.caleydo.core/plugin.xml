@@ -75,12 +75,4 @@
                name="Clear Selections">
          </command>
       </extension>
-      <extension
-            point="org.eclipse.ui.preferencePages">
-         <page
-               class="org.caleydo.core.internal.ui.ViewPreferencePage"
-               id="org.caleydo.core.gui.preferences.views"
-               name="Views">
-         </page>
-      </extension>
 </plugin>
