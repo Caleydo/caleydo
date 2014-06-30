@@ -46,9 +46,10 @@ import org.eclipse.core.runtime.Status;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.Graphs;
-import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
+
+import edu.asu.emit.qyan.alg.KShortestPathsAdapter;
 
 /**
  * The pathway manager is in charge of creating and handling the pathways. The class is implemented as a singleton.
@@ -73,6 +74,8 @@ public class PathwayManager {
 			DefaultEdge.class);
 
 	private boolean pathwayLoadingFinished;
+
+	private KShortestPathsAdapter<PathwayVertex, DefaultEdge> kShortestPathsAdapter;
 
 	private PathwayManager() {
 
@@ -500,79 +503,75 @@ public class PathwayManager {
 
 	public List<PathwayPath> getShortestPaths(final PathwayVertex from, final PathwayVertex to) {
 
+		if (kShortestPathsAdapter == null)
+			kShortestPathsAdapter = new KShortestPathsAdapter<>(getRootPathway());
+
 		Thread t = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				DirectedGraph<PathwayVertex, DefaultEdge> rootPathway = getRootPathway();
+
+				List<GraphPath<PathwayVertex, DefaultEdge>> paths = kShortestPathsAdapter.getKShortestPaths(from, to,
+						10);
+
+				int i = 1;
+				for (GraphPath<PathwayVertex, DefaultEdge> path : paths) {
+					System.out.println(i + " NEW ALGO, length: " + (path.getEdgeList().size() + 1));
+					printPath(path);
+					i++;
+				}
+
+				// DirectedGraph<PathwayVertex, DefaultEdge> rootPathway = getRootPathway();
 				// KShortestPaths<PathwayVertex, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertex, DefaultEdge>(
 				// rootPathway, from, 3, 5);
 				// List<GraphPath<PathwayVertex, DefaultEdge>> paths = pathAlgo.getPaths(to);
-				DijkstraShortestPath<PathwayVertex, DefaultEdge> pathAlgo = new DijkstraShortestPath<>(rootPathway,
-						from, to);
+				// DijkstraShortestPath<PathwayVertex, DefaultEdge> pathAlgo = new DijkstraShortestPath<>(rootPathway,
+				// from, to);
 
-				GraphPath<PathwayVertex, DefaultEdge> vertexPath = pathAlgo.getPath();
+				// Graph rootGraph = convertRootGraph();
+				// DirectedGraph<PathwayVertex, DefaultEdge> rootPathway2 = new DefaultDirectedGraph<PathwayVertex,
+				// DefaultEdge>(
+				// DefaultEdge.class);
+				// for (BaseVertex vertex : rootGraph.get_vertex_list()) {
+				// rootPathway2.addVertex(vertex.toPathwayVertex());
+				// }
+				// for (edu.asu.emit.qyan.alg.model.Pair<Integer, Integer> edge : rootGraph.getEdges()) {
+				// PathwayVertex s = rootGraph.get_vertex(edge.first()).toPathwayVertex();
+				// PathwayVertex d = rootGraph.get_vertex(edge.second()).toPathwayVertex();
+				// rootPathway2.addEdge(s, d);
+				// }
+				//
+				// DijkstraShortestPath<PathwayVertex, DefaultEdge> pathAlgo2 = new DijkstraShortestPath<>(rootPathway2,
+				// from, to);
 
-				if (vertexPath != null) {
-					PathwayPath path = new PathwayPath();
+				// System.out.println("OLD ALGO");
+				// GraphPath<PathwayVertex, DefaultEdge> vertexPath = pathAlgo.getPath();
+				// printPath(vertexPath);
 
-					// GraphPath<PathwayVertex, DefaultEdge> vertexPath = paths.get(0);
-
-					StringBuilder b = new StringBuilder();
-					PathSegment currentSegment = null;
-
-					for (DefaultEdge edge : vertexPath.getEdgeList()) {
-						PathwayVertex source = rootPathway.getEdgeSource(edge);
-						PathwayVertex target = rootPathway.getEdgeTarget(edge);
-
-						if (currentSegment == null) {
-							Pair<PathwayVertexRep, PathwayVertexRep> vertexReps = getConnectedVertexRepsFromVertices(
-									source, target, null);
-							if (vertexReps == null) {
-								Logger.log(new Status(IStatus.ERROR, "Path determination failed!",
-										"Could not find connected vertex reps."));
-								return;
-							}
-							currentSegment = new PathSegment();
-							path.add(currentSegment);
-
-							currentSegment.add(vertexReps.getFirst());
-							currentSegment.add(vertexReps.getSecond());
-
-						} else {
-							// Test if the next vertex rep is directly connected to the previous vertex rep
-							PathwayVertexRep lastVertexRep = currentSegment.get(currentSegment.size() - 1);
-							PathwayVertexRep nextVertexRep = getConnectedVertexRep(lastVertexRep, target);
-							if (nextVertexRep != null) {
-								currentSegment.add(nextVertexRep);
-							} else {
-								// Try to find an equivalent node that connects to the next one within the same pathway
-								// -> new path segment
-								currentSegment = new PathSegment();
-								path.add(currentSegment);
-								Pair<PathwayVertexRep, PathwayVertexRep> vertexReps = getConnectedVertexRepsFromVertices(
-										source, target, lastVertexRep.getPathway());
-								if (vertexReps == null) {
-									// Try to find an equivalent node that connects to the next one in any pathway
-									vertexReps = getConnectedVertexRepsFromVertices(source, target, null);
-									if (vertexReps == null) {
-										Logger.log(new Status(IStatus.ERROR, "Path determination failed!",
-												"Could not find connected vertex reps."));
-										return;
-									}
-								}
-
-								currentSegment.add(vertexReps.getFirst());
-								currentSegment.add(vertexReps.getSecond());
-							}
-						}
-
-						b.append(source.getHumanReadableName()).append(" - ").append(target.getHumanReadableName())
-								.append(" , ");
-					}
-					System.out.println(b);
-					System.out.println(path.toString());
-				}
+				// DijkstraShortestPathAlg alg = new DijkstraShortestPathAlg(rootGraph);
+				// YenTopKShortestPathsAlg alg = new YenTopKShortestPathsAlg(rootGraph);
+				// Path p = alg.get_shortest_path(rootGraph.getVertex(from), rootGraph.getVertex(to));
+				// List<Path> paths = alg.get_shortest_paths(rootGraph.getVertex(from), rootGraph.getVertex(to), 10);
+				// int k = 1;
+				// for (Path p : paths) {
+				// List<DefaultEdge> pathEdges = new ArrayList<>(p.get_vertices().size() - 1);
+				// List<BaseVertex> pathVertices = p.get_vertices();
+				// for (int i = 0; i < pathVertices.size() - 1; i++) {
+				//
+				// BaseVertex from = pathVertices.get(i);
+				// BaseVertex to = pathVertices.get(i + 1);
+				//
+				// pathEdges.add(rootPathway.getEdge(from.toPathwayVertex(), to.toPathwayVertex()));
+				//
+				// }
+				// System.out.println(k + " NEW ALGO, length: " + pathVertices.size());
+				// GraphPath<PathwayVertex, DefaultEdge> path = new GraphPathImpl<PathwayVertex, DefaultEdge>(
+				// rootPathway, pathVertices.get(0).toPathwayVertex(), pathVertices.get(
+				// pathVertices.size() - 1).toPathwayVertex(), pathEdges, 0);
+				//
+				// printPath(path);
+				// k++;
+				// }
 
 			}
 		});
@@ -580,6 +579,71 @@ public class PathwayManager {
 		t.start();
 
 		return null;
+	}
+
+	protected void printPath(GraphPath<PathwayVertex, DefaultEdge> vertexPath) {
+		DirectedGraph<PathwayVertex, DefaultEdge> rootPathway = getRootPathway();
+
+		if (vertexPath != null) {
+			PathwayPath path = new PathwayPath();
+
+			// GraphPath<PathwayVertex, DefaultEdge> vertexPath = paths.get(0);
+
+			StringBuilder b = new StringBuilder();
+			PathSegment currentSegment = null;
+
+			for (DefaultEdge edge : vertexPath.getEdgeList()) {
+				PathwayVertex source = rootPathway.getEdgeSource(edge);
+				PathwayVertex target = rootPathway.getEdgeTarget(edge);
+
+				if (currentSegment == null) {
+					Pair<PathwayVertexRep, PathwayVertexRep> vertexReps = getConnectedVertexRepsFromVertices(source,
+							target, null);
+					if (vertexReps == null) {
+						Logger.log(new Status(IStatus.ERROR, "Path determination failed!",
+								"Could not find connected vertex reps."));
+						return;
+					}
+					currentSegment = new PathSegment();
+					path.add(currentSegment);
+
+					currentSegment.add(vertexReps.getFirst());
+					currentSegment.add(vertexReps.getSecond());
+
+				} else {
+					// Test if the next vertex rep is directly connected to the previous vertex rep
+					PathwayVertexRep lastVertexRep = currentSegment.get(currentSegment.size() - 1);
+					PathwayVertexRep nextVertexRep = getConnectedVertexRep(lastVertexRep, target);
+					if (nextVertexRep != null) {
+						currentSegment.add(nextVertexRep);
+					} else {
+						// Try to find an equivalent node that connects to the next one within the same pathway
+						// -> new path segment
+						currentSegment = new PathSegment();
+						path.add(currentSegment);
+						Pair<PathwayVertexRep, PathwayVertexRep> vertexReps = getConnectedVertexRepsFromVertices(
+								source, target, lastVertexRep.getPathway());
+						if (vertexReps == null) {
+							// Try to find an equivalent node that connects to the next one in any pathway
+							vertexReps = getConnectedVertexRepsFromVertices(source, target, null);
+							if (vertexReps == null) {
+								Logger.log(new Status(IStatus.ERROR, "Path determination failed!",
+										"Could not find connected vertex reps."));
+								return;
+							}
+						}
+
+						currentSegment.add(vertexReps.getFirst());
+						currentSegment.add(vertexReps.getSecond());
+					}
+				}
+
+				b.append(source.getHumanReadableName()).append(" - ").append(target.getHumanReadableName())
+						.append(" , ");
+			}
+			System.out.println(b);
+			System.out.println(path.toString());
+		}
 	}
 
 	protected Pair<PathwayVertexRep, PathwayVertexRep> getConnectedVertexRepsFromVertices(PathwayVertex from,

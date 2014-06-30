@@ -21,3 +21,4 @@ Export-Package: org.caleydo.datadomain.pathway,
  org.caleydo.datadomain.pathway.listener,
  org.caleydo.datadomain.pathway.manager,
  org.caleydo.datadomain.pathway.toolbar
+Import-Package: edu.asu.emit.qyan.alg
