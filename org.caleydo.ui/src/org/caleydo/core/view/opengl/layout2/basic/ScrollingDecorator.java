@@ -14,10 +14,10 @@ import javax.media.opengl.GL2ES1;
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout2.AGLElementDecorator;
-import org.caleydo.core.view.opengl.layout2.AGLElementView;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.IGLElementParent;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar.IScrollBarCallback;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
@@ -344,13 +344,18 @@ public class ScrollingDecorator extends AGLElementDecorator implements IScrollBa
 			gl.glEnable(GL2ES1.GL_CLIP_PLANE2);
 			gl.glEnable(GL2ES1.GL_CLIP_PLANE3);
 		}
-		gl.glEnable(GL.GL_SCISSOR_TEST);
-		IGLCanvas canvas = findParent(AGLElementView.class).getParentGLCanvas();
-		int height = canvas.toRawPixel(canvas.getDIPHeight());
-		// gl.glScissor(0, 0, 100, 100);
 
-		int locx = canvas.toRawPixel(getAbsoluteLocation().x());
-		int locy = canvas.toRawPixel(getAbsoluteLocation().y());
+		gl.glEnable(GL.GL_SCISSOR_TEST);
+		IGLCanvas canvas = findCanvas();
+		int height = canvas.toRawPixel(canvas.getDIPHeight()); // gl.glScissor(0, 0, 100, 100);
+
+		final Vec2f abs = getAbsoluteLocation();
+		int locx = canvas.toRawPixel(abs.x());
+		int locy = canvas.toRawPixel(abs.y());
+		if (horizontal == null)
+			locx = 0;
+		if (vertical == null)
+			locy = 0;
 		int pixelW = canvas.toRawPixel(w);
 		int pixelH = canvas.toRawPixel(h);
 
@@ -366,6 +371,17 @@ public class ScrollingDecorator extends AGLElementDecorator implements IScrollBa
 		gl.glDisable(GL.GL_SCISSOR_TEST);
 		if (doVer || doHor) {
 			gl.glPopAttrib();
+		}
+	}
+
+	private IGLCanvas findCanvas() {
+		IGLElementParent p = getParent();
+		for (;;) {
+			IGLElementParent p2 = p.getParent();
+			if (p2 == null) { // we have to reach the root
+				return p.getLayoutDataAs(IGLCanvas.class, null);
+			}
+			p = p2;
 		}
 	}
 
