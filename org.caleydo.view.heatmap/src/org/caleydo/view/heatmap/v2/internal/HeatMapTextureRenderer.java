@@ -119,13 +119,15 @@ public class HeatMapTextureRenderer {
 			//fill full
 			int lastTile = numberOfDimensions - maxSize;
 			List<Rectangle> toload = new ArrayList<>();
-			for (int i = 0; i < lastTile; i += maxSize) {
+			for (int i = 0; i <= lastTile; i += maxSize) {
 				toload.add(new Rectangle(i, 0, maxSize, numberOfRecords));
 			}
 			{//create rest
 				int remaining = numberOfDimensions % maxSize;
-				Rectangle tile = new Rectangle(numberOfDimensions-remaining,0,remaining,numberOfRecords);
-				toload.add(tile);
+				if (remaining > 0) {
+					Rectangle tile = new Rectangle(numberOfDimensions - remaining, 0, remaining, numberOfRecords);
+					toload.add(tile);
+				}
 			}
 			tiles.addAll(f.create(maxSize * numberOfRecords * 4, toload));
 
@@ -134,14 +136,16 @@ public class HeatMapTextureRenderer {
 			//fill full
 			List<Rectangle> toload = new ArrayList<>();
 			int lastTile = numberOfRecords - maxSize;
-			for (int i = 0; i < lastTile; i += maxSize) {
+			for (int i = 0; i <= lastTile; i += maxSize) {
 				Rectangle tile = new Rectangle(0,i,numberOfDimensions,maxSize);
 				toload.add(tile);
 			}
 			{//create rest
 				int remaining = numberOfRecords % maxSize;
-				Rectangle tile = new Rectangle(0,numberOfRecords-remaining,numberOfDimensions,remaining);
-				toload.add(tile);
+				if (remaining > 0) {
+					Rectangle tile = new Rectangle(0, numberOfRecords - remaining, numberOfDimensions, remaining);
+					toload.add(tile);
+				}
 			}
 			tiles.addAll(f.create(numberOfDimensions * maxSize * 4, toload));
 		} else {
@@ -151,28 +155,32 @@ public class HeatMapTextureRenderer {
 			int lastTileR = numberOfRecords - maxSize;
 			int lastTileD = numberOfDimensions - maxSize;
 
-			for (int i = 0; i < lastTileR; i += maxSize) {
-				for (int j = 0; j < lastTileD; j += maxSize) {
+			for (int i = 0; i <= lastTileR; i += maxSize) {
+				for (int j = 0; j <= lastTileD; j += maxSize) {
 					Rectangle tile = new Rectangle(j,i,maxSize,maxSize);
 					toload.add(tile);
 				}
 				{//create rest
 					int remaining = numberOfDimensions % maxSize;
-					Rectangle tile = new Rectangle(numberOfDimensions - remaining, i, remaining, maxSize);
-					toload.add(tile);
+					if (remaining > 0) {
+						Rectangle tile = new Rectangle(numberOfDimensions - remaining, i, remaining, maxSize);
+						toload.add(tile);
+					}
 				}
 			}
 			{//last line
 				int iremaining = numberOfRecords % maxSize;
 				int i = numberOfRecords - iremaining;
-				for (int j = 0; j < lastTileD; j += maxSize) {
+				for (int j = 0; j <= lastTileD; j += maxSize) {
 					Rectangle tile = new Rectangle(j, i, maxSize, iremaining);
 					toload.add(tile);
 				}
 				{//create rest
 					int remaining = numberOfDimensions % maxSize;
-					Rectangle tile = new Rectangle(numberOfDimensions - remaining, i, remaining, iremaining);
-					toload.add(tile);
+					if (remaining > 0) {
+						Rectangle tile = new Rectangle(numberOfDimensions - remaining, i, remaining, iremaining);
+						toload.add(tile);
+					}
 				}
 			}
 			tiles.addAll(f.create(maxSize * maxSize * 4, toload));
