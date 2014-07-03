@@ -347,19 +347,26 @@ public class ScrollingDecorator extends AGLElementDecorator implements IScrollBa
 
 		gl.glEnable(GL.GL_SCISSOR_TEST);
 		IGLCanvas canvas = findCanvas();
-		int height = canvas.toRawPixel(canvas.getDIPHeight()); // gl.glScissor(0, 0, 100, 100);
+		int canvasW = canvas.toRawPixel(canvas.getDIPWidth());
+		int canvasH = canvas.toRawPixel(canvas.getDIPHeight()); // gl.glScissor(0, 0, 100, 100);
 
 		final Vec2f abs = getAbsoluteLocation();
 		int locx = canvas.toRawPixel(abs.x());
 		int locy = canvas.toRawPixel(abs.y());
-		if (horizontal == null)
-			locx = 0;
-		if (vertical == null)
-			locy = 0;
 		int pixelW = canvas.toRawPixel(w);
 		int pixelH = canvas.toRawPixel(h);
 
-		gl.glScissor(locx, height - locy - pixelH + (doHor ? canvas.toRawPixel(scrollBarWidth) : 0), pixelW
+		// if no horizontal scrollbar don't scissor that dimension
+		if (horizontal == null) {
+			locx = 0;
+			pixelW = canvasW;
+		}
+		if (vertical == null) {
+			locy = 0;
+			pixelH = canvasH;
+		}
+
+		gl.glScissor(locx, canvasH - locy - pixelH + (doHor ? canvas.toRawPixel(scrollBarWidth) : 0), pixelW
 				- (doVer ? canvas.toRawPixel(scrollBarWidth) : 0), pixelH
 				- (doHor ? canvas.toRawPixel(scrollBarWidth) : 0));
 
