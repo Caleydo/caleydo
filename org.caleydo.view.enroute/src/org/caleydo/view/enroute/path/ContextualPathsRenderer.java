@@ -20,7 +20,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventListenerManager;
@@ -41,10 +40,9 @@ import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.LayoutRendererAdapter;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
-import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
@@ -63,7 +61,8 @@ import org.caleydo.datadomain.pathway.listener.SampleMappingModeEvent;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.event.ShowPathEvent;
-import org.caleydo.view.pathway.v2.ui.PathwayElement;
+import org.caleydo.view.pathway.GLPathway;
+import org.caleydo.view.pathway.PathwayTextureCreator;
 import org.caleydo.view.pathway.v2.ui.PathwayTextureRepresentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.path.MergedPathSegmentsAugmentation;
 import org.caleydo.view.pathway.v2.ui.augmentation.path.MultiplePathsAugmentation;
@@ -86,7 +85,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	protected Map<APathwayPathRenderer, ElementLayout> renderers = new LinkedHashMap<>();
 	protected AGLView view;
 	protected List<TablePerspective> tablePerspectives = new ArrayList<>();
-	// protected GLPathway pathwayView;
+	protected GLPathway pathwayView;
 	protected PathwayTextureRepresentation pathwayThumbnail;
 	protected boolean isPathSelectionMode = false;
 	protected boolean isFreePathSelectionMode = false;
@@ -118,7 +117,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
-	// private boolean pathwayViewInitialized = false;
+	private boolean pathwayViewInitialized = false;
 	private KeyListener keyListener = new KeyListener();
 
 	/**
@@ -141,39 +140,39 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 		if (showThumbnail) {
 
-			PathwayElement pathwayElement = new PathwayElement(eventSpace);
-			pathwayThumbnail = new PathwayTextureRepresentation(pathway);
-
-			pathwayElement.setPathwayRepresentation(pathwayThumbnail);
-
-			contextPathsAugmentation = new MultiplePathsAugmentation(pathwayThumbnail);
-			pathwayElement.addForegroundAugmentation(contextPathsAugmentation);
-
-			selectedPathAugmentation = new MergedPathSegmentsAugmentation(pathwayThumbnail);
-			selectedPathAugmentation.setColor(SelectionType.SELECTION.getColor());
-			pathwayElement.addForegroundAugmentation(selectedPathAugmentation);
-
-			LayoutRendererAdapter wrappingLayoutRenderer = new LayoutRendererAdapter(view,
-					ResourceLocators.DATA_CLASSLOADER, pathwayElement, eventSpace);
-
-			pathwayThumbnail.setWrappingLayoutRenderer(wrappingLayoutRenderer);
-			pathwayThumbnail.setMinHeight(150);
-			pathwayThumbnail.setMinHeight(150);
-
-			ElementLayout pathwayThumbnailLayout = new ElementLayout();
-			pathwayThumbnailLayout.setPixelSizeY((int) pathwayThumbnail.getMinHeight());
-			baseColumn.add(pathwayThumbnailLayout);
-			pathwayThumbnailLayout.setRenderer(wrappingLayoutRenderer);
-
-			// PathwayTextureCreator creator = new PathwayTextureCreator();
-			// pathwayView = (GLPathway) creator.create(view, pathway, tablePerspectives, null, eventSpace);
+			// PathwayElement pathwayElement = new PathwayElement(eventSpace);
+			// pathwayThumbnail = new PathwayTextureRepresentation(pathway);
 			//
-			// ElementLayout pathwayTextureLayout = new ElementLayout();
-			// pathwayTextureLayout.setPixelSizeY(pathwayView.getMinPixelHeight());
+			// pathwayElement.setPathwayRepresentation(pathwayThumbnail);
 			//
-			// ViewLayoutRenderer viewRenderer = new ViewLayoutRenderer(pathwayView);
-			// baseColumn.add(pathwayTextureLayout);
-			// pathwayTextureLayout.setRenderer(viewRenderer);
+			// contextPathsAugmentation = new MultiplePathsAugmentation(pathwayThumbnail);
+			// pathwayElement.addForegroundAugmentation(contextPathsAugmentation);
+			//
+			// selectedPathAugmentation = new MergedPathSegmentsAugmentation(pathwayThumbnail);
+			// selectedPathAugmentation.setColor(SelectionType.SELECTION.getColor());
+			// pathwayElement.addForegroundAugmentation(selectedPathAugmentation);
+			//
+			// LayoutRendererAdapter wrappingLayoutRenderer = new LayoutRendererAdapter(view,
+			// ResourceLocators.DATA_CLASSLOADER, pathwayElement, eventSpace);
+			//
+			// pathwayThumbnail.setWrappingLayoutRenderer(wrappingLayoutRenderer);
+			// pathwayThumbnail.setMinHeight(150);
+			// pathwayThumbnail.setMinHeight(150);
+			//
+			// ElementLayout pathwayThumbnailLayout = new ElementLayout();
+			// pathwayThumbnailLayout.setPixelSizeY((int) pathwayThumbnail.getMinHeight());
+			// baseColumn.add(pathwayThumbnailLayout);
+			// pathwayThumbnailLayout.setRenderer(wrappingLayoutRenderer);
+
+			PathwayTextureCreator creator = new PathwayTextureCreator();
+			pathwayView = (GLPathway) creator.create(view, pathway, tablePerspectives, null, eventSpace);
+
+			ElementLayout pathwayTextureLayout = new ElementLayout();
+			pathwayTextureLayout.setPixelSizeY(pathwayView.getMinPixelHeight());
+
+			ViewLayoutRenderer viewRenderer = new ViewLayoutRenderer(pathwayView);
+			baseColumn.add(pathwayTextureLayout);
+			pathwayTextureLayout.setRenderer(viewRenderer);
 		}
 		baseColumn.add(pathRow);
 		layout.setBaseElementLayout(baseColumn);
@@ -182,10 +181,10 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 	@Override
 	protected void renderContent(GL2 gl) {
-		// if (!pathwayViewInitialized && showThumbnail) {
-		// pathwayView.initRemote(gl, view, view.getGLMouseListener());
-		// pathwayViewInitialized = true;
-		// }
+		if (!pathwayViewInitialized && showThumbnail) {
+			pathwayView.initRemote(gl, view, view.getGLMouseListener());
+			pathwayViewInitialized = true;
+		}
 		layout.render(gl);
 
 		// gl.glBegin(GL.GL_LINES);
@@ -626,7 +625,8 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 				maxMinPixelHeight = minPixelHeight;
 			}
 		}
-		return (showThumbnail ? ((int) pathwayThumbnail.getMinHeight()) : 1) + maxMinPixelHeight + 5;
+		// return (showThumbnail ? ((int) pathwayThumbnail.getMinHeight()) : 1) + maxMinPixelHeight + 5;
+		return (showThumbnail ? ((int) pathwayView.getMinHeight()) : 1) + maxMinPixelHeight + 5;
 	}
 
 	@Override
@@ -636,8 +636,10 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 			totalWidth += renderer.getMinWidthPixels();
 		}
 		// 2 * (65 + 50)
-		return Math.max(
-				Math.max(showThumbnail ? ((int) pathwayThumbnail.getMinHeight()) : 2 * (65 + 50), 2 * (65 + 50)),
+		// return Math.max(
+		// Math.max(showThumbnail ? ((int) pathwayThumbnail.getMinHeight()) : 2 * (65 + 50), 2 * (65 + 50)),
+		// totalWidth);
+		return Math.max(Math.max(showThumbnail ? ((int) pathwayView.getMinHeight()) : 2 * (65 + 50), 2 * (65 + 50)),
 				totalWidth);
 	}
 
@@ -706,18 +708,19 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	}
 
 	public void contextPathsChanged() {
-		// List<List<PathwayVertexRep>> contextPaths = new ArrayList<>();
-		if (contextPathsAugmentation != null) {
-			contextPathsAugmentation.clearPaths();
-			for (APathwayPathRenderer renderer : renderers.keySet()) {
-				contextPathsAugmentation.addPath(renderer.getPathSegments());
-				// List<PathwayVertexRep> flattenedPath = PathwayPath.flattenSegments(renderer.getPathSegments());
-				// if (flattenedPath != null && !flattenedPath.isEmpty()) {
-				// contextPaths.add(flattenedPath);
-				// }
+		List<List<PathwayVertexRep>> contextPaths = new ArrayList<>();
+		// if (contextPathsAugmentation != null) {
+		// contextPathsAugmentation.clearPaths();
+		for (APathwayPathRenderer renderer : renderers.keySet()) {
+			// contextPathsAugmentation.addPath(renderer.getPathSegments());
+			List<PathwayVertexRep> flattenedPath = PathwayPath.flattenSegments(renderer.getPathSegments());
+			if (flattenedPath != null && !flattenedPath.isEmpty()) {
+				contextPaths.add(flattenedPath);
 			}
-			// pathwayView.setContextPaths(contextPaths);
 		}
+			if (pathwayView != null)
+				pathwayView.setContextPaths(contextPaths);
+		// }
 	}
 
 	@Override
