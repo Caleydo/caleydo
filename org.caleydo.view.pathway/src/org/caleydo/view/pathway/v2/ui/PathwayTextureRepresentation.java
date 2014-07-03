@@ -7,13 +7,10 @@ package org.caleydo.view.pathway.v2.ui;
 
 import gleem.linalg.Vec2f;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-
-import javax.media.opengl.GL;
-import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -27,9 +24,9 @@ import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
-import org.caleydo.view.pathway.v2.internal.GLPathwayView;
+
+import com.google.common.base.Preconditions;
 
 /**
  * Pathway representation that renders a single KEGG- or Wikipathway as texture. The locations {@link PathwayVertexRep}s
@@ -41,59 +38,28 @@ import org.caleydo.view.pathway.v2.internal.GLPathwayView;
  */
 public class PathwayTextureRepresentation extends APathwayElementRepresentation {
 
-	protected PathwayGraph pathway;
+	private final PathwayGraph pathway;
 
-	protected boolean isShaderInitialized = false;
-	protected int shaderProgramTextOverlay;
+	private Vec2f renderSize = new Vec2f();
+	private Vec2f origin = new Vec2f();
+	private Vec2f scaling = new Vec2f();
 
-	protected Vec2f renderSize = new Vec2f();
-	protected Vec2f origin = new Vec2f();
-	protected Vec2f scaling = new Vec2f();
+	private PickingPool pool;
 
-	protected PickingPool pool;
+	private List<IVertexRepSelectionListener> vertexListeners = new ArrayList<>();
 
-	protected List<IVertexRepSelectionListener> vertexListeners = new ArrayList<>();
+	private float minWidth = -1;
+	private float minHeight = -1;
 
-	protected float minWidth = -1;
-	protected float minHeight = -1;
-
-	protected GLPadding padding = GLPadding.ZERO;
-
-	// protected List<VertexRepBasedContextMenuItem> contextMenuItems = new ArrayList<>();
-
-	public PathwayTextureRepresentation() {
-	}
+	private GLPadding padding = GLPadding.ZERO;
 
 	public PathwayTextureRepresentation(PathwayGraph pathway) {
-		this.pathway = pathway;
-
-		// DefaultDirectedGraph<PathwayVertexRep, DefaultEdge> testGraph1 = new
-		// DefaultDirectedGraph<>(DefaultEdge.class);
-		// PathwayVertexRep v1 = new PathwayVertexRep("A", EPathwayVertexShape.rectangle.name(), (short) 0, (short) 0,
-		// (short) 0, (short) 0);
-		// PathwayVertexRep v2 = new PathwayVertexRep("B", EPathwayVertexShape.rectangle.name(), (short) 0, (short) 0,
-		// (short) 0, (short) 0);
-		// PathwayVertexRep v3 = new PathwayVertexRep("C", EPathwayVertexShape.rectangle.name(), (short) 0, (short) 0,
-		// (short) 0, (short) 0);
-		//
-		// testGraph1.addVertex(v1);
-		// testGraph1.addVertex(v2);
-		// testGraph1.addVertex(v3);
-		//
-		// testGraph1.addEdge(v1, v2);
-		// testGraph1.addEdge(v1, v2);
-		// testGraph1.addEdge(v2, v1);
-		// testGraph1.addEdge(v1, v1);
-		//
-		// System.out.println("Edges of A: ");
-		// for (DefaultEdge e : testGraph1.edgesOf(v1)) {
-		// System.out.println(e);
-		// }
+		this.pathway = Preconditions.checkNotNull(pathway);
+		setVisibility(EVisibility.PICKABLE);
 	}
 
 	@Override
 	protected void init(IGLElementContext context) {
-		setVisibility(EVisibility.PICKABLE);
 
 		IPickingListener pickingListener = PickingListenerComposite.concat(new IPickingListener() {
 			@Override
@@ -136,93 +102,26 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 		// }
 	}
 
-	private void initShaders(GLGraphics g) throws IOException {
-		isShaderInitialized = true;
-		shaderProgramTextOverlay = g.loadShader(this.getClass().getResourceAsStream("vsTextOverlay.glsl"), this
-				.getClass().getResourceAsStream("fsTextOverlay.glsl"));
+	@Override
+	protected void layoutImpl(int deltaTimeMs) {
+		super.layoutImpl(deltaTimeMs);
+		Vec2f size = getSize();
+		calculateTransforms(size.x(), size.y());
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-
-		if (pathway == null)
-			return;
-
-		if (!isShaderInitialized) {
-			try {
-				initShaders(g);
-			} catch (IOException e) {
-				GLPathwayView.log.error("Error while reading shader file");
-			}
-		}
-
-		calculateTransforms(w, h);
-
-		if (pathway.getType() == EPathwayDatabaseType.WIKIPATHWAYS) {
-			renderBackground(g);
-		}
-
-		GL2 gl = g.gl;
-		// g.gl.glEnable(GL.GL_BLEND);
-		// g.gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-		if (shaderProgramTextOverlay > 0) {
-			gl.glUseProgram(shaderProgramTextOverlay);
-			// texture
-			gl.glUniform1i(gl.glGetUniformLocation(shaderProgramTextOverlay, "pathwayTex"), 0);
-			// which type
-			gl.glUniform1i(gl.glGetUniformLocation(shaderProgramTextOverlay, "mode"), this.pathway.getType().ordinal());
-		}
-
-		g.fillImage(pathway.getImage().getPath(), origin.x(), origin.y(), renderSize.x(), renderSize.y());
-
-		if (shaderProgramTextOverlay > 0)
-			gl.glUseProgram(0);
-
+		g.save();
+		g.move(origin);
+		g.gl.glScalef(scaling.x(), scaling.y(), 1);
+		pathway.getType().render(g, pathway);
+		g.restore();
 		// repaint();
 		// g.color(0f, 0f, 0f, 1f);
 		// for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
 		// g.fillRect(getVertexRepBounds(vertexRep));
 		// }
 
-	}
-
-	private void renderBackground(GLGraphics g) {
-		GL2 gl = g.gl;
-
-		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
-		gl.glEnable(GL.GL_STENCIL_TEST);
-		gl.glColorMask(false, false, false, false);
-		gl.glDepthMask(false);
-		gl.glStencilFunc(GL.GL_NEVER, 1, 0xFF);
-		gl.glStencilOp(GL.GL_REPLACE, GL.GL_KEEP, GL.GL_KEEP); // draw 1s on test fail (always)
-
-		// draw stencil pattern
-		gl.glStencilMask(0xFF);
-		gl.glClear(GL.GL_STENCIL_BUFFER_BIT); // needs mask=0xFF
-
-		for (PathwayVertexRep vertex : pathway.vertexSet()) {
-			g.fillRect(getVertexRepBounds(vertex));
-		}
-
-		gl.glColorMask(true, true, true, true);
-		gl.glDepthMask(true);
-		gl.glStencilMask(0x00);
-		// draw where stencil's value is 0
-		gl.glStencilFunc(GL.GL_EQUAL, 0, 0xFF);
-
-		gl.glEnable(GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-
-		gl.glPushMatrix();
-		gl.glPushAttrib(GL2.GL_LINE_BIT);
-
-		g.color(1, 1, 1, 1).fillRect(origin.x(), origin.y(), renderSize.x(), renderSize.y());
-		g.color(0, 0, 0, 1).drawRect(origin.x(), origin.y(), renderSize.x(), renderSize.y());
-
-		gl.glPopAttrib();
-		gl.glPopMatrix();
-
-		gl.glDisable(GL.GL_STENCIL_TEST);
 	}
 
 	@Override
@@ -272,8 +171,8 @@ public class PathwayTextureRepresentation extends APathwayElementRepresentation 
 	@Override
 	public List<PathwayGraph> getPathways() {
 		if (pathway == null)
-			return new ArrayList<>();
-		return Arrays.asList(pathway);
+			return Collections.emptyList();
+		return Collections.singletonList(pathway);
 	}
 
 	@Override

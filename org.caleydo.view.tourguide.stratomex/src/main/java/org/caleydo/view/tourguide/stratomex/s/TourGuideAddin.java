@@ -1027,8 +1027,9 @@ public class TourGuideAddin implements IStratomeXAddIn {
 
 		MultiFormRenderer multiFormRenderer = new MultiFormRenderer(stratomex, true);
 		List<TablePerspective> tablePerspectives = Lists.newArrayList(tablePerspective);
+		
 
-		String brickEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
+		String brickEventSpace = EventPublisher.INSTANCE.createUniqueEventSpace();
 		for (String viewID : remoteRenderedViewIDs) {
 			multiFormRenderer.addPluginVisualization(viewID, GLStratomex.VIEW_TYPE, embeddingID.id(),
 					tablePerspectives, brickEventSpace);

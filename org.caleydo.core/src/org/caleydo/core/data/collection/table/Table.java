@@ -23,10 +23,10 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.mapping.ColorMapper;
@@ -751,7 +751,8 @@ public class Table {
 	private void triggerUpdateEvent() {
 		DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.trigger(event);
 	}
 
 	/**

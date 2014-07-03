@@ -8,8 +8,8 @@ package org.caleydo.view.parcoords;
 import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.IRemoteViewCreator;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -29,10 +29,7 @@ public class ParCoordsRemoteViewCreator implements IRemoteViewCreator {
 	@Override
 	public AGLView createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
 			String embeddingEventSpace) {
-
-		GLParallelCoordinates parCoords = (GLParallelCoordinates) GeneralManager
-				.get()
-				.getViewManager()
+		GLParallelCoordinates parCoords = (GLParallelCoordinates) ViewManager.get()
 				.createGLView(GLParallelCoordinates.class, remoteRenderingView.getParentGLCanvas(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
 		parCoords.setRemoteRenderingGLView((IGLRemoteRenderingView) remoteRenderingView);

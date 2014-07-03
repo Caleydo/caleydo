@@ -9,7 +9,8 @@ Require-Bundle: org.caleydo.core;bundle-version="3.1.4.qualifier",
  org.caleydo.vis.lineup;bundle-version="3.1.4.qualifier";visibility:=reexport,
  org.eclipse.e4.ui.model.workbench;bundle-version="1.0.0",
  org.eclipse.e4.ui.workbench;bundle-version="1.0.0",
- org.caleydo.util.alg;bundle-version="3.1.4.qualifier"
+ org.caleydo.util.alg;bundle-version="3.1.4.qualifier",
+ org.caleydo.ui;bundle-version="3.1.4.qualifier";visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.caleydo.view.tourguide.api.adapter,
  org.caleydo.view.tourguide.api.event,

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -30,13 +31,13 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.SetMinViewSizeEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedMultiTablePerspectiveBasedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
@@ -341,7 +342,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		gl.glTranslatef(0, 0, -0.001f);
 		gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BACKGROUND.name(), 0));
 		gl.glColor4f(0, 0, 0, 0);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(0, viewFrustum.getHeight(), 0);
 		gl.glVertex3f(viewFrustum.getWidth(), viewFrustum.getHeight(), 0);
@@ -645,7 +646,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.trigger(event);
 		setLayoutDirty();
 	}
 
@@ -754,7 +756,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.trigger(event);
 
 		setLayoutDirty();
 	}

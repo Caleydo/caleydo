@@ -51,6 +51,6 @@ public class ShowPortalsAction extends SimpleAction {
 		super.run();
 		ShowPortalsEvent event = new ShowPortalsEvent(isChecked());
 		event.setEventSpace(eventSpace);
-		EventPublisher.INSTANCE.triggerEvent(event);
+		EventPublisher.trigger(event);
 	}
 }

@@ -7,6 +7,7 @@ package org.caleydo.view.stratomex.brick.ui;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
@@ -60,7 +61,7 @@ public class DimensionBarRenderer extends ALayoutRenderer {
 				baseColor = new float[] { 0.3f, 0.3f, 0.3f, 1f };
 				colorOffset = 0.25f;
 			}
-			gl.glBegin(GL2.GL_QUADS);
+			gl.glBegin(GL2GL3.GL_QUADS);
 			gl.glColor3f(baseColor[0] + colorOffset, baseColor[1] + colorOffset,
 					baseColor[2] + colorOffset);
 			gl.glVertex3f(i * elementWidth, 0, 0);

@@ -37,7 +37,6 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
@@ -179,7 +178,8 @@ public class MappedDataRenderer {
 					.getSampleGroupIDType());
 
 			SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(abstractGroupType);
-			GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
+			
+			EventPublisher.trigger(selectionTypeEvent);
 
 		} else {
 			throw new IllegalStateException("No Valid Datadomain");

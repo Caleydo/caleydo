@@ -6,6 +6,7 @@
 package org.caleydo.view.parcoords;
 
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.view.parcoords.toolbar.AngularBrushingAction;
 import org.caleydo.view.parcoords.toolbar.ResetAxisSpacingAction;
 import org.caleydo.view.parcoords.toolbar.SaveSelectionsAction;
@@ -24,7 +25,7 @@ public class RcpGLParCoordsView extends ARcpGLViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		view = new GLParallelCoordinates(glCanvas, serializedView.getViewFrustum());
+		view = new GLParallelCoordinates(glCanvas, ViewFrustum.createDefault());
 		initializeView();
 		createPartControlGL();
 	}

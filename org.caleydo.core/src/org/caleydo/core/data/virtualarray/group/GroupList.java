@@ -148,7 +148,6 @@ public class GroupList
 	 * over the group list
 	 */
 	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public GroupIterator iterator() {
 		return new GroupIterator(this);
 	}

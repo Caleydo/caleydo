@@ -17,11 +17,11 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.DataDomainSerializationData;
 import org.caleydo.core.serialize.ISerializationAddon;
 import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.serialize.SerializationData;
+import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.serialize.ZipUtils;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
@@ -111,8 +111,9 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 			}
 
 		}
+		
 
-		for (ISerializationAddon addon : GeneralManager.get().getSerializationManager().getAddons())
+		for (ISerializationAddon addon : SerializationManager.get().getAddons())
 			addon.load(serializationDataList);
 
 	}

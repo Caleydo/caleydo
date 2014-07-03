@@ -11,9 +11,9 @@ import java.net.URL;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.StyledColor;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.core.view.util.StyledColor;
 import org.caleydo.vis.lineup.ui.RenderStyle;
 
 public class TourGuideRenderStyle extends GeneralRenderStyle {

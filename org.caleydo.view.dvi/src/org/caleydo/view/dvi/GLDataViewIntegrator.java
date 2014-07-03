@@ -29,17 +29,16 @@ import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.event.MinSizeAppliedEvent;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.NewDataDomainEvent;
 import org.caleydo.core.event.data.NewDataDomainLoadedEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
+import org.caleydo.core.event.view.MinSizeAppliedEvent;
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.SetMinViewSizeEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
 import org.caleydo.core.util.base.ILabelHolder;
@@ -49,6 +48,7 @@ import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.RCPViewInitializationData;
 import org.caleydo.core.view.RCPViewManager;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -192,7 +192,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		for (IDataDomain dataDomain : dataDomainGraph.getDataDomains()) {
 			addDataDomain(dataDomain);
 		}
-		for (IView view : GeneralManager.get().getViewManager().getAllViews()) {
+		
+		for (IView view : ViewManager.get().getAllViews()) {
 			addView(view);
 		}
 
@@ -553,8 +554,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 			isMinSizeApplied = false;
 			waitForMinSizeApplication = true;
+			
 
-			EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+			EventPublisher eventPublisher = EventPublisher.INSTANCE;
 			SetMinViewSizeEvent event = new SetMinViewSizeEvent(this);
 			event.setMinViewSize(minViewWidthPixels, minViewHeightPixels);
 			eventPublisher.triggerEvent(event);
@@ -824,7 +826,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	}
 
 	public void openView(final IView view) {
-		final CaleydoRCPViewPart viewPart = GeneralManager.get().getViewManager().getViewPartFromView(view);
+		
+		final CaleydoRCPViewPart viewPart = ViewManager.get().getViewPartFromView(view);
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override

@@ -165,7 +165,8 @@ public final class ProjectManager {
 	}
 
 	private static SerializationData loadData(String dirName) throws IOException, JAXBException {
-		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
+		
+		SerializationManager serializationManager = SerializationManager.get();
 
 		Unmarshaller unmarshaller = serializationManager.getProjectContext().createUnmarshaller();
 
@@ -297,7 +298,8 @@ public final class ProjectManager {
 
 	private static void loadIDMappings(String dirName) throws JAXBException {
 
-		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
+		
+		SerializationManager serializationManager = SerializationManager.get();
 		Unmarshaller unmarshaller = serializationManager.getProjectContext().createUnmarshaller();
 
 		File idMapping = new File(dirName, ID_MAPPING_FILE);
@@ -407,8 +409,9 @@ public final class ProjectManager {
 		List<IDMappingDescription> descriptions = IDMappingManager.getIdMappingDescriptions();
 		IDMappingList mappingList = new IDMappingList();
 		mappingList.setMappingDescriptions(descriptions);
+		
 
-		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
+		SerializationManager serializationManager = SerializationManager.get();
 		JAXBContext projectContext = serializationManager.getProjectContext();
 
 		Marshaller marshaller = projectContext.createMarshaller();
@@ -523,7 +526,8 @@ public final class ProjectManager {
 	private static void saveData(String dirName, Collection<? extends IDataDomain> toSave, IProgressMonitor monitor,
 			ProjectMetaData metaData) throws JAXBException, IOException {
 
-		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
+		
+		SerializationManager serializationManager = SerializationManager.get();
 		JAXBContext projectContext = serializationManager.getProjectContext();
 
 		Marshaller marshaller = projectContext.createMarshaller();

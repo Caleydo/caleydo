@@ -7,8 +7,8 @@ package org.caleydo.view.pathway.toolbar;
 
 import java.util.Collection;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.util.SearchBox;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.listener.LoadPathwayEvent;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -128,13 +128,15 @@ public class PathwaySearchBox extends ControlContribution {
 	 * @return
 	 */
 	private boolean loadPathway(String entity) {
-		EPathwayDatabaseType ePathwayDatabaseType;
+		EPathwayDatabaseType ePathwayDatabaseType = null;
 
-		if (entity.contains(EPathwayDatabaseType.KEGG.getName())) {
-			ePathwayDatabaseType = EPathwayDatabaseType.KEGG;
-		} else if (entity.contains(EPathwayDatabaseType.WIKIPATHWAYS.getName())) {
-			ePathwayDatabaseType = EPathwayDatabaseType.WIKIPATHWAYS;
-		} else
+		for (EPathwayDatabaseType d : EPathwayDatabaseType.values()) {
+			if (entity.contains(d.getName())) {
+				ePathwayDatabaseType = d;
+				break;
+			}
+		}
+		if (ePathwayDatabaseType == null)
 			return false;
 
 		entity = entity.substring(0, entity.indexOf(" ("));
@@ -148,7 +150,8 @@ public class PathwaySearchBox extends ControlContribution {
 		event.setSender(this);
 		event.setPathwayID(pathway.getID());
 
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+		EventPublisher.trigger(event);
 
 		return true;
 	}

@@ -27,7 +27,6 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.MinSizeUpdateEvent;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
@@ -49,7 +48,6 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElement.EVisibility;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
@@ -61,11 +59,13 @@ import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.util.GLElementWindow;
 import org.caleydo.core.view.opengl.layout2.util.GLElementWindow.ICloseWindowListener;
+import org.caleydo.core.view.opengl.layout2.util.GLGraphicsUtils;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.data.loader.ITextureLoader;
 import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
+import org.caleydo.data.loader.TextureResourceLoader;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
@@ -84,7 +84,6 @@ import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.SampleMappingModeEvent;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
 import org.caleydo.view.enroute.GLEnRoutePathway;
@@ -120,7 +119,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	// private Set<String> remoteRenderedPathwayMultiformViewIDs;
 
-	private final String pathEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
+	private final String pathEventSpace = EventPublisher.INSTANCE.createUniqueEventSpace();
 
 	private AnimatedGLElementContainer baseContainer = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(
 			true, 10, GLPadding.ZERO));
@@ -505,9 +504,10 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		final GLEnRoutePathway enRoute = getEnRoute();
 		final IResourceLocator enrouteResourceLocator = org.caleydo.view.enroute.Activator.getResourceLocator();
 		enRoute.addContentUpdateListener(dataMappingWizard);
-		useCenterLineButton.setRenderer(GLRenderers.fillImage(new ResourceLoader(enrouteResourceLocator)
-				.getTexture("resources/icons/center_data_line.png")));
-		useCenterLineButton.setSelectedRenderer(GLRenderers.pushedImage(new ResourceLoader(enrouteResourceLocator)
+		final ITextureLoader loader = new TextureResourceLoader(enrouteResourceLocator);
+		useCenterLineButton
+				.setRenderer(GLRenderers.fillImage(loader.getTexture("resources/icons/center_data_line.png")));
+		useCenterLineButton.setSelectedRenderer(GLRenderers.pushedImage(loader
 				.getTexture("resources/icons/center_data_line.png")));
 		useCenterLineButton.setSelected(enRoute.isShowCenteredDataLineInRowCenter());
 
@@ -523,10 +523,9 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		useCenterLineButton.setTooltip("Toggle center line alignment for centered data.");
 
 		fitEnrouteToViewWidthButton.setSize(16, 16);
-		fitEnrouteToViewWidthButton.setRenderer(GLRenderers.fillImage(new ResourceLoader(enrouteResourceLocator)
+		fitEnrouteToViewWidthButton.setRenderer(GLRenderers.fillImage(loader
 				.getTexture("resources/icons/fit_to_width.png")));
-		fitEnrouteToViewWidthButton.setSelectedRenderer(GLRenderers.pushedImage(new ResourceLoader(
-				enrouteResourceLocator).getTexture("resources/icons/fit_to_width.png")));
+		fitEnrouteToViewWidthButton.setSelectedRenderer(GLRenderers.pushedImage(loader.getTexture("resources/icons/fit_to_width.png")));
 		fitEnrouteToViewWidthButton.setSelected(enRoute.isFitWidthToScreen());
 
 		fitEnrouteToViewWidthButton.onPick(new APickingListener() {
@@ -540,9 +539,9 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		fitEnrouteToViewWidthButton.setTooltip("Toggle fit to view width.");
 
 		useColorMappingButton.setSize(16, 16);
-		useColorMappingButton.setRenderer(GLRenderers.fillImage(new ResourceLoader(enrouteResourceLocator)
+		useColorMappingButton.setRenderer(GLRenderers.fillImage(loader
 				.getTexture("resources/icons/toggle_color.png")));
-		useColorMappingButton.setSelectedRenderer(GLRenderers.pushedImage(new ResourceLoader(enrouteResourceLocator)
+		useColorMappingButton.setSelectedRenderer(GLRenderers.pushedImage(loader
 				.getTexture("resources/icons/toggle_color.png")));
 		useColorMappingButton.setSelected(enRoute.isUseColorMapping());
 
@@ -663,7 +662,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 					ShowPortalsEvent event = new ShowPortalsEvent(!showPortalsButton.isChecked());
 					showPortalsButton.setChecked(!showPortalsButton.isChecked());
 					event.setEventSpace(pathEventSpace);
-					EventPublisher.INSTANCE.triggerEvent(event);
+					EventPublisher.trigger(event);
 				}
 				// highlightAllPortalsButton.setChecked(isOPressed);
 				boolean iswPressed = e.isKeyDown('w');
@@ -684,7 +683,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 								boolean enable = !selectPathAction.isChecked();
 								EnablePathSelectionEvent event = new EnablePathSelectionEvent(enable);
 								event.setEventSpace(pathEventSpace);
-								GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+								EventPublisher.trigger(event);
 								selectPathAction.setChecked(enable);
 							}
 						});
@@ -982,7 +982,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		if (isLayoutDirty)
 			updateAugmentation = true;
 
-		final boolean isPickingRun = GLGraphics.isPickingPass(gl);
+		final boolean isPickingRun = GLGraphicsUtils.isPickingPass(gl);
 		if (!isPickingRun) {
 			if (!contextMenuItemsToShow.isEmpty()) {
 				for (AContextMenuItem item : contextMenuItemsToShow) {
@@ -1461,7 +1461,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			for (PathwayVertexRep vertexRep : info.pathway.vertexSet()) {
 				if (vertexRep.getType() == EPathwayVertexType.map) {
 					PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
-							EPathwayDatabaseType.KEGG);
+							vertexRep.getPathway().getType());
 					PathwayMultiFormInfo target = getPathwayMultiFormInfo(pathway);
 					if (target != null) {
 						PortalHighlightRenderer renderer = new PortalHighlightRenderer(info, getPortalLocation(
@@ -1493,7 +1493,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	}
 
 	private boolean addPortalHighlightRenderer(PathwayVertexRep vertexRep, PathwayMultiFormInfo info) {
-		PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(), EPathwayDatabaseType.KEGG);
+		PathwayGraph pathway = vertexRep.getPathway();
 		boolean wasHighlighted = false;
 		if (pathway != null) {
 			PathwayMultiFormInfo windowInfo = getPathwayMultiFormInfo(pathway);

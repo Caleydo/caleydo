@@ -30,7 +30,6 @@ public class VAUtils {
 	 * @param sourceVAs
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static List<VirtualArray> createIntersectingVAs(List<VirtualArray> sourceVAs) {
 		if (sourceVAs == null)
 			return null;
@@ -40,7 +39,7 @@ public class VAUtils {
 		List<VirtualArray> targetVAs = new ArrayList<VirtualArray>();
 
 		for (VirtualArray sourceVA : sourceVAs) {
-			targetVAs.add((VirtualArray) sourceVA.clone());
+			targetVAs.add(sourceVA.clone());
 		}
 
 		for (int vaCount = 0; vaCount < sourceVAs.size(); vaCount++) {

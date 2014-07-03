@@ -16,6 +16,7 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDCreator;
@@ -23,23 +24,10 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
-import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.datadomain.pathway.parser.KEGGParser;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 
 /**
  * The data domain for pathways triggers the loading of the pathways from KEGG.
@@ -124,29 +112,7 @@ public class PathwayDataDomain extends ADataDomain {
 
 		PathwayManager pathwayManager = PathwayManager.get();
 
-		PathwayDatabase pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.KEGG);
-		KEGGParser.parse(pathwayDatabase);
-
-		pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.WIKIPATHWAYS);
-
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint point = registry.getExtensionPoint("org.caleydo.data.pathway.PathwayParser");
-		IExtension[] extensions = point.getExtensions();
-
-		for (IExtension extension : extensions) {
-			IConfigurationElement[] embeddingInfos = extension.getConfigurationElements();
-			for (IConfigurationElement embeddingInfo : embeddingInfos) {
-				try {
-					IPathwayParser parser = (IPathwayParser) embeddingInfo.createExecutableExtension("class");
-					parser.parse();
-				} catch (CoreException e) {
-					Logger.log(new Status(IStatus.WARNING, "PathwayDatadomain", "Could not create pathway parser for "
-							+ extension.getContributor().getName()));
-				}
-
-			}
-		}
-
+		PathwayManager.createPathwayDatabases();
 		pathwayManager.notifyPathwayLoadingFinished(true);
 
 		super.run();
@@ -181,7 +147,8 @@ public class PathwayDataDomain extends ADataDomain {
 
 		DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.trigger(event);
 	}
 
 	public List<PathwayTablePerspective> getTablePerspectives() {
@@ -194,6 +161,7 @@ public class PathwayDataDomain extends ADataDomain {
 
 		DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.trigger(event);
 	}
 }

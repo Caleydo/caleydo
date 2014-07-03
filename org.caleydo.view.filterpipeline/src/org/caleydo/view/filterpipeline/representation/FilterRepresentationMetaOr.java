@@ -11,6 +11,7 @@ import java.util.TreeSet;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
@@ -54,7 +55,7 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 		for (int i = 0; i < subFilterSizes.length; ++i) {
 			gl.glPushName(pickingManager.getPickingID(viewId, PickingType.FILTERPIPE_SUB_FILTER, i));
 			heightRight = vSize.y() * (subFilterSizes[i] / 100.f);
-			renderShape(gl, GL2.GL_QUADS, new Color(renderStyle.getFilterColorCombined(i)), Z_POS_BODY);
+			renderShape(gl, GL2GL3.GL_QUADS, new Color(renderStyle.getFilterColorCombined(i)), Z_POS_BODY);
 			gl.glPopName();
 		}
 		gl.glPopName();
@@ -92,7 +93,6 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 		sizesDirty = false;
 
 		// TODO also handle dimension filter
-		@SuppressWarnings("unchecked")
 		VirtualArray input = filter.getInput().clone();
 		ArrayList<Filter> filterList = ((RecordMetaOrFilter) filter.getFilter()).getFilterList();
 

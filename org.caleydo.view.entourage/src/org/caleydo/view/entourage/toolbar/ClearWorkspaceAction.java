@@ -43,6 +43,6 @@ public class ClearWorkspaceAction extends SimpleAction {
 
 		ClearWorkspaceEvent clearWorkspaceEvent = new ClearWorkspaceEvent();
 		clearWorkspaceEvent.to(entourage);
-		EventPublisher.INSTANCE.triggerEvent(clearWorkspaceEvent);
+		EventPublisher.trigger(clearWorkspaceEvent);
 	}
 }

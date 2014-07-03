@@ -118,7 +118,7 @@ public class LinkRenderer extends PickableGLElement {
 			}
 			ShowNodeContextEvent event = new ShowNodeContextEvent(vertexRep1);
 			event.setEventSpace(view.getPathEventSpace());
-			EventPublisher.INSTANCE.triggerEvent(event);
+			EventPublisher.trigger(event);
 		}
 	}
 

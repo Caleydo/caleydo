@@ -28,7 +28,6 @@ import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.MinSizeUpdateEvent;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
@@ -75,7 +74,7 @@ import org.caleydo.view.pathway.v2.ui.augmentation.path.MultiplePathsAugmentatio
  */
 public class ContextualPathsRenderer extends ALayoutRenderer implements IPathwayRepresentation, IListenerOwner {
 
-	protected final String BRANCH_PATH_EVENTSPACE = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
+	protected final String BRANCH_PATH_EVENTSPACE = EventPublisher.INSTANCE.createUniqueEventSpace();
 	// protected final int PATHWAY_TEXTURE_HEIGHT = 100;
 
 	protected LayoutManager layout;
@@ -552,7 +551,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	private void triggerMinSizeUpdate() {
 		MinSizeUpdateEvent e = new MinSizeUpdateEvent(this, getMinWidthPixels(), getMinHeightPixels());
 		e.setEventSpace(eventSpace);
-		EventPublisher.INSTANCE.triggerEvent(e);
+		EventPublisher.trigger(e);
 	}
 
 	@Override

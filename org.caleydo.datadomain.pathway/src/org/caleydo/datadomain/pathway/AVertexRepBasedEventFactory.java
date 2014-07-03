@@ -28,7 +28,7 @@ public abstract class AVertexRepBasedEventFactory implements IVertexRepBasedEven
 	public void triggerEvent(PathwayVertexRep vertexRep) {
 		AEvent event = create(vertexRep);
 		if (event != null) {
-			EventPublisher.INSTANCE.triggerEvent(event);
+			EventPublisher.trigger(event);
 		}
 	}
 

@@ -25,7 +25,6 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
-import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ZipUtils;
 import org.caleydo.core.util.collection.Pair;
@@ -41,14 +40,8 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.parser.PathwayImageMap;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.GraphPath;
@@ -63,19 +56,15 @@ import edu.asu.emit.qyan.alg.KShortestPathsAdapter;
  *
  * @author Marc Streit
  */
-public class PathwayManager extends AManager<PathwayGraph> {
+public class PathwayManager {
 	private static final Logger log = Logger.create(PathwayManager.class);
 
-	private volatile static PathwayManager pathwayManager;
+	private volatile static PathwayManager pathwayManager = new PathwayManager();
 
-	public IPathwayResourceLoader keggPathwayResourceLoader;
-	public IPathwayResourceLoader wikipathwaysResourceLoader;
+	private final Map<Integer, PathwayGraph> pathways = new HashMap<>();
+	private final Map<PathwayGraph, Boolean> hashPathwayToVisibilityState = new HashMap<PathwayGraph, Boolean>();
 
-	private Map<PathwayGraph, Boolean> hashPathwayToVisibilityState;
-
-	private Map<EPathwayDatabaseType, Map<String, PathwayGraph>> mapPathwayDBToPathways;
-
-	private Map<EPathwayDatabaseType, PathwayDatabase> hashPathwayDatabase;
+	private final Map<EPathwayDatabaseType, Map<String, PathwayGraph>> mapPathwayDBToPathways = new HashMap<>();
 
 	/**
 	 * Root pathway contains all nodes that are loaded into the system. Therefore it represents the overall topological
@@ -83,12 +72,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	 */
 	private DirectedGraph<PathwayVertex, DefaultEdge> rootPathwayGraph = new DefaultDirectedGraph<PathwayVertex, DefaultEdge>(
 			DefaultEdge.class);
-
-	/**
-	 * Used for pathways where only images can be loaded. The image map defines the clickable regions on that pathway
-	 * image.
-	 */
-	private PathwayImageMap currentPathwayImageMap;
 
 	private boolean pathwayLoadingFinished;
 
@@ -104,46 +87,18 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	 * @return singleton PathwayManager instance
 	 */
 	public static PathwayManager get() {
-		synchronized (PathwayManager.class) {
-			if (pathwayManager == null) {
-				pathwayManager = new PathwayManager();
-				pathwayManager.init();
-			}
-		}
-
 		return pathwayManager;
-	}
-
-	private void init() {
-		mapPathwayDBToPathways = new HashMap<>();
-		hashPathwayDatabase = new HashMap<EPathwayDatabaseType, PathwayDatabase>();
-		hashPathwayToVisibilityState = new HashMap<PathwayGraph, Boolean>();
 	}
 
 	public boolean hasPathways(EPathwayDatabaseType type) {
 		return this.mapPathwayDBToPathways.containsKey(type) && !this.mapPathwayDBToPathways.get(type).isEmpty();
 	}
 
-	public PathwayDatabase createPathwayDatabase(final EPathwayDatabaseType type) {
-
-		// Check if requested pathway database is already loaded (e.g. using
-		// caching)
-		if (hashPathwayDatabase.containsKey(type))
-			return hashPathwayDatabase.get(type);
-
-		PathwayDatabase pathwayDatabase = new PathwayDatabase(type);
-
-		hashPathwayDatabase.put(type, pathwayDatabase);
-		createPathwayResourceLoader(pathwayDatabase.getType());
-
-		return pathwayDatabase;
-	}
-
 	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName, final String sTitle,
 			final File image, final String sExternalLink) {
 		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, image, sExternalLink);
 
-		registerItem(pathway);
+		this.pathways.put(pathway.getID(), pathway);
 		Map<String, PathwayGraph> mapTitleToPathway = mapPathwayDBToPathways.get(type);
 		if (mapTitleToPathway == null) {
 			mapTitleToPathway = new HashMap<>();
@@ -210,11 +165,10 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		}
 	}
 
-	@Override
 	public Collection<PathwayGraph> getAllItems() {
 		waitUntilPathwayLoadingIsFinished();
 
-		return super.getAllItems();
+		return this.pathways.values();
 	}
 
 	public void setPathwayVisibilityState(final PathwayGraph pathway, final boolean bVisibilityState) {
@@ -237,18 +191,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		return hashPathwayToVisibilityState.get(pathway);
 	}
 
-	public void createPathwayImageMap(final String sImageLink) {
-		currentPathwayImageMap = new PathwayImageMap(sImageLink);
-	}
-
-	public PathwayImageMap getCurrentPathwayImageMap() {
-		return currentPathwayImageMap;
-	}
-
-	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type) {
-		return hashPathwayDatabase.get(type);
-	}
-
 	public void notifyPathwayLoadingFinished(boolean pathwayLoadingFinished) {
 		this.pathwayLoadingFinished = pathwayLoadingFinished;
 	}
@@ -265,44 +207,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 	public boolean isPathwayLoadingFinished() {
 		return pathwayLoadingFinished;
-	}
-
-	public void createPathwayResourceLoader(EPathwayDatabaseType type) {
-
-		IExtensionRegistry reg = Platform.getExtensionRegistry();
-		try {
-			if (type == EPathwayDatabaseType.KEGG) {
-				IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
-				IExtension ext = ep.getExtension("org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader");
-				IConfigurationElement[] ce = ext.getConfigurationElements();
-
-				keggPathwayResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
-
-			} else if (type == EPathwayDatabaseType.WIKIPATHWAYS) {
-
-				IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
-				IExtension ext = ep.getExtension("org.caleydo.data.pathway.wikipathways.WikiPathwaysResourceLoader");
-				IConfigurationElement[] ce = ext.getConfigurationElements();
-
-				wikipathwaysResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
-			} else {
-				throw new IllegalStateException("Unknown pathway database " + type);
-			}
-		} catch (Exception ex) {
-			Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Could not load " + type.getName()
-					+ " pathways."));
-		}
-	}
-
-	public IPathwayResourceLoader getPathwayResourceLoader(EPathwayDatabaseType type) {
-
-		if (type == EPathwayDatabaseType.KEGG) {
-			return keggPathwayResourceLoader;
-		} else if (type == EPathwayDatabaseType.WIKIPATHWAYS) {
-			return wikipathwaysResourceLoader;
-		}
-
-		throw new IllegalStateException("Unknown pathway database " + type);
 	}
 
 	/**
@@ -769,13 +673,13 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	 * @param monitor
 	 * @param wikipathways
 	 */
-	public File preparePathwayData(EPathwayDatabaseType type, IProgressMonitor monitor) {
+	public File preparePathwayData(String name, IProgressMonitor monitor) {
 		final String URL_PATTERN = GeneralManager.DATA_URL_PREFIX + "pathways/%s_%s.zip";
 		final Organism organism = GeneticMetaData.getOrganism();
 
 		URL url = null;
 		try {
-			url = new URL(String.format(URL_PATTERN, type.name().toLowerCase(), organism.name().toLowerCase()));
+			url = new URL(String.format(URL_PATTERN, name.toLowerCase(), organism.name().toLowerCase()));
 			RemoteFile zip = RemoteFile.of(url);
 
 			if (!zip.inCache(true)) {
@@ -785,7 +689,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 			}
 
 			File localZip = zip.getOrLoad(false, monitor, "Caching Pathways (this may take a while): Downloading "
-					+ type.getName() + " pathways (%2$d MB)");
+					+ name + " pathways (%2$d MB)");
 			if (localZip == null || !localZip.exists()) {
 				log.error("can't download: " + url);
 				return null;
@@ -830,5 +734,30 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		}
 
 		return ids;
+	}
+
+	/**
+	 *
+	 */
+	public static void createPathwayDatabases() {
+		for(EPathwayDatabaseType type: EPathwayDatabaseType.values()) {
+			type.load();
+		}
+	}
+
+	/**
+	 * @param pathwayID
+	 * @return
+	 */
+	public PathwayGraph getPathway(int pathwayID) {
+		return this.pathways.get(pathwayID);
+	}
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	public boolean hasPathway(int pathwayID) {
+		return this.pathways.containsKey(pathwayID);
 	}
 }

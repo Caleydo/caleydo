@@ -3,7 +3,7 @@ package org.caleydo.view.tourguide.internal.adapter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -65,7 +65,7 @@ public class PathwayDataMode extends ATourGuideDataMode {
 		base.setWidth(150);
 		base.orderByMe();
 
-		Map<EPathwayDatabaseType, String> metaData = new EnumMap<>(EPathwayDatabaseType.class);
+		Map<EPathwayDatabaseType, String> metaData = new HashMap<>();
 		for(EPathwayDatabaseType type : EPathwayDatabaseType.values()) {
 			metaData.put(type, type.getName());
 		}

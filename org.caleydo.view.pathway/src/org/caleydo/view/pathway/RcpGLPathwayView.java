@@ -14,9 +14,10 @@ import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
+import org.caleydo.core.gui.OpenOnlineHelpAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.datadomain.pathway.IPathwayHandler;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.listener.AddPathwayListener;
@@ -51,7 +52,7 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IPathwayHandler 
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLPathway(glCanvas, serializedView.getViewFrustum());
+		view = new GLPathway(glCanvas, ViewFrustum.createDefault());
 		initializeView();
 		createPartControlGL();
 	}
@@ -100,7 +101,7 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IPathwayHandler 
 			return;
 		((GLPathway) view).setPathway(pathwayID);
 
-		final PathwayGraph pathway = PathwayManager.get().getItem(pathwayID);
+		final PathwayGraph pathway = PathwayManager.get().getPathway(pathwayID);
 		Display.getDefault().asyncExec(new Runnable() {
 
 			@Override

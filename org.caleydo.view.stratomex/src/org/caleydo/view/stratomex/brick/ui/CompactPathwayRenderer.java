@@ -7,6 +7,8 @@ package org.caleydo.view.stratomex.brick.ui;
 
 import gleem.linalg.Vec3f;
 
+import java.net.URL;
+
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.color.Color;
@@ -14,8 +16,9 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+
+import com.jogamp.opengl.util.texture.Texture;
 
 /**
  * Renderer for a pathway icon and text.
@@ -32,11 +35,11 @@ public class CompactPathwayRenderer extends ALayoutRenderer {
 	private String caption;
 	private String pickingType;
 	private TextureManager textureManager;
-	private EIconTextures texture;
+	private URL texture;
 	private int id;
 
 	public CompactPathwayRenderer(AGLView view, String caption, String pickingType, int id,
-			TextureManager textureManager, EIconTextures texture) {
+			TextureManager textureManager, URL texture) {
 		this.view = view;
 		this.caption = caption;
 		this.pickingType = pickingType;
@@ -69,7 +72,8 @@ public class CompactPathwayRenderer extends ALayoutRenderer {
 		Vec3f upperRightCorner = new Vec3f(iconWidth, iconHeight, 0);
 		Vec3f upperLeftCorner = new Vec3f(0, iconHeight, 0);
 
-		textureManager.renderTexture(gl, texture, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
+		Texture tex = textureManager.get(texture);
+		textureManager.renderTexture(gl, tex, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
 				Color.WHITE);
 
 		gl.glPopName();

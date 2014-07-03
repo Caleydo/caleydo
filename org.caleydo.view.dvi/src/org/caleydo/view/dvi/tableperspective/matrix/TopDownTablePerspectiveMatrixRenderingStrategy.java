@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
@@ -136,7 +137,7 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 
 				gl.glColor4fv(groupColor, 0);
 
-				gl.glBegin(GL2.GL_QUADS);
+				gl.glBegin(GL2GL3.GL_QUADS);
 				gl.glVertex3f(currentPositionX, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + captionColumnWidth + captionSpacingX, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + captionColumnWidth + captionSpacingX, currentPositionY - rowHeight,
@@ -145,7 +146,7 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 				gl.glEnd();
 
 				gl.glColor4fv(perspectiveColor, 0);
-				gl.glBegin(GL2.GL_QUADS);
+				gl.glBegin(GL2GL3.GL_QUADS);
 				gl.glVertex3f(currentPositionX, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + childIndent, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + childIndent, currentPositionY - rowHeight, 0.1f);
@@ -243,7 +244,7 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 
 				gl.glColor4fv(groupColor, 0);
 
-				gl.glBegin(GL2.GL_QUADS);
+				gl.glBegin(GL2GL3.GL_QUADS);
 				gl.glVertex3f(currentPositionX, y - captionRowHeight - captionSpacingY, 0.1f);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, y - captionRowHeight - captionSpacingY, 0.1f);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, y, 0.1f);
@@ -251,7 +252,7 @@ class TopDownTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMa
 				gl.glEnd();
 
 				gl.glColor4fv(perspectiveColor, 0);
-				gl.glBegin(GL2.GL_QUADS);
+				gl.glBegin(GL2GL3.GL_QUADS);
 				gl.glVertex3f(currentPositionX, y - childIndent, 0.1f);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, y - childIndent, 0.1f);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, y, 0.1f);
