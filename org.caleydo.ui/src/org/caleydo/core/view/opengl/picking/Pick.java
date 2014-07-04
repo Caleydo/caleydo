@@ -20,6 +20,7 @@ public class Pick {
 	private final int objectID;
 
 	/** The picked object. */
+	// FIXME picking in OpenGL doesn't support objects, so why is that here?
 	private final Object object;
 
 	private final PickingMode ePickingMode;
