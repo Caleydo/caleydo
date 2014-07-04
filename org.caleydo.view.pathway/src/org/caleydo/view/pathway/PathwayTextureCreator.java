@@ -38,8 +38,8 @@ public class PathwayTextureCreator implements IPathwayRepresentationCreator {
 		}
 
 		pathwayView.setPathwayPathEventSpace(embeddingEventSpace);
-		pathwayView.setMinHeightPixels(150);
-		pathwayView.setMinWidthPixels(150);
+		pathwayView.setMinHeightPixels(120);
+		pathwayView.setMinWidthPixels(120);
 		pathwayView.setHighlightVertices(false);
 		// pathwayView.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		pathwayView.initialize();
