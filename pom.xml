@@ -54,6 +54,7 @@
 		<module>org.caleydo.view.idbrowser</module>
 		<module>org.caleydo.view.table</module>
 		<module>org.caleydo.view.treemap</module>
+		<module>org.caleydo.view.imageviewer</module>
 		
 		<module>org.caleydo.vis.lineup</module>
 		
