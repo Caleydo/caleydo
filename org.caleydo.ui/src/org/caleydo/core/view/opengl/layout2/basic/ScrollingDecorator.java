@@ -436,11 +436,11 @@ public class ScrollingDecorator extends AGLElementDecorator implements IScrollBa
 			vertical.scrollBar.move(delta.y());
 	}
 
-	protected boolean needHor() {
+	public boolean needHor() {
 		return horizontal != null && horizontal.needIt;
 	}
 
-	protected boolean needVer() {
+	public boolean needVer() {
 		return vertical != null && vertical.needIt;
 	}
 
