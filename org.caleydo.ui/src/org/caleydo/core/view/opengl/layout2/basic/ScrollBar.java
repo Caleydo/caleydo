@@ -20,7 +20,7 @@ public class ScrollBar extends AScrollBar {
 	private final float mouseWheelFactor;
 
 	public ScrollBar(boolean isHorizontal) {
-		this(isHorizontal, 3);
+		this(isHorizontal, 0.1f);
 	}
 
 	public ScrollBar(boolean isHorizontal, float mouseWheelFactor) {
@@ -56,7 +56,8 @@ public class ScrollBar extends AScrollBar {
 			callback.repaint();
 			break;
 		case MOUSE_WHEEL:
-			drag(-((IMouseEvent) pick).getWheelRotation() * mouseWheelFactor);
+			// drag(-((IMouseEvent) pick).getWheelRotation() * mouseWheelFactor);
+			move(-((IMouseEvent) pick).getWheelRotation() * callback.getHeight(this) * mouseWheelFactor);
 			break;
 		default:
 			break;
