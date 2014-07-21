@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Set;
 
+import org.caleydo.core.internal.Activator;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -94,6 +95,7 @@ public final class RemoteFile implements IRunnableWithProgress {
 		if (!checkModificationDate)
 			return true;
 		long have = file.lastModified();
+		Activator.updateProxySettings(url);
 		URLConnection connection;
 		try {
 			connection = url.openConnection();
@@ -154,6 +156,7 @@ public final class RemoteFile implements IRunnableWithProgress {
 			monitor.done();
 			return;
 		}
+		Activator.updateProxySettings(url);
 		successful = false;
 		caught = null;
 		File tmp = new File(file.getAbsolutePath() + "-tmp");

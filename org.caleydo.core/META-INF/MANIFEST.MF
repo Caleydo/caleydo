@@ -240,7 +240,8 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.9.0";visibility:=reex
  org.eclipse.nebula.widgets.nattable.core;bundle-version="1.0.1";visibility:=reexport,
  org.caleydo.thirdparty.jgrapht;bundle-version="0.8.3";visibility:=reexport,
  org.eclipse.jface,
- org.eclipse.ui.workbench
+ org.eclipse.ui.workbench,
+ org.eclipse.core.net;bundle-version="1.2.200"
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

@@ -8,9 +8,7 @@ package org.caleydo.data.loader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Arrays;
 
 /**
@@ -40,25 +38,6 @@ public class ResourceLocators {
 		@Override
 		public String toString() {
 			return "FILE";
-		}
-	};
-
-	public static final IResourceLocator URL = new IResourceLocator() {
-
-		@Override
-		public InputStream get(String res) {
-			URL url;
-			try {
-				url = new URL(res);
-				return url.openStream();
-			} catch (IOException e) {
-				return null;
-			}
-		}
-
-		@Override
-		public String toString() {
-			return "URL";
 		}
 	};
 
