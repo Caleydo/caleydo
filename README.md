@@ -46,6 +46,7 @@ Caleydo makes use of a range of open source tools, bioinformatics resources and 
 * [JGrahT](http://jgrapht.org/) - A graph library.
 * [Jogl](http://jogamp.org/jogl/www/) - Java bindings for OpenGL.
 * [PathVisio](http://www.pathvisio.org/) - loading and parsing WikiPathways.
+* [WordHoard](http://wordhoard.northwestern.edu/) - statistical utilities.
 
 ### Bioinformatics Resources
 
