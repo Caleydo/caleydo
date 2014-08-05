@@ -189,6 +189,7 @@ public class CorrelationResultPage extends WizardPage implements IPageChangedLis
 					info1.columnPerspective.getIdType());
 			IIDTypeMapper<Object, Object> mapper = mappingManager.getIDTypeMapper(info1.columnPerspective.getIdType(),
 					info2.columnPerspective.getIdType());
+			contingencyTable = new int[2][2];
 
 			for (int cell1ColumnID : info1.columnPerspective.getVirtualArray()) {
 
