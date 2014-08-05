@@ -119,7 +119,7 @@ public class ContentRenderer extends ALayoutRenderer implements IDisposeListener
 				IDType.getIDType(MappedDataRenderer.DATA_CELL_ID));
 		dataCellSelectionManager.registerEventListeners();
 
-		if (isHighlightMode) {
+		if (isHighlightMode && resolvedRowID != null) {
 			parent.pickingListenerManager.addIDPickingListener(new APickingListener() {
 				@Override
 				protected void mouseOver(Pick pick) {

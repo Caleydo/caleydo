@@ -23,10 +23,17 @@ public class CalculateCorrelationWizard extends Wizard {
 	protected IDataClassifier cell1Classifier;
 	protected IDataClassifier cell2Classifier;
 
+	/**
+	 *
+	 */
+	public CalculateCorrelationWizard() {
+		setWindowTitle("Calculate Data Correlation using Fisher's Exact Test");
+	}
+
 	@Override
 	public void addPages() {
-		firstDataCellPage = new SelectDataCellPage("Select First Data Cell");
-		secondDataCellPage = new SelectDataCellPage("Select Second Data Cell");
+		firstDataCellPage = new SelectDataCellPage("FirstBlock", "Select First Data Block", null);
+		secondDataCellPage = new SelectDataCellPage("SecondBlock", "Select Second Data Block", null);
 		CorrelationResultPage resultPage = new CorrelationResultPage("Result");
 
 		IWizardContainer wizardContainer = getContainer();

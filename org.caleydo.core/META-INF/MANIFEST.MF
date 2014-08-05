@@ -133,6 +133,7 @@ Export-Package: org.caleydo.core.data.collection,
    org.caleydo.core.io,
    org.eclipse.jface.dialogs",
  org.caleydo.core.io.gui.dataimport.widget,
+ org.caleydo.core.io.gui.dataimport.widget.table,
  org.caleydo.core.io.gui.dataimport.wizard,
  org.caleydo.core.io.parser.ascii;
   uses:="org.caleydo.core.data.datadomain,

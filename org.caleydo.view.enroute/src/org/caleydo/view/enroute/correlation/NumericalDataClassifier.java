@@ -16,7 +16,7 @@ import com.google.common.collect.Lists;
  * @author Christian
  *
  */
-public class NumericalThresholdClassifier implements IDataClassifier {
+public class NumericalDataClassifier implements IDataClassifier {
 
 	protected final float threshold;
 	protected final List<SimpleCategory> dataClasses;
@@ -24,7 +24,7 @@ public class NumericalThresholdClassifier implements IDataClassifier {
 	/**
 	 * @param threshold
 	 */
-	public NumericalThresholdClassifier(float threshold) {
+	public NumericalDataClassifier(float threshold) {
 		this.threshold = threshold;
 		dataClasses = Lists.newArrayList(new SimpleCategory("less than or equal " + threshold, Color.CYAN),
 				new SimpleCategory("greater than " + threshold, Color.MAGENTA));
