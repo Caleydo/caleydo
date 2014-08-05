@@ -263,6 +263,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	private GLButton useCenterLineButton = new GLButton(EButtonMode.CHECKBOX);
 	private GLButton fitEnrouteToViewWidthButton = new GLButton(EButtonMode.CHECKBOX);
 	private GLButton useColorMappingButton = new GLButton(EButtonMode.CHECKBOX);
+	private GLButton calcCorrelationSignificanceButton = new GLButton(EButtonMode.BUTTON);
 
 	/**
 	 * Constructor.
@@ -555,6 +556,21 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 			}
 		});
 		useColorMappingButton.setTooltip("Toggle color mapping for numerical bars.");
+
+		calcCorrelationSignificanceButton.setSize(16, 16);
+		calcCorrelationSignificanceButton.setRenderer(GLRenderers.fillImage(loader
+				.getTexture("resources/icons/toggle_color.png")));
+		calcCorrelationSignificanceButton.setSelectedRenderer(GLRenderers.pushedImage(loader
+				.getTexture("resources/icons/toggle_color.png")));
+		calcCorrelationSignificanceButton.setSelected(enRoute.isUseColorMapping());
+
+		calcCorrelationSignificanceButton.onPick(new APickingListener() {
+			@Override
+			protected void clicked(Pick pick) {
+				enRoute.onCalcCorrelationSignificance();
+			}
+		});
+		calcCorrelationSignificanceButton.setTooltip("Calculate significance of data correlation.");
 	}
 
 	/**
@@ -1078,10 +1094,13 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 							fitEnrouteToViewWidthButton);
 					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1, useColorMappingButton);
 					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1, useCenterLineButton);
+					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1,
+							calcCorrelationSignificanceButton);
 				} else {
 					pathInfo.window.getTitleBar().remove(fitEnrouteToViewWidthButton);
 					pathInfo.window.getTitleBar().remove(useColorMappingButton);
 					pathInfo.window.getTitleBar().remove(useCenterLineButton);
+					pathInfo.window.getTitleBar().remove(calcCorrelationSignificanceButton);
 				}
 			}
 		}

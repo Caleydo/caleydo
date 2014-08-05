@@ -34,6 +34,7 @@ import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.SetMinViewSizeEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
+import org.caleydo.core.gui.util.HelpButtonWizardDialog;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
@@ -67,6 +68,7 @@ import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.view.enroute.correlation.CalculateCorrelationWizard;
 import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.event.RemoveGeneEvent;
@@ -78,6 +80,7 @@ import org.caleydo.view.enroute.path.SelectedPathUpdateStrategy;
 import org.caleydo.view.pathway.GLPathway;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -180,6 +183,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	private int minHeight = 0;
 
 	private boolean useColorMapping = false;
+
+	private boolean isDataCellSelection = false;
 
 	private Set<IEnrouteContentUpdateListener> contentListeners = new HashSet<>();
 
@@ -497,6 +502,14 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		registerPickingListeners();
 	}
 
+	public void addEventListener(Object listener) {
+		listeners.register(listener);
+	}
+
+	public void removeEventListener(Object listener) {
+		listeners.unregister(listener);
+	}
+
 	public void registerPickingListeners() {
 		addIDPickingListener(new APickingListener() {
 			@Override
@@ -646,7 +659,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
-		
+
 		EventPublisher.trigger(event);
 		setLayoutDirty();
 	}
@@ -756,7 +769,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
-		
+
 		EventPublisher.trigger(event);
 
 		setLayoutDirty();
@@ -1063,6 +1076,29 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		return getMinPixelHeight();
 	}
 
+	public void onCalcCorrelationSignificance() {
+		isDataCellSelection = true;
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				CalculateCorrelationWizard wizard = new CalculateCorrelationWizard();
+
+				HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(Display.getDefault().getActiveShell(),
+						wizard) {
+					@Override
+					protected void setShellStyle(int newShellStyle) {
+						super.setShellStyle(SWT.CLOSE | SWT.MODELESS | SWT.BORDER | SWT.TITLE);
+					}
+				};
+
+				dialog.setBlockOnOpen(false);
+				dialog.open();
+
+			}
+		});
+	}
+
 	public void addContentUpdateListener(IEnrouteContentUpdateListener listener) {
 		contentListeners.add(listener);
 	}
@@ -1086,6 +1122,13 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	public List<Integer> getAddedGeneIDs() {
 		return mappedDataRenderer.getAdditionalDavidIDs();
+	}
+
+	/**
+	 * @return the isDataCellSelection, see {@link #isDataCellSelection}
+	 */
+	public boolean isDataCellSelection() {
+		return isDataCellSelection;
 	}
 
 }

@@ -8,6 +8,8 @@ Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.caleydo.core;bundle-version="3.1.4.qualifier",
  org.apache.commons.math;bundle-version="2.1.0"
-Export-Package: org.caleydo.view.tourguide.api.compute,
+Export-Package: edu.northwestern.at.utils.math,
+ edu.northwestern.at.utils.math.statistics,
+ org.caleydo.view.tourguide.api.compute,
  org.caleydo.view.tourguide.impl,
  org.caleydo.view.tourguide.spi.algorithm

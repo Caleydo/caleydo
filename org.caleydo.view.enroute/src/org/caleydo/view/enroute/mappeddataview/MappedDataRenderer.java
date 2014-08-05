@@ -8,12 +8,14 @@ package org.caleydo.view.enroute.mappeddataview;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.data.collection.column.container.CategoryProperty;
@@ -32,6 +34,7 @@ import org.caleydo.core.data.virtualarray.events.SortByDataEvent;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataDescription;
@@ -78,6 +81,8 @@ public class MappedDataRenderer {
 	public static Color CONTEXT_BAR_COLOR = Color.DARK_GRAY;// { 0.3f, 0.3f, 0.3f, 1f };
 
 	public static Color SUMMARY_BAR_COLOR = Color.DARK_GREEN;
+
+	public static final String DATA_CELL_ID = "DATA_CELL_ID";
 
 	public static final SelectionType abstractGroupType = new SelectionType("AbstactGroup", new Color(0, 0, 0), 1,
 			false, 0);
@@ -161,6 +166,14 @@ public class MappedDataRenderer {
 
 	PickingListenerManager pickingListenerManager;
 
+	private Set<IDisposeListener> disposeListeners = new HashSet<>();
+
+	private int currentCellID = 0;
+
+	public static interface IDisposeListener {
+		public void onDispose();
+	}
+
 	/**
 	 * Constructor with parent view as parameter.
 	 */
@@ -168,6 +181,8 @@ public class MappedDataRenderer {
 		this.parentView = parentView;
 		pickingListenerManager = new PickingListenerManager(parentView);
 		rowSelectionManager = parentView.getGeneSelectionManager();
+		IDCategory cellIDCategory = IDCategory.registerCategory(DATA_CELL_ID);
+		IDType.registerType(DATA_CELL_ID, cellIDCategory, EDataType.INTEGER);
 
 		List<GeneticDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(GeneticDataDomain.class);
 		if (dataDomains.size() != 0) {
@@ -178,7 +193,7 @@ public class MappedDataRenderer {
 					.getSampleGroupIDType());
 
 			SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(abstractGroupType);
-			
+
 			EventPublisher.trigger(selectionTypeEvent);
 
 		} else {
@@ -255,6 +270,10 @@ public class MappedDataRenderer {
 	/** Re-builds the layout from scratch */
 	private void reBuildLayout() {
 		pickingListenerManager.removePickingListeners();
+		for (IDisposeListener l : disposeListeners) {
+			l.onDispose();
+		}
+		disposeListeners.clear();
 		createLayout(baseLayoutManger, false);
 		createLayout(highlightLayoutManger, true);
 	}
@@ -555,6 +574,8 @@ public class MappedDataRenderer {
 		//
 		//
 		// }
+		currentCellID = 0;
+
 		for (int tablePerspectiveCount = 0; tablePerspectiveCount < geneTablePerspectives.size(); tablePerspectiveCount++) {
 
 			TablePerspective geneTablePerspective = geneTablePerspectives.get(tablePerspectiveCount);
@@ -567,7 +588,6 @@ public class MappedDataRenderer {
 							null, null, contextTablePerspective.getDataDomain().getOppositeIDType(sampleIDType),
 							contextRowIDs.get(contextTablePerspective), isHighlightLayout, geneTablePerspective,
 							summaryGroupWidth);
-
 				}
 			}
 
@@ -782,7 +802,9 @@ public class MappedDataRenderer {
 			DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
 
 			ContentRenderer renderer = new ContentRenderer(rowIDType, rowID, resolvedRowIDType, resolvedRowID,
-					dataDomain, columnPerspective, parentView, this, group, isHighlightLayout, foreignColumnPerspective);
+					dataDomain, columnPerspective, parentView, this, group, isHighlightLayout,
+					foreignColumnPerspective, currentCellID++);
+			disposeListeners.add(renderer);
 			tablePerspectiveLayout.setRenderer(renderer);
 			DataDescription dataDescription = dataSetDescription.getDataDescription();
 
