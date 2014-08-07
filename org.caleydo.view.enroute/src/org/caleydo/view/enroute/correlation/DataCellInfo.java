@@ -5,8 +5,12 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.correlation;
 
+import java.util.Set;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 
 /**
@@ -35,6 +39,21 @@ public class DataCellInfo {
 		this.columnPerspective = columnPerspective;
 		this.rowIDType = rowIDType;
 		this.rowID = rowID;
+	}
+
+	public String getDataDomainLabel() {
+		return dataDomain.getLabel();
+	}
+
+	public String getGroupLabel() {
+		return columnPerspective.getLabel();
+	}
+
+	public String getRowLabel() {
+		IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(rowIDType);
+		Set<String> humanReadableIDs = mappingManager.getIDAsSet(rowIDType, rowIDType.getIDCategory()
+				.getHumanReadableIDType(), rowID);
+		return humanReadableIDs.iterator().next();
 	}
 
 }

@@ -13,16 +13,40 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
+import org.caleydo.core.io.gui.dataimport.widget.table.NatTableToolTip;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.PageChangedEvent;
+import org.eclipse.jface.window.DefaultToolTip;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
+import org.eclipse.nebula.widgets.nattable.data.IRowDataProvider;
+import org.eclipse.nebula.widgets.nattable.grid.data.DefaultCornerDataProvider;
+import org.eclipse.nebula.widgets.nattable.grid.layer.ColumnHeaderLayer;
+import org.eclipse.nebula.widgets.nattable.grid.layer.CornerLayer;
+import org.eclipse.nebula.widgets.nattable.grid.layer.GridLayer;
+import org.eclipse.nebula.widgets.nattable.grid.layer.RowHeaderLayer;
+import org.eclipse.nebula.widgets.nattable.group.ColumnGroupHeaderLayer;
+import org.eclipse.nebula.widgets.nattable.group.ColumnGroupModel;
+import org.eclipse.nebula.widgets.nattable.group.RowGroupHeaderLayer;
+import org.eclipse.nebula.widgets.nattable.group.model.IRowGroupModel;
+import org.eclipse.nebula.widgets.nattable.group.model.RowGroup;
+import org.eclipse.nebula.widgets.nattable.group.model.RowGroupModel;
+import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
+import org.eclipse.nebula.widgets.nattable.layer.ILayer;
+import org.eclipse.nebula.widgets.nattable.layer.config.DefaultRowHeaderStyleConfiguration;
+import org.eclipse.nebula.widgets.nattable.painter.layer.GridLineCellLayerPainter;
+import org.eclipse.nebula.widgets.nattable.painter.layer.ILayerPainter;
+import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
+import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+
+import com.google.common.collect.Lists;
 
 import edu.northwestern.at.utils.math.statistics.FishersExactTest;
 
@@ -42,6 +66,8 @@ public class CorrelationResultPage extends WizardPage implements IPageChangedLis
 	protected CategoryHeaderProvider rowHeaderProvider = new CategoryHeaderProvider(false);
 	protected ContingencyTableBodyProvider bodyProvider = new ContingencyTableBodyProvider();
 
+	protected Composite parentComposite;
+
 	Label matrixLabel;
 	Label resultLabel;
 
@@ -60,8 +86,8 @@ public class CorrelationResultPage extends WizardPage implements IPageChangedLis
 
 		@Override
 		public Object getDataValue(int columnIndex, int rowIndex) {
-			if(classifier == null) {
-				return "C"+(isColumnHeader ? columnIndex : rowIndex);
+			if (classifier == null) {
+				return "C" + (isColumnHeader ? columnIndex : rowIndex);
 			}
 			List<SimpleCategory> categories = classifier.getDataClasses();
 			return isColumnHeader ? categories.get(columnIndex).name : categories.get(rowIndex).name;
@@ -76,12 +102,12 @@ public class CorrelationResultPage extends WizardPage implements IPageChangedLis
 		@Override
 		public int getColumnCount() {
 
-			return isColumnHeader ? 2 : 0;
+			return isColumnHeader ? 2 : 1;
 		}
 
 		@Override
 		public int getRowCount() {
-			return isColumnHeader ? 0 : 2;
+			return isColumnHeader ? 1 : 2;
 		}
 
 		/**
@@ -94,12 +120,15 @@ public class CorrelationResultPage extends WizardPage implements IPageChangedLis
 
 	}
 
-	private class ContingencyTableBodyProvider implements IDataProvider {
+	private class ContingencyTableBodyProvider implements IRowDataProvider<Object> {
+
+		// Dummy row objects
+		private List<Object> rowObjects = Lists.newArrayList(new Object(), new Object());
 
 		@Override
 		public Object getDataValue(int columnIndex, int rowIndex) {
-
-			return contingencyTable[columnIndex][rowIndex];
+			Integer value = contingencyTable[columnIndex][rowIndex];
+			return value.toString();
 		}
 
 		@Override
@@ -118,6 +147,37 @@ public class CorrelationResultPage extends WizardPage implements IPageChangedLis
 			return 2;
 		}
 
+		@Override
+		public Object getRowObject(int rowIndex) {
+			return rowObjects.get(rowIndex);
+		}
+
+		@Override
+		public int indexOfRowObject(Object rowObject) {
+			return rowObjects.indexOf(rowObject);
+		}
+
+	}
+
+	private static class MyRowGroupHeaderLayer<T> extends RowGroupHeaderLayer<T> {
+
+		private ILayerPainter myLayerPainter = new GridLineCellLayerPainter();
+
+		/**
+		 * @param rowHeaderLayer
+		 * @param selectionLayer
+		 * @param rowGroupModel
+		 */
+		public MyRowGroupHeaderLayer(ILayer rowHeaderLayer, SelectionLayer selectionLayer,
+				IRowGroupModel<T> rowGroupModel) {
+			super(rowHeaderLayer, selectionLayer, rowGroupModel);
+		}
+
+		@Override
+		public ILayerPainter getLayerPainter() {
+			return myLayerPainter;
+		}
+
 	}
 
 	/**
@@ -129,40 +189,11 @@ public class CorrelationResultPage extends WizardPage implements IPageChangedLis
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite parentComposite = new Composite(parent, SWT.NONE);
+		parentComposite = new Composite(parent, SWT.NONE);
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(1, false));
 
-		// final DataLayer bodyDataLayer = new DataLayer(bodyProvider, 120, 36);
-		//
-		// SelectionLayer selectionLayer = new SelectionLayer(bodyDataLayer);
-		// ViewportLayer bodyLayer = new ViewportLayer(selectionLayer);
-		//
-		// final DataLayer columnDataLayer = new DataLayer(columnHeaderProvider, 120, 25);
-		// ColumnHeaderLayer columnHeaderLayer = new ColumnHeaderLayer(columnDataLayer, bodyLayer, selectionLayer);
-		//
-		// DataLayer rowDataLayer = new DataLayer(rowHeaderProvider, 80, 36);
-		// RowHeaderLayer rowHeaderLayer = new RowHeaderLayer(rowDataLayer, bodyLayer, selectionLayer);
-		// DefaultCornerDataProvider cornerDataProvider = new DefaultCornerDataProvider(columnHeaderProvider,
-		// rowHeaderProvider);
-		// CornerLayer cornerLayer = new CornerLayer(new DataLayer(cornerDataProvider), rowHeaderLayer,
-		// columnHeaderLayer);
-		// GridLayer gridLayer = new GridLayer(bodyLayer, columnHeaderLayer, rowHeaderLayer, cornerLayer);
-		// if (table == null) {
-		// table = new NatTable(parentComposite, gridLayer, false);
-		// } else {
-		// table.setLayer(gridLayer);
-		// }
-		// table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		// table.addConfiguration(new DefaultCaleydoNatTableConfiguration());
-		// DefaultToolTip toolTip = new NatTableToolTip(table);
-		// // toolTip.setBackgroundColor(natTable.getDisplay().getSystemColor(SWT.COLOR_RED));
-		// // toolTip.setPopupDelay(500);
-		// toolTip.activate();
-		// toolTip.setShift(new Point(10, 10));
-		//
-		// NatGridLayerPainter layerPainter = new NatGridLayerPainter(table);
-		// table.setLayerPainter(layerPainter);
+		buildTable(parentComposite);
 
 		matrixLabel = new Label(parentComposite, SWT.NONE);
 		matrixLabel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
@@ -174,6 +205,97 @@ public class CorrelationResultPage extends WizardPage implements IPageChangedLis
 
 		setControl(parentComposite);
 
+	}
+
+	protected void buildTable(Composite parentComposite) {
+		final DataLayer bodyDataLayer = new DataLayer(bodyProvider, 200, 36);
+		// bodyDataLayer.addLayerListener(this);
+
+		SelectionLayer selectionLayer = new SelectionLayer(bodyDataLayer);
+		// selectionLayer.addLayerListener(this);
+		ViewportLayer bodyLayer = new ViewportLayer(selectionLayer);
+
+		final DataLayer columnDataLayer = new DataLayer(columnHeaderProvider, 200, 36);
+		ColumnHeaderLayer columnHeaderLayer = new ColumnHeaderLayer(columnDataLayer, bodyLayer, selectionLayer);
+
+		ColumnGroupModel columnGroupModel = new ColumnGroupModel();
+
+		ColumnGroupHeaderLayer columnGroupHeaderLayer = new ColumnGroupHeaderLayer(columnHeaderLayer, selectionLayer,
+				columnGroupModel);
+
+		CalculateCorrelationWizard wizard = (CalculateCorrelationWizard) getWizard();
+
+		columnGroupHeaderLayer.addColumnsIndexesToGroup(getInfoString(wizard.getInfo1()), 0, 1);
+		columnGroupHeaderLayer.setRowHeight(64);
+		columnGroupHeaderLayer.clearConfiguration();
+
+		DataLayer rowDataLayer = new DataLayer(rowHeaderProvider, 200, 36);
+		RowHeaderLayer rowHeaderLayer = new RowHeaderLayer(rowDataLayer, bodyLayer, selectionLayer, true,
+				new GridLineCellLayerPainter());
+
+		RowGroupModel<Object> rowGroupModel = new RowGroupModel<>();
+		rowGroupModel.setDataProvider(bodyProvider);
+		MyRowGroupHeaderLayer<Object> rowGroupHeaderLayer = new MyRowGroupHeaderLayer<Object>(rowHeaderLayer,
+				selectionLayer, rowGroupModel);
+		rowGroupHeaderLayer.setColumnWidth(200);
+		rowGroupHeaderLayer.clearConfiguration();
+		rowGroupHeaderLayer.addConfiguration(new DefaultRowHeaderStyleConfiguration());
+
+		RowGroup<Object> rowGroup = new RowGroup<Object>(rowGroupModel, getInfoString(wizard.getInfo2()), false);
+		rowGroup.addMemberRow(bodyProvider.getRowObject(0));
+		rowGroup.addStaticMemberRow(bodyProvider.getRowObject(1));
+		rowGroupModel.addRowGroup(rowGroup);
+
+		DefaultCornerDataProvider cornerDataProvider = new DefaultCornerDataProvider(columnHeaderProvider,
+				rowHeaderProvider);
+		CornerLayer cornerLayer = new CornerLayer(new DataLayer(cornerDataProvider), rowGroupHeaderLayer,
+				columnGroupHeaderLayer);
+		GridLayer gridLayer = new GridLayer(bodyLayer, columnGroupHeaderLayer, rowGroupHeaderLayer, cornerLayer);
+		if (table == null) {
+			table = new NatTable(parentComposite, gridLayer, false);
+		} else {
+			table.setLayer(gridLayer);
+		}
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd.widthHint = 800;
+		table.setLayoutData(gd);
+
+		table.addConfiguration(new ContingencyTableConfiguration());
+		DefaultToolTip toolTip = new NatTableToolTip(table);
+		toolTip.activate();
+		toolTip.setShift(new Point(10, 10));
+
+// NatTableUtil.applyDefaultNatTableStyling(table);
+		//
+		// table.addConfiguration(new AbstractRegistryConfiguration() {
+		//
+		// @Override
+		// public void configureRegistry(IConfigRegistry configRegistry) {
+		// Style cellStyle = new Style();
+		// cellStyle.setAttributeValue(CellStyleAttributes.HORIZONTAL_ALIGNMENT, HorizontalAlignmentEnum.LEFT);
+		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
+		// GridRegion.ROW_GROUP_HEADER);
+		//
+		// cellStyle = new Style();
+		// cellStyle.setAttributeValue(CellStyleAttributes.HORIZONTAL_ALIGNMENT, HorizontalAlignmentEnum.RIGHT);
+		// configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
+		// GridRegion.ROW_HEADER);
+		//
+		// }
+		// });
+
+		table.configure();
+
+
+	}
+
+	private String getInfoString(DataCellInfo info) {
+		if (info == null)
+			return "undefined";
+		StringBuilder b = new StringBuilder("Dataset: " + info.getDataDomainLabel() + System.lineSeparator());
+		b.append("Group: " + info.getGroupLabel() + System.lineSeparator());
+		b.append("Row: " + info.getRowLabel());
+		return b.toString();
 	}
 
 	@Override
@@ -219,12 +341,14 @@ public class CorrelationResultPage extends WizardPage implements IPageChangedLis
 			resultLabel.setText("Two-Sided: " + result[0] + " Left-Tail: " + result[1] + " Right-Tail: " + result[2]);
 			visited = true;
 
-			// columnHeaderProvider.setClassifier(classifier1);
-			// rowHeaderProvider.setClassifier(classifier2);
-			//
-			// table.refresh();
-			// getShell().layout(true, true);
-			// getShell().pack();
+			columnHeaderProvider.setClassifier(classifier1);
+			rowHeaderProvider.setClassifier(classifier2);
+
+			buildTable(parentComposite);
+
+			table.refresh();
+			getShell().layout(true, true);
+			getShell().pack();
 			getWizard().getContainer().updateButtons();
 		}
 

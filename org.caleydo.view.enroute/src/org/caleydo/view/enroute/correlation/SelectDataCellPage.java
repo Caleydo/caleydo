@@ -5,15 +5,11 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.correlation;
 
-import java.util.Set;
-
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.id.IDMappingManager;
-import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.base.ICallback;
 import org.eclipse.jface.dialogs.IPageChangedListener;
@@ -100,13 +96,9 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 		if (isCurrentPage()) {
 			info = event.getInfo();
 
-			datasetLabel.setText("Dataset: " + info.dataDomain.getLabel());
-			groupLabel.setText("Group: " + info.columnPerspective.getLabel());
-
-			IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(info.rowIDType);
-			Set<String> humanReadableIDs = mappingManager.getIDAsSet(info.rowIDType, info.rowIDType.getIDCategory()
-					.getHumanReadableIDType(), info.rowID);
-			rowLabel.setText("Row: " + humanReadableIDs.iterator().next());
+			datasetLabel.setText("Dataset: " + info.getDataDomainLabel());
+			groupLabel.setText("Group: " + info.getGroupLabel());
+			rowLabel.setText("Row: " + info.getRowLabel());
 
 			classificationGroup.setVisible(true);
 

@@ -26,7 +26,7 @@ public class NumericalDataClassifier implements IDataClassifier {
 	 */
 	public NumericalDataClassifier(float threshold) {
 		this.threshold = threshold;
-		dataClasses = Lists.newArrayList(new SimpleCategory("less than or equal " + threshold, Color.CYAN),
+		dataClasses = Lists.newArrayList(new SimpleCategory("less than or equal to " + threshold, Color.CYAN),
 				new SimpleCategory("greater than " + threshold, Color.MAGENTA));
 	}
 
