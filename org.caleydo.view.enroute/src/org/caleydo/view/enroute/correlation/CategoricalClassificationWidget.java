@@ -36,8 +36,8 @@ public class CategoricalClassificationWidget extends AClassificationWidget {
 	 * @param parent
 	 * @param style
 	 */
-	public CategoricalClassificationWidget(Composite parent, int style) {
-		super(parent, style);
+	public CategoricalClassificationWidget(Composite parent, int style, java.util.List<Color> categoryColors) {
+		super(parent, style, categoryColors);
 
 		GridLayout layout = new GridLayout(2, false);
 		setLayout(layout);

@@ -5,6 +5,8 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.correlation;
 
+import java.util.List;
+
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
@@ -12,6 +14,7 @@ import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.base.ICallback;
+import org.caleydo.core.util.color.Color;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -39,15 +42,17 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 	DataCellInfo info;
 
 	private AClassificationWidget classificationWidget;
+	private List<Color> categoryColors;
 
 	/**
 	 * @param pageName
 	 * @param title
 	 * @param titleImage
 	 */
-	protected SelectDataCellPage(String pageName, String title, ImageDescriptor titleImage) {
+	protected SelectDataCellPage(String pageName, String title, ImageDescriptor titleImage, List<Color> categoryColors) {
 		super(pageName, title, titleImage);
 		listeners.register(this);
+		this.categoryColors = categoryColors;
 	}
 
 	@Override
@@ -107,21 +112,25 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 
 			if (description instanceof NumericalProperties) {
 				if (classificationWidget == null) {
-					classificationWidget = new NumericalClassificationWidget(classificationGroup, SWT.NONE);
+					classificationWidget = new NumericalClassificationWidget(classificationGroup, SWT.NONE,
+							categoryColors);
 					initNewClassificationWidget();
 				} else if (!(classificationWidget instanceof NumericalClassificationWidget)) {
 					classificationWidget.dispose();
-					classificationWidget = new NumericalClassificationWidget(classificationGroup, SWT.NONE);
+					classificationWidget = new NumericalClassificationWidget(classificationGroup, SWT.NONE,
+							categoryColors);
 					initNewClassificationWidget();
 				}
 
 			} else if (description instanceof CategoricalClassDescription) {
 				if (classificationWidget == null) {
-					classificationWidget = new CategoricalClassificationWidget(classificationGroup, SWT.NONE);
+					classificationWidget = new CategoricalClassificationWidget(classificationGroup, SWT.NONE,
+							categoryColors);
 					initNewClassificationWidget();
 				} else if (!(classificationWidget instanceof CategoricalClassificationWidget)) {
 					classificationWidget.dispose();
-					classificationWidget = new CategoricalClassificationWidget(classificationGroup, SWT.NONE);
+					classificationWidget = new CategoricalClassificationWidget(classificationGroup, SWT.NONE,
+							categoryColors);
 					initNewClassificationWidget();
 				}
 			} else {

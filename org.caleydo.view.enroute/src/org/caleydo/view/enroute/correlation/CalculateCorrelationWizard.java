@@ -5,9 +5,15 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.correlation;
 
+import java.util.List;
+
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.ColorBrewer;
 import org.eclipse.jface.dialogs.IPageChangeProvider;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.Wizard;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author Christian
@@ -32,9 +38,16 @@ public class CalculateCorrelationWizard extends Wizard {
 
 	@Override
 	public void addPages() {
-		firstDataCellPage = new SelectDataCellPage("FirstBlock", "Select First Data Block", null);
-		secondDataCellPage = new SelectDataCellPage("SecondBlock", "Select Second Data Block", null);
-		CorrelationResultPage resultPage = new CorrelationResultPage("Result");
+		// List<Color> allColors = ColorBrewer.Set3.get(5);
+		List<Color> seq1 = ColorBrewer.Oranges.get(3);
+		List<Color> seq2 = ColorBrewer.Blues.get(3);
+
+		firstDataCellPage = new SelectDataCellPage("FirstBlock", "Select First Data Block", null, Lists.newArrayList(
+				seq1.get(0), seq1.get(2)));
+		secondDataCellPage = new SelectDataCellPage("SecondBlock", "Select Second Data Block", null,
+				Lists.newArrayList(seq2.get(0), seq2.get(2)));
+		CorrelationResultPage resultPage = new CorrelationResultPage("Result",
+				"Resulting Contingency Matrix and P-Values", null);
 
 		IWizardContainer wizardContainer = getContainer();
 		if (wizardContainer instanceof IPageChangeProvider) {

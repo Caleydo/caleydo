@@ -84,7 +84,7 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 							contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, columnID);
 					SimpleCategory category = contentRenderer.dataClassifier.apply(rawValue);
 					if (category != null) {
-						renderColorColumn(gl, new Color(category.color.r, category.color.g, category.color.b, 0.3f),
+						renderColorColumn(gl, new Color(category.color.r, category.color.g, category.color.b, 0.6f),
 								xIncrement, y);
 					}
 				}

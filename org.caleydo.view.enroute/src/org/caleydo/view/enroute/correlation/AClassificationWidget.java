@@ -6,9 +6,11 @@
 package org.caleydo.view.enroute.correlation;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.util.base.ICallback;
+import org.caleydo.core.util.color.Color;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -23,12 +25,14 @@ public abstract class AClassificationWidget extends Composite {
 
 	protected Set<ICallback<IDataClassifier>> callbacks = new HashSet<>();
 
+	protected List<Color> categoryColors;
 	/**
 	 * @param parent
 	 * @param style
 	 */
-	public AClassificationWidget(Composite parent, int style) {
+	public AClassificationWidget(Composite parent, int style, List<Color> categoryColors) {
 		super(parent, style);
+		this.categoryColors = categoryColors;
 	}
 
 

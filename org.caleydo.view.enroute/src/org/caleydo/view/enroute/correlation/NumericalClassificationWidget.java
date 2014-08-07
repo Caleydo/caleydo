@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.util.base.ICallback;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.DoubleFunctions;
 import org.caleydo.core.util.function.IInvertableDoubleFunction;
 import org.eclipse.swt.SWT;
@@ -46,17 +47,20 @@ public class NumericalClassificationWidget extends AClassificationWidget {
 
 	private IInvertableDoubleFunction mappingFunction;
 
-
-	private NumericalDataClassifier classifier = new NumericalDataClassifier(0);
+	private NumericalDataClassifier classifier;
 
 	private List<Label> classLabels;
 
 	/**
 	 * @param parent
 	 * @param style
+	 * @param categoryColors
+	 *            Colors used for categories. Must contain at least 2 colors.
 	 */
-	public NumericalClassificationWidget(Composite parent, int style) {
-		super(parent, style);
+	public NumericalClassificationWidget(Composite parent, int style, List<Color> categoryColors) {
+		super(parent, style, categoryColors);
+		classifier = new NumericalDataClassifier(0, categoryColors.get(0), categoryColors.get(1));
+
 		GridLayout layout = new GridLayout(2, false);
 		// layout.horizontalSpacing = 0;
 		// layout.verticalSpacing = 0;
@@ -166,9 +170,9 @@ public class NumericalClassificationWidget extends AClassificationWidget {
 	}
 
 	protected void updateClassifier(float threshold) {
-			classifier = new NumericalDataClassifier(threshold);
-			updateCategories();
-			notifyOfClassifierChange();
+		classifier = new NumericalDataClassifier(threshold, categoryColors.get(0), categoryColors.get(1));
+		updateCategories();
+		notifyOfClassifierChange();
 	}
 
 	protected void notifyOfClassifierChange() {
@@ -176,8 +180,6 @@ public class NumericalClassificationWidget extends AClassificationWidget {
 			callback.on(getClassifier());
 		}
 	}
-
-
 
 	@Override
 	public void updateData(DataCellInfo info) {

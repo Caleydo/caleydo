@@ -24,10 +24,10 @@ public class NumericalDataClassifier implements IDataClassifier {
 	/**
 	 * @param threshold
 	 */
-	public NumericalDataClassifier(float threshold) {
+	public NumericalDataClassifier(float threshold, Color category1Color, Color category2Color) {
 		this.threshold = threshold;
-		dataClasses = Lists.newArrayList(new SimpleCategory("less than or equal to " + threshold, Color.CYAN),
-				new SimpleCategory("greater than " + threshold, Color.MAGENTA));
+		dataClasses = Lists.newArrayList(new SimpleCategory("less than or equal to " + threshold, category1Color),
+				new SimpleCategory("greater than " + threshold, category2Color));
 	}
 
 	@Override
