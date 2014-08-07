@@ -17,7 +17,6 @@ import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
@@ -31,8 +30,6 @@ import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.SelectionColorCalculator;
 import org.caleydo.view.enroute.correlation.DataCellInfo;
 import org.caleydo.view.enroute.correlation.DataCellSelectionEvent;
-import org.caleydo.view.enroute.correlation.IDataClassifier;
-import org.caleydo.view.enroute.correlation.ShowDataClassificationEvent;
 import org.caleydo.view.enroute.mappeddataview.MappedDataRenderer.IDisposeListener;
 
 /**
@@ -85,7 +82,6 @@ public class ContentRenderer extends ALayoutRenderer implements IDisposeListener
 
 	private EventBasedSelectionManager dataCellSelectionManager;
 	private SelectionColorCalculator colorCalculator = new SelectionColorCalculator(new Color());
-	IDataClassifier dataClassifier;
 
 	public ContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType, Integer resolvedRowID,
 			ATableBasedDataDomain dataDomain, Perspective columnPerspective, GLEnRoutePathway parentView,
@@ -141,9 +137,9 @@ public class ContentRenderer extends ALayoutRenderer implements IDisposeListener
 					dataCellSelectionManager.addToType(SelectionType.SELECTION, ContentRenderer.this.cellID);
 					dataCellSelectionManager.triggerSelectionUpdateEvent();
 					ContentRenderer.this.parentView.setDisplayListDirty();
-					EventPublisher.trigger(new DataCellSelectionEvent(new DataCellInfo(ContentRenderer.this.cellID,
-							ContentRenderer.this.dataDomain, ContentRenderer.this.columnPerspective,
-							ContentRenderer.this.resolvedRowIDType, ContentRenderer.this.resolvedRowID)));
+					EventPublisher.trigger(new DataCellSelectionEvent(new DataCellInfo(ContentRenderer.this.dataDomain,
+							ContentRenderer.this.columnPerspective, ContentRenderer.this.resolvedRowIDType,
+							ContentRenderer.this.resolvedRowID, ContentRenderer.this.foreignColumnPerspective)));
 				}
 
 			}, EPickingType.DATA_CELL.name(), cellID);
@@ -180,7 +176,7 @@ public class ContentRenderer extends ALayoutRenderer implements IDisposeListener
 		if (!isHighlightMode) {
 			gl.glPopName();
 		}
-		if (isHighlightMode && parentView.isDataCellSelection()) {
+		if (isHighlightMode && parentView.getCorrelationManager().isCorrelationCalculationActive()) {
 			List<SelectionType> selTypes = dataCellSelectionManager.getSelectionTypes(cellID);
 			if (!selTypes.isEmpty() && selTypes.get(0) != SelectionType.NORMAL) {
 				// colorCalculator.setBaseColor(new Color());
@@ -240,16 +236,47 @@ public class ContentRenderer extends ALayoutRenderer implements IDisposeListener
 		// }
 	}
 
-	@ListenTo
-	public void onShowDataClassification(ShowDataClassificationEvent event) {
-		if (event.getDataCellID() == cellID && isHighlightMode) {
-			dataClassifier = event.getClassifier();
-			parentView.setDisplayListDirty();
-		}
+	// @ListenTo
+	// public void onShowDataClassification(ShowDataClassificationEvent event) {
+	// if (event.getDataCellID() == cellID && isHighlightMode) {
+	// dataClassifier = event.getClassifier();
+	// parentView.setDisplayListDirty();
+	// }
+	// }
+
+	/**
+	 * @return the rowIDType, see {@link #rowIDType}
+	 */
+	public IDType getRowIDType() {
+		return rowIDType;
 	}
 
-	public boolean isShowDataClassification() {
-		return dataClassifier != null && dataCellSelectionManager.checkStatus(SelectionType.SELECTION, cellID);
+	/**
+	 * @return the rowID, see {@link #rowID}
+	 */
+	public Integer getResolvedRowID() {
+		return resolvedRowID;
+	}
+
+	/**
+	 * @return the dataDomain, see {@link #dataDomain}
+	 */
+	public ATableBasedDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
+	/**
+	 * @return the columnPerspective, see {@link #columnPerspective}
+	 */
+	public Perspective getColumnPerspective() {
+		return columnPerspective;
+	}
+
+	/**
+	 * @return the foreignColumnPerspective, see {@link #foreignColumnPerspective}
+	 */
+	public Perspective getForeignColumnPerspective() {
+		return foreignColumnPerspective;
 	}
 
 }

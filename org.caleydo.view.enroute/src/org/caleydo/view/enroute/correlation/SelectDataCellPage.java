@@ -138,7 +138,8 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 			}
 
 			classificationWidget.updateData(info);
-			EventPublisher.trigger(new ShowDataClassificationEvent(info.cellID, classificationWidget.getClassifier()));
+			EventPublisher.trigger(new ShowDataClassificationEvent(info, classificationWidget.getClassifier(),
+					getWizard().getStartingPage() == this));
 		}
 	}
 
@@ -170,7 +171,7 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 
 	@Override
 	public void on(IDataClassifier data) {
-		EventPublisher.trigger(new ShowDataClassificationEvent(info.cellID, data));
+		EventPublisher.trigger(new ShowDataClassificationEvent(info, data, getWizard().getStartingPage() == this));
 	}
 
 }

@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
+import org.caleydo.view.enroute.correlation.IDataClassifier;
 import org.caleydo.view.enroute.correlation.SimpleCategory;
 
 /**
@@ -79,13 +80,18 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 			} else {
 				renderColumnBar(gl, columnID, xIncrement, y, selectionTypes, useShading);
 
-				if (contentRenderer.isShowDataClassification()) {
-					Object rawValue = contentRenderer.dataDomain.getRaw(contentRenderer.resolvedRowIDType,
-							contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, columnID);
-					SimpleCategory category = contentRenderer.dataClassifier.apply(rawValue);
-					if (category != null) {
-						renderColorColumn(gl, new Color(category.color.r, category.color.g, category.color.b, 0.6f),
-								xIncrement, y);
+				if (contentRenderer.isHighlightMode) {
+					IDataClassifier classifier = contentRenderer.parentView.getCorrelationManager().getClassifier(
+							contentRenderer);
+					if (classifier != null) {
+						Object rawValue = contentRenderer.dataDomain.getRaw(contentRenderer.resolvedRowIDType,
+								contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, columnID);
+						SimpleCategory category = classifier.apply(rawValue);
+						if (category != null) {
+							renderColorColumn(gl,
+									new Color(category.color.r, category.color.g, category.color.b, 0.6f), xIncrement,
+									y);
+						}
 					}
 				}
 			}

@@ -34,6 +34,8 @@ public class NumericalDataClassifier implements IDataClassifier {
 	public SimpleCategory apply(Object input) {
 		if (input instanceof Number) {
 			Number num = (Number) input;
+			if (Float.isNaN(num.floatValue()))
+				return null;
 			if (num.floatValue() <= threshold) {
 				return dataClasses.get(0);
 			} else {

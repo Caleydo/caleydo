@@ -7,11 +7,13 @@ package org.caleydo.view.enroute.correlation;
 
 import java.util.List;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorBrewer;
 import org.eclipse.jface.dialogs.IPageChangeProvider;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.collect.Lists;
 
@@ -63,8 +65,21 @@ public class CalculateCorrelationWizard extends Wizard {
 	}
 
 	@Override
+	public void createPageControls(Composite pageContainer) {
+		EventPublisher.trigger(new StartCorrelationCalculationEvent());
+		super.createPageControls(pageContainer);
+	}
+
+	@Override
 	public boolean performFinish() {
+		EventPublisher.trigger(new EndCorrelationCalculationEvent());
 		return true;
+	}
+
+	@Override
+	public boolean performCancel() {
+		EventPublisher.trigger(new EndCorrelationCalculationEvent());
+		return super.performCancel();
 	}
 
 	public void setPageInfo(SelectDataCellPage page, DataCellInfo info, IDataClassifier classifier) {

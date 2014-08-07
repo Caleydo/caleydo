@@ -9,24 +9,24 @@ import org.caleydo.core.event.AEvent;
 
 /**
  * Tells a data cell to show the data classification that is used for correlation calculation.
- * 
+ *
  * @author Christian
- * 
+ *
  */
 public class ShowDataClassificationEvent extends AEvent {
 
-	protected final int dataCellID;
-
+	protected final boolean isFirstCell;
+	protected final DataCellInfo info;
 	protected final IDataClassifier classifier;
 
 	/**
 	 * @param dataCellID
 	 * @param classificationPredicate
 	 */
-	public ShowDataClassificationEvent(int dataCellID, IDataClassifier classifier) {
-		super();
-		this.dataCellID = dataCellID;
+	public ShowDataClassificationEvent(DataCellInfo info, IDataClassifier classifier, boolean isFirstCell) {
+		this.info = info;
 		this.classifier = classifier;
+		this.isFirstCell = isFirstCell;
 	}
 
 	@Override
@@ -35,10 +35,10 @@ public class ShowDataClassificationEvent extends AEvent {
 	}
 
 	/**
-	 * @return the dataCellID, see {@link #dataCellID}
+	 * @return the info, see {@link #info}
 	 */
-	public int getDataCellID() {
-		return dataCellID;
+	public DataCellInfo getInfo() {
+		return info;
 	}
 
 	/**
@@ -46,6 +46,13 @@ public class ShowDataClassificationEvent extends AEvent {
 	 */
 	public IDataClassifier getClassifier() {
 		return classifier;
+	}
+
+	/**
+	 * @return the isFirstCell, see {@link #isFirstCell}
+	 */
+	public boolean isFirstCell() {
+		return isFirstCell;
 	}
 
 }

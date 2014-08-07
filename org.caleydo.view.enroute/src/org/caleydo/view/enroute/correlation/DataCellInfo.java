@@ -19,9 +19,9 @@ import org.caleydo.core.id.IDType;
  */
 public class DataCellInfo {
 
-	public int cellID;
 	public ATableBasedDataDomain dataDomain;
 	public Perspective columnPerspective;
+	public Perspective foreignColumnPerspective;
 	public IDType rowIDType;
 	public int rowID;
 
@@ -31,14 +31,14 @@ public class DataCellInfo {
 	 * @param rowIDType
 	 * @param rowID
 	 */
-	public DataCellInfo(int cellID, ATableBasedDataDomain dataDomain, Perspective columnPerspective, IDType rowIDType,
-			int rowID) {
-		super();
-		this.cellID = cellID;
+	public DataCellInfo(ATableBasedDataDomain dataDomain, Perspective columnPerspective, IDType rowIDType,
+ int rowID,
+			Perspective foreignColumnPerspective) {
 		this.dataDomain = dataDomain;
 		this.columnPerspective = columnPerspective;
 		this.rowIDType = rowIDType;
 		this.rowID = rowID;
+		this.foreignColumnPerspective = foreignColumnPerspective;
 	}
 
 	public String getDataDomainLabel() {
@@ -55,5 +55,6 @@ public class DataCellInfo {
 				.getHumanReadableIDType(), rowID);
 		return humanReadableIDs.iterator().next();
 	}
+
 
 }

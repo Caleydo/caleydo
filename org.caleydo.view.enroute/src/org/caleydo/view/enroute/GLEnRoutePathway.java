@@ -69,6 +69,7 @@ import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.correlation.CalculateCorrelationWizard;
+import org.caleydo.view.enroute.correlation.CorrelationManager;
 import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.event.RemoveGeneEvent;
@@ -184,9 +185,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	private boolean useColorMapping = false;
 
-	private boolean isDataCellSelection = false;
-
 	private Set<IEnrouteContentUpdateListener> contentListeners = new HashSet<>();
+
+	private CorrelationManager correlationManager;
 
 	/**
 	 * Listener for changes in context perspectives or additional genes.
@@ -229,6 +230,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		pathRenderer.setUpdateStrategy(new SelectedPathUpdateStrategy(pathRenderer,
 				GLPathway.DEFAULT_PATHWAY_PATH_EVENT_SPACE));
 		mappedDataRenderer = new MappedDataRenderer(this);
+
+		correlationManager = new CorrelationManager(this);
 	}
 
 	@Override
@@ -1077,7 +1080,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	public void onCalcCorrelationSignificance() {
-		isDataCellSelection = true;
 		Display.getDefault().asyncExec(new Runnable() {
 
 			@Override
@@ -1125,10 +1127,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	/**
-	 * @return the isDataCellSelection, see {@link #isDataCellSelection}
+	 * @return the correlationManager, see {@link #correlationManager}
 	 */
-	public boolean isDataCellSelection() {
-		return isDataCellSelection;
+	public CorrelationManager getCorrelationManager() {
+		return correlationManager;
 	}
 
 }
