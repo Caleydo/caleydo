@@ -13,6 +13,7 @@ import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.collection.CategoricalHistogram;
 import org.caleydo.core.data.collection.Histogram;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -22,6 +23,7 @@ import org.caleydo.core.util.function.IInvertableDoubleFunction;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
+import org.caleydo.view.enroute.correlation.CategoricalDataClassifier;
 import org.caleydo.view.enroute.correlation.IDataClassifier;
 import org.caleydo.view.enroute.correlation.NumericalDataClassifier;
 import org.caleydo.view.enroute.correlation.SimpleCategory;
@@ -160,8 +162,15 @@ public class HistogramRenderer extends ADataRenderer {
 			IDataClassifier classifier = contentRenderer.parentView.getCorrelationManager().getClassifier(
 					contentRenderer);
 			if (classifier != null) {
-				if (histogram instanceof CategoricalHistogram) {
-
+				if (histogram instanceof CategoricalHistogram && classifier instanceof CategoricalDataClassifier) {
+					CategoricalDataClassifier cl = (CategoricalDataClassifier) classifier;
+					CategoricalClassDescription<?> desc = cl.getClassDescription();
+					Object category = desc.getCategoryProperties().get(bucketNumber).getCategory();
+					SimpleCategory resultingCategory = cl.apply(category);
+					if (resultingCategory != null) {
+						renderColorOverlay(gl, resultingCategory.color.transparentCopy(0.6f), 0, barBottom, totalX,
+								barTop);
+					}
 				} else {
 					if (classifier instanceof NumericalDataClassifier && inferredNormalizeFunction != null) {
 						NumericalDataClassifier cl = (NumericalDataClassifier) classifier;

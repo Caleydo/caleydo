@@ -62,7 +62,9 @@ public class CategoricalClassificationWidget extends AClassificationWidget {
 
 		moveToCategory1Button = new Button(this, SWT.PUSH);
 		moveToCategory1Button.setText("Move Up");
-		moveToCategory1Button.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
+		GridData gd = new GridData(SWT.LEFT, SWT.TOP, false, false);
+		gd.widthHint = 100;
+		moveToCategory1Button.setLayoutData(gd);
 		moveToCategory1Button.setEnabled(false);
 		moveToCategory1Button.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -74,7 +76,9 @@ public class CategoricalClassificationWidget extends AClassificationWidget {
 
 		moveToCategory2Button = new Button(this, SWT.PUSH);
 		moveToCategory2Button.setText("Move Down");
-		moveToCategory2Button.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
+		gd = new GridData(SWT.LEFT, SWT.TOP, false, false);
+		gd.widthHint = 100;
+		moveToCategory2Button.setLayoutData(gd);
 		moveToCategory2Button.setEnabled(false);
 		moveToCategory2Button.addSelectionListener(new SelectionAdapter() {
 			@Override

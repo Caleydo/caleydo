@@ -149,7 +149,7 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 		classificationGroup.getShell().layout(true, true);
 		classificationGroup.getShell().pack(true);
 		// classificationGroup.update();
-		classificationGroup.pack(true);
+		// classificationGroup.pack(true);
 		getWizard().getContainer().updateButtons();
 	}
 
