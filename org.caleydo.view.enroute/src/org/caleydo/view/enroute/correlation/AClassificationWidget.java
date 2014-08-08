@@ -51,6 +51,12 @@ public abstract class AClassificationWidget extends Composite {
 		callbacks.remove(callback);
 	}
 
+	protected void notifyOfClassifierChange() {
+		for (ICallback<IDataClassifier> callback : callbacks) {
+			callback.on(getClassifier());
+		}
+	}
+
 	@Override
 	public void dispose() {
 		callbacks.clear();

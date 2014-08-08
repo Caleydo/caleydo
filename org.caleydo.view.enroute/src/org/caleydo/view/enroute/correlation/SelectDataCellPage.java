@@ -110,7 +110,7 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 			Object description = info.dataDomain.getDataClassSpecificDescription(info.rowIDType, info.rowID,
 					info.columnPerspective.getIdType(), info.columnPerspective.getVirtualArray().get(0));
 
-			if (description instanceof NumericalProperties) {
+			if (description == null || description instanceof NumericalProperties) {
 				if (classificationWidget == null) {
 					classificationWidget = new NumericalClassificationWidget(classificationGroup, SWT.NONE,
 							categoryColors);

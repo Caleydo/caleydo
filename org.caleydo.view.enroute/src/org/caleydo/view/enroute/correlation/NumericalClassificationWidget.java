@@ -8,7 +8,6 @@ package org.caleydo.view.enroute.correlation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.DoubleFunctions;
 import org.caleydo.core.util.function.IInvertableDoubleFunction;
@@ -136,7 +135,7 @@ public class NumericalClassificationWidget extends AClassificationWidget {
 		thresholdLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
 		thresholdLabel.setText("Threshold: ");
 
-		thresholdText = new Text(this, SWT.SHADOW_ETCHED_IN);
+		thresholdText = new Text(this, SWT.BORDER);
 		thresholdText.setText("0");
 		gd = new GridData(SWT.FILL, SWT.TOP, true, false);
 		gd.widthHint = 100;
@@ -175,11 +174,6 @@ public class NumericalClassificationWidget extends AClassificationWidget {
 		notifyOfClassifierChange();
 	}
 
-	protected void notifyOfClassifierChange() {
-		for (ICallback<IDataClassifier> callback : callbacks) {
-			callback.on(getClassifier());
-		}
-	}
 
 	@Override
 	public void updateData(DataCellInfo info) {
