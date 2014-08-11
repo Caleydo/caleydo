@@ -864,19 +864,19 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				case CLICKED:
 					new ShowNodeContextEventFactory(pathEventSpace, GLEntourage.this).triggerEvent(vertexRep);
 					// Temporary
-					if (isAltKeyPressed) {
-						if (fromVertex == null || toVertex != null) {
-							fromVertex = vertexRep.getPathwayVertices().get(0);
-							toVertex = null;
-						} else {
-							toVertex = vertexRep.getPathwayVertices().get(0);
-						}
-						if (fromVertex != null && toVertex != null) {
-							System.out.println("From: " + fromVertex.getHumanReadableName() + ", To: "
-									+ toVertex.getHumanReadableName());
-							PathwayManager.get().getShortestPaths(fromVertex, toVertex);
-						}
-					}
+					// if (isAltKeyPressed) {
+					// if (fromVertex == null || toVertex != null) {
+					// fromVertex = vertexRep.getPathwayVertices().get(0);
+					// toVertex = null;
+					// } else {
+					// toVertex = vertexRep.getPathwayVertices().get(0);
+					// }
+					// if (fromVertex != null && toVertex != null) {
+					// System.out.println("From: " + fromVertex.getHumanReadableName() + ", To: "
+					// + toVertex.getHumanReadableName());
+					// PathwayManager.get().getShortestPaths(fromVertex, toVertex);
+					// }
+					// }
 
 					break;
 				case MOUSE_OVER:
