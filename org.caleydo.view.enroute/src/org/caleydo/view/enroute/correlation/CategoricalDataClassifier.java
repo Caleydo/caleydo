@@ -37,7 +37,7 @@ public class CategoricalDataClassifier implements IDataClassifier {
 	private String getCategoryName(Set<Object> categoryClass) {
 		if (classDescription == null)
 			return "Category";
-		StringBuilder b = new StringBuilder("Categories: ");
+		StringBuilder b = new StringBuilder();
 		Iterator<Object> it = categoryClass.iterator();
 		while (it.hasNext()) {
 			b.append(classDescription.getCategoryProperty(it.next()).getCategoryName());
