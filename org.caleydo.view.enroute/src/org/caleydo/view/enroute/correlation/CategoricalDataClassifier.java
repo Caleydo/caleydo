@@ -6,7 +6,6 @@
 package org.caleydo.view.enroute.correlation;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -24,29 +23,17 @@ public class CategoricalDataClassifier implements IDataClassifier {
 	private final List<SimpleCategory> dataClasses;
 	private final CategoricalClassDescription<?> classDescription;
 
-	public CategoricalDataClassifier(Set<Object> categoryClass1, Set<Object> categoryClass2, Color category1Color,
-			Color category2Color, CategoricalClassDescription<?> classDescription) {
+	public CategoricalDataClassifier(Set<Object> categoryClass1, Set<Object> categoryClass2, Color class1Color,
+			Color class2Color, String class1Label, String class2Label, CategoricalClassDescription<?> classDescription) {
 		this.categoryClass1 = categoryClass1;
 		this.categoryClass2 = categoryClass2;
 		this.classDescription = classDescription;
 		dataClasses = new ArrayList<>();
-		dataClasses.add(new SimpleCategory(getCategoryName(categoryClass1), category1Color));
-		dataClasses.add(new SimpleCategory(getCategoryName(categoryClass2), category2Color));
+		dataClasses.add(new SimpleCategory(class1Label, class1Color));
+		dataClasses.add(new SimpleCategory(class2Label, class2Color));
 	}
 
-	private String getCategoryName(Set<Object> categoryClass) {
-		if (classDescription == null)
-			return "Category";
-		StringBuilder b = new StringBuilder();
-		Iterator<Object> it = categoryClass.iterator();
-		while (it.hasNext()) {
-			b.append(classDescription.getCategoryProperty(it.next()).getCategoryName());
-			if (it.hasNext())
-				b.append(", ");
-		}
 
-		return b.toString();
-	}
 
 	@Override
 	public SimpleCategory apply(Object input) {

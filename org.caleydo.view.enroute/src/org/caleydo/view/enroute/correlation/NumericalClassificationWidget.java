@@ -79,10 +79,10 @@ public class NumericalClassificationWidget extends AClassificationWidget {
 
 		for (SimpleCategory category : classifier.getDataClasses()) {
 
-			CLabel preview = new CLabel(categoryComposite, SWT.SHADOW_ETCHED_IN);
+			CLabel preview = new CLabel(categoryComposite, SWT.BORDER);
 			GridData gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
-			gridData.widthHint = 20;
-			gridData.heightHint = 20;
+			gridData.widthHint = 25;
+			gridData.heightHint = 25;
 			preview.setLayoutData(gridData);
 			org.eclipse.swt.graphics.Color c = category.color.getSWTColor(Display.getCurrent());
 			preview.setBackground(c);
