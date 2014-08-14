@@ -15,10 +15,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -42,13 +44,15 @@ public class NumericalClassificationWidget extends AClassificationWidget {
 	private Text thresholdText;
 	private Scale thresholdScale;
 
+	private Button useCustomCategoryNamesButton;
+
 	private Composite categoryComposite;
 
 	private IInvertableDoubleFunction mappingFunction;
 
 	private NumericalDataClassifier classifier;
 
-	private List<Label> classLabels;
+	private List<Text> classLabels;
 
 	/**
 	 * @param parent
@@ -58,7 +62,8 @@ public class NumericalClassificationWidget extends AClassificationWidget {
 	 */
 	public NumericalClassificationWidget(Composite parent, int style, List<Color> categoryColors) {
 		super(parent, style, categoryColors);
-		classifier = new NumericalDataClassifier(0, categoryColors.get(0), categoryColors.get(1));
+		classifier = new NumericalDataClassifier(0, categoryColors.get(0), categoryColors.get(1),
+				Character.toString((char) 0x2264) + " " + 0, "> " + 0);
 
 		GridLayout layout = new GridLayout(2, false);
 		// layout.horizontalSpacing = 0;
@@ -84,13 +89,35 @@ public class NumericalClassificationWidget extends AClassificationWidget {
 			preview.update();
 			colorRegistry.add(c);
 
-			Label l = new Label(categoryComposite, SWT.NONE);
+			Text l = new Text(categoryComposite, SWT.BORDER);
 			gridData = new GridData(SWT.FILL, SWT.TOP, true, false);
 			gridData.widthHint = 220;
 			l.setLayoutData(gridData);
 			l.setText(category.name);
+			l.setEditable(false);
+			l.addModifyListener(new ModifyListener() {
+
+				@Override
+				public void modifyText(ModifyEvent e) {
+					if (useCustomCategoryNamesButton.getSelection()) {
+						updateClassifier();
+					}
+				}
+			});
 			classLabels.add(l);
 		}
+
+		useCustomCategoryNamesButton = new Button(categoryComposite, SWT.CHECK);
+		useCustomCategoryNamesButton.setText("Use custom class names");
+		useCustomCategoryNamesButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 2, 1));
+		useCustomCategoryNamesButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				for (Text t : classLabels) {
+					t.setEditable(useCustomCategoryNamesButton.getSelection());
+				}
+			}
+		});
 
 		Composite scaleComposite = new Composite(this, SWT.NONE);
 		GridLayout gl = new GridLayout(1, false);
@@ -145,35 +172,44 @@ public class NumericalClassificationWidget extends AClassificationWidget {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
-				try {
-					float threshold = Float.parseFloat(thresholdText.getText());
-					thresholdScale.setSelection(thresholdScale.getMaximum() - (int) mappingFunction.unapply(threshold)
-							- thresholdScale.getMinimum());
-					updateClassifier(threshold);
-				} catch (NumberFormatException ex) {
-					// Do nothing
-				}
+				updateClassifier();
 			}
 		});
 	}
 
 	protected void updateCategories() {
-		List<SimpleCategory> categories = classifier.getDataClasses();
+		if (!useCustomCategoryNamesButton.getSelection()) {
+			List<SimpleCategory> categories = classifier.getDataClasses();
 
-		for (int i = 0; i < categories.size(); i++) {
-			SimpleCategory category = categories.get(i);
-			Label label = classLabels.get(i);
-			label.setText(category.name);
+			for (int i = 0; i < categories.size(); i++) {
+				SimpleCategory category = categories.get(i);
+				Text label = classLabels.get(i);
+				label.setText(category.name);
+			}
 		}
 
 	}
 
-	protected void updateClassifier(float threshold) {
-		classifier = new NumericalDataClassifier(threshold, categoryColors.get(0), categoryColors.get(1));
-		updateCategories();
-		notifyOfClassifierChange();
-	}
+	protected void updateClassifier() {
 
+		try {
+			float threshold = Float.parseFloat(thresholdText.getText());
+			thresholdScale.setSelection(thresholdScale.getMaximum() - (int) mappingFunction.unapply(threshold)
+					- thresholdScale.getMinimum());
+
+			if (useCustomCategoryNamesButton.getSelection()) {
+				classifier = new NumericalDataClassifier(threshold, categoryColors.get(0), categoryColors.get(1),
+						classLabels.get(0).getText(), classLabels.get(1).getText());
+			} else {
+				classifier = new NumericalDataClassifier(threshold, categoryColors.get(0), categoryColors.get(1),
+						Character.toString((char) 0x2264) + " " + threshold, "> " + threshold);
+			}
+			updateCategories();
+			notifyOfClassifierChange();
+		} catch (NumberFormatException e) {
+			// Do nothing
+		}
+	}
 
 	@Override
 	public void updateData(DataCellInfo info) {
