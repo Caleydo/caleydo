@@ -20,6 +20,7 @@ import org.caleydo.core.startup.CacheInitializers;
 import org.caleydo.core.startup.IStartUpDocumentListener;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
+import org.caleydo.core.startup.NetAuthenticator;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
@@ -35,7 +36,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
-import org.eclipse.ui.internal.net.auth.NetAuthenticator;
 import org.kohsuke.args4j.ClassParser;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -67,7 +67,6 @@ public class Application implements IApplication {
 			GeneralManager.get(); // stupid but needed for initialization
 
 			// set the authentificator as it will by used by the proxy plugin
-			@SuppressWarnings("restriction")
 			final NetAuthenticator auth = new NetAuthenticator();
 			Authenticator.setDefault(auth);
 
