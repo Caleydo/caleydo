@@ -8,8 +8,11 @@ package org.caleydo.core.internal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Properties;
 
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.internal.net.ProxySelector;
+import org.eclipse.core.internal.net.ProxyType;
 import org.eclipse.core.net.proxy.IProxyData;
 import org.eclipse.core.net.proxy.IProxyService;
 import org.eclipse.core.runtime.Plugin;
@@ -77,19 +80,51 @@ public class Activator extends Plugin {
 			Logger.create(Activator.class).error("can't convert url to uri", e);
 		}
 	}
+
+	@SuppressWarnings("restriction")
 	public static void updateProxySettings(URI uri) {
 		if (plugin == null)
 			return;
 		IProxyService proxyService = plugin.getProxyService();
 		IProxyData[] proxyDataForHost = proxyService.select(uri);
 
+		boolean proxiesEnabled = !ProxySelector.getDefaultProvider().equalsIgnoreCase("DIRECT");
 		for (IProxyData data : proxyDataForHost) {
-			if (data.getHost() != null) {
-				System.setProperty("http.proxySet", "true");
-				System.setProperty("http.proxyHost", data.getHost());
-			}
-			if (data.getHost() != null) {
-				System.setProperty("http.proxyPort", String.valueOf(data.getPort()));
+			if (!data.getType().equals(IProxyData.HTTP_PROXY_TYPE))
+				continue;
+			Properties sysProps = System.getProperties();
+			if (!proxiesEnabled || data.getHost() == null || data.getHost().equals("")) { //$NON-NLS-1$
+				sysProps.remove("http.proxySet"); //$NON-NLS-1$
+				sysProps.remove("http.proxyHost"); //$NON-NLS-1$
+				sysProps.remove("http.proxyPort"); //$NON-NLS-1$
+				sysProps.remove("http.nonProxyHosts"); //$NON-NLS-1$
+				sysProps.remove("http.proxyUser"); //$NON-NLS-1$
+				sysProps.remove("http.proxyUserName"); //$NON-NLS-1$
+				sysProps.remove("http.proxyPassword"); //$NON-NLS-1$
+			} else {
+				sysProps.put("http.proxySet", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+				sysProps.put("http.proxyHost", data.getHost()); //$NON-NLS-1$
+				int port = data.getPort();
+				if (port == -1) {
+					sysProps.remove("http.proxyPort"); //$NON-NLS-1$
+				} else {
+					sysProps.put("http.proxyPort", String.valueOf(port)); //$NON-NLS-1$
+				}
+				sysProps.put("http.nonProxyHosts", //$NON-NLS-1$
+						ProxyType.convertHostsToPropertyString(ProxySelector.getBypassHosts(ProxySelector
+								.getDefaultProvider())));
+
+				String userid = data.getUserId();
+				String password = data.getPassword();
+				if (userid == null || password == null || userid.length() == 0 || password.length() == 0) {
+					sysProps.remove("http.proxyUser"); //$NON-NLS-1$
+					sysProps.remove("http.proxyUserName"); //$NON-NLS-1$
+					sysProps.remove("http.proxyPassword"); //$NON-NLS-1$
+				} else {
+					sysProps.put("http.proxyUser", userid); //$NON-NLS-1$
+					sysProps.put("http.proxyUserName", userid); //$NON-NLS-1$
+					sysProps.put("http.proxyPassword", password); //$NON-NLS-1$
+				}
 			}
 		}
 		// Close the service and close the service tracker

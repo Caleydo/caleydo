@@ -7,18 +7,13 @@ package org.caleydo.core.internal;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.perspective.GenomePerspective;
 import org.caleydo.core.gui.perspective.PartListener;
 import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ViewManager;
-import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
@@ -67,40 +62,6 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Removing all non Caleydo menus. Especially useful for Eclipse contributed plugins when starting Caleydo from
-	 * Eclipses
-	 */
-	private static void removeNonCaleydoMenuEntries(IWorkbenchWindowConfigurer wconfigurer) {
-		IMenuManager menuManager = wconfigurer.getActionBarConfigurer().getMenuManager();
-		for (IContributionItem item : menuManager.getItems()) {
-
-			if (!item.getId().contains("org.caleydo")) {
-				menuManager.remove(item);
-			}
-		}
-
-		if (DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.generic") != null) {
-
-			IActionBarConfigurer configurer = wconfigurer.getActionBarConfigurer();
-
-			// Delete unwanted menu items
-			IContributionItem[] menuItems = configurer.getMenuManager().getItems();
-			for (int i = 0; i < menuItems.length; i++) {
-				IContributionItem menuItem = menuItems[i];
-				if (menuItem.getId().equals("org.caleydo.search.menu")) {
-					configurer.getMenuManager().remove(menuItem);
-				} else if (menuItem.getId().equals("viewMenu")) {
-					IContributionItem itemToRemove = ((MenuManager) menuItem)
-							.find("org.caleydo.core.command.openviews.remote");
-
-					if (itemToRemove != null)
-						itemToRemove.setVisible(false);
-				}
-			}
-		}
 	}
 
 	private class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {

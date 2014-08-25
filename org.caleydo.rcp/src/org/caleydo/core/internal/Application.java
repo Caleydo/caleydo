@@ -6,8 +6,8 @@
 package org.caleydo.core.internal;
 
 import java.io.File;
+import java.net.Authenticator;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
+import org.eclipse.ui.internal.net.auth.NetAuthenticator;
 import org.kohsuke.args4j.ClassParser;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -64,6 +65,11 @@ public class Application implements IApplication {
 			changeWorkspaceLocation();
 
 			GeneralManager.get(); // stupid but needed for initialization
+
+			// set the authentificator as it will by used by the proxy plugin
+			@SuppressWarnings("restriction")
+			final NetAuthenticator auth = new NetAuthenticator();
+			Authenticator.setDefault(auth);
 
 			Map<String, IStartupAddon> startups = StartupAddons.findAll();
 
@@ -275,27 +281,5 @@ public class Application implements IApplication {
 		startup.postWorkbenchOpen(windowConfigurer);
 		windowConfigurer.getWindow().getShell().setMaximized(true);
 		startup = null;
-	}
-
-	public class OpenDocumentEventProcessor implements Listener {
-		private ArrayList<String> filesToOpen = new ArrayList<String>(1);
-
-		@Override
-		public void handleEvent(Event event) {
-			if (event.text != null)
-				filesToOpen.add(event.text);
-		}
-
-		public void openFiles() {
-			if (filesToOpen.isEmpty())
-				return;
-
-			String[] filePaths = filesToOpen.toArray(new String[filesToOpen.size()]);
-			filesToOpen.clear();
-
-			for (String path : filePaths) {
-				// open the file path
-			}
-		}
 	}
 }
