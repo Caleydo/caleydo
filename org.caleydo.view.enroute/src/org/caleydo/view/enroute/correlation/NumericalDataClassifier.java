@@ -24,16 +24,19 @@ public class NumericalDataClassifier implements IDataClassifier {
 	/**
 	 * @param threshold
 	 */
-	public NumericalDataClassifier(float threshold) {
+	public NumericalDataClassifier(float threshold, Color category1Color, Color category2Color, String category1Name,
+			String category2Name) {
 		this.threshold = threshold;
-		dataClasses = Lists.newArrayList(new SimpleCategory("less than or equal " + threshold, Color.CYAN),
-				new SimpleCategory("greater than " + threshold, Color.MAGENTA));
+		dataClasses = Lists.newArrayList(new SimpleCategory(category1Name, category1Color), new SimpleCategory(
+				category2Name, category2Color));
 	}
 
 	@Override
 	public SimpleCategory apply(Object input) {
 		if (input instanceof Number) {
 			Number num = (Number) input;
+			if (Float.isNaN(num.floatValue()))
+				return null;
 			if (num.floatValue() <= threshold) {
 				return dataClasses.get(0);
 			} else {

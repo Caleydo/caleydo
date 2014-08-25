@@ -12,6 +12,10 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.view.enroute.correlation.IDataClassifier;
+import org.caleydo.view.enroute.correlation.NumericalDataClassifier;
+import org.caleydo.view.enroute.correlation.SimpleCategory;
 
 /**
  * @author Christian
@@ -28,6 +32,22 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 
 	@Override
 	public void render(GL2 gl, float x, float y, List<SelectionType> selectionTypes) {
+
+		if (contentRenderer.isHighlightMode && inferredNormalizeFunction != null) {
+			IDataClassifier classifier = contentRenderer.parentView.getCorrelationManager().getClassifier(
+					contentRenderer);
+			if (classifier != null && classifier instanceof NumericalDataClassifier) {
+				NumericalDataClassifier cl = (NumericalDataClassifier) classifier;
+				float threshold = cl.getThreshold();
+				float normalizedThreshold = (float) inferredNormalizeFunction.apply(threshold);
+				float thresholdX = normalizedThreshold * x;
+				List<SimpleCategory> categories = classifier.getDataClasses();
+
+				renderColorOverlay(gl, categories.get(0).color.transparentCopy(0.6f), 0, 0, thresholdX, y);
+				renderColorOverlay(gl, categories.get(1).color.transparentCopy(0.6f), thresholdX, 0, x, y);
+			}
+		}
+
 		if (contentRenderer.resolvedRowID == null || contentRenderer.isHighlightMode || normalizedStats == null)
 			return;
 
@@ -112,6 +132,20 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 		gl.glPopAttrib();
 
 		gl.glPopName();
+	}
+
+	private void renderColorOverlay(GL2 gl, Color color, float left, float bottom, float right, float top) {
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBegin(GL2GL3.GL_QUADS);
+
+		gl.glColor4fv(color.getRGBA(), 0);
+		gl.glVertex3f(left, bottom, z);
+		gl.glVertex3f(right, bottom, z);
+		gl.glVertex3f(right, top, z);
+		gl.glVertex3f(left, top, z);
+
+		gl.glEnd();
 	}
 
 	private float outlierAlhpa(int size) {

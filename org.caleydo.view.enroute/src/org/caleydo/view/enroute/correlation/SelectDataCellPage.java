@@ -5,17 +5,16 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.correlation;
 
-import java.util.Set;
+import java.util.List;
 
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.id.IDMappingManager;
-import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.base.ICallback;
+import org.caleydo.core.util.color.Color;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -43,15 +42,17 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 	DataCellInfo info;
 
 	private AClassificationWidget classificationWidget;
+	private List<Color> categoryColors;
 
 	/**
 	 * @param pageName
 	 * @param title
 	 * @param titleImage
 	 */
-	protected SelectDataCellPage(String pageName, String title, ImageDescriptor titleImage) {
+	protected SelectDataCellPage(String pageName, String title, ImageDescriptor titleImage, List<Color> categoryColors) {
 		super(pageName, title, titleImage);
 		listeners.register(this);
+		this.categoryColors = categoryColors;
 	}
 
 	@Override
@@ -100,36 +101,36 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 		if (isCurrentPage()) {
 			info = event.getInfo();
 
-			datasetLabel.setText("Dataset: " + info.dataDomain.getLabel());
-			groupLabel.setText("Group: " + info.columnPerspective.getLabel());
-
-			IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(info.rowIDType);
-			Set<String> humanReadableIDs = mappingManager.getIDAsSet(info.rowIDType, info.rowIDType.getIDCategory()
-					.getHumanReadableIDType(), info.rowID);
-			rowLabel.setText("Row: " + humanReadableIDs.iterator().next());
+			datasetLabel.setText("Dataset: " + info.getDataDomainLabel());
+			groupLabel.setText("Group: " + info.getGroupLabel());
+			rowLabel.setText("Row: " + info.getRowLabel());
 
 			classificationGroup.setVisible(true);
 
 			Object description = info.dataDomain.getDataClassSpecificDescription(info.rowIDType, info.rowID,
 					info.columnPerspective.getIdType(), info.columnPerspective.getVirtualArray().get(0));
 
-			if (description instanceof NumericalProperties) {
+			if (description == null || description instanceof NumericalProperties) {
 				if (classificationWidget == null) {
-					classificationWidget = new NumericalClassificationWidget(classificationGroup, SWT.NONE);
+					classificationWidget = new NumericalClassificationWidget(classificationGroup, SWT.NONE,
+							categoryColors);
 					initNewClassificationWidget();
 				} else if (!(classificationWidget instanceof NumericalClassificationWidget)) {
 					classificationWidget.dispose();
-					classificationWidget = new NumericalClassificationWidget(classificationGroup, SWT.NONE);
+					classificationWidget = new NumericalClassificationWidget(classificationGroup, SWT.NONE,
+							categoryColors);
 					initNewClassificationWidget();
 				}
 
 			} else if (description instanceof CategoricalClassDescription) {
 				if (classificationWidget == null) {
-					classificationWidget = new CategoricalClassificationWidget(classificationGroup, SWT.NONE);
+					classificationWidget = new CategoricalClassificationWidget(classificationGroup, SWT.NONE,
+							categoryColors);
 					initNewClassificationWidget();
 				} else if (!(classificationWidget instanceof CategoricalClassificationWidget)) {
 					classificationWidget.dispose();
-					classificationWidget = new CategoricalClassificationWidget(classificationGroup, SWT.NONE);
+					classificationWidget = new CategoricalClassificationWidget(classificationGroup, SWT.NONE,
+							categoryColors);
 					initNewClassificationWidget();
 				}
 			} else {
@@ -137,7 +138,8 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 			}
 
 			classificationWidget.updateData(info);
-			EventPublisher.trigger(new ShowDataClassificationEvent(info.cellID, classificationWidget.getClassifier()));
+			EventPublisher.trigger(new ShowDataClassificationEvent(info, classificationWidget.getClassifier(),
+					getWizard().getStartingPage() == this));
 		}
 	}
 
@@ -147,7 +149,7 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 		classificationGroup.getShell().layout(true, true);
 		classificationGroup.getShell().pack(true);
 		// classificationGroup.update();
-		classificationGroup.pack(true);
+		// classificationGroup.pack(true);
 		getWizard().getContainer().updateButtons();
 	}
 
@@ -169,7 +171,7 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 
 	@Override
 	public void on(IDataClassifier data) {
-		EventPublisher.trigger(new ShowDataClassificationEvent(info.cellID, data));
+		EventPublisher.trigger(new ShowDataClassificationEvent(info, data, getWizard().getStartingPage() == this));
 	}
 
 }

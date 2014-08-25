@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.util.color.Color;
 
 /**
@@ -17,17 +18,22 @@ import org.caleydo.core.util.color.Color;
  */
 public class CategoricalDataClassifier implements IDataClassifier {
 
-	final Set<Object> categoryClass1;
-	final Set<Object> categoryClass2;
-	final List<SimpleCategory> dataClasses;
+	private final Set<Object> categoryClass1;
+	private final Set<Object> categoryClass2;
+	private final List<SimpleCategory> dataClasses;
+	private final CategoricalClassDescription<?> classDescription;
 
-	public CategoricalDataClassifier(Set<Object> categoryClass1, Set<Object> categoryClass2) {
+	public CategoricalDataClassifier(Set<Object> categoryClass1, Set<Object> categoryClass2, Color class1Color,
+			Color class2Color, String class1Label, String class2Label, CategoricalClassDescription<?> classDescription) {
 		this.categoryClass1 = categoryClass1;
 		this.categoryClass2 = categoryClass2;
+		this.classDescription = classDescription;
 		dataClasses = new ArrayList<>();
-		dataClasses.add(new SimpleCategory("categories: " + categoryClass1.toString(), Color.CYAN));
-		dataClasses.add(new SimpleCategory("categories: " + categoryClass2.toString(), Color.MAGENTA));
+		dataClasses.add(new SimpleCategory(class1Label, class1Color));
+		dataClasses.add(new SimpleCategory(class2Label, class2Color));
 	}
+
+
 
 	@Override
 	public SimpleCategory apply(Object input) {
@@ -41,6 +47,13 @@ public class CategoricalDataClassifier implements IDataClassifier {
 	@Override
 	public List<SimpleCategory> getDataClasses() {
 		return dataClasses;
+	}
+
+	/**
+	 * @return the classDescription, see {@link #classDescription}
+	 */
+	public CategoricalClassDescription<?> getClassDescription() {
+		return classDescription;
 	}
 
 }

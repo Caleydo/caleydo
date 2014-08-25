@@ -263,7 +263,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	private GLButton useCenterLineButton = new GLButton(EButtonMode.CHECKBOX);
 	private GLButton fitEnrouteToViewWidthButton = new GLButton(EButtonMode.CHECKBOX);
 	private GLButton useColorMappingButton = new GLButton(EButtonMode.CHECKBOX);
-	private GLButton calcCorrelationSignificanceButton = new GLButton(EButtonMode.BUTTON);
+	private GLButton applyFishersTestButton = new GLButton(EButtonMode.BUTTON);
 
 	/**
 	 * Constructor.
@@ -557,20 +557,20 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		});
 		useColorMappingButton.setTooltip("Toggle color mapping for numerical bars.");
 
-		calcCorrelationSignificanceButton.setSize(16, 16);
-		calcCorrelationSignificanceButton.setRenderer(GLRenderers.fillImage(loader
-				.getTexture("resources/icons/toggle_color.png")));
-		calcCorrelationSignificanceButton.setSelectedRenderer(GLRenderers.pushedImage(loader
-				.getTexture("resources/icons/toggle_color.png")));
-		calcCorrelationSignificanceButton.setSelected(enRoute.isUseColorMapping());
+		applyFishersTestButton.setSize(16, 16);
+		applyFishersTestButton.setRenderer(GLRenderers.fillImage(loader
+.getTexture("resources/icons/fishers_test.png")));
+		applyFishersTestButton.setSelectedRenderer(GLRenderers.pushedImage(loader
+				.getTexture("resources/icons/fishers_test.png")));
+		applyFishersTestButton.setSelected(enRoute.isUseColorMapping());
 
-		calcCorrelationSignificanceButton.onPick(new APickingListener() {
+		applyFishersTestButton.onPick(new APickingListener() {
 			@Override
 			protected void clicked(Pick pick) {
 				enRoute.onCalcCorrelationSignificance();
 			}
 		});
-		calcCorrelationSignificanceButton.setTooltip("Calculate significance of data correlation.");
+		applyFishersTestButton.setTooltip("Apply Fisher's exact Test.");
 	}
 
 	/**
@@ -864,19 +864,19 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				case CLICKED:
 					new ShowNodeContextEventFactory(pathEventSpace, GLEntourage.this).triggerEvent(vertexRep);
 					// Temporary
-					if (isAltKeyPressed) {
-						if (fromVertex == null || toVertex != null) {
-							fromVertex = vertexRep.getPathwayVertices().get(0);
-							toVertex = null;
-						} else {
-							toVertex = vertexRep.getPathwayVertices().get(0);
-						}
-						if (fromVertex != null && toVertex != null) {
-							System.out.println("From: " + fromVertex.getHumanReadableName() + ", To: "
-									+ toVertex.getHumanReadableName());
-							PathwayManager.get().getShortestPaths(fromVertex, toVertex);
-						}
-					}
+					// if (isAltKeyPressed) {
+					// if (fromVertex == null || toVertex != null) {
+					// fromVertex = vertexRep.getPathwayVertices().get(0);
+					// toVertex = null;
+					// } else {
+					// toVertex = vertexRep.getPathwayVertices().get(0);
+					// }
+					// if (fromVertex != null && toVertex != null) {
+					// System.out.println("From: " + fromVertex.getHumanReadableName() + ", To: "
+					// + toVertex.getHumanReadableName());
+					// PathwayManager.get().getShortestPaths(fromVertex, toVertex);
+					// }
+					// }
 
 					break;
 				case MOUSE_OVER:
@@ -1095,12 +1095,12 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1, useColorMappingButton);
 					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1, useCenterLineButton);
 					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1,
-							calcCorrelationSignificanceButton);
+							applyFishersTestButton);
 				} else {
 					pathInfo.window.getTitleBar().remove(fitEnrouteToViewWidthButton);
 					pathInfo.window.getTitleBar().remove(useColorMappingButton);
 					pathInfo.window.getTitleBar().remove(useCenterLineButton);
-					pathInfo.window.getTitleBar().remove(calcCorrelationSignificanceButton);
+					pathInfo.window.getTitleBar().remove(applyFishersTestButton);
 				}
 			}
 		}
