@@ -513,6 +513,27 @@ public class IDMappingManager {
 	}
 
 	/**
+	 * Convenience method for getting human readable ids.
+	 *
+	 * @param source
+	 * @param sourceID
+	 * @return
+	 */
+	public synchronized <K> Set<String> getHumanReadableIDs(IDType source, K sourceID) {
+		return getIDAsSet(source, source.getIDCategory().getHumanReadableIDType(), sourceID);
+	}
+
+	/**
+	 * Convenience method for getting the id type mapper for human readable ids.
+	 *
+	 * @param source
+	 * @return
+	 */
+	public synchronized <K> IIDTypeMapper<K, String> getHumanReadableIDTypeMapper(IDType source) {
+		return getIDTypeMapper(source, source.getIDCategory().getHumanReadableIDType());
+	}
+
+	/**
 	 * <p>
 	 * Tries to find the mapping from the source IDType to the destination IDType of the specified sourceID along a path
 	 * of IDTypes where mappings exist. If no such path is found, null is returned. If the path includes multi-mappings,

@@ -216,7 +216,7 @@ public class PathwayManager {
 	 * @param id
 	 * @return a Set of PathwayGraphs or null if no such mapping exists
 	 */
-	public Set<PathwayGraph> getPathwayGraphsByGeneID(IDType idType, int id) {
+	public Set<PathwayGraph> getPathwayGraphsByGeneID(IDType idType, Object id) {
 
 		// set to avoid duplicate pathways
 		Set<PathwayGraph> pathways = new HashSet<PathwayGraph>();
