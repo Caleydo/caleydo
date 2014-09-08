@@ -6,8 +6,8 @@
 package org.caleydo.core.internal;
 
 import java.io.File;
+import java.net.Authenticator;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
@@ -20,6 +20,7 @@ import org.caleydo.core.startup.CacheInitializers;
 import org.caleydo.core.startup.IStartUpDocumentListener;
 import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
+import org.caleydo.core.startup.NetAuthenticator;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
@@ -64,6 +65,10 @@ public class Application implements IApplication {
 			changeWorkspaceLocation();
 
 			GeneralManager.get(); // stupid but needed for initialization
+
+			// set the authentificator as it will by used by the proxy plugin
+			final NetAuthenticator auth = new NetAuthenticator();
+			Authenticator.setDefault(auth);
 
 			Map<String, IStartupAddon> startups = StartupAddons.findAll();
 
@@ -275,27 +280,5 @@ public class Application implements IApplication {
 		startup.postWorkbenchOpen(windowConfigurer);
 		windowConfigurer.getWindow().getShell().setMaximized(true);
 		startup = null;
-	}
-
-	public class OpenDocumentEventProcessor implements Listener {
-		private ArrayList<String> filesToOpen = new ArrayList<String>(1);
-
-		@Override
-		public void handleEvent(Event event) {
-			if (event.text != null)
-				filesToOpen.add(event.text);
-		}
-
-		public void openFiles() {
-			if (filesToOpen.isEmpty())
-				return;
-
-			String[] filePaths = filesToOpen.toArray(new String[filesToOpen.size()]);
-			filesToOpen.clear();
-
-			for (String path : filePaths) {
-				// open the file path
-			}
-		}
 	}
 }
