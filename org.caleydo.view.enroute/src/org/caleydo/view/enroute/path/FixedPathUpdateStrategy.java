@@ -220,25 +220,26 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 						selectedPathStartNode, selectedPathSegments.get(selectedPathSegments.size() - 1).get(0));
 				Pair<Integer, Integer> toIndexPair = renderer.determinePathSegmentAndIndexOfPathNode(node,
 						node.getPrimaryPathwayVertexRep());
-				if (fromIndexPair == null || toIndexPair == null)
+				if (fromIndexPair == null || toIndexPair == null || fromIndexPair.getFirst() != toIndexPair.getFirst())
 					return;
 
 				PathwayPath segments = new PathwayPath(renderer.pathSegments.subList(
 						fromIndexPair.getFirst(), toIndexPair.getFirst() + 1));
 
-				if (fromIndexPair.getFirst() == toIndexPair.getFirst()) {
+				// if (fromIndexPair.getFirst() == toIndexPair.getFirst()) {
 					PathSegment segment = new PathSegment(segments.get(0).subList(fromIndexPair.getSecond(),
 							toIndexPair.getSecond() + 1));
 					segments.set(0, segment);
-				} else {
-					PathSegment startSegment = new PathSegment(segments.get(0)
-							.subList(0,
-							fromIndexPair.getSecond() + 1));
-					segments.set(0, startSegment);
-					PathSegment endSegment = segments.get(segments.size() - 1);
-					endSegment = new PathSegment(endSegment.subList(toIndexPair.getSecond(), endSegment.size()));
-					segments.set(segments.size() - 1, startSegment);
-				}
+				// } else {
+				// PathSegment startSegment = new PathSegment(segments.get(0)
+				// .subList(0,
+				// fromIndexPair.getSecond() + 1));
+				// segments.set(0, startSegment);
+				// PathSegment endSegment = segments.get(segments.size() - 1);
+				// endSegment = new PathSegment(endSegment.subList(toIndexPair.getSecond(),
+				// toIndexPair.getSecond() + 1));
+				// segments.set(segments.size() - 1, endSegment);
+				// }
 				selectedPathSegments.remove(selectedPathSegments.size() - 1);
 				selectedPathSegments.addAll(segments);
 				triggerPathUpdate(selectedPathSegments);
