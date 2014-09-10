@@ -260,10 +260,14 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	private ESampleMappingMode sampleMappingMode = ESampleMappingMode.ALL;
 
+	// enRoute Buttons
 	private GLButton useCenterLineButton = new GLButton(EButtonMode.CHECKBOX);
 	private GLButton fitEnrouteToViewWidthButton = new GLButton(EButtonMode.CHECKBOX);
 	private GLButton useColorMappingButton = new GLButton(EButtonMode.CHECKBOX);
 	private GLButton applyFishersTestButton = new GLButton(EButtonMode.BUTTON);
+
+	// Pathway List Buttons
+	private GLButton clearPathwayFiltersButton = new GLButton(EButtonMode.BUTTON);
 
 	/**
 	 * Constructor.
@@ -295,8 +299,33 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				.name()));
 		vertexSelectionManager.registerEventListeners();
 
+		initRankingWindow();
+
 		// column.add(dataMappingWindow);
 		// column.add(nodeInfoContainer);
+
+		// pathwayRow.setLayout(new GLMultiFormPathwayLayout(10, GLPadding.ZERO, this, pathwayRow));
+		pathwayRow.setLayout(pathwayLayout);
+
+		// pathwayRow.setDefaultDuration(Durations.fix(600));
+		// pathwayRow
+		// .setDefaultInTransition(new InOutTransitionBase(InOutInitializers.RIGHT, MoveTransitions.MOVE_LINEAR));
+		//
+		baseContainer.add(pathwayRow);
+
+		root.add(column);
+		root.add(augmentation);
+		//
+		// PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+		// "org.caleydo.datadomain.pathway");
+
+		// pathwaySelectionManager = new EventBasedSelectionManager(t
+
+		connectionBandRenderer = new ColoredConnectionBandRenderer();
+
+	}
+
+	protected void initRankingWindow() {
 		rankingWindow = new SideWindow("Pathways", this, SideWindow.SLIDE_LEFT_OUT);
 
 		rankingElement = new RankingElement(this);
@@ -318,27 +347,22 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		});
 		rankingWindow.addSlideInElement(slideInElement);
 		rankingWindow.setShowCloseButton(false);
+		rankingWindow.getTitleBar().add(rankingWindow.getTitleBar().size() - 1, clearPathwayFiltersButton);
+
 		rankingElement.setWindow(rankingWindow);
 		baseContainer.add(rankingWindow);
-		// pathwayRow.setLayout(new GLMultiFormPathwayLayout(10, GLPadding.ZERO, this, pathwayRow));
-		pathwayRow.setLayout(pathwayLayout);
 
-		// pathwayRow.setDefaultDuration(Durations.fix(600));
-		// pathwayRow
-		// .setDefaultInTransition(new InOutTransitionBase(InOutInitializers.RIGHT, MoveTransitions.MOVE_LINEAR));
-		//
-		baseContainer.add(pathwayRow);
+		clearPathwayFiltersButton.setSize(16, 16);
+		clearPathwayFiltersButton.setRenderer(GLRenderers.fillImage("resources/icons/filter_clear.png"));
 
-		root.add(column);
-		root.add(augmentation);
-		//
-		// PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
-		// "org.caleydo.datadomain.pathway");
-
-		// pathwaySelectionManager = new EventBasedSelectionManager(t
-
-		connectionBandRenderer = new ColoredConnectionBandRenderer();
-
+		clearPathwayFiltersButton.onPick(new APickingListener() {
+			@Override
+			protected void clicked(Pick pick) {
+				rankingElement.setFilter(PathwayFilters.NONE);
+				rankingElement.setRanking(null);
+			}
+		});
+		clearPathwayFiltersButton.setTooltip("Clear Filters.");
 	}
 
 	protected HashSet<Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>> windowStubs = new HashSet<Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>>();
