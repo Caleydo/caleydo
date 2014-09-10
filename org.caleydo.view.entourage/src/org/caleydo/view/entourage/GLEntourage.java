@@ -360,7 +360,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		baseContainer.add(rankingWindow);
 
 		rankPathwaysByContainedGenesButton.setSize(16, 16);
-		rankPathwaysByContainedGenesButton.setRenderer(GLRenderers.fillImage("resources/icons/filter_clear.png"));
+		rankPathwaysByContainedGenesButton.setRenderer(GLRenderers.fillImage("resources/icons/sort_descending.png"));
 
 		rankPathwaysByContainedGenesButton.onPick(new APickingListener() {
 			@Override
@@ -382,7 +382,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 			}
 		});
-		rankPathwaysByContainedGenesButton.setTooltip("Rank Pathways by contained Genes.");
+		rankPathwaysByContainedGenesButton.setTooltip("Rank pathways by specified genes.");
 
 		clearPathwayFiltersButton.setSize(16, 16);
 		clearPathwayFiltersButton.setRenderer(GLRenderers.fillImage("resources/icons/filter_clear.png"));
