@@ -28,6 +28,7 @@ import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.correlation.IDataClassifier;
+import org.caleydo.view.enroute.correlation.IIDClassifier;
 import org.caleydo.view.enroute.correlation.SimpleCategory;
 import org.caleydo.view.enroute.mappeddataview.overlay.IDataCellOverlayProvider;
 
@@ -85,7 +86,7 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 					IDataCellOverlayProvider provider = contentRenderer.parentView.getCorrelationManager()
 							.getOverlayProvider(contentRenderer);
 					if (provider != null) {
-						ColumnBasedDataOverlay overlay = provider.getOverlay(this);
+						IColumnBasedDataOverlay overlay = provider.getOverlay(this);
 						if (overlay != null)
 							overlay.render(gl, columnID, xIncrement, y);
 					}
@@ -264,17 +265,38 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 		}, EPickingType.SAMPLE.name() + hashCode());
 	}
 
-	public class ColumnBasedDataOverlay {
+	public interface IColumnBasedDataOverlay {
+		public void render(GL2 gl, int columnID, float xIncrement, float y);
+	}
+
+	public class DataClassifierOverlay implements IColumnBasedDataOverlay {
 		private final IDataClassifier classifier;
 
-		public ColumnBasedDataOverlay(IDataClassifier classifier) {
+		public DataClassifierOverlay(IDataClassifier classifier) {
 			this.classifier = classifier;
 		}
 
+		@Override
 		public void render(GL2 gl, int columnID, float xIncrement, float y) {
 			Object rawValue = contentRenderer.dataDomain.getRaw(contentRenderer.resolvedRowIDType,
 					contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, columnID);
 			SimpleCategory category = classifier.apply(rawValue);
+			if (category != null) {
+				renderColorColumn(gl, category.color.transparentCopy(0.6f), xIncrement, y);
+			}
+		}
+	}
+
+	public class IDClassifierOverlay implements IColumnBasedDataOverlay {
+		private final IIDClassifier classifier;
+
+		public IDClassifierOverlay(IIDClassifier classifier) {
+			this.classifier = classifier;
+		}
+
+		@Override
+		public void render(GL2 gl, int columnID, float xIncrement, float y) {
+			SimpleCategory category = classifier.apply(columnID, contentRenderer.resolvedColumnIDType);
 			if (category != null) {
 				renderColorColumn(gl, category.color.transparentCopy(0.6f), xIncrement, y);
 			}

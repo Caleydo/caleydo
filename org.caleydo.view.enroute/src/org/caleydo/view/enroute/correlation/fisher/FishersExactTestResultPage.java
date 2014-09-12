@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.view.enroute.correlation;
+package org.caleydo.view.enroute.correlation.fisher;
 
 import java.util.HashSet;
 import java.util.List;
@@ -16,6 +16,10 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.io.gui.dataimport.widget.table.NatTableToolTip;
+import org.caleydo.view.enroute.correlation.ContingencyTableConfiguration;
+import org.caleydo.view.enroute.correlation.DataCellInfo;
+import org.caleydo.view.enroute.correlation.IDataClassifier;
+import org.caleydo.view.enroute.correlation.SimpleCategory;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -69,7 +73,7 @@ import edu.northwestern.at.utils.math.statistics.FishersExactTest;
  * @author Christian
  *
  */
-public class CorrelationResultPage extends WizardPage implements IPageChangedListener {
+public class FishersExactTestResultPage extends WizardPage implements IPageChangedListener {
 
 	protected boolean visited = false;
 
@@ -204,7 +208,7 @@ public class CorrelationResultPage extends WizardPage implements IPageChangedLis
 	 * @param title
 	 * @param titleImage
 	 */
-	protected CorrelationResultPage(String pageName, String title, ImageDescriptor titleImage) {
+	protected FishersExactTestResultPage(String pageName, String title, ImageDescriptor titleImage) {
 		super(pageName, title, titleImage);
 	}
 
@@ -259,7 +263,7 @@ public class CorrelationResultPage extends WizardPage implements IPageChangedLis
 		ColumnGroupHeaderLayer columnGroupHeaderLayer = new ColumnGroupHeaderLayer(columnHeaderLayer, selectionLayer,
 				columnGroupModel);
 
-		final CalculateCorrelationWizard wizard = (CalculateCorrelationWizard) getWizard();
+		final FishersExactTestWizard wizard = (FishersExactTestWizard) getWizard();
 
 		columnGroupHeaderLayer.addColumnsIndexesToGroup(getInfoString(wizard.getInfo1()), 0, 1);
 		columnGroupHeaderLayer.setRowHeight(64);
@@ -369,7 +373,7 @@ public class CorrelationResultPage extends WizardPage implements IPageChangedLis
 	@Override
 	public void pageChanged(PageChangedEvent event) {
 		if (event.getSelectedPage() == this) {
-			CalculateCorrelationWizard wizard = (CalculateCorrelationWizard) getWizard();
+			FishersExactTestWizard wizard = (FishersExactTestWizard) getWizard();
 			DataCellInfo info1 = wizard.getInfo1();
 			DataCellInfo info2 = wizard.getInfo2();
 			IDataClassifier classifier1 = wizard.getCell1Classifier();

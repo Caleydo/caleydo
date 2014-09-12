@@ -270,6 +270,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	private GLButton fitEnrouteToViewWidthButton = new GLButton(EButtonMode.CHECKBOX);
 	private GLButton useColorMappingButton = new GLButton(EButtonMode.CHECKBOX);
 	private GLButton applyFishersTestButton = new GLButton(EButtonMode.BUTTON);
+	private GLButton applyWilcoxonTestButton = new GLButton(EButtonMode.BUTTON);
 
 	// Pathway List Buttons
 	private GLButton clearPathwayFiltersButton = new GLButton(EButtonMode.BUTTON);
@@ -623,10 +624,25 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		applyFishersTestButton.onPick(new APickingListener() {
 			@Override
 			protected void clicked(Pick pick) {
-				enRoute.onCalcCorrelationSignificance();
+				enRoute.applyFishersExactTest();
 			}
 		});
-		applyFishersTestButton.setTooltip("Apply Fisher's exact Test.");
+		applyFishersTestButton.setTooltip("Apply Fisher's exact test.");
+
+		applyWilcoxonTestButton.setSize(16, 16);
+		applyWilcoxonTestButton
+				.setRenderer(GLRenderers.fillImage(loader.getTexture("resources/icons/fishers_test.png")));
+		applyWilcoxonTestButton.setSelectedRenderer(GLRenderers.pushedImage(loader
+				.getTexture("resources/icons/fishers_test.png")));
+		applyWilcoxonTestButton.setSelected(enRoute.isUseColorMapping());
+
+		applyWilcoxonTestButton.onPick(new APickingListener() {
+			@Override
+			protected void clicked(Pick pick) {
+				enRoute.applyWilcoxonRankSumTest();
+			}
+		});
+		applyWilcoxonTestButton.setTooltip("Apply Wilcoxon's rank-sum test.");
 	}
 
 	/**
@@ -1151,11 +1167,14 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1, useColorMappingButton);
 					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1, useCenterLineButton);
 					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1, applyFishersTestButton);
+					pathInfo.window.getTitleBar()
+							.add(pathInfo.window.getTitleBar().size() - 1, applyWilcoxonTestButton);
 				} else {
 					pathInfo.window.getTitleBar().remove(fitEnrouteToViewWidthButton);
 					pathInfo.window.getTitleBar().remove(useColorMappingButton);
 					pathInfo.window.getTitleBar().remove(useCenterLineButton);
 					pathInfo.window.getTitleBar().remove(applyFishersTestButton);
+					pathInfo.window.getTitleBar().remove(applyWilcoxonTestButton);
 				}
 			}
 		}

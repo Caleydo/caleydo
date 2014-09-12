@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.view.enroute.correlation;
+package org.caleydo.view.enroute.correlation.widget;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +11,8 @@ import java.util.Set;
 
 import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.view.enroute.correlation.DataCellInfo;
+import org.caleydo.view.enroute.correlation.IDataClassifier;
 import org.eclipse.swt.widgets.Composite;
 
 /**

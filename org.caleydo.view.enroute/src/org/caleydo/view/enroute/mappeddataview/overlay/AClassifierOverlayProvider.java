@@ -7,7 +7,7 @@ package org.caleydo.view.enroute.mappeddataview.overlay;
 
 import org.caleydo.view.enroute.correlation.IDataClassifier;
 import org.caleydo.view.enroute.mappeddataview.AColumnBasedDataRenderer;
-import org.caleydo.view.enroute.mappeddataview.AColumnBasedDataRenderer.ColumnBasedDataOverlay;
+import org.caleydo.view.enroute.mappeddataview.AColumnBasedDataRenderer.IColumnBasedDataOverlay;
 
 /**
  * @author Christian
@@ -23,8 +23,8 @@ public abstract class AClassifierOverlayProvider implements IDataCellOverlayProv
 	}
 
 	@Override
-	public ColumnBasedDataOverlay getOverlay(AColumnBasedDataRenderer dataRenderer) {
-		return dataRenderer.new ColumnBasedDataOverlay(classifier);
+	public IColumnBasedDataOverlay getOverlay(AColumnBasedDataRenderer dataRenderer) {
+		return dataRenderer.new DataClassifierOverlay(classifier);
 	}
 
 }

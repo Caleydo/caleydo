@@ -5,6 +5,7 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview.overlay;
 
+import org.caleydo.view.enroute.correlation.IIDClassifier;
 import org.caleydo.view.enroute.mappeddataview.AColumnBasedDataRenderer;
 import org.caleydo.view.enroute.mappeddataview.AColumnBasedDataRenderer.IColumnBasedDataOverlay;
 import org.caleydo.view.enroute.mappeddataview.HistogramRenderer;
@@ -13,18 +14,32 @@ import org.caleydo.view.enroute.mappeddataview.SummaryBoxAndWhiskersRenderer;
 import org.caleydo.view.enroute.mappeddataview.SummaryBoxAndWhiskersRenderer.IBoxAndWhiskersOverlay;
 
 /**
- *
- * Interface for overlays on data cells during correlation calculation.
- *
  * @author Christian
  *
  */
-public interface IDataCellOverlayProvider {
+public class DerivedClassifierOverlayProvider implements IDataCellOverlayProvider {
 
-	public IColumnBasedDataOverlay getOverlay(AColumnBasedDataRenderer dataRenderer);
+	private final IIDClassifier classifier;
 
-	public IBoxAndWhiskersOverlay getOverlay(SummaryBoxAndWhiskersRenderer dataRenderer);
+	public DerivedClassifierOverlayProvider(IIDClassifier classifier) {
+		this.classifier = classifier;
+	}
 
-	public IHistogramOverlay getOverlay(HistogramRenderer dataRenderer);
+	@Override
+	public IColumnBasedDataOverlay getOverlay(AColumnBasedDataRenderer dataRenderer) {
+		return dataRenderer.new IDClassifierOverlay(classifier);
+	}
+
+	@Override
+	public IBoxAndWhiskersOverlay getOverlay(SummaryBoxAndWhiskersRenderer dataRenderer) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IHistogramOverlay getOverlay(HistogramRenderer dataRenderer) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

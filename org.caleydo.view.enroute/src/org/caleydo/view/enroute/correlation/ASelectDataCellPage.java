@@ -15,8 +15,11 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.view.enroute.correlation.widget.AClassificationWidget;
+import org.caleydo.view.enroute.correlation.widget.CategoricalClassificationWidget;
+import org.caleydo.view.enroute.correlation.widget.DataCellInfoWidget;
+import org.caleydo.view.enroute.correlation.widget.NumericalClassificationWidget;
 import org.eclipse.jface.dialogs.IPageChangedListener;
-import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -24,32 +27,28 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 
 /**
  * @author Christian
  *
  */
-public class SelectDataCellPage extends WizardPage implements IPageChangedListener, ICallback<IDataClassifier> {
+public abstract class ASelectDataCellPage extends WizardPage implements IPageChangedListener, ICallback<IDataClassifier> {
 
-	private final EventListenerManager listeners = EventListenerManagers.createSWTDirect();
+	protected final EventListenerManager listeners = EventListenerManagers.createSWTDirect();
 
-	private Label datasetLabel;
-	private Label groupLabel;
-	private Label rowLabel;
+	protected DataCellInfoWidget dataCellInfoWidget;
+	protected Group classificationGroup;
+	protected DataCellInfo info;
 
-	private Group classificationGroup;
-	DataCellInfo info;
-
-	private AClassificationWidget classificationWidget;
-	private List<Color> categoryColors;
+	protected AClassificationWidget classificationWidget;
+	protected List<Color> categoryColors;
 
 	/**
 	 * @param pageName
 	 * @param title
 	 * @param titleImage
 	 */
-	protected SelectDataCellPage(String pageName, String title, ImageDescriptor titleImage, List<Color> categoryColors) {
+	protected ASelectDataCellPage(String pageName, String title, ImageDescriptor titleImage, List<Color> categoryColors) {
 		super(pageName, title, titleImage);
 		listeners.register(this);
 		this.categoryColors = categoryColors;
@@ -62,22 +61,12 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(2, false));
 
-		Group dataInfoGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		dataInfoGroup.setText("Selected Data Block:");
-		dataInfoGroup.setLayout(new GridLayout(1, true));
-		dataInfoGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		Group infoGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		infoGroup.setText("Selected Data Block:");
+		infoGroup.setLayout(new GridLayout(1, true));
+		infoGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		datasetLabel = new Label(dataInfoGroup, SWT.NONE);
-		datasetLabel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		datasetLabel.setText("Dataset: ");
-
-		groupLabel = new Label(dataInfoGroup, SWT.NONE);
-		groupLabel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		groupLabel.setText("Group: ");
-
-		rowLabel = new Label(dataInfoGroup, SWT.NONE);
-		rowLabel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		rowLabel.setText("Row: ");
+		dataCellInfoWidget = new DataCellInfoWidget(infoGroup);
 
 		classificationGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		classificationGroup.setText("Data Classification:");
@@ -101,9 +90,7 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 		if (isCurrentPage()) {
 			info = event.getInfo();
 
-			datasetLabel.setText("Dataset: " + info.getDataDomainLabel());
-			groupLabel.setText("Group: " + info.getGroupLabel());
-			rowLabel.setText("Row: " + info.getRowLabel());
+			dataCellInfoWidget.updateInfo(info);
 
 			classificationGroup.setVisible(true);
 
@@ -143,7 +130,7 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 		}
 	}
 
-	private void initNewClassificationWidget() {
+	protected void initNewClassificationWidget() {
 		classificationWidget.addCallback(this);
 
 		classificationGroup.getShell().layout(true, true);
@@ -159,15 +146,6 @@ public class SelectDataCellPage extends WizardPage implements IPageChangedListen
 		super.dispose();
 	}
 
-	@Override
-	public void pageChanged(PageChangedEvent event) {
-		if (event.getSelectedPage() == getNextPage()) {
-
-			CalculateCorrelationWizard wizard = (CalculateCorrelationWizard) getWizard();
-			wizard.setPageInfo(this, info, classificationWidget.getClassifier());
-		}
-
-	}
 
 	@Override
 	public void on(IDataClassifier data) {

@@ -3,13 +3,18 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.view.enroute.correlation;
+package org.caleydo.view.enroute.correlation.fisher;
 
 import java.util.List;
 
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorBrewer;
+import org.caleydo.view.enroute.correlation.ASelectDataCellPage;
+import org.caleydo.view.enroute.correlation.DataCellInfo;
+import org.caleydo.view.enroute.correlation.EndCorrelationCalculationEvent;
+import org.caleydo.view.enroute.correlation.IDataClassifier;
+import org.caleydo.view.enroute.correlation.StartCorrelationCalculationEvent;
 import org.eclipse.jface.dialogs.IPageChangeProvider;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.Wizard;
@@ -21,10 +26,10 @@ import com.google.common.collect.Lists;
  * @author Christian
  *
  */
-public class CalculateCorrelationWizard extends Wizard {
+public class FishersExactTestWizard extends Wizard {
 
-	protected SelectDataCellPage firstDataCellPage;
-	protected SelectDataCellPage secondDataCellPage;
+	protected ASelectDataCellPage firstDataCellPage;
+	protected ASelectDataCellPage secondDataCellPage;
 
 	protected DataCellInfo info1;
 	protected DataCellInfo info2;
@@ -34,7 +39,7 @@ public class CalculateCorrelationWizard extends Wizard {
 	/**
 	 *
 	 */
-	public CalculateCorrelationWizard() {
+	public FishersExactTestWizard() {
 		setWindowTitle("Calculate Data Correlation using Fisher's Exact Test");
 	}
 
@@ -44,12 +49,13 @@ public class CalculateCorrelationWizard extends Wizard {
 		List<Color> seq1 = ColorBrewer.Oranges.get(3);
 		List<Color> seq2 = ColorBrewer.Blues.get(3);
 
-		firstDataCellPage = new SelectDataCellPage("FirstBlock", "Select First Data Block", null, Lists.newArrayList(
+		firstDataCellPage = new FishersSelectDataCellPage("FirstBlock", "Select First Data Block", null,
+				Lists.newArrayList(
 				seq1.get(0), seq1.get(2)));
-		secondDataCellPage = new SelectDataCellPage("SecondBlock", "Select Second Data Block", null,
+		secondDataCellPage = new FishersSelectDataCellPage("SecondBlock", "Select Second Data Block", null,
 				Lists.newArrayList(seq2.get(0), seq2.get(2)));
-		CorrelationResultPage resultPage = new CorrelationResultPage("Result",
-				"Resulting Contingency Matrix and P-Values", null);
+		FishersExactTestResultPage resultPage = new FishersExactTestResultPage("Result",
+				"Resulting Contingency Table and P-Values", null);
 
 		IWizardContainer wizardContainer = getContainer();
 		if (wizardContainer instanceof IPageChangeProvider) {
@@ -82,7 +88,7 @@ public class CalculateCorrelationWizard extends Wizard {
 		return super.performCancel();
 	}
 
-	public void setPageInfo(SelectDataCellPage page, DataCellInfo info, IDataClassifier classifier) {
+	public void setPageInfo(ASelectDataCellPage page, DataCellInfo info, IDataClassifier classifier) {
 		if (page == firstDataCellPage) {
 			info1 = info;
 			cell1Classifier = classifier;
