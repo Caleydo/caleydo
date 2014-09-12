@@ -11,6 +11,8 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.view.enroute.mappeddataview.overlay.CategoricalClassifierOverlayProvider;
+import org.caleydo.view.enroute.mappeddataview.overlay.IDataCellOverlayProvider;
 
 /**
  * @author Christian
@@ -54,6 +56,11 @@ public class CategoricalDataClassifier implements IDataClassifier {
 	 */
 	public CategoricalClassDescription<?> getClassDescription() {
 		return classDescription;
+	}
+
+	@Override
+	public IDataCellOverlayProvider getOverlayProvider() {
+		return new CategoricalClassifierOverlayProvider(this);
 	}
 
 }

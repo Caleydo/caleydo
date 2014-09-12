@@ -13,9 +13,9 @@ import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.view.enroute.correlation.IDataClassifier;
 import org.caleydo.view.enroute.correlation.NumericalDataClassifier;
 import org.caleydo.view.enroute.correlation.SimpleCategory;
+import org.caleydo.view.enroute.mappeddataview.overlay.IDataCellOverlayProvider;
 
 /**
  * @author Christian
@@ -34,17 +34,12 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 	public void render(GL2 gl, float x, float y, List<SelectionType> selectionTypes) {
 
 		if (contentRenderer.isHighlightMode && inferredNormalizeFunction != null) {
-			IDataClassifier classifier = contentRenderer.parentView.getCorrelationManager().getClassifier(
+			IDataCellOverlayProvider provider = contentRenderer.parentView.getCorrelationManager().getOverlayProvider(
 					contentRenderer);
-			if (classifier != null && classifier instanceof NumericalDataClassifier) {
-				NumericalDataClassifier cl = (NumericalDataClassifier) classifier;
-				float threshold = cl.getThreshold();
-				float normalizedThreshold = (float) inferredNormalizeFunction.apply(threshold);
-				float thresholdX = normalizedThreshold * x;
-				List<SimpleCategory> categories = classifier.getDataClasses();
-
-				renderColorOverlay(gl, categories.get(0).color.transparentCopy(0.6f), 0, 0, thresholdX, y);
-				renderColorOverlay(gl, categories.get(1).color.transparentCopy(0.6f), thresholdX, 0, x, y);
+			if (provider != null) {
+				IBoxAndWhiskersOverlay overlay = provider.getOverlay(this);
+				if (overlay != null)
+					overlay.render(gl, x, y);
 			}
 		}
 
@@ -157,6 +152,29 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 		if (v > 1)
 			return 1;
 		return v;
+	}
+
+	public interface IBoxAndWhiskersOverlay {
+		public void render(GL2 gl, float x, float y);
+	}
+
+	public class BoxAndWhiskersNumericalClassificationOverlay implements IBoxAndWhiskersOverlay {
+		private final NumericalDataClassifier classifier;
+
+		public BoxAndWhiskersNumericalClassificationOverlay(NumericalDataClassifier classifier) {
+			this.classifier = classifier;
+		}
+
+		@Override
+		public void render(GL2 gl, float x, float y) {
+			float threshold = classifier.getThreshold();
+			float normalizedThreshold = (float) inferredNormalizeFunction.apply(threshold);
+			float thresholdX = normalizedThreshold * x;
+			List<SimpleCategory> categories = classifier.getDataClasses();
+
+			renderColorOverlay(gl, categories.get(0).color.transparentCopy(0.6f), 0, 0, thresholdX, y);
+			renderColorOverlay(gl, categories.get(1).color.transparentCopy(0.6f), thresholdX, 0, x, y);
+		}
 	}
 
 }

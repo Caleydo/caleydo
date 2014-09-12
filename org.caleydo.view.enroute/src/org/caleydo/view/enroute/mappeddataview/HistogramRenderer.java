@@ -24,9 +24,9 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.correlation.CategoricalDataClassifier;
-import org.caleydo.view.enroute.correlation.IDataClassifier;
 import org.caleydo.view.enroute.correlation.NumericalDataClassifier;
 import org.caleydo.view.enroute.correlation.SimpleCategory;
+import org.caleydo.view.enroute.mappeddataview.overlay.IDataCellOverlayProvider;
 
 /**
  * @author Christian
@@ -159,35 +159,13 @@ public class HistogramRenderer extends ADataRenderer {
 	protected void renderCorrelationClassification(GL2 gl, int bucketNumber, float totalX, float barTop, float barBottom) {
 		if (contentRenderer.isHighlightMode) {
 
-			IDataClassifier classifier = contentRenderer.parentView.getCorrelationManager().getClassifier(
+			IDataCellOverlayProvider provider = contentRenderer.parentView.getCorrelationManager().getOverlayProvider(
 					contentRenderer);
-			if (classifier != null) {
-				if (histogram instanceof CategoricalHistogram && classifier instanceof CategoricalDataClassifier) {
-					CategoricalDataClassifier cl = (CategoricalDataClassifier) classifier;
-					CategoricalClassDescription<?> desc = cl.getClassDescription();
-					Object category = desc.getCategoryProperties().get(bucketNumber).getCategory();
-					SimpleCategory resultingCategory = cl.apply(category);
-					if (resultingCategory != null) {
-						renderColorOverlay(gl, resultingCategory.color.transparentCopy(0.6f), 0, barBottom, totalX,
-								barTop);
-					}
-				} else {
-					if (classifier instanceof NumericalDataClassifier && inferredNormalizeFunction != null) {
-						NumericalDataClassifier cl = (NumericalDataClassifier) classifier;
-						float threshold = cl.getThreshold();
-						float normalizedThreshold = (float) inferredNormalizeFunction.apply(threshold);
-
-						int thresholdBucketIndex = (int) (normalizedThreshold * histogram.size());
-
-						List<SimpleCategory> categories = classifier.getDataClasses();
-						renderColorOverlay(gl,
-								categories.get(bucketNumber <= thresholdBucketIndex ? 0 : 1).color
-										.transparentCopy(0.6f), 0, barBottom, totalX, barTop);
-
-					}
-				}
+			if (provider != null) {
+				IHistogramOverlay overlay = provider.getOverlay(this);
+				if (overlay != null)
+					overlay.render(gl, bucketNumber, barBottom, barTop, totalX);
 			}
-
 		}
 	}
 
@@ -227,6 +205,61 @@ public class HistogramRenderer extends ADataRenderer {
 
 		}, EPickingType.HISTOGRAM_BAR.name() + hashCode());
 		// }
+	}
+
+	public interface IHistogramOverlay {
+		public void render(GL2 gl, int bucketNumber, float barBottom, float barTop, float totalX);
+	}
+
+	public class CategoricalClassifierHistogramOverlay implements IHistogramOverlay {
+
+		private final CategoricalDataClassifier classifier;
+
+		public CategoricalClassifierHistogramOverlay(CategoricalDataClassifier classifier) {
+			this.classifier = classifier;
+		}
+
+		@Override
+		public void render(GL2 gl, int bucketNumber, float barBottom, float barTop, float totalX) {
+			if (histogram instanceof CategoricalHistogram) {
+				CategoricalClassDescription<?> desc = classifier.getClassDescription();
+				Object category = desc.getCategoryProperties().get(bucketNumber).getCategory();
+				SimpleCategory resultingCategory = classifier.apply(category);
+				if (resultingCategory != null) {
+					renderColorOverlay(gl, resultingCategory.color.transparentCopy(0.6f), 0, barBottom, totalX, barTop);
+				}
+			}
+
+		}
+
+	}
+
+	public class NumericalClassifierHistogramOverlay implements IHistogramOverlay {
+
+		private final NumericalDataClassifier classifier;
+
+		public NumericalClassifierHistogramOverlay(NumericalDataClassifier classifier) {
+			this.classifier = classifier;
+		}
+
+		@Override
+		public void render(GL2 gl, int bucketNumber, float barBottom, float barTop, float totalX) {
+			if (inferredNormalizeFunction != null) {
+
+				float threshold = classifier.getThreshold();
+				float normalizedThreshold = (float) inferredNormalizeFunction.apply(threshold);
+
+				int thresholdBucketIndex = (int) (normalizedThreshold * histogram.size());
+
+				List<SimpleCategory> categories = classifier.getDataClasses();
+				renderColorOverlay(gl,
+						categories.get(bucketNumber <= thresholdBucketIndex ? 0 : 1).color.transparentCopy(0.6f), 0,
+						barBottom, totalX, barTop);
+
+			}
+
+		}
+
 	}
 
 }

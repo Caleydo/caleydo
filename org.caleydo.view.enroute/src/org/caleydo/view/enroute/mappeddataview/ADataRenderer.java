@@ -31,5 +31,12 @@ public abstract class ADataRenderer implements IDataRenderer {
 
 	}
 
+	/**
+	 * @return the contentRenderer, see {@link #contentRenderer}
+	 */
+	public ContentRenderer getContentRenderer() {
+		return contentRenderer;
+	}
+
 
 }

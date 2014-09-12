@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.caleydo.core.util.color.Color;
+import org.caleydo.view.enroute.mappeddataview.overlay.IDataCellOverlayProvider;
+import org.caleydo.view.enroute.mappeddataview.overlay.NumericalClassifierOverlayProvider;
 
 import com.google.common.collect.Lists;
 
@@ -56,6 +58,11 @@ public class NumericalDataClassifier implements IDataClassifier {
 	@Override
 	public List<SimpleCategory> getDataClasses() {
 		return Collections.unmodifiableList(dataClasses);
+	}
+
+	@Override
+	public IDataCellOverlayProvider getOverlayProvider() {
+		return new NumericalClassifierOverlayProvider(this);
 	}
 
 }
