@@ -17,8 +17,9 @@ import org.caleydo.core.view.opengl.layout2.manage.GLLocation;
 import org.caleydo.view.histogram.v2.internal.IDistributionData;
 import org.caleydo.view.histogram.v2.internal.IDistributionData.DistributionEntry;
 
-import com.google.common.collect.DiscreteDomains;
-import com.google.common.collect.Ranges;
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.DiscreteDomain;
+import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 
 /**
@@ -105,7 +106,7 @@ public class BarDistributionElement extends ADistributionElement {
 		float max = EDimension.get(!vertical).select(getSize());
 		int from = (int) (location.getOffset() * data.size() / max);
 		int to = (int) (location.getOffset2() * data.size() / max);
-		return Ranges.closed(from, to).asSet(DiscreteDomains.integers());
+		return ContiguousSet.create(Range.closed(from, to), DiscreteDomain.integers());
 	}
 
 	/**

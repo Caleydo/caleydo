@@ -26,7 +26,6 @@ import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;
 import org.eclipse.nebula.widgets.nattable.config.DefaultNatTableStyleConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.IConfigRegistry;
 import org.eclipse.nebula.widgets.nattable.config.IConfiguration;
-import org.eclipse.nebula.widgets.nattable.coordinate.Range;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
 import org.eclipse.nebula.widgets.nattable.data.convert.IDisplayConverter;
 import org.eclipse.nebula.widgets.nattable.freeze.CompositeFreezeLayer;
@@ -65,8 +64,9 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
-import com.google.common.collect.DiscreteDomains;
-import com.google.common.collect.Ranges;
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.DiscreteDomain;
+import com.google.common.collect.Range;
 import com.google.common.primitives.Ints;
 
 /**
@@ -189,7 +189,7 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 
 			Collection<Integer> columns = Ints.asList(model.getSelectedColumnPositions());
 			Collection<Integer> rows = new TreeSet<>();
-			for (Range r : model.getSelectedRowPositions())
+			for (org.eclipse.nebula.widgets.nattable.coordinate.Range r : model.getSelectedRowPositions())
 				rows.addAll(r.getMembers());
 
 			int columnCount = data.getColumnCount();
@@ -471,8 +471,10 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 		}
 		if (!toKeep.isEmpty()) { // at least one visible otherwise show all
 			// all - visible = those to hide
-			Set<Integer> all = new HashSet<>(Ranges.closed(rowHidder.getRowPositionByIndex(0),
-					rowHidder.getRowPositionByIndex(data.getRowCount() - 1)).asSet(DiscreteDomains.integers()));
+
+			Set<Integer> all = new HashSet<>(ContiguousSet.create(
+					Range.closed(rowHidder.getRowPositionByIndex(0),
+							rowHidder.getRowPositionByIndex(data.getRowCount() - 1)), DiscreteDomain.integers()));
 			all.removeAll(toKeep);
 			rowHidder.hideRowPositions(all);
 		}
@@ -489,8 +491,10 @@ public class TableView extends ASingleTablePerspectiveSWTView implements ILayerL
 			toKeep.add(position);
 		}
 		if (!toKeep.isEmpty()) {
-			Set<Integer> all = new HashSet<>(Ranges.closed(columnHidder.getColumnPositionByIndex(0),
-					columnHidder.getColumnPositionByIndex(data.getColumnCount() - 1)).asSet(DiscreteDomains.integers()));
+			Set<Integer> all = new HashSet<>(ContiguousSet.create(
+					Range.closed(columnHidder.getColumnPositionByIndex(0),
+							columnHidder.getColumnPositionByIndex(data.getColumnCount() - 1)),
+					DiscreteDomain.integers()));
 			all.removeAll(toKeep);
 			columnHidder.hideColumnPositions(all);
 		}
