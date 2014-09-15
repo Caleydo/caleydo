@@ -109,7 +109,7 @@
    <extension
          point="org.caleydo.datadomain.genetic.GeneAction">
       <factory
-            class="org.caleydo.view.entourage.contextmenu.AddGeneActionFactory">
+            class="org.caleydo.view.entourage.contextmenu.EntourageGeneActionsFactory">
       </factory>
    </extension>
 

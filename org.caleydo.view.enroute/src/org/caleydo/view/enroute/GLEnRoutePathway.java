@@ -68,8 +68,9 @@ import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.view.enroute.correlation.CalculateCorrelationWizard;
 import org.caleydo.view.enroute.correlation.CorrelationManager;
+import org.caleydo.view.enroute.correlation.fisher.FishersExactTestWizard;
+import org.caleydo.view.enroute.correlation.wilcoxon.WilcoxonRankSumTestWizard;
 import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.event.RemoveGeneEvent;
@@ -81,6 +82,7 @@ import org.caleydo.view.enroute.path.SelectedPathUpdateStrategy;
 import org.caleydo.view.pathway.GLPathway;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -1079,26 +1081,36 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		return getMinPixelHeight();
 	}
 
-	public void onCalcCorrelationSignificance() {
+	public void applyFishersExactTest() {
 		Display.getDefault().asyncExec(new Runnable() {
 
 			@Override
 			public void run() {
-				CalculateCorrelationWizard wizard = new CalculateCorrelationWizard();
-
-				HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(Display.getDefault().getActiveShell(),
-						wizard) {
-					@Override
-					protected void setShellStyle(int newShellStyle) {
-						super.setShellStyle(SWT.CLOSE | SWT.MODELESS | SWT.BORDER | SWT.TITLE);
-					}
-				};
-
-				dialog.setBlockOnOpen(false);
-				dialog.open();
-
+				openWizardDialog(new FishersExactTestWizard());
 			}
 		});
+	}
+
+	public void applyWilcoxonRankSumTest() {
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				openWizardDialog(new WilcoxonRankSumTestWizard());
+			}
+		});
+	}
+
+	private void openWizardDialog(Wizard wizard) {
+		HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(Display.getDefault().getActiveShell(), wizard) {
+			@Override
+			protected void setShellStyle(int newShellStyle) {
+				super.setShellStyle(SWT.CLOSE | SWT.MODELESS | SWT.BORDER | SWT.TITLE);
+			}
+		};
+
+		dialog.setBlockOnOpen(false);
+		dialog.open();
 	}
 
 	public void addContentUpdateListener(IEnrouteContentUpdateListener listener) {

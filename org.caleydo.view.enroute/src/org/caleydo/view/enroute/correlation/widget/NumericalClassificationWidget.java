@@ -3,7 +3,7 @@
  * Copyright (c) The Caleydo Team. All rights reserved.
  * Licensed under the new BSD license, available at http://caleydo.org/license
  *******************************************************************************/
-package org.caleydo.view.enroute.correlation;
+package org.caleydo.view.enroute.correlation.widget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,10 @@ import java.util.List;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.DoubleFunctions;
 import org.caleydo.core.util.function.IInvertableDoubleFunction;
+import org.caleydo.view.enroute.correlation.DataCellInfo;
+import org.caleydo.view.enroute.correlation.IDataClassifier;
+import org.caleydo.view.enroute.correlation.NumericalDataClassifier;
+import org.caleydo.view.enroute.correlation.SimpleCategory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.ModifyEvent;

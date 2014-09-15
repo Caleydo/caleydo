@@ -6,26 +6,27 @@
 package org.caleydo.view.enroute.correlation;
 
 import org.caleydo.core.event.AEvent;
+import org.caleydo.view.enroute.mappeddataview.overlay.IDataCellOverlayProvider;
 
 /**
- * Tells a data cell to show the data classification that is used for correlation calculation.
+ * Tells a data cell to show the overlay that is used for correlation calculation.
  *
  * @author Christian
  *
  */
-public class ShowDataClassificationEvent extends AEvent {
+public class ShowOverlayEvent extends AEvent {
 
 	protected final boolean isFirstCell;
 	protected final DataCellInfo info;
-	protected final IDataClassifier classifier;
+	protected final IDataCellOverlayProvider overlay;
 
 	/**
 	 * @param dataCellID
-	 * @param classificationPredicate
+	 * @param overlay
 	 */
-	public ShowDataClassificationEvent(DataCellInfo info, IDataClassifier classifier, boolean isFirstCell) {
+	public ShowOverlayEvent(DataCellInfo info, IDataCellOverlayProvider overlay, boolean isFirstCell) {
 		this.info = info;
-		this.classifier = classifier;
+		this.overlay = overlay;
 		this.isFirstCell = isFirstCell;
 	}
 
@@ -44,8 +45,8 @@ public class ShowDataClassificationEvent extends AEvent {
 	/**
 	 * @return the classifier, see {@link #classifier}
 	 */
-	public IDataClassifier getClassifier() {
-		return classifier;
+	public IDataCellOverlayProvider getOverlay() {
+		return overlay;
 	}
 
 	/**

@@ -214,9 +214,9 @@ public class PathwayManager {
 	 *
 	 * @param idType
 	 * @param id
-	 * @return a Set of PathwayGraphs or null if no such mapping exists
+	 * @return a Set of PathwayGraphs
 	 */
-	public Set<PathwayGraph> getPathwayGraphsByGeneID(IDType idType, int id) {
+	public Set<PathwayGraph> getPathwayGraphsByGeneID(IDType idType, Object id) {
 
 		// set to avoid duplicate pathways
 		Set<PathwayGraph> pathways = new HashSet<PathwayGraph>();
@@ -224,13 +224,40 @@ public class PathwayManager {
 		IDMappingManager geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idType);
 		Set<Integer> vertexRepIDs = geneIDMappingManager.getIDAsSet(idType, PathwayVertexRep.getIdType(), id);
 		if (vertexRepIDs == null)
-			return null;
+			return pathways;
 		for (Integer vertexRepID : vertexRepIDs) {
 
 			pathways.add(PathwayItemManager.get().getPathwayVertexRep(vertexRepID).getPathway());
 		}
 
 		return pathways;
+	}
+
+	/**
+	 * Gets the subset of specified genes that is contained in the specified pathway
+	 *
+	 * @param pathway
+	 * @param geneIDs
+	 *            Gene IDs that should be looked for in the pathway
+	 * @param idType
+	 *            IDType of the specified gene IDs
+	 * @return The subset of specified Gene IDs that is contained by the pathway
+	 */
+	public static Set<Object> getContainedGenes(PathwayGraph pathway, Set<Object> geneIDs, IDType geneIDType) {
+		IDMappingManager geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(geneIDType);
+		IIDTypeMapper<Object, Integer> mapper = geneIDMappingManager.getIDTypeMapper(geneIDType,
+				PathwayVertexRep.getIdType());
+		Set<Object> result = new HashSet<>();
+		for (Object id : geneIDs) {
+			Set<Integer> vertexRepIDs = mapper.apply(id);
+			for (Integer vertexRepID : vertexRepIDs) {
+				if (PathwayItemManager.get().getPathwayVertexRep(vertexRepID).getPathway() == pathway) {
+					result.add(id);
+					break;
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -740,7 +767,7 @@ public class PathwayManager {
 	 *
 	 */
 	public static void createPathwayDatabases() {
-		for(EPathwayDatabaseType type: EPathwayDatabaseType.values()) {
+		for (EPathwayDatabaseType type : EPathwayDatabaseType.values()) {
 			type.load();
 		}
 	}

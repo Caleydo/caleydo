@@ -28,6 +28,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.MinSizeUpdateEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.base.Runnables;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ViewManager;
@@ -104,8 +105,12 @@ import org.caleydo.view.entourage.event.ShowPortalsEvent;
 import org.caleydo.view.entourage.pathway.PathwayViews;
 import org.caleydo.view.entourage.ranking.PathwayFilters;
 import org.caleydo.view.entourage.ranking.PathwayRankings;
+import org.caleydo.view.entourage.ranking.PathwayRankings.NumberOfGenesFromSetRanking;
+import org.caleydo.view.entourage.ranking.RankPathwaysByGenesDialog;
+import org.caleydo.view.entourage.ranking.RankPathwaysEvent;
 import org.caleydo.view.entourage.ranking.RankingElement;
 import org.caleydo.view.entourage.toolbar.ShowPortalsAction;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 
 public class GLEntourage extends AGLElementGLView implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView,
@@ -260,10 +265,16 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 	private ESampleMappingMode sampleMappingMode = ESampleMappingMode.ALL;
 
+	// enRoute Buttons
 	private GLButton useCenterLineButton = new GLButton(EButtonMode.CHECKBOX);
 	private GLButton fitEnrouteToViewWidthButton = new GLButton(EButtonMode.CHECKBOX);
 	private GLButton useColorMappingButton = new GLButton(EButtonMode.CHECKBOX);
 	private GLButton applyFishersTestButton = new GLButton(EButtonMode.BUTTON);
+	private GLButton applyWilcoxonTestButton = new GLButton(EButtonMode.BUTTON);
+
+	// Pathway List Buttons
+	private GLButton clearPathwayFiltersButton = new GLButton(EButtonMode.BUTTON);
+	private GLButton rankPathwaysByContainedGenesButton = new GLButton(EButtonMode.BUTTON);
 
 	/**
 	 * Constructor.
@@ -295,8 +306,33 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				.name()));
 		vertexSelectionManager.registerEventListeners();
 
+		initRankingWindow();
+
 		// column.add(dataMappingWindow);
 		// column.add(nodeInfoContainer);
+
+		// pathwayRow.setLayout(new GLMultiFormPathwayLayout(10, GLPadding.ZERO, this, pathwayRow));
+		pathwayRow.setLayout(pathwayLayout);
+
+		// pathwayRow.setDefaultDuration(Durations.fix(600));
+		// pathwayRow
+		// .setDefaultInTransition(new InOutTransitionBase(InOutInitializers.RIGHT, MoveTransitions.MOVE_LINEAR));
+		//
+		baseContainer.add(pathwayRow);
+
+		root.add(column);
+		root.add(augmentation);
+		//
+		// PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+		// "org.caleydo.datadomain.pathway");
+
+		// pathwaySelectionManager = new EventBasedSelectionManager(t
+
+		connectionBandRenderer = new ColoredConnectionBandRenderer();
+
+	}
+
+	protected void initRankingWindow() {
 		rankingWindow = new SideWindow("Pathways", this, SideWindow.SLIDE_LEFT_OUT);
 
 		rankingElement = new RankingElement(this);
@@ -318,27 +354,48 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		});
 		rankingWindow.addSlideInElement(slideInElement);
 		rankingWindow.setShowCloseButton(false);
+		rankingWindow.getTitleBar().add(rankingWindow.getTitleBar().size() - 1, rankPathwaysByContainedGenesButton);
+		rankingWindow.getTitleBar().add(rankingWindow.getTitleBar().size() - 1, clearPathwayFiltersButton);
+
 		rankingElement.setWindow(rankingWindow);
 		baseContainer.add(rankingWindow);
-		// pathwayRow.setLayout(new GLMultiFormPathwayLayout(10, GLPadding.ZERO, this, pathwayRow));
-		pathwayRow.setLayout(pathwayLayout);
 
-		// pathwayRow.setDefaultDuration(Durations.fix(600));
-		// pathwayRow
-		// .setDefaultInTransition(new InOutTransitionBase(InOutInitializers.RIGHT, MoveTransitions.MOVE_LINEAR));
-		//
-		baseContainer.add(pathwayRow);
+		rankPathwaysByContainedGenesButton.setSize(16, 16);
+		rankPathwaysByContainedGenesButton.setRenderer(GLRenderers.fillImage("resources/icons/sort_descending.png"));
 
-		root.add(column);
-		root.add(augmentation);
-		//
-		// PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
-		// "org.caleydo.datadomain.pathway");
+		rankPathwaysByContainedGenesButton.onPick(new APickingListener() {
+			@Override
+			protected void clicked(Pick pick) {
 
-		// pathwaySelectionManager = new EventBasedSelectionManager(t
+				Runnables.withinSWTThread(new Runnable() {
 
-		connectionBandRenderer = new ColoredConnectionBandRenderer();
+					@Override
+					public void run() {
+						RankPathwaysByGenesDialog dialog = new RankPathwaysByGenesDialog(Display.getDefault()
+								.getActiveShell());
+						if (dialog.open() == Window.OK) {
+							RankPathwaysEvent event = new RankPathwaysEvent(new NumberOfGenesFromSetRanking(dialog
+									.getSelectedGeneIDs(), dialog.getGeneIDType()));
+							EventPublisher.trigger(event);
+						}
+					}
+				}).run();
 
+			}
+		});
+		rankPathwaysByContainedGenesButton.setTooltip("Rank pathways by specified genes.");
+
+		clearPathwayFiltersButton.setSize(16, 16);
+		clearPathwayFiltersButton.setRenderer(GLRenderers.fillImage("resources/icons/filter_clear.png"));
+
+		clearPathwayFiltersButton.onPick(new APickingListener() {
+			@Override
+			protected void clicked(Pick pick) {
+				rankingElement.setFilter(PathwayFilters.NONE);
+				rankingElement.setRanking(null);
+			}
+		});
+		clearPathwayFiltersButton.setTooltip("Clear Filters and Rankings.");
 	}
 
 	protected HashSet<Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>> windowStubs = new HashSet<Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>>();
@@ -526,7 +583,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		fitEnrouteToViewWidthButton.setSize(16, 16);
 		fitEnrouteToViewWidthButton.setRenderer(GLRenderers.fillImage(loader
 				.getTexture("resources/icons/fit_to_width.png")));
-		fitEnrouteToViewWidthButton.setSelectedRenderer(GLRenderers.pushedImage(loader.getTexture("resources/icons/fit_to_width.png")));
+		fitEnrouteToViewWidthButton.setSelectedRenderer(GLRenderers.pushedImage(loader
+				.getTexture("resources/icons/fit_to_width.png")));
 		fitEnrouteToViewWidthButton.setSelected(enRoute.isFitWidthToScreen());
 
 		fitEnrouteToViewWidthButton.onPick(new APickingListener() {
@@ -540,8 +598,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		fitEnrouteToViewWidthButton.setTooltip("Toggle fit to view width.");
 
 		useColorMappingButton.setSize(16, 16);
-		useColorMappingButton.setRenderer(GLRenderers.fillImage(loader
-				.getTexture("resources/icons/toggle_color.png")));
+		useColorMappingButton.setRenderer(GLRenderers.fillImage(loader.getTexture("resources/icons/toggle_color.png")));
 		useColorMappingButton.setSelectedRenderer(GLRenderers.pushedImage(loader
 				.getTexture("resources/icons/toggle_color.png")));
 		useColorMappingButton.setSelected(enRoute.isUseColorMapping());
@@ -558,8 +615,8 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		useColorMappingButton.setTooltip("Toggle color mapping for numerical bars.");
 
 		applyFishersTestButton.setSize(16, 16);
-		applyFishersTestButton.setRenderer(GLRenderers.fillImage(loader
-.getTexture("resources/icons/fishers_test.png")));
+		applyFishersTestButton
+				.setRenderer(GLRenderers.fillImage(loader.getTexture("resources/icons/fishers_test.png")));
 		applyFishersTestButton.setSelectedRenderer(GLRenderers.pushedImage(loader
 				.getTexture("resources/icons/fishers_test.png")));
 		applyFishersTestButton.setSelected(enRoute.isUseColorMapping());
@@ -567,10 +624,26 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		applyFishersTestButton.onPick(new APickingListener() {
 			@Override
 			protected void clicked(Pick pick) {
-				enRoute.onCalcCorrelationSignificance();
+				enRoute.applyFishersExactTest();
 			}
 		});
-		applyFishersTestButton.setTooltip("Apply Fisher's exact Test.");
+		applyFishersTestButton.setTooltip("Apply Fisher's exact test.");
+
+		applyWilcoxonTestButton.setSize(16, 16);
+		applyWilcoxonTestButton
+.setRenderer(GLRenderers.fillImage(loader
+				.getTexture("resources/icons/wilcoxon_test.png")));
+		applyWilcoxonTestButton.setSelectedRenderer(GLRenderers.pushedImage(loader
+				.getTexture("resources/icons/fishers_test.png")));
+		applyWilcoxonTestButton.setSelected(enRoute.isUseColorMapping());
+
+		applyWilcoxonTestButton.onPick(new APickingListener() {
+			@Override
+			protected void clicked(Pick pick) {
+				enRoute.applyWilcoxonRankSumTest();
+			}
+		});
+		applyWilcoxonTestButton.setTooltip("Apply Wilcoxon's rank-sum test.");
 	}
 
 	/**
@@ -1094,13 +1167,15 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 							fitEnrouteToViewWidthButton);
 					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1, useColorMappingButton);
 					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1, useCenterLineButton);
-					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1,
-							applyFishersTestButton);
+					pathInfo.window.getTitleBar().add(pathInfo.window.getTitleBar().size() - 1, applyFishersTestButton);
+					pathInfo.window.getTitleBar()
+							.add(pathInfo.window.getTitleBar().size() - 1, applyWilcoxonTestButton);
 				} else {
 					pathInfo.window.getTitleBar().remove(fitEnrouteToViewWidthButton);
 					pathInfo.window.getTitleBar().remove(useColorMappingButton);
 					pathInfo.window.getTitleBar().remove(useCenterLineButton);
 					pathInfo.window.getTitleBar().remove(applyFishersTestButton);
+					pathInfo.window.getTitleBar().remove(applyWilcoxonTestButton);
 				}
 			}
 		}
@@ -1246,8 +1321,6 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 	public void onShowPathwaysWithGene(LoadPathwaysByGeneEvent event) {
 		Set<PathwayGraph> pathways = PathwayManager.get()
 				.getPathwayGraphsByGeneID(event.getIdType(), event.getGeneID());
-		if (pathways == null)
-			pathways = new HashSet<>();
 		rankingElement.setFilter(new PathwayFilters.PathwaySetFilter(pathways));
 
 	}
@@ -1509,6 +1582,12 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		// }
 		// }
 		// return wasHighlighted;
+	}
+
+	@ListenTo
+	public void onRankPathways(RankPathwaysEvent event) {
+		rankingElement.setRanking(event.getRanking());
+		isLayoutDirty = true;
 	}
 
 	private boolean addPortalHighlightRenderer(PathwayVertexRep vertexRep, PathwayMultiFormInfo info) {

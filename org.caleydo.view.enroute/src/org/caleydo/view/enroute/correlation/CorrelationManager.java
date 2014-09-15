@@ -11,6 +11,7 @@ import java.util.List;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.mappeddataview.ContentRenderer;
+import org.caleydo.view.enroute.mappeddataview.overlay.IDataCellOverlayProvider;
 
 /**
  * @author Christian
@@ -21,8 +22,8 @@ public class CorrelationManager {
 	private boolean isCorrelationCalculationActive = false;
 	private DataCellInfo dataCellInfo1;
 	private DataCellInfo dataCellInfo2;
-	private IDataClassifier classifier1;
-	private IDataClassifier classifier2;
+	private IDataCellOverlayProvider overlay1;
+	private IDataCellOverlayProvider overlay2;
 
 	private final GLEnRoutePathway enRoute;
 
@@ -47,17 +48,17 @@ public class CorrelationManager {
 	}
 
 	/**
-	 *
-	 *
+	 * 
+	 * 
 	 * @param contentRenderer
-	 * @return The classifier that was assigned to the data cell of the content renderer. Can be null.
+	 * @return The overlay that was assigned to the data cell of the content renderer. Can be null.
 	 */
-	public IDataClassifier getClassifier(ContentRenderer contentRenderer) {
+	public IDataCellOverlayProvider getOverlayProvider(ContentRenderer contentRenderer) {
 
 		if (dataCellInfo1 != null && isSelectedDataCell(contentRenderer, dataCellInfo1)) {
-			return classifier1;
+			return overlay1;
 		} else if (dataCellInfo2 != null && isSelectedDataCell(contentRenderer, dataCellInfo2)) {
-			return classifier2;
+			return overlay2;
 		}
 		return null;
 	}
@@ -93,15 +94,23 @@ public class CorrelationManager {
 	}
 
 	@ListenTo
-	public void onShowDataClassification(ShowDataClassificationEvent event) {
+	public void onShowDataClassification(ShowOverlayEvent event) {
 		if (event.isFirstCell) {
 			this.dataCellInfo1 = event.getInfo();
-			this.classifier1 = event.getClassifier();
+			this.overlay1 = event.getOverlay();
 		} else {
 			this.dataCellInfo2 = event.getInfo();
-			this.classifier2 = event.getClassifier();
+			this.overlay2 = event.getOverlay();
 		}
 		enRoute.setDisplayListDirty();
+	}
+
+	public static void b(NumericalDataClassifier c) {
+
+	}
+
+	public static void b(CategoricalDataClassifier c) {
+
 	}
 
 	@ListenTo
@@ -115,8 +124,8 @@ public class CorrelationManager {
 		isCorrelationCalculationActive = false;
 		dataCellInfo1 = null;
 		dataCellInfo2 = null;
-		classifier1 = null;
-		classifier2 = null;
+		overlay1 = null;
+		overlay2 = null;
 		enRoute.setDisplayListDirty();
 	}
 

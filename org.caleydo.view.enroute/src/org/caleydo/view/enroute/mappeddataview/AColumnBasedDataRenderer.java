@@ -28,7 +28,9 @@ import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.correlation.IDataClassifier;
+import org.caleydo.view.enroute.correlation.IIDClassifier;
 import org.caleydo.view.enroute.correlation.SimpleCategory;
+import org.caleydo.view.enroute.mappeddataview.overlay.IDataCellOverlayProvider;
 
 /**
  * @author Christian
@@ -81,15 +83,12 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 				renderColumnBar(gl, columnID, xIncrement, y, selectionTypes, useShading);
 
 				if (contentRenderer.isHighlightMode) {
-					IDataClassifier classifier = contentRenderer.parentView.getCorrelationManager().getClassifier(
-							contentRenderer);
-					if (classifier != null) {
-						Object rawValue = contentRenderer.dataDomain.getRaw(contentRenderer.resolvedRowIDType,
-								contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, columnID);
-						SimpleCategory category = classifier.apply(rawValue);
-						if (category != null) {
-							renderColorColumn(gl, category.color.transparentCopy(0.6f), xIncrement, y);
-						}
+					IDataCellOverlayProvider provider = contentRenderer.parentView.getCorrelationManager()
+							.getOverlayProvider(contentRenderer);
+					if (provider != null) {
+						IColumnBasedDataOverlay overlay = provider.getOverlay(this);
+						if (overlay != null)
+							overlay.render(gl, columnID, xIncrement, y);
 					}
 				}
 			}
@@ -101,7 +100,7 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 
 	}
 
-	protected void renderColorColumn(GL2 gl, Color color, float x, float y) {
+	public void renderColorColumn(GL2 gl, Color color, float x, float y) {
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glBegin(GL2GL3.GL_QUADS);
@@ -264,5 +263,43 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 			}
 
 		}, EPickingType.SAMPLE.name() + hashCode());
+	}
+
+	public interface IColumnBasedDataOverlay {
+		public void render(GL2 gl, int columnID, float xIncrement, float y);
+	}
+
+	public class DataClassifierOverlay implements IColumnBasedDataOverlay {
+		private final IDataClassifier classifier;
+
+		public DataClassifierOverlay(IDataClassifier classifier) {
+			this.classifier = classifier;
+		}
+
+		@Override
+		public void render(GL2 gl, int columnID, float xIncrement, float y) {
+			Object rawValue = contentRenderer.dataDomain.getRaw(contentRenderer.resolvedRowIDType,
+					contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, columnID);
+			SimpleCategory category = classifier.apply(rawValue);
+			if (category != null) {
+				renderColorColumn(gl, category.color.transparentCopy(0.6f), xIncrement, y);
+			}
+		}
+	}
+
+	public class IDClassifierOverlay implements IColumnBasedDataOverlay {
+		private final IIDClassifier classifier;
+
+		public IDClassifierOverlay(IIDClassifier classifier) {
+			this.classifier = classifier;
+		}
+
+		@Override
+		public void render(GL2 gl, int columnID, float xIncrement, float y) {
+			SimpleCategory category = classifier.apply(columnID, contentRenderer.resolvedColumnIDType);
+			if (category != null) {
+				renderColorColumn(gl, category.color.transparentCopy(0.6f), xIncrement, y);
+			}
+		}
 	}
 }
