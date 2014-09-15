@@ -164,12 +164,12 @@ public abstract class AGLCanvas implements IGLCanvas {
 
 	@Override
 	public final float getDIPWidth() {
-		return dip(asGLAutoDrawAble().getWidth());
+		return dip(asGLAutoDrawAble().getSurfaceWidth());
 	}
 
 	@Override
 	public final float getDIPHeight() {
-		return dip(asGLAutoDrawAble().getHeight());
+		return dip(asGLAutoDrawAble().getSurfaceHeight());
 	}
 
 	private float dip(int px) {
@@ -232,7 +232,7 @@ public abstract class AGLCanvas implements IGLCanvas {
 				final int count = drawable.getGLEventListenerCount();
 				for (int i = 0; i < count; ++i) {
 					GLEventListener l = drawable.getGLEventListener(i);
-					l.reshape(drawable, 0, 0, drawable.getWidth(), drawable.getHeight());
+					l.reshape(drawable, 0, 0, drawable.getSurfaceWidth(), drawable.getSurfaceHeight());
 				}
 				return true;
 			}

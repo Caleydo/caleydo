@@ -20,6 +20,8 @@ import jogamp.opengl.FPSCounterImpl;
 
 import org.caleydo.core.util.logging.Logger;
 
+import com.jogamp.opengl.util.AnimatorBase.UncaughtAnimatorException;
+
 /**
  * custom animator implementation with newer techniques
  *
@@ -45,6 +47,8 @@ public class MyAnimator implements GLAnimatorControl, Runnable {
 
 	private boolean started = false;
 	private ScheduledFuture<?> animating;
+
+	private UncaughtExceptionHandler uncaughtExceptionHandler;
 
 	public MyAnimator(int fps) {
 		this.fps = fps;
@@ -179,6 +183,9 @@ public class MyAnimator implements GLAnimatorControl, Runnable {
 					return;
 				try {
 					drawable.display();
+				} catch (UncaughtAnimatorException e) {
+					this.handleUncaughtException(e);
+					log.error("display error: " + drawable, e);
 				} catch (RuntimeException e) {
 					log.error("display error: " + drawable, e);
 					if (Thread.interrupted() || e.getCause() instanceof InterruptedException)
@@ -201,6 +208,30 @@ public class MyAnimator implements GLAnimatorControl, Runnable {
 	public void remove(GLAutoDrawable drawable) {
 		drawable.setAnimator(null);
 		drawables.remove(drawable);
+	}
+
+	@Override
+	public final UncaughtExceptionHandler getUncaughtExceptionHandler() {
+		return uncaughtExceptionHandler;
+	}
+
+	@Override
+	public final void setUncaughtExceptionHandler(final UncaughtExceptionHandler handler) {
+		uncaughtExceptionHandler = handler;
+	}
+
+	/**
+	 * Should be called in case of an uncaught exception from within the animator thread to flush all animator
+	 */
+	protected final synchronized void handleUncaughtException(final UncaughtAnimatorException ue) {
+		if (null != uncaughtExceptionHandler) {
+			try {
+				uncaughtExceptionHandler.uncaughtException(this, ue.getGLAutoDrawable(), ue.getCause());
+			} catch (final Throwable t) { /* ignore intentionally */
+			}
+		} else {
+			throw ue;
+		}
 	}
 
 }

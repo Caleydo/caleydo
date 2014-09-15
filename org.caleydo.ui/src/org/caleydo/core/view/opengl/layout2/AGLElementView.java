@@ -132,7 +132,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public void initialize() {
 		super.initialize();
-		
+
 		ViewManager.get().registerView(this, true);
 		// already here after we are registered and before the maybe first time view
 		eventListeners.register(this);
@@ -228,7 +228,8 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		GL2 gl = drawable.getGL().getGL2();
 		if (!wasVisible) {
 			//set the viewport again for mac bug 1476
-			gl.glViewport(0,0,canvas.asGLAutoDrawAble().getWidth(), canvas.asGLAutoDrawAble().getHeight());
+			gl.glViewport(0, 0, canvas.asGLAutoDrawAble().getSurfaceWidth(), canvas.asGLAutoDrawAble()
+					.getSurfaceHeight());
 			wasVisible = true;
 		}
 

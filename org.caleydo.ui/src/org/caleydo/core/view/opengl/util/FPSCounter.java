@@ -55,7 +55,7 @@ public class FPSCounter {
 	/**
 	 * Creates a new FPSCounter with the given font size. An OpenGL2 context must be current at the time the
 	 * constructor is called.
-	 * 
+	 *
 	 * @param drawable
 	 *            the drawable to render the text to
 	 * @param textSize
@@ -72,7 +72,7 @@ public class FPSCounter {
 	/**
 	 * Creates a new FPSCounter with the given font. An OpenGL2 context must be current at the time the
 	 * constructor is called.
-	 * 
+	 *
 	 * @param drawable
 	 *            the drawable to render the text to
 	 * @param font
@@ -89,7 +89,7 @@ public class FPSCounter {
 	/**
 	 * Creates a new FPSCounter with the given font and rendering attributes. An OpenGL2 context must be
 	 * current at the time the constructor is called.
-	 * 
+	 *
 	 * @param drawable
 	 *            the drawable to render the text to
 	 * @param font
@@ -133,7 +133,7 @@ public class FPSCounter {
 	 * 0.0f - 1.0f. The alpha component, if used, does not need to be premultiplied into the color channels as
 	 * described in the documentation for {@link Texture Texture}, although premultiplied colors are used
 	 * internally. The default color is opaque white.
-	 * 
+	 *
 	 * @param r
 	 *            the red component of the new color
 	 * @param g
@@ -172,19 +172,19 @@ public class FPSCounter {
 		}
 
 		if (fpsText != null) {
-			renderer.beginRendering(drawable.getWidth(), drawable.getHeight());
+			renderer.beginRendering(drawable.getSurfaceWidth(), drawable.getSurfaceHeight());
 			// Figure out the location at which to draw the text
 			int x = 0;
 			int y = 0;
 			switch (textLocation) {
 				case UPPER_LEFT:
 					x = fpsOffset;
-					y = drawable.getHeight() - fpsHeight - fpsOffset;
+				y = drawable.getSurfaceHeight() - fpsHeight - fpsOffset;
 					break;
 
 				case UPPER_RIGHT:
-					x = drawable.getWidth() - fpsWidth - fpsOffset;
-					y = drawable.getHeight() - fpsHeight - fpsOffset;
+				x = drawable.getSurfaceWidth() - fpsWidth - fpsOffset;
+				y = drawable.getSurfaceHeight() - fpsHeight - fpsOffset;
 					break;
 
 				case LOWER_LEFT:
@@ -193,7 +193,7 @@ public class FPSCounter {
 					break;
 
 				case LOWER_RIGHT:
-					x = drawable.getWidth() - fpsWidth - fpsOffset;
+				x = drawable.getSurfaceWidth() - fpsWidth - fpsOffset;
 					y = fpsOffset;
 					break;
 			}

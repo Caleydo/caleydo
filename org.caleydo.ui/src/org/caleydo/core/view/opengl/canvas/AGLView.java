@@ -361,8 +361,8 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 			if (!wasVisible) {
 				// set the viewport again for mac bug 1476
-				gl.glViewport(0, 0, parentGLCanvas.asGLAutoDrawAble().getWidth(), parentGLCanvas.asGLAutoDrawAble()
-						.getHeight());
+				gl.glViewport(0, 0, parentGLCanvas.asGLAutoDrawAble().getSurfaceWidth(), parentGLCanvas
+						.asGLAutoDrawAble().getSurfaceHeight());
 				wasVisible = true;
 			}
 			GLGraphics.checkError(gl);

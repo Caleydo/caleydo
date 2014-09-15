@@ -171,7 +171,6 @@ public class GLGraphics {
 			StackTraceElement caller = stackTrace[1];
 			GLU glu = new GLU();
 			System.err.println(caller.toString() + " " + error + " " + glu.gluErrorString(error) + " ");
-			glu.destroy();
 			return true;
 		}
 		return false;

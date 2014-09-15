@@ -161,7 +161,7 @@ final class NEWTMouseAdapter implements MouseListener {
 			Object source = event.getSource();
 			if (source instanceof GLDrawable) {
 				GLDrawable d = (GLDrawable) source;
-				size = new Dimension(d.getWidth(), d.getHeight());
+				size = new Dimension(d.getSurfaceWidth(), d.getSurfaceHeight());
 			} else if (source instanceof Composite) {
 				Composite d = (Composite) source;
 				size = new Dimension(d.getSize().x, d.getSize().y);

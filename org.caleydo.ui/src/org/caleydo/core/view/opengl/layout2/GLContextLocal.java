@@ -150,7 +150,6 @@ public class GLContextLocal {
 		pool.deleteAll(gl);
 
 		if (this.glu != null) {
-			this.glu.destroy();
 			this.glu = null;
 		}
 		if (this.tesselationRenderer != null) {
