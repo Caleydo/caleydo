@@ -103,7 +103,7 @@ public class WilcoxonSelectTargetDataCellPage extends WizardPage implements IPag
 			Object description = info.dataDomain.getDataClassSpecificDescription(info.rowIDType, info.rowID,
 					info.columnPerspective.getIdType(), info.columnPerspective.getVirtualArray().get(0));
 
-			if (description instanceof CategoricalClassDescription) {
+			if (description != null && description instanceof CategoricalClassDescription) {
 
 				CategoricalClassDescription<?> desc = (CategoricalClassDescription<?>) description;
 				if (desc.getCategoryType() == ECategoryType.NOMINAL) {

@@ -578,7 +578,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				enRoute.setLayoutDirty();
 			}
 		});
-		useCenterLineButton.setTooltip("Toggle center line alignment for centered data.");
+		useCenterLineButton.setTooltip("Toggle center line alignment for centered data");
 
 		fitEnrouteToViewWidthButton.setSize(16, 16);
 		fitEnrouteToViewWidthButton.setRenderer(GLRenderers.fillImage(loader
@@ -595,7 +595,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				EventPublisher.trigger(new FitToViewWidthEvent(!fit));
 			}
 		});
-		fitEnrouteToViewWidthButton.setTooltip("Toggle fit to view width.");
+		fitEnrouteToViewWidthButton.setTooltip("Toggle fit to view width");
 
 		useColorMappingButton.setSize(16, 16);
 		useColorMappingButton.setRenderer(GLRenderers.fillImage(loader.getTexture("resources/icons/toggle_color.png")));
@@ -612,7 +612,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				enRoute.setLayoutDirty();
 			}
 		});
-		useColorMappingButton.setTooltip("Toggle color mapping for numerical bars.");
+		useColorMappingButton.setTooltip("Toggle color mapping for numerical bars");
 
 		applyFishersTestButton.setSize(16, 16);
 		applyFishersTestButton
@@ -627,7 +627,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				enRoute.applyFishersExactTest();
 			}
 		});
-		applyFishersTestButton.setTooltip("Apply Fisher's exact test.");
+		applyFishersTestButton.setTooltip("Apply Fisher's exact test");
 
 		applyWilcoxonTestButton.setSize(16, 16);
 		applyWilcoxonTestButton
@@ -643,7 +643,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				enRoute.applyWilcoxonRankSumTest();
 			}
 		});
-		applyWilcoxonTestButton.setTooltip("Apply Wilcoxon's rank-sum test.");
+		applyWilcoxonTestButton.setTooltip("Apply Wilcoxon's rank-sum test");
 	}
 
 	/**
