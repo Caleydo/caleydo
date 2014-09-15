@@ -17,7 +17,6 @@ import org.caleydo.view.enroute.correlation.ASelectDataCellPage;
 import org.caleydo.view.enroute.correlation.DataCellInfo;
 import org.caleydo.view.enroute.correlation.EndCorrelationCalculationEvent;
 import org.caleydo.view.enroute.correlation.IDataClassifier;
-import org.caleydo.view.enroute.correlation.IIDClassifier;
 import org.caleydo.view.enroute.correlation.SimpleCategory;
 import org.caleydo.view.enroute.correlation.SimpleIDClassifier;
 import org.caleydo.view.enroute.correlation.StartCorrelationCalculationEvent;
@@ -40,7 +39,7 @@ public class WilcoxonRankSumTestWizard extends Wizard {
 	protected DataCellInfo info1;
 	protected DataCellInfo info2;
 	protected IDataClassifier cell1Classifier;
-	protected IIDClassifier derivedIDClassifier;
+	protected SimpleIDClassifier derivedIDClassifier;
 
 	/**
 	 *
@@ -57,7 +56,7 @@ public class WilcoxonRankSumTestWizard extends Wizard {
 		sourceDataCellPage = new WilcoxonSelectSourceDataCellPage("FirstBlock", "Select First Data Block", null,
 				Lists.newArrayList(seq1.get(0), seq1.get(2)));
 		targetDataCellPage = new WilcoxonSelectTargetDataCellPage("SecondBlock", "Select Second Data Block", null);
-		WilcoxonResultPage resultPage = new WilcoxonResultPage("Results", "Results", null);
+		WilcoxonResultPage resultPage = new WilcoxonResultPage("Results", "Summary and Results", null);
 
 		IWizardContainer wizardContainer = getContainer();
 		if (wizardContainer instanceof IPageChangeProvider) {
@@ -157,7 +156,7 @@ public class WilcoxonRankSumTestWizard extends Wizard {
 	/**
 	 * @return the derivedIDClassifier, see {@link #derivedIDClassifier}
 	 */
-	public IIDClassifier getDerivedIDClassifier() {
+	public SimpleIDClassifier getDerivedIDClassifier() {
 		return derivedIDClassifier;
 	}
 

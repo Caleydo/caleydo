@@ -72,4 +72,18 @@ public class SimpleIDClassifier implements IIDClassifier {
 		return new DerivedClassifierOverlayProvider(this);
 	}
 
+	/**
+	 * @return the class1IDs, see {@link #class1IDs}
+	 */
+	public Set<Object> getClass1IDs() {
+		return class1IDs;
+	}
+
+	/**
+	 * @return the class2IDs, see {@link #class2IDs}
+	 */
+	public Set<Object> getClass2IDs() {
+		return class2IDs;
+	}
+
 }
