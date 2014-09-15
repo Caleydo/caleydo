@@ -121,7 +121,6 @@ public class WilcoxonResultPage extends WizardPage implements IPageChangedListen
 			WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
 			DataCellInfo info = wizard.getInfo2();
 			SimpleIDClassifier derivedClassifier = wizard.getDerivedIDClassifier();
-			// TODO: implement rank sum test
 			MannWhitneyUTest test = new MannWhitneyUTest(NaNStrategy.REMOVED, TiesStrategy.AVERAGE);
 			double[] values1 = getSampleValues(info, derivedClassifier.getClass1IDs());
 			double[] values2 = getSampleValues(info, derivedClassifier.getClass2IDs());

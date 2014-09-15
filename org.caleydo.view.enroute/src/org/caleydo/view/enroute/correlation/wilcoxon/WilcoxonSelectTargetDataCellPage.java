@@ -5,15 +5,19 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.correlation.wilcoxon;
 
+import java.util.EnumSet;
+
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.view.enroute.correlation.CellSelectionValidators;
 import org.caleydo.view.enroute.correlation.DataCellInfo;
 import org.caleydo.view.enroute.correlation.DataCellSelectionEvent;
 import org.caleydo.view.enroute.correlation.ShowOverlayEvent;
+import org.caleydo.view.enroute.correlation.UpdateDataCellSelectionValidatorEvent;
 import org.caleydo.view.enroute.correlation.widget.DataCellInfoWidget;
 import org.caleydo.view.enroute.correlation.widget.DerivedClassificationWidget;
 import org.eclipse.jface.dialogs.IPageChangedListener;
@@ -25,6 +29,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 
 /**
  * @author Christian
@@ -78,8 +85,14 @@ public class WilcoxonSelectTargetDataCellPage extends WizardPage implements IPag
 	public void pageChanged(PageChangedEvent event) {
 		WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
 		if (event.getSelectedPage() == this) {
-			if (classificationWidget != null) {
 
+			Predicate<DataCellInfo> validator = Predicates.and(
+					CellSelectionValidators.nonEmptyCellValidator(),
+					Predicates.or(CellSelectionValidators.numericalValuesValidator(),
+							CellSelectionValidators.categoricalValuesValidator(EnumSet.of(ECategoryType.ORDINAL))));
+
+			EventPublisher.trigger(new UpdateDataCellSelectionValidatorEvent(validator));
+			if (classificationWidget != null) {
 				classificationWidget.setClassifier(wizard.getDerivedIDClassifier());
 				EventPublisher.trigger(new ShowOverlayEvent(info, classificationWidget.getClassifier()
 						.getOverlayProvider(), getWizard().getStartingPage() == this));
@@ -130,7 +143,6 @@ public class WilcoxonSelectTargetDataCellPage extends WizardPage implements IPag
 					classificationWidget.getClassifier().getOverlayProvider(), getWizard().getStartingPage() == this));
 		}
 	}
-
 
 	@Override
 	public void dispose() {

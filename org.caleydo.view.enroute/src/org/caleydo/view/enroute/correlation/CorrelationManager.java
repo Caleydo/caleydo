@@ -13,6 +13,8 @@ import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.mappeddataview.ContentRenderer;
 import org.caleydo.view.enroute.mappeddataview.overlay.IDataCellOverlayProvider;
 
+import com.google.common.base.Predicate;
+
 /**
  * @author Christian
  *
@@ -22,8 +24,9 @@ public class CorrelationManager {
 	private boolean isCorrelationCalculationActive = false;
 	private DataCellInfo dataCellInfo1;
 	private DataCellInfo dataCellInfo2;
-	private IDataCellOverlayProvider overlay1;
-	private IDataCellOverlayProvider overlay2;
+	private IDataCellOverlayProvider overlayProvider1;
+	private IDataCellOverlayProvider overlayProvider2;
+	private Predicate<DataCellInfo> dataCellSelectionValidator;
 
 	private final GLEnRoutePathway enRoute;
 
@@ -48,17 +51,17 @@ public class CorrelationManager {
 	}
 
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * @param contentRenderer
 	 * @return The overlay that was assigned to the data cell of the content renderer. Can be null.
 	 */
 	public IDataCellOverlayProvider getOverlayProvider(ContentRenderer contentRenderer) {
 
 		if (dataCellInfo1 != null && isSelectedDataCell(contentRenderer, dataCellInfo1)) {
-			return overlay1;
+			return overlayProvider1;
 		} else if (dataCellInfo2 != null && isSelectedDataCell(contentRenderer, dataCellInfo2)) {
-			return overlay2;
+			return overlayProvider2;
 		}
 		return null;
 	}
@@ -97,20 +100,22 @@ public class CorrelationManager {
 	public void onShowDataClassification(ShowOverlayEvent event) {
 		if (event.isFirstCell) {
 			this.dataCellInfo1 = event.getInfo();
-			this.overlay1 = event.getOverlay();
+			this.overlayProvider1 = event.getOverlay();
 		} else {
 			this.dataCellInfo2 = event.getInfo();
-			this.overlay2 = event.getOverlay();
+			this.overlayProvider2 = event.getOverlay();
 		}
 		enRoute.setDisplayListDirty();
 	}
 
-	public static void b(NumericalDataClassifier c) {
-
-	}
-
-	public static void b(CategoricalDataClassifier c) {
-
+	/**
+	 * @param info
+	 * @return True, if the specified data cell represents a valid selection for the current state.
+	 */
+	public boolean isDataCellSelectionValid(DataCellInfo info) {
+		if (dataCellSelectionValidator == null)
+			return false;
+		return dataCellSelectionValidator.apply(info);
 	}
 
 	@ListenTo
@@ -124,9 +129,15 @@ public class CorrelationManager {
 		isCorrelationCalculationActive = false;
 		dataCellInfo1 = null;
 		dataCellInfo2 = null;
-		overlay1 = null;
-		overlay2 = null;
+		overlayProvider1 = null;
+		overlayProvider2 = null;
+		dataCellSelectionValidator = null;
 		enRoute.setDisplayListDirty();
+	}
+
+	@ListenTo
+	public void onUpdateDataCellSelectionValidator(UpdateDataCellSelectionValidatorEvent event) {
+		dataCellSelectionValidator = event.getValidator();
 	}
 
 }

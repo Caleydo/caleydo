@@ -84,7 +84,7 @@ public class ContentRenderer extends ALayoutRenderer implements IDisposeListener
 	private SelectionColorCalculator colorCalculator = new SelectionColorCalculator(new Color());
 
 	public ContentRenderer(IDType rowIDType, Integer rowID, IDType resolvedRowIDType, Integer resolvedRowID,
-			ATableBasedDataDomain dataDomain, Perspective columnPerspective, GLEnRoutePathway parentView,
+			ATableBasedDataDomain dataDomain, Perspective columnPerspective, final GLEnRoutePathway parentView,
 			MappedDataRenderer parent, Group group, boolean isHighlightMode, Perspective foreignColumnPerspective,
 			int cellID) {
 
@@ -119,31 +119,44 @@ public class ContentRenderer extends ALayoutRenderer implements IDisposeListener
 			parent.pickingListenerManager.addIDPickingListener(new APickingListener() {
 				@Override
 				protected void mouseOver(Pick pick) {
-					dataCellSelectionManager.addToType(SelectionType.MOUSE_OVER, ContentRenderer.this.cellID);
-					dataCellSelectionManager.triggerSelectionUpdateEvent();
-					ContentRenderer.this.parentView.setDisplayListDirty();
+					if (parentView.getCorrelationManager().isCorrelationCalculationActive()
+							&& parentView.getCorrelationManager().isDataCellSelectionValid(getInfo())) {
+						dataCellSelectionManager.addToType(SelectionType.MOUSE_OVER, ContentRenderer.this.cellID);
+						dataCellSelectionManager.triggerSelectionUpdateEvent();
+						ContentRenderer.this.parentView.setDisplayListDirty();
+					}
 				}
 
 				@Override
 				protected void mouseOut(Pick pick) {
-					dataCellSelectionManager.removeFromType(SelectionType.MOUSE_OVER, ContentRenderer.this.cellID);
-					dataCellSelectionManager.triggerSelectionUpdateEvent();
-					ContentRenderer.this.parentView.setDisplayListDirty();
+					if (parentView.getCorrelationManager().isCorrelationCalculationActive()
+							&& parentView.getCorrelationManager().isDataCellSelectionValid(getInfo())) {
+						dataCellSelectionManager.removeFromType(SelectionType.MOUSE_OVER, ContentRenderer.this.cellID);
+						dataCellSelectionManager.triggerSelectionUpdateEvent();
+						ContentRenderer.this.parentView.setDisplayListDirty();
+					}
 				}
 
 				@Override
 				protected void clicked(Pick pick) {
-					dataCellSelectionManager.clearSelection(SelectionType.SELECTION);
-					dataCellSelectionManager.addToType(SelectionType.SELECTION, ContentRenderer.this.cellID);
-					dataCellSelectionManager.triggerSelectionUpdateEvent();
-					ContentRenderer.this.parentView.setDisplayListDirty();
-					EventPublisher.trigger(new DataCellSelectionEvent(new DataCellInfo(ContentRenderer.this.dataDomain,
-							ContentRenderer.this.columnPerspective, ContentRenderer.this.resolvedRowIDType,
-							ContentRenderer.this.resolvedRowID, ContentRenderer.this.foreignColumnPerspective)));
+					if (parentView.getCorrelationManager().isCorrelationCalculationActive()
+							&& parentView.getCorrelationManager().isDataCellSelectionValid(getInfo())) {
+						dataCellSelectionManager.clearSelection(SelectionType.SELECTION);
+						dataCellSelectionManager.addToType(SelectionType.SELECTION, ContentRenderer.this.cellID);
+						dataCellSelectionManager.triggerSelectionUpdateEvent();
+						ContentRenderer.this.parentView.setDisplayListDirty();
+						EventPublisher.trigger(new DataCellSelectionEvent(getInfo()));
+					}
 				}
 
 			}, EPickingType.DATA_CELL.name(), cellID);
 		}
+	}
+
+	protected DataCellInfo getInfo() {
+		return new DataCellInfo(ContentRenderer.this.dataDomain, ContentRenderer.this.columnPerspective,
+				ContentRenderer.this.resolvedRowIDType, ContentRenderer.this.resolvedRowID,
+				ContentRenderer.this.foreignColumnPerspective);
 	}
 
 	@Override
