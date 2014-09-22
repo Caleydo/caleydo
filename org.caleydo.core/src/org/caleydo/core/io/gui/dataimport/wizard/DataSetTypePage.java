@@ -155,7 +155,8 @@ public class DataSetTypePage extends AImportDataPage<DataImportWizard> {
 	public void pageActivated() {
 		// The user must always visit the next page before he can finish
 		// updateWidgets();
-		if (dataSetDescription.getDataDescription().getCategoricalClassDescription() != null) {
+		if (dataSetDescription.getDataDescription() != null
+				&& dataSetDescription.getDataDescription().getCategoricalClassDescription() != null) {
 			numericalDatasetButton.setSelection(false);
 			categoricalDatasetButton.setSelection(true);
 		} else {
