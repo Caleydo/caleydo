@@ -110,6 +110,23 @@ public class PathwayManager {
 		return pathway;
 	}
 
+	/**
+	 * Gets all pathways that belong to the specified {@link EPathwayDatabaseType}.
+	 *
+	 * @param pathwayDatabaseType
+	 * @return
+	 */
+	public Set<PathwayGraph> getPathwaysOfDatabase(EPathwayDatabaseType pathwayDatabaseType) {
+		Set<PathwayGraph> pathways = new HashSet<>();
+
+		Map<String, PathwayGraph> pws = mapPathwayDBToPathways.get(pathwayDatabaseType);
+		if (pws != null) {
+			pathways.addAll(pws.values());
+		}
+
+		return pathways;
+	}
+
 	public PathwayGraph getPathwayByTitle(final String pathwayTitle, EPathwayDatabaseType pathwayDatabaseType) {
 
 		waitUntilPathwayLoadingIsFinished();

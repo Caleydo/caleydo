@@ -302,4 +302,20 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 			}
 		}
 	}
+
+	public class ColorOverlay implements IColumnBasedDataOverlay {
+
+		private final Color color;
+
+		public ColorOverlay(Color color) {
+			this.color = color;
+		}
+
+		@Override
+		public void render(GL2 gl, int columnID, float xIncrement, float y) {
+			renderColorColumn(gl, color.transparentCopy(0.6f), xIncrement, y);
+
+		}
+
+	}
 }

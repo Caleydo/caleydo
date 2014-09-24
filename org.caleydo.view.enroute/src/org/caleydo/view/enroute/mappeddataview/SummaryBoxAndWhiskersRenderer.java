@@ -177,4 +177,20 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 		}
 	}
 
+	public class ColorOverlay implements IBoxAndWhiskersOverlay {
+
+		private final Color color;
+
+		public ColorOverlay(Color color) {
+			this.color = color;
+		}
+
+		@Override
+		public void render(GL2 gl, float x, float y) {
+			renderColorOverlay(gl, color.transparentCopy(0.6f), 0, 0, x, y);
+
+		}
+
+	}
+
 }

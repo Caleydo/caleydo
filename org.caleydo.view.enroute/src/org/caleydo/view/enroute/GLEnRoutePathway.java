@@ -791,6 +791,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		}
 		mappedDataRenderer.destroy(gl);
 		contentListeners.clear();
+		correlationManager.dispose();
 	}
 
 	public void setLayoutDirty() {

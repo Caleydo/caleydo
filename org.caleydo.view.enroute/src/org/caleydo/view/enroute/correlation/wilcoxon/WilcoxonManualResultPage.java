@@ -25,6 +25,7 @@ import org.caleydo.view.enroute.correlation.SimpleIDClassifier;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -39,7 +40,7 @@ import org.eclipse.swt.widgets.Label;
  * @author Christian
  *
  */
-public class WilcoxonResultPage extends WizardPage implements IPageChangedListener {
+public class WilcoxonManualResultPage extends WizardPage implements IPageChangedListener {
 
 	protected Set<org.eclipse.swt.graphics.Color> colorRegistry = new HashSet<>();
 
@@ -57,7 +58,7 @@ public class WilcoxonResultPage extends WizardPage implements IPageChangedListen
 	 * @param title
 	 * @param titleImage
 	 */
-	protected WilcoxonResultPage(String pageName, String title, ImageDescriptor titleImage) {
+	protected WilcoxonManualResultPage(String pageName, String title, ImageDescriptor titleImage) {
 		super(pageName, title, titleImage);
 	}
 
@@ -119,7 +120,7 @@ public class WilcoxonResultPage extends WizardPage implements IPageChangedListen
 	public void pageChanged(PageChangedEvent event) {
 		if (event.getSelectedPage() == this) {
 			WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
-			DataCellInfo info = wizard.getInfo2();
+			DataCellInfo info = wizard.getTargetInfo();
 			SimpleIDClassifier derivedClassifier = wizard.getDerivedIDClassifier();
 			MannWhitneyUTest test = new MannWhitneyUTest(NaNStrategy.REMOVED, TiesStrategy.AVERAGE);
 			double[] values1 = getSampleValues(info, derivedClassifier.getClass1IDs());
@@ -199,5 +200,15 @@ public class WilcoxonResultPage extends WizardPage implements IPageChangedListen
 		}
 		colorRegistry.clear();
 		super.dispose();
+	}
+
+	@Override
+	public IWizardPage getPreviousPage() {
+		return ((WilcoxonRankSumTestWizard) getWizard()).getManualTargetDataCellPage();
+	}
+
+	@Override
+	public IWizardPage getNextPage() {
+		return null;
 	}
 }

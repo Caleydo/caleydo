@@ -8,9 +8,14 @@ package org.caleydo.view.enroute.correlation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
+import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.id.IDType;
 import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.mappeddataview.ContentRenderer;
+import org.caleydo.view.enroute.mappeddataview.MappedDataRenderer;
 import org.caleydo.view.enroute.mappeddataview.overlay.IDataCellOverlayProvider;
 
 import com.google.common.base.Predicate;
@@ -19,7 +24,7 @@ import com.google.common.base.Predicate;
  * @author Christian
  *
  */
-public class CorrelationManager {
+public class CorrelationManager implements IEventBasedSelectionManagerUser {
 
 	private boolean isCorrelationCalculationActive = false;
 	private DataCellInfo dataCellInfo1;
@@ -28,11 +33,16 @@ public class CorrelationManager {
 	private IDataCellOverlayProvider overlayProvider2;
 	private Predicate<DataCellInfo> dataCellSelectionValidator;
 
+	private EventBasedSelectionManager dataCellSelectionManager;
+
 	private final GLEnRoutePathway enRoute;
 
 	public CorrelationManager(GLEnRoutePathway enRoute) {
 		this.enRoute = enRoute;
 		enRoute.addEventListener(this);
+		dataCellSelectionManager = new EventBasedSelectionManager(this,
+				IDType.getIDType(MappedDataRenderer.DATA_CELL_ID));
+		dataCellSelectionManager.registerEventListeners();
 	}
 
 	/**
@@ -132,12 +142,25 @@ public class CorrelationManager {
 		overlayProvider1 = null;
 		overlayProvider2 = null;
 		dataCellSelectionValidator = null;
+		dataCellSelectionManager.clearSelection(SelectionType.SELECTION);
+		dataCellSelectionManager.triggerSelectionUpdateEvent();
+
 		enRoute.setDisplayListDirty();
 	}
 
 	@ListenTo
 	public void onUpdateDataCellSelectionValidator(UpdateDataCellSelectionValidatorEvent event) {
 		dataCellSelectionValidator = event.getValidator();
+	}
+
+	@Override
+	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void dispose() {
+		dataCellSelectionManager.unregisterEventListeners();
 	}
 
 }

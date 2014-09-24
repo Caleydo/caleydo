@@ -262,4 +262,20 @@ public class HistogramRenderer extends ADataRenderer {
 
 	}
 
+	public class ColorOverlay implements IHistogramOverlay {
+
+		private final Color color;
+
+		public ColorOverlay(Color color) {
+			this.color = color;
+		}
+
+		@Override
+		public void render(GL2 gl, int bucketNumber, float barBottom, float barTop, float totalX) {
+			renderColorOverlay(gl, color.transparentCopy(0.6f), 0, barBottom, totalX, barTop);
+
+		}
+
+	}
+
 }
