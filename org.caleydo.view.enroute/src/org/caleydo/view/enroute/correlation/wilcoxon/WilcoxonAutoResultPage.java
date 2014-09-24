@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.List;
  */
 public class WilcoxonAutoResultPage extends WizardPage implements IPageChangedListener {
 
+	private WilcoxonResultsWidget resultsWidget;
 	private Map<Integer, WilcoxonResult> resultsMap = new HashMap<>();
 	private List resultsList;
 
@@ -46,9 +47,9 @@ public class WilcoxonAutoResultPage extends WizardPage implements IPageChangedLi
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite parentComposite = new Composite(parent, SWT.NONE);
+		final Composite parentComposite = new Composite(parent, SWT.NONE);
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		parentComposite.setLayout(new GridLayout(1, false));
+		parentComposite.setLayout(new GridLayout(2, false));
 		// Group summaryGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		// summaryGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		// summaryGroup.setLayout(new GridLayout(2, false));
@@ -57,14 +58,31 @@ public class WilcoxonAutoResultPage extends WizardPage implements IPageChangedLi
 		Group resultsGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		resultsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		resultsGroup.setLayout(new GridLayout(1, false));
-		resultsGroup.setText("Results");
+		resultsGroup.setText("Classifications");
 		resultsList = new List(resultsGroup, SWT.BORDER | SWT.V_SCROLL);
-		resultsList.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd.heightHint = 200;
+		gd.widthHint = 150;
+		resultsList.setLayoutData(gd);
 		resultsList.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				WilcoxonResult result = resultsMap.get(resultsList.getSelectionIndex());
 				WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
+
+				if (resultsWidget == null) {
+					resultsWidget = new WilcoxonResultsWidget(parentComposite);
+
+					getShell().layout(true, true);
+					getShell().pack(true);
+				}
+				double[] values1 = WilcoxonUtil.getSampleValuesArray(wizard.getTargetInfo(),
+						result.derivedClassifier.getClass1IDs());
+				double[] values2 = WilcoxonUtil.getSampleValuesArray(wizard.getTargetInfo(),
+						result.derivedClassifier.getClass2IDs());
+				resultsWidget.updateClassSummary(0, values1, result.derivedClassifier.getDataClasses().get(0));
+				resultsWidget.updateClassSummary(1, values2, result.derivedClassifier.getDataClasses().get(1));
+				resultsWidget.updateStatistics(result.u, result.p);
 
 				EventPublisher.trigger(new ShowOverlayEvent(wizard.getSourceInfo(), result.classifier
 						.getOverlayProvider(), true));
@@ -80,6 +98,10 @@ public class WilcoxonAutoResultPage extends WizardPage implements IPageChangedLi
 	@Override
 	public void pageChanged(PageChangedEvent event) {
 		if (event.getSelectedPage() == this) {
+			if (resultsWidget != null) {
+				resultsWidget.dispose();
+				resultsWidget = null;
+			}
 			WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
 			java.util.List<WilcoxonResult> results = WilcoxonUtil.calcAllWilcoxonCombinations(wizard.getSourceInfo(),
 					wizard.getTargetInfo());
@@ -92,7 +114,8 @@ public class WilcoxonAutoResultPage extends WizardPage implements IPageChangedLi
 				resultsMap.put(index, result);
 				index++;
 			}
-
+			getShell().layout(true, true);
+			getShell().pack(true);
 		}
 
 	}
