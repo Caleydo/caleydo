@@ -5,19 +5,14 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.correlation.wilcoxon;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorBrewer;
 import org.caleydo.view.enroute.correlation.ASelectDataCellPage;
 import org.caleydo.view.enroute.correlation.DataCellInfo;
 import org.caleydo.view.enroute.correlation.EndCorrelationCalculationEvent;
 import org.caleydo.view.enroute.correlation.IDataClassifier;
-import org.caleydo.view.enroute.correlation.SimpleCategory;
 import org.caleydo.view.enroute.correlation.SimpleIDClassifier;
 import org.eclipse.jface.dialogs.IPageChangeProvider;
 import org.eclipse.jface.wizard.IWizardContainer;
@@ -31,6 +26,11 @@ import com.google.common.collect.Lists;
  *
  */
 public class WilcoxonRankSumTestWizard extends Wizard {
+
+	public static final Pair<Color, Color> CLASSIFICATION_COLORS_1 = Pair.make(ColorBrewer.Oranges.get(3).get(0),
+			ColorBrewer.Oranges.get(3).get(2));
+	public static final Pair<Color, Color> CLASSIFICATION_COLORS_2 = Pair.make(ColorBrewer.Blues.get(3).get(0),
+			ColorBrewer.Blues.get(3).get(2));
 
 	protected WilcoxonMethodSelectionPage methodSelectionPage;
 
@@ -57,19 +57,17 @@ public class WilcoxonRankSumTestWizard extends Wizard {
 	@Override
 	public void addPages() {
 		// List<Color> allColors = ColorBrewer.Set3.get(5);
-		List<Color> oranges = ColorBrewer.Oranges.get(3);
-		List<Color> blues = ColorBrewer.Blues.get(3);
 
 		methodSelectionPage = new WilcoxonMethodSelectionPage("Method", "Select the method for applying the test", null);
 		manualSourceDataCellPage = new WilcoxonManualSourceDataCellPage("FirstBlock", "Select First Data Block", null,
-				Lists.newArrayList(oranges.get(0), oranges.get(2)));
+				Lists.newArrayList(CLASSIFICATION_COLORS_1.getFirst(), CLASSIFICATION_COLORS_1.getSecond()));
 		manualTargetDataCellPage = new WilcoxonManualTargetDataCellPage("SecondBlock", "Select Second Data Block", null);
 		manualResultPage = new WilcoxonManualResultPage("Results", "Summary and Results", null);
 
 		autoSourceDataCellPage = new WilcoxonAutoSourceDataCellPage("FirstAutoBlock", "Select First Data Block", null,
-				oranges.get(0));
+				CLASSIFICATION_COLORS_1.getFirst());
 		autoTargetDataCellPage = new WilcoxonAutoTargetDataCellPage("SecondAutoBlock", "Select Second Data Block",
-				null, blues.get(0));
+				null, CLASSIFICATION_COLORS_2.getFirst());
 		autoResultPage = new WilcoxonAutoResultPage("AutoResults", "Summary and Results", null);
 
 		IWizardContainer wizardContainer = getContainer();
@@ -114,33 +112,6 @@ public class WilcoxonRankSumTestWizard extends Wizard {
 		sourceInfo = info;
 	}
 
-	public void setSourceInfo(DataCellInfo info, IDataClassifier classifier) {
-		sourceInfo = info;
-		cell1Classifier = classifier;
-		List<SimpleCategory> classes = classifier.getDataClasses();
-		List<Set<Object>> idSets = new ArrayList<>(classes.size());
-		// There will be no more than 2
-		idSets.add(new HashSet<>());
-		idSets.add(new HashSet<>());
-		for (int columnID : sourceInfo.columnPerspective.getVirtualArray()) {
-			Object value = sourceInfo.dataDomain.getRaw(sourceInfo.columnPerspective.getIdType(), columnID,
-					sourceInfo.rowIDType, sourceInfo.rowID);
-			SimpleCategory c = classifier.apply(value);
-			if (c != null) {
-				Set<Object> idSet = idSets.get(classes.indexOf(c));
-				idSet.add(columnID);
-			}
-		}
-
-		List<Color> blues = ColorBrewer.Blues.get(3);
-
-		SimpleCategory class1 = new SimpleCategory(classes.get(0).name + " in first data block", blues.get(0));
-		SimpleCategory class2 = new SimpleCategory(classes.get(1).name + " in first data block", blues.get(2));
-
-		derivedIDClassifier = new SimpleIDClassifier(idSets.get(0), idSets.get(1),
-				sourceInfo.columnPerspective.getIdType(), class1, class2);
-	}
-
 	/**
 	 * @return the sourceInfo, see {@link #sourceInfo}
 	 */
@@ -175,6 +146,14 @@ public class WilcoxonRankSumTestWizard extends Wizard {
 	 */
 	public SimpleIDClassifier getDerivedIDClassifier() {
 		return derivedIDClassifier;
+	}
+
+	/**
+	 * @param derivedIDClassifier
+	 *            setter, see {@link derivedIDClassifier}
+	 */
+	public void setDerivedIDClassifier(SimpleIDClassifier derivedIDClassifier) {
+		this.derivedIDClassifier = derivedIDClassifier;
 	}
 
 	/**

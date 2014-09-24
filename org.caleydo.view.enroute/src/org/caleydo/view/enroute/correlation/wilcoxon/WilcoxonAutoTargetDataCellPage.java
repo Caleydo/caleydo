@@ -68,8 +68,8 @@ public class WilcoxonAutoTargetDataCellPage extends ASelectDataCellPage {
 
 	@Override
 	public boolean isPageComplete() {
-		WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
-		return wizard.getTargetInfo() != null;
+		// WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
+		return info != null;
 	}
 
 	@Override
@@ -80,6 +80,7 @@ public class WilcoxonAutoTargetDataCellPage extends ASelectDataCellPage {
 	@Override
 	protected void dataCellChanged(DataCellInfo info) {
 		EventPublisher.trigger(new ShowOverlayEvent(info, new SimpleColorOverlayProvider(overlayColor), false));
+		getWizard().getContainer().updateButtons();
 	}
 
 	@Override

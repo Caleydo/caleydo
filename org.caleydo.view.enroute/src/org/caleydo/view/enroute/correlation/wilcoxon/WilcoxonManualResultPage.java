@@ -5,18 +5,13 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.correlation.wilcoxon;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 import org.apache.commons.math3.stat.inference.MannWhitneyUTest;
 import org.apache.commons.math3.stat.ranking.NaNStrategy;
 import org.apache.commons.math3.stat.ranking.TiesStrategy;
-import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
-import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
-import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.function.AdvancedDoubleStatistics;
 import org.caleydo.view.enroute.correlation.DataCellInfo;
@@ -123,8 +118,8 @@ public class WilcoxonManualResultPage extends WizardPage implements IPageChanged
 			DataCellInfo info = wizard.getTargetInfo();
 			SimpleIDClassifier derivedClassifier = wizard.getDerivedIDClassifier();
 			MannWhitneyUTest test = new MannWhitneyUTest(NaNStrategy.REMOVED, TiesStrategy.AVERAGE);
-			double[] values1 = getSampleValues(info, derivedClassifier.getClass1IDs());
-			double[] values2 = getSampleValues(info, derivedClassifier.getClass2IDs());
+			double[] values1 = WilcoxonUtil.getSampleValuesArray(info, derivedClassifier.getClass1IDs());
+			double[] values2 = WilcoxonUtil.getSampleValuesArray(info, derivedClassifier.getClass2IDs());
 			updateClassSummary(0, values1, derivedClassifier.getDataClasses().get(0));
 			updateClassSummary(1, values2, derivedClassifier.getDataClasses().get(1));
 			double u = test.mannWhitneyU(values1, values2);
@@ -148,50 +143,7 @@ public class WilcoxonManualResultPage extends WizardPage implements IPageChanged
 		classMedianLabel[classNumber].setText(String.format(Locale.ENGLISH, "Median: %.8f", stats.getMedian()));
 	}
 
-	protected double[] getSampleValues(DataCellInfo info, Set<Object> columnIDs) {
-		Object description = info.dataDomain.getDataClassSpecificDescription(info.rowIDType, info.rowID,
-				info.columnPerspective.getIdType(), info.columnPerspective.getVirtualArray().get(0));
 
-		List<Double> values = new ArrayList<>();
-
-		if (description == null || description instanceof NumericalProperties) {
-
-			for (Object columnID : columnIDs) {
-				Number value = (Number) info.dataDomain.getRaw(info.columnPerspective.getIdType(), (Integer) columnID,
-						info.rowIDType, info.rowID);
-				if (value != null && !Double.isNaN(value.doubleValue())) {
-					values.add(value.doubleValue());
-				}
-			}
-			return asArray(values);
-
-		} else if (description instanceof CategoricalClassDescription) {
-
-			CategoricalClassDescription<?> desc = (CategoricalClassDescription<?>) description;
-			if (desc.getCategoryType() == ECategoryType.NOMINAL) {
-				throw new UnsupportedOperationException("Wilcoxon rank-sum test cannot be applied to nominal data");
-			} else {
-				for (Object columnID : columnIDs) {
-					Object category = info.dataDomain.getRaw(info.columnPerspective.getIdType(), (Integer) columnID,
-							info.rowIDType, info.rowID);
-					if (category != null) {
-						values.add((new Integer(desc.indexOf(category))).doubleValue());
-					}
-				}
-				return asArray(values);
-			}
-		}
-
-		return new double[0];
-	}
-
-	private double[] asArray(List<Double> values) {
-		double[] array = new double[values.size()];
-		for (int i = 0; i < values.size(); i++) {
-			array[i] = values.get(i);
-		}
-		return array;
-	}
 
 	@Override
 	public void dispose() {
