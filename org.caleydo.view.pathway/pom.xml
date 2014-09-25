@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.caleydo</groupId>
 		<artifactId>org.caleydo.parent</artifactId>
-		<version>3.1.3</version>
+		<version>3.1.4</version>
 		<relativePath>../org.caleydo.parent</relativePath>
 	</parent>
 	<artifactId>org.caleydo.view.pathway</artifactId>
