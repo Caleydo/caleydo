@@ -15,7 +15,7 @@
 	<properties>
 		<java.version>1.7</java.version>
 		<maven.version>3.0</maven.version>
-		<tycho.version>0.20.0</tycho.version>
+		<tycho.version>0.21.0</tycho.version>
 		<tycho-extras.version>${tycho.version}</tycho-extras.version>
 		<tycho.test.jvmArgs>-Xmx512m -XX:MaxPermSize=256m</tycho.test.jvmArgs>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -64,7 +64,12 @@
 		</repository>
 		<repository>
 			<id>caleydo-eclipse-p2</id>
-			<url>http://dev.caleydo.org/nexus/content/repositories/eclipse2</url>
+			<url>http://dev.caleydo.org/nexus/content/repositories/eclipse34</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>eclipse-44</id>
+			<url>http://download.eclipse.org/eclipse/updates/4.4/R-4.4-201406061215</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
