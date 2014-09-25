@@ -47,6 +47,8 @@ public final class RemoteFile implements IRunnableWithProgress {
 
 	private static final int CONNECT_TIMEOUT = 10 * 1000; // [ms]
 
+	private static final boolean WORK_OFFLINE = Boolean.getBoolean("org.caleydo.cache.offline");
+
 	private final URL url;
 	private final File file;
 
@@ -90,6 +92,9 @@ public final class RemoteFile implements IRunnableWithProgress {
 	 * @return
 	 */
 	public boolean inCache(boolean checkModificationDate) {
+		if (WORK_OFFLINE) {
+			return file.exists();
+		}
 		if (!file.exists())
 			return false;
 		if (!checkModificationDate)
@@ -138,6 +143,9 @@ public final class RemoteFile implements IRunnableWithProgress {
 
 	public File getOrLoad(boolean checkModificationDate, IProgressMonitor monitor, String pattern) {
 		if (!inCache(checkModificationDate)) {
+			if (WORK_OFFLINE && !file.exists()) { // can't load can't download
+				return null;
+			}
 			delete();
 			run(monitor, pattern);
 			if (!file.exists())
@@ -154,6 +162,11 @@ public final class RemoteFile implements IRunnableWithProgress {
 	public void run(IProgressMonitor monitor, String pattern) {
 		if (inCache(false)) {
 			monitor.done();
+			return;
+		}
+		if (WORK_OFFLINE) {
+			monitor.done();
+			successful = false;
 			return;
 		}
 		Activator.updateProxySettings(url);
