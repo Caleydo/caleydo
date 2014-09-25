@@ -17,7 +17,7 @@ Require-Bundle: org.caleydo.core;bundle-version="3.1.4.qualifier",
  com.google.gson;bundle-version="2.1.0",
  org.apache.commons.compress;bundle-version="1.4.1",
  org.caleydo.view.tourguide;bundle-version="3.1.4.qualifier",
- com.google.guava,
+ com.google.guava;bundle-version="[15.0.0,16.0.0)",
  org.kohsuke.args4j;bundle-version="2.0.21"
 Bundle-Activator: org.caleydo.data.importer.Activator
 Import-Package: org.caleydo.vis.lineup.model.mapping
