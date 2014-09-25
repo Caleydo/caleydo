@@ -8,6 +8,7 @@ package org.caleydo.view.enroute.correlation.wilcoxon;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -16,12 +17,16 @@ import org.apache.commons.math3.stat.ranking.NaNStrategy;
 import org.apache.commons.math3.stat.ranking.TiesStrategy;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
+import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.io.NumericalProperties;
+import org.caleydo.view.enroute.correlation.CategoricalDataClassifier;
 import org.caleydo.view.enroute.correlation.DataCellInfo;
 import org.caleydo.view.enroute.correlation.IDataClassifier;
 import org.caleydo.view.enroute.correlation.NumericalDataClassifier;
 import org.caleydo.view.enroute.correlation.SimpleCategory;
 import org.caleydo.view.enroute.correlation.SimpleIDClassifier;
+
+import com.google.common.collect.Sets;
 
 /**
  * @author Christian
@@ -90,10 +95,80 @@ public final class WilcoxonUtil {
 			}
 
 		} else {
-			// TODO
+
+			CategoricalClassDescription<?> classDesc = (CategoricalClassDescription<?>) description;
+			Set<Object> allCategories = new LinkedHashSet<>(classDesc.size());
+			for (CategoryProperty<?> property : classDesc.getCategoryProperties()) {
+				allCategories.add(property.getCategory());
+			}
+			Set<Set<Object>> combinations = new HashSet<>();
+			calcCategoryCombinations(combinations, new HashSet<>(), allCategories);
+
+			Set<Set<Object>> usedClass1s = new HashSet<>();
+
+			for (Set<Object> class1 : combinations) {
+				Set<Object> class2 = Sets.symmetricDifference(class1, allCategories);
+				if (!class2.isEmpty() && !containsSet(usedClass1s, class2)) {
+					usedClass1s.add(class1);
+					CategoricalDataClassifier classifier = new CategoricalDataClassifier(class1, class2,
+							WilcoxonRankSumTestWizard.CLASSIFICATION_COLORS_1.getFirst(),
+							WilcoxonRankSumTestWizard.CLASSIFICATION_COLORS_1.getSecond(), getCategoryName(class1,
+									classDesc), getCategoryName(class2, classDesc), classDesc);
+
+					SimpleIDClassifier derivedClassifier = createDerivedClassifier(classifier, sourceInfo);
+					double[] values1 = getSampleValuesArray(targetInfo, derivedClassifier.getClass1IDs());
+					double[] values2 = getSampleValuesArray(targetInfo, derivedClassifier.getClass2IDs());
+
+					if (values1.length > 0 && values2.length > 0) {
+						double u = test.mannWhitneyU(values1, values2);
+						double p = test.mannWhitneyUTest(values1, values2);
+						results.add(new WilcoxonResult(p, u, classifier, derivedClassifier));
+					}
+				}
+			}
+
 		}
 
 		return results;
+	}
+
+	private static String getCategoryName(Set<Object> categories, CategoricalClassDescription<?> classDesc) {
+		StringBuilder b = new StringBuilder();
+		int i = 0;
+		for (Object category : categories) {
+			String categoryName = classDesc.getCategoryProperty(category).getCategoryName();
+			b.append(categoryName);
+			if (i < categories.size() - 1)
+				b.append(", ");
+			i++;
+		}
+
+		return b.toString();
+	}
+
+	private static boolean containsSet(Set<Set<Object>> pool, Set<Object> set) {
+		for (Set<Object> s : pool) {
+			if (Sets.symmetricDifference(s, set).isEmpty()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static void calcCategoryCombinations(Set<Set<Object>> combinations, Set<Object> previousSet,
+			Set<Object> categoryPool) {
+
+		Set<Object> currentPool = new LinkedHashSet<>(categoryPool);
+
+		for (Object category : categoryPool) {
+			Set<Object> currentSet = new LinkedHashSet<>(previousSet);
+			currentSet.add(category);
+			combinations.add(currentSet);
+			currentPool.remove(category);
+			if (!currentPool.isEmpty()) {
+				calcCategoryCombinations(combinations, currentSet, new LinkedHashSet<>(currentPool));
+			}
+		}
 	}
 
 	public static List<Double> getSampleValues(DataCellInfo info, Iterable<Object> columnIDs) {

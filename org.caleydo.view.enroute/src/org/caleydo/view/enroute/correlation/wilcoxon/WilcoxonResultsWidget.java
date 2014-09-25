@@ -80,8 +80,10 @@ public class WilcoxonResultsWidget extends Composite {
 		classColorLabel[classNumber].update();
 		colorRegistry.add(c);
 
-		Composite textLabelComposite = new Composite(parent, SWT.NONE);
-		textLabelComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		Composite textLabelComposite = new Composite(parent, SWT.WRAP);
+		gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gridData.widthHint = 350;
+		textLabelComposite.setLayoutData(gridData);
 		textLabelComposite.setLayout(new GridLayout(1, false));
 		classLabel[classNumber] = createLabel(textLabelComposite, "Class Name");
 		classNumElementsLabel[classNumber] = createLabel(textLabelComposite, "Number of Elements: ");
@@ -104,13 +106,14 @@ public class WilcoxonResultsWidget extends Composite {
 		colorRegistry.add(c);
 
 		classLabel[classNumber].setText(category.name);
+		classLabel[classNumber].setToolTipText(category.name);
 		classNumElementsLabel[classNumber].setText("Number of Elements: " + values.length);
 		AdvancedDoubleStatistics stats = AdvancedDoubleStatistics.of(values);
 		classMedianLabel[classNumber].setText(String.format(Locale.ENGLISH, "Median: %.8f", stats.getMedian()));
 	}
 
 	public void updateStatistics(double u, double p) {
-		uValueLabel.setText(String.format(Locale.ENGLISH, "U: %.8f", u));
+		uValueLabel.setText(String.format(Locale.ENGLISH, "U: %.2f", u));
 		pValueLabel.setText(String.format(Locale.ENGLISH, "P-Value: %.8f", p));
 	}
 
