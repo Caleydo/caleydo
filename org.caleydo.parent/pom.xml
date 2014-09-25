@@ -68,8 +68,8 @@
 			<layout>p2</layout>
 		</repository>
 		<repository>
-			<id>eclipse-luna</id>
-			<url>http://download.eclipse.org/releases/luna</url>
+			<id>eclipse-44</id>
+			<url>http://download.eclipse.org/eclipse/updates/4.4/R-4.4-201406061215</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
