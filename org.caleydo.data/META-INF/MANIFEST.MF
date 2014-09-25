@@ -7,7 +7,7 @@ Bundle-Vendor: www.caleydo.org
 Require-Bundle: org.eclipse.rcp;bundle-version="4.3.0",
  org.eclipse.core.runtime;bundle-version="3.9.0",
  org.eclipse.jface;bundle-version="3.9.1",
- org.caleydo.thirdparty.jogl;bundle-version="2.0.2";visibility:=reexport
+ org.caleydo.thirdparty.jogl;bundle-version="[2.0.2,2.0.2]";visibility:=reexport
 Export-Package: org.caleydo.data.loader
 Bundle-ClassPath: .,
  resources/
