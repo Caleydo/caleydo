@@ -21,7 +21,7 @@ public interface IGLElementVisitor<P, R> {
 
 	R visit(AnimatedGLElementContainer elem, P para);
 
-	R visit(GLElementDecorator elem, P para);
+	R visit(AGLElementDecorator elem, P para);
 
 	R visit(GLElementSelector elem, P para);
 }

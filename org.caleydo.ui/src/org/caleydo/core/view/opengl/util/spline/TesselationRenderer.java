@@ -18,6 +18,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.util.gleem.ColoredVec2f;
 import org.caleydo.core.view.opengl.util.gleem.ColoredVec3f;
 import org.caleydo.core.view.opengl.util.gleem.IColored;
+import org.caleydo.core.view.opengl.util.gleem.TexturedVec2f;
 
 /**
  * a tesselation renderer supporting: {@link Vec3f}, {@link ColoredVec3f}, double[] and {@link Vec2f}
@@ -82,6 +83,7 @@ public class TesselationRenderer {
 		@Override
 		public void vertex(Object vertexData) {
 			checkColor(vertexData);
+			checkTexture(vertexData);
 			if (vertexData instanceof double[]) {
 				double[] pointer = (double[]) vertexData;
 				assert pointer.length >= 3;
@@ -107,6 +109,15 @@ public class TesselationRenderer {
 			if (v instanceof IColored) {
 				IColored cv = (IColored) v;
 				gl.glColor4fv(cv.getColor().getRGBA(), 0);
+			}
+		}
+
+		private void checkTexture(Object v) {
+			if (v instanceof TexturedVec2f) {
+				TexturedVec2f cv = (TexturedVec2f) v;
+				Vec2f c = cv.getTexCoords();
+				if (c != null)
+					gl.glTexCoord2f(c.x(), c.y());
 			}
 		}
 
@@ -162,6 +173,11 @@ public class TesselationRenderer {
 				v.set((float) coords[0], (float) coords[1]);
 				v.setColor(interpolateColor(data, weight));
 				outData[0] = v;
+			} else if (type instanceof TexturedVec2f) {
+				TexturedVec2f v = new TexturedVec2f();
+				v.set((float) coords[0], (float) coords[1]);
+				v.setTexCoords(interpolateTexel(data, weight));
+				outData[0] = v;
 			} else if (type instanceof Vec2f) {
 				Vec2f v = new Vec2f();
 				v.set((float) coords[0], (float) coords[1]);
@@ -183,6 +199,19 @@ public class TesselationRenderer {
 			}
 			Color c = new Color(r, g, b, a);
 			return c;
+		}
+
+		private Vec2f interpolateTexel(Object[] data, float[] weight) {
+			float s = 0, t = 0;
+			for (int j = 0; j < weight.length; ++j) {
+				TexturedVec2f d = (TexturedVec2f) data[j];
+				if (d == null)
+					continue;
+				Vec2f st = d.getTexCoords();
+				s += st == null ? 0 : weight[j] * st.x();
+				t += st == null ? 0 : weight[j] * st.y();
+			}
+			return new Vec2f(s, t);
 		}
 
 		@Override

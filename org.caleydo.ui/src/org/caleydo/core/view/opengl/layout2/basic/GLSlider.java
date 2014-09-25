@@ -256,7 +256,7 @@ public class GLSlider extends PickableGLElement {
 			float y = mapValue(h) + 1;
 			g.fillRect(0, y, w, Math.min(BAR_WIDTH, h - y));
 			if (showText || showMinMaxText)
-				g.save().gl.glRotatef(90, 0, 0, 1);
+				g.save().asAdvanced().rotate(90);
 			if (showMinMaxText) {
 				g.textColor(Color.DARK_GRAY);
 				g.drawText(format(min), 2, 4 - w, h - 4, w - 11, VAlign.LEFT);

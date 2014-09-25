@@ -33,8 +33,8 @@
 <unit id="org.eclipse.e4.ui.workbench.addons.swt" version="1.1.0.v20140602-1537"/>
 <unit id="org.eclipse.ui.net" version="1.2.200.v20120807-0927"/>
 <unit id="org.eclipse.core.net" version="1.2.200.v20140124-2013"/>
-<unit id="org.apache.batik.svggen" version="1.6.0.v201011041432"/>
-<unit id="org.apache.batik.dom.svg" version="1.6.0.v201011041432"/>
+<unit id="org.apache.batik.svggen" version="1.7.0.v201011041433"/>
+<unit id="org.apache.batik.dom.svg" version="1.7.0.v201011041433"/>
 
 <repository location="http://dev.caleydo.org/nexus/content/groups/public-p2"/>
 <repository location="http://dev.caleydo.org/nexus/content/repositories/eclipse34"/>

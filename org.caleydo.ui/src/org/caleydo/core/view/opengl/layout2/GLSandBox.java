@@ -32,6 +32,7 @@ import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.MyAnimator;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
+import org.caleydo.core.view.opengl.layout2.IGLGraphicsTracer.ERenderPass;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
 import org.caleydo.core.view.opengl.layout2.internal.SandBoxLibraryLoader;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
@@ -336,7 +337,8 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		eventListeners.processEvents();
 
 		GL2 gl = drawable.getGL().getGL2();
-		final GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs);
+		final IGLGraphicsTracer t = createTracer();
+		final GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs, t);
 
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
@@ -353,6 +355,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		}
 
 		// 1 pass: picking
+		g.switchTo(ERenderPass.PICKING);
 		Runnable toRender = new Runnable() {
 			@Override
 			public void run() {
@@ -372,12 +375,21 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		root.layout(deltaTimeMs);
 
 		// 3. pass: rendering
+		g.switchTo(ERenderPass.RENDERING);
 		if (renderPick)
 			root.renderPick(g);
 		else
 			root.render(g);
 
 		g.move(-padding.left, -padding.right);
+		g.switchTo(ERenderPass.DONE);
+	}
+
+	/**
+	 * @return
+	 */
+	protected IGLGraphicsTracer createTracer() {
+		return null;
 	}
 
 	@Override

@@ -213,6 +213,9 @@ public class GLElement implements IHasGLLayoutData, IHasMinSize {
 
 		g.incZ(zDelta);
 		g.move(x, y);
+		if (g.forceNoCache())
+			cache.invalidate(context.getDisplayListPool());
+
 		if (!cache.render(context.getDisplayListPool(), g.gl)) {
 			cache.begin(context.getDisplayListPool(), g, w, h);
 			renderImpl(g, w, h);

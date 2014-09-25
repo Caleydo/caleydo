@@ -11,6 +11,7 @@ import gleem.linalg.Vec3f;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -22,12 +23,15 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout2.IGLGraphicsTracer.ERenderPass;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
+import org.caleydo.core.view.opengl.layout2.internal.GLGraphicsTracers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.layout2.renderer.RoundedRectRenderer;
 import org.caleydo.core.view.opengl.layout2.util.GLGraphicsUtils;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.core.view.opengl.util.gleem.ColoredVec2f;
+import org.caleydo.core.view.opengl.util.gleem.TexturedVec2f;
 import org.caleydo.core.view.opengl.util.spline.ITesselatedPolygon;
 import org.caleydo.core.view.opengl.util.text.ETextStyle;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
@@ -35,6 +39,7 @@ import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.caleydo.data.loader.StackedResourceLocator;
 import org.caleydo.data.loader.TextureResourceLoader;
 
+import com.google.common.collect.ImmutableList;
 import com.jogamp.opengl.util.texture.Texture;
 
 /**
@@ -83,15 +88,28 @@ public class GLGraphics {
 
 	private final Vec3f[] pool = { new Vec3f(), new Vec3f(), new Vec3f(), new Vec3f() };
 
-	public GLGraphics(GL2 gl, GLContextLocal local, boolean originInTopLeft, int deltaTimeMs) {
+	private final IGLGraphicsTracer tracer;
+
+	public GLGraphics(GL2 gl, GLContextLocal local, boolean originInTopLeft, int deltaTimeMs, IGLGraphicsTracer tracer) {
 		this.gl = gl;
 		this.local = local;
 		this.text = local.getText();
 		this.deltaTimeMs = deltaTimeMs;
-		textColor(Color.BLACK);
 		this.locator.push(local.getLoader());
 		this.originInTopLeft = originInTopLeft;
+		this.tracer = tracer == null ? GLGraphicsTracers.DUMMY : tracer;
+
+		textColor(Color.BLACK);
 	}
+
+	void switchTo(ERenderPass pass) {
+		tracer.switchTo(pass);
+	}
+
+	boolean forceNoCache() {
+		return tracer.forceRepaint();
+	}
+
 
 	/**
 	 * @return the deltaTimeMs, see {@link #deltaTimeMs}
@@ -223,6 +241,7 @@ public class GLGraphics {
 	}
 
 	public GLGraphics color(float r, float g, float b, float a) {
+		tracer.color(r, g, b, a);
 		gl.glColor4f(r, g, b, a);
 		return this;
 	}
@@ -245,6 +264,7 @@ public class GLGraphics {
 	}
 
 	public GLGraphics textColor(Color color) {
+		tracer.textColor(color);
 		text.setColor(color);
 		local.getText_bold().setColor(color);
 		local.getText_italic().setColor(color);
@@ -269,12 +289,36 @@ public class GLGraphics {
 	// ######### attribute setters
 
 	public GLGraphics lineWidth(float lineWidth) {
+		tracer.lineWidth(lineWidth);
 		gl.glLineWidth(lineWidth);
 		return this;
 	}
 
 	public GLGraphics pointSize(float pointSize) {
+		tracer.pointSize(pointSize);
 		gl.glPointSize(pointSize);
+		return this;
+	}
+
+	public final GLGraphics lineStippled(boolean enable) {
+		return lineStippled(enable ? 2 : -1, 0xAAAA);
+	}
+
+	/**
+	 *
+	 * @param factor
+	 *            <= 0 to disable
+	 * @param pattern
+	 * @return
+	 */
+	public GLGraphics lineStippled(int factor, int pattern) {
+		if (factor > 0) {
+			gl.glEnable(GL2.GL_LINE_STIPPLE);
+			gl.glLineStipple(factor, (short) pattern);
+		} else {
+			gl.glDisable(GL2.GL_LINE_STIPPLE);
+		}
+		tracer.lineStippled(factor, pattern);
 		return this;
 	}
 
@@ -323,6 +367,7 @@ public class GLGraphics {
 	private GLGraphics renderRect(boolean fill, float x, float y, float w, float h) {
 		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
 			return this;
+		tracer.renderRect(fill, x, y, w, h);
 		stats.incRect();
 		gl.glBegin(fill ? GL2.GL_POLYGON : GL.GL_LINE_LOOP);
 		gl.glVertex3f(x, y, z);
@@ -347,6 +392,8 @@ public class GLGraphics {
 	public GLGraphics fillRoundedRect(float x, float y, float w, float h, float radius, int segments) {
 		if (isInvalidOrZero(w) || isInvalidOrZero(h))
 			return this;
+		tracer.renderRoundedRect(true, x, y, w, h, radius, segments);
+
 		int count = RoundedRectRenderer.render(this, x, y, w, h, radius, segments, RoundedRectRenderer.FLAG_FILL
 				| RoundedRectRenderer.FLAG_ALL);
 		stats.incRoundedRect(count);
@@ -357,14 +404,16 @@ public class GLGraphics {
 	 * renders a texture within the given rect
 	 */
 	public GLGraphics fillImage(String texture, float x, float y, float w, float h) {
-		return fillImage(getTexture(texture), x, y, w, h);
+		tracer.fillImage(texture, locator, x, y, w, h);
+		return fillImageImpl(getTexture(texture), x, y, w, h, Color.WHITE);
 	}
 
 	/**
 	 * renders a texture within the given rect
 	 */
 	public GLGraphics fillImage(URL texture, float x, float y, float w, float h) {
-		return fillImage(getTexture(texture), x, y, w, h);
+		tracer.fillImage(texture, x, y, w, h);
+		return fillImageImpl(getTexture(texture), x, y, w, h, Color.WHITE);
 	}
 
 	public Texture getTexture(String texture) {
@@ -389,6 +438,11 @@ public class GLGraphics {
 	 * @return
 	 */
 	public GLGraphics fillImage(Texture texture, float x, float y, float w, float h, Color color) {
+		tracer.fillImage(texture, x, y, w, h, color);
+		return fillImageImpl(texture, x, y, w, h, color);
+	}
+
+	private GLGraphics fillImageImpl(Texture texture, float x, float y, float w, float h, Color color) {
 		if (isInvalidOrZero(w) || isInvalidOrZero(h) || isInvalid(x) || isInvalid(y))
 			return this;
 		stats.incImage();
@@ -424,6 +478,7 @@ public class GLGraphics {
 	public GLGraphics fillPolygon(ITesselatedPolygon polygon) {
 		if (polygon.size() <= 0)
 			return this;
+		tracer.renderPolygon(true, polygon);
 		stats.incPath(polygon.size());
 		polygon.fill(this, local.getTesselationRenderer());
 		return this;
@@ -444,6 +499,7 @@ public class GLGraphics {
 	private GLGraphics renderCircle(boolean fill, float x, float y, float radius, int numSlices) {
 		if (isInvalidOrZero(radius) || isInvalid(x) || isInvalid(y))
 			return this;
+		tracer.renderCircle(fill, x, y, radius, numSlices);
 		stats.incCircle(numSlices);
 		gl.glTranslatef(x, y, z);
 		if (fill)
@@ -488,8 +544,11 @@ public class GLGraphics {
 			return this;
 		if (text.indexOf('\n') < 0) {
 			if (angle == 0) {
+				tracer.drawText(Collections.singletonList(text), x, y, textWidth, textHeight, 0, valign, style);
 				return drawSingleTextLine(text, x, y, textWidth, textHeight, valign, style);
 			} else {
+				tracer.drawRotatedText(Collections.singletonList(text), x, y, textWidth, textHeight, 0, valign, style,
+						angle);
 				save().move(x, y);
 				gl.glRotatef(angle, 0, 0, 1);
 				drawSingleTextLine(text, 0, 0, textWidth, textHeight, valign, style);
@@ -547,6 +606,7 @@ public class GLGraphics {
 			return this;
 		if (lines == null || lines.isEmpty())
 			return this;
+		tracer.drawText(lines, x, y, w, h, lineSpace, valign, style);
 		ITextRenderer font = selectFont(style);
 		if (originInTopLeft && !font.isOriginTopLeft()) {
 			gl.glPushMatrix();
@@ -586,6 +646,7 @@ public class GLGraphics {
 		if (angle == 0) {
 			return drawTextImpl(lines, x, y, w, h, lineSpace, valign, style);
 		} else {
+			tracer.drawRotatedText(lines, x, y, w, h, lineSpace, valign, style, angle);
 			save();
 			gl.glRotatef(angle, 0, 0, 1);
 			drawTextImpl(lines, x, y, w, h, lineSpace, valign, style);
@@ -666,6 +727,7 @@ public class GLGraphics {
 	 * renders a line between the two given points
 	 */
 	public GLGraphics drawLine(float x, float y, float x2, float y2) {
+		tracer.drawLine(x, y, x2, y2);
 		stats.incLine();
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(x, y, z);
@@ -706,6 +768,7 @@ public class GLGraphics {
 
 	public GLGraphics drawPath(ITesselatedPolygon polygon) {
 		stats.incPath(polygon.size());
+		tracer.renderPolygon(false, polygon);
 		polygon.draw(this);
 		return this;
 	}
@@ -720,6 +783,8 @@ public class GLGraphics {
 	public GLGraphics drawPoint(float x, float y) {
 		if (isInvalid(x) || isInvalid(y))
 			return this;
+		tracer.render(GL.GL_POINTS, ImmutableList.of(new Vec2f(x, y)));
+
 		gl.glBegin(GL.GL_POINTS);
 		gl.glVertex3f(x, y, z);
 		gl.glEnd();
@@ -751,12 +816,18 @@ public class GLGraphics {
 	private GLGraphics render(int mode, Iterable<Vec2f> points) {
 		if (points instanceof Collection && ((Collection<?>) points).isEmpty())
 			return this;
+		tracer.render(mode, points);
 		int count = 0;
 		gl.glBegin(mode);
 		for (Vec2f p : points) {
 			count++;
 			if (p instanceof ColoredVec2f)
 				color(((ColoredVec2f) p).getColor());
+			if (p instanceof TexturedVec2f) {
+				Vec2f t = ((TexturedVec2f) p).getTexCoords();
+				if (t != null)
+					gl.glTexCoord2f(t.x(), t.y());
+			}
 			gl.glVertex3f(p.x(), p.y(), z);
 		}
 		gl.glEnd();
@@ -781,7 +852,8 @@ public class GLGraphics {
 	 * @param zDelta
 	 * @return
 	 */
-	public GLGraphics incZ(float zDelta) {
+	public final GLGraphics incZ(float zDelta) {
+		tracer.incZ(zDelta);
 		this.z += zDelta;
 		return this;
 	}
@@ -813,9 +885,14 @@ public class GLGraphics {
 	 * shortcut to {@link GL2#glTranslatef(float, float, float)
 	 */
 	public GLGraphics move(float x, float y) {
+		tracer.move(x, y);
 		if (x != 0 || y != 0)
 			gl.glTranslatef(x, y, 0);
 		return this;
+	}
+
+	public AdvancedGraphics asAdvanced() {
+		return new AdvancedGraphics();
 	}
 
 	/**
@@ -834,6 +911,7 @@ public class GLGraphics {
 	 * shortcut to {@link GL2#glPushMatrix()}
 	 */
 	public GLGraphics save() {
+		tracer.save();
 		gl.glPushMatrix();
 		return this;
 	}
@@ -842,6 +920,7 @@ public class GLGraphics {
 	 * shortcut to {@link GL2#glPopMatrix()}
 	 */
 	public GLGraphics restore() {
+		tracer.restore();
 		gl.glPopMatrix();
 		return this;
 	}
@@ -856,27 +935,51 @@ public class GLGraphics {
 		return this;
 	}
 
-	/**
-	 *
-	 */
-	public GLGraphics lineStippled(boolean enable) {
-		return lineStippled(enable ? 2 : -1, 0xAAAA);
+	public class AdvancedGraphics {
+		public AdvancedGraphics scale(float x, float y) {
+			tracer.scale(x, y);
+			gl.glScalef(x, y, 1);
+			return this;
+		}
+
+		public AdvancedGraphics rotate(float angle) {
+			tracer.rotate(angle);
+			gl.glRotatef(angle, 0, 0, 1);
+			return this;
+		}
+
+		public void fillImage(URL texture, Rect pos, Rect texel, ETextureWrappingMode wrapS,
+ ETextureWrappingMode wrapT) {
+			Texture tex = getTexture(texture);
+			gl.glPushAttrib(GL2.GL_TEXTURE_BIT);
+			tex.enable(gl);
+			tex.bind(gl);
+			tex.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_S, wrapS.asOpenGL());
+			tex.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_T, wrapT.asOpenGL());
+			fillPolygon(new TexturedVec2f(pos.xy(), texel.xy()), new TexturedVec2f(pos.x2y(), texel.x2y()),
+					new TexturedVec2f(pos.x2y2(), texel.x2y2()), new TexturedVec2f(pos.xy2(), texel.xy2()));
+			tex.disable(gl);
+			gl.glPopAttrib();
+		}
 	}
 
+	public enum ETextureWrappingMode {
+		REPEAT, MIRROR_REPEAT, CLAMP_TO_EDGE;
+
 	/**
-	 *
-	 * @param factor
-	 *            <= 0 to disable
-	 * @param pattern
 	 * @return
 	 */
-	public GLGraphics lineStippled(int factor, int pattern) {
-		if (factor > 0) {
-			gl.glEnable(GL2.GL_LINE_STIPPLE);
-			gl.glLineStipple(factor, (short) pattern);
-		} else {
-			gl.glDisable(GL2.GL_LINE_STIPPLE);
+		public int asOpenGL() {
+			switch (this) {
+			case REPEAT:
+				return GL.GL_REPEAT;
+			case MIRROR_REPEAT:
+				return GL2.GL_MIRRORED_REPEAT;
+			case CLAMP_TO_EDGE:
+				return GL2.GL_CLAMP_TO_EDGE;
+			}
+			throw new IllegalStateException("unknown this");
 		}
-		return this;
+
 	}
 }

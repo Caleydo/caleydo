@@ -17,6 +17,7 @@ import org.caleydo.core.util.base.ICallback;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.GLGraphics.AdvancedGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.picking.AdvancedPick;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -64,18 +65,18 @@ public class WaitingElement extends AGLButton {
     @Override
     protected void renderImpl(GLGraphics g, float w, float h) {
         GL2 gl = g.gl;
-
+		AdvancedGraphics ga = g.asAdvanced();
         gl.glPushAttrib(GL2.GL_POINT_BIT);
         gl.glPushClientAttrib(GL2.GL_CLIENT_VERTEX_ARRAY_BIT);
 		gl.glEnable(GL2ES1.GL_POINT_SMOOTH);
 
         g.save();
         gl.glTranslatef(w / 2, h / 2,g.z());
-        gl.glRotatef(computeAngle(g.getDeltaTimeMs()), 0, 0, 1);
+		ga.rotate(computeAngle(g.getDeltaTimeMs()));
 
         final float r = Math.min(w, h) / 4;
-		gl.glScalef(r, r, 1);
-		gl.glPointSize(Math.round(r * 0.25f));
+		ga.scale(r, r);
+		g.pointSize(Math.round(r * 0.25f));
 
         gl.glEnableClientState(GLPointerFunc.GL_VERTEX_ARRAY);
         gl.glEnableClientState(GLPointerFunc.GL_COLOR_ARRAY);

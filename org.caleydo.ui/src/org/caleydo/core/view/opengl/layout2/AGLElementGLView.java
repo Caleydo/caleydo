@@ -17,6 +17,8 @@ import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.layout2.IGLGraphicsTracer.ERenderPass;
+import org.caleydo.core.view.opengl.layout2.internal.GLGraphicsTracers;
 import org.caleydo.core.view.opengl.layout2.internal.SWTLayer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.util.GLGraphicsUtils;
@@ -145,17 +147,21 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 		if (!isPickingRun) {
 			deltaTimeMs = local.getDeltaTimeMs();
 		}
-		GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs);
+		GLGraphics g = new GLGraphics(gl, local, true, deltaTimeMs, createTracer());
 		g.checkError("pre render");
 
 		if (isPickingRun) {
 			// 1. pick passes
+			g.switchTo(ERenderPass.PICKING);
 			root.renderPick(g);
+			g.switchTo(ERenderPass.DONE);
 		} else {
 			// 2. pass layouting
 			root.layout(deltaTimeMs);
 			// 3. pass render pass
+			g.switchTo(ERenderPass.PICKING);
 			root.render(g);
+			g.switchTo(ERenderPass.DONE);
 		}
 		g.checkError("post render");
 
@@ -163,6 +169,13 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 		processEvents();
 
 		gl.glPopMatrix();
+	}
+
+	/**
+	 * @return
+	 */
+	private IGLGraphicsTracer createTracer() {
+		return GLGraphicsTracers.create(this);
 	}
 
 	@Override
