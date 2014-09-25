@@ -15,7 +15,7 @@
 	<properties>
 		<java.version>1.7</java.version>
 		<maven.version>3.0</maven.version>
-		<tycho.version>0.20.0</tycho.version>
+		<tycho.version>0.21.0</tycho.version>
 		<tycho-extras.version>${tycho.version}</tycho-extras.version>
 		<tycho.test.jvmArgs>-Xmx512m -XX:MaxPermSize=256m</tycho.test.jvmArgs>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
