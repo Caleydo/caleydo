@@ -68,6 +68,11 @@
 			<layout>p2</layout>
 		</repository>
 		<repository>
+			<id>eclipse-luna</id>
+			<url>http://download.eclipse.org/releases/luna</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
 			<id>caleydo-thirdparty-p2</id>
 			<url>http://dev.caleydo.org/nexus/content/repositories/thirdparty/.meta/p2</url>
 			<layout>p2</layout>
