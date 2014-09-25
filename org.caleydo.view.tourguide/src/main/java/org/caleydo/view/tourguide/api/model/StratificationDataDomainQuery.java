@@ -91,7 +91,7 @@ public class StratificationDataDomainQuery extends ADataDomainQuery {
 			int i = 0;
 			for (AScoreRow row : data) {
 				StratificationPerspectiveRow r = (StratificationPerspectiveRow) row;
-				Perspective perspective = r.getStratification();
+				Perspective perspective = r.asPerspective();
 				blackList.set(i++, !current.remove(perspective.getPerspectiveID()));
 			}
 		}

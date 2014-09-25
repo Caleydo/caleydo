@@ -57,6 +57,13 @@ public abstract class ASingleIDDataDomainQuery extends ADataDomainQuery {
 		return idType;
 	}
 
+	/**
+	 * @return
+	 */
+	public IDType getStratificationIDType() {
+		return getDataDomain().getOppositeIDType(idType);
+	}
+
 	@Override
 	public boolean apply(AScoreRow row) {
 		assert row.getDataDomain() == dataDomain;
@@ -196,4 +203,5 @@ public abstract class ASingleIDDataDomainQuery extends ADataDomainQuery {
 	 * @return
 	 */
 	public abstract int getGroupSize(Integer id);
+
 }

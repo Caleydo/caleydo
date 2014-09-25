@@ -93,6 +93,10 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 	private TablePerspective tablePerspective;
 
+	private boolean showKMPlot = true;
+
+	private String[] emptyViewText;
+
 	/**
 	 * Constructor.
 	 *
@@ -117,7 +121,8 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 	@Override
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
-
+		if (!showKMPlot)
+			return;
 		if (!isMaxAxisTimeSetExternally) {
 			calculateMaxAxisTime(tablePerspective);
 		}
@@ -254,6 +259,12 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 	private void buildDisplayList(final GL2 gl, int displayListIndex) {
 
 		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
+
+		if (!showKMPlot) {
+			renderEmptyViewText(gl, 12, emptyViewText);
+			gl.glEndList();
+			return;
+		}
 
 		Integer groupID = null;
 		VirtualArray recordVA;
@@ -516,7 +527,6 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 
 			lineLabelRenderer.setAlignmentX(EAlignmentX.RIGHT);
 
-
 			lineLabelRenderer.setLabelTranslation(10, 0);
 			connectionLineRenderer.addAttributeRenderer(lineLabelRenderer);
 		}
@@ -663,5 +673,21 @@ public class GLKaplanMeier extends AGLView implements ISingleTablePerspectiveBas
 		List<TablePerspective> tpList = new ArrayList<>(1);
 		tpList.add(tablePerspective);
 		return tpList;
+	}
+
+	/**
+	 * @param showKMPlot
+	 *            setter, see {@link showKMPlot}
+	 */
+	public void setShowKMPlot(boolean showKMPlot) {
+		this.showKMPlot = showKMPlot;
+	}
+
+	/**
+	 * @param emptyViewText
+	 *            setter, see {@link emptyViewText}
+	 */
+	public void setEmptyViewText(String[] emptyViewText) {
+		this.emptyViewText = emptyViewText;
 	}
 }

@@ -79,7 +79,7 @@ public class CategoricalPercentageRankColumnModel extends DoubleRankColumnModel 
 	}
 
 	public static boolean isConsideredForCalculation(CategoricalPercentageRankColumnModel model) {
-		return model.getColor() != Color.NEUTRAL_GREY && !model.getTitle().endsWith("*");
+		return model.getColor() != Color.NEUTRAL_GREY && !model.getLabel().endsWith("*");
 	}
 
 	public CategoricalPercentageRankColumnModel(CategoricalPercentageRankColumnModel copy) {

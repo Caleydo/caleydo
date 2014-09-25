@@ -8,15 +8,14 @@
  */
 package org.caleydo.datadomain.pathway.listener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 /**
- * Event that specifies a list of pathway path segments.
+ * Event that specifies the selection of a {@link PathwayPath}.
  *
  * @author Christian Partl
  *
@@ -26,33 +25,31 @@ public class PathwayPathSelectionEvent extends AEvent {
 	/**
 	 * Path object that specifies a path.
 	 */
-	private List<PathwayPath> pathSegments;
+	private PathwayPath path;
 
 	@Override
 	public boolean checkIntegrity() {
-		return pathSegments != null;
-	}
-
-	/**
-	 * @return the pathSegments, see {@link #pathSegments}
-	 */
-	public List<PathwayPath> getPathSegments() {
-		return pathSegments;
-	}
-
-	public List<List<PathwayVertexRep>> getPathSegmentsAsVertexList() {
-		List<List<PathwayVertexRep>> segments = new ArrayList<>(pathSegments.size());
-		for (PathwayPath path : pathSegments) {
-			segments.add(path.getNodes());
+		if (path == null)
+			return false;
+		boolean ok = path.checkIntegrity();
+		if (!ok) {
+			Logger.log(new Status(IStatus.ERROR, "Pathway Path", "Integrity check of path failed: " + path.toString()));
 		}
-		return segments;
+		return path.checkIntegrity();
 	}
 
 	/**
-	 * @param pathSegments
-	 *            setter, see {@link pathSegments}
+	 * @return a new copy of the path, see {@link #path}
 	 */
-	public void setPathSegments(List<PathwayPath> pathSegments) {
-		this.pathSegments = pathSegments;
+	public PathwayPath getPath() {
+		return new PathwayPath(path);
+	}
+
+	/**
+	 * @param path
+	 *            setter, see {@link path}
+	 */
+	public void setPath(PathwayPath path) {
+		this.path = path;
 	}
 }

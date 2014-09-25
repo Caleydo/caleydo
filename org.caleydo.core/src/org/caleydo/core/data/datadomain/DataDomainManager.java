@@ -7,6 +7,7 @@ package org.caleydo.core.data.datadomain;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,25 +18,23 @@ import org.caleydo.core.event.data.NewDataDomainEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorManager;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.swt.widgets.Shell;
 
 /**
  * <p>
- * Singleton that manages dataDomains based on their dataDomainType (the string
- * plug-in id) and the concrete object.
+ * Singleton that manages dataDomains based on their dataDomainType (the string plug-in id) and the concrete object.
  * </p>
  * <p>
- * The DataDomainManager holds the default {@link AssociationManager}, which
- * stores associations between views and dataDomains. Notice that it is legal to
- * hold a private AssociationManager for special cases.
+ * The DataDomainManager holds the default {@link AssociationManager}, which stores associations between views and
+ * dataDomains. Notice that it is legal to hold a private AssociationManager for special cases.
  * </p>
  *
  * @author Alexander Lex
@@ -64,52 +63,42 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * This method is intended for initialization of the data domain in general.
-	 * It does not create an data domain instance.
+	 * This method is intended for initialization of the data domain in general. It does not create an data domain
+	 * instance.
 	 *
-	 * @param dataDomainType the plug-in id of the data domain
+	 * @param dataDomainType
+	 *            the plug-in id of the data domain
 	 */
 	public void initalizeDataDomain(String dataDomainType) {
-
-		IExtensionRegistry reg = Platform.getExtensionRegistry();
-
-		IExtensionPoint ep = reg
-				.getExtensionPoint("org.caleydo.datadomain.DataDomainInitialization");
-		IExtension ext = ep.getExtension(dataDomainType);
-		IConfigurationElement[] ce = ext.getConfigurationElements();
-
-		try {
-			IDataDomainInitialization dataDomain = (IDataDomainInitialization) ce[0]
-					.createExecutableExtension("class");
-			dataDomain.createIDTypesAndMapping();
-		}
-		catch (Exception ex) {
-			throw new RuntimeException("Could not instantiate data domain " + dataDomainType,
-					ex);
+		for (IDataDomainInitialization initializer : ExtensionUtils.findImplementation(
+				"org.caleydo.datadomain.DataDomainInitialization", "class", IDataDomainInitialization.class)) {
+			try {
+				initializer.createIDTypesAndMapping();
+			} catch (Exception ex) {
+				throw new RuntimeException("Could not instantiate data domain " + dataDomainType, ex);
+			}
 		}
 	}
 
 	/**
 	 * <p>
-	 * Create a new {@link ADataDomain} of the type specified through
-	 * <code>dataDomainType</code>. The created dataDomain is also registered
-	 * with the manager.
+	 * Create a new {@link ADataDomain} of the type specified through <code>dataDomainType</code>. The created
+	 * dataDomain is also registered with the manager.
 	 * </p>
 	 * <p>
-	 * This method also specifies a boolean to determine whether the columns in
-	 * a file corresponds to the dimensions in the application. This is only
-	 * relevant for {@link ATableBasedDataDomain}s. For other DataDomains or the
-	 * default (true) use {@link #createDataDomain(String)}.
+	 * This method also specifies a boolean to determine whether the columns in a file corresponds to the dimensions in
+	 * the application. This is only relevant for {@link ATableBasedDataDomain}s. For other DataDomains or the default
+	 * (true) use {@link #createDataDomain(String)}.
 	 * </p>
 	 *
-	 * @param dataDomainType the plug-in id of the data domain
-	 * @param isColumnDimension set to false if this dataDomain is of type
-	 *            {@link ATableBasedDataDomain} and you want to access the
+	 * @param dataDomainType
+	 *            the plug-in id of the data domain
+	 * @param isColumnDimension
+	 *            set to false if this dataDomain is of type {@link ATableBasedDataDomain} and you want to access the
 	 *            columns of the loaded files as records
 	 * @return the created {@link IDataDomain}
 	 */
-	public synchronized IDataDomain createDataDomain(String dataDomainType,
-			DataSetDescription dataSetDescription) {
+	public synchronized IDataDomain createDataDomain(String dataDomainType, DataSetDescription dataSetDescription) {
 
 		IExtensionRegistry reg = RegistryFactory.getRegistry();
 
@@ -127,19 +116,17 @@ public class DataDomainManager {
 			register(dataDomain);
 
 			return dataDomain;
-		}
-		catch (Exception ex) {
-			throw new RuntimeException("Could not instantiate data domain " + dataDomainType,
-					ex);
+		} catch (Exception ex) {
+			throw new RuntimeException("Could not instantiate data domain " + dataDomainType, ex);
 		}
 	}
 
 	/**
-	 * Create a new {@link ADataDomain} of the type specified through
-	 * <code>dataDomainType</code>. The created dataDomain is also registered
-	 * with the manager.
+	 * Create a new {@link ADataDomain} of the type specified through <code>dataDomainType</code>. The created
+	 * dataDomain is also registered with the manager.
 	 *
-	 * @param dataDomainType the plug-in id of the data domain
+	 * @param dataDomainType
+	 *            the plug-in id of the data domain
 	 * @return the created {@link IDataDomain}
 	 */
 	public IDataDomain createDataDomain(String dataDomainType) {
@@ -156,8 +143,7 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Get a concrete dataDomain object for the dataDomainID. Returns null if no
-	 * dataDomain object is mapped to the ID.
+	 * Get a concrete dataDomain object for the dataDomainID. Returns null if no dataDomain object is mapped to the ID.
 	 *
 	 * @param dataDomainID
 	 * @return
@@ -167,10 +153,9 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Get a concrete dataDomain object for the dataDomainType. Returns null if
-	 * no dataDomain object is mapped to the type. If more than one data domain
-	 * object is registered for that ID, the chooser dialog is opened where the
-	 * user can determine the data domain.
+	 * Get a concrete dataDomain object for the dataDomainType. Returns null if no dataDomain object is mapped to the
+	 * type. If more than one data domain object is registered for that ID, the chooser dialog is opened where the user
+	 * can determine the data domain.
 	 *
 	 * @param dataDomainType
 	 * @return
@@ -185,8 +170,8 @@ public class DataDomainManager {
 		if (possibleDataDomains.size() == 1)
 			dataDomain = possibleDataDomains.get(0);
 		else {
-			ChooseDataConfigurationDialog chooseDataDomainDialog = new ChooseDataConfigurationDialog(
-					new Shell(), "DataDomainManager");
+			ChooseDataConfigurationDialog chooseDataDomainDialog = new ChooseDataConfigurationDialog(new Shell(),
+					"DataDomainManager");
 			chooseDataDomainDialog.setBlockOnOpen(true);
 			chooseDataDomainDialog.open();
 			dataDomain = chooseDataDomainDialog.getDataConfiguration().getDataDomain();
@@ -195,6 +180,27 @@ public class DataDomainManager {
 		}
 
 		return dataDomain;
+	}
+
+	/**
+	 * Get a concrete dataDomain object for the dataDomainType with the given
+	 * label. Returns null if no dataDomain object has assigned the label. If
+	 * more than one data domain object has that label, the first data domain
+	 * object is returned.
+	 *
+	 * @param dataDomainType
+	 * @return
+	 */
+	public synchronized IDataDomain getDataDomainByLabel(String dataDomainType,
+			String label) {
+
+		List<IDataDomain> domains = getDataDomainsByType(dataDomainType);
+		if (domains != null)
+			for (IDataDomain dataDomain : domains)
+				if (dataDomain.getLabel().equalsIgnoreCase(label))
+					return dataDomain;
+
+		return null;
 	}
 
 	/**
@@ -211,16 +217,13 @@ public class DataDomainManager {
 			List<IDataDomain> dataDomainList = new ArrayList<IDataDomain>();
 			dataDomainList.add(dataDomain);
 			byType.put(dataDomain.getDataDomainType(), dataDomainList);
-		}
-		else {
+		} else {
 			byType.get(dataDomain.getDataDomainType()).add(dataDomain);
 		}
 
 		// Only assign random color if no color has been set externally
 		if (dataDomain.getColor() == null) {
-			Color color = ColorManager.get().getFirstMarkedColorOfList(
-					ColorManager.QUALITATIVE_COLORS, false);
-			ColorManager.get().markColor(ColorManager.QUALITATIVE_COLORS, color, true);
+			Color color = ColorManager.get().getAndMarkColor(ColorManager.QUALITATIVE_COLORS);
 			dataDomain.getDataSetDescription().setColor(color);
 		}
 
@@ -269,14 +272,17 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Returns a list of all data domains of this type registered or null if no
-	 * such data domain is registered.
+	 * Returns a list of all data domains of this type registered or an empty
+	 * list if no such data domain is registered.
 	 *
 	 * @param dataDomainType
 	 * @return
 	 */
 	public List<IDataDomain> getDataDomainsByType(String dataDomainType) {
-		return byType.get(dataDomainType);
+		List<IDataDomain> result = byType.get(dataDomainType);
+		if( result == null )
+			result = new ArrayList<>();
+		return result;
 	}
 
 	/**
@@ -295,12 +301,15 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Unregisters all data domains. This is for instance needed when loading a
-	 * new cal file during runtime.
+	 * Unregisters all data domains. This is for instance needed when loading a new cal file during runtime.
 	 */
 	public void unregisterAllDataDomains() {
 		for (IDataDomain domain : new ArrayList<>(getDataDomains())) { // work on a local copy
 			unregister(domain);
 		}
+	}
+
+	public Collection<IDataDomain> getAllDataDomains() {
+		return Collections.unmodifiableCollection(byID.values());
 	}
 }

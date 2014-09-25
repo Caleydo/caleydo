@@ -5,10 +5,9 @@
  ******************************************************************************/
 package org.caleydo.vis.lineup.model.mixin;
 
-import org.caleydo.core.util.color.Color;
-
 import java.util.Comparator;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.vis.lineup.model.ColumnRanker;
 import org.caleydo.vis.lineup.model.IRow;
 

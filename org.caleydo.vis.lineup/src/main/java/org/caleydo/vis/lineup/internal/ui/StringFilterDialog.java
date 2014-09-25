@@ -6,8 +6,9 @@
 package org.caleydo.vis.lineup.internal.ui;
 
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.vis.lineup.internal.event.FilterEvent;
+import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
+import org.caleydo.vis.lineup.ui.AFilterDialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;

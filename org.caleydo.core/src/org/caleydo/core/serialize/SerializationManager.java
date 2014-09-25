@@ -52,6 +52,7 @@ public class SerializationManager {
 		serializableTypes.add(ColorBrewer.ColorBrewerColor.class);
 		serializableTypes.add(StyledColor.class);
 		serializableTypes.add(AttributeType.class);
+		serializableTypes.add(IDMappingList.class);
 
 		for (ISerializationAddon addon : addons)
 			serializableTypes.addAll(addon.getJAXBContextClasses());

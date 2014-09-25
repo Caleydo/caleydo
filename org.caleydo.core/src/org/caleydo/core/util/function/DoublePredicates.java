@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.util.function;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.google.common.base.Predicate;
 
 
@@ -16,6 +18,81 @@ import com.google.common.base.Predicate;
  */
 public class DoublePredicates {
 	public static final IDoublePredicate isNaN = new CompareDoublePredicate(6, 0);
+	public static final IDoublePredicate alwaysTrue = new IDoublePredicate() {
+		@Override
+		public boolean apply(Double arg0) {
+			return true;
+		}
+
+		@Override
+		public boolean apply(double in) {
+			return true;
+		}
+
+		@Override
+		public String toString() {
+			return "true";
+		}
+	};
+	public static final IDoublePredicate alwaysFalse = not(alwaysTrue);
+
+	public static IDoublePredicate and(final IDoublePredicate... operands) {
+		if (operands.length == 1)
+			return operands[0];
+		if (operands.length == 0)
+			return alwaysTrue;
+		return new IDoublePredicate() {
+			@Override
+			public boolean apply(Double input) {
+				for (IDoublePredicate p : operands)
+					if (!p.apply(input))
+						return false;
+				return true;
+			}
+
+			@Override
+			public boolean apply(double in) {
+				for (IDoublePredicate p : operands)
+					if (!p.apply(in))
+						return false;
+				return true;
+			}
+
+			@Override
+			public String toString() {
+				return "and(" + StringUtils.join(operands, ", ") + ")";
+			}
+		};
+	}
+
+	public static IDoublePredicate or(final IDoublePredicate... operands) {
+		if (operands.length == 1)
+			return operands[0];
+		if (operands.length == 0)
+			return alwaysFalse;
+		return new IDoublePredicate() {
+			@Override
+			public boolean apply(Double input) {
+				for(IDoublePredicate p : operands)
+					if (p.apply(input))
+						return true;
+				return false;
+			}
+
+			@Override
+			public boolean apply(double in) {
+				for(IDoublePredicate p : operands)
+					if (!p.apply(in))
+						return true;
+				return false;
+			}
+
+			@Override
+			public String toString() {
+				return "or(" + StringUtils.join(operands, ", ") + ")";
+			}
+		};
+	}
 
 	public static IDoublePredicate lt(double v) {
 		return new CompareDoublePredicate(0, v);
@@ -50,6 +127,11 @@ public class DoublePredicates {
 			@Override
 			public boolean apply(double in) {
 				return !o.apply(in);
+			}
+
+			@Override
+			public String toString() {
+				return "not(" + o + ")";
 			}
 		};
 	}
@@ -101,6 +183,27 @@ public class DoublePredicates {
 				return Double.isNaN(in);
 			}
 			return false;
+		}
+
+		@Override
+		public String toString() {
+			switch (mode) {
+			case 0:
+				return "lt(" + v + ")";
+			case 1:
+				return "le(" + v + ")";
+			case 2:
+				return "gt(" + v + ")";
+			case 3:
+				return "ge(" + v + ")";
+			case 4:
+				return "ne(" + v + ")";
+			case 5:
+				return "eq(" + v + ")";
+			case 6:
+				return "isNaN";
+			}
+			return "";
 		}
 
 	}

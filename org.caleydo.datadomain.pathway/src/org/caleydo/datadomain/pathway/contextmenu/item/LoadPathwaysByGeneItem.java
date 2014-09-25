@@ -43,11 +43,16 @@ public class LoadPathwaysByGeneItem extends AContextMenuItem {
 	 */
 	public void setDavidID(IDType idType, int david, String dataDomainID) {
 
+		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = createEvent(idType, david, dataDomainID, this);
+		registerEvent(loadPathwaysByGeneEvent);
+	}
+
+	public static LoadPathwaysByGeneEvent createEvent(IDType idType, int david, String dataDomainID, Object sender) {
 		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
-		loadPathwaysByGeneEvent.setSender(this);
+		loadPathwaysByGeneEvent.setSender(sender);
 		loadPathwaysByGeneEvent.setGeneID(david);
 		loadPathwaysByGeneEvent.setTableIDType(idType);
 		loadPathwaysByGeneEvent.setEventSpace(dataDomainID);
-		registerEvent(loadPathwaysByGeneEvent);
+		return loadPathwaysByGeneEvent;
 	}
 }

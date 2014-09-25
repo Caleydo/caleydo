@@ -39,15 +39,63 @@
       </EmbeddingInfo>
    </extension>
    <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.pathway.v2.internal.RcpGLPathwayView"
+            icon="resources/icons/pathway.png"
+            id="org.caleydo.view.pathway.v2"
+            name="Pathway">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.pathway.v2.internal.OpenViewHandler"
+            id="org.caleydo.view.pathway.v2.open"
+            name="OpenPathway">
+      </command>
+   </extension>
+   <extension
+         point="org.caleydo.ui.GLElementFactory">
+      <factory
+            factory="org.caleydo.view.pathway.v2.internal.PathwayElementFactory"
+            icon="resources/icons/pathway.png"
+            name="Pathway">
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.view"
+               label="View">
+            <menu
+                  id="org.caleydo.menu.view.visualization"
+                  label="Visualizations">
+               <command
+                     commandId="org.caleydo.view.pathway.v2.open"
+                     icon="resources/icons/pathway.png"
+                     label="Pathway"
+                     style="push">
+               </command>
+            </menu>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
          point="org.caleydo.datadomain.pathway.embeddedPathway">
       <parent
             viewID="org.caleydo.view.entourage">
          <pathway
                embeddingID="org.caleydo.view.entourage.pathway.multiform.level1"
                icon="resources/icons/pathway_lv1.png">
-            <viewCreator
-                  class="org.caleydo.view.pathway.EntourageLevel1PathwayCreator">
-            </viewCreator>
+            <creator
+                  class="org.caleydo.view.pathway.v2.internal.EntouragePathwayLevel1Creator">
+            </creator>
          </pathway>
       </parent>
    </extension>

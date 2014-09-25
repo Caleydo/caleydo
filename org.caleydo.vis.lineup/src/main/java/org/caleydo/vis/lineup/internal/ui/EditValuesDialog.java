@@ -85,7 +85,7 @@ public class EditValuesDialog extends Dialog {
 
 			for (final ARankColumnModel col : columns) {
 				Label l = new Label(p, SWT.RIGHT);
-				l.setText(col.getTitle() + ":");
+				l.setText(col.getLabel() + ":");
 				boolean editAble = (col instanceof ISetableColumnMixin);
 				final Text t = new Text(p, SWT.SINGLE | (editAble ? SWT.NONE : SWT.READ_ONLY)
 						| SWT.BORDER);

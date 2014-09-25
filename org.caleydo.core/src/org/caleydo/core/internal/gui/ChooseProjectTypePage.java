@@ -54,7 +54,7 @@ public class ChooseProjectTypePage extends WizardPage implements Listener {
 		this.setImageDescriptor(Activator.getImageDescriptor("resources/wizard/wizard.png"));
 		this.setDescription("What data do you want to load?");
 
-		this.setPageComplete(false);
+		this.setPageComplete(true);
 	}
 
 	@Override
@@ -93,6 +93,8 @@ public class ChooseProjectTypePage extends WizardPage implements Listener {
 
 		this.setControl(composite);
 		composite.pack();
+
+		// updateButtons();
 	}
 
 	/**

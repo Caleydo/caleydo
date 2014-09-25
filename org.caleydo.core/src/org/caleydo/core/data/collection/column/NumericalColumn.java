@@ -10,6 +10,7 @@ import org.caleydo.core.data.collection.column.container.INumericalContainer;
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.io.DataDescription;
+import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.math.MathHelper;
 
 /**
@@ -26,11 +27,24 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	private double externalMin = Double.NaN;
 	private double externalMax = Double.NaN;
 
+	NumericalProperties properties;
+
 	/**
 	 * Constructor
 	 */
 	public NumericalColumn(DataDescription dataDescription) {
 		super(dataDescription);
+		properties = dataDescription.getNumericalProperties();
+
+		if (properties != null) {
+			defaultDataTransformation = properties.getDataTransformation();
+			if (properties.getMin() != null) {
+				externalMin = dataDescription.getNumericalProperties().getMin();
+			}
+			if (properties.getMax() != null) {
+				externalMax = dataDescription.getNumericalProperties().getMax();
+			}
+		}
 	}
 
 	/**
@@ -121,6 +135,11 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 		FloatContainer logContainer = rawContainer.log(2);
 		dataRepToContainerMap.put(NumericalTable.Transformation.LOG2,
 				logContainer.normalizeWithAtrificalExtrema(MathHelper.log(getMin(), 2), MathHelper.log(getMax(), 2)));
+	}
+
+	@Override
+	public Object getDataClassSpecificDescription() {
+		return properties;
 	}
 
 }

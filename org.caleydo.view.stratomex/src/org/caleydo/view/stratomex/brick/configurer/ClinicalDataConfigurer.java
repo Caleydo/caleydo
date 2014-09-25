@@ -11,11 +11,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.data.datadomain.TablePerspectiveActions;
+import org.caleydo.core.data.perspective.table.TableDoubleLists;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.function.IDoubleIterator;
+import org.caleydo.core.util.function.IDoubleList;
 import org.caleydo.core.view.ViewManager;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -177,13 +182,17 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 
 	@Override
 	public void setBrickViews(GLBrick brick, ABrickLayoutConfiguration brickLayout) {
-
+		List<TablePerspective> tablePerspectives = brick.getTablePerspectives();
+		boolean hasMixedValues = hasMixedValues(tablePerspectives);
 		EEmbeddingID embeddingID;
 		if (brick.isHeaderBrick()) {
-			embeddingID = EEmbeddingID.CLINICAL_HEADER_BRICK;
+			embeddingID = hasMixedValues ? EEmbeddingID.CLINICAL_NUMERICAL_HEADER_BRICK
+					: EEmbeddingID.CLINICAL_HEADER_BRICK;
 		} else {
-			embeddingID = EEmbeddingID.CLINICAL_SEGMENT_BRICK;
+			embeddingID = hasMixedValues ? EEmbeddingID.CLINICAL_NUMERICAL_SEGMENT_BRICK
+					: EEmbeddingID.CLINICAL_SEGMENT_BRICK;
 		}
+
 		Set<String> remoteRenderedViewIDs = ViewManager.get().getRemotePlugInViewIDs(GLStratomex.VIEW_TYPE,
 				embeddingID.id());
 
@@ -191,7 +200,6 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 		Collections.sort(viewIDs);
 
 		MultiFormRenderer multiFormRenderer = new MultiFormRenderer(brick.getStratomex(), true);
-		List<TablePerspective> tablePerspectives = brick.getTablePerspectives();
 
 		int globalRendererID = 0;
 		int localRendererID = -1;
@@ -227,6 +235,31 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 		// brick.setViewSwitchingBar(viewSwitchingBar);
 		// brick.setCompactRendererID(compactRendererID);
 		// multiFormRenderer.addChangeListener(brick);
+	}
+
+	/**
+	 * checks whether the data behind the first {@link TablePerspective} has positive as well as negative raw values
+	 *
+	 * @param tablePerspectives
+	 * @return
+	 */
+	private static boolean hasMixedValues(List<TablePerspective> tablePerspectives) {
+		if (tablePerspectives.isEmpty())
+			return false;
+		TablePerspective p = tablePerspectives.get(0);
+		if (p.getParentTablePerspective() != null)
+			p = p.getParentTablePerspective();
+		boolean hasNegative = false;
+		boolean hasPositive = false;
+		IDoubleList list = TableDoubleLists.asRawList(p);
+		for (IDoubleIterator it = list.iterator(); it.hasNext();) {
+			double d = it.nextPrimitive();
+			hasNegative = hasNegative || d < 0;
+			hasPositive = hasPositive || d >= 0;
+			if (hasNegative && hasPositive) // early abort
+				return true;
+		}
+		return false;
 	}
 
 	protected ArrayList<ElementLayout> createToolBarElements(ABrickLayoutConfiguration layoutTemplate) {
@@ -267,6 +300,11 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 	@Override
 	public boolean distributeBricksUniformly() {
 		return true;
+	}
+
+	@Override
+	public void addDataSpecificContextMenuEntries(ContextMenuCreator creator, GLBrick brick) {
+		TablePerspectiveActions.add(creator, brick.getTablePerspective(), this, true);
 	}
 
 }

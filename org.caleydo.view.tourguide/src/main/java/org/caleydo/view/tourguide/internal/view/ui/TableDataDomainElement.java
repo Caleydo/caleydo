@@ -40,7 +40,9 @@ public class TableDataDomainElement extends ADataDomainElement {
 			GroupContextMenuItem item = new GroupContextMenuItem("Used " + getModel().getOppositeIDType() + " View");
 			creator.addContextMenuItem(item);
 			for (Perspective d : dims)
-				item.add(new GenericContextMenuItem(d.getLabel(), EContextMenuType.CHECK,
+				item.add(new GenericContextMenuItem(String.format("%s (%d items)", d.getLabel(), d.getVirtualArray()
+						.size()),
+						EContextMenuType.CHECK,
 						new SelectDimensionSelectionEvent(d).to(this)).setState(d == dim));
 			creator.addSeparator();
 		}
@@ -75,7 +77,7 @@ public class TableDataDomainElement extends ADataDomainElement {
 		@Override
 		public void create() {
 			super.create();
-			getShell().setText("Edit Filter of " + model.getDataDomain().getLabel());
+			getShell().setText("Edit Filter of " + model.getLabel());
 			this.setBlockOnOpen(false);
 		}
 

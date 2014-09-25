@@ -84,7 +84,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 
 	@Override
 	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
-		return GLLayouts.resolveLayoutDatas(clazz, default_, this.local);
+		return GLLayouts.resolveLayoutDatas(clazz, default_, this.parentGLCanvas, this.local);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 		IResourceLocator locator = createLocator();
 		this.local = new GLContextLocal(this.getTextRenderer(), this.getTextureManager(), locator);
 
-		this.root = new WindowGLElement(createRoot());
+		this.root = new WindowGLElement(createRoot(), getParentGLCanvas());
 
 		this.root.setParent(this);
 		this.root.init(this);

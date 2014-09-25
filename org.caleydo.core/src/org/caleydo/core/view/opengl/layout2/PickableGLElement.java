@@ -6,6 +6,8 @@
 package org.caleydo.core.view.opengl.layout2;
 
 import org.caleydo.core.util.base.ILabeled;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -30,7 +32,16 @@ public class PickableGLElement extends GLElement {
 		this(0);
 	}
 
+	public PickableGLElement(IGLRenderer renderer) {
+		this(0, renderer);
+	}
+
 	public PickableGLElement(int objectId) {
+		this(objectId, GLRenderers.DUMMY);
+	}
+
+	public PickableGLElement(int objectId, IGLRenderer renderer) {
+		super(renderer);
 		this.objectId = objectId;
 		this.setVisibility(EVisibility.PICKABLE);
 		this.onPick(new IPickingListener() {
@@ -131,6 +142,9 @@ public class PickableGLElement extends GLElement {
 		case MOUSE_WHEEL:
 			onMouseWheel(pick);
 			break;
+		case DRAG_DETECTED:
+			onDragDetected(pick);
+			break;
 		}
 
 	}
@@ -166,6 +180,10 @@ public class PickableGLElement extends GLElement {
 	}
 
 	protected void onMouseWheel(Pick pick) {
+
+	}
+
+	protected void onDragDetected(Pick pick) {
 
 	}
 }

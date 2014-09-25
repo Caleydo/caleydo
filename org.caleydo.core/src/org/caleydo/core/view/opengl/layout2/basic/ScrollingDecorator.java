@@ -7,16 +7,23 @@ package org.caleydo.core.view.opengl.layout2.basic;
 
 import gleem.linalg.Vec2f;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 
+import org.caleydo.core.data.collection.EDimension;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout2.AGLElementDecorator;
+import org.caleydo.core.view.opengl.layout2.AGLElementView;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar.IScrollBarCallback;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingMode;
 
 /**
  * wrapper element that enables the use of scrollbars.
@@ -26,9 +33,14 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
  * @author Samuel Gratzl
  *
  */
-public final class ScrollingDecorator extends AGLElementDecorator implements IScrollBarCallback {
+public class ScrollingDecorator extends AGLElementDecorator implements IScrollBarCallback {
 	private final ScrollBarImpl vertical;
 	private final ScrollBarImpl horizontal;
+	/**
+	 * in which direction a mouse wheel changes a scrollbar
+	 */
+	private final EDimension mouseWheelScrolls;
+	private int mouseWheelsScrollsPickingId = -1;
 
 	private final float scrollBarWidth;
 
@@ -38,13 +50,24 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	private boolean enabled = true;
 
 	/**
+	 * whether the viewport should be automatically reseted, if scrolling isn't needed anymore
+	 */
+	private boolean autoResetViewport = true;
+
+	/**
 	 * a custom min size provider otherwise the content will be used
 	 */
 	private IHasMinSize minSizeProvider = null;
 
 	public ScrollingDecorator(GLElement content, IScrollBar horizontal, IScrollBar vertical, float scrollBarWidth) {
+		this(content, horizontal, vertical, scrollBarWidth, null);
+	}
+
+	public ScrollingDecorator(GLElement content, IScrollBar horizontal, IScrollBar vertical, float scrollBarWidth,
+			EDimension mouseWheelsScrolls) {
 		super(content);
 		this.scrollBarWidth = scrollBarWidth;
+		mouseWheelScrolls = mouseWheelsScrolls;
 		this.horizontal = horizontal != null ? new ScrollBarImpl(horizontal) : null;
 		if (horizontal != null) {
 			horizontal.setCallback(this);
@@ -57,8 +80,24 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 		}
 	}
 
+	/**
+	 * factory method for creating a {@link ScrollingDecorator}
+	 *
+	 * @param content
+	 *            what
+	 * @param scrollBarWidth
+	 *            size of the scrollbar
+	 * @param mouseWheelsScrolls
+	 *            in which direction should the mouse wheel scroll, null is allowed
+	 * @return
+	 */
+	public static ScrollingDecorator wrap(GLElement content, float scrollBarWidth, EDimension mouseWheelsScrolls) {
+		return new ScrollingDecorator(content, new ScrollBar(true), new ScrollBar(false), scrollBarWidth,
+				mouseWheelsScrolls);
+	}
+
 	public static ScrollingDecorator wrap(GLElement content, float scrollBarWidth) {
-		return new ScrollingDecorator(content, new ScrollBar(true), new ScrollBar(false), scrollBarWidth);
+		return wrap(content, scrollBarWidth, null);
 	}
 
 	@Override
@@ -68,6 +107,14 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 			horizontal.pickingId = context.registerPickingListener(horizontal.scrollBar);
 		if (vertical != null)
 			vertical.pickingId = context.registerPickingListener(vertical.scrollBar);
+		if (mouseWheelScrolls != null && mouseWheelScrolls.select(horizontal, vertical) != null)
+			mouseWheelsScrollsPickingId = context.registerPickingListener(new IPickingListener() {
+				@Override
+				public void pick(Pick pick) {
+					if (pick.getPickingMode() == PickingMode.MOUSE_WHEEL)
+						mouseWheelScrolls.select(horizontal, vertical).scrollBar.pick(pick);
+				}
+			});
 	}
 
 	@Override
@@ -76,6 +123,10 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 			context.unregisterPickingListener(horizontal.pickingId);
 		if (vertical != null)
 			context.unregisterPickingListener(vertical.pickingId);
+		if (mouseWheelsScrollsPickingId != -1) {
+			context.unregisterPickingListener(mouseWheelsScrollsPickingId);
+			mouseWheelsScrollsPickingId = -1;
+		}
 		super.takeDown();
 	}
 
@@ -83,9 +134,21 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	 * @param minSizeProvider
 	 *            setter, see {@link minSizeProvider}
 	 */
+	@Override
 	public void setMinSizeProvider(IHasMinSize minSizeProvider) {
+		super.setMinSizeProvider(minSizeProvider);
 		this.minSizeProvider = minSizeProvider;
 		relayout();
+	}
+
+	/**
+	 * @param autoResetViewport
+	 *            setter, see {@link autoResetViewport}
+	 */
+	public void setAutoResetViewport(boolean autoResetViewport) {
+		this.autoResetViewport = autoResetViewport;
+		if (this.autoResetViewport)
+			relayout();
 	}
 
 	/**
@@ -118,6 +181,13 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 		Vec2f offset = content.getLocation();
 		offset.setX(-offset.x());
 		offset.setY(-offset.y());
+
+		if (!autoResetViewport && offset.x() != 0) {
+			minSize.setX(Math.max(size.x() + offset.x(), minSize.x()));
+		}
+		if (!autoResetViewport && offset.y() != 0) {
+			minSize.setY(Math.max(size.y() + offset.y(), minSize.y()));
+		}
 
 		boolean needHor = horizontal != null && size.x() < minSize.x();
 		if (needHor)
@@ -157,7 +227,6 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 		layout.setSize(contentSize.x(), contentSize.y());
 	}
 
-
 	/**
 	 * @param layout
 	 * @return
@@ -177,6 +246,26 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 			return getSize().x();
 		else
 			return getSize().y();
+	}
+
+	/**
+	 * externally set the clipping location
+	 *
+	 * @param x
+	 * @param y
+	 */
+	public void setClippingLocation(float x, float y) {
+		x = fix(horizontal, x);
+		y = fix(vertical, y);
+		content.setLocation(x, y);
+		repaint();
+	}
+
+	private static float fix(ScrollBarImpl s, float v) {
+		if (s == null) // no scrolling in this dimension
+			return 0;
+		v = Math.max(0, Math.min(v, s.scrollBar.getSize() - s.scrollBar.getWindow()));
+		return v;
 	}
 
 	@Override
@@ -205,7 +294,7 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	protected void doRender(GLGraphics g, float w, float h, boolean pick) {
 		if (!enabled) {
 			if (pick)
-				content.renderPick(g);
+				renderPickContent(g, w, h);
 			else
 				content.render(g);
 			return;
@@ -245,6 +334,7 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 			gl.glClipPlane(GL2ES1.GL_CLIP_PLANE1, clipPlane3, 0);
 			gl.glEnable(GL2ES1.GL_CLIP_PLANE0);
 			gl.glEnable(GL2ES1.GL_CLIP_PLANE1);
+
 		}
 		if (doVer) {
 			double[] clipPlane2 = new double[] { 0.0, 1.0, 0.0, 0 };
@@ -254,14 +344,37 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 			gl.glEnable(GL2ES1.GL_CLIP_PLANE2);
 			gl.glEnable(GL2ES1.GL_CLIP_PLANE3);
 		}
+		gl.glEnable(GL.GL_SCISSOR_TEST);
+		IGLCanvas canvas = findParent(AGLElementView.class).getParentGLCanvas();
+		int height = canvas.toRawPixel(canvas.getDIPHeight());
+		// gl.glScissor(0, 0, 100, 100);
+
+		int locx = canvas.toRawPixel(getAbsoluteLocation().x());
+		int locy = canvas.toRawPixel(getAbsoluteLocation().y());
+		int pixelW = canvas.toRawPixel(w);
+		int pixelH = canvas.toRawPixel(h);
+
+		gl.glScissor(locx, height - locy - pixelH + (doHor ? canvas.toRawPixel(scrollBarWidth) : 0), pixelW
+				- (doVer ? canvas.toRawPixel(scrollBarWidth) : 0), pixelH
+				- (doHor ? canvas.toRawPixel(scrollBarWidth) : 0));
+
 		if (pick)
-			content.renderPick(g);
+			renderPickContent(g, w, h);
 		else
 			content.render(g);
 
+		gl.glDisable(GL.GL_SCISSOR_TEST);
 		if (doVer || doHor) {
 			gl.glPopAttrib();
 		}
+	}
+
+	private void renderPickContent(GLGraphics g, float w, float h) {
+		if (mouseWheelsScrollsPickingId >= 0)
+			g.pushName(mouseWheelsScrollsPickingId).fillRect(0, 0, w, h);
+		content.renderPick(g);
+		if (mouseWheelsScrollsPickingId >= 0)
+			g.popName();
 	}
 
 	/**
@@ -282,6 +395,24 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 		return r;
 	}
 
+	public void setClippingLocation(Vec2f location) {
+		setClippingLocation(location.x(), location.y());
+	}
+
+	public void moveContentTo(Vec2f pos) {
+		if (horizontal != null)
+			horizontal.scrollBar.moveTo(pos.x());
+		if (vertical != null)
+			vertical.scrollBar.moveTo(pos.y());
+	}
+
+	public void moveContent(Vec2f delta) {
+		if (horizontal != null)
+			horizontal.scrollBar.move(delta.x());
+		if (vertical != null)
+			vertical.scrollBar.move(delta.y());
+	}
+
 	protected boolean needHor() {
 		return horizontal != null && horizontal.needIt;
 	}
@@ -290,16 +421,15 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 		return vertical != null && vertical.needIt;
 	}
 
-
 	@Override
 	public boolean moved(GLElement child) {
 		return false;
 	}
 
 	private class ScrollBarImpl {
-		private final IScrollBar scrollBar;
-		private int pickingId;
-		private boolean needIt;
+		final IScrollBar scrollBar;
+		int pickingId;
+		boolean needIt;
 
 		public ScrollBarImpl(IScrollBar scrollBar) {
 			this.scrollBar = scrollBar;
@@ -312,7 +442,7 @@ public final class ScrollingDecorator extends AGLElementDecorator implements ISc
 	 * @author Samuel Gratzl
 	 *
 	 */
-	public interface IHasMinSize {
+	public static interface IHasMinSize {
 		Vec2f getMinSize();
 	}
 }

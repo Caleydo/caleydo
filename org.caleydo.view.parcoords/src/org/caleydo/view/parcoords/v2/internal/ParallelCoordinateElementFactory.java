@@ -29,7 +29,7 @@ public class ParallelCoordinateElementFactory implements IGLElementFactory {
 	}
 
 	@Override
-	public boolean canCreate(GLElementFactoryContext context) {
+	public boolean apply(GLElementFactoryContext context) {
 		if (context.getData() == null)
 			return false;
 

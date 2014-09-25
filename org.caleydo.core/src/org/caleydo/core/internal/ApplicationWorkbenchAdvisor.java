@@ -12,6 +12,7 @@ import org.caleydo.core.gui.perspective.GenomePerspective;
 import org.caleydo.core.gui.perspective.PartListener;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectManager;
+import org.caleydo.core.util.logging.Logger;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -55,13 +56,13 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 		// .stopMultipleExecution(autoSaver);
 		// autoSaver = null;
 
-		try {
-			new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(true, false,
-					ProjectManager.saveRecentProject());
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		if (MyPreferences.saveRecentProject()) {
+			try {
+				new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(true, false,
+						ProjectManager.saveRecentProject());
+			} catch (InvocationTargetException | InterruptedException e) {
+				Logger.create(Application.class).error("can't save recent project", e);
+			}
 		}
 
 		return true;

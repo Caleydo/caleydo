@@ -51,6 +51,6 @@ public interface IGLKeyListener {
 	}
 
 	public enum ESpecialKey {
-		ALT, CONTROL, SHIFT, LEFT, RIGHT, UP, DOWN, PAGE_UP, PAGE_DOWN, HOME, END
+		ALT, CONTROL, SHIFT, LEFT, RIGHT, UP, DOWN, PAGE_UP, PAGE_DOWN, HOME, END, INSERT, DELETE;
 	}
 }

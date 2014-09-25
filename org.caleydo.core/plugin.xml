@@ -19,6 +19,9 @@
 
    <extension-point id="org.caleydo.core.CacheInitializer" name="CacheInitializer" schema="schema/org.caleydo.core.CacheInitializer.exsd"/>
    <extension-point id="org.caleydo.ui.GLElementFactory" name="GLElementFactory" schema="schema/org.caleydo.ui.GLElementFactory.exsd"/>
+   <extension-point id="org.caleydo.core.view.dnd.TransferSerializer" name="TransferSerializer" schema="schema/org.caleydo.core.view.dnd.TransferSerializer.exsd"/>
+   <extension-point id="org.caleydo.datadomain.TablePerspectiveActions" name="TablePerspectiveActions" schema="schema/org.caleydo.datadomain.TablePerspectiveActions.exsd"/>
+   <extension-point id="org.caleydo.datadomain.TypedIDActions" name="TypedIDActions" schema="schema/org.caleydo.datadomain.TypedIDActions.exsd"/>
 
    <extension
          id="application"
@@ -230,12 +233,17 @@
                      value="true">
                </parameter>
             </command>
-            <command
-                  commandId="org.caleydo.core.io.gui.import_data"
+            <menu
                   icon="resources/icons/general/import_data.png"
-                  label="Import Data"
-                  style="push">
-            </command>
+                  id="org.caleydo.menu.file.import"
+                  label="Import">
+               <command
+                     commandId="org.caleydo.core.io.gui.import_data"
+                     icon="resources/icons/general/import_data.png"
+                     label="Import Data"
+                     style="push">
+               </command>
+            </menu>
             <command
                   commandId="org.caleydo.core.io.gui.export_data"
                   icon="resources/icons/general/export_data.png"

@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.entourage.ranking;
 
+import gleem.linalg.Vec2f;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -28,14 +30,19 @@ import java.util.Collections;
 import java.util.List;
 
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
+import org.caleydo.core.view.opengl.canvas.GLThreadListenerWrapper;
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.animation.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBarCompatibility;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.layout2.util.GLElementWindow;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -43,7 +50,6 @@ import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.entourage.EEmbeddingID;
 import org.caleydo.view.entourage.GLEntourage;
-import org.caleydo.view.entourage.GLWindow;
 import org.caleydo.vis.lineup.config.IRankTableUIConfig;
 import org.caleydo.vis.lineup.config.RankTableConfigBase;
 import org.caleydo.vis.lineup.config.RankTableUIConfigBase;
@@ -78,7 +84,10 @@ public class RankingElement extends GLElementContainer {
 	private ARankColumnModel currentRankColumnModel;
 	private StringRankColumnModel pathwayNameColumn;
 	private CategoricalRankColumnModel<?> pathwayDataBaseColumn;
-	private GLWindow window;
+	private GLElementWindow window;
+	private TableUI tableUI;
+	private IGLMouseListener mouseListener;
+
 	private final PropertyChangeListener onSelectRow = new PropertyChangeListener() {
 
 		@Override
@@ -123,6 +132,24 @@ public class RankingElement extends GLElementContainer {
 
 	public RankingElement(final GLEntourage view) {
 		this.view = view;
+		mouseListener = GLThreadListenerWrapper.wrap(new GLMouseAdapter() {
+
+			@Override
+			public void mouseWheelMoved(IMouseEvent mouseEvent) {
+				Vec2f location = getAbsoluteLocation();
+				Vec2f size = getSize();
+				Vec2f wheelPosition = mouseEvent.getPoint();
+				if (wheelPosition.x() >= location.x() && wheelPosition.x() <= location.x() + size.x()
+						&& wheelPosition.y() >= location.y() && wheelPosition.y() <= location.y() + size.y()) {
+					tableUI.getBody().scroll(-mouseEvent.getWheelRotation());
+				}
+
+			}
+
+		});
+		view.getParentGLCanvas().addMouseListener(mouseListener);
+		view.getEventListenerManager().register(mouseListener);
+
 		this.table = new RankTableModel(new RankTableConfigBase());
 		table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, onSelectRow);
 		table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, onModifyColumn);
@@ -147,9 +174,9 @@ public class RankingElement extends GLElementContainer {
 			}
 
 			@Override
-			public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
+			public void renderRowBackground(GLGraphics g, Rect rect, boolean even, IRow row,
 					IRow selected) {
-				renderRowBackgroundImpl(g, x, y, w, h, even, row, selected);
+				renderRowBackgroundImpl(g, rect.x(), rect.y(), rect.width(), rect.height(), even, row, selected);
 			}
 
 			@Override
@@ -163,7 +190,7 @@ public class RankingElement extends GLElementContainer {
 			}
 		};
 
-		TableUI tableUI = new TableUI(table, config, RowHeightLayouts.UNIFORM);
+		tableUI = new TableUI(table, config, RowHeightLayouts.UNIFORM);
 		this.add(tableUI);
 		tableUI.getBody().addOnRowPick(new IPickingListener() {
 			@Override
@@ -338,7 +365,7 @@ public class RankingElement extends GLElementContainer {
 	 * @param window
 	 *            setter, see {@link window}
 	 */
-	public void setWindow(GLWindow window) {
+	public void setWindow(GLElementWindow window) {
 		this.window = window;
 	}
 }

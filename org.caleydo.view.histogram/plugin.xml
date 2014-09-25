@@ -118,6 +118,30 @@
                </ViewCreator>
             </Embedding>
          </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.clinical.numerical.segment.brick"
+                  icon="resources/icons/histogram.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.view.histogram.HistogramVisInfo">
+               <ViewCreator
+                     class="org.caleydo.view.histogram.HistogramRemoteViewCreator">
+               </ViewCreator>
+            </Embedding>
+         </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.clinical.numerical.header.brick"
+                  icon="resources/icons/histogram.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.view.histogram.HistogramVisInfo">
+               <ViewCreator
+                     class="org.caleydo.view.histogram.HistogramRemoteViewCreator">
+               </ViewCreator>
+            </Embedding>
+         </ParentView>
       </EmbeddingInfo>
       <EmbeddingInfo
             viewID="org.caleydo.view.boxandwhiskers">
@@ -148,57 +172,9 @@
          <ParentView
                viewID="org.caleydo.view.stratomex">
             <Embedding
-                  embeddingID="org.caleydo.view.stratomex.categorical.header.brick"
-                  icon="resources/icons/chart_boxandwhiskers.png"
-                  isDefaultView="false"
-                  visInfo="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersVisInfo">
-               <RendererCreator
-                     class="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersRemoteViewCreator">
-               </RendererCreator>
-            </Embedding>
-         </ParentView>
-         <ParentView
-               viewID="org.caleydo.view.stratomex">
-            <Embedding
-                  embeddingID="org.caleydo.view.stratomex.categorical.segment.brick"
-                  icon="resources/icons/chart_boxandwhiskers.png"
-                  isDefaultView="false"
-                  visInfo="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersVisInfo">
-               <RendererCreator
-                     class="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersRemoteViewCreator">
-               </RendererCreator>
-            </Embedding>
-         </ParentView>
-         <ParentView
-               viewID="org.caleydo.view.stratomex">
-            <Embedding
-                  embeddingID="org.caleydo.view.stratomex.clinical.header.brick"
-                  icon="resources/icons/chart_boxandwhiskers.png"
-                  isDefaultView="false"
-                  visInfo="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersVisInfo">
-               <RendererCreator
-                     class="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersRemoteViewCreator">
-               </RendererCreator>
-            </Embedding>
-         </ParentView>
-         <ParentView
-               viewID="org.caleydo.view.stratomex">
-            <Embedding
                   embeddingID="org.caleydo.view.stratomex.clinical.segment.brick"
                   icon="resources/icons/chart_boxandwhiskers.png"
-                  isDefaultView="false"
-                  visInfo="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersVisInfo">
-               <RendererCreator
-                     class="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersRemoteViewCreator">
-               </RendererCreator>
-            </Embedding>
-         </ParentView>
-         <ParentView
-               viewID="org.caleydo.view.stratomex">
-            <Embedding
-                  embeddingID="org.caleydo.view.stratomex.numerical.segment.brick"
-                  icon="resources/icons/chart_boxandwhiskers.png"
-                  isDefaultView="false"
+                  isDefaultView="true"
                   visInfo="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersVisInfo">
                <RendererCreator
                      class="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersRemoteViewCreator">
@@ -210,7 +186,31 @@
             <Embedding
                   embeddingID="org.caleydo.view.stratomex.clinical.header.brick"
                   icon="resources/icons/chart_boxandwhiskers.png"
-                  isDefaultView="false"
+                  isDefaultView="true"
+                  visInfo="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersVisInfo">
+               <RendererCreator
+                     class="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersRemoteViewCreator">
+               </RendererCreator>
+            </Embedding>
+         </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.clinical.numerical.segment.brick"
+                  icon="resources/icons/chart_boxandwhiskers.png"
+                  isDefaultView="true"
+                  visInfo="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersVisInfo">
+               <RendererCreator
+                     class="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersRemoteViewCreator">
+               </RendererCreator>
+            </Embedding>
+         </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.clinical.numerical.header.brick"
+                  icon="resources/icons/chart_boxandwhiskers.png"
+                  isDefaultView="true"
                   visInfo="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersVisInfo">
                <RendererCreator
                      class="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersRemoteViewCreator">
@@ -236,32 +236,32 @@
       <factory
             factory="org.caleydo.view.histogram.v2.internal.HistogramElementFactory"
             icon="resources/icons/chart_bar.png"
-            name="Histogram">
-      </factory>
-      <factory
-            factory="org.caleydo.view.histogram.v2.internal.AverageBarElementFactory"
-            icon="resources/icons/chart_averagebar.png"
-            name="Average Bar">
+            name="Histogram"
+            scaleType="fix">
       </factory>
       <factory
             factory="org.caleydo.view.histogram.v2.internal.DistributionBarElementFactory"
             icon="resources/icons/chart_distribution.png"
-            name="Distribution (Bar)">
+            name="Distribution (Bar)"
+            scaleType="dataDependent">
       </factory>
       <factory
             factory="org.caleydo.view.histogram.v2.internal.DistributionPieElementFactory"
             icon="resources/icons/chart_pie.png"
-            name="Distribution (Pie)">
+            name="Distribution (Pie)"
+            scaleType="fix">
       </factory>
       <factory
             factory="org.caleydo.view.histogram.v2.internal.DistributionHistogramElementFactory"
             icon="resources/icons/chart_bar.png"
-            name="Histogram">
+            name="Histogram"
+            scaleType="fix">
       </factory>
       <factory
             factory="org.caleydo.view.histogram.v2.internal.BoxAndWhiskersElementFactory"
             icon="resources/icons/chart_boxandwhiskers.png"
-            name="Box-and-Whiskers">
+            name="Box-and-Whiskers"
+            scaleType="fix">
       </factory>
    </extension>
 </plugin>

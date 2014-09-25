@@ -19,6 +19,9 @@ public class Pick {
 	/** The id of the picked object. */
 	private final int objectID;
 
+	/** The picked object. */
+	private final Object object;
+
 	private final PickingMode ePickingMode;
 
 	/** The coordinates in the plane where the pick occurred */
@@ -50,21 +53,50 @@ public class Pick {
 	private final Vec2f dv;
 
 	public Pick(int objectID, PickingMode ePickingMode, Vec2f pickedPoint, Vec2f dragStartPoint, float depth) {
-		this(objectID, ePickingMode, pickedPoint, dragStartPoint, depth, new Vec2f(0, 0), false);
+		this(objectID, null, ePickingMode, pickedPoint, dragStartPoint, depth, new Vec2f(0, 0), false);
 	}
+
+	public Pick(int objectID, Object object, PickingMode ePickingMode, Vec2f pickedPoint, Vec2f dragStartPoint,
+			float depth) {
+		this(objectID, object, ePickingMode, pickedPoint, dragStartPoint, depth, new Vec2f(0, 0), false);
+	}
+
+	public Pick(int objectID, PickingMode ePickingMode, Vec2f pickedPoint, Vec2f dragStartPoint, float depth, Vec2f dv,
+			boolean isAnyDragging) {
+		this(objectID, null, ePickingMode, pickedPoint, dragStartPoint, depth, dv, isAnyDragging);
+	}
+
 	/**
 	 * Constructor.
 	 */
-	public Pick(int objectID, PickingMode ePickingMode, Vec2f pickedPoint, Vec2f dragStartPoint, float depth, Vec2f dv,
+	public Pick(int objectID, Object object, PickingMode ePickingMode, Vec2f pickedPoint, Vec2f dragStartPoint,
+			float depth, Vec2f dv,
 			boolean isAnyDragging) {
 
 		this.objectID = objectID;
+		this.object = object;
 		this.ePickingMode = ePickingMode;
 		this.pickedPoint = pickedPoint;
 		this.dragStartPoint = dragStartPoint;
 		this.depth = depth;
 		this.dv = dv;
 		this.isAnyDragging = isAnyDragging;
+	}
+
+	public Pick(Pick rhs, Object obj, PickingMode ePickingMode) {
+		this.objectID = rhs.objectID;
+		this.object = obj;
+		this.ePickingMode = ePickingMode;
+		this.pickedPoint = rhs.pickedPoint;
+		this.dragStartPoint = rhs.dragStartPoint;
+		this.depth = rhs.depth;
+		this.doDragging = rhs.doDragging;
+		this.isAnyDragging = rhs.isAnyDragging;
+		this.dv = rhs.dv;
+	}
+
+	public Object getObject() {
+		return object;
 	}
 
 	/**

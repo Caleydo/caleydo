@@ -396,49 +396,45 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 		// emptyCellRenderers.clear();
 		tablePerspectiveRenderers.clear();
 
+		// faster than linear search
+		Map<String, TablePerspective> lookup = new HashMap<>(tablePerspectives.size());
+		for (TablePerspective p : tablePerspectives)
+			lookup.put(p.getTablePerspectiveKey(), p);
+
 		// int emptyCellId = 0;
 		for (CellContainer column : columns) {
 			int numSubdivisions = 1;
+
+			String dimensionPerspectiveID = column.id;
 			for (CellContainer row : rows) {
-				boolean tablePerspectiveExists = false;
-				for (TablePerspective tablePerspective : tablePerspectives) {
-
-					if (tablePerspective.isPrivate())
-						continue;
-
-					String recordPerspectiveID = row.id;
-					String dimensionPerspectiveID = column.id;
-
-					if (tablePerspective.getDimensionPerspective().getPerspectiveID().equals(dimensionPerspectiveID)
-							&& tablePerspective.getRecordPerspective().getPerspectiveID().equals(recordPerspectiveID)) {
-
-						tablePerspectiveExists = true;
-						TablePerspectiveRenderer tablePerspectiveRenderer = new TablePerspectiveRenderer(
-								tablePerspective, view, node);
-						tablePerspectiveRenderer.setShowText(false);
-						if (view.isTablePerspectiveShownByView(tablePerspective)) {
-							numSubdivisions++;
-							if (numSubdivisions >= rows.size()) {
-								numSubdivisions = rows.size();
-							}
-							tablePerspectiveRenderer.setActive(true);
-							row.isVisible = true;
-							column.isVisible = true;
-						} else {
-							if (row.parentContainer != null && row.parentContainer.isCollapsed) {
-								row.isVisible = false;
-							}
-							if (column.parentContainer != null && column.parentContainer.isCollapsed) {
-								column.isVisible = false;
-							}
+				String recordPerspectiveID = row.id;
+				String key = TablePerspective.createKey(recordPerspectiveID, dimensionPerspectiveID);
+				TablePerspective tablePerspective = lookup.get(key);
+				boolean tablePerspectiveExists = tablePerspective != null && !tablePerspective.isPrivate();
+				if (tablePerspectiveExists) {
+					TablePerspectiveRenderer tablePerspectiveRenderer = new TablePerspectiveRenderer(tablePerspective,
+							view, node);
+					tablePerspectiveRenderer.setShowText(false);
+					if (view.isTablePerspectiveShownByView(tablePerspective)) {
+						numSubdivisions++;
+						if (numSubdivisions >= rows.size()) {
+							numSubdivisions = rows.size();
 						}
-						cells.put(row.id + column.id, tablePerspectiveRenderer);
-						tablePerspectiveRenderers.put(tablePerspectiveRenderer, new Pair<CellContainer, CellContainer>(
-								row, column));
-						break;
+						tablePerspectiveRenderer.setActive(true);
+						row.isVisible = true;
+						column.isVisible = true;
+					} else {
+						if (row.parentContainer != null && row.parentContainer.isCollapsed) {
+							row.isVisible = false;
+						}
+						if (column.parentContainer != null && column.parentContainer.isCollapsed) {
+							column.isVisible = false;
+						}
 					}
-				}
-				if (!tablePerspectiveExists) {
+					cells.put(row.id + column.id, tablePerspectiveRenderer);
+					tablePerspectiveRenderers.put(tablePerspectiveRenderer, new Pair<CellContainer, CellContainer>(row,
+							column));
+				} else {
 					TablePerspectiveCreator.Builder builder = new TablePerspectiveCreator.Builder(dataDomain);
 
 					Perspective recordPerspective = dataDomain.getTable().getRecordPerspective(row.id);

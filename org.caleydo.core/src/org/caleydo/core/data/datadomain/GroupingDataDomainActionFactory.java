@@ -12,7 +12,10 @@ import org.caleydo.core.data.datadomain.DataDomainActions.IDataDomainActionFacto
 import org.caleydo.core.data.datadomain.event.CreateClusteringEvent;
 import org.caleydo.core.data.datadomain.event.LoadGroupingEvent;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.util.base.Runnables;
 import org.caleydo.core.util.collection.Pair;
+
+import com.google.common.collect.Collections2;
 
 /**
  * @author Samuel Gratzl
@@ -20,7 +23,7 @@ import org.caleydo.core.util.collection.Pair;
  */
 public class GroupingDataDomainActionFactory implements IDataDomainActionFactory {
 	@Override
-	public Collection<Pair<String, ? extends AEvent>> create(IDataDomain dataDomain, Object sender) {
+	public Collection<Pair<String, Runnable>> create(IDataDomain dataDomain, Object sender) {
 		Collection<Pair<String, ? extends AEvent>> r = new ArrayList<>(4);
 		if (dataDomain instanceof ATableBasedDataDomain) {
 			ATableBasedDataDomain d = (ATableBasedDataDomain) dataDomain;
@@ -35,6 +38,6 @@ public class GroupingDataDomainActionFactory implements IDataDomainActionFactory
 			r.add(Pair.make("Create Grouping for " + d.getRecordIDCategory().getCategoryName() + " using Clustering",
 					new CreateClusteringEvent(d, false).from(sender)));
 		}
-		return r;
+		return Collections2.transform(r, Runnables.SEND_EVENTS);
 	}
 }

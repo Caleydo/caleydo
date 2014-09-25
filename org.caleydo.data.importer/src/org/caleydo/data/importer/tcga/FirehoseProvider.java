@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -22,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +38,7 @@ import org.apache.commons.lang.SystemUtils;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.data.importer.tcga.model.TumorType;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Table;
 import com.google.common.collect.TreeBasedTable;
 import com.google.common.io.Closeables;
@@ -91,6 +94,17 @@ public final class FirehoseProvider {
 		return tumor.toString();
 	}
 
+	/**
+	 * @return
+	 */
+	public boolean is2014Run() {
+		return relevantDate.get(Calendar.YEAR) >= 2014;
+	}
+
+	public boolean isPost20140416() {
+		return relevantDate.get(Calendar.YEAR) >= 2014 && relevantDate.get(Calendar.MONTH) >= Calendar.APRIL;
+	}
+
 	private String getFileName(String suffix) {
 		return tumorSample + suffix;
 	}
@@ -107,7 +121,7 @@ public final class FirehoseProvider {
 
 	private Pair<TCGAFileInfo, Boolean> findStandardSampledClusteredFile(EDataSetType type) {
 		return Pair.make(
-				extractAnalysisRunFile("outputprefix.expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL),
+extractAnalysisRunFile(".expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL),
 				false);
 	}
 
@@ -121,7 +135,12 @@ public final class FirehoseProvider {
 
 	public Pair<TCGAFileInfo, Boolean> findmRNAMatrixFile(boolean loadFullGenes) {
 		if (loadFullGenes) {
-			TCGAFileInfo r = extractAnalysisRunFile(getFileName(".medianexp.txt"), "mRNA_Preprocess_Median", LEVEL);
+			TCGAFileInfo r;
+			if (isPost20140416()) {
+				r = extractDataRunFile(".medianexp.txt", "mRNA_Preprocess_Median", LEVEL);
+			} else {
+				r = extractAnalysisRunFile(getFileName(".medianexp.txt"), "mRNA_Preprocess_Median", LEVEL);
+			}
 			if (r != null)
 				return Pair.make(r, true);
 		}
@@ -130,23 +149,110 @@ public final class FirehoseProvider {
 
 	public Pair<TCGAFileInfo, Boolean> findmRNAseqMatrixFile(boolean loadFullGenes) {
 		if (loadFullGenes) {
-			TCGAFileInfo r = extractDataRunFile(".uncv2.mRNAseq_RSEM_normalized_log2.txt", "mRNAseq_Preprocess", LEVEL);
+			TCGAFileInfo r = extractDataRunFile(".uncv2.mRNAseq_RSEM_normalized_log2.txt", "mRNAseq_Preprocess",
+					isPost20140416() ? 3 : LEVEL);
 			if (r == null)
 				r = extractDataRunFile(".uncv1.mRNAseq_RPKM_log2.txt",
-						"mRNAseq_Preprocess", LEVEL);
+ "mRNAseq_Preprocess", isPost20140416() ? 3
+						: LEVEL);
 			if (r == null)
-				r = extractDataRunFile(".mRNAseq_RPKM_log2.txt", "mRNAseq_Preprocess", LEVEL);
-			if (r != null)
+				r = extractDataRunFile(".mRNAseq_RPKM_log2.txt", "mRNAseq_Preprocess", isPost20140416() ? 3 : LEVEL);
+			if (r != null) {
+				r = filterColumns(r, findStandardSampledClusteredFile(EDataSetType.mRNAseq));
 				return Pair.make(r, true);
+			}
 		}
 		return findStandardSampledClusteredFile(EDataSetType.mRNAseq);
 	}
 
+	private TCGAFileInfo filterColumns(TCGAFileInfo full, Pair<TCGAFileInfo, Boolean> sampled) {
+		File in = full.getFile();
+		File out = new File(in.getParentFile(), "F" + in.getName());
+		TCGAFileInfo r = new TCGAFileInfo(out, full.getArchiveURL(), full.getSourceFileName());
+		if (out.exists() && !settings.isCleanCache())
+			return r;
+		assert full != null;
+		if (sampled == null || sampled.getFirst() == null) {
+			log.severe("can't filter the full gene file: " + in + " - sampled not found");
+			return full;
+		}
+		// full: 1row, 2col
+		// sampled: 3row, 3col
+		Set<String> good = readGoodSamples(sampled.getFirst().getFile());
+		if (good == null)
+			return full;
+		try (BufferedReader fin = new BufferedReader(new FileReader(in)); PrintWriter w = new PrintWriter(out)) {
+			String[] header = fin.readLine().split("\t");
+			BitSet bad = filterCols(header, good);
+			{
+				StringBuilder b = new StringBuilder();
+				for (int i = bad.nextSetBit(0); i >= 0; i = bad.nextSetBit(i + 1))
+					b.append(' ').append(header[i]);
+				log.warning("remove bad samples of " + in + ":" + b);
+			}
+			w.append(header[0]);
+			for (int i = 1; i < header.length; ++i) {
+				if (bad.get(i))
+					continue;
+				w.append('\t').append(header[i]);
+			}
+			String line;
+			while ((line = fin.readLine()) != null) {
+				w.println();
+				int t = line.indexOf('\t');
+				w.append(line.subSequence(0, t));
+				int prev = t;
+				int i = 1;
+				for (t = line.indexOf('\t', t + 1); t >= 0; t = line.indexOf('\t', t + 1), ++i) {
+					if (!bad.get(i))
+						w.append(line.subSequence(prev, t));
+					prev = t;
+				}
+				if (!bad.get(i))
+					w.append(line.subSequence(prev, line.length()));
+
+			}
+		} catch (IOException e) {
+			log.log(Level.SEVERE, "can't filter full file: " + in, e);
+		}
+
+		return r;
+	}
+
+	/**
+	 * @param header
+	 * @param good
+	 * @return
+	 */
+	private static BitSet filterCols(String[] header, Set<String> good) {
+		BitSet r = new BitSet(header.length);
+		for (int i = 0; i < header.length; ++i)
+			if (!good.contains(header[i]))
+				r.set(i);
+		return r;
+	}
+
+	private static Set<String> readGoodSamples(File file) {
+		// sampled: 3row, >=3col
+		try (BufferedReader r = new BufferedReader(new FileReader(file))) {
+			r.readLine();
+			r.readLine();
+			String line = r.readLine();
+			String[] samples = line.split("\t");
+			return ImmutableSet.copyOf(Arrays.copyOfRange(samples, 2, samples.length));
+		} catch (IOException e) {
+			log.log(Level.SEVERE, "can't read sample header from: " + file, e);
+		}
+		return null;
+	}
+
 	public Pair<TCGAFileInfo, Boolean> findmicroRNAMatrixFile(boolean loadFullGenes) {
 		if (loadFullGenes) {
-			TCGAFileInfo r = extractDataRunFile(".miR_expression.txt", "miR_Preprocess", LEVEL);
-			if (r != null)
+			TCGAFileInfo r = extractDataRunFile(".miR_expression.txt", "miR_Preprocess", isPost20140416() ? 3 : LEVEL);
+			if (r != null) {
+				r = filterColumns(r, findStandardSampledClusteredFile(EDataSetType.microRNA));
 				return Pair.make(r, true);
+			}
 		}
 		return findStandardSampledClusteredFile(EDataSetType.microRNA);
 	}
@@ -155,12 +261,14 @@ public final class FirehoseProvider {
 		if (loadFullGenes) {
 			TCGAFileInfo r = extractAnalysisRunFile(getFileName(".uncv2.miRseq_RSEM_normalized_log2.txt"),
 					"miRseq_Preprocess",
-					LEVEL);
+ isPost20140416() ? 3 : LEVEL);
 			if (r == null)
 				r = extractAnalysisRunFile(getFileName(".miRseq_RPKM_log2.txt"), "miRseq_Preprocess",
 						LEVEL);
-			if (r != null)
+			if (r != null) {
+				r = filterColumns(r, findStandardSampledClusteredFile(EDataSetType.microRNA));
 				return Pair.make(r, true);
+			}
 		}
 		return findStandardSampledClusteredFile(EDataSetType.microRNAseq);
 	}
@@ -171,7 +279,7 @@ public final class FirehoseProvider {
 	}
 
 	public TCGAFileInfo findCNMFGroupingFile(EDataSetType type) {
-		return extractAnalysisRunFile("cnmf.membership.txt", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL);
+		return extractAnalysisRunFile(".membership.txt", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL);
 	}
 
 	public TCGAFileInfo findCopyNumberFile() {
@@ -396,5 +504,6 @@ public final class FirehoseProvider {
 		builder.append("]");
 		return builder.toString();
 	}
+
 
 }

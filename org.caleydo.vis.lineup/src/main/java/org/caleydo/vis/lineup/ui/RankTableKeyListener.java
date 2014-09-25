@@ -19,10 +19,11 @@ public class RankTableKeyListener implements IGLKeyListener {
 	private static final char TOGGLE_ALIGN_ALL = 't';
 
 	private final RankTableModel table;
+	private final TableBodyUI body;
 
-	public RankTableKeyListener(RankTableModel table) {
-		super();
+	public RankTableKeyListener(RankTableModel table, TableBodyUI body) {
 		this.table = table;
+		this.body = body;
 	}
 
 	@Override
@@ -35,6 +36,16 @@ public class RankTableKeyListener implements IGLKeyListener {
 			// short cut for align all
 			for (StackedRankColumnModel stacked : Iterables.filter(table.getColumns(), StackedRankColumnModel.class)) {
 				stacked.switchToNextAlignment();
+			}
+		} else if (body != null) {
+			if (e.isKey(ESpecialKey.PAGE_UP)) {
+				body.scroll(-15);
+			} else if (e.isKey(ESpecialKey.PAGE_DOWN)) {
+				body.scroll(15);
+			} else if (e.isKey(ESpecialKey.HOME)) {
+				body.scrollFirst();
+			} else if (e.isKey(ESpecialKey.END)) {
+				body.scrollLast();
 			}
 		}
 	}

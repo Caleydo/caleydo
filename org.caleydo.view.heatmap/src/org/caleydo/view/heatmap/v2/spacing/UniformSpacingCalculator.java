@@ -5,9 +5,9 @@
  ******************************************************************************/
 package org.caleydo.view.heatmap.v2.spacing;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
+import java.util.List;
+
 import org.caleydo.core.data.selection.SelectionManager;
-import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy;
 
 /**
@@ -53,13 +53,8 @@ public class UniformSpacingCalculator implements ISpacingStrategy {
 	}
 
 	@Override
-	public ISpacingLayout apply(Perspective perspective, SelectionManager selectionManager, boolean hideHidden,
-			float size) {
-		int nrRecordElements = perspective.getVirtualArray().size();
-		if (hideHidden) {
-			nrRecordElements -= selectionManager.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
-		}
-
+	public ISpacingLayout apply(List<Integer> ids, SelectionManager selectionManager, float size) {
+		int nrRecordElements = ids.size();
 		final float fieldHeight = size / nrRecordElements;
 
 		return new UniformSpacingImpl(fieldHeight);

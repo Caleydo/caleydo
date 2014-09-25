@@ -32,7 +32,7 @@ import com.google.common.base.Supplier;
  * @author Samuel Gratzl
  *
  */
-public class SideWindow extends GLWindow {
+public class SideWindow extends GLEntourageWindow {
 	public static final IMoveTransition SLIDE_LEFT_OUT = new IMoveTransition() {
 		@Override
 		public Vec4f move(Vec4f from, Vec4f to, float w, float h, float alpha) {

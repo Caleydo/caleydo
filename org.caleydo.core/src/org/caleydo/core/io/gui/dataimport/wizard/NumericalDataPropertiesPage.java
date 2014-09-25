@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Listener;
  * @author Christian Partl
  *
  */
-public class NumericalDataPropertiesPage extends AImportDataPage implements Listener {
+public class NumericalDataPropertiesPage extends AImportDataPage<DataImportWizard> implements Listener {
 
 	public static final String PAGE_NAME = "Numerical Dataset Properties";
 

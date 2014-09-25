@@ -141,11 +141,11 @@ public class CheckColumnModel extends ARankColumnModel implements IGLRenderer {
 		}
 
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
-			String icon = EButtonIcon.CHECKBOX.get(is(getRow()));
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
+			String icon = EButtonIcon.CHECKBOX.get(is(row));
 			float hi = Math.min(h - 2, 16);
 			g.fillImage(icon, (w - hi) * 0.5f, (h - hi) * 0.5f, hi, hi);
-			super.renderImpl(g, w, h);
+			// super.renderImpl(g, w, h);
 		}
 
 		@Override

@@ -5,13 +5,14 @@
  *******************************************************************************/
 package org.caleydo.view.histogram.v2.internal;
 
-import org.caleydo.core.data.datadomain.DataSupportDefinitions;
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.collection.EDimension;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
+import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
+import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc.DescBuilder;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
-import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
-import org.caleydo.view.histogram.v2.DistributionElement;
-import org.caleydo.view.histogram.v2.DistributionElement.EDistributionMode;
+import org.caleydo.view.histogram.v2.HistogramDistributionElement;
 
 /**
  * element factory for creating distribution elements
@@ -19,23 +20,32 @@ import org.caleydo.view.histogram.v2.DistributionElement.EDistributionMode;
  * @author Samuel Gratzl
  *
  */
-public class DistributionHistogramElementFactory implements IGLElementFactory {
+public class DistributionHistogramElementFactory extends ADistributionBarElementFactory {
 	@Override
 	public String getId() {
 		return "distribution.hist";
 	}
 
 	@Override
-	public boolean canCreate(GLElementFactoryContext context) {
-		TablePerspective data = context.getData();
-		return DataSupportDefinitions.categoricalColumns.apply(data);
+	public GLElement create(GLElementFactoryContext context) {
+		boolean vertical = context.is("vertical", context.get(EDimension.class, EDimension.DIMENSION).isRecord());
+		HistogramDistributionElement h = new HistogramDistributionElement(createData(context),
+				EDimension.get(!vertical));
+		h.setFrameColor(context.get("frameColor", Color.class, h.getFrameColor()));
+		return h;
 	}
 
 	@Override
-	public GLElement create(GLElementFactoryContext context) {
-		TablePerspective data = context.getData();
-		DistributionElement elem = new DistributionElement(data, EDistributionMode.HISTOGRAM);
-		return elem;
+	public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
+		final float v = dim.select(((IHasMinSize) elem).getMinSize());
+		final DescBuilder builder = GLElementDimensionDesc.newFix(v).minimum(v * 0.5f);
+		if (dim == ((HistogramDistributionElement) elem).getDimension())
+			builder.locateUsing(((HistogramDistributionElement) elem));
+		return builder.build();
 	}
 
+	@Override
+	public GLElement createParameters(GLElement elem) {
+		return null;
+	}
 }

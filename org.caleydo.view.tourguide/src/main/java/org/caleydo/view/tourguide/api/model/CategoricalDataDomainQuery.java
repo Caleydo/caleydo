@@ -275,7 +275,7 @@ public class CategoricalDataDomainQuery extends ASingleIDDataDomainQuery {
 	}
 
 	private static ARankColumnModel createCategoricalFromGroupList(String label, final VirtualArray va) {
-		Collection<String> items = new ArrayList<>();
+		Set<String> items = new HashSet<>();
 		for (Group g : va.getGroupList()) {
 			items.add(g.getLabel());
 		}
@@ -302,7 +302,7 @@ public class CategoricalDataDomainQuery extends ASingleIDDataDomainQuery {
 		while (cols.hasNext()) {
 			ARankColumnModel col = cols.next();
 			if (col instanceof GroupRankColumnModel
-					&& ((GroupRankColumnModel) col).getTitle().startsWith(getDataDomain().getLabel() + " ")) {
+					&& ((GroupRankColumnModel) col).getLabel().startsWith(getDataDomain().getLabel() + " ")) {
 				toDestroy.add(col);
 			} else if (col instanceof ACompositeRankColumnModel) {
 				flat(((ACompositeRankColumnModel) col).iterator(), toDestroy);

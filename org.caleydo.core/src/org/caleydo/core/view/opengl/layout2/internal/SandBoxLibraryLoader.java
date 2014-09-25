@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.internal;
 
 import java.io.BufferedOutputStream;
@@ -10,6 +15,7 @@ import java.io.OutputStream;
 import java.net.URL;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.SystemUtils;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
@@ -21,6 +27,8 @@ public final class SandBoxLibraryLoader {
 	public static File toTemporaryFile(String libName) throws IOException {
 		// convert to native library name
 		libName = System.mapLibraryName(libName);
+		if (SystemUtils.IS_OS_MAC_OSX)
+			libName = StringUtils.replace(libName, ".dylib", ".jnilib");
 
 		// create
 		String extension = Files.getFileExtension(libName);

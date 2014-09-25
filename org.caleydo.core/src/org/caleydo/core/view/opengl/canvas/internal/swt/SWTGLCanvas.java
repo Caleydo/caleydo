@@ -5,6 +5,8 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.canvas.internal.swt;
 
+import java.util.Iterator;
+
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
@@ -21,6 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Table;
 import com.jogamp.opengl.swt.GLCanvas;
 
@@ -32,6 +35,7 @@ final class SWTGLCanvas extends AGLCanvas {
 	private final GLCanvas canvas;
 
 	private final Table<Integer, Object, Object> listenerMapping = HashBasedTable.create();
+
 
 	SWTGLCanvas(final GLCanvas canvas) {
 		super(canvas);
@@ -62,6 +66,11 @@ final class SWTGLCanvas extends AGLCanvas {
 	}
 
 	@Override
+	protected Iterator<IGLMouseListener> mouseListeners() {
+		return Iterators.filter(listenerMapping.columnKeySet().iterator(), IGLMouseListener.class);
+	}
+
+	@Override
 	public void addMouseListener(final IGLMouseListener listener) {
 		if (canvas.isDisposed())
 			return;
@@ -77,6 +86,7 @@ final class SWTGLCanvas extends AGLCanvas {
 				canvas.addMouseWheelListener(a);
 				canvas.addMouseTrackListener(a);
 				canvas.addMenuDetectListener(a);
+				canvas.addDragDetectListener(a);
 
 			}
 		});
@@ -97,6 +107,7 @@ final class SWTGLCanvas extends AGLCanvas {
 				canvas.removeMouseWheelListener(a);
 				canvas.removeMouseTrackListener(a);
 				canvas.removeMenuDetectListener(a);
+				canvas.removeDragDetectListener(a);
 			}
 		});
 	}
@@ -214,6 +225,4 @@ final class SWTGLCanvas extends AGLCanvas {
 	public String toString() {
 		return "SWTGLCanvas of " + canvas.toString();
 	}
-
-
 }

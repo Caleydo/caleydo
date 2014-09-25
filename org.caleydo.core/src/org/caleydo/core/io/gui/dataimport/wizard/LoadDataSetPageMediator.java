@@ -13,9 +13,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.FileUtil;
 import org.caleydo.core.io.GroupingParseSpecification;
@@ -25,6 +29,7 @@ import org.caleydo.core.io.gui.dataimport.CreateIDTypeDialog;
 import org.caleydo.core.io.gui.dataimport.DefineIDParsingDialog;
 import org.caleydo.core.io.gui.dataimport.FilePreviewParser;
 import org.caleydo.core.io.parser.ascii.ATextParser;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
@@ -39,7 +44,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Christian Partl
  *
  */
-public class LoadDataSetPageMediator {
+public class LoadDataSetPageMediator extends ALoadDataPageMediator {
 
 	protected static final int UNMAPPED_INDEX = 0;
 
@@ -67,11 +72,6 @@ public class LoadDataSetPageMediator {
 	 * Parser used to parse data files.
 	 */
 	private FilePreviewParser parser = new FilePreviewParser();
-
-	/**
-	 * All registered id categories.
-	 */
-	private List<IDCategory> registeredIDCategories;
 
 	/**
 	 * Matrix that stores the data for {@link #MAX_PREVIEW_TABLE_ROWS} rows and all columns of the data file.
@@ -133,6 +133,11 @@ public class LoadDataSetPageMediator {
 	 */
 	protected File transposedDataFile;
 
+	/**
+	 * Determines whether a config file was loaded that shall be initialized from
+	 */
+	protected boolean initFromConfiguration = false;
+
 	protected boolean datasetChanged = true;
 
 	public LoadDataSetPageMediator(LoadDataSetPage page, DataSetDescription dataSetDescription) {
@@ -142,18 +147,13 @@ public class LoadDataSetPageMediator {
 		dataSetDescription.setNumberOfHeaderLines(1);
 		dataSetDescription.setRowOfColumnIDs(0);
 		dataSetDescription.setColumnOfRowIds(0);
-		registeredIDCategories = new ArrayList<IDCategory>();
-		for (IDCategory idCategory : IDCategory.getAllRegisteredIDCategories()) {
-			if (!idCategory.isInternaltCategory())
-				registeredIDCategories.add(idCategory);
-		}
-
 	}
 
 	/**
 	 * Initializes all widgets of the {@link #page}. This method should be called after all widgets of the dialog were
 	 * created.
 	 */
+	@Override
 	public void guiCreated() {
 		initWidgets();
 	}
@@ -165,6 +165,35 @@ public class LoadDataSetPageMediator {
 		initWidgets();
 		isTransposed = false;
 		transposedDataFile = null;
+		setDataSetChanged(true);
+		initFromConfiguration = false;
+	}
+
+	public void onLoadDatasetDescription(String inputFileName) {
+		Unmarshaller unmarshaller;
+		try {
+			unmarshaller = GeneralManager.get().getSerializationManager().getProjectContext().createUnmarshaller();
+
+			File descriptionFile = new File(inputFileName);
+			if (descriptionFile.exists()) {
+				DataSetDescription desc = (DataSetDescription) unmarshaller.unmarshal(descriptionFile);
+				desc.setDataSourcePath(dataSetDescription.getDataSourcePath());
+				page.getWizard().setDataSetDescription(desc);
+				initFromConfiguration = true;
+			}
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * @param dataSetDescription
+	 *            setter, see {@link dataSetDescription}
+	 */
+	public void setDataSetDescription(DataSetDescription dataSetDescription) {
+		this.dataSetDescription = dataSetDescription;
+		updateToDatasetDescription();
 		setDataSetChanged(true);
 	}
 
@@ -218,6 +247,8 @@ public class LoadDataSetPageMediator {
 		page.inhomogeneousDatasetButton.setEnabled(fileSpecified);
 		page.inhomogeneousDatasetButton.setSelection(false);
 
+		page.loadDatasetDescriptionButton.setEnabled(fileSpecified);
+
 		page.createRowIDCategoryButton.setEnabled(fileSpecified);
 
 		page.createColumnIDCategoryButton.setEnabled(fileSpecified);
@@ -249,7 +280,118 @@ public class LoadDataSetPageMediator {
 		page.previewTable.setEnabled(fileSpecified);
 
 		if (fileSpecified)
-			createDataPreviewTableFromFile();
+			createDataPreviewTableFromFile(true);
+	}
+
+	private void updateToDatasetDescription() {
+		String inputFileName = dataSetDescription.getDataSourcePath();
+		if (inputFileName == null)
+			return;
+
+		page.loadFile.setFileName(inputFileName);
+
+		String datasetName = dataSetDescription.getDataSetName();
+		page.label.setText(datasetName == null ? "" : datasetName);
+		page.label.setEnabled(true);
+
+		IDSpecification rowIDSpecification = dataSetDescription.getRowIDSpecification();
+		if (rowIDSpecification != null) {
+			updateToIDSpecification(rowIDSpecification, true);
+		}
+
+		IDSpecification columnIDSpecification = dataSetDescription.getColumnIDSpecification();
+		if (columnIDSpecification != null) {
+			updateToIDSpecification(columnIDSpecification, false);
+		}
+
+		boolean isHomogeneous = dataSetDescription.getDataDescription() != null;
+
+		page.createRowIDCategoryButton.setEnabled(true);
+
+		page.createColumnIDCategoryButton.setEnabled(isHomogeneous);
+
+		page.createRowIDTypeButton.setEnabled(true);
+
+		page.createColumnIDTypeButton.setEnabled(isHomogeneous);
+
+		page.defineRowIDParsingButton.setEnabled(true);
+
+		page.defineColumnIDParsingButton.setEnabled(isHomogeneous);
+
+		onHomogeneousDatasetSelected(isHomogeneous);
+
+		page.homogeneousDatasetButton.setEnabled(true);
+		page.homogeneousDatasetButton.setSelection(isHomogeneous);
+		page.inhomogeneousDatasetButton.setEnabled(true);
+		page.inhomogeneousDatasetButton.setSelection(!isHomogeneous);
+
+		Integer numHeaderLines = dataSetDescription.getNumberOfHeaderLines();
+		page.numHeaderRowsSpinner.setSelection(numHeaderLines == null ? 1 : numHeaderLines);
+		page.numHeaderRowsSpinner.setEnabled(true);
+
+		Integer rowOfColumnID = dataSetDescription.getNumberOfHeaderLines();
+		page.rowOfColumnIDSpinner.setSelection(rowOfColumnID == null ? 1 : rowOfColumnID);
+		page.rowOfColumnIDSpinner.setEnabled(true);
+
+		Integer columnOfRowID = dataSetDescription.getNumberOfHeaderLines();
+		page.columnOfRowIDSpinner.setSelection(columnOfRowID == null ? 1 : columnOfRowID);
+		page.columnOfRowIDSpinner.setEnabled(true);
+
+		// page.buttonHomogeneous.setEnabled(fileSpecified);
+
+		page.delimiterRadioGroup.setDelimeter(dataSetDescription.getDelimiter());
+		page.delimiterRadioGroup.setEnabled(true);
+		page.selectAllNone.setEnabled(true);
+
+		page.previewTable.setEnabled(true);
+
+		createDataPreviewTableFromFile(false);
+
+		List<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
+		List<Integer> columns = new ArrayList<>(parsingPattern.size() + 1);
+		columns.add(page.columnOfRowIDSpinner.getSelection() - 1);
+		for (ColumnDescription desc : parsingPattern) {
+			columns.add(desc.getColumn());
+		}
+
+		page.previewTable.setSelectedColumns(columns);
+	}
+
+	private void updateToIDSpecification(IDSpecification spec, boolean isRowIDSpec) {
+		IDCategory idCategory = IDCategory.registerCategory(spec.getIdCategory());
+		EDataType dataType = spec.getDataType();
+		IDType idType = IDType.registerType(spec.getIdType(), idCategory, dataType == null ? EDataType.STRING
+				: dataType);
+		if (spec.getIdTypeParsingRules() != null)
+			idType.setIdTypeParsingRules(spec.getIdTypeParsingRules());
+		Combo idCategoryCombo = null;
+		Combo idCombo = null;
+		List<IDType> idTypes = null;
+		boolean enable = true;
+
+		if (isRowIDSpec) {
+			idCategoryCombo = page.rowIDCategoryCombo;
+			idCombo = page.rowIDCombo;
+			idTypes = rowIDTypes;
+			rowIDCategory = idCategory;
+		} else {
+			idCategoryCombo = page.columnIDCategoryCombo;
+			idCombo = page.columnIDCombo;
+			idTypes = columnIDTypes;
+			columnIDCategory = idCategory;
+			if (dataSetDescription.getDataDescription() == null)
+				enable = false;
+		}
+
+		refreshRegisteredCategories();
+		fillIDCategoryCombo(idCategoryCombo);
+
+		idCategoryCombo.select(idCategoryCombo.indexOf(idCategory.getCategoryName()));
+		idCategoryCombo.setEnabled(enable);
+
+		fillIDTypeCombo(idCategory, idTypes, idCombo);
+		idCombo.select(idCombo.indexOf(idType.getTypeName()));
+		idCombo.setEnabled(enable);
 	}
 
 	private String getRowIDSample() {
@@ -601,7 +743,7 @@ public class LoadDataSetPageMediator {
 		if (isTransposed) {
 			loadTransposedFile();
 		}
-		createDataPreviewTableFromFile();
+		createDataPreviewTableFromFile(true);
 
 		setDataSetChanged(true);
 	}
@@ -619,7 +761,7 @@ public class LoadDataSetPageMediator {
 	// updateWidgetsAccordingToTableChanges();
 	// }
 
-	public void createDataPreviewTableFromFile() {
+	public void createDataPreviewTableFromFile(boolean guessIDTypes) {
 		parser.parseWithProgress(page.getShell(), isTransposed ? transposedDataFile.getAbsolutePath()
 				: dataSetDescription.getDataSourcePath(), dataSetDescription.getDelimiter(), true, -1);
 		dataMatrix = parser.getDataMatrix();
@@ -627,8 +769,10 @@ public class LoadDataSetPageMediator {
 		totalNumberOfRows = parser.getTotalNumberOfRows();
 		page.previewTable.createTableFromMatrix(dataMatrix, totalNumberOfColumns);
 		updateWidgetsAccordingToTableChanges();
-		guessNumberOfHeaderRows();
-		determineIDTypes();
+		if (guessIDTypes) {
+			guessNumberOfHeaderRows();
+			determineIDTypes();
+		}
 
 		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
 				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
@@ -789,72 +933,6 @@ public class LoadDataSetPageMediator {
 		return mostProbableIDType;
 	}
 
-	private void fillIDCategoryCombo(Combo idCategoryCombo) {
-
-		String previousSelection = null;
-		if (idCategoryCombo.getSelectionIndex() != -1) {
-			previousSelection = idCategoryCombo.getItem(idCategoryCombo.getSelectionIndex());
-		}
-
-		idCategoryCombo.removeAll();
-		idCategoryCombo.add("<Unmapped>");
-		for (IDCategory idCategory : registeredIDCategories) {
-			idCategoryCombo.add(idCategory.getCategoryName());
-		}
-
-		int selectionIndex = -1;
-		if (previousSelection != null) {
-			selectionIndex = idCategoryCombo.indexOf(previousSelection);
-		}
-		if (registeredIDCategories.size() == 1) {
-			// idCategoryCombo.setText(idCategoryCombo.getItem(0));
-			idCategoryCombo.select(1);
-		} else if (selectionIndex == -1) {
-			idCategoryCombo.deselectAll();
-		} else {
-			// idCategoryCombo.setText(idCategoryCombo.getItem(selectionIndex));
-			idCategoryCombo.select(selectionIndex);
-		}
-
-	}
-
-	private void fillIDTypeCombo(IDCategory idCategory, List<IDType> idTypes, Combo idTypeCombo) {
-
-		if (idCategory == null)
-			return;
-		ArrayList<IDType> allIDTypesOfCategory = new ArrayList<IDType>(idCategory.getIdTypes());
-
-		String previousSelection = null;
-
-		if (idTypeCombo.getSelectionIndex() != -1) {
-			previousSelection = idTypeCombo.getItem(idTypeCombo.getSelectionIndex());
-		}
-		idTypeCombo.removeAll();
-		idTypes.clear();
-
-		for (IDType idType : allIDTypesOfCategory) {
-			if (!idType.isInternalType()) {
-				idTypes.add(idType);
-				idTypeCombo.add(idType.getTypeName());
-			}
-		}
-
-		int selectionIndex = -1;
-		if (previousSelection != null) {
-			selectionIndex = idTypeCombo.indexOf(previousSelection);
-		}
-		if (idTypes.size() == 1) {
-			// idTypeCombo.setText(idTypeCombo.getItem(0));
-			idTypeCombo.select(0);
-		} else if (selectionIndex != -1) {
-			// idTypeCombo.setText(idTypeCombo.getItem(selectionIndex));
-			idTypeCombo.select(selectionIndex);
-		} else {
-			// idTypeCombo.setText("<Please Select>");
-			idTypeCombo.deselectAll();
-		}
-	}
-
 	/**
 	 * Reads the min and max values (if set) from the dialog
 	 */
@@ -866,6 +944,7 @@ public class LoadDataSetPageMediator {
 			IDSpecification rowIDSpecification = new IDSpecification();
 			IDType rowIDType = IDType.getIDType(page.rowIDCombo.getItem(page.rowIDCombo.getSelectionIndex()));
 			rowIDSpecification.setIdType(rowIDType.getTypeName());
+			rowIDSpecification.setDataType(rowIDType.getDataType());
 			if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
 				rowIDSpecification.setIDTypeGene(true);
 			rowIDSpecification.setIdCategory(rowIDType.getIDCategory().getCategoryName());
@@ -897,6 +976,7 @@ public class LoadDataSetPageMediator {
 			IDType columnIDType = IDType.getIDType(page.columnIDCombo.getItem(page.columnIDCombo.getSelectionIndex()));
 			// columnIDTypes.get(page.columnIDCombo.getSelectionIndex());
 			columnIDSpecification.setIdType(columnIDType.getTypeName());
+			columnIDSpecification.setDataType(columnIDType.getDataType());
 			if (columnIDType.getIDCategory().getCategoryName().equals("GENE"))
 				columnIDSpecification.setIDTypeGene(true);
 			columnIDSpecification.setIdCategory(columnIDType.getIDCategory().getCategoryName());
@@ -959,7 +1039,7 @@ public class LoadDataSetPageMediator {
 
 		if (page.inhomogeneousDatasetButton.getSelection()) {
 			if (datasetChanged || dataSetDescription.getDataDescription() != null) {
-				page.getWizard().getInhomogeneousDataPropertiesPage().setInitColumnDescriptions(true);
+				page.getWizard().getInhomogeneousDataPropertiesPage().setInitColumnDescriptions(!initFromConfiguration);
 				// No global data description for inhomogeneous
 				dataSetDescription.setDataDescription(null);
 			}

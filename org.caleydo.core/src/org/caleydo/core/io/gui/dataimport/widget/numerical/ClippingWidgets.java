@@ -252,7 +252,7 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 
 	@Override
 	public void setProperties(NumericalProperties numericalProperties) {
-		if (minMaxClippingButton.getSelection())
+		if (minMaxClippingButton.getSelection()) {
 			if (minTextField.getEnabled() && !minTextField.getText().isEmpty()) {
 				float min = Float.parseFloat(minTextField.getText());
 				if (!Float.isNaN(min)) {
@@ -260,11 +260,12 @@ public class ClippingWidgets implements INumericalDataPropertiesWidgets {
 					numericalProperties.setMin(min);
 				}
 			}
-		if (maxTextField.getEnabled() && !maxTextField.getText().isEmpty()) {
-			float max = Float.parseFloat(maxTextField.getText());
-			if (!Float.isNaN(max)) {
-				numericalProperties.setClipToStdDevFactor(null);
-				numericalProperties.setMax(max);
+			if (maxTextField.getEnabled() && !maxTextField.getText().isEmpty()) {
+				float max = Float.parseFloat(maxTextField.getText());
+				if (!Float.isNaN(max)) {
+					numericalProperties.setClipToStdDevFactor(null);
+					numericalProperties.setMax(max);
+				}
 			}
 		} else if (stdDevClippingButton.getSelection()) {
 			if (stdDevFactorTextField.getEnabled() && !stdDevFactorTextField.getText().isEmpty()) {

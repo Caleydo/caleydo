@@ -23,7 +23,6 @@ import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
  * Abstract class that implements data and view management.
@@ -53,8 +52,6 @@ public abstract class ADataDomain extends AEventHandler implements IDataDomain {
 	// */
 
 	protected String dataDomainID = "unspecified";
-
-	protected EIconTextures icon = EIconTextures.NO_ICON_AVAILABLE;
 
 	/** parameters for loading the data-{@link set} */
 	protected DataSetDescription dataSetDescription;
@@ -116,11 +113,6 @@ public abstract class ADataDomain extends AEventHandler implements IDataDomain {
 	@Override
 	public void setDataDomainType(String dataDomainType) {
 		this.dataDomainType = dataDomainType;
-	}
-
-	@Override
-	public EIconTextures getIcon() {
-		return icon;
 	}
 
 	@Override

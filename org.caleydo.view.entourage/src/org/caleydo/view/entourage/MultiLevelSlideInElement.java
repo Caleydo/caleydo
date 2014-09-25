@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.core.view.opengl.layout2.util.GLElementWindow;
 
 /**
  * @author Christian
@@ -44,7 +45,7 @@ public class MultiLevelSlideInElement extends SlideInElement {
 	/**
 	 * @param window
 	 */
-	public MultiLevelSlideInElement(GLWindow window, ESlideInElementPosition elementPosition) {
+	public MultiLevelSlideInElement(GLElementWindow window, ESlideInElementPosition elementPosition) {
 		super();
 		this.window = window;
 		this.elementPosition = elementPosition;

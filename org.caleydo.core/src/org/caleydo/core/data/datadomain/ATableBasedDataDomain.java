@@ -599,25 +599,35 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
-
-		if (recordSelectionManager == null)
-			return;
-
-		if (recordIDMappingManager.hasMapping(selectionDelta.getIDType(), recordSelectionManager.getIDType())) {
+		if (recordSelectionManager != null
+				&& recordIDMappingManager.hasMapping(selectionDelta.getIDType(), recordSelectionManager.getIDType())) {
 			recordSelectionManager.setDelta(selectionDelta);
-		} else if (dimensionIDMappingManager.hasMapping(selectionDelta.getIDType(),
-				dimensionSelectionManager.getIDType())) {
+		} else if (dimensionSelectionManager != null
+				&& dimensionIDMappingManager.hasMapping(selectionDelta.getIDType(),
+						dimensionSelectionManager.getIDType())) {
 			dimensionSelectionManager.setDelta(selectionDelta);
 		}
 
-		if (selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
+		if (recordGroupSelectionManager != null
+				&& selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
 			recordGroupSelectionManager.setDelta(selectionDelta);
 		}
 	}
 
 	@Override
 	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
-		// TODO Auto-generated method stub
+		if (recordSelectionManager != null
+				&& (idCategory == null || idCategory.equals(recordSelectionManager.getIDType()))) {
+			recordSelectionManager.executeSelectionCommand(selectionCommand);
+		} else if (dimensionSelectionManager != null
+				&& (idCategory == null || idCategory.equals(dimensionSelectionManager.getIDType()))) {
+			dimensionSelectionManager.executeSelectionCommand(selectionCommand);
+		}
+
+		if (recordGroupSelectionManager != null
+				&& (idCategory == null || idCategory.equals(recordGroupSelectionManager.getIDType()))) {
+			recordGroupSelectionManager.executeSelectionCommand(selectionCommand);
+		}
 	}
 
 	/**
@@ -670,15 +680,15 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	public String getRecordDenomination(boolean capitalized, boolean plural) {
 		String recordDenomination;
 		if (plural)
-			recordDenomination = recordIDCategory.getDenominationPlural();
+			recordDenomination = recordIDCategory.getDenominationPlural(capitalized);
 		else
-			recordDenomination = recordIDCategory.getDenomination();
+			recordDenomination = recordIDCategory.getDenomination(capitalized);
 
-		if (capitalized) {
-			// Make first char capitalized
-			recordDenomination = recordDenomination.substring(0, 1).toUpperCase()
-					+ recordDenomination.substring(1, recordDenomination.length());
-		}
+		// if (capitalized) {
+		// // Make first char capitalized
+		// recordDenomination = recordDenomination.substring(0, 1).toUpperCase()
+		// + recordDenomination.substring(1, recordDenomination.length());
+		// }
 		return recordDenomination;
 	}
 
@@ -687,15 +697,15 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		String dimensionDenomination;
 
 		if (plural)
-			dimensionDenomination = dimensionIDCategory.getDenominationPlural();
+			dimensionDenomination = dimensionIDCategory.getDenominationPlural(capitalized);
 		else
-			dimensionDenomination = dimensionIDCategory.getDenomination();
+			dimensionDenomination = dimensionIDCategory.getDenomination(capitalized);
 
-		if (capitalized) {
-			// Make first char capitalized
-			dimensionDenomination = dimensionDenomination.substring(0, 1).toUpperCase()
-					+ dimensionDenomination.substring(1, dimensionDenomination.length());
-		}
+		// if (capitalized) {
+		// // Make first char capitalized
+		// dimensionDenomination = dimensionDenomination.substring(0, 1).toUpperCase()
+		// + dimensionDenomination.substring(1, dimensionDenomination.length());
+		// }
 		return dimensionDenomination;
 	}
 
@@ -797,12 +807,13 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		super.registerEventListeners();
 		SelectionUpdateListener selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setExclusiveEventSpace(dataDomainID);
+		// selectionUpdateListener.setExclusiveEventSpace(dataDomainID); //no event space similar to
+		// EventBasedSelectionManager
 		listeners.register(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		SelectionCommandListener selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setEventSpace(dataDomainID);
+		// selectionCommandListener.setEventSpace(dataDomainID); //no event space similar to EventBasedSelectionManager
 		listeners.register(SelectionCommandEvent.class, selectionCommandListener);
 
 		StartClusteringListener startClusteringListener = new StartClusteringListener();
@@ -858,7 +869,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 			return foreignPerspective;
 
 		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(localIDType);
-
 
 		VirtualArray foreignVA = foreignPerspective.getVirtualArray();
 
@@ -962,6 +972,14 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	// ================ New ID based interface ======================
 
+	/**
+	 * @param idCategory
+	 * @return True if the specified id category is one of the two primary id categories of this table.
+	 */
+	public boolean hasIDCategory(IDCategory idCategory) {
+		return recordIDCategory == idCategory || dimensionIDCategory == idCategory;
+	}
+
 	/** Returns true if the specified id type is one of the two primary categories registered for this table. */
 	public boolean hasIDCategory(IDType idType) {
 		if (recordIDCategory.isOfCategory(idType))
@@ -1025,6 +1043,16 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 			return table.getRaw(id2, id1);
 		} else if (idType2.equals(recordIDType) && idType1.equals(dimensionIDType)) {
 			return table.getRaw(id1, id2);
+		}
+		throw new IllegalStateException("At least one of the ID types " + idType1 + " " + idType2
+				+ " not registered with this datadomain " + this.toString());
+	}
+
+	public float[] getColor(IDType idType1, Integer id1, IDType idType2, Integer id2) {
+		if (idType1.equals(recordIDType) && idType2.equals(dimensionIDType)) {
+			return table.getColor(id2, id1);
+		} else if (idType2.equals(recordIDType) && idType1.equals(dimensionIDType)) {
+			return table.getColor(id1, id2);
 		}
 		throw new IllegalStateException("At least one of the ID types " + idType1 + " " + idType2
 				+ " not registered with this datadomain " + this.toString());
@@ -1096,5 +1124,21 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		}
 		throw new IllegalStateException("ID Category " + idCategory + " not registered with this datadomain "
 				+ this.toString());
+	}
+
+	public IDType getDatasetDescriptionIDType(IDCategory idCategory) {
+		if (idCategory.equals(recordIDCategory)) {
+			if (isColumnDimension()) {
+				return IDType.getIDType(dataSetDescription.getRowIDSpecification().getIdType());
+			} else {
+				return IDType.getIDType(dataSetDescription.getColumnIDSpecification().getIdType());
+			}
+		} else {
+			if (isColumnDimension()) {
+				return IDType.getIDType(dataSetDescription.getColumnIDSpecification().getIdType());
+			} else {
+				return IDType.getIDType(dataSetDescription.getRowIDSpecification().getIdType());
+			}
+		}
 	}
 }

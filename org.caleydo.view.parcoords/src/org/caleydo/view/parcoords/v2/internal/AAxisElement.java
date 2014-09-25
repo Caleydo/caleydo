@@ -43,8 +43,7 @@ import org.caleydo.view.parcoords.v2.ParallelCoordinateElement;
  * @author Samuel Gratzl
  *
  */
-public abstract class AAxisElement extends GLElementContainer implements IPickingListener, IGLLayout2,
- IDoublePredicate {
+public abstract class AAxisElement extends GLElementContainer implements IPickingListener, IGLLayout2, IDoublePredicate {
 	protected final int id;
 	protected final String label;
 	private final GLButton hideNaN;

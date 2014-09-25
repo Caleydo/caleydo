@@ -5,13 +5,12 @@
  *******************************************************************************/
 package org.caleydo.view.histogram.v2.internal;
 
-import org.caleydo.core.data.datadomain.DataSupportDefinitions;
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
+import org.caleydo.core.view.opengl.layout2.manage.GLElementDimensionDesc;
 import org.caleydo.core.view.opengl.layout2.manage.GLElementFactoryContext;
-import org.caleydo.core.view.opengl.layout2.manage.IGLElementFactory;
-import org.caleydo.view.histogram.v2.DistributionElement;
-import org.caleydo.view.histogram.v2.DistributionElement.EDistributionMode;
+import org.caleydo.view.histogram.v2.PieDistributionElement;
 
 /**
  * element factory for creating distribution elements
@@ -19,23 +18,25 @@ import org.caleydo.view.histogram.v2.DistributionElement.EDistributionMode;
  * @author Samuel Gratzl
  *
  */
-public class DistributionPieElementFactory implements IGLElementFactory {
+public class DistributionPieElementFactory extends ADistributionBarElementFactory {
 	@Override
 	public String getId() {
 		return "distribution.pie";
 	}
 
 	@Override
-	public boolean canCreate(GLElementFactoryContext context) {
-		TablePerspective data = context.getData();
-		return DataSupportDefinitions.categoricalColumns.apply(data);
+	public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
+		final float v = dim.select(((IHasMinSize) elem).getMinSize());
+		return GLElementDimensionDesc.newFix(v).minimum(v * 0.5f).build();
 	}
 
 	@Override
 	public GLElement create(GLElementFactoryContext context) {
-		TablePerspective data = context.getData();
-		DistributionElement elem = new DistributionElement(data, EDistributionMode.PIE);
-		return elem;
+		return new PieDistributionElement(createData(context));
 	}
 
+	@Override
+	public GLElement createParameters(GLElement elem) {
+		return null;
+	}
 }

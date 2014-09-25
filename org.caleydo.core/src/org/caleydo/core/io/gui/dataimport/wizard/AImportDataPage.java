@@ -28,7 +28,9 @@ import org.eclipse.swt.widgets.Composite;
  * @author Christian Partl
  *
  */
-public abstract class AImportDataPage extends WizardPage implements IPageChangedListener {
+public abstract class AImportDataPage<WizardType extends AWizard<WizardType>>
+	extends WizardPage
+	implements IPageChangedListener {
 
 	/**
 	 * The {@link DataSetDescription} for which data is defined in subclasses.
@@ -77,6 +79,14 @@ public abstract class AImportDataPage extends WizardPage implements IPageChanged
 		// scrolledComposite.setMinSize(this.parent.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
 		setControl(scrolledComposite);
+	}
+
+	/**
+	 * @param dataSetDescription
+	 *            setter, see {@link dataSetDescription}
+	 */
+	public void setDataSetDescription(DataSetDescription dataSetDescription) {
+		this.dataSetDescription = dataSetDescription;
 	}
 
 	/**
@@ -137,9 +147,10 @@ public abstract class AImportDataPage extends WizardPage implements IPageChanged
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public DataImportWizard getWizard() {
-		return (DataImportWizard) super.getWizard();
+	public WizardType getWizard() {
+		return (WizardType) super.getWizard();
 	}
 
 }

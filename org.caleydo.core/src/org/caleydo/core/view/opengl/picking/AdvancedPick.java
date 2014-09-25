@@ -33,6 +33,15 @@ public class AdvancedPick extends Pick implements IMouseEvent {
 		this.event = event;
 	}
 
+	public AdvancedPick(Pick rhs, Object obj, PickingMode ePickingMode) {
+		super(rhs, obj, ePickingMode);
+
+		if( rhs instanceof AdvancedPick )
+			event = ((AdvancedPick) rhs).event;
+		else
+			event = null;
+	}
+
 	@Override
 	public Vec2f getPoint() {
 		return event.getPoint();
@@ -92,4 +101,19 @@ public class AdvancedPick extends Pick implements IMouseEvent {
 	public boolean isCtrlDown() {
 		return event == null ? false : event.isCtrlDown();
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("AdvancedPick [").append(getPoint());
+		builder.append("R").append(getWheelRotation());
+		builder.append(" ").append(getPickingMode());
+		builder.append(" B").append(getButton());
+		builder.append(isShiftDown() ? "S" : "");
+		builder.append(isAltDown() ? "A" : "");
+		builder.append(isCtrlDown() ? "C" : "");
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

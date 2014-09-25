@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.parser.ascii.ATextParser;
@@ -39,6 +42,7 @@ import org.eclipse.core.runtime.Status;
  *
  * @author Alexander Lex
  */
+@XmlJavaTypeAdapter(IDType.SerializeAdapter.class)
 public class IDType {
 
 	private static Map<String, IDType> registeredTypes = new HashMap<String, IDType>();
@@ -261,6 +265,32 @@ public class IDType {
 		}
 
 		return (float) numMatchedIDs / (float) idList.size();
+	}
+
+	protected static class IDTypeData {
+		public String name;
+		public IDCategory category;
+		public EDataType dataType;
+		public boolean isInternalType;
+	}
+
+	protected static class SerializeAdapter extends
+			XmlAdapter<IDTypeData, IDType> {
+
+		@Override
+		public IDType unmarshal(IDTypeData type) {
+			return registerType(type.name, type.category, type.dataType, type.isInternalType);
+		}
+
+		@Override
+		public IDTypeData marshal(IDType type) {
+			IDTypeData typeData = new IDTypeData();
+			typeData.name = type.typeName;
+			typeData.category = type.idCategory;
+			typeData.dataType = type.dataType;
+			typeData.isInternalType = type.isInternalType;
+			return typeData;
+		}
 	}
 
 }

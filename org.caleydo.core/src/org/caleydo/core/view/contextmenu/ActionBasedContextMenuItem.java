@@ -8,7 +8,7 @@ package org.caleydo.core.view.contextmenu;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.util.base.IAction;
+import org.eclipse.jface.action.IAction;
 
 /**
  * Generic context menu item that performs an {@link IAction} when clicked.
@@ -18,22 +18,22 @@ import org.caleydo.core.util.base.IAction;
  */
 public class ActionBasedContextMenuItem extends AContextMenuItem {
 
-	protected List<IAction> actions = new ArrayList<>();
+	protected List<Runnable> actions = new ArrayList<>();
 
-	public ActionBasedContextMenuItem(String label, IAction action) {
+	public ActionBasedContextMenuItem(String label, Runnable action) {
 		setLabel(label);
 		actions.add(action);
 	}
 
-	public ActionBasedContextMenuItem(String label, List<IAction> actions) {
+	public ActionBasedContextMenuItem(String label, List<Runnable> actions) {
 		setLabel(label);
 		this.actions.addAll(actions);
 	}
 
 	@Override
 	public void triggerEvent() {
-		for (IAction action : actions) {
-			action.perform();
+		for (Runnable action : actions) {
+			action.run();
 		}
 	}
 

@@ -30,16 +30,17 @@ import org.caleydo.core.view.opengl.layout2.basic.GLButton.EButtonMode;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.core.view.opengl.layout2.util.GLElementWindow;
 
 /**
- * Element for a {@link GLWindow} that lets it slide in or out.
+ * Element for a {@link GLElementWindow} that lets it slide in or out.
  *
  * @author Christian Partl
  *
  */
 public class SlideInElement extends GLElementContainer {
 
-	protected GLWindow window;
+	protected GLElementWindow window;
 	protected ESlideInElementPosition elementPosition;
 	protected GLButton slideInButton;
 
@@ -55,7 +56,7 @@ public class SlideInElement extends GLElementContainer {
 	/**
 	 *
 	 */
-	public SlideInElement(GLWindow window, ESlideInElementPosition elementPosition) {
+	public SlideInElement(GLElementWindow window, ESlideInElementPosition elementPosition) {
 		this.window = window;
 		this.elementPosition = elementPosition;
 		slideInButton = new GLButton(EButtonMode.CHECKBOX);

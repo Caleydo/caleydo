@@ -36,7 +36,7 @@ public class LoadGenericStartupAddon implements IStartupAddon {
 
 	@Override
 	public Composite create(Composite parent, WizardPage page, Listener listener) {
-		page.setPageComplete(true);
+		// page.setPageComplete(true);
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(1, false));

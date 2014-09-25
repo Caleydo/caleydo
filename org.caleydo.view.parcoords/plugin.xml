@@ -69,5 +69,11 @@
             icon="resources/icons/parcoords.png"
             name="Parallel Coordinates Plot">
       </factory>
+      <factory
+            factory="org.caleydo.view.parcoords.v2.internal.SingleAxisElementFactory"
+            icon="resources/icons/icon_axis.png"
+            name="1D Scatterplot"
+            scaleType="fix">
+      </factory>
    </extension>
 </plugin>

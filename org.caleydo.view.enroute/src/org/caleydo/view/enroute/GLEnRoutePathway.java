@@ -5,7 +5,6 @@
  ******************************************************************************/
 package org.caleydo.view.enroute;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -46,18 +45,20 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
-import org.caleydo.datadomain.pathway.IVertexRepBasedEventFactory;
+import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -883,20 +884,20 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	@Override
-	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
+	public Rect getVertexRepBounds(PathwayVertexRep vertexRep) {
 		if (pathRenderer != null)
 			return pathRenderer.getVertexRepBounds(vertexRep);
 		return null;
 	}
 
 	@Override
-	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
+	public List<Rect> getVertexRepsBounds(PathwayVertexRep vertexRep) {
 		if (pathRenderer != null)
 			return pathRenderer.getVertexRepsBounds(vertexRep);
 		return null;
 	}
 
-	@Override
+	// @Override
 	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
 		if (pathRenderer != null)
 			pathRenderer.addVertexRepBasedContextMenuItem(item);
@@ -961,11 +962,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		});
 	}
 
-	@Override
-	public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
-		if (pathRenderer != null)
-			pathRenderer.addVertexRepBasedSelectionEvent(eventFactory, pickingMode);
-	}
+	// @Override
+	// public void addVertexRepBasedSelectionEvent(IVertexRepBasedEventFactory eventFactory, PickingMode pickingMode) {
+	// if (pathRenderer != null)
+	// pathRenderer.addVertexRepBasedSelectionEvent(eventFactory, pickingMode);
+	// }
 
 	@ListenTo
 	public void clearGroupSelection(ClearGroupSelectionEvent event) {
@@ -1001,6 +1002,45 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	public boolean isUseColorMapping() {
 		return useColorMapping;
+	}
+
+	@Override
+	public void addVertexRepSelectionListener(IVertexRepSelectionListener listener) {
+		if (pathRenderer != null)
+			pathRenderer.addVertexRepSelectionListener(listener);
+
+	}
+
+	@Override
+	public Rect getPathwayBounds() {
+
+		return new Rect(0, 0, pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()),
+				pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight()));
+	}
+
+	@Override
+	public GLElement asGLElement() {
+		return null;
+	}
+
+	@Override
+	public AGLView asAGLView() {
+		return this;
+	}
+
+	@Override
+	public ALayoutRenderer asLayoutRenderer() {
+		return null;
+	}
+
+	@Override
+	public float getMinWidth() {
+		return getMinPixelWidth();
+	}
+
+	@Override
+	public float getMinHeight() {
+		return getMinPixelHeight();
 	}
 
 }

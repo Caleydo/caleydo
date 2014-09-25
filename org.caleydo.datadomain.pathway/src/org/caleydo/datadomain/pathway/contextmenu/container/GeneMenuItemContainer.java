@@ -5,12 +5,18 @@
  ******************************************************************************/
 package org.caleydo.datadomain.pathway.contextmenu.container;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.base.Runnables;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.AContextMenuItemContainer;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
@@ -65,5 +71,31 @@ public class GeneMenuItemContainer extends AContextMenuItemContainer {
 			showPathwaysByGeneItem.setDavidID(pathwayDataDomain.getDavidIDType(), davidID);
 			addContextMenuItem(showPathwaysByGeneItem);
 		}
+	}
+
+	public static Collection<Pair<String,Runnable>> create(Integer id, IDType idType, ATableBasedDataDomain dataDomain, Object sender) {
+		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+				PathwayDataDomain.DATA_DOMAIN_TYPE);
+		if (pathwayDataDomain == null)
+			return Collections.emptyList();
+
+		Set<Integer> davids = ((GeneticDataDomain) dataDomain).getGeneIDMappingManager().getIDAsSet(idType,
+				pathwayDataDomain.getDavidIDType(), id);
+		if (davids == null || pathwayDataDomain == null)
+			return Collections.emptyList();
+
+
+		final String dataDomainID = dataDomain.getDataDomainID();
+
+		Collection<Pair<String,Runnable>> r= new ArrayList<Pair<String,Runnable>>();
+		for (Integer davidID : davids) {
+			r.add(Pair.make("Load depending pathways",
+					Runnables.sendEvent(LoadPathwaysByGeneItem.createEvent(idType, davidID, dataDomainID, sender))));
+			ShowPathwaysByGeneItem showPathwaysByGeneItem = new ShowPathwaysByGeneItem(pathwayDataDomain);
+			showPathwaysByGeneItem.setDavidID(pathwayDataDomain.getDavidIDType(), davidID);
+			r.add(ShowPathwaysByGeneItem.createChooser(pathwayDataDomain, pathwayDataDomain.getDavidIDType(), davidID,
+					sender));
+		}
+		return r;
 	}
 }

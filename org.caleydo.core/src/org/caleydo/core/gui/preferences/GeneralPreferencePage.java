@@ -9,6 +9,7 @@ import org.caleydo.core.gui.util.ScaleFieldEditor2;
 import org.caleydo.core.gui.util.SpinnerFieldEditor;
 import org.caleydo.core.internal.Activator;
 import org.caleydo.core.internal.MyPreferences;
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.ScaleFieldEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -40,6 +41,7 @@ public class GeneralPreferencePage extends FieldEditorPreferencePage implements 
 				300, 10, 20, ScaleFieldEditor2.PERCENT_FORMATTER);
 		addField(s);
 		addField(new SpinnerFieldEditor(MyPreferences.FPS, "Target frames per seconds (FPS)", parent, 5, 60, 5, 10));
+		addField(new BooleanFieldEditor(MyPreferences.SAVE_RECENT_PROJECT, "Auto save project on close?", parent));
 	}
 
 	@Override

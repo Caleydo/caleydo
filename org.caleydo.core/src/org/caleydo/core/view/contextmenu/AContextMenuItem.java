@@ -114,7 +114,7 @@ public abstract class AContextMenuItem {
 		}
 	}
 
-	protected void addSubItem(AContextMenuItem contextMenuItem) {
+	public void addSubItem(AContextMenuItem contextMenuItem) {
 		subMenuItems.add(contextMenuItem);
 	}
 

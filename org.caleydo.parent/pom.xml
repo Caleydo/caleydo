@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.caleydo</groupId>
 	<artifactId>org.caleydo.parent</artifactId>
-	<version>3.1.1</version>
+	<version>3.1.3</version>
 	<packaging>pom</packaging>
 	<url>https://github.com/Caleydo/caleydo</url>
 
@@ -15,7 +15,7 @@
 	<properties>
 		<java.version>1.7</java.version>
 		<maven.version>3.0</maven.version>
-		<tycho.version>0.18.1</tycho.version>
+		<tycho.version>0.19.0</tycho.version>
 		<tycho-extras.version>${tycho.version}</tycho-extras.version>
 		<tycho.test.jvmArgs>-Xmx512m -XX:MaxPermSize=256m</tycho.test.jvmArgs>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -64,7 +64,7 @@
 		</repository>
 		<repository>
 			<id>caleydo-eclipse-p2</id>
-			<url>http://dev.caleydo.org/nexus/content/repositories/eclipse</url>
+			<url>http://dev.caleydo.org/nexus/content/repositories/eclipse2</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>

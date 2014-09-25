@@ -5,8 +5,6 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.layout;
 
-import org.caleydo.core.view.opengl.layout2.GLElement;
-
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
@@ -37,10 +35,10 @@ public class GLLayoutDatas {
 	 * @param default_
 	 * @return
 	 */
-	public static <T> Function<GLElement, T> toLayoutData(final Class<T> clazz, final Supplier<T> default_) {
-		return new Function<GLElement, T>() {
+	public static <T> Function<IHasGLLayoutData, T> toLayoutData(final Class<T> clazz, final Supplier<T> default_) {
+		return new Function<IHasGLLayoutData, T>() {
 			@Override
-			public T apply(GLElement arg0) {
+			public T apply(IHasGLLayoutData arg0) {
 				if (arg0 == null)
 					return null;
 				return arg0.getLayoutDataAs(clazz, default_);

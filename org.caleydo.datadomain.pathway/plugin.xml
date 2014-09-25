@@ -23,4 +23,10 @@
             class="org.caleydo.datadomain.pathway.parser.KEGGParser">
       </initializer>
    </extension>
+   <extension
+         point="org.caleydo.datadomain.TypedIDActions">
+      <factory
+            class="org.caleydo.datadomain.pathway.internal.TypedIDActionFactory">
+      </factory>
+   </extension>
 </plugin>

@@ -1,6 +1,8 @@
 #name	category	Label
 patient.vitalstatus	deceased	Deceased
 patient.vitalstatus	living	Living
+patient.vitalstatus	dead	Deceased
+patient.vitalstatus	alive	Living
 patient.gender	female	Female
 patient.gender	male	Male
 patient.race	asian	Asian

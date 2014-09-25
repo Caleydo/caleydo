@@ -5,10 +5,8 @@
  ******************************************************************************/
 package org.caleydo.view.enroute.event;
 
-import java.util.List;
-
 import org.caleydo.core.event.AEvent;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 
 /**
@@ -24,9 +22,9 @@ public class ShowPathEvent extends AEvent {
 	/**
 	 * Path segments that shall be shown.
 	 */
-	protected List<List<PathwayVertexRep>> pathSegments;
+	protected PathwayPath pathSegments;
 
-	public ShowPathEvent(List<List<PathwayVertexRep>> pathSegments) {
+	public ShowPathEvent(PathwayPath pathSegments) {
 		this.pathSegments = pathSegments;
 
 	}
@@ -39,7 +37,7 @@ public class ShowPathEvent extends AEvent {
 	/**
 	 * @return the pathSegments, see {@link #pathSegments}
 	 */
-	public List<List<PathwayVertexRep>> getPathSegments() {
+	public PathwayPath getPathSegments() {
 		return pathSegments;
 	}
 
@@ -47,7 +45,7 @@ public class ShowPathEvent extends AEvent {
 	 * @param pathSegments
 	 *            setter, see {@link pathSegments}
 	 */
-	public void setPathSegments(List<List<PathwayVertexRep>> pathSegments) {
+	public void setPathSegments(PathwayPath pathSegments) {
 		this.pathSegments = pathSegments;
 	}
 

@@ -7,6 +7,7 @@ package org.caleydo.core.view.opengl.layout2.basic;
 
 import gleem.linalg.Vec2f;
 
+import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -190,6 +191,21 @@ public abstract class AInputBoxDialog extends Window {
 	protected void handleShellCloseEvent() {
 		set(getInitialValue());
 		super.handleShellCloseEvent();
+	}
+
+	public static class SetValueEvent extends ADirectedEvent {
+		private final String value;
+
+		public SetValueEvent(String value) {
+			this.value = value;
+		}
+
+		/**
+		 * @return the value, see {@link #value}
+		 */
+		public String getValue() {
+			return value;
+		}
 	}
 
 }

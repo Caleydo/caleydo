@@ -146,4 +146,9 @@ public class DataTranspositionWidget {
 	public boolean isTransposition() {
 		return swapRowsWithColumnsButton.getSelection();
 	}
+
+	public void setTranspose(boolean transpose) {
+		swapRowsWithColumnsButton.setSelection(transpose);
+		update();
+	}
 }

@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Label;
  * @author Christian
  *
  */
-public class DataSetTypePage extends AImportDataPage {
+public class DataSetTypePage extends AImportDataPage<DataImportWizard> {
 
 	public static final String PAGE_NAME = "Select Dataset Type";
 
@@ -155,8 +155,17 @@ public class DataSetTypePage extends AImportDataPage {
 	public void pageActivated() {
 		// The user must always visit the next page before he can finish
 		// updateWidgets();
+		if (dataSetDescription.getDataDescription().getCategoricalClassDescription() != null) {
+			numericalDatasetButton.setSelection(false);
+			categoricalDatasetButton.setSelection(true);
+		} else {
+			numericalDatasetButton.setSelection(true);
+			categoricalDatasetButton.setSelection(false);
+		}
+
 		getWizard().setChosenDataTypePage(null);
 		getWizard().getContainer().updateButtons();
+		dataTranspositionWidget.setTranspose(dataSetDescription.isTransposeMatrix());
 		dataTranspositionWidget.update();
 	}
 

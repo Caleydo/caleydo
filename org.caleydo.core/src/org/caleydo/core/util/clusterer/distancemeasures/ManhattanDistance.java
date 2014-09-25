@@ -45,7 +45,7 @@ public class ManhattanDistance
 	@Override
 	public double apply(final IDoubleSizedIterable a, final IDoubleSizedIterable b) {
 		final IDoubleSizedIterator a_it = a.iterator();
-		final IDoubleSizedIterator b_it = a.iterator();
+		final IDoubleSizedIterator b_it = b.iterator();
 
 		double acc = 0;
 

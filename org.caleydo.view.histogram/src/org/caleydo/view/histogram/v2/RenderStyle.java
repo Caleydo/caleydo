@@ -12,5 +12,5 @@ import org.caleydo.core.util.color.Color;
  *
  */
 public class RenderStyle {
-	public static final Color COLOR_BORDER = Color.DARK_GRAY; // or null for none
+	public static final Color COLOR_BORDER = Color.WHITE; // or null for none
 }

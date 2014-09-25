@@ -14,6 +14,6 @@ package org.caleydo.core.util.function;
 public abstract class ADoubleFunction implements IDoubleFunction {
 	@Override
 	public final Double apply(Double v) {
-		return Double.valueOf(apply(v.doubleValue()));
+		return DoubleFunctions.applyPrimitive(this, v);
 	}
 }

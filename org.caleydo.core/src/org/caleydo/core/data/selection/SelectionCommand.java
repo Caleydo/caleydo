@@ -51,10 +51,6 @@ public class SelectionCommand {
 		return selectionType;
 	}
 
-	public ESelectionCommandType getESelectionCommandType() {
-		return selectionCommandType;
-	}
-
 	public void setSelectionCommandType(ESelectionCommandType selectionCommandType) {
 		this.selectionCommandType = selectionCommandType;
 	}

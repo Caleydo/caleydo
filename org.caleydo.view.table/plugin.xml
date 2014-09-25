@@ -59,5 +59,11 @@
             viewID="org.caleydo.view.table">
       </ViewCategory>
    </extension>
+      <extension
+            point="org.caleydo.datadomain.TablePerspectiveActions">
+         <factory
+               class="org.caleydo.view.table.TablePerspectiveAction">
+         </factory>
+      </extension>
 </plugin>
 

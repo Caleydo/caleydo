@@ -687,9 +687,9 @@ public class MappedDataRenderer {
 			group = tPForGroup.getPerspective(columnIDTypeForGroup).getVirtualArray().getGroupList().get(0);
 			group.setLabel(tPForGroup.getLabel(), tPForGroup.isLabelDefault());
 		}
-		if (tPForGroup.getPerspective(columnIDTypeForGroup).getVirtualArray().getGroupList().size() <= 1) {
-			group.setLabel(tPForGroup.getLabel(), tPForGroup.isLabelDefault());
-		}
+		// if (tPForGroup.getPerspective(columnIDTypeForGroup).getVirtualArray().getGroupList().size() <= 1) {
+		// group.setLabel(tPForGroup.getLabel(), tPForGroup.isLabelDefault());
+		// }
 
 		if (isHighlightLayout && topCaptionLayout != null && bottomCaptionLayout != null) {
 

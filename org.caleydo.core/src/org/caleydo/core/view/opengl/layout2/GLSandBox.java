@@ -15,7 +15,6 @@ import java.net.URLClassLoader;
 import javax.media.opengl.FPSCounter;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import javax.media.opengl.GLAnimatorControl;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
@@ -54,6 +53,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -102,14 +102,13 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		});
 	}
 
-	private final GLAnimatorControl animator;
+	private final MyAnimator animator;
 	private final WindowGLElement root;
 
 	private final ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 100, 100, 0, -20, 20);
 
 	private final SimplePickingManager pickingManager = new SimplePickingManager();
 
-	protected final Shell shell;
 	protected final IGLCanvas canvas;
 	private final ISWTLayer swtLayer;
 	protected boolean renderPick;
@@ -125,17 +124,19 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	 * @param canvas
 	 */
 	public GLSandBox(Shell parentShell, String title, GLElement root, GLPadding padding, Dimension dim) {
-		this.shell = parentShell;
-		this.shell.setText(title);
-		this.shell.setLayout(new GridLayout(1, true));
-		this.shell.setSize(dim.width, dim.height);
+		this(initShell(parentShell, title, dim), root, padding);
+	}
+
+	public GLSandBox(Composite parent, GLElement root, GLPadding padding) {
+		// use use my own library loader
+		System.setProperty("jnlp.launcher.class", SandBoxLibraryLoader.class.getCanonicalName());
 
 		IGLCanvasFactory canvasFactory = new SWTGLCanvasFactory();
 
 		GLCapabilities caps = createCapabilities();
 
 
-		this.canvas = canvasFactory.create(caps, shell);
+		this.canvas = canvasFactory.create(caps, parent);
 		canvas.asComposite().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		this.swtLayer = new SWTLayer(canvas);
 
@@ -164,9 +165,16 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 			}
 		});
-		this.root = new WindowGLElement(root);
+		this.root = new WindowGLElement(root, canvas);
 
 		animator.start();
+	}
+
+	private static Shell initShell(Shell shell, String title, Dimension dim) {
+		shell.setText(title);
+		shell.setLayout(new GridLayout(1, true));
+		shell.setSize(dim.width, dim.height);
+		return shell;
 	}
 
 	protected GLCapabilities createCapabilities() {
@@ -310,6 +318,10 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		local.destroy(gl);
 	}
 
+	public void shutdown() {
+		animator.shutdown();
+	}
+
 	private float getWidth() {
 		return viewFrustum.getRight();
 	}
@@ -439,7 +451,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		@Override
 		public void run() {
 			// use my class for library loading
-			System.setProperty("jnlp.launcher.class", SandBoxLibraryLoader.class.getCanonicalName());
 			try {
 				Display display = Display.getDefault();
 				final Shell splash = createSplash(display);
@@ -458,7 +469,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 						display.sleep();
 				}
 				if (sandbox != null)
-					sandbox.animator.stop();
+					sandbox.shutdown();
 				display.dispose();
 			} catch (Throwable e) {
 				// TODO Auto-generated catch block

@@ -32,16 +32,6 @@ public interface ITourGuideDataMode extends Predicate<IDataDomain> {
 	Iterable<? extends ADataDomainQuery> createDataDomainQuery(IDataDomain dd);
 
 	/**
-	 * @return the number of categories to split up the data domains in vertical mode
-	 */
-	int getNumCategories();
-
-	/**
-	 * @return the category of a specific data domain
-	 */
-	int getCategory(IDataDomain dataDomain);
-
-	/**
 	 * add default columns to the {@link RankTableModel} for this data domain mode, e.g. label, metrics,...
 	 * 
 	 * @param table

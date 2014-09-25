@@ -11,11 +11,22 @@ package org.caleydo.core.util.function;
  *
  */
 public class DoubleReductions {
-	public enum EReduceOperations implements IDoubleReduction {
+	/**
+	 * set of simple reduce operators, for some of them the data item order matters
+	 * 
+	 * @author Samuel Gratzl
+	 * 
+	 */
+	public enum EReduceOperations implements IDoubleFunction2 {
 		PRODUCT, SUM, MIN, MAX, SUB, DIVIDE;
 
 		@Override
-		public double reduce(double a, double b) {
+		public Double apply(Double input1, Double input2) {
+			return Double.valueOf(apply(input1.doubleValue(), input2.doubleValue()));
+		}
+
+		@Override
+		public double apply(double a, double b) {
 			switch (this) {
 			case PRODUCT:
 				return a * b;

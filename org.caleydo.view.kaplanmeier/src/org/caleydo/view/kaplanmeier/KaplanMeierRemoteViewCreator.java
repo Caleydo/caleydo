@@ -44,10 +44,16 @@ public class KaplanMeierRemoteViewCreator implements IRemoteViewCreator {
 			kaplanMeier.setTablePerspective(tablePerspective);
 			kaplanMeier.setDataDomain(tablePerspective.getDataDomain());
 			float maxTimeValue = 0;
-			if (tablePerspective.getParentTablePerspective() != null) {
-				maxTimeValue = GLKaplanMeier.calculateMaxAxisTime(tablePerspective.getParentTablePerspective());
-			} else {
-				maxTimeValue = GLKaplanMeier.calculateMaxAxisTime(tablePerspective);
+			try {
+				if (tablePerspective.getParentTablePerspective() != null) {
+					maxTimeValue = GLKaplanMeier.calculateMaxAxisTime(tablePerspective.getParentTablePerspective());
+				} else {
+					maxTimeValue = GLKaplanMeier.calculateMaxAxisTime(tablePerspective);
+				}
+			} catch (IllegalStateException e) {
+				kaplanMeier.setEmptyViewText(new String[] { "KM plot", "cannot handle", "positive and",
+						"negative values." });
+				kaplanMeier.setShowKMPlot(false);
 			}
 			kaplanMeier.setMaxAxisTime(maxTimeValue);
 		}

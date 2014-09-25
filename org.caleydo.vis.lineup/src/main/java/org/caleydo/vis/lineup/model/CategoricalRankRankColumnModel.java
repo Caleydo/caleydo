@@ -27,9 +27,10 @@ import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.lineup.config.IRankTableUIConfig;
-import org.caleydo.vis.lineup.internal.event.FilterEvent;
+import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.ui.CatFilterDalog;
 import org.caleydo.vis.lineup.model.mapping.ICategoricalMappingFunction;
+import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
@@ -53,7 +54,7 @@ import com.google.common.base.Function;
  *
  */
 public final class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel implements
-		IFilterColumnMixin, IMappedColumnMixin, IDoubleRankableColumnMixin, Cloneable {
+		IFilterColumnMixin, IMappedColumnMixin, IDoubleRankableColumnMixin, Cloneable, IDataBasedColumnMixin {
 	private static final int MAX_CATEGORY_COLORS = 8;
 
 	private final Function<IRow, CATEGORY_TYPE> data;
@@ -104,6 +105,14 @@ public final class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicF
 		return mapping.isComplexMapping();
 	}
 
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	@Override
+	public Function<IRow, CATEGORY_TYPE> getData() {
+		return data;
+	}
+
 	@Override
 	public void onRankingInvalid() {
 		cacheHist.invalidate();
@@ -135,7 +144,7 @@ public final class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicF
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				CatFilterDalog<CATEGORY_TYPE> dialog = new CatFilterDalog<>(canvas.getShell(), getTitle(), summary,
+				CatFilterDalog<CATEGORY_TYPE> dialog = new CatFilterDalog<>(canvas.getShell(), getLabel(), summary,
 						metaData, selection, CategoricalRankRankColumnModel.this, getTable().hasSnapshots(), loc,
 						false, "");
 				dialog.open();

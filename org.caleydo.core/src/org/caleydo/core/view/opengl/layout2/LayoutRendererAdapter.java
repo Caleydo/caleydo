@@ -63,7 +63,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 
 	public LayoutRendererAdapter(AGLView view, IResourceLocator locator, GLElement root, String eventSpace) {
 		this.view = view;
-		this.root = new WindowGLElement(root);
+		this.root = new WindowGLElement(root, view.getParentGLCanvas());
 		this.eventListeners = EventListenerManagers.createQueued();
 		this.eventSpace = eventSpace;
 
@@ -100,7 +100,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 
 	@Override
 	public <T> T getLayoutDataAs(Class<T> clazz, Supplier<? extends T> default_) {
-		return GLLayouts.resolveLayoutDatas(clazz, default_, view, this.local);
+		return GLLayouts.resolveLayoutDatas(clazz, default_, view, view.getParentGLCanvas(), this.local);
 	}
 
 	@Override
@@ -147,6 +147,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 
 		if (dirty) {
 			root.setBounds(0, 0, w, h);
+			root.relayout();
 			dirty = false;
 		}
 
@@ -181,6 +182,12 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	@Override
 	public void relayout() {
 		dirty = true;
+	}
+
+	@Override
+	public void setLimits(float x, float y) {
+		super.setLimits(x, y);
+		relayout();
 	}
 
 	@Override

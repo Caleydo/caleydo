@@ -6,13 +6,15 @@
 package org.caleydo.vis.lineup.ui;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.layout2.dnd.ADropGLTarget;
+import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
+import org.caleydo.core.view.opengl.layout2.dnd.IDropGLTarget;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
+import org.caleydo.vis.lineup.model.ColumnDragInfo;
 
 /**
  * a visual glyph for a separator, i.e. a place where to drop a column
@@ -24,6 +26,28 @@ public class SeparatorUI extends PickableGLElement {
 	protected int index;
 	protected boolean armed = false;
 	private final IMoveHereChecker model;
+	private IDropGLTarget dropTarget = new ADropGLTarget() {
+
+		@Override
+		public boolean canSWTDrop(IDnDItem input) {
+			if (!(input.getInfo() instanceof ColumnDragInfo))
+				return false;
+			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();
+			if (!model.canMoveHere(index, info.getModel(), RenderStyle.isCloneDragging(input)))
+				return false;
+			armed = true;
+			repaint();
+			return true;
+		}
+
+		@Override
+		public void onDrop(IDnDItem input) {
+			ColumnDragInfo info = (ColumnDragInfo) input.getInfo();
+			context.getSWTLayer().setCursor(-1);
+			armed = false;
+			model.moveHere(index, info.getModel(), RenderStyle.isCloneDragging(input));
+		}
+	};
 
 	public SeparatorUI(IMoveHereChecker model) {
 		setzDelta(0.2f);
@@ -83,49 +107,22 @@ public class SeparatorUI extends PickableGLElement {
 
 	protected boolean isDraggingAColumn() {
 		IMouseLayer m = context.getMouseLayer();
-		return m.hasDraggable(ARankColumnModel.class);
+		return m.isDragging(ColumnDragInfo.class);
 	}
 
 	@Override
 	protected void onMouseOver(Pick pick) {
-		if (!pick.isAnyDragging())
-			return;
-		IMouseLayer m = context.getMouseLayer();
-		if (!m.hasDraggable(ARankColumnModel.class))
-			return;
-		Pair<GLElement, ARankColumnModel> info = m.getFirstDraggable(ARankColumnModel.class);
-		if (!model.canMoveHere(index, info.getSecond(), RenderStyle.isCloneDragging(pick)))
-			return;
-		m.setDropable(ARankColumnModel.class, true);
-		armed = true;
-		repaint();
+		context.getMouseLayer().addDropTarget(dropTarget);
 	}
 
 	@Override
 	protected void onMouseOut(Pick pick) {
+		context.getMouseLayer().removeDropTarget(dropTarget);
 		if (!armed)
 			return;
-		IMouseLayer m = context.getMouseLayer();
-		m.setDropable(ARankColumnModel.class, false);
 		armed = false;
 		repaint();
 	}
-
-	@Override
-	protected void onMouseReleased(Pick pick) {
-		if (!armed)
-			return;
-		IMouseLayer m = context.getMouseLayer();
-		m.setDropable(ARankColumnModel.class, false);
-		Pair<GLElement, ARankColumnModel> info = m.getFirstDraggable(ARankColumnModel.class);
-		m.removeDraggable(info.getFirst());
-		m.setDropable(ARankColumnModel.class, false);
-		context.getSWTLayer().setCursor(-1);
-		armed = false;
-		model.moveHere(index, info.getSecond(), RenderStyle.isCloneDragging(pick));
-	}
-
-
 
 	public interface IMoveHereChecker {
 		boolean canMoveHere(int index, ARankColumnModel model, boolean clone);

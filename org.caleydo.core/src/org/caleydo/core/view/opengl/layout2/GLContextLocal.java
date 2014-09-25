@@ -24,8 +24,17 @@ import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
  *
  */
 public class GLContextLocal {
+	/**
+	 * text renderer plain font
+	 */
 	private final ITextRenderer text_plain;
+	/**
+	 * text renderer bold font
+	 */
 	private final ITextRenderer text_bold;
+	/**
+	 * text renderer italic font
+	 */
 	private final ITextRenderer text_italic;
 
 	private final TextureManager textures;

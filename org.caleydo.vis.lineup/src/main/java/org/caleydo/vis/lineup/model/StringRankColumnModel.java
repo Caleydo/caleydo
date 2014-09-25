@@ -22,11 +22,12 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.ISWTLayer.ISWTLayerRunnable;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
-import org.caleydo.vis.lineup.internal.event.FilterEvent;
+import org.caleydo.vis.lineup.event.FilterEvent;
 import org.caleydo.vis.lineup.internal.event.SearchEvent;
 import org.caleydo.vis.lineup.internal.event.SearchEvent.SearchResult;
 import org.caleydo.vis.lineup.internal.ui.StringFilterDialog;
 import org.caleydo.vis.lineup.internal.ui.StringSearchDialog;
+import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IGrabRemainingHorizontalSpace;
 import org.caleydo.vis.lineup.model.mixin.IRankColumnModel;
@@ -47,7 +48,7 @@ import com.google.common.base.Function;
  *
  */
 public class StringRankColumnModel extends ABasicFilterableRankColumnModel implements IGrabRemainingHorizontalSpace,
-		IFilterColumnMixin, IRankableColumnMixin, ISearchableColumnMixin {
+		IFilterColumnMixin, IRankableColumnMixin, ISearchableColumnMixin, IDataBasedColumnMixin {
 	/**
 	 * different strategies for filter modi
 	 *
@@ -139,6 +140,14 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		return new StringRankColumnModel(this);
 	}
 
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	@Override
+	public Function<IRow, String> getData() {
+		return data;
+	}
+
 	@Override
 	public GLElement createSummary(boolean interactive) {
 		return new MyElement(interactive);
@@ -151,7 +160,15 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 	@Override
 	public int compare(IRow o1, IRow o2) {
-		return String.CASE_INSENSITIVE_ORDER.compare(data.apply(o1), data.apply(o2));
+		String s1 = data.apply(o1);
+		String s2 = data.apply(o2);
+		if (Objects.equals(s1, s2))
+			return 0;
+		if (s1 == null)
+			return 1;
+		if (s2 == null)
+			return -1;
+		return String.CASE_INSENSITIVE_ORDER.compare(s1, s2);
 	}
 
 	@Override
@@ -171,7 +188,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				StringFilterDialog dialog = new StringFilterDialog(canvas.getShell(), getTitle(), filterStrategy
+				StringFilterDialog dialog = new StringFilterDialog(canvas.getShell(), getLabel(), filterStrategy
 						.getHint(), summary, filter, StringRankColumnModel.this, getTable().hasSnapshots(), loc);
 				dialog.open();
 			}
@@ -185,7 +202,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				StringSearchDialog dialog = new StringSearchDialog(canvas.getShell(), getTitle(), filterStrategy
+				StringSearchDialog dialog = new StringSearchDialog(canvas.getShell(), getLabel(), filterStrategy
 						.getHint(), summary, filter, loc);
 				dialog.open();
 			}
@@ -269,6 +286,13 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		return filter != null;
 	}
 
+	/**
+	 * @return the filter, see {@link #filter}
+	 */
+	public String getFilter() {
+		return filter;
+	}
+
 	@Override
 	protected void updateMask(BitSet todo, List<IRow> data, BitSet mask) {
 		String prepared = filterStrategy.prepare(filter);
@@ -331,7 +355,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 	class MyValueElement extends ValueElement {
 		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
+		protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
 			if (h < 5 || (w - 7) < 10)
 				return;
 			String value = getTooltip();
@@ -343,7 +367,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 		@Override
 		public String getTooltip() {
-			return data.apply(getLayoutDataAs(IRow.class, null));
+			return data.apply(getRow());
 		}
 	}
 }

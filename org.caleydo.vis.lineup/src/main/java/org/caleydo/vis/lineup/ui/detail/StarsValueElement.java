@@ -34,8 +34,8 @@ public class StarsValueElement extends ValueElement {
 	}
 
 	@Override
-	protected void renderImpl(GLGraphics g, float w, float h) {
-		final IRow r = getLayoutDataAs(IRow.class, null); // current row
+	protected void renderImpl(GLGraphics g, float w, float h, IRow row) {
+		final IRow r = row; // current row
 		double v = model.applyPrimitive(r);
 
 		if (Double.isNaN(v) || v <= 0)

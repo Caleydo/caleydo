@@ -26,8 +26,8 @@ import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
-
 
 /**
  * <p>
@@ -79,6 +79,12 @@ import com.google.common.collect.Sets;
  *
  */
 public class IDMappingManager {
+
+	/**
+	 * Registered {@link IDMappingDescription}s for mappings loaded by the user.
+	 */
+	private static List<IDMappingDescription> idMappingDescriptions = new ArrayList<>();
+
 	/**
 	 * The {@link IDCategory} for which this mapping manager provides the mapping
 	 */
@@ -243,8 +249,8 @@ public class IDMappingManager {
 	 *            Mapping type that specifies the already existent map which is used for creating the code resolved map.
 	 */
 	@SuppressWarnings("unchecked")
-	public <K, V> void createCodeResolvedMap(MappingType originalMappingType,
-			IDType codeResolvedFromType, IDType codeResolvedToType) {
+	public <K, V> void createCodeResolvedMap(MappingType originalMappingType, IDType codeResolvedFromType,
+			IDType codeResolvedToType) {
 
 		@SuppressWarnings("rawtypes")
 		Map codeResolvedMap = null;
@@ -647,6 +653,10 @@ public class IDMappingManager {
 	}
 
 	protected List<MappingType> findPath(IDType source, IDType destination) {
+		MappingType r = mappingGraph.getEdge(source, destination);
+		if (r != null) { // direct edge
+			return Collections.singletonList(r);
+		}
 		try {
 			return DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
 		} catch (IllegalArgumentException e) {
@@ -681,6 +691,14 @@ public class IDMappingManager {
 		@Override
 		public IDType getTarget() {
 			return target;
+		}
+
+		@Override
+		public boolean isOne2OneMapping() {
+			for (MappingType p : path)
+				if (p.isMultiMap())
+					return false;
+			return true;
 		}
 
 		@Override
@@ -765,6 +783,18 @@ public class IDMappingManager {
 		}
 
 		@Override
+		public Collection<Set<V>> applySeq(Collection<K> sourceIDs) {
+			List<Set<V>> r = new ArrayList<>(sourceIDs.size());
+			for (K sourceID : sourceIDs) {
+				Set<V> ri = apply(sourceID);
+				if (ri == null)
+					ri = Collections.emptySet();
+				r.add(ri);
+			}
+			return ImmutableList.copyOf(r);
+		}
+
+		@Override
 		public boolean isMapAble(K sourceId) {
 			return !apply(Collections.singleton(sourceId)).isEmpty();
 		}
@@ -791,6 +821,11 @@ public class IDMappingManager {
 
 		private IDMappingManager getOuterType() {
 			return IDMappingManager.this;
+		}
+
+		@Override
+		public List<MappingType> getPath() {
+			return path;
 		}
 	}
 
@@ -847,7 +882,16 @@ public class IDMappingManager {
 
 	@Override
 	public String toString() {
-		return "IDMappingManager for " + idCategory;// + " with registered id types: " + hashMappingType2Map.keySet();
+		// StringBuilder b = new StringBuilder();
+		// for (IDType v : mappingGraph.vertexSet()) {
+		// b.append(v).append(": \n");
+		// for (MappingType e : mappingGraph.edgesOf(v)) {
+		// b.append(e).append("\n");
+		// }
+		// }
+		// return b.toString();
+		return "IDMappingManager for " + idCategory;// + " with registered id types: " +
+		// hashMappingType2Map.keySet();
 	}
 
 	/**
@@ -873,5 +917,16 @@ public class IDMappingManager {
 					mappingGraph.removeVertex(mappingType.getToIDType());
 			}
 		}
+	}
+
+	public static void addIDMappingDescription(IDMappingDescription desc) {
+		idMappingDescriptions.add(desc);
+	}
+
+	/**
+	 * @return the idMappingDescriptions, see {@link #idMappingDescriptions}
+	 */
+	public static List<IDMappingDescription> getIdMappingDescriptions() {
+		return idMappingDescriptions;
 	}
 }

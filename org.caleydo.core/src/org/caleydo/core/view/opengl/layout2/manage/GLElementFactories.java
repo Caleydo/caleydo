@@ -5,17 +5,22 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.manage;
 
+import gleem.linalg.Vec2f;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.util.ExtensionUtils.IExtensionLoader;
 import org.caleydo.core.util.base.ILabeled;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.basic.ScrollingDecorator.IHasMinSize;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 
@@ -57,6 +62,18 @@ public final class GLElementFactories {
 	}
 
 	/**
+	 * @param id
+	 * @return the corresponding meta data of an item
+	 */
+	public static IGLElementMetaData getMetaData(String id) {
+		for (ElementExtension elem : extensions) {
+			if (Objects.equals(elem.getId(), id))
+				return elem;
+		}
+		return null;
+	}
+
+	/**
 	 * returns a list a element suppliers that can be created using the given parameters
 	 *
 	 * @param context
@@ -64,14 +81,15 @@ public final class GLElementFactories {
 	 * @param callerId
 	 *            the id of the caller (for including excluding)
 	 * @param filter
-	 *            a additional filter to include / exclude from the caller side
+	 *            an additional filter to include / exclude from the caller side
 	 * @return
 	 */
 	public static ImmutableList<GLElementSupplier> getExtensions(GLElementFactoryContext context, String callerId,
 			Predicate<? super String> filter) {
 		ImmutableList.Builder<GLElementSupplier> builder = ImmutableList.builder();
 		for (ElementExtension elem : extensions) {
-			if ((filter != null && !filter.apply(elem.getId())) || !elem.canCreate(callerId, context))
+			if ((filter != null && !filter.apply(elem.getId()))
+					|| !elem.canCreate(callerId, context))
 				continue;
 			builder.add(new GLElementSupplier(elem, context));
 		}
@@ -91,6 +109,17 @@ public final class GLElementFactories {
 		private GLElementSupplier(ElementExtension extension, GLElementFactoryContext context) {
 			this.extension = extension;
 			this.context = context;
+		}
+
+		public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
+			return extension.getDesc(dim, elem);
+		}
+
+		/**
+		 * @return
+		 */
+		public GLElement createParameters(GLElement elem) {
+			return extension.createParameters(elem);
 		}
 
 		@Override
@@ -151,7 +180,13 @@ public final class GLElementFactories {
 
 	}
 
-	private static class ElementExtension implements ILabeled, Comparable<ElementExtension> {
+	/**
+	 * internal class holding the factory and its metadata
+	 *
+	 * @author Samuel Gratzl
+	 *
+	 */
+	private static class ElementExtension implements IGLElementMetaData, Comparable<ElementExtension> {
 		private final String label;
 		private final URL icon;
 		private final String id;
@@ -159,6 +194,7 @@ public final class GLElementFactories {
 		private final IGLElementFactory factory;
 		private final Set<String> excludes;
 		private final Set<String> includes;
+		private final EVisScaleType scaleType;
 
 		/**
 		 * @param elem
@@ -171,11 +207,43 @@ public final class GLElementFactories {
 			id = factory.getId();
 			excludes = parseList(elem, "exclude");
 			includes = parseList(elem, "include");
+			scaleType = parseEnum(elem.getAttribute("scaleType"));
 			String order = elem.getAttribute("order");
 			if (order == null || StringUtils.isBlank(order) || !StringUtils.isNumeric(order))
 				this.order = 10;
 			else
 				this.order = Integer.parseInt(order);
+		}
+
+		/**
+		 * @param attribute
+		 * @return
+		 */
+		private EVisScaleType parseEnum(String value) {
+			if (StringUtils.isBlank(value))
+				return EVisScaleType.FIX;
+			return EVisScaleType.valueOf(value.toUpperCase());
+		}
+
+		public GLElement createParameters(GLElement elem) {
+			if (factory instanceof IGLElementFactory2)
+				return ((IGLElementFactory2) factory).createParameters(elem);
+			return null;
+		}
+
+		@Override
+		public EVisScaleType getScaleType() {
+			return scaleType;
+		}
+
+		public GLElementDimensionDesc getDesc(EDimension dim, GLElement elem) {
+			if (factory instanceof IGLElementFactory2)
+				return ((IGLElementFactory2) factory).getDesc(dim, elem);
+			// create a dummy one
+			Vec2f size = new Vec2f(100, 100);
+			if (elem instanceof IHasMinSize)
+				size = ((IHasMinSize) elem).getMinSize();
+			return GLElementDimensionDesc.newFix(dim.select(size)).build();
 		}
 
 		@Override
@@ -194,6 +262,7 @@ public final class GLElementFactories {
 		/**
 		 * @return the id, see {@link #id}
 		 */
+		@Override
 		public String getId() {
 			return id;
 		}
@@ -201,6 +270,7 @@ public final class GLElementFactories {
 		/**
 		 * @return the icon, see {@link #icon}
 		 */
+		@Override
 		public URL getIcon() {
 			return icon;
 		}
@@ -212,7 +282,7 @@ public final class GLElementFactories {
 			// not explicitly included by myself
 			if (!includes.isEmpty() && !includes.contains(callerId))
 				return false;
-			return factory.canCreate(context.sub(id));
+			return factory.apply(context.sub(id));
 		}
 
 		public GLElement create(GLElementFactoryContext context) {
@@ -225,6 +295,25 @@ public final class GLElementFactories {
 		@Override
 		public String getLabel() {
 			return label;
+		}
+
+		@Override
+		public String toString() {
+			StringBuilder builder = new StringBuilder();
+			builder.append("ElementExtension [id=");
+			builder.append(id);
+			builder.append(", label=");
+			builder.append(label);
+			builder.append(", scaleType=");
+			builder.append(scaleType);
+			builder.append(", order=");
+			builder.append(order);
+			builder.append(", excludes=");
+			builder.append(excludes);
+			builder.append(", includes=");
+			builder.append(includes);
+			builder.append("]");
+			return builder.toString();
 		}
 
 	}

@@ -9,14 +9,15 @@
 <location id="org.eclipse.emf.ecore" path="${eclipse_home}" type="Feature"/>
 <location id="org.eclipse.equinox.p2.user.ui" path="${eclipse_home}" type="Feature"/>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.caleydo.thirdparty.jogl" version="2.0.2"/>
-<unit id="org.caleydo.thirdparty.jogl-natives-linux-amd64" version="2.0.2"/>
-<unit id="org.caleydo.thirdparty.jogl-natives-linux-i586" version="2.0.2"/>
-<unit id="org.caleydo.thirdparty.jogl-natives-macosx-universal" version="2.0.2"/>
-<unit id="org.caleydo.thirdparty.jogl-natives-windows-amd64" version="2.0.2"/>
-<unit id="org.caleydo.thirdparty.jogl-natives-windows-i586" version="2.0.2"/>
-<unit id="org.caleydo.thirdparty.jgrapht" version="0.8.3"/>
+<unit id="org.caleydo.thirdparty.jogl" version="2.1.3"/>
+<unit id="org.caleydo.thirdparty.jogl-natives-linux-amd64" version="2.1.3"/>
+<unit id="org.caleydo.thirdparty.jogl-natives-linux-i586" version="2.1.3"/>
+<unit id="org.caleydo.thirdparty.jogl-natives-macosx-universal" version="2.1.3"/>
+<unit id="org.caleydo.thirdparty.jogl-natives-windows-amd64" version="2.1.3"/>
+<unit id="org.caleydo.thirdparty.jogl-natives-windows-i586" version="2.1.3"/>
+<unit id="org.caleydo.thirdparty.jgrapht" version="0.9.0"/>
 <unit id="org.caleydo.thirdparty.pathvisio" version="31.0.0"/>
+<unit id="org.caleydo.thirdparty.cdk" version="1.5.3" />
 <repository location="http://dev.caleydo.org/nexus/content/repositories/thirdparty/.meta/p2"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -28,12 +29,9 @@
 <unit id="org.apache.commons.math" version="2.1.0.v201105210652"/>
 <unit id="org.apache.commons.compress" version="1.4.1.v201301140946"/>
 <unit id="org.apache.commons.logging" version="1.1.1.v201101211721"/>
-<unit id="org.eclipse.e4.ui.workbench.addons.swt" version="1.0.1.v20130823-1518"/>
+<unit id="org.eclipse.e4.ui.workbench.addons.swt" version="1.0.2.v20131129-1621"/>
 <repository location="http://dev.caleydo.org/nexus/content/groups/public-p2"/>
-<repository location="http://dev.caleydo.org/nexus/content/repositories/eclipse"/>
-</location>
-<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<repository location="http://dev.caleydo.org/nexus/content/groups/public-p2"/>
+<repository location="http://dev.caleydo.org/nexus/content/repositories/eclipse2"/>
 </location>
 </locations>
 </target>

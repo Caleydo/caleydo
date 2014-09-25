@@ -38,7 +38,7 @@ public class ScrollBar extends AScrollBar {
 		case MOUSE_OVER:
 			hovered = true;
 			break;
-		case CLICKED:
+		case DRAG_DETECTED:
 			Vec2f relative = callback.toRelative(pick.getPickedPoint());
 			if (!jump(dim.select(relative)))
 				pick.setDoDragging(true);

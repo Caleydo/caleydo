@@ -12,6 +12,8 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.basic.IScrollBar;
 import org.caleydo.core.view.opengl.layout2.basic.ScrollBar;
+import org.caleydo.core.view.opengl.layout2.geom.Rect;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
 import org.caleydo.vis.lineup.model.IRow;
@@ -93,19 +95,19 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 	}
 
 	@Override
-	public void renderRowBackground(GLGraphics g, float x, float y, float w, float h, boolean even, IRow row,
+	public void renderRowBackground(GLGraphics g, Rect rect, boolean even, IRow row,
 			IRow selected) {
 		if (row == selected) {
-				g.color(RenderStyle.COLOR_SELECTED_ROW);
-				g.incZ();
-				g.fillRect(x, y, w, h);
-				g.color(RenderStyle.COLOR_SELECTED_BORDER);
-				g.drawLine(x, y, x + w, y);
-				g.drawLine(x, y+h, x + w, y+h);
-				g.decZ();
+			g.color(RenderStyle.COLOR_SELECTED_ROW);
+			g.incZ();
+			g.fillRect(rect);
+			g.color(RenderStyle.COLOR_SELECTED_BORDER);
+			g.drawLine(rect.x(), rect.y(), rect.x() + rect.width(), rect.y());
+			g.drawLine(rect.x(), rect.y() + rect.height(), rect.x() + rect.width(), rect.y() + rect.height());
+			g.decZ();
 		} else if (!even) {
 			g.color(RenderStyle.COLOR_BACKGROUND_EVEN);
-			g.fillRect(x, y, w, h);
+			g.fillRect(rect);
 		}
 	}
 
@@ -120,15 +122,27 @@ public class RankTableUIConfigBase implements IRankTableUIConfig {
 	}
 
 	@Override
-	public void onRowClick(RankTableModel table, PickingMode pickingMode, IRow row, boolean isSelected,
-			IGLElementContext context) {
-		if (!isSelected && pickingMode == PickingMode.CLICKED) {
+	public void onRowClick(RankTableModel table, Pick pick, IRow row, boolean isSelected,
+ IGLElementContext context,
+			ARankColumnModel model) {
+		onRowClick(table, pick, row, isSelected, context);
+	}
+
+	public void onRowClick(RankTableModel table, Pick pick, IRow row, boolean isSelected,
+ IGLElementContext context) {
+		if (!isSelected && pick.getPickingMode() == PickingMode.CLICKED) {
 			table.setSelectedRow(row);
 		}
 	}
 
+
 	@Override
 	public boolean isFastFiltering() {
 		return false;
+	}
+
+	@Override
+	public boolean isAutoJumpingToSelectedRow() {
+		return true;
 	}
 }

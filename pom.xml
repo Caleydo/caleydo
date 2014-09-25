@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.caleydo</groupId>
 		<artifactId>org.caleydo.parent</artifactId>
-		<version>3.1.1</version>
+		<version>3.1.3</version>
 		<relativePath>org.caleydo.parent</relativePath>
 	</parent>
 	
@@ -24,6 +24,7 @@
 		<module>org.caleydo.datadomain.generic</module>
 		<module>org.caleydo.datadomain.genetic</module>
 		<module>org.caleydo.datadomain.pathway</module>
+		<module>org.caleydo.datadomain.image</module>
 		
 		<module>org.caleydo.data.tcga</module>
 		<module>org.caleydo.data.pathway.kegg</module>
@@ -47,6 +48,7 @@
 		<module>org.caleydo.view.selectionbrowser</module>
 		<module>org.caleydo.view.stratomex</module>
 		<module>org.caleydo.view.search</module>
+		<module>org.caleydo.view.idbrowser</module>
 		<module>org.caleydo.view.table</module>
 		<module>org.caleydo.view.treemap</module>
 		

@@ -27,6 +27,11 @@ import org.caleydo.core.util.color.ColorManager;
  */
 public final class DataDescriptionUtil {
 
+	/**
+	 *
+	 */
+	private static final int TOO_MANY_CATEGORIES = 20;
+
 	private DataDescriptionUtil() {
 	}
 
@@ -183,6 +188,11 @@ public final class DataDescriptionUtil {
 
 			return new DataDescription(useIntegers ? EDataClass.NATURAL_NUMBER : EDataClass.REAL_NUMBER,
 					useIntegers ? EDataType.INTEGER : EDataType.FLOAT, numericalProperties);
+		}
+
+		// guess unique objects in case of too many categories
+		if (!categoricalOnly && categories.size() > TOO_MANY_CATEGORIES) {
+			return new DataDescription(EDataClass.UNIQUE_OBJECT, EDataType.STRING);
 		}
 
 		List<String> categoryValues = new ArrayList<>(categories);

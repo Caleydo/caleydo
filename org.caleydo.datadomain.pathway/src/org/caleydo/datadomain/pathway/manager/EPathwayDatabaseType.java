@@ -5,12 +5,14 @@
  ******************************************************************************/
 package org.caleydo.datadomain.pathway.manager;
 
+import org.caleydo.core.util.base.ILabeled;
+
 /**
  * Class holds all supported pathway database types.
  *
  * @author Marc Streit
  */
-public enum EPathwayDatabaseType {
+public enum EPathwayDatabaseType implements ILabeled {
 
 	KEGG("KEGG", "www.genome.jp/kegg"), WIKIPATHWAYS("Wikipathways", "www.wikipathways.org");
 
@@ -32,6 +34,11 @@ public enum EPathwayDatabaseType {
 
 	public String getName() {
 
+		return name;
+	}
+
+	@Override
+	public String getLabel() {
 		return name;
 	}
 

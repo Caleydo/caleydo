@@ -22,14 +22,14 @@ public abstract class ADoubleList extends AbstractList<Double> implements IDoubl
 	}
 
 	@Override
-	public final double reduce(double start, IDoubleReduction r) {
+	public final double reduce(double start, IDoubleFunction2 r) {
 		return reduceImpl(this, start, r);
 	}
 
-	private double reduceImpl(ADoubleList list, double start, IDoubleReduction r) {
+	private double reduceImpl(ADoubleList list, double start, IDoubleFunction2 r) {
 		double result = start;
 		for (IDoubleIterator it = list.iterator(); it.hasNext();) {
-			result = r.reduce(result, it.nextPrimitive());
+			result = r.apply(result, it.nextPrimitive());
 		}
 		return result;
 	}

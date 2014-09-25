@@ -26,7 +26,6 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -81,8 +80,6 @@ public class PathwayDataDomain extends ADataDomain {
 
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER
 				+ IDCreator.createPersistentID(PathwayDataDomain.class));
-
-		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
 		this.dataSetDescription = new DataSetDescription();
 

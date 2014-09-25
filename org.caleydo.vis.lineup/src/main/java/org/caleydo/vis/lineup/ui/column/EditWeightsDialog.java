@@ -78,7 +78,7 @@ public class EditWeightsDialog extends TitleAreaDialog implements VerifyListener
 		for (int i = 0; i < dists.length; ++i) {
 			ARankColumnModel r = model.get(i);
 			Label l = new Label(p, SWT.NONE);
-			l.setText(clean(r.getTitle()));
+			l.setText(clean(r.getLabel()));
 			Text t = new Text(p, SWT.BORDER);
 			t.addFocusListener(focusListener);
 			t.setText(toString(dists[i] * 100));
@@ -137,7 +137,7 @@ public class EditWeightsDialog extends TitleAreaDialog implements VerifyListener
 		super.create();
 		getShell().setText("Edit attribute weights");
 		setTitle("Edit the attribute weight of");
-		setMessage(model.getTitle());
+		setMessage(model.getLabel());
 	}
 
 	@Override

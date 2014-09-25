@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="org.caleydo.view.info.DataSetItem" name="DataSetItem" schema="schema/org.caleydo.view.info.DataSetItem.exsd"/>
    <extension
          point="org.eclipse.ui.views">
       <view
@@ -60,5 +61,36 @@
             name="info"
             order="20">
       </factory>
+   </extension>
+   <extension
+         point="org.caleydo.view.info.DataSetItem">
+      <item
+            class="org.caleydo.view.info.dataset.impl.DataSetItem"
+            order="20">
+      </item>
+      <item
+            class="org.caleydo.view.info.dataset.impl.HistogramItem"
+            order="70">
+      </item>
+      <item
+            class="org.caleydo.view.info.dataset.impl.MetaDataItem"
+            order="50">
+      </item>
+      <item
+            class="org.caleydo.view.info.dataset.impl.ProcessingInfoItem"
+            order="30">
+      </item>
+      <item
+            class="org.caleydo.view.info.dataset.impl.ProjectInfoItem"
+            order="10">
+      </item>
+      <item
+            class="org.caleydo.view.info.dataset.impl.StatsInfoItem"
+            order="40">
+      </item>
+      <item
+            class="org.caleydo.view.info.dataset.impl.TablePerspectiveItem"
+            order="60">
+      </item>
    </extension>
 </plugin>

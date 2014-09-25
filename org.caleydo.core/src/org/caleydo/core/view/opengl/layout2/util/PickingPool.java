@@ -29,6 +29,7 @@ public class PickingPool {
 		this.pickingListener = pickingListener;
 	}
 
+
 	/**
 	 * creates a bunch of picking ids given by start and end
 	 *
@@ -88,7 +89,7 @@ public class PickingPool {
 
 	/**
 	 * returns a snapshot of the current keys
-	 * 
+	 *
 	 * @return
 	 */
 	public ImmutableSet<Integer> currentKeys() {
@@ -98,4 +99,5 @@ public class PickingPool {
 		}
 		return builder.build();
 	}
+
 }

@@ -7,14 +7,33 @@ package org.caleydo.core.view.opengl.layout2.manage;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 
+import com.google.common.base.Predicate;
+
 /**
+ * a {@link IGLElementFactory} is a factory pattern for creating {@link GLElement} based on a given context
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public interface IGLElementFactory {
+public interface IGLElementFactory extends Predicate<GLElementFactoryContext> {
+	/**
+	 * returns a unique id
+	 *
+	 * @return
+	 */
 	String getId();
 
+	/**
+	 * create the element for the given context
+	 *
+	 * @param context
+	 * @return
+	 */
 	GLElement create(GLElementFactoryContext context);
 
-	boolean canCreate(GLElementFactoryContext context);
+	/**
+	 * whether the element can be created
+	 */
+	@Override
+	boolean apply(GLElementFactoryContext context);
 }

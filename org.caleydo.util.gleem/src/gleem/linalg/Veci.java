@@ -50,7 +50,7 @@ public class Veci {
 		return data[i];
 	}
 
-	public void set(int i, int val) {
+	public void setComponent(int i, int val) {
 		data[i] = val;
 	}
 
@@ -59,7 +59,7 @@ public class Veci {
 			throw new DimensionMismatchException();
 		Vec2f out = new Vec2f();
 		for (int i = 0; i < 2; i++) {
-			out.set(i, get(i));
+			out.setComponent(i, get(i));
 		}
 		return out;
 	}
@@ -69,7 +69,7 @@ public class Veci {
 			throw new DimensionMismatchException();
 		Vec3f out = new Vec3f();
 		for (int i = 0; i < 3; i++) {
-			out.set(i, get(i));
+			out.setComponent(i, get(i));
 		}
 		return out;
 	}
@@ -77,7 +77,7 @@ public class Veci {
 	public Vecf toVecf() {
 		Vecf out = new Vecf(length());
 		for (int i = 0; i < length(); i++) {
-			out.set(i, get(i));
+			out.setComponent(i, get(i));
 		}
 		return out;
 	}

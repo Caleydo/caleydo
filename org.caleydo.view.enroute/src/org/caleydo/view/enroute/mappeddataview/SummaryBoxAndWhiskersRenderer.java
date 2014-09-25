@@ -31,7 +31,10 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 		if (contentRenderer.resolvedRowID == null || contentRenderer.isHighlightMode || normalizedStats == null)
 			return;
 
-		float[] color = MappedDataRenderer.SUMMARY_BAR_COLOR.getRGBA();
+		// float[] color = MappedDataRenderer.SUMMARY_BAR_COLOR.getRGBA();
+
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		// float[] color = MappedDataRenderer.SUMMARY_BAR_COLOR.getRGBA();
 
 		gl.glPushName(contentRenderer.parentView.getPickingManager().getPickingID(contentRenderer.parentView.getID(),
@@ -49,11 +52,13 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 		gl.glVertex3f(firstQuantrileBoundary, y / 3 * 2, z);
 		gl.glEnd();
 
-		float min = normalizedIQRMin * x;
-		float max = normalizedIQRMax * x;
+		float iqrMin = normalizedIQRMin * x;
+		float iqrMax = normalizedIQRMax * x;
 
-		float lineTailHeight = contentRenderer.parentView.getPixelGLConverter().getGLHeightForPixelHeight(3);
+		float iqrLineTailHeight = contentRenderer.parentView.getPixelGLConverter().getGLHeightForPixelHeight(5);
 
+		// gl.glPushAttrib(GL2.GL_LINE_BIT);
+		// gl.glLineWidth(2);
 		// Median
 		gl.glColor3f(1f, 1f, 1f);
 		gl.glBegin(GL.GL_LINES);
@@ -62,20 +67,19 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 
 		// Whiskers
 		gl.glColor3f(0, 0, 0);
-		gl.glVertex3f(min, y / 2, z);
+		gl.glVertex3f(iqrMin, y / 2, z);
 		gl.glVertex3f(firstQuantrileBoundary, y / 2, z);
 
 		gl.glVertex3f(thirdQuantrileBoundary, y / 2, z);
-		gl.glVertex3f(max, y / 2, z);
+		gl.glVertex3f(iqrMax, y / 2, z);
 
 		// gl.glLineWidth(0.6f);
 		//
-		gl.glVertex3f(min, y / 2 - lineTailHeight, z);
-		gl.glVertex3f(min, y / 2 + lineTailHeight, z);
+		gl.glVertex3f(iqrMin, y / 2 - iqrLineTailHeight, z);
+		gl.glVertex3f(iqrMin, y / 2 + iqrLineTailHeight, z);
 
-		gl.glVertex3f(max, y / 2 - lineTailHeight, z);
-		gl.glVertex3f(max, y / 2 + lineTailHeight, z);
-
+		gl.glVertex3f(iqrMax, y / 2 - iqrLineTailHeight, z);
+		gl.glVertex3f(iqrMax, y / 2 + iqrLineTailHeight, z);
 		gl.glEnd();
 
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -87,8 +91,38 @@ public class SummaryBoxAndWhiskersRenderer extends AMedianBasedSummaryRenderer {
 		gl.glVertex3f(firstQuantrileBoundary, y / 3 * 2, z);
 		gl.glEnd();
 
-		gl.glPopName();
+		// gl.glPopAttrib();
 
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+
+		gl.glColor4f(0f, 0f, 0f, outlierAlhpa(outliers.size()));
+
+		gl.glPushAttrib(GL2.GL_POINT_BIT);
+		gl.glPointSize(2f);
+
+		gl.glBegin(GL.GL_POINTS);
+
+		for (float outlier : outliers) {
+			gl.glVertex3f(outlier * x, y / 2, z);
+		}
+
+		gl.glEnd();
+
+		gl.glPopAttrib();
+
+		gl.glPopName();
+	}
+
+	private float outlierAlhpa(int size) {
+		if (size < 10)
+			return 1.0f;
+		float v = 5.0f / size;
+		if (v < 0.05f)
+			return 0.05f;
+		if (v > 1)
+			return 1;
+		return v;
 	}
 
 }

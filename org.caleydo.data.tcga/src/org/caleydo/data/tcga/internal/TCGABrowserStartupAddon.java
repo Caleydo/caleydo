@@ -234,10 +234,10 @@ public class TCGABrowserStartupAddon implements IStartupAddon {
 				Object f = s.getFirstElement();
 				if (f instanceof TumorProject) {
 					selectedChoice = ((TumorProject) f).getProject();
-					page.setPageComplete(true);
+					// page.setPageComplete(true);
 				} else {
 					selectedChoice = null;
-					page.setPageComplete(false);
+					// page.setPageComplete(false);
 				}
 
 				if (f instanceof TumorProject) {

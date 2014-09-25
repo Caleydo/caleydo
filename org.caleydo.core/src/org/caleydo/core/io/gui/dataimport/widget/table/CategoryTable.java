@@ -276,7 +276,7 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 
 						@Override
 						public void run(NatTable natTable, MouseEvent event) {
-							int rowIndex = natTable.getRowPositionByY(event.y) - 1;
+							int rowIndex = natTable.getRowIndexByPosition(natTable.getRowPositionByY(event.y));
 
 							if (rowIndex > 0) {
 								swapRows(rowIndex, rowIndex - 1);
@@ -290,7 +290,7 @@ public class CategoryTable extends AMatrixBasedTableWidget implements ILayerList
 
 						@Override
 						public void run(NatTable natTable, MouseEvent event) {
-							int rowIndex = natTable.getRowPositionByY(event.y) - 1;
+							int rowIndex = natTable.getRowIndexByPosition(natTable.getRowPositionByY(event.y));
 
 							if (rowIndex != -1 && rowIndex < getRowCount() - 1) {
 								swapRows(rowIndex, rowIndex + 1);

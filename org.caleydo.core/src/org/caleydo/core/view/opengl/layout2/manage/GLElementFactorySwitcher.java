@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementAccessor;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -44,6 +45,9 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 	private final ELazyiness lazy;
 
 	private final IGLRenderer missingRenderer;
+
+	private GLElementDimensionDesc dimDesc;
+	private GLElementDimensionDesc recDesc;
 
 	/**
 	 * @param children
@@ -156,8 +160,39 @@ public class GLElementFactorySwitcher extends GLElement implements IGLElementPar
 			break;
 		}
 		this.active = active;
+		updateDescriptions();
 		fireActiveChanged(active);
 		relayout();
+	}
+
+	public GLElementDimensionDesc getActiveDesc(EDimension dim) {
+		GLElementDimensionDesc desc = dim.select(dimDesc, recDesc);
+		if (desc == null)
+			desc = GLElementDimensionDesc.newFix(100).minimum(100).build();
+		return desc;
+	}
+
+	/**
+	 *
+	 */
+	private void updateDescriptions() {
+		if (this.active < 0) {
+			this.recDesc = null;
+			this.dimDesc = null;
+		} else {
+			GLElementSupplier s = getActiveSupplier();
+			GLElement e = getActiveElement();
+			this.recDesc = s.getDesc(EDimension.RECORD, e);
+			this.dimDesc = s.getDesc(EDimension.DIMENSION, e);
+		}
+	}
+
+	/**
+	 * @return
+	 */
+	public GLElement createParameter() {
+		GLElementSupplier s = getActiveSupplier();
+		return s.createParameters(getActiveElement());
 	}
 
 	private void setup(GLElement child) {

@@ -23,6 +23,8 @@ public class ViewLayoutRenderer extends ALayoutRenderer {
 
 	protected AGLView view;
 
+	// protected boolean useAbsoluteScreenCoordinateViewFrustum = false;
+
 	public ViewLayoutRenderer() {
 
 	}
@@ -38,9 +40,16 @@ public class ViewLayoutRenderer extends ALayoutRenderer {
 
 	@Override
 	public void setLimits(float x, float y) {
+		if (layoutManager == null)
+			return;
+		float left = layoutManager.getViewFrustum().getLeft() + elementLayout.getTranslateX();
+		float bottom = layoutManager.getViewFrustum().getBottom() + elementLayout.getTranslateY();
+
 		if (Float.compare(this.x, x) == 0 && Float.compare(this.y, y) == 0
 				&& Float.compare(view.getViewFrustum().getWidth(), x) == 0
-				&& Float.compare(view.getViewFrustum().getHeight(), y) == 0)
+				&& Float.compare(view.getViewFrustum().getHeight(), y) == 0
+				&& Float.compare(view.getViewFrustum().getLeft(), left) == 0
+				&& Float.compare(view.getViewFrustum().getBottom(), bottom) == 0)
 			return;
 		super.setLimits(x, y);
 
@@ -51,10 +60,17 @@ public class ViewLayoutRenderer extends ALayoutRenderer {
 			viewFrustum.setProjectionMode(CameraProjectionMode.ORTHOGRAPHIC);
 		}
 
-		viewFrustum.setLeft(0);
-		viewFrustum.setBottom(0);
-		viewFrustum.setRight(x);
-		viewFrustum.setTop(y);
+		// if (useAbsoluteScreenCoordinateViewFrustum) {
+		viewFrustum.setLeft(left);
+		viewFrustum.setBottom(bottom);
+		viewFrustum.setRight(left + x);
+		viewFrustum.setTop(bottom + y);
+		// } else {
+		// viewFrustum.setLeft(0);
+		// viewFrustum.setBottom(0);
+		// viewFrustum.setRight(x);
+		// viewFrustum.setTop(y);
+		// }
 		view.setFrustum(viewFrustum);
 		view.setDisplayListDirty();
 	}
@@ -93,5 +109,13 @@ public class ViewLayoutRenderer extends ALayoutRenderer {
 	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
+
+	// /**
+	// * @param useAbsoluteScreenCoordinateViewFrustum
+	// * setter, see {@link useAbsoluteScreenCoordinateViewFrustum}
+	// */
+	// public void setUseAbsoluteScreenCoordinateViewFrustum(boolean useAbsoluteScreenCoordinateViewFrustum) {
+	// this.useAbsoluteScreenCoordinateViewFrustum = useAbsoluteScreenCoordinateViewFrustum;
+	// }
 
 }

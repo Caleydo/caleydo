@@ -13,6 +13,9 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.collection.Pair;
@@ -44,6 +47,7 @@ import com.google.common.base.Preconditions;
  *
  * @author Alexander Lex
  */
+@XmlJavaTypeAdapter(IDCategory.SerializeAdapter.class)
 public class IDCategory {
 
 	private static final ConcurrentMap<String, IDCategory> registeredCategories = new ConcurrentHashMap<>();
@@ -95,7 +99,7 @@ public class IDCategory {
 
 	/**
 	 * Returns all registered ID categories.
-	 * 
+	 *
 	 * @return all registered ID categories
 	 */
 	public static Collection<IDCategory> getAllRegisteredIDCategories() {
@@ -160,6 +164,7 @@ public class IDCategory {
 	/** Private constructor, created through the static instances */
 	private IDCategory(String categoryName) {
 		this.categoryName = categoryName;
+		setDenomination(categoryName.toLowerCase());
 	}
 
 	/**
@@ -196,7 +201,10 @@ public class IDCategory {
 	/**
 	 * @return the denomination, see {@link #denomination}
 	 */
-	public String getDenomination() {
+	public String getDenomination(boolean capitalized) {
+		if (capitalized) {
+			return denomination.substring(0, 1).toUpperCase() + denomination.substring(1, denomination.length());
+		}
 		return denomination;
 	}
 
@@ -213,7 +221,11 @@ public class IDCategory {
 	/**
 	 * @return the denominationPlural, see {@link #denominationPlural}
 	 */
-	public String getDenominationPlural() {
+	public String getDenominationPlural(boolean capitalized) {
+		if (capitalized) {
+			return denominationPlural.substring(0, 1).toUpperCase()
+					+ denominationPlural.substring(1, denominationPlural.length());
+		}
 		return denominationPlural;
 	}
 
@@ -431,4 +443,32 @@ public class IDCategory {
 			return new IDCategory(categoryName);
 		}
 	}
+
+	protected static class IDCategoryData {
+		public String name;
+	}
+
+	protected static class SerializeAdapter extends
+			XmlAdapter<IDCategoryData, IDCategory> {
+
+		@Override
+		public IDCategory unmarshal(IDCategoryData category) {
+			IDCategory cat = getIDCategory(category.name);
+			if( cat == null ) {
+				cat = registerCategoryIfAbsent(category.name);
+				// cat.initialize();
+			}
+
+			return cat;
+		}
+
+		@Override
+		public IDCategoryData marshal(IDCategory category) {
+			IDCategoryData categoryData = new IDCategoryData();
+			categoryData.name = category.categoryName;
+			return categoryData;
+		}
+	}
 }
+
+

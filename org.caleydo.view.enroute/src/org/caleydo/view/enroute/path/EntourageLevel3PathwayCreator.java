@@ -4,18 +4,18 @@ import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
-import org.caleydo.datadomain.pathway.embedding.IPathwayRendererCreator;
+import org.caleydo.datadomain.pathway.IPathwayRepresentation;
+import org.caleydo.datadomain.pathway.embedding.IPathwayRepresentationCreator;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
-public class EntourageLevel3PathwayCreator implements IPathwayRendererCreator {
+public class EntourageLevel3PathwayCreator implements IPathwayRepresentationCreator {
 
 	public EntourageLevel3PathwayCreator() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public ALayoutRenderer create(AGLView remoteRenderingView, PathwayGraph pathway,
+	public IPathwayRepresentation create(AGLView remoteRenderingView, PathwayGraph pathway,
 			List<TablePerspective> tablePerspectives, TablePerspective mappingTablePerspective,
 			String embeddingEventSpace) {
 		ContextualPathsRenderer renderer = new ContextualPathsRenderer(remoteRenderingView, embeddingEventSpace,

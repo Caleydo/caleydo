@@ -13,14 +13,29 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 /**
+ * abstraction of the SWT interface, which is thread safe
+ *
  * @author Samuel Gratzl
  *
  */
 public interface ISWTLayer {
+	/**
+	 * set the cursor to a specific SWT cursor instance
+	 *
+	 * @param swtCursorConst
+	 */
 	void setCursor(int swtCursorConst);
 
+	/**
+	 * reset to normal cursor
+	 */
 	void resetCursor();
 
+	/**
+	 * run the given {@link ISWTLayerRunnable} within the SWT thread
+	 *
+	 * @param runnable
+	 */
 	void run(ISWTLayerRunnable runnable);
 
 	/**
@@ -38,8 +53,20 @@ public interface ISWTLayer {
 	 */
 	IPickingListener createTooltip(ILabeled label);
 
+	/**
+	 * creates a gl canvas specific picking listener that computes the label to show
+	 *
+	 * @param label
+	 * @return
+	 */
 	IPickingListener createTooltip(IPickingLabelProvider label);
 
+	/**
+	 * similar to {@link Runnable} but with additional arguments for the display
+	 * 
+	 * @author Samuel Gratzl
+	 * 
+	 */
 	public interface ISWTLayerRunnable {
 		void run(Display display, Composite canvas);
 	}

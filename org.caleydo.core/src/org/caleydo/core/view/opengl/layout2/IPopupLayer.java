@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
 import org.caleydo.core.view.opengl.layout2.geom.Rect;
@@ -65,5 +66,18 @@ public interface IPopupLayer {
 	 * @param popup
 	 */
 	void hide(GLElement popup);
+
+	/**
+	 * @return
+	 */
+	Vec2f getSize();
+
+	public interface IPopupElement {
+		void hide();
+
+		void shift(float dx, float dy);
+
+		void setContentSize(float w, float h);
+	}
 }
 

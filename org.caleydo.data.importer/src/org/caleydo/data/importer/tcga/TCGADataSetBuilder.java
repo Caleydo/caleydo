@@ -6,15 +6,20 @@
 package org.caleydo.data.importer.tcga;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.caleydo.core.data.collection.EDataType;
@@ -24,7 +29,6 @@ import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
-import org.caleydo.core.io.FileUtil;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -186,7 +190,8 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 			// the files with all the genes have the ids in the first row, then a row with "signal" and then the data
 			// NG: I can't confirm the above and I found counter examples, e.g. in mRNA-seq for THCA
-			dataSet.setNumberOfHeaderLines(1);
+			// in the 2014 run, there is a new additional row in the data
+			dataSet.setNumberOfHeaderLines(this.fileFinder.is2014Run() ? 2 : 1);
 			dataSet.setRowOfColumnIDs(0);
 		}
 
@@ -456,9 +461,12 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		log.fine(id + " data found: " + clinicalFileInfo);
 		File clinicalFile = clinicalFileInfo.getFile();
 
-		File out = new File(clinicalFile.getParentFile(), "T" + clinicalFile.getName());
+		// new key for force an update
+		File out = new File(clinicalFile.getParentFile(), "TR" + clinicalFile.getName());
 
-		transposeCSV(clinicalFile.getPath(), out.getPath());
+		Collection<String> toInclude = settings.getClinicalVariables();
+
+		transposeCSV(clinicalFile.getPath(), out.getPath(), ClinicalMapping.getAliasMap(toInclude));
 		log.fine(id + " transposed file to " + out);
 
 		MetaDataElement metaData = new MetaDataElement();
@@ -493,7 +501,6 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		}
 
 		int counter = 0;
-		Collection<String> toInclude = settings.getClinicalVariables();
 		for (int i = 2; i < columns.size(); ++i) {
 			String name = columns.get(i).toLowerCase();
 			boolean found = toInclude.isEmpty();
@@ -544,13 +551,58 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		return null;
 	}
 
-	private void transposeCSV(String fileName, String fileNameOut) {
+	private void transposeCSV(String fileName, String fileNameOut, Map<String, String> lookupMap) {
 		// File in = new File(fileName);
 		File out = new File(fileNameOut);
 
 		if (out.exists() && !settings.isCleanCache())
 			return;
 
-		FileUtil.transposeCSV(fileName, fileNameOut, "\t");
+		transposeCSV(fileName, fileNameOut, "\t", lookupMap);
+	}
+
+	public static void transposeCSV(String fileName, String fileNameOut, String delimiter, Map<String, String> lookupMap) {
+		// log.info("tranposing: " + fileName);
+		File in = new File(fileName);
+		File out = new File(fileNameOut);
+
+		// if (out.exists() && !settings.isCleanCache())
+		// return;
+
+		List<String> data;
+		try {
+			data = Files.readAllLines(in.toPath(), Charset.forName("UTF-8"));
+		} catch (IOException e2) {
+			log.log(Level.SEVERE, "can' read all of " + in, e2);
+			return;
+		}
+		// split into parts
+		String[][] parts = new String[data.size()][];
+		int maxCol = -1;
+		for (int i = 0; i < data.size(); ++i) {
+			parts[i] = data.get(i).split(delimiter, -1);
+			if (parts[i].length > maxCol)
+				maxCol = parts[i].length;
+		}
+		data = null;
+
+		try (BufferedWriter writer = Files.newBufferedWriter(out.toPath(), Charset.forName("UTF-8"))) {
+			for (int c = 0; c < maxCol; ++c) {
+				for (int i = 0; i < parts.length; ++i) {
+					if (i > 0)
+						writer.append(delimiter);
+					String[] p = parts[i];
+					if (p.length > c) {
+						String v = p[c];
+						if (lookupMap.containsKey(v))
+							v = lookupMap.get(v);
+						writer.append(v);
+					}
+				}
+				writer.newLine();
+			}
+		} catch (IOException e1) {
+			log.log(Level.SEVERE, "can' write all of " + in + " to " + out, e1);
+		}
 	}
 }

@@ -5,9 +5,12 @@
  ******************************************************************************/
 package org.caleydo.core.id;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 
 /**
@@ -48,6 +51,11 @@ final class IdentityIDTypeMapper<K, V> implements IIDTypeMapper<K, V> {
 	}
 
 	@Override
+	public Collection<Set<V>> applySeq(Collection<K> sourceIDs) {
+		return Collections2.transform(sourceIDs, this);
+	}
+
+	@Override
 	public boolean isMapAble(K sourceId) {
 		return sourceId != null;
 	}
@@ -81,6 +89,16 @@ final class IdentityIDTypeMapper<K, V> implements IIDTypeMapper<K, V> {
 	@Override
 	public String toString() {
 		return String.format("IdentityIDTypeMapper [sourceAndTarget=%s]", sourceAndTarget);
+	}
+
+	@Override
+	public boolean isOne2OneMapping() {
+		return true;
+	}
+
+	@Override
+	public List<MappingType> getPath() {
+		return null;
 	}
 
 }

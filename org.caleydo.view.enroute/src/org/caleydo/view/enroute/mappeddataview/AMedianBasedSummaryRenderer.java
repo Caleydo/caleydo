@@ -6,6 +6,8 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.base.ILabelProvider;
@@ -22,6 +24,7 @@ public abstract class AMedianBasedSummaryRenderer extends ADataRenderer {
 	protected float normalizedIQRMax = 0;
 	protected float rawIQRMin = 0;
 	protected float rawIQRMax = 0;
+	protected List<Float> outliers = new ArrayList<>();
 	protected AdvancedDoubleStatistics rawStats;
 	protected AdvancedDoubleStatistics normalizedStats;
 
@@ -45,15 +48,7 @@ public abstract class AMedianBasedSummaryRenderer extends ADataRenderer {
 					contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, id);
 			Object rawValue = contentRenderer.dataDomain.getRaw(contentRenderer.resolvedRowIDType,
 					contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, id);
-			if (rawValue instanceof Integer) {
-				rawValues[i] = ((Integer) rawValue).doubleValue();
-			} else if (rawValue instanceof Float) {
-				rawValues[i] = ((Float) rawValue).doubleValue();
-			} else if (rawValue instanceof Double) {
-				rawValues[i] = ((Double) rawValue).doubleValue();
-			} else {
-				throw new IllegalStateException("The value " + rawValue + " is not supported.");
-			}
+			rawValues[i] = asFloat(rawValue);
 		}
 
 		if (rawValues.length == 0 || normalizedValues.length == 0)
@@ -72,28 +67,31 @@ public abstract class AMedianBasedSummaryRenderer extends ADataRenderer {
 					contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, id);
 			if (value < normalizedIQRMin && value >= lowerIQRBounds) {
 				normalizedIQRMin = value;
-
-				if (rawValue instanceof Integer) {
-					rawIQRMin = ((Integer) rawValue).floatValue();
-				} else if (rawValue instanceof Float) {
-					rawIQRMin = ((Float) rawValue).floatValue();
-				} else if (rawValue instanceof Double) {
-					rawIQRMin = ((Double) rawValue).floatValue();
-				}
+				rawIQRMin = asFloat(rawValue);
 			}
 			if (value > normalizedIQRMax && value <= upperIQRBounds) {
 				normalizedIQRMax = value;
-				if (rawValue instanceof Integer) {
-					rawIQRMax = ((Integer) rawValue).floatValue();
-				} else if (rawValue instanceof Float) {
-					rawIQRMax = ((Float) rawValue).floatValue();
-				} else if (rawValue instanceof Double) {
-					rawIQRMax = ((Double) rawValue).floatValue();
-				}
+				rawIQRMax = asFloat(rawValue);
+			}
+
+			if (value < lowerIQRBounds || value > upperIQRBounds) {
+				outliers.add(value);
 			}
 		}
 
 		registerPickingListeners();
+	}
+
+	private float asFloat(Object value) {
+		if (value instanceof Integer) {
+			return ((Integer) value).floatValue();
+		} else if (value instanceof Float) {
+			return ((Float) value).floatValue();
+		} else if (value instanceof Double) {
+			return ((Double) value).floatValue();
+		} else {
+			throw new IllegalStateException("The value " + value + " is not supported.");
+		}
 	}
 
 	protected void registerPickingListeners() {
@@ -105,7 +103,8 @@ public abstract class AMedianBasedSummaryRenderer extends ADataRenderer {
 				return "Median: " + df.format(rawStats.getMedian()) + "\n1st Quartile: "
 						+ df.format(rawStats.getQuartile25()) + "\n3rd Quartile: "
 						+ df.format(rawStats.getQuartile75()) + "\nLowest value in 1.5xIQR range: "
-						+ df.format(rawIQRMin) + "\nHighest value in 1.5xIQR range: " + df.format(rawIQRMax);
+						+ df.format(rawIQRMin) + "\nHighest value in 1.5xIQR range: " + df.format(rawIQRMax)
+						+ "\nMin: " + df.format(rawStats.getMin()) + "\nMax: " + df.format(rawStats.getMax());
 			}
 
 			@Override

@@ -6,12 +6,15 @@
 package org.caleydo.view.tourguide.internal.view.ui.pool;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.dnd.EDnDType;
+import org.caleydo.core.view.opengl.layout2.dnd.IDnDItem;
+import org.caleydo.core.view.opengl.layout2.dnd.IDragInfo;
+import org.caleydo.core.view.opengl.layout2.dnd.IDropGLTarget;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.vis.lineup.model.ARankColumnModel;
+import org.caleydo.vis.lineup.model.ColumnDragInfo;
 import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.mixin.IHideableColumnMixin;
 
@@ -19,7 +22,7 @@ import org.caleydo.vis.lineup.model.mixin.IHideableColumnMixin;
  * @author Samuel Gratzl
  *
  */
-public class PaperBasket extends APoolElem {
+public class PaperBasket extends APoolElem implements IDropGLTarget {
 	private final RankTableModel table;
 
 	public PaperBasket(RankTableModel table) {
@@ -29,37 +32,53 @@ public class PaperBasket extends APoolElem {
 
 	@Override
 	protected void onMouseOver(Pick pick) {
-		if (!pick.isAnyDragging() || !context.getMouseLayer().hasDraggable(IHideableColumnMixin.class))
-			return;
-		Pair<GLElement, IHideableColumnMixin> pair = context.getMouseLayer().getFirstDraggable(
-				IHideableColumnMixin.class);
-		if (!pair.getSecond().isDestroyAble())
-			return;
+		context.getMouseLayer().addDropTarget(this);
+	}
+
+	@Override
+	public boolean canSWTDrop(IDnDItem input) {
+		IDragInfo info = input.getInfo();
+		if (!(info instanceof ColumnDragInfo))
+			return false;
+		ARankColumnModel model = ((ColumnDragInfo) info).getModel();
+		if (!(model instanceof IHideableColumnMixin) || !model.isDestroyAble())
+			return false;
 		this.armed = true;
-		context.getMouseLayer().setDropable(IHideableColumnMixin.class, true);
+		repaint();
+		return true;
+	}
+
+	@Override
+	public void onItemChanged(IDnDItem input) {
+
+	}
+
+	@Override
+	public void onDropLeave() {
+
+	}
+
+	@Override
+	public void onDrop(IDnDItem info) {
+		ARankColumnModel model = ((ColumnDragInfo) info.getInfo()).getModel();
+		table.removeFromPool(model);
+		context.getSWTLayer().setCursor(-1);
+		armed = false;
 		repaint();
 	}
 
 	@Override
 	protected void onMouseOut(Pick pick) {
+		context.getMouseLayer().removeDropTarget(this);
 		if (armed) {
-			context.getMouseLayer().setDropable(IHideableColumnMixin.class, false);
 			armed = false;
 			repaint();
 		}
 	}
 
 	@Override
-	protected void onMouseReleased(Pick pick) {
-		if (armed) {
-			Pair<GLElement, ARankColumnModel> draggable = context.getMouseLayer().getFirstDraggable(
-					ARankColumnModel.class);
-			context.getMouseLayer().removeDraggable(draggable.getFirst());
-			table.removeFromPool(draggable.getSecond());
-			context.getSWTLayer().setCursor(-1);
-			armed = false;
-			repaint();
-		}
+	public EDnDType defaultSWTDnDType(IDnDItem item) {
+		return EDnDType.MOVE;
 	}
 
 	@Override

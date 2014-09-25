@@ -9,6 +9,8 @@ import gleem.linalg.Vec2f;
 
 import java.awt.Dimension;
 
+import org.caleydo.core.util.collection.Pair;
+
 /**
  * @author Samuel Gratzl
  *
@@ -60,15 +62,15 @@ public enum EDimension {
 		return this == DIMENSION ? wh.width : wh.height;
 	}
 
+	public <T> T select(Pair<T, T> pair) {
+		return this == DIMENSION ? pair.getFirst() : pair.getSecond();
+	}
+
 	public double select(double dim, double rec) {
 		return this == DIMENSION ? dim : rec;
 	}
 
 	public <T> T select(T dim, T rec) {
 		return this == DIMENSION ? dim : rec;
-	}
-
-	public <T> T selectZL(T z, T l) {
-		return this == DIMENSION ? z : l;
 	}
 }
