@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.caleydo</groupId>
 	<artifactId>org.caleydo.parent</artifactId>
-	<version>3.1.4</version>
+	<version>3.1.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<url>https://github.com/Caleydo/caleydo</url>
 
@@ -128,6 +128,62 @@
 							<arch>x86_64</arch>
 						</environment>
 					</environments>
+					<filter>
+						<type>eclipse-plugin</type>
+						<id>com.google.guava</id>
+						<restrictTo>
+						   <version>12.0.0.v201212092141</version>
+						</restrictTo>
+					 </filter>
+					<filter>
+						<type>eclipse-plugin</type>
+						<id>org.caleydo.thirdparty.jogl</id>
+						<restrictTo>
+						   <version>2.0.2</version>
+						</restrictTo>						
+					 </filter>
+					<filter>
+						<type>eclipse-plugin</type>
+						<id>org.caleydo.thirdparty.jogl-natives-linux-amd64</id>
+						<restrictTo>
+						   <version>2.0.2</version>
+						</restrictTo>						
+					 </filter>
+					<filter>
+						<type>eclipse-plugin</type>
+						<id>org.caleydo.thirdparty.jogl-natives-linux-i586</id>
+						<restrictTo>
+						   <version>2.0.2</version>
+						</restrictTo>						
+					 </filter>
+					<filter>
+						<type>eclipse-plugin</type>
+						<id>org.caleydo.thirdparty.jogl-natives-macosx-universal</id>
+						<restrictTo>
+						   <version>2.0.2</version>
+						</restrictTo>						
+					 </filter>
+					<filter>
+						<type>eclipse-plugin</type>
+						<id>org.caleydo.thirdparty.jogl-natives-windows-amd64</id>
+						<restrictTo>
+						   <version>2.0.2</version>
+						</restrictTo>						
+					 </filter>
+					<filter>
+						<type>eclipse-plugin</type>
+						<id>org.caleydo.thirdparty.jogl-natives-windows-i586</id>
+						<restrictTo>
+						   <version>2.0.2</version>
+						</restrictTo>						
+					 </filter>
+					<filter>
+						<type>eclipse-plugin</type>
+						<id>org.caleydo.thirdparty.jgrapht</id>
+						<restrictTo>
+						   <version>0.8.3</version>
+						</restrictTo>						
+					 </filter>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -245,3 +301,4 @@
 	</reporting>
 
 </project>
+
