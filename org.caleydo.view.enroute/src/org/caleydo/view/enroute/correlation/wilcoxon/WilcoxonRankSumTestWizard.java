@@ -97,6 +97,11 @@ public class WilcoxonRankSumTestWizard extends Wizard {
 	}
 
 	@Override
+	public boolean canFinish() {
+		return getContainer().getCurrentPage() == autoResultPage || getContainer().getCurrentPage() == manualResultPage;
+	}
+
+	@Override
 	public boolean performFinish() {
 		EventPublisher.trigger(new EndCorrelationCalculationEvent());
 		return true;
