@@ -6,10 +6,11 @@
 package org.caleydo.core.data.virtualarray;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
-import com.jogamp.common.util.IntObjectHashMap;
 
 /**
  * Package private class used as hash-backing of virtual arrays to increase indexof performance to linear
@@ -21,7 +22,7 @@ class IDMap {
 	private final static Integer INVALID = Integer.valueOf(-1);
 
 	// use a specialized class for less memory
-	private IntObjectHashMap id2indices;
+	private Map<Integer, Object> id2indices;
 	private final List<Integer> data;
 
 	IDMap(List<Integer> virtualArrayList) {
@@ -38,7 +39,7 @@ class IDMap {
 
 		// Logger.log(new Status(IStatus.INFO, "core", "Rebuilding index map for VA:" + virtualArray));
 
-		id2indices = new IntObjectHashMap(data.size());
+		id2indices = new HashMap<>(data.size());
 		for(int i = 0; i < data.size(); ++i) {
 			Integer id = data.get(i);
 			int id_i = id.intValue();

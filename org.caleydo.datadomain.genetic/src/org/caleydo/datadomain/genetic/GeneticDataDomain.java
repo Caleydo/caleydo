@@ -16,6 +16,7 @@ import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.id.IDCategory;
@@ -165,7 +166,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 			}
 			resendEvent.setSelectionDelta(convertedDelta);
 
-			eventPublisher.triggerEvent(resendEvent);
+			EventPublisher.trigger(resendEvent);
 		} else
 			return;
 	}
@@ -233,7 +234,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 			newCommandEvent.setSelectionCommand(selectionCommand);
 			newCommandEvent.setIDCategory(idCategory);
 			newCommandEvent.setEventSpace(dataDomainType);
-			eventPublisher.triggerEvent(newCommandEvent);
+			EventPublisher.trigger(newCommandEvent);
 		}
 	}
 

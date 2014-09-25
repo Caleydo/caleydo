@@ -5,8 +5,8 @@
  *******************************************************************************/
 package org.caleydo.view.table;
 
-import static org.caleydo.core.util.base.Runnables.show;
 import static org.caleydo.core.util.base.Runnables.withinSWTThread;
+import static org.caleydo.core.view.util.UIRunnables.show;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,7 +16,7 @@ import org.apache.commons.lang.WordUtils;
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.TablePerspectiveActions.ITablePerspectiveFactory;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.gui.command.AOpenViewHandler;
+import org.caleydo.core.internal.cmd.AOpenViewHandler;
 import org.caleydo.core.util.collection.Pair;
 
 /**

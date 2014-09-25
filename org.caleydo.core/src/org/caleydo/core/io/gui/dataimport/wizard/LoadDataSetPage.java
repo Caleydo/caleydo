@@ -34,9 +34,11 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 
 /**
@@ -159,6 +161,8 @@ public class LoadDataSetPage extends AImportDataPage<DataImportWizard> implement
 
 	protected LabelWidget label;
 
+	protected Button loadDatasetDescriptionButton;
+
 	/**
 	 * Mediator for this page.
 	 */
@@ -197,8 +201,15 @@ public class LoadDataSetPage extends AImportDataPage<DataImportWizard> implement
 		parentComposite.setLayout(layout);
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
+		Composite fileComposite = new Composite(parentComposite, SWT.NONE);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
+		fileComposite.setLayoutData(gd);
+		GridLayout l = new GridLayout(3, false);
+		l.marginWidth = 0;
+		fileComposite.setLayout(l);
+
 		// File Selection
-		loadFile = new LoadFileWidget(parentComposite, "Open Data File", new ICallback<String>() {
+		loadFile = new LoadFileWidget(fileComposite, "Open Data File", new ICallback<String>() {
 			@Override
 			public void on(String data) {
 				mediator.onSelectFile(data);
@@ -206,17 +217,40 @@ public class LoadDataSetPage extends AImportDataPage<DataImportWizard> implement
 		}, new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		// label
-		label = new LabelWidget(parentComposite, "Dataset Name");
+		label = new LabelWidget(fileComposite, "Dataset Name");
+
+		Group loadDatasetDescriptionGroup = new Group(fileComposite, SWT.SHADOW_ETCHED_IN);
+		loadDatasetDescriptionGroup.setText("Dataset Configuration");
+		loadDatasetDescriptionGroup.setLayout(new GridLayout(1, false));
+		loadDatasetDescriptionGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		loadDatasetDescriptionButton = new Button(loadDatasetDescriptionGroup, SWT.PUSH);
+		loadDatasetDescriptionButton.setText("Load Configuration");
+		loadDatasetDescriptionButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog fileDialog = new FileDialog(new Shell());
+				fileDialog.setText("Load Configuration");
+				// fileDialog.setFilterPath(filePath);
+				String[] filterExt = { "*.xml", "*.*" };
+				fileDialog.setFilterExtensions(filterExt);
+
+				String inputFileName = fileDialog.open();
+				if (inputFileName == null)
+					return;
+				inputFileName = inputFileName.trim();
+				mediator.onLoadDatasetDescription(inputFileName);
+			}
+		});
 
 		Group datasetConfigGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		datasetConfigGroup.setText("Dataset Configuration");
+		datasetConfigGroup.setText("Dataset Type");
 		datasetConfigGroup.setLayout(new GridLayout(3, false));
 		datasetConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		Label homogenetyExplanation = new Label(datasetConfigGroup, SWT.WRAP);
 		homogenetyExplanation
 				.setText("Inhomogeneous datasets have a different meaning for every column and do not need to be of the same data type or identifier. For example, you could load a table where in one column contains the sex of patients while the next column contains their age.\n"
 						+ "In homogeneous datasets every column is of the same type and has the same bounds. For example, in a file with normalized gene expression data all columns are of the same type and have the same bounds. This is also true for categorical data where the cateogries are global across all columns. ");
-		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
+		gd = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
 		gd.widthHint = 400;
 		homogenetyExplanation.setLayoutData(gd);
 
@@ -521,10 +555,6 @@ public class LoadDataSetPage extends AImportDataPage<DataImportWizard> implement
 		mediator.fillDataSetDescription();
 	}
 
-	public DataSetDescription getDataSetDescription() {
-		return mediator.getDataSetDescription();
-	}
-
 	@Override
 	public boolean isPageComplete() {
 		if (!mediator.isValidConfiguration())
@@ -551,6 +581,12 @@ public class LoadDataSetPage extends AImportDataPage<DataImportWizard> implement
 	public void pageActivated() {
 		getWizard().setChosenDataTypePage(null);
 		getWizard().getContainer().updateButtons();
+	}
+
+	@Override
+	public void setDataSetDescription(DataSetDescription dataSetDescription) {
+		super.setDataSetDescription(dataSetDescription);
+		mediator.setDataSetDescription(dataSetDescription);
 	}
 
 }

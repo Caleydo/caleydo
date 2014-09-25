@@ -8,8 +8,8 @@ package org.caleydo.view.kaplanmeier;
 import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.IRemoteViewCreator;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -32,10 +32,7 @@ public class KaplanMeierRemoteViewCreator implements IRemoteViewCreator {
 	@Override
 	public AGLView createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
 			String embeddingEventSpace) {
-
-		GLKaplanMeier kaplanMeier = (GLKaplanMeier) GeneralManager
-				.get()
-				.getViewManager()
+		GLKaplanMeier kaplanMeier = (GLKaplanMeier) ViewManager.get()
 				.createGLView(GLKaplanMeier.class, remoteRenderingView.getParentGLCanvas(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
 		if (tablePerspectives.size() > 0) {

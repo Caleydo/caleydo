@@ -6,6 +6,7 @@
 package org.caleydo.view.stratomex.brick;
 
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -26,7 +27,7 @@ public class RcpGLBrickView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLBrick(glCanvas, serializedView.getViewFrustum());
+		view = new GLBrick(glCanvas, ViewFrustum.createDefault());
 		initializeView();
 		createPartControlGL();
 	}

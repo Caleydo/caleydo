@@ -15,7 +15,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.IView;
@@ -177,7 +177,8 @@ public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea
 			AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(
 					tablePerspective);
 			event.to(representedView).from(this);
-			GeneralManager.get().getEventPublisher().triggerEvent(event);
+			
+			EventPublisher.trigger(event);
 
 			if (tablePerspective instanceof PathwayTablePerspective) {
 				dataDomains.add(((PathwayTablePerspective) tablePerspective)

@@ -8,6 +8,7 @@ package org.caleydo.view.dvi.tableperspective;
 import java.awt.geom.Point2D;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
@@ -55,7 +56,7 @@ public abstract class ADraggableColorRenderer
 	public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY)
 	{
 		gl.glColor4f(color[0], color[1], color[2], 0.5f);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glVertex3f(mouseCoordinateX - mousePositionDeltaX, mouseCoordinateY
 				- mousePositionDeltaY, 2);
 		gl.glVertex3f(mouseCoordinateX - mousePositionDeltaX + x, mouseCoordinateY

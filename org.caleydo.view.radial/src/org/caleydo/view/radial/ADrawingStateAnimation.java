@@ -13,7 +13,7 @@ import javax.media.opengl.glu.GLU;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.view.opengl.util.animation.MovementValue;
+import org.caleydo.view.radial.animation.MovementValue;
 
 /**
  * ADrawingStateAnimation is the base class for all animations considering the

@@ -23,7 +23,6 @@ import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.ViewManager;
@@ -465,7 +464,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	private GLBrick createBrick(ElementLayout wrappingLayout, TablePerspective tablePerspective, boolean isHeaderBrick,
 			Class<? extends ABrickLayoutConfiguration> layoutTemplateClass) {
 		ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4, 4);
-		GLBrick brick = (GLBrick) GeneralManager.get().getViewManager()
+		
+		GLBrick brick = (GLBrick) ViewManager.get()
 				.createGLView(GLBrick.class, parentGLCanvas, brickFrustum);
 
 		brick.setDataDomain(dataDomain);

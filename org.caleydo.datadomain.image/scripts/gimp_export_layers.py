@@ -195,6 +195,9 @@ pdb = gimp.pdb
 PLUGIN_TITLE = "Export Layers"
 SHELF_PREFIX = "export_layers_"
 
+ALLOWED_FILENAME_CHARS = string.ascii_letters + string.digits + '^&\'@{}[],$=!-#()%.+~_ '
+delete_table = string.maketrans(ALLOWED_FILENAME_CHARS, '\x00' * len(ALLOWED_FILENAME_CHARS))
+
 #===============================================================================
   
 def uniquify_string(s, existing_strings):
@@ -419,7 +422,17 @@ def display_message(msg, msg_handler=gimpenums.MESSAGE_BOX):
 #   else:
 #     return gimp.directory
 
-def _export_layer(run_mode, overwrite_mode, image, layer, filename):
+def _export_layer( run_mode,
+                   overwrite_mode,
+                   image,
+                   layer,
+                   output_directory,
+                   base_name,
+                   suffix,
+                   file_ext,
+                   ini ):
+
+  filename = os.path.join(output_directory, base_name + suffix + file_ext)
 
   # Handle conflicting files.
   if os.path.exists(filename):
@@ -437,10 +450,11 @@ def _export_layer(run_mode, overwrite_mode, image, layer, filename):
         os.rename(filename, uniq_filename)
 
   try:
-    pdb.gimp_file_save( image, 
+    pdb.gimp_file_save( image,
                         layer,
                         filename,
                         os.path.basename(filename) )
+    ini.write("image" + suffix + "=" + os.path.basename(filename) + "\n")
   except RuntimeError as e:
     # HACK: Since RuntimeError could indicate anything including pdb.gimp_file_save
     # failure, this is the only plausible way to intercept Cancel operation.
@@ -455,7 +469,8 @@ def _export_layer(run_mode, overwrite_mode, image, layer, filename):
                        overwrite_mode,
                        image,
                        layer,
-                       filename )
+                       filename,
+                       ini )
       else:
         pdb.gimp_image_delete(image)
         raise ExportLayersError(e.message)
@@ -480,9 +495,7 @@ def export_layers( run_mode,
                    file_format,
                    output_directory,
                    overwrite_mode,
-                   ignore_invisible = False,
-                   is_autocrop = False,
-                   use_image_size = False ):
+                   ini ):
   """
   Export layers from specified image.
   
@@ -492,19 +505,11 @@ def export_layers( run_mode,
   file_format -- file extension indicating file format for exported layers
   output_directory -- output directory for exported layers
   overwrite_mode -- OverwriteMode object determining how to overwrite existing files
-  
-  Keyword arguments:
-  ignore_invisible -- do not export invisible layers, including visible layers
-                      within invisible layer groups (default False)
-  is_autocrop -- autocrop layers before exporting (default False)
-  use_image_size -- resize layers to image size before exporting (default False)
+  ini -- INI file for config
   """
   # Save context just in case. No need for undo groups or undo freeze here.
   pdb.gimp_context_push()
     
-  ALLOWED_FILENAME_CHARS = string.ascii_letters + string.digits + '^&\'@{}[],$=!-#()%.+~_ '
-  delete_table = string.maketrans(ALLOWED_FILENAME_CHARS, '\x00' * len(ALLOWED_FILENAME_CHARS))
-  
   file_ext = file_format.lower()
   if not file_ext.startswith('.'):
     file_ext = '.' + file_ext
@@ -522,15 +527,22 @@ def export_layers( run_mode,
   new_height = round(scale * image.height)
 
   image_thumb = pdb.gimp_image_new(new_width, new_height, gimpenums.RGB)
-  self = {'run_mode': run_mode}
+
+  self = {
+    'run_mode': run_mode,
+    'ini_file': ini
+  }
 
   def _writeLayerWithThumb(layer, suffix):
     _export_layer( self['run_mode'],
                    overwrite_mode,
                    image_new,
                    layer,
-                   os.path.join( output_directory,
-                                 base_name + suffix + file_ext ) )
+                   output_directory,
+                   base_name,
+                   suffix,
+                   file_ext,
+                   self['ini_file'] )
 
     self['run_mode'] = gimpenums.RUN_WITH_LAST_VALS
 
@@ -541,26 +553,17 @@ def export_layers( run_mode,
                    overwrite_mode,
                    image_thumb,
                    layer,
-                   os.path.join( output_directory,
-                                 base_name + suffix + "_thumb" + file_ext ) )
+                   output_directory,
+                   base_name,
+                   suffix + "_thumb",
+                   file_ext,
+                   self['ini_file'] )
 
     pdb.gimp_image_remove_layer(image_new, layer)
 
   i = 0
-  for layer in image.layers:
+  for layer in reversed(image.layers):
     i += 1
-
-    if (ignore_invisible and not pdb.gimp_item_get_visible(layer)):
-      continue
-
-#    if not use_image_size:
-#      pdb.gimp_image_resize_to_layers(image_new)
-#      if is_autocrop:
-#        pdb.plug_in_autocrop(image_new, layer_copy)
-#    else:
-#      if is_autocrop:
-#        pdb.plug_in_autocrop_layer(image_new, layer_copy)
-#      pdb.gimp_layer_resize_to_image_size(layer_copy)
 
     # Allow only alphanumeric and certain special characters in filename.
     base_name = layer.name.translate(None, delete_table)
@@ -570,7 +573,9 @@ def export_layers( run_mode,
       base_name = name_parts[0]
 
     # Create highlights for all but the base layer
-    if i < len(image.layers):
+    if i > 1:
+      ini.write("[layer" + str(i) + "]\n")
+      ini.write("name=" + base_name + "\n")
 
       # Region border
       #
@@ -593,6 +598,10 @@ def export_layers( run_mode,
     else:
       layer_copy = _copy_layer(image_new, layer)
       _writeLayerWithThumb(layer_copy, "")
+
+      if len(image.layers) == 1:
+        ini.write("[dummy-layer]\n")
+        ini.write("name=" + base_name + "\n")
 
   pdb.gimp_image_delete(image_new)
   pdb.gimp_image_delete(image_thumb)
@@ -646,13 +655,17 @@ class ExportLayersGui(object):
     self.hbox_file_format.pack_start(self.file_format_error_message, expand=False)
     
     self.hbox_export_options = gtk.HBox(homogeneous=False)
-    self.export_options_ignore_invisible = gtk.CheckButton("Ignore invisible layers")
-    self.export_options_is_autocrop = gtk.CheckButton("Autocrop layers")
-    self.export_options_use_image_size = gtk.CheckButton("Use image size instead of layer size")
-    self.hbox_export_options.pack_start(self.export_options_ignore_invisible)
-    self.hbox_export_options.pack_start(self.export_options_is_autocrop)
-    self.hbox_export_options.pack_start(self.export_options_use_image_size)
-    
+    self.hbox_export_options.set_spacing(5)
+    self.url_label = gtk.Label()
+    self.url_label.set_markup("<b>URL:</b>")
+    self.url_label.set_alignment(0.0, 0.5)
+    self.url_label.set_size_request(100, -1)
+    self.url_entry = gtk.Entry()
+    self.url_entry.set_size_request(100, -1)
+    self.url_entry.set_tooltip_text("Set the URL for the large image linkout")
+    self.hbox_export_options.pack_start(self.url_label, expand = False)
+    self.hbox_export_options.pack_start(self.url_entry, expand = True)
+
     self.hbox_action_area = gtk.HBox(homogeneous=False)
     self.export_layers_button = gtk.Button(label="Export Layers")
     self.export_layers_button.set_size_request(110, -1)
@@ -690,12 +703,6 @@ class ExportLayersGui(object):
         self.directory_chooser.set_current_folder(ExportLayersPlugin.PARAMS_DEFAULT_VALUES['output_directory'])
     self.file_format_entry.set_text(
           retrieve_setting('file_format', ExportLayersPlugin.PARAMS_DEFAULT_VALUES['file_format']))
-    self.export_options_ignore_invisible.set_active(
-          retrieve_setting('ignore_invisible', ExportLayersPlugin.PARAMS_DEFAULT_VALUES['ignore_invisible']))
-    self.export_options_is_autocrop.set_active(
-          retrieve_setting('is_autocrop', ExportLayersPlugin.PARAMS_DEFAULT_VALUES['is_autocrop']))
-    self.export_options_use_image_size.set_active(
-          retrieve_setting('use_image_size', ExportLayersPlugin.PARAMS_DEFAULT_VALUES['use_image_size']))
     
     self.dialog.show_all()
     # Action area is unused, the dialog bottom would otherwise be filled with empty space.
@@ -715,9 +722,16 @@ class ExportLayersGui(object):
     
     output_directory = self.directory_chooser.get_current_folder()
     overwrite_mode = DialogOverwrite(parent=self.dialog)
-    ignore_invisible = self.export_options_ignore_invisible.get_active()
-    is_autocrop = self.export_options_is_autocrop.get_active()
-    use_image_size = self.export_options_use_image_size.get_active()
+
+    base_name = self.image.layers[-1].name.translate(None, delete_table)
+    ini = open(os.path.join(output_directory, base_name + ".ini"), "w")
+
+    ini.write("[base]\n")
+    ini.write("name="+base_name+"\n")
+
+    url = self.url_entry.get_text()
+    if url is not None and url:
+      ini.write("url="+url+"\n") # TODO check escaping
 
     self.progress_bar.set_visible(True)
     pdb.gimp_progress_init("Exporting...", None)
@@ -727,15 +741,14 @@ class ExportLayersGui(object):
                      file_format,
                      output_directory,
                      overwrite_mode,
-                     ignore_invisible, is_autocrop, use_image_size )
+                     ini )
       # For testing purposes only.
 #       for j in range(0,2):
 #         file_format_counter = retrieve_setting('file_format_counter', 0)
 #         file_format = FILE_FORMATS[file_format_counter]
 #         export_layers(gimpenums.RUN_INTERACTIVE, self.image,
 #                                         file_format, os.path.join(output_directory, file_format),
-#                                         overwrite_mode,
-#                                         ignore_invisible, is_autocrop, use_image_size)
+#                                         overwrite_mode)
 #       file_format_counter += 1
 #       store_settings(file_format_counter=file_format_counter)
       
@@ -752,14 +765,12 @@ class ExportLayersGui(object):
     finally:
       self.progress_bar.set_visible(False)
       pdb.gimp_progress_end()
+      ini.close()
     
     store_settings( image=self.image,
                     file_format=file_format,
                     output_directory=output_directory,
                     overwrite_mode=overwrite_mode.get_value(),
-                    ignore_invisible=ignore_invisible,
-                    is_autocrop=is_autocrop,
-                    use_image_size=use_image_size,
                     dialog_position=self.dialog.get_position(),
                     first_run=False )
     
@@ -818,19 +829,13 @@ class ExportLayersPlugin(gimpplugin.plugin):
    (gimpenums.PDB_IMAGE, "image", "Image to export layers from"),
    (gimpenums.PDB_STRING, "file_format", "File format"),
    (gimpenums.PDB_STRING, "output_directory", "Output directory"),
-   (gimpenums.PDB_INT32, "ignore_invisible", "Ignore invisible layers"),
-   (gimpenums.PDB_INT32, "is_autocrop", "Autocrop layers"),
-   (gimpenums.PDB_INT32, "use_image_size", "Use image size instead of layer size"),
    (gimpenums.PDB_INT32, "overwrite_mode", ("Overwrite mode (non-interactive only)"
                                             "{ 1 = Skip, 2 = Overwrite, 3 = Rename new files, 4 = Rename existing files}")),
    ]
   PARAMS_DEFAULT_VALUES = { 'file_format' : "png",
                             'output_directory' : gimp.user_directory(4),    # Pictures directory
                             'overwrite_mode' : OverwriteMode.OVERWRITE,
-                            'ignore_invisible' : False,
-                            'is_autocrop' : False,
-                            'use_image_size' : False,
-                           }
+                          }
   
   PLUG_IN_RETS = [
 
@@ -840,10 +845,9 @@ class ExportLayersPlugin(gimpplugin.plugin):
     gimp.install_procedure("plug_in_export_layers",
                            "Export layers as separate images in specified file format to specified directory.",
                            "Layer names are used as filenames for the exported images.",
-
                            "khalim19",
                            "khalim19",
-                           "2013",
+                           "2014",
                            "<Image>/File/Export/E_xport Layers (HTI)...",
                            "*",
                            gimpenums.PLUGIN,
@@ -851,9 +855,11 @@ class ExportLayersPlugin(gimpplugin.plugin):
                            self.PLUG_IN_RETS
                            )
    
-  def plug_in_export_layers(self, run_mode, image, file_format=None, output_directory=None, 
-                            ignore_invisible=False, is_autocrop=False, use_image_size=False,
-                            overwrite_mode=OverwriteMode.OVERWRITE):
+  def plug_in_export_layers( self, run_mode,
+                                   image,
+                                   file_format = None,
+                                   output_directory = None,
+                                   overwrite_mode = OverwriteMode.OVERWRITE ):
     if run_mode == gimpenums.RUN_INTERACTIVE:
       gui = ExportLayersGui(image)
       gtk.main()
@@ -865,11 +871,8 @@ class ExportLayersPlugin(gimpplugin.plugin):
         run_mode, image,
         retrieve_setting('file_format', self.PARAMS_DEFAULT_VALUES['file_format']),
         retrieve_setting('output_directory', self.PARAMS_DEFAULT_VALUES['output_directory']),
-        NoninteractiveOverwrite(retrieve_setting('overwrite_mode', self.PARAMS_DEFAULT_VALUES['overwrite_mode'])),
-        retrieve_setting('ignore_invisible', self.PARAMS_DEFAULT_VALUES['ignore_invisible']),
-        retrieve_setting('is_autocrop', self.PARAMS_DEFAULT_VALUES['is_autocrop']),
-        retrieve_setting('use_image_size', self.PARAMS_DEFAULT_VALUES['use_image_size']),
-        )
+        NoninteractiveOverwrite(retrieve_setting('overwrite_mode', self.PARAMS_DEFAULT_VALUES['overwrite_mode']))
+      )
     else:          # gimpenums.RUN_NONINTERACTIVE
       if output_directory is None:
         output_directory = self.PARAMS_DEFAULT_VALUES['output_directory']
@@ -878,8 +881,7 @@ class ExportLayersPlugin(gimpplugin.plugin):
       if overwrite_mode not in OverwriteMode.OVERWRITE_MODES:
         overwrite_mode = self.PARAMS_DEFAULT_VALUES['overwrite_mode']
       export_layers( run_mode, image, file_format, output_directory,
-                     NoninteractiveOverwrite(overwrite_mode),
-                     ignore_invisible, is_autocrop, use_image_size)
+                     NoninteractiveOverwrite(overwrite_mode) )
       store_settings(first_run=False)
 
 if __name__ == "__main__":

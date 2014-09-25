@@ -101,6 +101,10 @@ public final class FirehoseProvider {
 		return relevantDate.get(Calendar.YEAR) >= 2014;
 	}
 
+	public boolean isPost20140416() {
+		return relevantDate.get(Calendar.YEAR) >= 2014 && relevantDate.get(Calendar.MONTH) >= Calendar.APRIL;
+	}
+
 	private String getFileName(String suffix) {
 		return tumorSample + suffix;
 	}
@@ -117,7 +121,7 @@ public final class FirehoseProvider {
 
 	private Pair<TCGAFileInfo, Boolean> findStandardSampledClusteredFile(EDataSetType type) {
 		return Pair.make(
-				extractAnalysisRunFile("outputprefix.expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL),
+extractAnalysisRunFile(".expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL),
 				false);
 	}
 
@@ -131,7 +135,12 @@ public final class FirehoseProvider {
 
 	public Pair<TCGAFileInfo, Boolean> findmRNAMatrixFile(boolean loadFullGenes) {
 		if (loadFullGenes) {
-			TCGAFileInfo r = extractAnalysisRunFile(getFileName(".medianexp.txt"), "mRNA_Preprocess_Median", LEVEL);
+			TCGAFileInfo r;
+			if (isPost20140416()) {
+				r = extractDataRunFile(".medianexp.txt", "mRNA_Preprocess_Median", LEVEL);
+			} else {
+				r = extractAnalysisRunFile(getFileName(".medianexp.txt"), "mRNA_Preprocess_Median", LEVEL);
+			}
 			if (r != null)
 				return Pair.make(r, true);
 		}
@@ -140,12 +149,14 @@ public final class FirehoseProvider {
 
 	public Pair<TCGAFileInfo, Boolean> findmRNAseqMatrixFile(boolean loadFullGenes) {
 		if (loadFullGenes) {
-			TCGAFileInfo r = extractDataRunFile(".uncv2.mRNAseq_RSEM_normalized_log2.txt", "mRNAseq_Preprocess", LEVEL);
+			TCGAFileInfo r = extractDataRunFile(".uncv2.mRNAseq_RSEM_normalized_log2.txt", "mRNAseq_Preprocess",
+					isPost20140416() ? 3 : LEVEL);
 			if (r == null)
 				r = extractDataRunFile(".uncv1.mRNAseq_RPKM_log2.txt",
-						"mRNAseq_Preprocess", LEVEL);
+ "mRNAseq_Preprocess", isPost20140416() ? 3
+						: LEVEL);
 			if (r == null)
-				r = extractDataRunFile(".mRNAseq_RPKM_log2.txt", "mRNAseq_Preprocess", LEVEL);
+				r = extractDataRunFile(".mRNAseq_RPKM_log2.txt", "mRNAseq_Preprocess", isPost20140416() ? 3 : LEVEL);
 			if (r != null) {
 				r = filterColumns(r, findStandardSampledClusteredFile(EDataSetType.mRNAseq));
 				return Pair.make(r, true);
@@ -237,7 +248,7 @@ public final class FirehoseProvider {
 
 	public Pair<TCGAFileInfo, Boolean> findmicroRNAMatrixFile(boolean loadFullGenes) {
 		if (loadFullGenes) {
-			TCGAFileInfo r = extractDataRunFile(".miR_expression.txt", "miR_Preprocess", LEVEL);
+			TCGAFileInfo r = extractDataRunFile(".miR_expression.txt", "miR_Preprocess", isPost20140416() ? 3 : LEVEL);
 			if (r != null) {
 				r = filterColumns(r, findStandardSampledClusteredFile(EDataSetType.microRNA));
 				return Pair.make(r, true);
@@ -250,7 +261,7 @@ public final class FirehoseProvider {
 		if (loadFullGenes) {
 			TCGAFileInfo r = extractAnalysisRunFile(getFileName(".uncv2.miRseq_RSEM_normalized_log2.txt"),
 					"miRseq_Preprocess",
-					LEVEL);
+ isPost20140416() ? 3 : LEVEL);
 			if (r == null)
 				r = extractAnalysisRunFile(getFileName(".miRseq_RPKM_log2.txt"), "miRseq_Preprocess",
 						LEVEL);
@@ -268,7 +279,7 @@ public final class FirehoseProvider {
 	}
 
 	public TCGAFileInfo findCNMFGroupingFile(EDataSetType type) {
-		return extractAnalysisRunFile("cnmf.membership.txt", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL);
+		return extractAnalysisRunFile(".membership.txt", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL);
 	}
 
 	public TCGAFileInfo findCopyNumberFile() {

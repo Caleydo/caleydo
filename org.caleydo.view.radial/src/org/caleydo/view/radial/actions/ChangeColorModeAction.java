@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.radial.actions;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.radial.event.ChangeColorModeEvent;
@@ -22,8 +23,9 @@ public class ChangeColorModeAction extends SimpleAction {
 	@Override
 	public void run() {
 		super.run();
+		
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new ChangeColorModeEvent());
+		EventPublisher.trigger(new ChangeColorModeEvent());
 		setChecked(false);
 	}
 }

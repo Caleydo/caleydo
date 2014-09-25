@@ -109,7 +109,7 @@ public class ExpressionFunctions {
 	 *
 	 */
 	public enum EMonoOperator implements IInvertableDoubleFunction {
-		NEGATE, LN, LOG10, SQUARED, SQRT;
+		NEGATE, LN, LOG10, LOG2, SQUARED, SQRT;
 
 		@Override
 		public double apply(double v) {
@@ -120,6 +120,8 @@ public class ExpressionFunctions {
 				return Math.log(v);
 			case LOG10:
 				return Math.log10(v);
+			case LOG2:
+				return Math.log(v) / Math.log(2);
 			case SQUARED:
 				return v * v;
 			case SQRT:
@@ -142,6 +144,8 @@ public class ExpressionFunctions {
 				return Math.exp(v);
 			case LOG10:
 				return Math.pow(10, v);
+			case LOG2:
+				return Math.pow(2, v);
 			case SQUARED:
 				return Math.sqrt(v);
 			case SQRT:

@@ -7,9 +7,7 @@ package org.caleydo.view.tourguide.entourage;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.caleydo.core.data.collection.EDimension;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -23,7 +21,6 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
-import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
@@ -37,10 +34,8 @@ import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.util.text.ETextStyle;
+import org.caleydo.datadomain.genetic.GeneActions;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.listener.LoadPathwaysEvent;
-import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.entourage.datamapping.DataMappingState;
 import org.caleydo.view.tourguide.api.adapter.TourGuideDataModes;
 import org.caleydo.view.tourguide.api.model.ADataDomainQuery;
@@ -425,14 +420,19 @@ public class EntourageStratificationAdapter extends AEntourageAdapter implements
 				VirtualArray va = perspective.getVirtualArray();
 				if (va.size() == 1) {
 
-					Set<PathwayGraph> pathways = PathwayManager.get().getPathwayGraphsByGeneID(perspective.getIdType(),
-							va.get(0));
-					int numPathways = pathways == null ? 0 : pathways.size();
-					LoadPathwaysEvent event = new LoadPathwaysEvent(pathways == null ? new HashSet<PathwayGraph>()
-							: pathways);
-					creator.addContextMenuItem(new GenericContextMenuItem("Show Pathways with " + row.getLabel() + " ("
-							+ numPathways + " pathways available)", event));
+					GeneActions.addToContextMenu(creator, va.get(0), perspective.getIdType(), this, true);
 					context.getSWTLayer().showContextMenu(creator);
+
+					// Set<PathwayGraph> pathways =
+					// PathwayManager.get().getPathwayGraphsByGeneID(perspective.getIdType(),
+					// va.get(0));
+					// int numPathways = pathways == null ? 0 : pathways.size();
+					// LoadPathwaysEvent event = new LoadPathwaysEvent(pathways == null ? new HashSet<PathwayGraph>()
+					// : pathways);
+					// creator.addContextMenuItem(new GenericContextMenuItem("Show Pathways with " + row.getLabel() +
+					// " ("
+					// + numPathways + " pathways available)", event));
+					// context.getSWTLayer().showContextMenu(creator);
 				}
 			}
 

@@ -12,7 +12,9 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.PixelGrabber;
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.util.color.ColorManager;
 
@@ -168,12 +170,12 @@ public class BubbleSetGLRenderer {
 		texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
 		bubbleSetsTexture = texRenderer.getTexture();
 
-		gl.glEnable(GL2.GL_BLEND);
-		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		bubbleSetsTexture.enable(gl);
 		bubbleSetsTexture.bind(gl);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 			gl.glTexCoord2f(0, 0);
 			gl.glVertex3f(0.0f, 0.0f, 0.0f);
 
@@ -195,12 +197,12 @@ public class BubbleSetGLRenderer {
 		texRenderer.setColor(1.0f, 1.0f, 1.0f,  opacity);
 		bubbleSetsTexture = texRenderer.getTexture();
 
-		gl.glEnable(GL2.GL_BLEND);
-		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		bubbleSetsTexture.enable(gl);
 		bubbleSetsTexture.bind(gl);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 			gl.glTexCoord2f(0, 1);
 			gl.glVertex3f(0.0f, 0.0f, 0.0f);
 			gl.glTexCoord2f(1, 1);
@@ -218,12 +220,12 @@ public class BubbleSetGLRenderer {
 		texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
 		bubbleSetsTexture = texRenderer.getTexture();
 
-		gl.glEnable(GL2.GL_BLEND);
-		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		bubbleSetsTexture.enable(gl);
 		bubbleSetsTexture.bind(gl);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 			gl.glTexCoord2f(0, 1);
 			gl.glVertex3f(0.0f, 0.0f, 0.0f);
 			gl.glTexCoord2f(1, 1);

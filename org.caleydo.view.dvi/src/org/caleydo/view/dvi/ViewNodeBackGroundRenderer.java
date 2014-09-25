@@ -8,6 +8,7 @@ package org.caleydo.view.dvi;
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
@@ -39,7 +40,7 @@ public class ViewNodeBackGroundRenderer extends ALayoutRenderer {
 	public void renderContent(GL2 gl) {
 
 		gl.glColor4fv(color, 0);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(x, 0, 0);
 		gl.glVertex3f(x, y, 0);

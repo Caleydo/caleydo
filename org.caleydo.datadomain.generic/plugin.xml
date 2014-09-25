@@ -9,13 +9,6 @@
           class="org.caleydo.datadomain.generic.GenericDataDomain" />
    </extension>
    <extension
-         id="org.caleydo.datadomain.generic"
-         name="GenericDataDomainInitialization"
-         point="org.caleydo.datadomain.DataDomainInitialization">
-          <DataDomainInitialization
-          class="org.caleydo.datadomain.generic.GenericDataDomainInitialization" />
-   </extension>
-   <extension
          point="org.caleydo.core.StartupAddon">
       <addon
             class="org.caleydo.datadomain.generic.internal.LoadGenericStartupAddon"

@@ -8,8 +8,6 @@ package org.caleydo.core.view;
 import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
-import org.caleydo.core.view.listener.AddTablePerspectivesListener;
 
 /**
  * Interface for views that manage multiple table perspectives. </p>
@@ -17,7 +15,7 @@ import org.caleydo.core.view.listener.AddTablePerspectivesListener;
  * Setting data containers can be achieved using the {@link AddTablePerspectivesEvent} and
  * {@link AddTablePerspectivesListener}.
  * </p>
- * 
+ *
  * @author Alexander Lex
  */
 public interface IMultiTablePerspectiveBasedView extends ITablePerspectiveBasedView {

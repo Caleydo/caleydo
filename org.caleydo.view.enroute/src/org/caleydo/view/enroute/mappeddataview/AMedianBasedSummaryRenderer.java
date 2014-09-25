@@ -12,6 +12,7 @@ import java.util.List;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.function.AdvancedDoubleStatistics;
+import org.caleydo.core.util.function.IInvertableDoubleFunction;
 import org.caleydo.view.enroute.EPickingType;
 
 /**
@@ -27,6 +28,8 @@ public abstract class AMedianBasedSummaryRenderer extends ADataRenderer {
 	protected List<Float> outliers = new ArrayList<>();
 	protected AdvancedDoubleStatistics rawStats;
 	protected AdvancedDoubleStatistics normalizedStats;
+
+	protected IInvertableDoubleFunction inferredNormalizeFunction;
 
 	/**
 	 * @param contentRenderer
@@ -79,8 +82,14 @@ public abstract class AMedianBasedSummaryRenderer extends ADataRenderer {
 			}
 		}
 
+		if (contentRenderer.isHighlightMode) {
+			inferredNormalizeFunction = NormalizeUtil.inferNormalizeFunction(rawValues, normalizedValues);
+		}
+
 		registerPickingListeners();
 	}
+
+
 
 	private float asFloat(Object value) {
 		if (value instanceof Integer) {

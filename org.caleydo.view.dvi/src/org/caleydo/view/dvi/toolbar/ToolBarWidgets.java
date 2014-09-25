@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.dvi.toolbar;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.event.ApplySpecificGraphLayoutEvent;
@@ -73,9 +74,9 @@ public class ToolBarWidgets extends ControlContribution {
 		Listener showDataConnectionsListener = new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				GeneralManager
-						.get()
-						.getEventPublisher()
+				GeneralManager r = GeneralManager
+						.get();
+				EventPublisher.INSTANCE
 						.triggerEvent(
 								new ShowDataConnectionsEvent(showDataConnectionsCheckBox
 										.getSelection()));
@@ -95,7 +96,8 @@ public class ToolBarWidgets extends ControlContribution {
 				}
 
 				e.setSender(this);
-				GeneralManager.get().getEventPublisher().triggerEvent(e);
+				
+				EventPublisher.trigger(e);
 
 			}
 		};

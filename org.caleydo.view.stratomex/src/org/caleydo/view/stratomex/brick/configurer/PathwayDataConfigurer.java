@@ -5,13 +5,14 @@
  ******************************************************************************/
 package org.caleydo.view.stratomex.brick.configurer;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
@@ -22,7 +23,6 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.PathwayActions;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -180,7 +180,8 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 
 		int globalRendererID = 0;
 		int localRendererID = -1;
-		String brickEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
+		
+		String brickEventSpace = EventPublisher.INSTANCE.createUniqueEventSpace();
 		for (String viewID : remoteRenderedViewIDs) {
 			localRendererID = multiFormRenderer.addPluginVisualization(viewID, brick.getStratomex().getViewType(),
 					embeddingID.id(), tablePerspectives, brickEventSpace);
@@ -199,10 +200,7 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 				PathwayTablePerspective brickData = (PathwayTablePerspective) brick.getTablePerspective();
 				if (brickData.getPathway() != null) {
 					EPathwayDatabaseType dataBaseType = brickData.getPathway().getType();
-					EIconTextures texture = null;
-					if (dataBaseType == EPathwayDatabaseType.KEGG) {
-						texture = EIconTextures.CM_KEGG;
-					}
+					URL texture = dataBaseType.getIcon();
 
 					if (texture != null) {
 						ALayoutRenderer compactPathwayRenderer = new CompactPathwayRenderer(brick, brick

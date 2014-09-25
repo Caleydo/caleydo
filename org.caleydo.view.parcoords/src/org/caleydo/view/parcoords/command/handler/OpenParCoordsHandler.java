@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.parcoords.command.handler;
 
-import org.caleydo.core.gui.command.AOpenViewHandler;
+import org.caleydo.core.internal.cmd.AOpenViewHandler;
 import org.caleydo.view.parcoords.GLParallelCoordinates;
 
 public class OpenParCoordsHandler extends AOpenViewHandler {

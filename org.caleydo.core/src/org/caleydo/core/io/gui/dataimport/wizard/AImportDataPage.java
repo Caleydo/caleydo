@@ -82,6 +82,14 @@ public abstract class AImportDataPage<WizardType extends AWizard<WizardType>>
 	}
 
 	/**
+	 * @param dataSetDescription
+	 *            setter, see {@link dataSetDescription}
+	 */
+	public void setDataSetDescription(DataSetDescription dataSetDescription) {
+		this.dataSetDescription = dataSetDescription;
+	}
+
+	/**
 	 * Subclasses are intended to create their widgets within this method instead of in
 	 * {@link #createControl(Composite)}.
 	 *

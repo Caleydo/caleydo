@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.selection.SelectionType;
@@ -80,7 +81,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 			heightRight = vSize.y() * (subFilterSizes[i] / 100.f);
 
 			gl.glPushName(pickingManager.getPickingID(viewId, PickingType.FILTERPIPE_SUB_FILTER, i));
-			renderShape(gl, GL2.GL_QUADS, curPos, subFilterWidth, scaleY * heightLeft, scaleY * heightRight,
+			renderShape(gl, GL2GL3.GL_QUADS, curPos, subFilterWidth, scaleY * heightLeft, scaleY * heightRight,
 					renderStyle.getFilterColor(i), Z_POS_BODY + 0.1f);
 			gl.glLineWidth(1);
 			renderShape(gl, GL.GL_LINE_LOOP, curPos, subFilterWidth, scaleY * heightLeft, scaleY * heightRight,

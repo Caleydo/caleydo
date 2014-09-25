@@ -43,9 +43,21 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.filter.command.handler.OpenFilterHandler"
+            defaultHandler="org.caleydo.view.filter.OpenFilterHandler"
             id="org.caleydo.view.filter.command.openfilter"
             name="Filter">
       </command>
+   </extension>
+   <extension
+         point="org.caleydo.core.data.datadomain.ViewDataDomainAssociation">
+      <association
+            view="org.caleydo.view.filter">
+         <dataDomain
+               type="org.caleydo.datadomain.genetic">
+         </dataDomain>
+         <dataDomain
+               type="org.caleydo.datadomain.generic">
+         </dataDomain>
+      </association>
    </extension>
 </plugin>

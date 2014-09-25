@@ -130,6 +130,49 @@ public final class DoubleFunctions {
 		};
 	}
 
+	/**
+	 * simple mapping from a source to a target range
+	 *
+	 * @param fromMin
+	 * @param fromMax
+	 * @param toMin
+	 * @param toMax
+	 * @return
+	 */
+	public static IInvertableDoubleFunction map(final double fromMin, final double fromMax, final double toMin,
+			final double toMax) {
+		final double scale = (toMax - toMin) / (fromMax - fromMin);
+		return new IInvertableDoubleFunction() {
+			@Override
+			public double apply(double in) {
+				if (in <= fromMin)
+					return toMin;
+				if (in >= fromMax)
+					return toMax;
+				return toMin + ((in - fromMin) * scale);
+			}
+
+			@Override
+			public String toString() {
+				return String.format("map[%f,%f->%f,%f]", fromMin, fromMax, toMin, toMax);
+			}
+
+			@Override
+			public Double apply(Double input) {
+				return applyPrimitive(this, input);
+			}
+
+			@Override
+			public double unapply(double in) {
+				if (in <= toMin)
+					return fromMin;
+				if (in >= toMax)
+					return fromMax;
+				return fromMin + ((in - toMin) * (1 / scale));
+			}
+		};
+	}
+
 	public static IDoubleFunction wrap(final Function<Double, Double> f) {
 		return new IDoubleFunction() {
 			@Override

@@ -27,12 +27,18 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
+import org.caleydo.view.enroute.correlation.IDataClassifier;
+import org.caleydo.view.enroute.correlation.IIDClassifier;
+import org.caleydo.view.enroute.correlation.SimpleCategory;
+import org.caleydo.view.enroute.mappeddataview.overlay.IDataCellOverlayProvider;
 
 /**
  * @author Christian
  *
  */
 public abstract class AColumnBasedDataRenderer extends ADataRenderer {
+
+	private static final Color MISSING_VALUE_COLOR = new Color(1, 1, 1, 0.3f);
 
 	/**
 	 * @param contentRenderer
@@ -71,9 +77,20 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 				}
 			}
 			if (columnID == null) {
+				renderColorColumn(gl, MISSING_VALUE_COLOR, xIncrement, y);
 				renderMissingValue(gl, xIncrement, y);
 			} else {
 				renderColumnBar(gl, columnID, xIncrement, y, selectionTypes, useShading);
+
+				if (contentRenderer.isHighlightMode) {
+					IDataCellOverlayProvider provider = contentRenderer.parentView.getCorrelationManager()
+							.getOverlayProvider(contentRenderer);
+					if (provider != null) {
+						IColumnBasedDataOverlay overlay = provider.getOverlay(this);
+						if (overlay != null)
+							overlay.render(gl, columnID, xIncrement, y);
+					}
+				}
 			}
 			gl.glTranslatef(xIncrement, 0, 0);
 
@@ -83,18 +100,22 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 
 	}
 
-	protected void renderMissingValue(GL2 gl, float x, float y) {
+	public void renderColorColumn(GL2 gl, Color color, float x, float y) {
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glBegin(GL2GL3.GL_QUADS);
 
-		gl.glColor4f(1f, 1f, 1f, 0.3f);
+		gl.glColor4fv(color.getRGBA(), 0);
 		gl.glVertex3f(0, 0, z);
 		gl.glVertex3f(x, 0, z);
 		gl.glVertex3f(x, y, z);
 		gl.glVertex3f(0, y, z);
 
 		gl.glEnd();
+	}
+
+	protected void renderMissingValue(GL2 gl, float x, float y) {
+		renderColorColumn(gl, MISSING_VALUE_COLOR, x, y);
 	}
 
 	protected abstract void renderColumnBar(GL2 gl, int columnID, float x, float y, List<SelectionType> selectionTypes,
@@ -242,5 +263,59 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 			}
 
 		}, EPickingType.SAMPLE.name() + hashCode());
+	}
+
+	public interface IColumnBasedDataOverlay {
+		public void render(GL2 gl, int columnID, float xIncrement, float y);
+	}
+
+	public class DataClassifierOverlay implements IColumnBasedDataOverlay {
+		private final IDataClassifier classifier;
+
+		public DataClassifierOverlay(IDataClassifier classifier) {
+			this.classifier = classifier;
+		}
+
+		@Override
+		public void render(GL2 gl, int columnID, float xIncrement, float y) {
+			Object rawValue = contentRenderer.dataDomain.getRaw(contentRenderer.resolvedRowIDType,
+					contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, columnID);
+			SimpleCategory category = classifier.apply(rawValue);
+			if (category != null) {
+				renderColorColumn(gl, category.color.transparentCopy(0.6f), xIncrement, y);
+			}
+		}
+	}
+
+	public class IDClassifierOverlay implements IColumnBasedDataOverlay {
+		private final IIDClassifier classifier;
+
+		public IDClassifierOverlay(IIDClassifier classifier) {
+			this.classifier = classifier;
+		}
+
+		@Override
+		public void render(GL2 gl, int columnID, float xIncrement, float y) {
+			SimpleCategory category = classifier.apply(columnID, contentRenderer.resolvedColumnIDType);
+			if (category != null) {
+				renderColorColumn(gl, category.color.transparentCopy(0.6f), xIncrement, y);
+			}
+		}
+	}
+
+	public class ColorOverlay implements IColumnBasedDataOverlay {
+
+		private final Color color;
+
+		public ColorOverlay(Color color) {
+			this.color = color;
+		}
+
+		@Override
+		public void render(GL2 gl, int columnID, float xIncrement, float y) {
+			renderColorColumn(gl, color.transparentCopy(0.6f), xIncrement, y);
+
+		}
+
 	}
 }

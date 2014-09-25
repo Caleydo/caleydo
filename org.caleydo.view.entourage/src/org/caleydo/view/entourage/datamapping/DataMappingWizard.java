@@ -6,8 +6,8 @@
 package org.caleydo.view.entourage.datamapping;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -22,9 +22,12 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
+import org.caleydo.view.enroute.GLEnRoutePathway;
+import org.caleydo.view.enroute.GLEnRoutePathway.IEnrouteContentUpdateListener;
 import org.caleydo.view.entourage.EEmbeddingID;
 import org.caleydo.view.entourage.GLEntourage;
 import org.eclipse.swt.widgets.Display;
@@ -35,7 +38,7 @@ import org.eclipse.swt.widgets.Display;
  * @author Christian
  *
  */
-public class DataMappingWizard extends GLElementContainer {
+public class DataMappingWizard extends GLElementContainer implements IEnrouteContentUpdateListener {
 
 	private static final String PATH_SELECTION_ICON = "resources/icons/icon_32.png";
 	private static final String DATA_MAPPING_ICON = "resources/icons/data_mapping.png";
@@ -70,27 +73,26 @@ public class DataMappingWizard extends GLElementContainer {
 
 	private void setupPathAndDataLayer() {
 		pathAndDataLayer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1, GLPadding.ZERO));
-		GLElementContainer selectPathButtonContainer = createButtonLayout(PATH_SELECTION_ICON,
-				new IPickingListener() {
-					@Override
-					public void pick(Pick pick) {
-						if (pick.getPickingMode() == PickingMode.CLICKED) {
-							EnablePathSelectionEvent event = new EnablePathSelectionEvent(true);
-							event.setEventSpace(DataMappingWizard.this.entourage.getPathEventSpace());
-							GeneralManager.get().getEventPublisher().triggerEvent(event);
-							Display.getDefault().asyncExec(new Runnable() {
-								@Override
-								public void run() {
-									SelectPathAction selectPathAction = DataMappingWizard.this.entourage
-											.getSelectPathAction();
-									if (selectPathAction != null) {
-										selectPathAction.setChecked(true);
-									}
-								}
-							});
+		GLElementContainer selectPathButtonContainer = createButtonLayout(PATH_SELECTION_ICON, new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				if (pick.getPickingMode() == PickingMode.CLICKED) {
+					EnablePathSelectionEvent event = new EnablePathSelectionEvent(true);
+					event.setEventSpace(DataMappingWizard.this.entourage.getPathEventSpace());
+					
+					EventPublisher.trigger(event);
+					Display.getDefault().asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							SelectPathAction selectPathAction = DataMappingWizard.this.entourage.getSelectPathAction();
+							if (selectPathAction != null) {
+								selectPathAction.setChecked(true);
+							}
 						}
-					}
-				});
+					});
+				}
+			}
+		});
 
 		GLElementContainer openDataMapperButtonContainer = createButtonLayout(DATA_MAPPING_ICON,
 				new IPickingListener() {
@@ -204,13 +206,7 @@ public class DataMappingWizard extends GLElementContainer {
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onPathwayPathSelected(PathwayPathSelectionEvent e) {
 
-		if (!e.getPath().isEmpty()) {
-			pathAndDataLayer.setVisibility(EVisibility.NONE);
-			updateDataLayerVisibility();
-		} else {
-			pathAndDataLayer.setVisibility(EVisibility.VISIBLE);
-			dataLayer.setVisibility(EVisibility.NONE);
-		}
+		updateLayerVisibility(entourage.getEnRoute(), e.getPath());
 	}
 
 	@ListenTo
@@ -239,5 +235,22 @@ public class DataMappingWizard extends GLElementContainer {
 			dataLayer.setVisibility(EVisibility.NONE);
 		}
 		relayout();
+	}
+
+	private void updateLayerVisibility(GLEnRoutePathway enRoute, PathwayPath path) {
+		entourage.setPathLevel(EEmbeddingID.PATH_LEVEL1);
+		if (!enRoute.getAddedGeneIDs().isEmpty() || !enRoute.getContextualTablePerspectives().isEmpty()
+				|| !path.isEmpty()) {
+			pathAndDataLayer.setVisibility(EVisibility.NONE);
+			updateDataLayerVisibility();
+		} else {
+			pathAndDataLayer.setVisibility(EVisibility.VISIBLE);
+			dataLayer.setVisibility(EVisibility.NONE);
+		}
+	}
+
+	@Override
+	public void onEnrouteContentChanged(GLEnRoutePathway enRoute) {
+		updateLayerVisibility(enRoute, entourage.getPath());
 	}
 }

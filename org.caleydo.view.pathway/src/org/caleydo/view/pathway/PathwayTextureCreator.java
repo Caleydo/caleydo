@@ -8,7 +8,7 @@ package org.caleydo.view.pathway;
 import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -27,9 +27,7 @@ public class PathwayTextureCreator implements IPathwayRepresentationCreator {
 	public IPathwayRepresentation create(AGLView remoteRenderingView, PathwayGraph pathway,
 			List<TablePerspective> tablePerspectives,
 			TablePerspective mappingTablePerspective, String embeddingEventSpace) {
-		GLPathway pathwayView = (GLPathway) GeneralManager
-				.get()
-				.getViewManager()
+		GLPathway pathwayView = (GLPathway) ViewManager.get()
 				.createGLView(GLPathway.class, remoteRenderingView.getParentGLCanvas(),
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
 
@@ -40,8 +38,8 @@ public class PathwayTextureCreator implements IPathwayRepresentationCreator {
 		}
 
 		pathwayView.setPathwayPathEventSpace(embeddingEventSpace);
-		pathwayView.setMinHeightPixels(150);
-		pathwayView.setMinWidthPixels(150);
+		pathwayView.setMinHeightPixels(120);
+		pathwayView.setMinWidthPixels(120);
 		pathwayView.setHighlightVertices(false);
 		// pathwayView.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		pathwayView.initialize();

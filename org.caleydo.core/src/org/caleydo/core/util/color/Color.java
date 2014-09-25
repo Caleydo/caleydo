@@ -156,6 +156,16 @@ public class Color implements Cloneable, Serializable {
 		setRGBA(r / colorDepth, g / colorDepth, b / colorDepth, a / colorDepth);
 	}
 
+	/**
+	 * Creates a copy of the current color with the specified alpha value.
+	 *
+	 * @param a
+	 * @return
+	 */
+	public Color transparentCopy(float a) {
+		return new Color(r, g, b, a);
+	}
+
 	/** Returns the red, green and blue color component as a float array of length 3 */
 	public float[] getRGB() {
 		return new float[] { r, g, b };

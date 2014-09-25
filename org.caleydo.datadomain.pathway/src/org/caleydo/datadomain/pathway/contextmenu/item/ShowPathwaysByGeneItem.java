@@ -52,7 +52,7 @@ public class ShowPathwaysByGeneItem extends AContextMenuItem {
 
 		int pathwayCount = 0;
 
-		if (pathwayGraphs != null) {
+		if (pathwayGraphs != null && pathwayGraphs.size() > 0) {
 
 			pathwayCount = pathwayGraphs.size();
 
@@ -68,13 +68,14 @@ public class ShowPathwaysByGeneItem extends AContextMenuItem {
 		setLabel("Load Pathways (" + pathwayCount + ")");
 	}
 
-	public static Pair<String,Runnable> createChooser(PathwayDataDomain pathwayDataDomain, IDType idType, Integer david, Object sender) {
+	public static Pair<String, Runnable> createChooser(PathwayDataDomain pathwayDataDomain, IDType idType,
+			Integer david, Object sender) {
 		Set<PathwayGraph> pathwayGraphs = PathwayManager.get().getPathwayGraphsByGeneID(idType, david);
 
 		int pathwayCount = 0;
 
 		ChooserRunnable r = new ChooserRunnable();
-		if (pathwayGraphs != null) {
+		if (pathwayGraphs != null && pathwayGraphs.size() > 0) {
 
 			pathwayCount = pathwayGraphs.size();
 
@@ -91,6 +92,6 @@ public class ShowPathwaysByGeneItem extends AContextMenuItem {
 		}
 
 		final String label = "Load Pathways (" + pathwayCount + ")";
-		return Pair.make(label, (Runnable)r);
+		return Pair.make(label, (Runnable) r);
 	}
 }

@@ -59,7 +59,6 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.Clusterers;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
@@ -120,9 +119,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	protected SelectionManager recordSelectionManager;
 	protected SelectionManager dimensionSelectionManager;
 	protected SelectionManager recordGroupSelectionManager;
-
-	/** central {@link EventPublisher} to receive and send events */
-	protected EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
 	/**
 	 * All recordPerspectiveIDs registered with the Table. This variable is synchronous with the keys of the hashMap of
@@ -295,7 +291,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 			if (notifyDataDomain) {
 				DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
 				event.setSender(this);
-				GeneralManager.get().getEventPublisher().triggerEvent(event);
+				
+				EventPublisher.trigger(event);
 			}
 		}
 
@@ -556,7 +553,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 			RecordVAUpdateEvent event = new RecordVAUpdateEvent(dataDomainID, recordPerspective.getPerspectiveID(),
 					this);
-			eventPublisher.triggerEvent(event);
+			EventPublisher.trigger(event);
 		} else if (targetCategory == dimensionIDCategory) {
 			if (vaDelta.getIDType() != dimensionIDType)
 				vaDelta = DeltaConverter.convertDelta(dimensionIDMappingManager, dimensionIDType, vaDelta);
@@ -565,7 +562,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 			RecordVAUpdateEvent event = new RecordVAUpdateEvent(dataDomainID, dimensionPerspective.getPerspectiveID(),
 					this);
-			eventPublisher.triggerEvent(event);
+			EventPublisher.trigger(event);
 		}
 
 	}
@@ -585,7 +582,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 			event.setSender(this);
 			event.setEventSpace(dataDomainID);
 			event.setPerspectiveID(perspectiveID);
-			eventPublisher.triggerEvent(event);
+			EventPublisher.trigger(event);
 		} else if (table.getDimensionPerspective(perspectiveID) != null) {
 			table.getDimensionPerspective(perspectiveID).init(data);
 
@@ -593,7 +590,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 			event.setEventSpace(dataDomainID);
 			event.setSender(this);
 			event.setPerspectiveID(perspectiveID);
-			eventPublisher.triggerEvent(event);
+			EventPublisher.trigger(event);
 		}
 	}
 
@@ -966,7 +963,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		perspective.sort(valueColumn);
 		PerspectiveUpdatedEvent pUpdateEvent = new PerspectiveUpdatedEvent(perspective);
 		pUpdateEvent.setSender(this);
-		eventPublisher.triggerEvent(pUpdateEvent);
+		EventPublisher.trigger(pUpdateEvent);
 
 	}
 
@@ -1043,6 +1040,16 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 			return table.getRaw(id2, id1);
 		} else if (idType2.equals(recordIDType) && idType1.equals(dimensionIDType)) {
 			return table.getRaw(id1, id2);
+		}
+		throw new IllegalStateException("At least one of the ID types " + idType1 + " " + idType2
+				+ " not registered with this datadomain " + this.toString());
+	}
+
+	public float[] getColor(IDType idType1, Integer id1, IDType idType2, Integer id2) {
+		if (idType1.equals(recordIDType) && idType2.equals(dimensionIDType)) {
+			return table.getColor(id2, id1);
+		} else if (idType2.equals(recordIDType) && idType1.equals(dimensionIDType)) {
+			return table.getColor(id1, id2);
 		}
 		throw new IllegalStateException("At least one of the ID types " + idType1 + " " + idType2
 				+ " not registered with this datadomain " + this.toString());

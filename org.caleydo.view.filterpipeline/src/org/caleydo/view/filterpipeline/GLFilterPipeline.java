@@ -15,6 +15,7 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
@@ -157,8 +158,8 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
-		gl.glEnable(GL2.GL_POLYGON_SMOOTH);
-		gl.glHint(GL2.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);
+		gl.glEnable(GL2GL3.GL_POLYGON_SMOOTH);
+		gl.glHint(GL2GL3.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);
 	}
 
 	@Override
@@ -266,7 +267,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 					float fullHeightRight = ((filterList.get(0).getInput().size() - filter.getSizeVADelta()) * filterSize
 							.y()) / 100.f;
 
-					gl.glBegin(GL2.GL_QUADS);
+					gl.glBegin(GL2GL3.GL_QUADS);
 					gl.glColor4f(153 / 255.f, 213 / 255.f, 148 / 255.f, 0.3f);
 					gl.glVertex2f(pos.x(), pos.y());
 					gl.glVertex2f(pos.x(), pos.y() + fullHeightLeft);
@@ -328,7 +329,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		gl.glTranslatef(left + halfSize, bottom + halfSize, 0.001f);
 		gl.glRotatef(id <= firstFilter ? -90 : 90, 0, 0, 1);
 
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		{
 			gl.glColor3f(0.9f, 1f, 0.9f);
 
@@ -361,6 +362,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		switch (pickingMode) {
 		case CLICKED:
 			dragAndDropController.clearDraggables();
+			break;
 		case MOUSE_OVER:
 			// filterMenu.handleClearMouseOver();
 			break;
@@ -451,6 +453,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 				if (!bControlPressed)
 					selectionManager.clearSelection(SelectionType.SELECTION);
 				// break; Fall through...
+				//$FALL-THROUGH$
 			case MOUSE_OVER:
 				// reset all mouse over actions
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);

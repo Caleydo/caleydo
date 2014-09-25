@@ -50,7 +50,7 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		// pathwayElement.setPathwayRepresentation(new PathwayTextureRepresentation(PathwayManager.get()
 		// .getPathwayByTitle("ErbB signaling pathway", EPathwayDatabaseType.WIKIPATHWAYS)));
 		pathwayElement.setPathwayRepresentation(new PathwayTextureRepresentation(PathwayManager.get()
-				.getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG)));
+				.getPathwayByTitle("Glioma", EPathwayDatabaseType.valueOf("KEGG"))));
 		// PathwayDataMappingHandler pathwayMappingHandler = new PathwayDataMappingHandler();
 		// pathwayMappingHandler.setEventSpace(eventSpace);
 
@@ -73,7 +73,6 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 				.getPathwayRepresentation(), pathwayElement.getMappingHandler()));
 		pathwayElement.addForegroundAugmentation(new StdDevBarConsideringVertexHighlightAugmentation(pathwayElement));
 		pathwayElement.addForegroundAugmentation(new CompoundAugmentation(pathwayElement.getPathwayRepresentation()));
-
 
 		// IDMappingDescription desc = new IDMappingDescription();
 		// desc.setParsingStartLine(0);
@@ -120,34 +119,35 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		// desc.setToDataType(EDataType.INTEGER);
 		// IDMappingManager.addIDMappingDescription(desc);
 
+		// HTI
 		// IDMappingDescription desc = new IDMappingDescription();
 		// desc.setParsingStartLine(1);
 		// desc.setParsingStopLine(-1);
-		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/MUTATION_SAMPLE2GENE_SYMBOL.txt");
+		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/VARIANT_ID2GENE_SYMBOL.txt");
 		// desc.setDelimiter("\t");
-		// desc.setFromIDType(EGeneIDTypes.MUTATION_SAMPLE.name());
+		// desc.setFromIDType(EGeneIDTypes.VARIANT_ID.name());
 		// desc.setToIDType(EGeneIDTypes.GENE_SYMBOL.name());
 		// desc.setIdCategory(EGeneIDTypes.GENE.name());
 		// desc.setMultiMapping(true);
 		// desc.setCreateReverseMapping(true);
 		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
-		// desc.setFromDataType(EDataType.INTEGER);
-		// desc.setToDataType(EDataType.STRING);
+		// desc.setFromDataType(EGeneIDTypes.VARIANT_ID.getDataType());
+		// desc.setToDataType(EGeneIDTypes.GENE_SYMBOL.getDataType());
 		// IDMappingManager.addIDMappingDescription(desc);
 		//
 		// desc = new IDMappingDescription();
 		// desc.setParsingStartLine(1);
 		// desc.setParsingStopLine(-1);
-		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/MUTATION_SAMPLE2VCF_SAMPLE.txt");
+		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/VARIANT_CALL_ID2VCF_SAMPLE.txt");
 		// desc.setDelimiter("\t");
-		// desc.setFromIDType(EGeneIDTypes.MUTATION_SAMPLE.name());
+		// desc.setFromIDType(EGeneIDTypes.VARIANT_CALL_ID.name());
 		// desc.setToIDType(EGeneIDTypes.VCF_SAMPLE.name());
 		// desc.setIdCategory(EGeneIDTypes.GENE.name());
 		// desc.setMultiMapping(true);
 		// desc.setCreateReverseMapping(true);
 		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
-		// desc.setFromDataType(EDataType.INTEGER);
-		// desc.setToDataType(EDataType.STRING);
+		// desc.setFromDataType(EGeneIDTypes.VARIANT_CALL_ID.getDataType());
+		// desc.setToDataType(EGeneIDTypes.VCF_SAMPLE.getDataType());
 		// IDMappingManager.addIDMappingDescription(desc);
 		//
 		// desc = new IDMappingDescription();
@@ -161,8 +161,53 @@ public class GLPathwayView extends AMultiTablePerspectiveElementView {
 		// desc.setMultiMapping(true);
 		// desc.setCreateReverseMapping(true);
 		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
-		// desc.setFromDataType(EDataType.STRING);
-		// desc.setToDataType(EDataType.STRING);
+		// desc.setFromDataType(EGeneIDTypes.PATIENT.getDataType());
+		// desc.setToDataType(EGeneIDTypes.VCF_SAMPLE.getDataType());
+		// IDMappingManager.addIDMappingDescription(desc);
+		//
+		// desc = new IDMappingDescription();
+		// desc.setParsingStartLine(1);
+		// desc.setParsingStopLine(-1);
+		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/VARIANT_CALL_ID2VARIANT_ID.txt");
+		// desc.setDelimiter("\t");
+		// desc.setFromIDType(EGeneIDTypes.VARIANT_CALL_ID.name());
+		// desc.setToIDType(EGeneIDTypes.VARIANT_ID.name());
+		// desc.setIdCategory(EGeneIDTypes.GENE.name());
+		// desc.setMultiMapping(true);
+		// desc.setCreateReverseMapping(true);
+		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
+		// desc.setFromDataType(EGeneIDTypes.VARIANT_CALL_ID.getDataType());
+		// desc.setToDataType(EGeneIDTypes.VARIANT_ID.getDataType());
+		// IDMappingManager.addIDMappingDescription(desc);
+		//
+		// desc = new IDMappingDescription();
+		// desc.setParsingStartLine(1);
+		// desc.setParsingStopLine(-1);
+		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/VARIANT_ID2DBSNP.txt");
+		// desc.setDelimiter("\t");
+		// desc.setFromIDType(EGeneIDTypes.VARIANT_ID.name());
+		// desc.setToIDType(EGeneIDTypes.DBSNP.name());
+		// desc.setIdCategory(EGeneIDTypes.GENE.name());
+		// desc.setMultiMapping(true);
+		// desc.setCreateReverseMapping(true);
+		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
+		// desc.setFromDataType(EGeneIDTypes.VARIANT_ID.getDataType());
+		// desc.setToDataType(EGeneIDTypes.DBSNP.getDataType());
+		// IDMappingManager.addIDMappingDescription(desc);
+		//
+		// desc = new IDMappingDescription();
+		// desc.setParsingStartLine(1);
+		// desc.setParsingStopLine(-1);
+		// desc.setFileName("C:/Users/Christian/.caleydo_3.1/cache/caleydo/download/3.1/mappings/homo_sapiens/VARIANT_ID2COSMIC.txt");
+		// desc.setDelimiter("\t");
+		// desc.setFromIDType(EGeneIDTypes.VARIANT_ID.name());
+		// desc.setToIDType(EGeneIDTypes.COSMIC.name());
+		// desc.setIdCategory(EGeneIDTypes.GENE.name());
+		// desc.setMultiMapping(true);
+		// desc.setCreateReverseMapping(true);
+		// desc.setResolveCodeMappingUsingCodeToId_LUT(false);
+		// desc.setFromDataType(EGeneIDTypes.VARIANT_ID.getDataType());
+		// desc.setToDataType(EGeneIDTypes.COSMIC.getDataType());
 		// IDMappingManager.addIDMappingDescription(desc);
 	}
 

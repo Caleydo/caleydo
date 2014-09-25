@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.core.internal.cmd.ZoomHandler"
+            id="org.caleydo.core.startup.zoom"
+            name="Change Zoom Factor">
+         <commandParameter
+               id="action"
+               name="Zooming action"
+               optional="true"
+               values="org.caleydo.core.internal.cmd.ZoomHandlerParameters">
+         </commandParameter>
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.caleydo.core.view.internal.ui.ViewPreferencePage"
+            id="org.caleydo.core.gui.preferences.views"
+            name="Views">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.caleydo.core.view.internal.MyPreferences">
+      </initializer>
+   </extension>
+
+</plugin>

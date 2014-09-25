@@ -5,9 +5,10 @@
  ******************************************************************************/
 package org.caleydo.view.dvi;
 
-import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
+import org.caleydo.core.gui.OpenOnlineHelpAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.dvi.toolbar.ToolBarWidgets;
 import org.eclipse.jface.action.IToolBarManager;
@@ -26,7 +27,7 @@ public class RcpGLDVIView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLDataViewIntegrator(glCanvas, serializedView.getViewFrustum());
+		view = new GLDataViewIntegrator(glCanvas, ViewFrustum.createDefault());
 		initializeView();
 		minSizeComposite.setView((AGLView) view);
 		createPartControlGL();

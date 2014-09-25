@@ -13,7 +13,6 @@ import java.util.List;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 
@@ -103,7 +102,7 @@ public abstract class AContextMenuItem {
 	public void triggerEvent() {
 		if (events != null && events.size() > 0) {
 			for (AEvent event : events) {
-				GeneralManager.get().getEventPublisher().triggerEvent(event);
+				EventPublisher.trigger(event);
 			}
 		}
 	}
@@ -114,7 +113,7 @@ public abstract class AContextMenuItem {
 		}
 	}
 
-	protected void addSubItem(AContextMenuItem contextMenuItem) {
+	public void addSubItem(AContextMenuItem contextMenuItem) {
 		subMenuItems.add(contextMenuItem);
 	}
 

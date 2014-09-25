@@ -23,6 +23,7 @@ public enum EPickingType {
 	REMOVABLE_NODE,
 	REMOVE_NODE_BUTTON,
 	BACKGROUND,
+	DATA_CELL,
 
 	/** Picking type for samples */
 	SAMPLE,

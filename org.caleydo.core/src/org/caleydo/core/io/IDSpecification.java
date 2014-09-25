@@ -8,6 +8,7 @@
  */
 package org.caleydo.core.io;
 
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IDTypeInitializer;
@@ -123,6 +124,8 @@ public class IDSpecification {
 	 */
 	private boolean isIDTypeGene = false;
 
+	private EDataType dataType;
+
 	/** Advanced parsing rules for IDs. Defaults to null */
 	private IDTypeParsingRules idTypeParsingRules = null;
 
@@ -208,6 +211,21 @@ public class IDSpecification {
 	 */
 	public IDTypeParsingRules getIdTypeParsingRules() {
 		return idTypeParsingRules;
+	}
+
+	/**
+	 * @return the dataType, see {@link #dataType}
+	 */
+	public EDataType getDataType() {
+		return dataType;
+	}
+
+	/**
+	 * @param dataType
+	 *            setter, see {@link dataType}
+	 */
+	public void setDataType(EDataType dataType) {
+		this.dataType = dataType;
 	}
 
 }

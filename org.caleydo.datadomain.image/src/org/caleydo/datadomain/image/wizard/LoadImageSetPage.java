@@ -9,15 +9,14 @@
 package org.caleydo.datadomain.image.wizard;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.SortedSet;
 
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.gui.dataimport.wizard.AImportDataPage;
-import org.caleydo.datadomain.image.FilePrefixGrouper;
 import org.caleydo.datadomain.image.ImageSet;
+import org.caleydo.datadomain.image.LayeredImage;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -62,16 +61,6 @@ public class LoadImageSetPage
 	public static final String PAGE_NAME = "Load Images";
 
 	public static final String PAGE_DESCRIPTION = "Specify the images you want to load.";
-
-	/**
-	 * Allowed image extensions.
-	 */
-	public static final List<String> EXTENSIONS_IMG = Arrays.asList("png", "jpg", "jpeg");
-
-	/**
-	 * Allowed config file extensions.
-	 */
-	public static final List<String> EXTENSIONS_CFG = Arrays.asList("url", "ini");
 
 	/**
 	 * Composite that is the parent of all gui elements of this dialog.
@@ -125,8 +114,6 @@ public class LoadImageSetPage
 	 */
 	protected Button addFilesButton;
 
-	protected FilePrefixGrouper imageGroups;
-
 	protected FileTree files = new FileTree();
 
 	protected LoadImageSetPageMediator mediator;
@@ -173,7 +160,7 @@ public class LoadImageSetPage
 		fileTree = new TreeViewer(datasetConfigGroup);
 		fileTree.getTree().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		fileTree.setContentProvider(files);
-		// fileTree.setLabelProvider(new FileTreeLabelProvider());
+		fileTree.setLabelProvider(files);
 		fileTree.setInput("root"); // pass a non-null that will be ignored
 		fileTree.getTree().addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -189,8 +176,18 @@ public class LoadImageSetPage
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.keyCode == SWT.DEL) {
-					for (TreeItem item : fileTree.getTree().getSelection())
-						imageGroups.remove((String) item.getData());
+					for (TreeItem item : fileTree.getTree().getSelection()) {
+						Object selection = item.getData();
+						if (selection instanceof LayeredImage) {
+							ImageSet imageSet = getWizard().getImageSet();
+							if (imageSet == null)
+								return;
+							imageSet.removeImage((LayeredImage)selection);
+						} else if (selection instanceof LayeredImage.Layer) {
+							LayeredImage.Layer layer = (LayeredImage.Layer)selection;
+							layer.getParent().removeLayer(layer);
+						}
+					}
 					updateTree();
 				}
 			}
@@ -223,7 +220,7 @@ public class LoadImageSetPage
 				if (dir == null)
 					return;
 
-				imageGroups.add(new File(dir));
+				getWizard().getImageSet().importFrom(new File(dir));
 				updateTree();
 			}
 		});
@@ -236,33 +233,18 @@ public class LoadImageSetPage
 				FileDialog fileDialog = new FileDialog(new Shell(), SWT.MULTI);
 				fileDialog.setText("Add File(s)");
 
-				String[] exts = new String[3];
+				String[] exts = new String[1];
 				String[] names = new String[exts.length];
 
-				names[0] = "All (";
-				exts[1] = "";
-				names[1] = "Image (";
-				for (int i = 0; i < EXTENSIONS_IMG.size(); ++i) {
-					exts[1] += "*." + EXTENSIONS_IMG.get(i) + ";"
-							+  "*." + EXTENSIONS_IMG.get(i).toUpperCase() + ";";
-					String name = (i > 0 ? ", " : "") + "*." + EXTENSIONS_IMG.get(i);
-					names[0] += name;
-					names[1] += name;
+				exts[0] = "";
+				names[0] = "Image Set Description (";
+				for (int i = 0; i < ImageSet.EXTENSIONS_CFG.size(); ++i) {
+					exts[0] += "*." + ImageSet.EXTENSIONS_CFG.get(i) + ";"
+							+  "*." + ImageSet.EXTENSIONS_CFG.get(i).toUpperCase() + ";";
+					String name = "*." + ImageSet.EXTENSIONS_CFG.get(i);
+					names[0] += (i > 0 ? ", " : "") + name;
 				}
-				names[1] += ")";
-
-				exts[2] = "";
-				names[2] = "Config (";
-				for (int i = 0; i < EXTENSIONS_CFG.size(); ++i) {
-					exts[2] += "*." + EXTENSIONS_CFG.get(i) + ";"
-							+  "*." + EXTENSIONS_CFG.get(i).toUpperCase() + ";";
-					String name = "*." + EXTENSIONS_CFG.get(i);
-					names[0] += ", " + name;
-					names[2] += (i > 0 ? ", " : "") + name;
-				}
-				names[2] += ")";
 				names[0] += ")";
-				exts[0] = exts[1] + exts[2];
 
 				fileDialog.setFilterExtensions(exts);
 				fileDialog.setFilterNames(names);
@@ -272,8 +254,10 @@ public class LoadImageSetPage
 
 				String basePath = fileDialog.getFilterPath();
 
-				for (String file_name : fileDialog.getFileNames())
-					imageGroups.add(new File(basePath, file_name.trim()));
+				for (String file_name : fileDialog.getFileNames()) {
+					getWizard().getImageSet().importFrom(
+							new File(basePath, file_name));
+				}
 				updateTree();
 			}
 		});
@@ -286,7 +270,6 @@ public class LoadImageSetPage
 	 * Regroup all added images and rebuild the tree view.
 	 */
 	protected void updateTree() {
-		imageGroups.refreshGroups();
 		fileTree.refresh();
 		handleEvent(null);
 	}
@@ -295,8 +278,16 @@ public class LoadImageSetPage
 		Point s = previewImage.getSize();
 		File imgFile = null;
 		TreeItem[] selections = fileTree.getTree().getSelection();
-		if (selections.length > 0)
-			imgFile = imageGroups.getFiles().get(selections[0].getData());
+		if (selections.length > 0) {
+			Object selection = selections[0].getData();
+			if (selection instanceof LayeredImage)
+				imgFile = ((LayeredImage)selection).getBaseImage().image;
+			else if(selection instanceof LayeredImage.Layer) {
+				LayeredImage.Image img = ((LayeredImage.Layer)selection).area;
+				if (img != null)
+					imgFile = img.image;
+			}
+		}
 		Image src = null;
 
 		if (imgFile != null) {
@@ -461,8 +452,8 @@ public class LoadImageSetPage
 	@Override
 	public boolean isPageComplete() {
 		if (   nameText.getText().isEmpty()
-			|| imageGroups == null
-			|| imageGroups.getGroups().isEmpty() )
+			|| getWizard().getImageSet() == null
+			|| getWizard().getImageSet().getImageNames().isEmpty() )
 			return false;
 
 		return super.isPageComplete();
@@ -483,8 +474,7 @@ public class LoadImageSetPage
 	public void pageActivated() {
 		ImageSet img = getWizard().getImageSet();
 		nameText.setText(img.getName());
-		imageGroups = img;
-		files.fileGrouper = imageGroups;
+		files.imageSet = img;
 		updateTree();
 
 		mediator.guiCreated();
@@ -500,9 +490,9 @@ public class LoadImageSetPage
 
 }
 
-class FileTree implements ITreeContentProvider {
+class FileTree implements ITreeContentProvider, ILabelProvider {
 
-	public FilePrefixGrouper fileGrouper;
+	public ImageSet imageSet;
 
 	/**
 	 * Gets the root element(s) of the tree
@@ -513,15 +503,13 @@ class FileTree implements ITreeContentProvider {
 	 */
 	@Override
 	public Object[] getElements(Object arg0) {
-		if (fileGrouper == null)
+		if (imageSet == null)
 			return new Object[0];
 
 		// These are the root elements of the tree
 		// We don't care what arg0 is, because we just want all
 		// the root nodes in the file system
-		return fileGrouper.getGroups().isEmpty()
-				? fileGrouper.getFiles().keySet().toArray()
-				: fileGrouper.getGroups().keySet().toArray();
+		return imageSet.getImages().toArray();
 	}
 
 	/**
@@ -533,14 +521,10 @@ class FileTree implements ITreeContentProvider {
 	 */
 	@Override
 	public Object[] getChildren(Object arg0) {
-		if (fileGrouper == null)
+		if (imageSet == null || !(arg0 instanceof LayeredImage))
 			return new Object[0];
 
-		SortedSet<String> group = fileGrouper.getGroups().get(arg0);
-		if (group != null)
-			return group.toArray();
-
-		return new Object[0];
+		return ((LayeredImage)arg0).getLayers().values().toArray();
 	}
 
 	/**
@@ -564,11 +548,6 @@ class FileTree implements ITreeContentProvider {
 	 */
 	@Override
 	public Object getParent(Object arg0) {
-		if (   fileGrouper == null
-			|| fileGrouper.getGroups().isEmpty()
-			|| fileGrouper.getGroups().keySet().contains(arg0) )
-			return null;
-
 		// TODO search groups for element
 		return null;
 	}
@@ -595,4 +574,35 @@ class FileTree implements ITreeContentProvider {
 	public void inputChanged(Viewer arg0, Object arg1, Object arg2) {
 		// Nothing to change
 	}
+
+	@Override
+	public void addListener(ILabelProviderListener listener) {
+
+	}
+
+	@Override
+	public boolean isLabelProperty(Object element, String property) {
+		return false;
+	}
+
+	@Override
+	public void removeListener(ILabelProviderListener listener) {
+
+	}
+
+	@Override
+	public Image getImage(Object element) {
+		return null;
+	}
+
+	@Override
+	public String getText(Object element) {
+		if (element instanceof LayeredImage)
+			return ((LayeredImage)element).getName();
+		else if (element instanceof LayeredImage.Layer)
+			return ((LayeredImage.Layer)element).getName();
+
+		return null;
+	}
+
 }

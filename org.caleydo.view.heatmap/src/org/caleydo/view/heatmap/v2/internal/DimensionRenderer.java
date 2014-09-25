@@ -23,8 +23,9 @@ import org.caleydo.view.heatmap.v2.ISpacingStrategy;
 import org.caleydo.view.heatmap.v2.ISpacingStrategy.ISpacingLayout;
 import org.caleydo.view.heatmap.v2.SpacingStrategies;
 
-import com.google.common.collect.DiscreteDomains;
-import com.google.common.collect.Ranges;
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.DiscreteDomain;
+import com.google.common.collect.Range;
 import com.google.common.primitives.Ints;
 /**
  * utility class to render the selection of a heatmap as one ore more crosses
@@ -226,7 +227,7 @@ public class DimensionRenderer {
 		}
 		int from = spacing.getIndex(offset);
 		int to = spacing.getIndex(offset2);
-		return Ranges.closed(from, to).asSet(DiscreteDomains.integers());
+		return ContiguousSet.create(Range.closed(from, to), DiscreteDomain.integers());
 	}
 
 	/**

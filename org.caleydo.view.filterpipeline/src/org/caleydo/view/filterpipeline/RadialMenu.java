@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -87,7 +88,7 @@ public class RadialMenu {
 
 				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
-				gl.glBegin(GL2.GL_QUADS);
+				gl.glBegin(GL2GL3.GL_QUADS);
 				{
 					if (i == activeEntry)
 						gl.glColor4f(1.0f, 0.6f, 0.6f, 0.7f);
@@ -122,7 +123,7 @@ public class RadialMenu {
 				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			}
 
-			gl.glBegin(GL2.GL_QUADS);
+			gl.glBegin(GL2GL3.GL_QUADS);
 			{
 				if (texture == null) {
 					if (i == activeEntry)

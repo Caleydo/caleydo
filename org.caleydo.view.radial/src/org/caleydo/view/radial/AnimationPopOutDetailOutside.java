@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.view.opengl.util.animation.MovementValue;
+import org.caleydo.view.radial.animation.MovementValue;
 
 /**
  * This class represents the animation where a selected partial disc pops out to

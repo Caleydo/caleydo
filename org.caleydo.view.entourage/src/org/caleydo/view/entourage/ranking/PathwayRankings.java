@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.entourage.ranking;
 
+import java.util.Set;
+
+import org.caleydo.core.id.IDType;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.vis.lineup.data.ADoubleFunction;
@@ -77,6 +80,34 @@ public final class PathwayRankings {
 					PathwayRow r = (PathwayRow) in;
 					return (double) PathwayManager.get().getNumEquivalentVertexReps(pathway, r.getPathway())
 							/ (double) PathwayManager.get().filterEquivalentVertexReps(r.getPathway()).size();
+				}
+			};
+		}
+
+	}
+
+	public static class NumberOfGenesFromSetRanking implements IPathwayRanking {
+
+		private final Set<Object> geneIDs;
+		private final IDType geneIDType;
+
+		public NumberOfGenesFromSetRanking(Set<Object> geneIDs, IDType geneIDType) {
+			this.geneIDs = geneIDs;
+			this.geneIDType = geneIDType;
+		}
+
+		@Override
+		public String getRankingCriterion() {
+			return "Number of Genes from Set";
+		}
+
+		@Override
+		public IDoubleFunction<IRow> getRankingFunction() {
+			return new ADoubleFunction<IRow>() {
+				@Override
+				public double applyPrimitive(IRow in) {
+					PathwayRow r = (PathwayRow) in;
+					return PathwayManager.getContainedGenes(r.getPathway(), geneIDs, geneIDType).size();
 				}
 			};
 		}

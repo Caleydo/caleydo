@@ -9,9 +9,9 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.StyledColor;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.util.StyledColor;
 
 import com.google.common.base.Objects;
 

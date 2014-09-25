@@ -19,8 +19,6 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.serialize.ISerializationAddon;
 import org.caleydo.core.serialize.SerializationData;
 
-import com.google.common.io.Files;
-
 /**
  * @author Thomas Geymayer
  *
@@ -47,8 +45,7 @@ public class ImageSerializationAddon implements ISerializationAddon {
 				.getDataDomainsByType(ImageDataDomain.DATA_DOMAIN_TYPE);
 		for(IDataDomain dataDomain: domains) {
 			ImageSet imageSet = ((ImageDataDomain) dataDomain).getImageSet();
-			imageSet.add(new File(dirName, dataDomain.getDataDomainID()));
-			imageSet.refreshGroups();
+			imageSet.importFrom(new File(dirName, dataDomain.getDataDomainID()));
 		}
 	}
 
@@ -56,16 +53,16 @@ public class ImageSerializationAddon implements ISerializationAddon {
 	public void serialize( Collection<? extends IDataDomain> toSave,
 						   Marshaller marshaller,
 						   String dirName ) throws IOException {
-		for(IDataDomain dataDomain: toSave)
-			if( dataDomain instanceof ImageDataDomain) {
-				File savePath = new File(dirName, dataDomain.getDataDomainID());
-				savePath.mkdirs();
-				for(File img: ((ImageDataDomain)dataDomain).getImageSet()
-														   .getFiles()
-														   .values()) {
-					Files.copy(img, new File(savePath, img.getName()));
-				}
+		for(IDataDomain dataDomain: toSave) {
+			if (!(dataDomain instanceof ImageDataDomain))
+				continue;
+
+			ImageDataDomain domain = (ImageDataDomain)dataDomain;
+			File domainPath = new File(dirName, domain.getDataDomainID());
+			for (LayeredImage img : domain.getImageSet().getImages()) {
+				img.export(new File(domainPath, img.getName()));
 			}
+		}
 	}
 
 	@Override

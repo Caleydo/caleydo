@@ -35,7 +35,7 @@ public class PathwayPathSelectionEvent extends AEvent {
 		if (!ok) {
 			Logger.log(new Status(IStatus.ERROR, "Pathway Path", "Integrity check of path failed: " + path.toString()));
 		}
-		return path.checkIntegrity();
+		return ok;
 	}
 
 	/**

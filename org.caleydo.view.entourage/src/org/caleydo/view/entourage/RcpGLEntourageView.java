@@ -19,9 +19,10 @@
  *******************************************************************************/
 package org.caleydo.view.entourage;
 
-import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
+import org.caleydo.core.gui.OpenOnlineHelpAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.datadomain.pathway.toolbar.ClearPathAction;
 import org.caleydo.datadomain.pathway.toolbar.SampleSelectionMode;
 import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
@@ -55,7 +56,7 @@ public class RcpGLEntourageView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		GLEntourage subgraph = new GLEntourage(glCanvas, serializedView.getViewFrustum());
+		GLEntourage subgraph = new GLEntourage(glCanvas, ViewFrustum.createDefault());
 		view = subgraph;
 		initializeView();
 

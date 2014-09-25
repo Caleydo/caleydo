@@ -44,6 +44,13 @@ public class PathwayPath extends ArrayList<PathSegment> {
 		super(segments);
 	}
 
+	public PathwayPath(PathSegment... segments) {
+		super(segments.length);
+		for (PathSegment s : segments) {
+			add(s);
+		}
+	}
+
 	public List<PathSegment> getSegmentsOfPathway(PathwayGraph pathway) {
 		List<PathSegment> segments = new ArrayList<>();
 		for (PathSegment segment : this) {

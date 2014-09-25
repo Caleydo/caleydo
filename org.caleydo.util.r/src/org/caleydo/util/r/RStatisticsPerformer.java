@@ -19,23 +19,16 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.event.data.StatisticsFoldChangeReductionEvent;
-import org.caleydo.core.event.data.StatisticsPValueReductionEvent;
-import org.caleydo.core.event.data.StatisticsTwoSidedTTestReductionEvent;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.util.r.filter.FilterRepresentationFoldChange;
 import org.caleydo.util.r.filter.FilterRepresentationPValue;
 import org.caleydo.util.r.filter.FilterRepresentationTwoSidedTTest;
-import org.caleydo.util.r.listener.StatisticsFoldChangeReductionListener;
-import org.caleydo.util.r.listener.StatisticsPValueReductionListener;
-import org.caleydo.util.r.listener.StatisticsTwoSidedTTestReductionListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 
-public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwner {
+public class RStatisticsPerformer implements IListenerOwner {
 	private static final Logger log = Logger.create(RStatisticsPerformer.class);
 
 	private Rengine engine;
@@ -48,7 +41,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		registerEventListeners();
 	}
 
-	@Override
+
 	public void init() {
 		// just making sure we have the right version of everything
 
@@ -82,10 +75,11 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 	@Override
 	public void registerEventListeners() {
-		listeners.register(StatisticsPValueReductionEvent.class, new StatisticsPValueReductionListener(this));
-		listeners.register(StatisticsFoldChangeReductionEvent.class, new StatisticsFoldChangeReductionListener(this));
-		listeners.register(StatisticsTwoSidedTTestReductionEvent.class, new StatisticsTwoSidedTTestReductionListener(
-				this));
+		// listeners.register(StatisticsPValueReductionEvent.class, new StatisticsPValueReductionListener(this));
+		// listeners.register(StatisticsFoldChangeReductionEvent.class, new
+		// StatisticsFoldChangeReductionListener(this));
+		// listeners.register(StatisticsTwoSidedTTestReductionEvent.class, new StatisticsTwoSidedTTestReductionListener(
+		// this));
 	}
 
 	// TODO: never called!
@@ -94,7 +88,6 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		listeners.unregisterAll();
 	}
 
-	@Override
 	public void performTest() {
 
 		try {
@@ -130,7 +123,6 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 	 * measurements. They are computed as: num/denom if num>denom, and as -denom/num otherwise.
 	 * </p>
 	 */
-	@Override
 	public synchronized void foldChange(TablePerspective container1, TablePerspective container2, boolean betweenRecords) {
 
 		// Do nothing if the operations was already performed earlier
@@ -295,7 +287,6 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 	/**
 	 * FIXME this uses only the first two!
 	 */
-	@Override
 	public void twoSidedTTest(ArrayList<TablePerspective> tablePerspectives) {
 
 		// Perform t-test between all neighboring sets (A<->B<->C)

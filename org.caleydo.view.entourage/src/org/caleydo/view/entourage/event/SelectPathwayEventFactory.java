@@ -25,7 +25,6 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.PathwaySelectionEvent;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
@@ -46,7 +45,7 @@ public class SelectPathwayEventFactory extends AVertexRepBasedEventFactory {
 	public AEvent create(PathwayVertexRep vertexRep) {
 		if (vertexRep != null && vertexRep.getType() == EPathwayVertexType.map) {
 			PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
-					EPathwayDatabaseType.KEGG);
+					vertexRep.getPathway().getType());
 			if (pathway != null) {
 				PathwaySelectionEvent event = new PathwaySelectionEvent(pathway);
 				event.setEventSpace(eventSpace);
