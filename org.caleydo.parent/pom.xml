@@ -64,7 +64,7 @@
 		</repository>
 		<repository>
 			<id>caleydo-eclipse-p2</id>
-			<url>http://dev.caleydo.org/nexus/content/repositories/eclipse2</url>
+			<url>http://dev.caleydo.org/nexus/content/repositories/eclipse34</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
