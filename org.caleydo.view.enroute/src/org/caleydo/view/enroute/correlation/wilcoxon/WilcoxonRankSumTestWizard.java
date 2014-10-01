@@ -44,7 +44,7 @@ public class WilcoxonRankSumTestWizard extends Wizard {
 
 	protected DataCellInfo sourceInfo;
 	protected DataCellInfo targetInfo;
-	protected IDataClassifier cell1Classifier;
+	protected IDataClassifier sourceClassifier;
 	protected SimpleIDClassifier derivedIDClassifier;
 
 	/**
@@ -140,10 +140,18 @@ public class WilcoxonRankSumTestWizard extends Wizard {
 	}
 
 	/**
-	 * @return the cell1Classifier, see {@link #cell1Classifier}
+	 * @return the cell1Classifier, see {@link #sourceClassifier}
 	 */
-	public IDataClassifier getCell1Classifier() {
-		return cell1Classifier;
+	public IDataClassifier getSourceClassifier() {
+		return sourceClassifier;
+	}
+
+	/**
+	 * @param sourceClassifier
+	 *            setter, see {@link sourceClassifier}
+	 */
+	public void setSourceClassifier(IDataClassifier sourceClassifier) {
+		this.sourceClassifier = sourceClassifier;
 	}
 
 	/**

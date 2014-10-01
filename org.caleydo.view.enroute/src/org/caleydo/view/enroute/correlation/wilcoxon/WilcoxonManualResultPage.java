@@ -42,16 +42,24 @@ public class WilcoxonManualResultPage extends WizardPage implements IPageChanged
 
 	}
 
-
 	@Override
 	public void pageChanged(PageChangedEvent event) {
 		if (event.getSelectedPage() == this) {
 			WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
-			DataCellInfo info = wizard.getTargetInfo();
+			DataCellInfo targetInfo = wizard.getTargetInfo();
+
+			// java.util.List<WilcoxonResult> resultList = WilcoxonUtil.applyWilcoxonToAllElements(
+			// wizard.getSourceClassifier(), wizard.getSourceInfo(), targetInfo.columnPerspective);
+			//
+			// for (WilcoxonResult r : resultList) {
+			// System.out.println(r.p);
+			// }
+			// System.out.println("NumElements: " + resultList.size());
+
 			SimpleIDClassifier derivedClassifier = wizard.getDerivedIDClassifier();
 			MannWhitneyUTest test = new MannWhitneyUTest(NaNStrategy.REMOVED, TiesStrategy.AVERAGE);
-			double[] values1 = WilcoxonUtil.getSampleValuesArray(info, derivedClassifier.getClass1IDs());
-			double[] values2 = WilcoxonUtil.getSampleValuesArray(info, derivedClassifier.getClass2IDs());
+			double[] values1 = WilcoxonUtil.getSampleValuesArray(targetInfo, derivedClassifier.getClass1IDs());
+			double[] values2 = WilcoxonUtil.getSampleValuesArray(targetInfo, derivedClassifier.getClass2IDs());
 			resultsWidget.updateClassSummary(0, values1, derivedClassifier.getDataClasses().get(0));
 			resultsWidget.updateClassSummary(1, values2, derivedClassifier.getDataClasses().get(1));
 			double u = test.mannWhitneyU(values1, values2);
@@ -61,7 +69,6 @@ public class WilcoxonManualResultPage extends WizardPage implements IPageChanged
 		}
 
 	}
-
 
 	@Override
 	public IWizardPage getPreviousPage() {

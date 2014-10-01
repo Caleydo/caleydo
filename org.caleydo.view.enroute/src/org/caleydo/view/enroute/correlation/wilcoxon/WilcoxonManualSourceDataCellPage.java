@@ -41,8 +41,11 @@ public class WilcoxonManualSourceDataCellPage extends AManualDataClassificationP
 		if (event.getSelectedPage() == getNextPage()) {
 			WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
 			wizard.setSourceInfo(info);
-			wizard.setDerivedIDClassifier(WilcoxonUtil.createDerivedClassifier(classificationWidget.getClassifier(),
+			IDataClassifier classifier = classificationWidget.getClassifier();
+			wizard.setSourceClassifier(classifier);
+			wizard.setDerivedIDClassifier(WilcoxonUtil.createDerivedClassifier(classifier,
 					info));
+
 		} else if (event.getSelectedPage() == this) {
 			UpdateDataCellSelectionValidatorEvent e = new UpdateDataCellSelectionValidatorEvent(
 					CellSelectionValidators.nonEmptyCellValidator());

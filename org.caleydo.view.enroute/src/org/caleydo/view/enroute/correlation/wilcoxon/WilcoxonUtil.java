@@ -18,6 +18,8 @@ import org.apache.commons.math3.stat.ranking.TiesStrategy;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.data.collection.column.container.CategoryProperty;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.view.enroute.correlation.CategoricalDataClassifier;
 import org.caleydo.view.enroute.correlation.DataCellInfo;
@@ -60,7 +62,45 @@ public final class WilcoxonUtil {
 
 	}
 
+	public static final MannWhitneyUTest WILCOXON_TEST = new MannWhitneyUTest(NaNStrategy.REMOVED, TiesStrategy.AVERAGE);
+
 	private WilcoxonUtil() {
+	}
+
+	public static List<WilcoxonResult> applyWilcoxonToAllElements(IDataClassifier classifier, DataCellInfo sourceInfo,
+			Perspective targetPerspective) {
+
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) targetPerspective.getDataDomain();
+		Perspective perspective = dataDomain.getDefaultTablePerspective().getOppositePerspective(
+				targetPerspective.getIdType());
+
+		List<WilcoxonResult> list = new ArrayList<>(perspective.getVirtualArray().size());
+
+		for (int id : perspective.getVirtualArray()) {
+
+			DataCellInfo targetInfo = new DataCellInfo(dataDomain, targetPerspective, perspective.getIdType(), id, null);
+			WilcoxonResult result = calcWilcoxonRankSumTest(sourceInfo, classifier, targetInfo);
+			if (result != null) {
+				list.add(result);
+			}
+		}
+
+		return list;
+	}
+
+	public static WilcoxonResult calcWilcoxonRankSumTest(DataCellInfo sourceInfo, IDataClassifier classifier,
+			DataCellInfo targetInfo) {
+
+		SimpleIDClassifier derivedClassifier = createDerivedClassifier(classifier, sourceInfo);
+		double[] values1 = getSampleValuesArray(targetInfo, derivedClassifier.getClass1IDs());
+		double[] values2 = getSampleValuesArray(targetInfo, derivedClassifier.getClass2IDs());
+
+		if (values1.length > 0 && values2.length > 0) {
+			double u = WILCOXON_TEST.mannWhitneyU(values1, values2);
+			double p = WILCOXON_TEST.mannWhitneyUTest(values1, values2);
+			return new WilcoxonResult(p, u, classifier, derivedClassifier);
+		}
+		return null;
 	}
 
 	public static List<WilcoxonResult> calcAllWilcoxonCombinations(DataCellInfo sourceInfo, DataCellInfo targetInfo) {
@@ -69,8 +109,6 @@ public final class WilcoxonUtil {
 		Object description = sourceInfo.dataDomain.getDataClassSpecificDescription(sourceInfo.rowIDType,
 				sourceInfo.rowID, sourceInfo.columnPerspective.getIdType(), sourceInfo.columnPerspective
 						.getVirtualArray().get(0));
-
-		MannWhitneyUTest test = new MannWhitneyUTest(NaNStrategy.REMOVED, TiesStrategy.AVERAGE);
 
 		if (description == null || description instanceof NumericalProperties) {
 			List<Double> values = getSampleValues(sourceInfo, new HashSet<Object>(sourceInfo.columnPerspective
@@ -83,14 +121,10 @@ public final class WilcoxonUtil {
 						WilcoxonRankSumTestWizard.CLASSIFICATION_COLORS_1.getSecond(),
 						Character.toString((char) 0x2264) + " " + threshold, "> " + threshold);
 
-				SimpleIDClassifier derivedClassifier = createDerivedClassifier(classifier, sourceInfo);
-				double[] values1 = getSampleValuesArray(targetInfo, derivedClassifier.getClass1IDs());
-				double[] values2 = getSampleValuesArray(targetInfo, derivedClassifier.getClass2IDs());
+				WilcoxonResult result = calcWilcoxonRankSumTest(sourceInfo, classifier, targetInfo);
 
-				if (values1.length > 0 && values2.length > 0) {
-					double u = test.mannWhitneyU(values1, values2);
-					double p = test.mannWhitneyUTest(values1, values2);
-					results.add(new WilcoxonResult(p, u, classifier, derivedClassifier));
+				if (result != null) {
+					results.add(result);
 				}
 			}
 
@@ -115,14 +149,10 @@ public final class WilcoxonUtil {
 							WilcoxonRankSumTestWizard.CLASSIFICATION_COLORS_1.getSecond(), getCategoryName(class1,
 									classDesc), getCategoryName(class2, classDesc), classDesc);
 
-					SimpleIDClassifier derivedClassifier = createDerivedClassifier(classifier, sourceInfo);
-					double[] values1 = getSampleValuesArray(targetInfo, derivedClassifier.getClass1IDs());
-					double[] values2 = getSampleValuesArray(targetInfo, derivedClassifier.getClass2IDs());
+					WilcoxonResult result = calcWilcoxonRankSumTest(sourceInfo, classifier, targetInfo);
 
-					if (values1.length > 0 && values2.length > 0) {
-						double u = test.mannWhitneyU(values1, values2);
-						double p = test.mannWhitneyUTest(values1, values2);
-						results.add(new WilcoxonResult(p, u, classifier, derivedClassifier));
+					if (result != null) {
+						results.add(result);
 					}
 				}
 			}
