@@ -147,6 +147,11 @@
             id="org.caleydo.core.startup.open"
             name="Open Project">
       </command>
+      <command
+            defaultHandler="org.caleydo.core.io.gui.ImportMappingHandler"
+            id="org.caleydo.core.io.gui.import_mapping"
+            name="Import Mapping">
+      </command>
 
    </extension>
    <extension
@@ -194,6 +199,11 @@
                      commandId="org.caleydo.core.io.gui.import_data"
                      icon="resources/icons/general/import_data.png"
                      label="Import Data"
+                     style="push">
+               </command>
+               <command
+                     commandId="org.caleydo.core.io.gui.import_mapping"
+                     label="Import Mapping"
                      style="push">
                </command>
             </menu>
