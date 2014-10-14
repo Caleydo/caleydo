@@ -47,12 +47,12 @@ public class MatrixDefinition {
 	 * </p>
 	 * <p>
 	 * e.g.:
-	 * 
+	 *
 	 * <pre>
 	 * Sample1 | Gene1 | 0.4
 	 * Sample1 | Gene2 | 0.6
 	 * </pre>
-	 * 
+	 *
 	 * </p>
 	 * <p>
 	 * Defaults to false.

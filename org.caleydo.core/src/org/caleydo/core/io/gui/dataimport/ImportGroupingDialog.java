@@ -186,7 +186,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 			public void on(int numColumn, int numRow, List<? extends List<String>> dataMatrix) {
 				onPreviewChanged(numColumn, numRow, dataMatrix);
 			}
-		}, true);
+		}, true, true);
 
 		init();
 
