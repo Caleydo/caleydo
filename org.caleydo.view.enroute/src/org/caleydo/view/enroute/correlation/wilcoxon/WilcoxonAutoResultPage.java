@@ -242,7 +242,7 @@ public class WilcoxonAutoResultPage extends WizardPage implements IPageChangedLi
 			@Override
 			public String getText(Object element) {
 				WilcoxonResult result = (WilcoxonResult) element;
-				return String.format(String.format(Locale.ENGLISH, "%.6f", result.p));
+				return String.format(String.format(Locale.ENGLISH, "%.6e", result.p));
 			}
 		});
 

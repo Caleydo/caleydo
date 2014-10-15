@@ -445,7 +445,7 @@ public class TablePerspective implements IDefaultLabelHolder, IUniqueObject {
 
 		for (Group group : groupList) {
 			if (groupList.size() == 1 && group.isLabelDefault())
-				group.setLabel(getLabel(), isLabelDefault());
+				group.setLabel("Ungrouped", isLabelDefault());// group.setLabel(getLabel(), isLabelDefault());
 
 			List<Integer> indices = recordVA.getIDsOfGroup(group.getGroupIndex());
 
@@ -494,7 +494,7 @@ public class TablePerspective implements IDefaultLabelHolder, IUniqueObject {
 
 		for (Group group : groupList) {
 			if (groupList.size() == 1 && group.isLabelDefault())
-				group.setLabel(getLabel(), isLabelDefault());
+				group.setLabel("Ungrouped", isLabelDefault());// group.setLabel(getLabel(), isLabelDefault());
 			List<Integer> indices = dimensionVA.getIDsOfGroup(group.getGroupIndex());
 
 			Perspective dimensionPerspective = new Perspective(dataDomain, dimensionVA.getIdType());

@@ -409,9 +409,9 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 			double[] result = FishersExactTest.fishersExactTest(contingencyTable[0][0], contingencyTable[0][1],
 					contingencyTable[1][0], contingencyTable[1][1]);
 
-			twoSidedPValueLabel.setText(String.format(Locale.ENGLISH, "Two-Sided: %.8f", result[0]));
-			leftTailPValueLabel.setText(String.format(Locale.ENGLISH, "Left-Tail:  %.8f", result[1]));
-			rightTailPValueLabel.setText(String.format(Locale.ENGLISH, "Right-Tail:  %.8f", result[2]));
+			twoSidedPValueLabel.setText(String.format(Locale.ENGLISH, "Two-Sided: %.6e", result[0], result[0]));
+			leftTailPValueLabel.setText(String.format(Locale.ENGLISH, "Left-Tail:  %.6e", result[1]));
+			rightTailPValueLabel.setText(String.format(Locale.ENGLISH, "Right-Tail:  %.6e", result[2]));
 			visited = true;
 
 			columnHeaderProvider.setClassifier(classifier1);

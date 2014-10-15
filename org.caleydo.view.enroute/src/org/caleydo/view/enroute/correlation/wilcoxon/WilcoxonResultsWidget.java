@@ -109,12 +109,12 @@ public class WilcoxonResultsWidget extends Composite {
 		classLabel[classNumber].setToolTipText(category.name);
 		classNumElementsLabel[classNumber].setText("Number of Elements: " + values.length);
 		AdvancedDoubleStatistics stats = AdvancedDoubleStatistics.of(values);
-		classMedianLabel[classNumber].setText(String.format(Locale.ENGLISH, "Median: %.8f", stats.getMedian()));
+		classMedianLabel[classNumber].setText(String.format(Locale.ENGLISH, "Median: %.6e", stats.getMedian()));
 	}
 
 	public void updateStatistics(double u, double p) {
 		uValueLabel.setText(String.format(Locale.ENGLISH, "U: %.2f", u));
-		pValueLabel.setText(String.format(Locale.ENGLISH, "P-Value: %.8f", p));
+		pValueLabel.setText(String.format(Locale.ENGLISH, "P-Value: %.6e", p));
 	}
 
 	@Override
