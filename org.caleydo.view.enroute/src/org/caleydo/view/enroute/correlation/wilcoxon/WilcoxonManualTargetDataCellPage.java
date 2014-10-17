@@ -5,8 +5,6 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.correlation.wilcoxon;
 
-import java.util.EnumSet;
-
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.event.EventPublisher;
@@ -53,10 +51,8 @@ public class WilcoxonManualTargetDataCellPage extends ASelectDataCellPage {
 		WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
 		if (event.getSelectedPage() == this) {
 
-			Predicate<DataCellInfo> validator = Predicates.and(
-					CellSelectionValidators.nonEmptyCellValidator(),
-					Predicates.or(CellSelectionValidators.numericalValuesValidator(),
-							CellSelectionValidators.categoricalValuesValidator(EnumSet.of(ECategoryType.ORDINAL))));
+			Predicate<DataCellInfo> validator = Predicates.and(CellSelectionValidators.nonEmptyCellValidator(),
+					CellSelectionValidators.numericalValuesValidator());
 
 			EventPublisher.trigger(new UpdateDataCellSelectionValidatorEvent(validator));
 			if (classificationWidget != null) {
@@ -75,7 +71,6 @@ public class WilcoxonManualTargetDataCellPage extends ASelectDataCellPage {
 			return false;
 		return super.isPageComplete();
 	}
-
 
 	@Override
 	public void dispose() {
