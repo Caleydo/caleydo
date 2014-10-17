@@ -827,17 +827,17 @@ public class MappedDataRenderer {
 
 				} else {
 					if (assignRenderersForCenteredCategoryData(dataDescription.getCategoricalClassDescription(),
-							renderer))
+							renderer)) {
 						continue;
+					} else {
+						renderer.setDetailRenderer(new ColoredColumnRenderer(renderer));
+						renderer.setOverviewRenderer(new HistogramRenderer(renderer));
+						continue;
+					}
 				}
-				if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
-					renderer.setDetailRenderer(new ColoredColumnRenderer(renderer));
-					renderer.setOverviewRenderer(new HistogramRenderer(renderer));
 
-				} else {
-					renderer.setDetailRenderer(new ContinuousDataRenderer(renderer));
-					renderer.setOverviewRenderer(new SummaryBoxAndWhiskersRenderer(renderer));
-				}
+				renderer.setDetailRenderer(new ContinuousDataRenderer(renderer));
+				renderer.setOverviewRenderer(new SummaryBoxAndWhiskersRenderer(renderer));
 
 			} else {
 				// inhomogeneous table

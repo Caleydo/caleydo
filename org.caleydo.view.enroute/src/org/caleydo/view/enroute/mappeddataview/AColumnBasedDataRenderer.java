@@ -121,10 +121,9 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 	protected abstract void renderColumnBar(GL2 gl, int columnID, float x, float y, List<SelectionType> selectionTypes,
 			boolean useShading);
 
-	protected void renderSingleBar(GL2 gl, float x, float y, float height, float width,
+	protected void renderSingleBar(GL2 gl, float x, float y, float height, float width, float totalHeight,
 			List<SelectionType> selectionTypes, float[] baseColor, int columnID, boolean useShading) {
-		float[] topBarColor = baseColor;
-		float[] bottomBarColor = baseColor;
+
 
 		List<SelectionType> experimentSelectionTypes = contentRenderer.parent.sampleSelectionManager.getSelectionTypes(
 				contentRenderer.columnIDType, columnID);
@@ -132,39 +131,53 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 		@SuppressWarnings("unchecked")
 		List<SelectionType> sTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes, selectionTypes);
 
-		if (contentRenderer.isHighlightMode
-				&& !(sTypes.contains(SelectionType.MOUSE_OVER) || sTypes.contains(SelectionType.SELECTION))) {
-			return;
-		}
-
 		if (contentRenderer.isHighlightMode) {
+			if (!(sTypes.contains(SelectionType.MOUSE_OVER) || sTypes.contains(SelectionType.SELECTION)))
+				return;
 			colorCalculator.setBaseColor(new Color(baseColor));
 
 			colorCalculator.calculateColors(sTypes);
 
-			topBarColor = colorCalculator.getPrimaryColor().getRGBA();
-			bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
+			float[] topBarColor = colorCalculator.getPrimaryColor().transparentCopy(0.5f).getRGBA();
+			float[] bottomBarColor = colorCalculator.getSecondaryColor().transparentCopy(0.5f).getRGBA();
+
+			renderBar(gl, x, 0, width, totalHeight, bottomBarColor, topBarColor, useShading);
+
+		} else {
+
+			Integer resolvedSampleID = contentRenderer.columnIDMappingManager.getID(
+					contentRenderer.resolvedColumnIDType, contentRenderer.parent.sampleIDType, columnID);
+
+			gl.glPushName(contentRenderer.parentView.getPickingManager().getPickingID(
+					contentRenderer.parentView.getID(), EPickingType.SAMPLE.name(), resolvedSampleID));
+			gl.glPushName(contentRenderer.parentView.getPickingManager().getPickingID(
+					contentRenderer.parentView.getID(), EPickingType.SAMPLE.name() + hashCode(), columnID));
+
+			// Render whole area to be pickable, not only the bar
+			renderBar(gl, x, 0, width, totalHeight, new float[] { 0, 0, 0, 0 }, new float[] { 0, 0, 0, 0 }, useShading);
+
+			gl.glPopName();
+			gl.glPopName();
+
+			renderBar(gl, x, y, width, height, baseColor, baseColor, useShading);
+
 		}
 
-		Integer resolvedSampleID = contentRenderer.columnIDMappingManager.getID(contentRenderer.resolvedColumnIDType,
-				contentRenderer.parent.sampleIDType, columnID);
+	}
 
-		gl.glPushName(contentRenderer.parentView.getPickingManager().getPickingID(contentRenderer.parentView.getID(),
-				EPickingType.SAMPLE.name(), resolvedSampleID));
-		gl.glPushName(contentRenderer.parentView.getPickingManager().getPickingID(contentRenderer.parentView.getID(),
-				EPickingType.SAMPLE.name() + hashCode(), columnID));
-
+	private void renderBar(GL2 gl, float x, float y, float width, float height, float[] bottomBarColor,
+			float[] topBarColor, boolean useShading) {
 		gl.glBegin(GL2GL3.GL_QUADS);
 
 		gl.glColor4fv(bottomBarColor, 0);
 		gl.glVertex3f(x, y, z);
 		if (useShading) {
-			gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f);
+			gl.glColor4f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f, topBarColor[3]);
 
 		}
 		gl.glVertex3f(x + width, y, z);
 		if (useShading) {
-			gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
+			gl.glColor4f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f, topBarColor[3]);
 		} else {
 			gl.glColor4fv(topBarColor, 0);
 		}
@@ -175,9 +188,6 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 		gl.glVertex3f(x, y + height, z);
 
 		gl.glEnd();
-
-		gl.glPopName();
-		gl.glPopName();
 	}
 
 	protected float[] getMappingColorForItem(int columnID) {
