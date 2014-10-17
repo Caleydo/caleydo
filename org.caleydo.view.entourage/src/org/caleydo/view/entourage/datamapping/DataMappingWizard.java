@@ -62,6 +62,7 @@ public class DataMappingWizard extends GLElementContainer implements IEnrouteCon
 	private GLEntourage entourage;
 	private GLElementContainer pathAndDataLayer;
 	private GLElementContainer dataLayer;
+	private boolean automaticPathShownFirstTime = false;
 
 	public DataMappingWizard(GLEntourage entourage) {
 		this.entourage = entourage;
@@ -79,7 +80,7 @@ public class DataMappingWizard extends GLElementContainer implements IEnrouteCon
 				if (pick.getPickingMode() == PickingMode.CLICKED) {
 					EnablePathSelectionEvent event = new EnablePathSelectionEvent(true);
 					event.setEventSpace(DataMappingWizard.this.entourage.getPathEventSpace());
-					
+
 					EventPublisher.trigger(event);
 					Display.getDefault().asyncExec(new Runnable() {
 						@Override
@@ -205,8 +206,10 @@ public class DataMappingWizard extends GLElementContainer implements IEnrouteCon
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onPathwayPathSelected(PathwayPathSelectionEvent e) {
-
-		updateLayerVisibility(entourage.getEnRoute(), e.getPath());
+		if (!automaticPathShownFirstTime) {
+			automaticPathShownFirstTime = true;
+			updateLayerVisibility(entourage.getEnRoute(), e.getPath());
+		}
 	}
 
 	@ListenTo
