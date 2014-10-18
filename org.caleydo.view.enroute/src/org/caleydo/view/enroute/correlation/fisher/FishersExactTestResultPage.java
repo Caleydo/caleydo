@@ -339,6 +339,8 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 					cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, color);
 					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle,
 							DisplayMode.NORMAL, labelPrefix + i);
+					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle,
+							DisplayMode.SELECT, labelPrefix + i);
 					colorRegistry.add(color);
 				}
 			}
