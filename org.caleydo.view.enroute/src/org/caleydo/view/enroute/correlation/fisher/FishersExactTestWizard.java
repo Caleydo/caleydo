@@ -98,6 +98,10 @@ public class FishersExactTestWizard extends Wizard {
 		}
 	}
 
+	public boolean isFirstPage(ASelectDataCellPage page) {
+		return page == firstDataCellPage;
+	}
+
 	/**
 	 * @param info1
 	 *            setter, see {@link info1}

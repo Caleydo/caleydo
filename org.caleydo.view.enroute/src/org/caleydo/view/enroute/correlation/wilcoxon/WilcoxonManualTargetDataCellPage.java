@@ -51,8 +51,21 @@ public class WilcoxonManualTargetDataCellPage extends ASelectDataCellPage {
 		WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
 		if (event.getSelectedPage() == this) {
 
+			if (info != null) {
+				if (!CellSelectionValidators.overlappingSamplesValidator(wizard.getSourceInfo()).apply(info)) {
+					info = null;
+					classificationGroup.setVisible(false);
+					dataCellInfoWidget.updateInfo(null);
+					getWizard().getContainer().updateButtons();
+
+					EventPublisher.trigger(new ShowOverlayEvent(null, null, getWizard().getStartingPage() == this));
+				}
+			}
+
+			@SuppressWarnings("unchecked")
 			Predicate<DataCellInfo> validator = Predicates.and(CellSelectionValidators.nonEmptyCellValidator(),
-					CellSelectionValidators.numericalValuesValidator());
+					CellSelectionValidators.numericalValuesValidator(),
+					CellSelectionValidators.overlappingSamplesValidator(wizard.getSourceInfo()));
 
 			EventPublisher.trigger(new UpdateDataCellSelectionValidatorEvent(validator));
 			if (classificationWidget != null) {
@@ -67,7 +80,7 @@ public class WilcoxonManualTargetDataCellPage extends ASelectDataCellPage {
 
 	@Override
 	public boolean isPageComplete() {
-		if (classificationWidget == null)
+		if (info == null)
 			return false;
 		return super.isPageComplete();
 	}
@@ -121,7 +134,7 @@ public class WilcoxonManualTargetDataCellPage extends ASelectDataCellPage {
 
 		EventPublisher.trigger(new ShowOverlayEvent(info, classificationWidget.getClassifier().getOverlayProvider(),
 				false));
-
+		getWizard().getContainer().updateButtons();
 	}
 
 	@Override

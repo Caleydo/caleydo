@@ -44,12 +44,25 @@ public class WilcoxonAutoTargetDataCellPage extends ASelectDataCellPage {
 
 	@Override
 	public void pageChanged(PageChangedEvent event) {
+		WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
 		if (event.getSelectedPage() == getNextPage()) {
-			WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
+
 			wizard.setTargetInfo(info);
 		} else if (event.getSelectedPage() == this) {
+			if (info != null) {
+				if (!CellSelectionValidators.overlappingSamplesValidator(wizard.getSourceInfo()).apply(info)) {
+					info = null;
+					dataCellInfoWidget.updateInfo(null);
+					getWizard().getContainer().updateButtons();
+
+					EventPublisher.trigger(new ShowOverlayEvent(null, null, getWizard().getStartingPage() == this));
+				}
+			}
+
+			@SuppressWarnings("unchecked")
 			Predicate<DataCellInfo> validator = Predicates.and(CellSelectionValidators.nonEmptyCellValidator(),
-					CellSelectionValidators.numericalValuesValidator());
+					CellSelectionValidators.numericalValuesValidator(),
+					CellSelectionValidators.overlappingSamplesValidator(wizard.getSourceInfo()));
 			UpdateDataCellSelectionValidatorEvent e = new UpdateDataCellSelectionValidatorEvent(validator);
 			EventPublisher.trigger(e);
 		}

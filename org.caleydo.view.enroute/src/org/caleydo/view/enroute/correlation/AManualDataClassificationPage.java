@@ -60,7 +60,7 @@ public abstract class AManualDataClassificationPage extends ASelectDataCellPage 
 
 	@Override
 	public boolean isPageComplete() {
-		if (classificationWidget == null)
+		if (info == null)
 			return false;
 		return super.isPageComplete();
 	}

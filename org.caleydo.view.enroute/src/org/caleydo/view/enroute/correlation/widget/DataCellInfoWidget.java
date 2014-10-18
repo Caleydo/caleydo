@@ -46,9 +46,9 @@ public class DataCellInfoWidget extends Composite {
 	}
 
 	public void updateInfo(DataCellInfo info) {
-		datasetLabel.setText("Dataset: " + info.getDataDomainLabel());
-		groupLabel.setText("Group: " + info.getGroupLabel());
-		rowLabel.setText("Row: " + info.getRowLabel());
+		datasetLabel.setText("Dataset: " + (info == null ? "" : info.getDataDomainLabel()));
+		groupLabel.setText("Group: " + (info == null ? "" : info.getGroupLabel()));
+		rowLabel.setText("Row: " + (info == null ? "" : info.getRowLabel()));
 	}
 
 }
