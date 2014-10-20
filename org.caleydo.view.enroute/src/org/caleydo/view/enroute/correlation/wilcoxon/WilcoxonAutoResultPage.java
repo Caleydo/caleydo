@@ -262,13 +262,15 @@ public class WilcoxonAutoResultPage extends WizardPage implements IPageChangedLi
 
 
 				}
-				double[] values1 = WilcoxonUtil.getSampleValuesArray(wizard.getTargetInfo(),
-						result.derivedClassifier.getClass1IDs());
-				double[] values2 = WilcoxonUtil.getSampleValuesArray(wizard.getTargetInfo(),
-						result.derivedClassifier.getClass2IDs());
-				resultsWidget.updateClassSummary(0, values1, result.derivedClassifier.getDataClasses().get(0));
-				resultsWidget.updateClassSummary(1, values2, result.derivedClassifier.getDataClasses().get(1));
-				resultsWidget.updateStatistics(result.u, result.p);
+				// double[] values1 = WilcoxonUtil.getSampleValuesArray(wizard.getTargetInfo(),
+				// result.derivedClassifier.getClass1IDs());
+				// double[] values2 = WilcoxonUtil.getSampleValuesArray(wizard.getTargetInfo(),
+				// result.derivedClassifier.getClass2IDs());
+				// resultsWidget.updateClassSummary(0, values1, result.derivedClassifier.getDataClasses().get(0));
+				// resultsWidget.updateClassSummary(1, values2, result.derivedClassifier.getDataClasses().get(1));
+				// resultsWidget.updateStatistics(result.u, result.p);
+				resultsWidget.update(wizard.getSourceInfo(), wizard.getTargetInfo(), result);
+
 				getShell().layout(true, true);
 				getShell().pack(true);
 

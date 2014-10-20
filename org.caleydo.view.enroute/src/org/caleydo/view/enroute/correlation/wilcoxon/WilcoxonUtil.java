@@ -107,6 +107,7 @@ public final class WilcoxonUtil {
 		return null;
 	}
 
+
 	public static List<WilcoxonResult> calcAllWilcoxonCombinations(DataCellInfo sourceInfo, DataCellInfo targetInfo) {
 		List<WilcoxonResult> results = new ArrayList<>();
 

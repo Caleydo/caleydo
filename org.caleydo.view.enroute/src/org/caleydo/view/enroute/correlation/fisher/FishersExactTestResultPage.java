@@ -327,7 +327,7 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 			DataCellInfo info2 = wizard.getInfo2();
 
 			out.println(info2.columnPerspective.getIdType().getIDCategory().getHumanReadableIDType().getTypeName()
-					+ "\tCategory Data Block 1\t Category Data Block 2");
+					+ "\tCategory Data Block 1\tCategory Data Block 2");
 
 			IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
 					info1.columnPerspective.getIdType());
