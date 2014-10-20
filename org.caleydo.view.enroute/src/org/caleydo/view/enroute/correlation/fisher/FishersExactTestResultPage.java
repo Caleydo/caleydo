@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -106,6 +108,31 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 	protected Label twoSidedPValueLabel;
 	protected Label leftTailPValueLabel;
 	protected Label rightTailPValueLabel;
+
+	private static class ExportSampleItem implements Comparable<ExportSampleItem> {
+
+		public Object sampleID;
+		public String category1;
+		public String category2;
+
+		public ExportSampleItem(Object sampleID, String category1, String category2) {
+			this.sampleID = sampleID;
+			this.category1 = category1;
+			this.category2 = category2;
+		}
+
+		@Override
+		public int compareTo(ExportSampleItem o) {
+
+			int res = category1.compareTo(o.category1);
+			if (res != 0)
+				return res;
+
+			res = category2.compareTo(o.category2);
+			return res;
+		}
+
+	}
 
 	private static class CategoryHeaderProvider implements IDataProvider {
 
@@ -282,7 +309,7 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 			IDataClassifier classifier2 = wizard.getCell2Classifier();
 
 			out.println("\t" + classifier1.getDataClasses().get(0).name + "\t"
-					+ classifier1.getDataClasses().get(0).name);
+					+ classifier1.getDataClasses().get(1).name);
 			out.println(classifier2.getDataClasses().get(0).name + "\t" + contingencyTable[0][0] + "\t"
 					+ contingencyTable[1][0]);
 			out.println(classifier2.getDataClasses().get(1).name + "\t" + contingencyTable[0][1] + "\t"
@@ -310,21 +337,28 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 					info1.columnPerspective.getIdType(), info2.columnPerspective.getIdType().getIDCategory()
 							.getHumanReadableIDType());
 
+			List<ExportSampleItem> items = new ArrayList<>();
+
 			// We assume a 1:1 mapping between samples
 			for (int cell1ColumnID : info1.columnPerspective.getVirtualArray()) {
 
 				Set<Object> cell2ColumnIDs = mapper.apply(cell1ColumnID);
 				if (cell2ColumnIDs != null && !cell2ColumnIDs.isEmpty()) {
-					Object sampleID = primaryMapper.apply(cell1ColumnID);
+					Set<Object> sampleIDs = primaryMapper.apply(cell1ColumnID);
 					SimpleCategory c1 = getCategory(info1.dataDomain, info1.columnPerspective.getIdType(),
 							cell1ColumnID, info1.rowIDType, info1.rowID, wizard.getCell1Classifier());
 					SimpleCategory c2 = getCategory(info2.dataDomain, info2.columnPerspective.getIdType(),
 							(Integer) cell2ColumnIDs.iterator().next(), info2.rowIDType, info2.rowID,
 							wizard.getCell2Classifier());
 
-					out.println(sampleID + "\t" + c1.name + "\t" + c2.name);
+					items.add(new ExportSampleItem(sampleIDs.iterator().next(), c1.name, c2.name));
+					// out.println(sampleIDs.iterator().next() + "\t" + c1.name + "\t" + c2.name);
 				}
+			}
 
+			Collections.sort(items);
+			for (ExportSampleItem item : items) {
+				out.println(item.sampleID + "\t" + item.category1 + "\t" + item.category2);
 			}
 
 			out.close();
