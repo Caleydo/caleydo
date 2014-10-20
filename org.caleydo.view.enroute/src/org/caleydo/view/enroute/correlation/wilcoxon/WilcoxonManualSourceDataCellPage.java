@@ -43,8 +43,6 @@ public class WilcoxonManualSourceDataCellPage extends AManualDataClassificationP
 			wizard.setSourceInfo(info);
 			IDataClassifier classifier = classificationWidget.getClassifier();
 			wizard.setSourceClassifier(classifier);
-			wizard.setDerivedIDClassifier(WilcoxonUtil.createDerivedClassifier(classifier,
-					info));
 
 		} else if (event.getSelectedPage() == this) {
 			UpdateDataCellSelectionValidatorEvent e = new UpdateDataCellSelectionValidatorEvent(

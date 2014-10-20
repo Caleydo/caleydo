@@ -12,6 +12,7 @@ import org.caleydo.view.enroute.correlation.ASelectDataCellPage;
 import org.caleydo.view.enroute.correlation.CellSelectionValidators;
 import org.caleydo.view.enroute.correlation.DataCellInfo;
 import org.caleydo.view.enroute.correlation.ShowOverlayEvent;
+import org.caleydo.view.enroute.correlation.SimpleIDClassifier;
 import org.caleydo.view.enroute.correlation.UpdateDataCellSelectionValidatorEvent;
 import org.caleydo.view.enroute.correlation.widget.DerivedClassificationWidget;
 import org.eclipse.jface.dialogs.PageChangedEvent;
@@ -68,10 +69,12 @@ public class WilcoxonManualTargetDataCellPage extends ASelectDataCellPage {
 					CellSelectionValidators.overlappingSamplesValidator(wizard.getSourceInfo()));
 
 			EventPublisher.trigger(new UpdateDataCellSelectionValidatorEvent(validator));
-			if (classificationWidget != null) {
-				classificationWidget.setClassifier(wizard.getDerivedIDClassifier());
-				EventPublisher.trigger(new ShowOverlayEvent(info, classificationWidget.getClassifier()
-						.getOverlayProvider(), false));
+			if (classificationWidget != null && info != null) {
+				SimpleIDClassifier derivedClassifier = WilcoxonUtil.createDerivedClassifier(
+						wizard.getSourceClassifier(), wizard.getSourceInfo(), info);
+				wizard.setDerivedIDClassifier(derivedClassifier);
+				classificationWidget.setClassifier(derivedClassifier);
+				EventPublisher.trigger(new ShowOverlayEvent(info, derivedClassifier.getOverlayProvider(), false));
 			}
 		} else if (event.getSelectedPage() == getNextPage()) {
 			wizard.setTargetInfo(info);
@@ -121,16 +124,19 @@ public class WilcoxonManualTargetDataCellPage extends ASelectDataCellPage {
 
 		classificationGroup.setVisible(true);
 
+		WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
+		SimpleIDClassifier derivedClassifier = WilcoxonUtil.createDerivedClassifier(wizard.getSourceClassifier(),
+				wizard.getSourceInfo(), info);
+		wizard.setDerivedIDClassifier(derivedClassifier);
+
 		if (classificationWidget == null) {
 
 			classificationWidget = new DerivedClassificationWidget(classificationGroup);
 			classificationGroup.getShell().layout(true, true);
 			classificationGroup.getShell().pack(true);
 			getWizard().getContainer().updateButtons();
-
-			WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
-			classificationWidget.setClassifier(wizard.getDerivedIDClassifier());
 		}
+		classificationWidget.setClassifier(wizard.getDerivedIDClassifier());
 
 		EventPublisher.trigger(new ShowOverlayEvent(info, classificationWidget.getClassifier().getOverlayProvider(),
 				false));

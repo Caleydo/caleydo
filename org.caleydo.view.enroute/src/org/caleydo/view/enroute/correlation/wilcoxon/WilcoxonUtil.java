@@ -20,6 +20,9 @@ import org.caleydo.core.data.collection.column.container.CategoricalClassDescrip
 import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.view.enroute.correlation.CategoricalDataClassifier;
 import org.caleydo.view.enroute.correlation.DataCellInfo;
@@ -91,7 +94,8 @@ public final class WilcoxonUtil {
 	public static WilcoxonResult calcWilcoxonRankSumTest(DataCellInfo sourceInfo, IDataClassifier classifier,
 			DataCellInfo targetInfo) {
 
-		SimpleIDClassifier derivedClassifier = createDerivedClassifier(classifier, sourceInfo);
+		SimpleIDClassifier derivedClassifier = createDerivedClassifier(classifier, sourceInfo, targetInfo);
+
 		double[] values1 = getSampleValuesArray(targetInfo, derivedClassifier.getClass1IDs());
 		double[] values2 = getSampleValuesArray(targetInfo, derivedClassifier.getClass2IDs());
 
@@ -250,19 +254,45 @@ public final class WilcoxonUtil {
 		return array;
 	}
 
-	public static SimpleIDClassifier createDerivedClassifier(IDataClassifier classifier, DataCellInfo info) {
+	/**
+	 * Creates a {@link SimpleIDClassifier} with IDs and IDType of the specified target info using the classifier to
+	 * classify columns in the source info.
+	 *
+	 * @param classifier
+	 * @param sourceInfo
+	 * @return
+	 */
+	public static SimpleIDClassifier createDerivedClassifier(IDataClassifier classifier, DataCellInfo sourceInfo,
+			DataCellInfo targetInfo) {
 		List<SimpleCategory> classes = classifier.getDataClasses();
-		List<Set<Object>> idSets = new ArrayList<>(classes.size());
+		List<Set<Object>> sourceIdSets = new ArrayList<>(classes.size());
 		// There will be no more than 2
-		idSets.add(new HashSet<>());
-		idSets.add(new HashSet<>());
-		for (int columnID : info.columnPerspective.getVirtualArray()) {
-			Object value = info.dataDomain.getRaw(info.columnPerspective.getIdType(), columnID, info.rowIDType,
-					info.rowID);
+		sourceIdSets.add(new HashSet<>());
+		sourceIdSets.add(new HashSet<>());
+		for (int columnID : sourceInfo.columnPerspective.getVirtualArray()) {
+			Object value = sourceInfo.dataDomain.getRaw(sourceInfo.columnPerspective.getIdType(), columnID,
+					sourceInfo.rowIDType, sourceInfo.rowID);
 			SimpleCategory c = classifier.apply(value);
 			if (c != null) {
-				Set<Object> idSet = idSets.get(classes.indexOf(c));
+				Set<Object> idSet = sourceIdSets.get(classes.indexOf(c));
 				idSet.add(columnID);
+			}
+		}
+		IDMappingManager manager = IDMappingManagerRegistry.get().getIDMappingManager(
+				sourceInfo.columnPerspective.getIdType());
+		IIDTypeMapper<Object, Object> mapper = manager.getIDTypeMapper(sourceInfo.columnPerspective.getIdType(),
+				targetInfo.columnPerspective.getIdType());
+
+		List<Set<Object>> targetIDSets = new ArrayList<>(classes.size());
+
+		for (Set<Object> sourceIDs : sourceIdSets) {
+			Set<Object> mappedIDs = mapper.apply(sourceIDs);
+			Set<Object> targetIDs = new HashSet<Object>(mappedIDs.size());
+			targetIDSets.add(targetIDs);
+			for (Integer columnID : targetInfo.columnPerspective.getVirtualArray()) {
+				if (mappedIDs.contains(columnID)) {
+					targetIDs.add(columnID);
+				}
 			}
 		}
 
@@ -271,7 +301,9 @@ public final class WilcoxonUtil {
 		SimpleCategory class2 = new SimpleCategory(classes.get(1).name + " in first data block",
 				WilcoxonRankSumTestWizard.CLASSIFICATION_COLORS_2.getSecond());
 
-		return new SimpleIDClassifier(idSets.get(0), idSets.get(1), info.columnPerspective.getIdType(), class1, class2);
+		return new SimpleIDClassifier(targetIDSets.get(0), targetIDSets.get(1),
+				targetInfo.columnPerspective.getIdType(), class1,
+				class2);
 	}
 
 }

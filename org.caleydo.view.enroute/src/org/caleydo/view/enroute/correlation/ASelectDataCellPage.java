@@ -27,6 +27,7 @@ public abstract class ASelectDataCellPage extends WizardPage implements IPageCha
 
 	protected final EventListenerManager listeners = EventListenerManagers.createSWTDirect();
 
+	protected Group instructionsGroup;
 	protected DataCellInfoWidget dataCellInfoWidget;
 	protected DataCellInfo info;
 
@@ -54,6 +55,11 @@ public abstract class ASelectDataCellPage extends WizardPage implements IPageCha
 		infoGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		dataCellInfoWidget = new DataCellInfoWidget(infoGroup);
+
+		// instructionsGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		// instructionsGroup.setText("Instructions:");
+		// instructionsGroup.setLayout(new GridLayout(1, true));
+		// instructionsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		createWidgets(parentComposite);
 

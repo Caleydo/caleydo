@@ -51,7 +51,7 @@ public class WilcoxonRankSumTestWizard extends Wizard {
 	 *
 	 */
 	public WilcoxonRankSumTestWizard() {
-		setWindowTitle("Calculate Data Correlation using the Wilcoxon Rank-Sum Test");
+		setWindowTitle("Test Significance of Association using the Wilcoxon Rank-Sum Test");
 	}
 
 	@Override

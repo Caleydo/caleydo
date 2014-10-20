@@ -40,7 +40,7 @@ public class FishersExactTestWizard extends Wizard {
 	 *
 	 */
 	public FishersExactTestWizard() {
-		setWindowTitle("Calculate Data Correlation using Fisher's Exact Test");
+		setWindowTitle("Test Significance of Association using Fisher's Exact Test");
 	}
 
 	@Override
@@ -52,6 +52,9 @@ public class FishersExactTestWizard extends Wizard {
 		firstDataCellPage = new FishersSelectDataCellPage("FirstBlock", "Select First Data Block", null,
 				Lists.newArrayList(
 				seq1.get(0), seq1.get(2)));
+		// firstDataCellPage
+		// .setDescription("With Fisher's Exact Test you can evaluate the statistical significance of a correlation based on a contingency table. You will divide the data by selecting two data blocks in enRoute that you want to compare, and by setting thresholds in these blocks.\n\n"
+		// + "To start, click on the first data block that you want to compare now.");
 		secondDataCellPage = new FishersSelectDataCellPage("SecondBlock", "Select Second Data Block", null,
 				Lists.newArrayList(seq2.get(0), seq2.get(2)));
 		FishersExactTestResultPage resultPage = new FishersExactTestResultPage("Result",
