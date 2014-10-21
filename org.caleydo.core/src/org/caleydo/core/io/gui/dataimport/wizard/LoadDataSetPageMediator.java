@@ -508,9 +508,9 @@ public class LoadDataSetPageMediator extends ALoadDataPageMediator {
 
 	private void updateTable() {
 		page.previewTable.updateTable(dataSetDescription.getNumberOfHeaderLines(), Lists.newArrayList(new RowColDesc(
-				dataSetDescription.getRowOfColumnIDs(), Color.GREEN, rowIDTypeParsingRules)),
+				dataSetDescription.getRowOfColumnIDs(), Color.GREEN, columnIDTypeParsingRules)),
 				Lists.newArrayList(new RowColDesc(dataSetDescription.getColumnOfRowIds(), Color.GREEN,
-						columnIDTypeParsingRules)));
+						rowIDTypeParsingRules)));
 	}
 
 	/**

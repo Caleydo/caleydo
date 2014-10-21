@@ -90,6 +90,9 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 	private boolean headerRowsInFront = false;
 
+	private List<RowColDesc> extRowDescriptions = new ArrayList<>();
+	private List<RowColDesc> extColumnDescriptions = new ArrayList<>();
+
 	private List<RowColDescInternal> rowDescriptions = new ArrayList<>();
 	private List<RowColDescInternal> columnDescriptions = new ArrayList<>();
 	// private int idRowIndex = -1;
@@ -662,11 +665,38 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	// // table.redraw();
 	// }
 
+	private boolean needsReconfiguration(List<RowColDesc> rowDescriptions, List<RowColDesc> columnDescriptions) {
+		if (needsReconfig(rowDescriptions, extRowDescriptions))
+			return true;
+
+		return needsReconfig(columnDescriptions, extColumnDescriptions);
+	}
+
+	private boolean needsReconfig(List<RowColDesc> descriptions, List<RowColDesc> presentDescriptions) {
+		if (descriptions.size() != presentDescriptions.size())
+			return true;
+
+		for (RowColDesc desc : descriptions) {
+			boolean newDesc = true;
+			for (RowColDesc prevDesc : presentDescriptions) {
+				if (desc.color == prevDesc.color && desc.idTypeParsingRules == prevDesc.idTypeParsingRules) {
+					newDesc = false;
+					break;
+				}
+			}
+			if (newDesc)
+				return true;
+		}
+		return false;
+	}
+
 	public void updateTable(int numberOfHeaderRows, List<RowColDesc> rowDescriptions,
 			List<RowColDesc> columnDescriptions) {
 
-		boolean needsReconfiguration = rowDescriptions.size() != this.rowDescriptions.size()
-				|| columnDescriptions.size() != this.columnDescriptions.size();
+		boolean needsReconfiguration = needsReconfiguration(rowDescriptions, columnDescriptions);
+
+		this.extColumnDescriptions = columnDescriptions;
+		this.extRowDescriptions = rowDescriptions;
 
 		this.rowDescriptions.clear();
 		this.columnDescriptions.clear();
