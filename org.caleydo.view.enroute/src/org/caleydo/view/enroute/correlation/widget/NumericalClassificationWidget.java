@@ -75,9 +75,9 @@ public class NumericalClassificationWidget extends AClassificationWidget {
 		setLayout(layout);
 		setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		Label descLabel = new Label(this, SWT.NONE);
-		descLabel.setText("Define a threshold to divide the samples in this data block in two.");
-		descLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		// Label descLabel = new Label(this, SWT.NONE);
+		// descLabel.setText("Define a threshold to divide the samples in this data block in two.");
+		// descLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
 		categoryComposite = new Composite(this, SWT.NONE);
 		categoryComposite.setLayout(new GridLayout(2, false));

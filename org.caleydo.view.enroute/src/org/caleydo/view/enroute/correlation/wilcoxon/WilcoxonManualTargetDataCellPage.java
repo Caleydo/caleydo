@@ -34,6 +34,7 @@ import com.google.common.base.Predicates;
  */
 public class WilcoxonManualTargetDataCellPage extends ASelectDataCellPage {
 
+	protected Composite rightColumnComposite;
 	protected Group classificationGroup;
 	protected DerivedClassificationWidget classificationWidget;
 
@@ -44,7 +45,11 @@ public class WilcoxonManualTargetDataCellPage extends ASelectDataCellPage {
 	 * @param categoryColors
 	 */
 	protected WilcoxonManualTargetDataCellPage(String pageName, String title, ImageDescriptor titleImage) {
-		super(pageName, title, titleImage);
+		super(
+				pageName,
+				title,
+				titleImage,
+				"Select the second data block. The data of this block will be divided according to the split from the first data block.");
 	}
 
 	@Override
@@ -96,11 +101,14 @@ public class WilcoxonManualTargetDataCellPage extends ASelectDataCellPage {
 
 	@Override
 	protected void createWidgets(Composite parentComposite) {
-		classificationGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		classificationGroup.setText("Data Classification:");
-		classificationGroup.setLayout(new GridLayout(3, false));
-		classificationGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		classificationGroup.setVisible(false);
+		rightColumnComposite = new Composite(parentComposite, SWT.NONE);
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		rightColumnComposite.setLayout(layout);
+		rightColumnComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		createInstructionsGroup(rightColumnComposite);
 
 	}
 
@@ -120,6 +128,15 @@ public class WilcoxonManualTargetDataCellPage extends ASelectDataCellPage {
 			if (desc.getCategoryType() == ECategoryType.NOMINAL) {
 				throw new UnsupportedOperationException("Wilcoxon rank-sum test cannot be applied to nominal data");
 			}
+		}
+
+		if (classificationGroup == null) {
+			classificationGroup = new Group(rightColumnComposite, SWT.SHADOW_ETCHED_IN);
+			classificationGroup.setText("Data Classification:");
+			classificationGroup.setLayout(new GridLayout(3, false));
+			classificationGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			classificationGroup.getShell().layout(true, true);
+			classificationGroup.getShell().pack(true);
 		}
 
 		classificationGroup.setVisible(true);

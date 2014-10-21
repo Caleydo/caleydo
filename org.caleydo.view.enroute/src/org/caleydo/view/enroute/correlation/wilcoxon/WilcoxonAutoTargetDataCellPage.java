@@ -38,7 +38,11 @@ public class WilcoxonAutoTargetDataCellPage extends ASelectDataCellPage {
 	 */
 	protected WilcoxonAutoTargetDataCellPage(String pageName, String title, ImageDescriptor titleImage,
 			Color overlayColor) {
-		super(pageName, title, titleImage);
+		super(
+				pageName,
+				title,
+				titleImage,
+				"Select the second data block. The data of this block will be divided according to the calculated splits from the first data block.");
 		this.overlayColor = overlayColor;
 	}
 
@@ -70,8 +74,7 @@ public class WilcoxonAutoTargetDataCellPage extends ASelectDataCellPage {
 
 	@Override
 	protected void createWidgets(Composite parentComposite) {
-		// No additional widgets required
-
+		createInstructionsGroup(parentComposite);
 	}
 
 	@Override
@@ -82,7 +85,7 @@ public class WilcoxonAutoTargetDataCellPage extends ASelectDataCellPage {
 
 	@Override
 	protected Layout getBaseLayout() {
-		return new GridLayout(1, false);
+		return new GridLayout(2, false);
 	}
 
 	@Override

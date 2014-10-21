@@ -33,8 +33,8 @@ public class FishersSelectDataCellPage extends AManualDataClassificationPage {
 	 * @param categoryColors
 	 */
 	protected FishersSelectDataCellPage(String pageName, String title, ImageDescriptor titleImage,
-			List<Color> categoryColors) {
-		super(pageName, title, titleImage, categoryColors);
+			List<Color> categoryColors, String initialInstruction) {
+		super(pageName, title, titleImage, categoryColors, initialInstruction);
 	}
 
 	@Override
@@ -55,6 +55,7 @@ public class FishersSelectDataCellPage extends AManualDataClassificationPage {
 						info = null;
 						classificationGroup.setVisible(false);
 						dataCellInfoWidget.updateInfo(null);
+						instructionsLabel.setText(initialInstruction);
 						getWizard().getContainer().updateButtons();
 
 						EventPublisher.trigger(new ShowOverlayEvent(null, null, getWizard().getStartingPage() == this));

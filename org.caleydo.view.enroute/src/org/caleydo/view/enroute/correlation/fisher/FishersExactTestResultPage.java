@@ -265,7 +265,14 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 
 		buildTable(contingencyTableGroup);
 
-		Group pValuesGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		Composite leftRightComposite = new Composite(parentComposite, SWT.NONE);
+		GridLayout layout = new GridLayout(2, false);
+		layout.marginWidth =0;
+		layout.marginHeight = 0;
+		leftRightComposite.setLayout(layout);
+		leftRightComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		Group pValuesGroup = new Group(leftRightComposite, SWT.SHADOW_ETCHED_IN);
 		pValuesGroup.setText("P-Values");
 		pValuesGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		pValuesGroup.setLayout(new GridLayout(1, false));
@@ -294,6 +301,18 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 				}
 			}
 		});
+
+
+		Group descriptionGroup = new Group(leftRightComposite, SWT.SHADOW_ETCHED_IN);
+		descriptionGroup.setText("Description");
+		descriptionGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		descriptionGroup.setLayout(new GridLayout(1, false));
+
+		Label descLabel = new Label(descriptionGroup, SWT.WRAP);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd.widthHint = 300;
+		descLabel.setLayoutData(gd);
+		descLabel.setText("The left-/right-tailed test represents the sum of probabilities for obtaining a contingency table with an arrangement as extreme or more extreme as the given table in one direction. In the two-sided test, tables with equal or lower propabilities as the given table are considered in both directions.");
 
 		setControl(parentComposite);
 

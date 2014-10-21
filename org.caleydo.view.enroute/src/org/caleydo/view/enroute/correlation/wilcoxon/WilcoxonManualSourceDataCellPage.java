@@ -33,7 +33,8 @@ public class WilcoxonManualSourceDataCellPage extends AManualDataClassificationP
 	 */
 	protected WilcoxonManualSourceDataCellPage(String pageName, String title, ImageDescriptor titleImage,
 			List<Color> categoryColors) {
-		super(pageName, title, titleImage, categoryColors);
+		super(pageName, title, titleImage, categoryColors,
+				"Select the data block that you want to compare in the enRoute view.");
 	}
 
 	@Override
