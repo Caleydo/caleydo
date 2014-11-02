@@ -56,6 +56,7 @@ import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -76,20 +77,31 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 	private static final String ID_CELL = "ID_CELL";
 	private static final String HEADER_LINE_CELL = "HEADER_LINE_CELL";
-	private static final String COLUMN_ID = "COLUMN_ID";
-	private static final String ROW_ID = "ROW_ID";
+	private static final String ID_ROW = "ID_ROW";
+	private static final String ID_COLUMN = "ID_COLUMN";
+	private static final String COLORED_COLUMN = "COLORED_COLUMN";
+	private static final String COLORED_ROW = "COLORED_ROW";
+
 	private static final String DISABLED_CELL = "DISABLED_CELL";
 	private static final String EDITABLE = "EDITABLE";
 	private static final String COLUMN_HEADER_CHECKBOX = "COLUMN_HEADER_CHECKBOX";
 
 	private int numberOfHeaderRows = -1;
-	private int idRowIndex = -1;
-	private int idColumnIndex = -1;
+
+	private boolean headerRowsInFront = false;
+
+	private List<RowColDesc> extRowDescriptions = new ArrayList<>();
+	private List<RowColDesc> extColumnDescriptions = new ArrayList<>();
+
+	private List<RowColDescInternal> rowDescriptions = new ArrayList<>();
+	private List<RowColDescInternal> columnDescriptions = new ArrayList<>();
+	// private int idRowIndex = -1;
+	// private int idColumnIndex = -1;
 
 	private List<Pair<IDataProvider, Boolean>> customHeaderDataProviders = new ArrayList<>();
 	private List<Boolean> columnSelectionStatus = new ArrayList<>();
-	private RegExIDConverter columnIDConverter;
-	private RegExIDConverter rowIDConverter;
+	// private RegExIDConverter columnIDConverter;
+	// private RegExIDConverter rowIDConverter;
 	private IntegerCallback onColumnSelection;
 	private INoArgumentCallback onTranspose;
 
@@ -99,8 +111,44 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 	private DataLayer bodyDataLayer;
 
 	private boolean isTransposeable = false;
+	private boolean areColumnsSelectable = true;
 
 	private Label tableDimensionsLabel;
+
+	private class RowColDescInternal {
+		public int index;
+		public Color color;
+		public RegExIDConverter converter;
+
+		public RowColDescInternal(RowColDesc desc) {
+			this.index = desc.index;
+			this.color = GUIHelper.getColor(desc.color.asRGB());
+			this.converter = new RegExIDConverter(desc.idTypeParsingRules);
+		}
+
+	}
+
+	public static class RowColDesc {
+		public int index;
+		public org.caleydo.core.util.color.Color color;
+		public IDTypeParsingRules idTypeParsingRules;
+
+		public RowColDesc() {
+
+		}
+
+		/**
+		 * @param index
+		 * @param color
+		 * @param converter
+		 */
+		public RowColDesc(int index, org.caleydo.core.util.color.Color color, IDTypeParsingRules idTypeParsingRules) {
+			this.index = index;
+			this.color = color;
+			this.idTypeParsingRules = idTypeParsingRules;
+		}
+
+	}
 
 	private class TransposeDataProvider implements IDataProvider {
 
@@ -157,13 +205,13 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 			this.idTypeParsingRules = idTypeParsingRules;
 		}
 
-		/**
-		 * @param idTypeParsingRules
-		 *            setter, see {@link idTypeParsingRules}
-		 */
-		public void setIdTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
-			this.idTypeParsingRules = idTypeParsingRules;
-		}
+		// /**
+		// * @param idTypeParsingRules
+		// * setter, see {@link idTypeParsingRules}
+		// */
+		// public void setIdTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
+		// this.idTypeParsingRules = idTypeParsingRules;
+		// }
 
 		@Override
 		public Object canonicalToDisplayValue(Object canonicalValue) {
@@ -244,8 +292,10 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 					pastRows += provider.getRowCount();
 				}
 			} else {
-				if (columnSelectionStatus == null || columnSelectionStatus.size() == 0 || columnIndex == idColumnIndex)
+				if (columnSelectionStatus == null || columnSelectionStatus.size() == 0
+						|| containsIndex(columnIndex, columnDescriptions))
 					return;
+
 				columnSelectionStatus.set(columnIndex, (Boolean) newValue);
 			}
 			table.refresh();
@@ -275,14 +325,15 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 	}
 
-	public PreviewTableWidget(Composite parent, IntegerCallback onColumnSelection, boolean isTransposeable,
-			INoArgumentCallback onTranspose) {
+	public PreviewTableWidget(Composite parent, boolean areColumnsSelectable, IntegerCallback onColumnSelection,
+			boolean isTransposeable, INoArgumentCallback onTranspose) {
 		super(parent);
 		this.parent = new Composite(parent, SWT.NONE);
 		this.parent.setLayout(new GridLayout(1, true));
 		this.parent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		this.onColumnSelection = onColumnSelection;
 		this.isTransposeable = isTransposeable;
+		this.areColumnsSelectable = areColumnsSelectable;
 		this.onTranspose = onTranspose;
 		List<List<String>> emptyMatrix = createEmptyDataMatrix(15, 10);
 
@@ -340,18 +391,41 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		IConfigLabelAccumulator cellLabelAccumulator = new IConfigLabelAccumulator() {
 			@Override
 			public void accumulateConfigLabels(LabelStack configLabels, int columnPosition, int rowPosition) {
-				if (columnPosition == idColumnIndex || rowPosition == idRowIndex) {
-					configLabels.addLabel(ID_CELL);
+
+				for (int i = 0; i < rowDescriptions.size(); i++) {
+					RowColDescInternal rowDesc = rowDescriptions.get(i);
+					if (rowPosition == rowDesc.index) {
+						configLabels.addLabel(COLORED_ROW + i);
+						if (!containsIndex(columnPosition, columnDescriptions))
+							configLabels.addLabel(ID_ROW + i);
+					}
 				}
-				if (rowPosition < numberOfHeaderRows) {
+
+				if (headerRowsInFront && rowPosition < numberOfHeaderRows) {
 					configLabels.addLabel(HEADER_LINE_CELL);
 				}
-				if (columnPosition == idColumnIndex && rowPosition >= numberOfHeaderRows && rowPosition != idRowIndex) {
-					configLabels.addLabel(ROW_ID);
+
+				for (int i = 0; i < columnDescriptions.size(); i++) {
+					RowColDescInternal columnDesc = columnDescriptions.get(i);
+					if (columnPosition == columnDesc.index) {
+						configLabels.addLabel(COLORED_COLUMN + i);
+						if (rowPosition >= numberOfHeaderRows && !containsIndex(rowPosition, rowDescriptions)) {
+							configLabels.addLabel(ID_COLUMN + i);
+						}
+					}
 				}
-				if (rowPosition == idRowIndex && columnPosition != idColumnIndex) {
-					configLabels.addLabel(COLUMN_ID);
+
+				if (!headerRowsInFront && rowPosition < numberOfHeaderRows) {
+					configLabels.addLabel(HEADER_LINE_CELL);
 				}
+
+				// if (columnPosition == idColumnIndex || rowPosition == idRowIndex) {
+				// configLabels.addLabel(ID_CELL);
+				// }
+				// if (columnPosition == idColumnIndex && rowPosition >= numberOfHeaderRows && rowPosition !=
+				// idRowIndex) {
+				// configLabels.addLabel(ROW_ID);
+				// }
 
 				if ((Boolean) columnDataProvider.getDataValue(columnPosition, 0) == false) {
 					configLabels.addLabel(DISABLED_CELL);
@@ -386,10 +460,10 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		// acc.registerColumnOverrides(9, ColumnLabelAccumulator.COLUMN_LABEL_PREFIX + 9);
 
 		NatTableUtil.applyDefaultNatTableStyling(table);
-		if (columnIDConverter == null)
-			columnIDConverter = new RegExIDConverter(null);
-		if (rowIDConverter == null)
-			rowIDConverter = new RegExIDConverter(null);
+		// if (columnIDConverter == null)
+		// columnIDConverter = new RegExIDConverter(null);
+		// if (rowIDConverter == null)
+		// rowIDConverter = new RegExIDConverter(null);
 
 		final CheckBoxPainter columnHeaderCheckBoxPainter = new CheckBoxPainter();
 		final ICellPainter columnHeaderPainter = new GridLineCellPainterDecorator(new CellPainterDecorator(
@@ -411,19 +485,31 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 			public void configureRegistry(IConfigRegistry configRegistry) {
 
 				Style cellStyle = new Style();
-
-				cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_GREEN);
-				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
-						ID_CELL);
-
-				cellStyle = new Style();
 				cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_DARK_GRAY);
 				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
 						HEADER_LINE_CELL);
-				configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER, columnIDConverter,
-						DisplayMode.NORMAL, COLUMN_ID);
-				configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER, rowIDConverter,
-						DisplayMode.NORMAL, ROW_ID);
+
+				for (int i = 0; i < rowDescriptions.size(); i++) {
+					cellStyle = new Style();
+					RowColDescInternal rowDesc = rowDescriptions.get(i);
+					cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, rowDesc.color);
+					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle,
+							DisplayMode.NORMAL, COLORED_ROW + i);
+
+					configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER, rowDesc.converter,
+							DisplayMode.NORMAL, ID_ROW + i);
+				}
+
+				for (int i = 0; i < columnDescriptions.size(); i++) {
+					cellStyle = new Style();
+					RowColDescInternal columnDesc = columnDescriptions.get(i);
+					cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, columnDesc.color);
+					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle,
+							DisplayMode.NORMAL, COLORED_COLUMN + i);
+
+					configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER,
+							columnDesc.converter, DisplayMode.NORMAL, ID_COLUMN + i);
+				}
 
 				cellStyle = new Style();
 
@@ -431,10 +517,19 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
 						DISABLED_CELL);
 
-				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, columnHeaderPainter,
-						DisplayMode.NORMAL, COLUMN_HEADER_CHECKBOX);
-				configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, columnHeaderPainter,
-						DisplayMode.EDIT, COLUMN_HEADER_CHECKBOX);
+				if (areColumnsSelectable) {
+					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, columnHeaderPainter,
+							DisplayMode.NORMAL, COLUMN_HEADER_CHECKBOX);
+					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, columnHeaderPainter,
+							DisplayMode.EDIT, COLUMN_HEADER_CHECKBOX);
+				} else {
+					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER,
+							new GridLineCellPainterDecorator(new ColumnNumberCellPainter()), DisplayMode.NORMAL,
+							COLUMN_HEADER_CHECKBOX);
+					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER,
+							new GridLineCellPainterDecorator(new ColumnNumberCellPainter()), DisplayMode.EDIT,
+							COLUMN_HEADER_CHECKBOX);
+				}
 
 				configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER,
 						new DefaultBooleanDisplayConverter(), DisplayMode.NORMAL, COLUMN_HEADER_CHECKBOX);
@@ -452,12 +547,14 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 			@Override
 			public void configureUiBindings(UiBindingRegistry uiBindingRegistry) {
-				uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
-						GridRegion.COLUMN_HEADER, MouseEventMatcher.LEFT_BUTTON, columnHeaderCheckBoxPainter),
-						new ColumnSelectionAction());
-				uiBindingRegistry.registerFirstSingleClickBinding(new CellLabelMouseEventMatcher(
-						GridRegion.COLUMN_HEADER, MouseEventMatcher.LEFT_BUTTON, EDITABLE), new MouseEditAction());
+				if (areColumnsSelectable) {
+					uiBindingRegistry.registerFirstSingleClickBinding(new CellPainterMouseEventMatcher(
+							GridRegion.COLUMN_HEADER, MouseEventMatcher.LEFT_BUTTON, columnHeaderCheckBoxPainter),
+							new ColumnSelectionAction());
 
+					uiBindingRegistry.registerFirstSingleClickBinding(new CellLabelMouseEventMatcher(
+							GridRegion.COLUMN_HEADER, MouseEventMatcher.LEFT_BUTTON, EDITABLE), new MouseEditAction());
+				}
 				if (isTransposeable) {
 					CellLabelMouseEventMatcher mouseEventMatcher = new CellLabelMouseEventMatcher(GridRegion.CORNER,
 							MouseEventMatcher.LEFT_BUTTON, GridRegion.CORNER);
@@ -474,6 +571,14 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 		tableDimensionsLabel.setText("Rows: " + bodyDataProvider.getRowCount() + " Columns: "
 				+ bodyDataProvider.getColumnCount());
 		tableDimensionsLabel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+	}
+
+	private boolean containsIndex(int index, List<RowColDescInternal> descriptions) {
+		for (RowColDescInternal desc : descriptions) {
+			if (desc.index == index)
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -520,41 +625,110 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 				+ bodyDataProvider.getColumnCount());
 	}
 
-	public void setColumnIDTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
-		this.columnIDConverter.setIdTypeParsingRules(idTypeParsingRules);
-		table.refresh();
+	// /**
+	// * @param idTypeParsingRules
+	// */
+	// public void setColumnIDTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
+	// this.columnIDConverter.setIdTypeParsingRules(idTypeParsingRules);
+	// table.refresh();
+	// }
+	//
+	// public void setRowIDTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
+	// this.rowIDConverter.setIdTypeParsingRules(idTypeParsingRules);
+	// table.refresh();
+	// }
+
+	// /**
+	// * Colors the header rows gray and the id row and id column green.
+	// *
+	// * @param numberOfHeaderRows
+	// * Number of rows that should be treated as headers.
+	// * @param idRowIndex
+	// * Index of the row that contains IDs. If no row shall be colored, set -1.
+	// * @param idColumnIndex
+	// * Index of the column that contains IDs. If no column shall be colored, set -1.
+	// */
+	// public void updateTableColors(int numberOfHeaderRows, int idRowIndex, int idColumnIndex) {
+	//
+	// if (columnSelectionStatus != null && !columnSelectionStatus.isEmpty() && idColumnIndex >= 0)
+	// columnSelectionStatus.set(idColumnIndex, true);
+	//
+	// this.idRowIndex = idRowIndex;
+	// this.idColumnIndex = idColumnIndex;
+	// this.numberOfHeaderRows = numberOfHeaderRows;
+	//
+	// // table.setSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+	// // table.pack();
+	// // table.layout(true);
+	// table.refresh();
+	//
+	// // table.redraw();
+	// }
+
+	private boolean needsReconfiguration(List<RowColDesc> rowDescriptions, List<RowColDesc> columnDescriptions) {
+		if (needsReconfig(rowDescriptions, extRowDescriptions))
+			return true;
+
+		return needsReconfig(columnDescriptions, extColumnDescriptions);
 	}
 
-	public void setRowIDTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
-		this.rowIDConverter.setIdTypeParsingRules(idTypeParsingRules);
-		table.refresh();
+	private boolean needsReconfig(List<RowColDesc> descriptions, List<RowColDesc> presentDescriptions) {
+		if (descriptions.size() != presentDescriptions.size())
+			return true;
+
+		for (RowColDesc desc : descriptions) {
+			boolean newDesc = true;
+			for (RowColDesc prevDesc : presentDescriptions) {
+				if (desc.color == prevDesc.color && desc.idTypeParsingRules == prevDesc.idTypeParsingRules) {
+					newDesc = false;
+					break;
+				}
+			}
+			if (newDesc)
+				return true;
+		}
+		return false;
 	}
 
-	/**
-	 * Colors the header rows gray and the id row and id column green.
-	 *
-	 * @param numberOfHeaderRows
-	 *            Number of rows that should be treated as headers.
-	 * @param idRowIndex
-	 *            Index of the row that contains IDs. If no row shall be colored, set -1.
-	 * @param idColumnIndex
-	 *            Index of the column that contains IDs. If no column shall be colored, set -1.
-	 */
-	public void updateTableColors(int numberOfHeaderRows, int idRowIndex, int idColumnIndex) {
+	public void updateTable(int numberOfHeaderRows, List<RowColDesc> rowDescriptions,
+			List<RowColDesc> columnDescriptions) {
 
-		if (columnSelectionStatus != null && !columnSelectionStatus.isEmpty() && idColumnIndex >= 0)
-			columnSelectionStatus.set(idColumnIndex, true);
+		boolean needsReconfiguration = needsReconfiguration(rowDescriptions, columnDescriptions);
 
-		this.idRowIndex = idRowIndex;
-		this.idColumnIndex = idColumnIndex;
+		this.extColumnDescriptions = columnDescriptions;
+		this.extRowDescriptions = rowDescriptions;
+
+		this.rowDescriptions.clear();
+		this.columnDescriptions.clear();
+
+		for (RowColDesc r : rowDescriptions) {
+			this.rowDescriptions.add(new RowColDescInternal(r));
+		}
+		for (RowColDesc c : columnDescriptions) {
+			this.columnDescriptions.add(new RowColDescInternal(c));
+		}
+
+		if (columnSelectionStatus != null && !columnSelectionStatus.isEmpty()) {
+			for (RowColDescInternal desc : this.columnDescriptions) {
+				columnSelectionStatus.set(desc.index, true);
+			}
+		}
+
 		this.numberOfHeaderRows = numberOfHeaderRows;
 
 		// table.setSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		// table.pack();
 		// table.layout(true);
+		if (needsReconfiguration)
+			table.configure();
 		table.refresh();
 
 		// table.redraw();
+	}
+
+	public void reconfigure() {
+		table.configure();
+		table.refresh();
 	}
 
 	public void selectColumns(boolean selectAll, int columnOfRowId) {
@@ -619,6 +793,10 @@ public class PreviewTableWidget extends AMatrixBasedTableWidget {
 
 	public void clearCustomHeaderRows() {
 		customHeaderDataProviders.clear();
+	}
+
+	public void setHeaderRowsInFront(boolean isInFront) {
+		this.headerRowsInFront = isInFront;
 	}
 
 }

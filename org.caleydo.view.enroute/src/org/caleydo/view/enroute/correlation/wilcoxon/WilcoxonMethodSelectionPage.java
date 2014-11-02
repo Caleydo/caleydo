@@ -19,6 +19,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * @author Christian
@@ -43,7 +44,19 @@ public class WilcoxonMethodSelectionPage extends WizardPage implements IPageChan
 
 		Composite parentComposite = new Composite(parent, SWT.NONE);
 		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		parentComposite.setLayout(new GridLayout(2, false));
+		parentComposite.setLayout(new GridLayout(1, false));
+
+		Group descriptionGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		descriptionGroup.setText("Description:");
+		descriptionGroup.setLayout(new GridLayout(1, true));
+		descriptionGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		Label instructionsLabel = new Label(descriptionGroup, SWT.WRAP);
+		GridData gd = new GridData(SWT.LEFT, SWT.TOP, false, false);
+		gd.widthHint = 800;
+		instructionsLabel.setLayoutData(gd);
+		instructionsLabel
+				.setText("The Wilcoxon rank-sum test (or Mann-Whitney U test) allows you to test the support of a split in one data block in another data block of the enRoute view. You will first select a data block and define how to split the data into two groups. Then you will select a second block which will be divided according to the split in the first one. Alternatively, you can just select two data blocks and different splits are automatically suggested based on statistical support.");
 
 		Group methodGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		methodGroup.setText("Method:");
@@ -55,10 +68,22 @@ public class WilcoxonMethodSelectionPage extends WizardPage implements IPageChan
 		manualMethodButton.setSelection(true);
 		manualMethodButton.setText("Define Data Classification");
 
+		Label manualLabel = new Label(methodGroup, SWT.WRAP);
+		gd = new GridData(SWT.LEFT, SWT.TOP, false, false);
+		gd.horizontalIndent = 22;
+		manualLabel.setLayoutData(gd);
+		manualLabel.setText("You define both data blocks and how to split the data.");
+
 		autoMethodButton = new Button(methodGroup, SWT.RADIO);
 		autoMethodButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
 		autoMethodButton.setSelection(false);
 		autoMethodButton.setText("Detect Significant Data Classifications");
+		Label autoLabel = new Label(methodGroup, SWT.WRAP);
+		gd = new GridData(SWT.LEFT, SWT.TOP, false, false);
+		gd.horizontalIndent = 22;
+		autoLabel.setLayoutData(gd);
+		autoLabel
+				.setText("You only define both data blocks and Caleydo will list all possible splits, ranked by significance.");
 
 		setControl(parentComposite);
 	}

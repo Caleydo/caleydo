@@ -5,6 +5,15 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.correlation.fisher;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -56,14 +65,19 @@ import org.eclipse.nebula.widgets.nattable.style.DisplayMode;
 import org.eclipse.nebula.widgets.nattable.style.Style;
 import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.collect.Lists;
 
@@ -80,6 +94,7 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 	protected NatTable table;
 
 	protected int[][] contingencyTable = new int[2][2];
+	protected double[] result = new double[3];
 
 	protected CategoryHeaderProvider columnHeaderProvider = new CategoryHeaderProvider(true);
 	protected CategoryHeaderProvider rowHeaderProvider = new CategoryHeaderProvider(false);
@@ -93,6 +108,31 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 	protected Label twoSidedPValueLabel;
 	protected Label leftTailPValueLabel;
 	protected Label rightTailPValueLabel;
+
+	private static class ExportSampleItem implements Comparable<ExportSampleItem> {
+
+		public Object sampleID;
+		public String category1;
+		public String category2;
+
+		public ExportSampleItem(Object sampleID, String category1, String category2) {
+			this.sampleID = sampleID;
+			this.category1 = category1;
+			this.category2 = category2;
+		}
+
+		@Override
+		public int compareTo(ExportSampleItem o) {
+
+			int res = category1.compareTo(o.category1);
+			if (res != 0)
+				return res;
+
+			res = category2.compareTo(o.category2);
+			return res;
+		}
+
+	}
 
 	private static class CategoryHeaderProvider implements IDataProvider {
 
@@ -225,7 +265,14 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 
 		buildTable(contingencyTableGroup);
 
-		Group pValuesGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		Composite leftRightComposite = new Composite(parentComposite, SWT.NONE);
+		GridLayout layout = new GridLayout(2, false);
+		layout.marginWidth =0;
+		layout.marginHeight = 0;
+		leftRightComposite.setLayout(layout);
+		leftRightComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		Group pValuesGroup = new Group(leftRightComposite, SWT.SHADOW_ETCHED_IN);
 		pValuesGroup.setText("P-Values");
 		pValuesGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		pValuesGroup.setLayout(new GridLayout(1, false));
@@ -234,8 +281,109 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 		leftTailPValueLabel = createLabel(pValuesGroup, "Left-Tail: ");
 		rightTailPValueLabel = createLabel(pValuesGroup, "Right-Tail: ");
 
+		Button exportButton = new Button(pValuesGroup, SWT.PUSH);
+		exportButton.setText("Export");
+		exportButton.setLayoutData(new GridData());
+		exportButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog fileDialog = new FileDialog(new Shell(), SWT.SAVE);
+				fileDialog.setText("Export Results");
+				String[] filterExt = { "*.csv", "*.txt", "*.*" };
+				fileDialog.setFilterExtensions(filterExt);
+
+				fileDialog.setFileName("caleydo_fishers_test_"
+						+ new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date()) + ".csv");
+				String fileName = fileDialog.open();
+
+				if (fileName != null) {
+					exportResults(fileName);
+				}
+			}
+		});
+
+
+		Group descriptionGroup = new Group(leftRightComposite, SWT.SHADOW_ETCHED_IN);
+		descriptionGroup.setText("Description");
+		descriptionGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		descriptionGroup.setLayout(new GridLayout(1, false));
+
+		Label descLabel = new Label(descriptionGroup, SWT.WRAP);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd.widthHint = 300;
+		descLabel.setLayoutData(gd);
+		descLabel.setText("The left-/right-tailed test represents the sum of probabilities for obtaining a contingency table with an arrangement as extreme or more extreme as the given table in one direction. In the two-sided test, tables with equal or lower propabilities as the given table are considered in both directions.");
+
 		setControl(parentComposite);
 
+	}
+
+	private void exportResults(String fileName) {
+		FishersExactTestWizard wizard = (FishersExactTestWizard) getWizard();
+
+		try {
+			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName),
+					"UTF-16")));
+			IDataClassifier classifier1 = wizard.getCell1Classifier();
+			IDataClassifier classifier2 = wizard.getCell2Classifier();
+
+			out.println("\t" + classifier1.getDataClasses().get(0).name + "\t"
+					+ classifier1.getDataClasses().get(1).name);
+			out.println(classifier2.getDataClasses().get(0).name + "\t" + contingencyTable[0][0] + "\t"
+					+ contingencyTable[1][0]);
+			out.println(classifier2.getDataClasses().get(1).name + "\t" + contingencyTable[0][1] + "\t"
+					+ contingencyTable[1][1]);
+
+			out.println();
+
+			out.println("Two-Sided\t" + result[0]);
+			out.println("Left-Tail\t" + result[1]);
+			out.println("Right-Tail\t" + result[2]);
+
+			out.println();
+
+			DataCellInfo info1 = wizard.getInfo1();
+			DataCellInfo info2 = wizard.getInfo2();
+
+			out.println(info2.columnPerspective.getIdType().getIDCategory().getHumanReadableIDType().getTypeName()
+					+ "\tCategory Data Block 1\tCategory Data Block 2");
+
+			IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+					info1.columnPerspective.getIdType());
+			IIDTypeMapper<Object, Object> mapper = mappingManager.getIDTypeMapper(info1.columnPerspective.getIdType(),
+					info2.columnPerspective.getIdType());
+			IIDTypeMapper<Object, Object> primaryMapper = mappingManager.getIDTypeMapper(
+					info1.columnPerspective.getIdType(), info2.columnPerspective.getIdType().getIDCategory()
+							.getHumanReadableIDType());
+
+			List<ExportSampleItem> items = new ArrayList<>();
+
+			// We assume a 1:1 mapping between samples
+			for (int cell1ColumnID : info1.columnPerspective.getVirtualArray()) {
+
+				Set<Object> cell2ColumnIDs = mapper.apply(cell1ColumnID);
+				if (cell2ColumnIDs != null && !cell2ColumnIDs.isEmpty()) {
+					Set<Object> sampleIDs = primaryMapper.apply(cell1ColumnID);
+					SimpleCategory c1 = getCategory(info1.dataDomain, info1.columnPerspective.getIdType(),
+							cell1ColumnID, info1.rowIDType, info1.rowID, wizard.getCell1Classifier());
+					SimpleCategory c2 = getCategory(info2.dataDomain, info2.columnPerspective.getIdType(),
+							(Integer) cell2ColumnIDs.iterator().next(), info2.rowIDType, info2.rowID,
+							wizard.getCell2Classifier());
+
+					items.add(new ExportSampleItem(sampleIDs.iterator().next(), c1.name, c2.name));
+					// out.println(sampleIDs.iterator().next() + "\t" + c1.name + "\t" + c2.name);
+				}
+			}
+
+			Collections.sort(items);
+			for (ExportSampleItem item : items) {
+				out.println(item.sampleID + "\t" + item.category1 + "\t" + item.category2);
+			}
+
+			out.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	private Label createLabel(Composite parentComposite, String text) {
@@ -339,6 +487,8 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 					cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, color);
 					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle,
 							DisplayMode.NORMAL, labelPrefix + i);
+					configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle,
+							DisplayMode.SELECT, labelPrefix + i);
 					colorRegistry.add(color);
 				}
 			}
@@ -406,12 +556,12 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 
 			}
 
-			double[] result = FishersExactTest.fishersExactTest(contingencyTable[0][0], contingencyTable[0][1],
+			result = FishersExactTest.fishersExactTest(contingencyTable[0][0], contingencyTable[0][1],
 					contingencyTable[1][0], contingencyTable[1][1]);
 
-			twoSidedPValueLabel.setText(String.format(Locale.ENGLISH, "Two-Sided: %.8f", result[0]));
-			leftTailPValueLabel.setText(String.format(Locale.ENGLISH, "Left-Tail:  %.8f", result[1]));
-			rightTailPValueLabel.setText(String.format(Locale.ENGLISH, "Right-Tail:  %.8f", result[2]));
+			twoSidedPValueLabel.setText(String.format(Locale.ENGLISH, "Two-Sided: %.6e", result[0]));
+			leftTailPValueLabel.setText(String.format(Locale.ENGLISH, "Left-Tail:  %.6e", result[1]));
+			rightTailPValueLabel.setText(String.format(Locale.ENGLISH, "Right-Tail:  %.6e", result[2]));
 			visited = true;
 
 			columnHeaderProvider.setClassifier(classifier1);
@@ -429,12 +579,17 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 
 	private int getContingencyIndex(ATableBasedDataDomain dataDomain, IDType columnIDType, int columnID,
 			IDType rowIDType, int rowID, IDataClassifier classifier) {
-		Object value = dataDomain.getRaw(columnIDType, columnID, rowIDType, rowID);
 		List<SimpleCategory> classes = classifier.getDataClasses();
-		SimpleCategory c = classifier.apply(value);
+		SimpleCategory c = getCategory(dataDomain, columnIDType, columnID, rowIDType, rowID, classifier);
 		if (c == null)
 			return -1;
 		return classes.indexOf(c);
+	}
+
+	private SimpleCategory getCategory(ATableBasedDataDomain dataDomain, IDType columnIDType, int columnID,
+			IDType rowIDType, int rowID, IDataClassifier classifier) {
+		Object value = dataDomain.getRaw(columnIDType, columnID, rowIDType, rowID);
+		return classifier.apply(value);
 	}
 
 	@Override

@@ -119,12 +119,14 @@ public class ContentRenderer extends ALayoutRenderer implements IDisposeListener
 			parent.pickingListenerManager.addIDPickingListener(new APickingListener() {
 				@Override
 				protected void mouseOver(Pick pick) {
+					dataCellSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 					if (parentView.getCorrelationManager().isCorrelationCalculationActive()
 							&& parentView.getCorrelationManager().isDataCellSelectionValid(getInfo())) {
 						dataCellSelectionManager.addToType(SelectionType.MOUSE_OVER, ContentRenderer.this.cellID);
-						dataCellSelectionManager.triggerSelectionUpdateEvent();
-						ContentRenderer.this.parentView.setDisplayListDirty();
+
 					}
+					dataCellSelectionManager.triggerSelectionUpdateEvent();
+					ContentRenderer.this.parentView.setDisplayListDirty();
 				}
 
 				@Override

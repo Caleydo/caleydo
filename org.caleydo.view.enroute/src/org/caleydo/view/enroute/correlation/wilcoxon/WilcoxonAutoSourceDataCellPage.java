@@ -35,7 +35,8 @@ public class WilcoxonAutoSourceDataCellPage extends ASelectDataCellPage {
 	 */
 	protected WilcoxonAutoSourceDataCellPage(String pageName, String title, ImageDescriptor titleImage,
 			Color overlayColor) {
-		super(pageName, title, titleImage);
+		super(pageName, title, titleImage,
+				"Select the first data block for which all possible splits should be calculated.");
 		this.overlayColor = overlayColor;
 	}
 
@@ -53,7 +54,7 @@ public class WilcoxonAutoSourceDataCellPage extends ASelectDataCellPage {
 
 	@Override
 	protected void createWidgets(Composite parentComposite) {
-		// No additional widgets required
+		createInstructionsGroup(parentComposite);
 
 	}
 
@@ -65,7 +66,7 @@ public class WilcoxonAutoSourceDataCellPage extends ASelectDataCellPage {
 
 	@Override
 	protected Layout getBaseLayout() {
-		return new GridLayout(1, false);
+		return new GridLayout(2, false);
 	}
 
 	@Override

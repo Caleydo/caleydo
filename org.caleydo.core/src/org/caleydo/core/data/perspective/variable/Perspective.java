@@ -465,6 +465,7 @@ public class Perspective implements IDefaultLabelHolder {
 		// }
 		GroupList groupList = new GroupList();
 		Group group = new Group(virtualArray.size(), 0);
+		group.setLabel("All");
 		groupList.append(group);
 		virtualArray.setGroupList(groupList);
 

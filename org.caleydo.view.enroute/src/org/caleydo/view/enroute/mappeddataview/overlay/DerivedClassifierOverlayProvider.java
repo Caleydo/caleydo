@@ -32,14 +32,12 @@ public class DerivedClassifierOverlayProvider implements IDataCellOverlayProvide
 
 	@Override
 	public IBoxAndWhiskersOverlay getOverlay(SummaryBoxAndWhiskersRenderer dataRenderer) {
-		// TODO Auto-generated method stub
-		return null;
+		return dataRenderer.new ColorOverlay(classifier.getDataClasses().get(0).color);
 	}
 
 	@Override
 	public IHistogramOverlay getOverlay(HistogramRenderer dataRenderer) {
-		// TODO Auto-generated method stub
-		return null;
+		return dataRenderer.new ColorOverlay(classifier.getDataClasses().get(0).color);
 	}
 
 }

@@ -6,12 +6,18 @@
 package org.caleydo.view.enroute.correlation;
 
 import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.io.NumericalProperties;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.Sets;
 
 /**
  * Validators that determine whether a selected cell is valid.
@@ -89,4 +95,36 @@ public final class CellSelectionValidators {
 		};
 	}
 
+	/**
+	 * Creates a validator that only permits cells that have an overlap in samples with the specified
+	 * {@link DataCellInfo}.
+	 *
+	 * @param sourceInfo
+	 * @return
+	 */
+	public static Predicate<DataCellInfo> overlappingSamplesValidator(final DataCellInfo sourceInfo) {
+		return new Predicate<DataCellInfo>() {
+
+			@Override
+			public boolean apply(DataCellInfo info) {
+
+				sourceInfo.columnPerspective.getVirtualArray();
+
+				IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+						sourceInfo.columnPerspective.getIdType());
+
+				IIDTypeMapper<Object, Object> mapper = mappingManager.getIDTypeMapper(
+						sourceInfo.columnPerspective.getIdType(), info.columnPerspective.getIdType());
+
+				Set<Object> mappedIDs = mapper.apply(new HashSet<Object>(sourceInfo.columnPerspective.getVirtualArray()
+						.getIDs()));
+				if (mappedIDs == null)
+					return false;
+
+				Set<Object> intersection = Sets.intersection(mappedIDs, new HashSet<Object>(info.columnPerspective
+						.getVirtualArray().getIDs()));
+				return !intersection.isEmpty();
+			}
+		};
+	}
 }

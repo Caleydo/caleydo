@@ -39,6 +39,10 @@ public class ContingencyTableConfiguration extends AbstractRegistryConfiguration
 				GridRegion.COLUMN_HEADER);
 		configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, headerPainter, DisplayMode.NORMAL,
 				GridRegion.CORNER);
+		configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, headerPainter, DisplayMode.SELECT,
+				GridRegion.COLUMN_HEADER);
+		configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, headerPainter, DisplayMode.SELECT,
+				GridRegion.CORNER);
 
 		// Body style
 		Style cellStyle = new Style();
@@ -62,14 +66,23 @@ public class ContingencyTableConfiguration extends AbstractRegistryConfiguration
 		configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
 				GridRegion.CORNER);
 
+		configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.SELECT,
+				GridRegion.COLUMN_HEADER);
+		configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.SELECT,
+				GridRegion.CORNER);
+
 		// cellStyle = createDefaultHeaderStyle();
 		// cellStyle.setAttributeValue(CellStyleAttributes.HORIZONTAL_ALIGNMENT, HorizontalAlignmentEnum.LEFT);
 		configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
+				GridRegion.ROW_HEADER);
+		configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.SELECT,
 				GridRegion.ROW_HEADER);
 
 		cellStyle = createDefaultHeaderStyle();
 		cellStyle.setAttributeValue(CellStyleAttributes.HORIZONTAL_ALIGNMENT, HorizontalAlignmentEnum.LEFT);
 		configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
+				GridRegion.ROW_GROUP_HEADER);
+		configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.SELECT,
 				GridRegion.ROW_GROUP_HEADER);
 
 		// FontData templateFontData = GUIHelper.DEFAULT_FONT.getFontData()[0];
@@ -82,7 +95,11 @@ public class ContingencyTableConfiguration extends AbstractRegistryConfiguration
 		cellStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_WHITE);
 		configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
 				AlternatingRowConfigLabelAccumulator.ODD_ROW_CONFIG_TYPE);
+		configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.SELECT,
+				AlternatingRowConfigLabelAccumulator.ODD_ROW_CONFIG_TYPE);
 		configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.NORMAL,
+				AlternatingRowConfigLabelAccumulator.EVEN_ROW_CONFIG_TYPE);
+		configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle, DisplayMode.SELECT,
 				AlternatingRowConfigLabelAccumulator.EVEN_ROW_CONFIG_TYPE);
 		//
 		// cellStyle = new Style();

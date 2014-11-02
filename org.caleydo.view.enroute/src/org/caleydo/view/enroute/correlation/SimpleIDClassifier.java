@@ -86,4 +86,8 @@ public class SimpleIDClassifier implements IIDClassifier {
 		return class2IDs;
 	}
 
+	public IDType getIDType() {
+		return myIDType;
+	}
+
 }

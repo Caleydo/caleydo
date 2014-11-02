@@ -28,13 +28,17 @@ import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.CreateIDTypeDialog;
 import org.caleydo.core.io.gui.dataimport.DefineIDParsingDialog;
 import org.caleydo.core.io.gui.dataimport.FilePreviewParser;
+import org.caleydo.core.io.gui.dataimport.widget.table.PreviewTableWidget.RowColDesc;
 import org.caleydo.core.io.parser.ascii.ATextParser;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Shell;
+
+import com.google.common.collect.Lists;
 
 /**
  * Mediator for {@link LoadDataSetPage}. This class is responsible for setting the states of all widgets of the page and
@@ -172,7 +176,7 @@ public class LoadDataSetPageMediator extends ALoadDataPageMediator {
 	public void onLoadDatasetDescription(String inputFileName) {
 		Unmarshaller unmarshaller;
 		try {
-			
+
 			unmarshaller = SerializationManager.get().getProjectContext().createUnmarshaller();
 
 			File descriptionFile = new File(inputFileName);
@@ -498,7 +502,15 @@ public class LoadDataSetPageMediator extends ALoadDataPageMediator {
 
 	private void setRowIDTypeParsingRules(IDTypeParsingRules rowIDTypeParsingRules) {
 		this.rowIDTypeParsingRules = rowIDTypeParsingRules;
-		page.previewTable.setRowIDTypeParsingRules(rowIDTypeParsingRules);
+		updateTable();
+		// page.previewTable.setRowIDTypeParsingRules(rowIDTypeParsingRules);
+	}
+
+	private void updateTable() {
+		page.previewTable.updateTable(dataSetDescription.getNumberOfHeaderLines(), Lists.newArrayList(new RowColDesc(
+				dataSetDescription.getRowOfColumnIDs(), Color.GREEN, columnIDTypeParsingRules)),
+				Lists.newArrayList(new RowColDesc(dataSetDescription.getColumnOfRowIds(), Color.GREEN,
+						rowIDTypeParsingRules)));
 	}
 
 	/**
@@ -507,7 +519,8 @@ public class LoadDataSetPageMediator extends ALoadDataPageMediator {
 	 */
 	public void setColumnIDTypeParsingRules(IDTypeParsingRules columnIDTypeParsingRules) {
 		this.columnIDTypeParsingRules = columnIDTypeParsingRules;
-		page.previewTable.setColumnIDTypeParsingRules(columnIDTypeParsingRules);
+		updateTable();
+		// page.previewTable.setColumnIDTypeParsingRules(columnIDTypeParsingRules);
 	}
 
 	/**
@@ -611,8 +624,9 @@ public class LoadDataSetPageMediator extends ALoadDataPageMediator {
 			dataSetDescription.setRowOfColumnIDs(numHeaderRows - 1);
 		}
 		dataSetDescription.setNumberOfHeaderLines(numHeaderRows);
-		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
-				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
+		updateTable();
+		// page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
+		// dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
 		setDataSetChanged(true);
 	}
 
@@ -626,8 +640,9 @@ public class LoadDataSetPageMediator extends ALoadDataPageMediator {
 	 */
 	public void columnOfRowIDSpinnerModified() {
 		dataSetDescription.setColumnOfRowIds(page.columnOfRowIDSpinner.getSelection() - 1);
-		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
-				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
+		updateTable();
+		// page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
+		// dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
 		setDataSetChanged(true);
 	}
 
@@ -734,8 +749,9 @@ public class LoadDataSetPageMediator extends ALoadDataPageMediator {
 			page.numHeaderRowsSpinner.setSelection(idRowIndex);
 			dataSetDescription.setNumberOfHeaderLines(idRowIndex);
 		}
-		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
-				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
+		updateTable();
+		// page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
+		// dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
 		setDataSetChanged(true);
 	}
 
@@ -774,9 +790,9 @@ public class LoadDataSetPageMediator extends ALoadDataPageMediator {
 			guessNumberOfHeaderRows();
 			determineIDTypes();
 		}
-
-		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
-				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
+		updateTable();
+		// page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
+		// dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
 		// page.parentComposite.pack();
 		// page.parentComposite.setSize(800, 600);
 		// page.parentComposite.setSize(page.parentComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));

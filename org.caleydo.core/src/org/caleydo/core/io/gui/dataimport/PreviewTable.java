@@ -18,11 +18,15 @@ import org.caleydo.core.io.gui.dataimport.widget.DelimiterWidget;
 import org.caleydo.core.io.gui.dataimport.widget.SelectAllNoneWidget;
 import org.caleydo.core.io.gui.dataimport.widget.table.INoArgumentCallback;
 import org.caleydo.core.io.gui.dataimport.widget.table.PreviewTableWidget;
+import org.caleydo.core.io.gui.dataimport.widget.table.PreviewTableWidget.RowColDesc;
 import org.caleydo.core.util.base.BooleanCallback;
 import org.caleydo.core.util.base.ICallback;
+import org.caleydo.core.util.color.Color;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author Samuel Gratzl
@@ -56,12 +60,15 @@ public class PreviewTable {
 
 	private boolean isTransposed = false;
 
+	private IDTypeParsingRules columnIDTypeParsingRules;
+	private IDTypeParsingRules rowIDTypeParsingRules;
+
 	private File transposedDataFile;
 
 	private String originalFilePath;
 
 	public PreviewTable(Composite parent, MatrixDefinition spec, IPreviewCallback previewCallback,
-			boolean isTransposeable) {
+			boolean isTransposeable, boolean areColumnsSelectable) {
 		this.spec = spec;
 		this.previewCallback = previewCallback;
 
@@ -81,25 +88,26 @@ public class PreviewTable {
 		});
 		this.selectAllNone.setEnabled(false);
 
-		previewTable = new PreviewTableWidget(parent, null, isTransposeable, new INoArgumentCallback() {
+		previewTable = new PreviewTableWidget(parent, areColumnsSelectable, null, isTransposeable,
+				new INoArgumentCallback() {
 
-			@Override
-			public void on() {
-				isTransposed = !isTransposed;
+					@Override
+					public void on() {
+						isTransposed = !isTransposed;
 
-				if (isTransposed) {
-					if (transposedDataFile == null) {
-						loadTransposedFile();
+						if (isTransposed) {
+							if (transposedDataFile == null) {
+								loadTransposedFile();
+							}
+							originalFilePath = PreviewTable.this.spec.getDataSourcePath();
+							PreviewTable.this.spec.setDataSourcePath(transposedDataFile.getAbsolutePath());
+						} else {
+							PreviewTable.this.spec.setDataSourcePath(originalFilePath);
+						}
+						createDataPreviewTableFromFile();
 					}
-					originalFilePath = PreviewTable.this.spec.getDataSourcePath();
-					PreviewTable.this.spec.setDataSourcePath(transposedDataFile.getAbsolutePath());
-				} else {
-					PreviewTable.this.spec.setDataSourcePath(originalFilePath);
-				}
-				createDataPreviewTableFromFile();
-			}
 
-		});
+				});
 		// , new BooleanCallback() {
 		// @Override
 		// public void on(boolean data) {
@@ -151,8 +159,15 @@ public class PreviewTable {
 		this.previewTable.createTableFromMatrix(dataMatrix, totalNumberOfColumns);
 		previewCallback.on(totalNumberOfColumns, parser.getTotalNumberOfRows(), dataMatrix);
 		// previewTable.updateVisibleColumns(totalNumberOfColumns);
-		this.previewTable.updateTableColors(spec.getNumberOfHeaderLines(),
-				spec.getRowOfColumnIDs() == null ? -1 : spec.getRowOfColumnIDs(), spec.getColumnOfRowIds());
+		updateTable();
+		// this.previewTable.updateTableColors(spec.getNumberOfHeaderLines(),
+		// spec.getRowOfColumnIDs() == null ? -1 : spec.getRowOfColumnIDs(), spec.getColumnOfRowIds());
+	}
+
+	private void updateTable() {
+		previewTable.updateTable(spec.getNumberOfHeaderLines(), Lists.newArrayList(new RowColDesc(spec
+				.getRowOfColumnIDs() == null ? -1 : spec.getRowOfColumnIDs(), Color.GREEN, rowIDTypeParsingRules)),
+				Lists.newArrayList(new RowColDesc(spec.getColumnOfRowIds(), Color.GREEN, columnIDTypeParsingRules)));
 	}
 
 	public Collection<Integer> getSelectedColumns() {
@@ -217,8 +232,9 @@ public class PreviewTable {
 	public void onNumHeaderRowsChanged(int numHeaderRows) {
 		try {
 			spec.setNumberOfHeaderLines(numHeaderRows);
-			previewTable.updateTableColors(spec.getNumberOfHeaderLines(),
-					spec.getRowOfColumnIDs() == null ? -1 : spec.getRowOfColumnIDs(), spec.getColumnOfRowIds());
+			updateTable();
+			// previewTable.updateTableColors(spec.getNumberOfHeaderLines(),
+			// spec.getRowOfColumnIDs() == null ? -1 : spec.getRowOfColumnIDs(), spec.getColumnOfRowIds());
 		} catch (NumberFormatException exc) {
 
 		}
@@ -226,11 +242,15 @@ public class PreviewTable {
 	}
 
 	public void setColumnIDTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
-		previewTable.setColumnIDTypeParsingRules(idTypeParsingRules);
+		this.columnIDTypeParsingRules = idTypeParsingRules;
+		updateTable();
+		// previewTable.setColumnIDTypeParsingRules(idTypeParsingRules);
 	}
 
 	public void setRowIDTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
-		previewTable.setRowIDTypeParsingRules(idTypeParsingRules);
+		this.rowIDTypeParsingRules = idTypeParsingRules;
+		// previewTable.setRowIDTypeParsingRules(idTypeParsingRules);
+		updateTable();
 	}
 
 	/**
@@ -238,14 +258,16 @@ public class PreviewTable {
 	 */
 	public void onColumnOfRowIDChanged(int column) {
 		spec.setColumnOfRowIds(column - 1);
-		previewTable.updateTableColors(spec.getNumberOfHeaderLines(),
-				spec.getRowOfColumnIDs() == null ? -1 : spec.getRowOfColumnIDs(), spec.getColumnOfRowIds());
+		updateTable();
+		// previewTable.updateTableColors(spec.getNumberOfHeaderLines(),
+		// spec.getRowOfColumnIDs() == null ? -1 : spec.getRowOfColumnIDs(), spec.getColumnOfRowIds());
 	}
 
 	public void onRowOfColumnIDChanged(int row) {
 		spec.setRowOfColumnIDs(row > 0 ? row - 1 : null);
-		previewTable.updateTableColors(spec.getNumberOfHeaderLines(),
-				spec.getRowOfColumnIDs() == null ? -1 : spec.getRowOfColumnIDs(), spec.getColumnOfRowIds());
+		updateTable();
+		// previewTable.updateTableColors(spec.getNumberOfHeaderLines(),
+		// spec.getRowOfColumnIDs() == null ? -1 : spec.getRowOfColumnIDs(), spec.getColumnOfRowIds());
 	}
 
 	public void onDelimiterChanged(String delimiter) {

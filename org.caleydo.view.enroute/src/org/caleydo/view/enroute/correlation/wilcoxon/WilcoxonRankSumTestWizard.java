@@ -44,14 +44,14 @@ public class WilcoxonRankSumTestWizard extends Wizard {
 
 	protected DataCellInfo sourceInfo;
 	protected DataCellInfo targetInfo;
-	protected IDataClassifier cell1Classifier;
+	protected IDataClassifier sourceClassifier;
 	protected SimpleIDClassifier derivedIDClassifier;
 
 	/**
 	 *
 	 */
 	public WilcoxonRankSumTestWizard() {
-		setWindowTitle("Calculate Data Correlation using the Wilcoxon Rank-Sum Test");
+		setWindowTitle("Test Significance of Association using the Wilcoxon Rank-Sum Test");
 	}
 
 	@Override
@@ -97,6 +97,11 @@ public class WilcoxonRankSumTestWizard extends Wizard {
 	}
 
 	@Override
+	public boolean canFinish() {
+		return getContainer().getCurrentPage() == autoResultPage || getContainer().getCurrentPage() == manualResultPage;
+	}
+
+	@Override
 	public boolean performFinish() {
 		EventPublisher.trigger(new EndCorrelationCalculationEvent());
 		return true;
@@ -135,10 +140,18 @@ public class WilcoxonRankSumTestWizard extends Wizard {
 	}
 
 	/**
-	 * @return the cell1Classifier, see {@link #cell1Classifier}
+	 * @return the cell1Classifier, see {@link #sourceClassifier}
 	 */
-	public IDataClassifier getCell1Classifier() {
-		return cell1Classifier;
+	public IDataClassifier getSourceClassifier() {
+		return sourceClassifier;
+	}
+
+	/**
+	 * @param sourceClassifier
+	 *            setter, see {@link sourceClassifier}
+	 */
+	public void setSourceClassifier(IDataClassifier sourceClassifier) {
+		this.sourceClassifier = sourceClassifier;
 	}
 
 	/**

@@ -32,7 +32,7 @@ public class ColoredColumnRenderer extends AColumnBasedDataRenderer {
 
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-		renderSingleBar(gl, 0, 0, y, x, selectionTypes, getMappingColorForItem(columnID), columnID, useShading);
+		renderSingleBar(gl, 0, 0, y, x, y, selectionTypes, getMappingColorForItem(columnID), columnID, useShading);
 
 	}
 

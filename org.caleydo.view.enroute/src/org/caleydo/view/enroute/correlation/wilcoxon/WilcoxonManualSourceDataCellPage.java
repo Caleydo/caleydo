@@ -33,7 +33,8 @@ public class WilcoxonManualSourceDataCellPage extends AManualDataClassificationP
 	 */
 	protected WilcoxonManualSourceDataCellPage(String pageName, String title, ImageDescriptor titleImage,
 			List<Color> categoryColors) {
-		super(pageName, title, titleImage, categoryColors);
+		super(pageName, title, titleImage, categoryColors,
+				"Select the data block that you want to compare in the enRoute view.");
 	}
 
 	@Override
@@ -41,8 +42,9 @@ public class WilcoxonManualSourceDataCellPage extends AManualDataClassificationP
 		if (event.getSelectedPage() == getNextPage()) {
 			WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
 			wizard.setSourceInfo(info);
-			wizard.setDerivedIDClassifier(WilcoxonUtil.createDerivedClassifier(classificationWidget.getClassifier(),
-					info));
+			IDataClassifier classifier = classificationWidget.getClassifier();
+			wizard.setSourceClassifier(classifier);
+
 		} else if (event.getSelectedPage() == this) {
 			UpdateDataCellSelectionValidatorEvent e = new UpdateDataCellSelectionValidatorEvent(
 					CellSelectionValidators.nonEmptyCellValidator());

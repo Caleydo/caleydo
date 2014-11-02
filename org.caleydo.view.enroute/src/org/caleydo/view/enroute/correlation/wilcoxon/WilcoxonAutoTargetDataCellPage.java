@@ -5,9 +5,6 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.correlation.wilcoxon;
 
-import java.util.EnumSet;
-
-import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.view.enroute.correlation.ASelectDataCellPage;
@@ -41,20 +38,35 @@ public class WilcoxonAutoTargetDataCellPage extends ASelectDataCellPage {
 	 */
 	protected WilcoxonAutoTargetDataCellPage(String pageName, String title, ImageDescriptor titleImage,
 			Color overlayColor) {
-		super(pageName, title, titleImage);
+		super(
+				pageName,
+				title,
+				titleImage,
+				"Select the second data block. The data of this block will be divided according to the calculated splits from the first data block.");
 		this.overlayColor = overlayColor;
 	}
 
 	@Override
 	public void pageChanged(PageChangedEvent event) {
+		WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
 		if (event.getSelectedPage() == getNextPage()) {
-			WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
+
 			wizard.setTargetInfo(info);
 		} else if (event.getSelectedPage() == this) {
-			Predicate<DataCellInfo> validator = Predicates.and(
-					CellSelectionValidators.nonEmptyCellValidator(),
-					Predicates.or(CellSelectionValidators.numericalValuesValidator(),
-							CellSelectionValidators.categoricalValuesValidator(EnumSet.of(ECategoryType.ORDINAL))));
+			if (info != null) {
+				if (!CellSelectionValidators.overlappingSamplesValidator(wizard.getSourceInfo()).apply(info)) {
+					info = null;
+					dataCellInfoWidget.updateInfo(null);
+					getWizard().getContainer().updateButtons();
+
+					EventPublisher.trigger(new ShowOverlayEvent(null, null, getWizard().getStartingPage() == this));
+				}
+			}
+
+			@SuppressWarnings("unchecked")
+			Predicate<DataCellInfo> validator = Predicates.and(CellSelectionValidators.nonEmptyCellValidator(),
+					CellSelectionValidators.numericalValuesValidator(),
+					CellSelectionValidators.overlappingSamplesValidator(wizard.getSourceInfo()));
 			UpdateDataCellSelectionValidatorEvent e = new UpdateDataCellSelectionValidatorEvent(validator);
 			EventPublisher.trigger(e);
 		}
@@ -62,8 +74,7 @@ public class WilcoxonAutoTargetDataCellPage extends ASelectDataCellPage {
 
 	@Override
 	protected void createWidgets(Composite parentComposite) {
-		// No additional widgets required
-
+		createInstructionsGroup(parentComposite);
 	}
 
 	@Override
@@ -74,7 +85,7 @@ public class WilcoxonAutoTargetDataCellPage extends ASelectDataCellPage {
 
 	@Override
 	protected Layout getBaseLayout() {
-		return new GridLayout(1, false);
+		return new GridLayout(2, false);
 	}
 
 	@Override
