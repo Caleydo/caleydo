@@ -55,6 +55,7 @@ public class WilcoxonResultsWidget extends Composite {
 
 	private Label uValueLabel;
 	private Label pValueLabel;
+	private Label adjustedPValueLabel;
 
 	private CLabel[] classColorLabel = new CLabel[2];
 
@@ -62,12 +63,16 @@ public class WilcoxonResultsWidget extends Composite {
 	private Label[] classNumElementsLabel = new Label[2];
 	private Label[] classMedianLabel = new Label[2];
 
+	private boolean showAdjustedPValue;
+
 	/**
 	 * @param parent
 	 * @param style
 	 */
-	public WilcoxonResultsWidget(Composite parent) {
+	public WilcoxonResultsWidget(Composite parent, boolean showAdjustedPValue) {
 		super(parent, SWT.NONE);
+
+		this.showAdjustedPValue = showAdjustedPValue;
 
 		setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		GridLayout layout = new GridLayout(1, false);
@@ -88,6 +93,9 @@ public class WilcoxonResultsWidget extends Composite {
 
 		uValueLabel = createLabel(resultsGroup, "U: ");
 		pValueLabel = createLabel(resultsGroup, "P-Value: ");
+		if (showAdjustedPValue) {
+			adjustedPValueLabel = createLabel(resultsGroup, "Adjusted P-Value: ");
+		}
 
 		Button exportButton = new Button(resultsGroup, SWT.PUSH);
 		exportButton.setText("Export");
@@ -157,9 +165,11 @@ public class WilcoxonResultsWidget extends Composite {
 
 	}
 
-	private void updateStatistics(double u, double p) {
+	private void updateStatistics(double u, double p, double adjustedP) {
 		uValueLabel.setText(String.format(Locale.ENGLISH, "U: %.2f", u));
 		pValueLabel.setText(String.format(Locale.ENGLISH, "P-Value: %.6e", p));
+		if (showAdjustedPValue)
+			adjustedPValueLabel.setText(String.format(Locale.ENGLISH, "Adjusted P-Value: %.6e", adjustedP));
 	}
 
 	public void update(DataCellInfo sourceInfo, DataCellInfo targetInfo, WilcoxonResult result) {
@@ -170,7 +180,7 @@ public class WilcoxonResultsWidget extends Composite {
 		dataValues[1] = WilcoxonUtil.getSampleValuesArray(targetInfo, result.derivedClassifier.getClass2IDs());
 		updateClassSummary(0, dataValues[0], result.derivedClassifier.getDataClasses().get(0));
 		updateClassSummary(1, dataValues[1], result.derivedClassifier.getDataClasses().get(1));
-		updateStatistics(result.u, result.p);
+		updateStatistics(result.u, result.p, result.adjustedP);
 	}
 
 	@Override
@@ -202,6 +212,9 @@ public class WilcoxonResultsWidget extends Composite {
 
 			out.println("U\t" + result.u);
 			out.println("P-Value\t" + result.p);
+			if (showAdjustedPValue) {
+				out.println("Adjusted P-Value\t" + result.adjustedP);
+			}
 
 			out.println();
 
@@ -231,8 +244,7 @@ public class WilcoxonResultsWidget extends Composite {
 					(Integer) columnID, targetInfo.rowIDType, targetInfo.rowID);
 			if (value != null && !Double.isNaN(value.doubleValue())) {
 				out.println(sampleIDs.iterator().next() + "\t"
-						+ result.classifier.getDataClasses().get(categoryIndex).name
-						+ "\t" + value.doubleValue());
+						+ result.classifier.getDataClasses().get(categoryIndex).name + "\t" + value.doubleValue());
 			}
 
 		}
