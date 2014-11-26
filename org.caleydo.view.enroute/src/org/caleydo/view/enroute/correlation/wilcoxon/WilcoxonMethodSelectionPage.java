@@ -77,13 +77,13 @@ public class WilcoxonMethodSelectionPage extends WizardPage implements IPageChan
 		autoMethodButton = new Button(methodGroup, SWT.RADIO);
 		autoMethodButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
 		autoMethodButton.setSelection(false);
-		autoMethodButton.setText("Detect Significant Data Classifications");
+		autoMethodButton.setText("Compute All Data Classifications");
 		Label autoLabel = new Label(methodGroup, SWT.WRAP);
 		gd = new GridData(SWT.LEFT, SWT.TOP, false, false);
 		gd.horizontalIndent = 22;
 		autoLabel.setLayoutData(gd);
 		autoLabel
-				.setText("You only define both data blocks and Caleydo will list all possible splits, ranked by significance.");
+				.setText("You only define both data blocks and Caleydo will list all possible splits and show their significance (p-values) and adjusted p-values taking the false discovery rate into account.");
 
 		setControl(parentComposite);
 	}

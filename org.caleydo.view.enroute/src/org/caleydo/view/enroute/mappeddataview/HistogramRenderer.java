@@ -112,8 +112,9 @@ public class HistogramRenderer extends ADataRenderer {
 			float lowerEdge = histogramStartY + barWidth * bucketCount;
 			float value = 0;
 			int nrValues = histogram.get(bucketNumber);
+			int numElements = contentRenderer.columnPerspective.getVirtualArray().size();
 			if (nrValues != 0)
-				value = ((float) nrValues) / histogram.getLargestValue();
+				value = ((float) nrValues) / numElements;
 
 			colorCalculator.calculateColors(Algorithms.mergeListsToUniqueList(selectionTypes));
 
