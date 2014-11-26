@@ -13,6 +13,8 @@ import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -32,18 +34,22 @@ public abstract class ASelectDataCellPage extends WizardPage implements IPageCha
 	protected DataCellInfo info;
 
 	protected Label instructionsLabel;
+	protected Label restrictionLabel;
 	protected Group instructionsGroup;
 	protected String initialInstruction;
+	protected String selectionRestrictionText;
 
 	/**
 	 * @param pageName
 	 * @param title
 	 * @param titleImage
 	 */
-	protected ASelectDataCellPage(String pageName, String title, ImageDescriptor titleImage, String initialInstruction) {
+	protected ASelectDataCellPage(String pageName, String title, ImageDescriptor titleImage, String initialInstruction,
+			String selectionRestrictionText) {
 		super(pageName, title, titleImage);
 		listeners.register(this);
 		this.initialInstruction = initialInstruction;
+		this.selectionRestrictionText = selectionRestrictionText;
 	}
 
 	@Override
@@ -73,10 +79,23 @@ public abstract class ASelectDataCellPage extends WizardPage implements IPageCha
 		instructionsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		instructionsLabel = new Label(instructionsGroup, SWT.WRAP);
-		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gd.widthHint = 300;
 		instructionsLabel.setLayoutData(gd);
 		instructionsLabel.setText(initialInstruction);
+
+		if (selectionRestrictionText != null && !selectionRestrictionText.isEmpty()) {
+			restrictionLabel = new Label(instructionsGroup, SWT.WRAP);
+			gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+			gd.widthHint = 300;
+			restrictionLabel.setLayoutData(gd);
+			restrictionLabel.setText(selectionRestrictionText);
+			FontData fontData = restrictionLabel.getFont().getFontData()[0];
+			Font font = new Font(getShell().getDisplay(), new FontData(fontData.getName(), fontData.getHeight(),
+					SWT.BOLD));
+			restrictionLabel.setFont(font);
+		}
+
 	}
 
 	protected abstract void createWidgets(Composite parentComposite);

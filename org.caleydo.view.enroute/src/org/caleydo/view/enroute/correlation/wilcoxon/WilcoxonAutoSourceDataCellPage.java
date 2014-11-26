@@ -20,6 +20,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Layout;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+
 /**
  * @author Christian
  *
@@ -36,7 +39,8 @@ public class WilcoxonAutoSourceDataCellPage extends ASelectDataCellPage {
 	protected WilcoxonAutoSourceDataCellPage(String pageName, String title, ImageDescriptor titleImage,
 			Color overlayColor) {
 		super(pageName, title, titleImage,
-				"Select the first data block for which all possible splits should be calculated.");
+				"Select the first data block for which all possible splits should be calculated.",
+				"Restriction: Make sure to select numerical (not categorical) data blocks.");
 		this.overlayColor = overlayColor;
 	}
 
@@ -46,8 +50,10 @@ public class WilcoxonAutoSourceDataCellPage extends ASelectDataCellPage {
 			WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
 			wizard.setSourceInfo(info);
 		} else if (event.getSelectedPage() == this) {
-			UpdateDataCellSelectionValidatorEvent e = new UpdateDataCellSelectionValidatorEvent(
-					CellSelectionValidators.nonEmptyCellValidator());
+			Predicate<DataCellInfo> validator = Predicates.and(CellSelectionValidators.nonEmptyCellValidator(),
+					CellSelectionValidators.numericalValuesValidator());
+
+			UpdateDataCellSelectionValidatorEvent e = new UpdateDataCellSelectionValidatorEvent(validator);
 			EventPublisher.trigger(e);
 		}
 	}
