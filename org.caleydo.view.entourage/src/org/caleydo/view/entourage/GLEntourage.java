@@ -643,7 +643,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				enRoute.applyWilcoxonRankSumTest();
 			}
 		});
-		applyWilcoxonTestButton.setTooltip("Apply Wilcoxon's rank-sum test");
+		applyWilcoxonTestButton.setTooltip("Apply the Wilcoxon rank-sum test");
 	}
 
 	/**

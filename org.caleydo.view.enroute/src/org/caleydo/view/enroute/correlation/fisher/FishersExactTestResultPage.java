@@ -267,7 +267,7 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 
 		Composite leftRightComposite = new Composite(parentComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(2, false);
-		layout.marginWidth =0;
+		layout.marginWidth = 0;
 		layout.marginHeight = 0;
 		leftRightComposite.setLayout(layout);
 		leftRightComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -302,7 +302,6 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 			}
 		});
 
-
 		Group descriptionGroup = new Group(leftRightComposite, SWT.SHADOW_ETCHED_IN);
 		descriptionGroup.setText("Description");
 		descriptionGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -312,7 +311,8 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gd.widthHint = 300;
 		descLabel.setLayoutData(gd);
-		descLabel.setText("The left-/right-tailed test represents the sum of probabilities for obtaining a contingency table with an arrangement as extreme or more extreme as the given table in one direction. In the two-sided test, tables with equal or lower propabilities as the given table are considered in both directions.");
+		descLabel
+				.setText("The left-/right-tailed test represents the sum of probabilities for obtaining a contingency table with an arrangement as extreme or more extreme as the given table in one direction. In the two-sided test, tables with equal or lower propabilities as the given table are considered in both directions.");
 
 		setControl(parentComposite);
 
@@ -559,6 +559,9 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 			result = FishersExactTest.fishersExactTest(contingencyTable[0][0], contingencyTable[0][1],
 					contingencyTable[1][0], contingencyTable[1][1]);
 
+			// twoSidedPValueLabel.setText("Two-Sided: " + formatDouble(result[0], 3));
+			// leftTailPValueLabel.setText("Left-Tail: " + formatDouble(result[1], 3));
+			// rightTailPValueLabel.setText("Right-Tail: " + formatDouble(result[2], 3));
 			twoSidedPValueLabel.setText(String.format(Locale.ENGLISH, "Two-Sided: %.6e", result[0]));
 			leftTailPValueLabel.setText(String.format(Locale.ENGLISH, "Left-Tail:  %.6e", result[1]));
 			rightTailPValueLabel.setText(String.format(Locale.ENGLISH, "Right-Tail:  %.6e", result[2]));
@@ -576,6 +579,22 @@ public class FishersExactTestResultPage extends WizardPage implements IPageChang
 		}
 
 	}
+
+	// public static String formatDouble(double value, int maxNumZeros) {
+	// int zeros = 0;
+	// double temp = value;
+	// while (temp < 1) {
+	// temp *= 10;
+	// zeros++;
+	// }
+	// zeros -= 1;
+	//
+	// if (zeros > maxNumZeros) {
+	// return String.format(Locale.ENGLISH, "%.6e", value);
+	// }
+	// return String.format(Locale.ENGLISH, "%.6f", value);
+	//
+	// }
 
 	private int getContingencyIndex(ATableBasedDataDomain dataDomain, IDType columnIDType, int columnID,
 			IDType rowIDType, int rowID, IDataClassifier classifier) {
