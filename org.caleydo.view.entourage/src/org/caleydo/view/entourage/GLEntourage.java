@@ -383,7 +383,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 
 			}
 		});
-		rankPathwaysByContainedGenesButton.setTooltip("Rank pathways by specified genes.");
+		rankPathwaysByContainedGenesButton.setTooltip("Rank pathways by specified genes");
 
 		clearPathwayFiltersButton.setSize(16, 16);
 		clearPathwayFiltersButton.setRenderer(GLRenderers.fillImage("resources/icons/filter_clear.png"));
@@ -395,7 +395,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 				rankingElement.setRanking(null);
 			}
 		});
-		clearPathwayFiltersButton.setTooltip("Clear Filters and Rankings.");
+		clearPathwayFiltersButton.setTooltip("Clear Filters and Rankings");
 	}
 
 	protected HashSet<Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>> windowStubs = new HashSet<Pair<PathwayMultiFormInfo, PathwayMultiFormInfo>>();
