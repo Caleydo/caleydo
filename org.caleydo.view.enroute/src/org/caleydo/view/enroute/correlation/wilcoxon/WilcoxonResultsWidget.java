@@ -169,7 +169,8 @@ public class WilcoxonResultsWidget extends Composite {
 		uValueLabel.setText(String.format(Locale.ENGLISH, "U: %.2f", u));
 		pValueLabel.setText(String.format(Locale.ENGLISH, "P-Value: %.6e", p));
 		if (showAdjustedPValue)
-			adjustedPValueLabel.setText(String.format(Locale.ENGLISH, "Adjusted P-Value: %.6e", adjustedP));
+			adjustedPValueLabel.setText(String.format(Locale.ENGLISH,
+					"Adjusted P-Value \nusing False Discovery Rate: %.6e", adjustedP));
 	}
 
 	public void update(DataCellInfo sourceInfo, DataCellInfo targetInfo, WilcoxonResult result) {
