@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-  <extension
-        id="org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader"
-        name="KEGGPathwayResourceLoader"
-        point="org.caleydo.data.pathway.PathwayResourceLoader">
-        <PathwayResourceLoader
-          class="org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader" />
-  </extension>
+   <extension
+         point="org.caleydo.data.pathway.Database">
+      <database
+            icon="icons/kegg.png"
+            loader="org.caleydo.data.pathway.kegg.KEGGParser"
+            name="KEGG"
+            url="www.genome.jp/kegg">
+         <renderer
+               fragmentShader="shader/fsTextOverlay.glsl"
+               renderBackground="false"
+               vertexShader="shader/vsTextOverlay.glsl">
+         </renderer>
+      </database>
+   </extension>
+   <extension
+         point="org.caleydo.core.CacheInitializer">
+      <initializer
+            class="org.caleydo.data.pathway.kegg.KEGGParser">
+      </initializer>
+   </extension>
 
 </plugin>

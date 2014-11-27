@@ -16,7 +16,7 @@ import org.caleydo.core.view.opengl.picking.PickingManager;
 /**
  * APDDrawingStrategy encapsulates the functionality of drawing child
  * indicators, which indicate, that a partial disc has children.
- * 
+ *
  * @author Christian Partl
  */
 public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrategy {
@@ -30,7 +30,7 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param pickingManager
 	 *            The picking manager that should handle the picking of the
 	 *            drawn elements.
@@ -53,7 +53,7 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 	/**
 	 * Draws a child indicator (triangle) according to the parameters of a
 	 * partial disc.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 object that shall be used for drawing.
 	 * @param fInnerRadius
@@ -99,7 +99,7 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 	/**
 	 * Calculates the position of a point using the angle and radius (distance)
 	 * from the center that is assumed at (0,0).
-	 * 
+	 *
 	 * @param fAngle
 	 *            Angle that determines the direction of the radius.
 	 * @param fRadius
@@ -117,7 +117,7 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 
 	/**
 	 * Draws an isosceles triangle.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 object that shall be used for drawing.
 	 * @param fHeight
@@ -139,7 +139,7 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 		gl.glRotatef(fRotationAngle, 0, 0, 1);
 		gl.glColor4fv(fArChildIndicatorColor, 0);
 
-		gl.glBegin(GL2.GL_TRIANGLES);
+		gl.glBegin(GL.GL_TRIANGLES);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(fHalfWidth, -fHeight, 0);
 		gl.glVertex3f(-fHalfWidth, -fHeight, 0);
@@ -157,7 +157,7 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 
 	/**
 	 * Gets the color which is used to draw the child indicator.
-	 * 
+	 *
 	 * @return RGB-Color which is used to draw the child indicator.
 	 */
 	public float[] getChildIndicatorColor() {
@@ -166,7 +166,7 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 
 	/**
 	 * Sets the color which is used to draw the child indicator.
-	 * 
+	 *
 	 * @param fArChildIndicatorColor
 	 *            RGB-Color which shall be used to draw the child indicator.
 	 *            Only the first three values of the array will be used.

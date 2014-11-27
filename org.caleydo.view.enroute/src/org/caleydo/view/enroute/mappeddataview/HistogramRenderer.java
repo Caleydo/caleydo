@@ -13,14 +13,20 @@ import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.collection.CategoricalHistogram;
 import org.caleydo.core.data.collection.Histogram;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.function.IInvertableDoubleFunction;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
+import org.caleydo.view.enroute.correlation.CategoricalDataClassifier;
+import org.caleydo.view.enroute.correlation.NumericalDataClassifier;
+import org.caleydo.view.enroute.correlation.SimpleCategory;
+import org.caleydo.view.enroute.mappeddataview.overlay.IDataCellOverlayProvider;
 
 /**
  * @author Christian
@@ -32,6 +38,8 @@ public class HistogramRenderer extends ADataRenderer {
 	protected static final int SPACING_PIXELS = 2;
 
 	protected Histogram histogram;
+
+	protected IInvertableDoubleFunction inferredNormalizeFunction;
 
 	public HistogramRenderer(ContentRenderer contentRenderer) {
 		super(contentRenderer);
@@ -46,6 +54,12 @@ public class HistogramRenderer extends ADataRenderer {
 		else
 			histogram = TablePerspectiveStatistics.calculateHistogram(contentRenderer.dataDomain.getTable(),
 					columnVirtualArray, rowVirtualArray);
+
+		if (!(histogram instanceof CategoricalHistogram)) {
+			inferredNormalizeFunction = NormalizeUtil.inferNormalizeFunction(contentRenderer.dataDomain,
+					contentRenderer.columnPerspective.getVirtualArray(), contentRenderer.columnPerspective.getIdType(),
+					contentRenderer.resolvedRowID, contentRenderer.resolvedRowIDType);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -85,9 +99,11 @@ public class HistogramRenderer extends ADataRenderer {
 			float[] baseColor = null;
 			if (histogram instanceof CategoricalHistogram) {
 				baseColor = ((CategoricalHistogram) histogram).getColor(bucketNumber).getRGBA();
+
 			} else {
 				baseColor = contentRenderer.dataDomain.getTable().getColorMapper()
 						.getColor((float) bucketCount / (histogram.size() - 1));
+
 			}
 
 			colorCalculator.setBaseColor(new Color(baseColor[0], baseColor[1], baseColor[2]));
@@ -96,8 +112,9 @@ public class HistogramRenderer extends ADataRenderer {
 			float lowerEdge = histogramStartY + barWidth * bucketCount;
 			float value = 0;
 			int nrValues = histogram.get(bucketNumber);
+			int numElements = contentRenderer.columnPerspective.getVirtualArray().size();
 			if (nrValues != 0)
-				value = ((float) nrValues) / histogram.getLargestValue();
+				value = ((float) nrValues) / numElements;
 
 			colorCalculator.calculateColors(Algorithms.mergeListsToUniqueList(selectionTypes));
 
@@ -132,10 +149,39 @@ public class HistogramRenderer extends ADataRenderer {
 			gl.glVertex3f(0, lowerEdge + barWidth, z);
 			gl.glEnd();
 			gl.glPopName();
+
+			renderCorrelationClassification(gl, bucketNumber, x, lowerEdge + barWidth, lowerEdge);
 			bucketCount++;
 
 			// parent.selectedBucketID = 0;
 		}
+	}
+
+	protected void renderCorrelationClassification(GL2 gl, int bucketNumber, float totalX, float barTop, float barBottom) {
+		if (contentRenderer.isHighlightMode) {
+
+			IDataCellOverlayProvider provider = contentRenderer.parentView.getCorrelationManager().getOverlayProvider(
+					contentRenderer);
+			if (provider != null) {
+				IHistogramOverlay overlay = provider.getOverlay(this);
+				if (overlay != null)
+					overlay.render(gl, bucketNumber, barBottom, barTop, totalX);
+			}
+		}
+	}
+
+	private void renderColorOverlay(GL2 gl, Color color, float left, float bottom, float right, float top) {
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBegin(GL2GL3.GL_QUADS);
+
+		gl.glColor4fv(color.getRGBA(), 0);
+		gl.glVertex3f(left, bottom, z);
+		gl.glVertex3f(right, bottom, z);
+		gl.glVertex3f(right, top, z);
+		gl.glVertex3f(left, top, z);
+
+		gl.glEnd();
 	}
 
 	protected void registerPickingListeners() {
@@ -160,6 +206,77 @@ public class HistogramRenderer extends ADataRenderer {
 
 		}, EPickingType.HISTOGRAM_BAR.name() + hashCode());
 		// }
+	}
+
+	public interface IHistogramOverlay {
+		public void render(GL2 gl, int bucketNumber, float barBottom, float barTop, float totalX);
+	}
+
+	public class CategoricalClassifierHistogramOverlay implements IHistogramOverlay {
+
+		private final CategoricalDataClassifier classifier;
+
+		public CategoricalClassifierHistogramOverlay(CategoricalDataClassifier classifier) {
+			this.classifier = classifier;
+		}
+
+		@Override
+		public void render(GL2 gl, int bucketNumber, float barBottom, float barTop, float totalX) {
+			if (histogram instanceof CategoricalHistogram) {
+				CategoricalClassDescription<?> desc = classifier.getClassDescription();
+				Object category = desc.getCategoryProperties().get(bucketNumber).getCategory();
+				SimpleCategory resultingCategory = classifier.apply(category);
+				if (resultingCategory != null) {
+					renderColorOverlay(gl, resultingCategory.color.transparentCopy(0.6f), 0, barBottom, totalX, barTop);
+				}
+			}
+
+		}
+
+	}
+
+	public class NumericalClassifierHistogramOverlay implements IHistogramOverlay {
+
+		private final NumericalDataClassifier classifier;
+
+		public NumericalClassifierHistogramOverlay(NumericalDataClassifier classifier) {
+			this.classifier = classifier;
+		}
+
+		@Override
+		public void render(GL2 gl, int bucketNumber, float barBottom, float barTop, float totalX) {
+			if (inferredNormalizeFunction != null) {
+
+				float threshold = classifier.getThreshold();
+				float normalizedThreshold = (float) inferredNormalizeFunction.apply(threshold);
+
+				int thresholdBucketIndex = (int) (normalizedThreshold * histogram.size());
+
+				List<SimpleCategory> categories = classifier.getDataClasses();
+				renderColorOverlay(gl,
+						categories.get(bucketNumber <= thresholdBucketIndex ? 0 : 1).color.transparentCopy(0.6f), 0,
+						barBottom, totalX, barTop);
+
+			}
+
+		}
+
+	}
+
+	public class ColorOverlay implements IHistogramOverlay {
+
+		private final Color color;
+
+		public ColorOverlay(Color color) {
+			this.color = color;
+		}
+
+		@Override
+		public void render(GL2 gl, int bucketNumber, float barBottom, float barTop, float totalX) {
+			renderColorOverlay(gl, color.transparentCopy(0.6f), 0, barBottom, totalX, barTop);
+
+		}
+
 	}
 
 }

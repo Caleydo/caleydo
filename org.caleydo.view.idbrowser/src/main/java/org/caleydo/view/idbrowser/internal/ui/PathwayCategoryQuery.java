@@ -5,7 +5,6 @@
  *******************************************************************************/
 package org.caleydo.view.idbrowser.internal.ui;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -93,7 +92,7 @@ public class PathwayCategoryQuery extends ACategoryQuery {
 						EPathwayDatabaseType database = ((PathwayRow) input).getDatabase();
 						return database.getName();
 					}
-				}, Collections2.transform(Arrays.asList(EPathwayDatabaseType.values()), Labels.TO_LABEL)));
+				}, Collections2.transform(EPathwayDatabaseType.values(), Labels.TO_LABEL)));
 		super.addColumns(table);
 	}
 

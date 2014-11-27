@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.caleydo</groupId>
 		<artifactId>org.caleydo.parent</artifactId>
-		<version>3.1.3</version>
+		<version>3.1.5</version>
 		<relativePath>org.caleydo.parent</relativePath>
 	</parent>
 	
@@ -16,10 +16,13 @@
 	
 	<modules>
 		<module>org.caleydo.core</module>
+		<module>org.caleydo.ui</module>
+		<module>org.caleydo.rcp</module>
 		<module>org.caleydo.data</module>
 		<module>org.caleydo.util.gleem</module>
 		<module>org.caleydo.util.bubblesets</module>
 		<module>org.caleydo.util.alg</module>
+		<module>org.caleydo.util.graph.alg</module>
 		
 		<module>org.caleydo.datadomain.generic</module>
 		<module>org.caleydo.datadomain.genetic</module>
@@ -51,6 +54,7 @@
 		<module>org.caleydo.view.idbrowser</module>
 		<module>org.caleydo.view.table</module>
 		<module>org.caleydo.view.treemap</module>
+		<module>org.caleydo.view.imageviewer</module>
 		
 		<module>org.caleydo.vis.lineup</module>
 		

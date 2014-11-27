@@ -174,8 +174,7 @@ public class RankingElement extends GLElementContainer {
 			}
 
 			@Override
-			public void renderRowBackground(GLGraphics g, Rect rect, boolean even, IRow row,
-					IRow selected) {
+			public void renderRowBackground(GLGraphics g, Rect rect, boolean even, IRow row, IRow selected) {
 				renderRowBackgroundImpl(g, rect.x(), rect.y(), rect.width(), rect.height(), even, row, selected);
 			}
 
@@ -349,6 +348,10 @@ public class RankingElement extends GLElementContainer {
 	 */
 	public void setRanking(IPathwayRanking ranking) {
 		// this.ranking = ranking;
+		if (ranking == null) {
+			table.remove(currentRankColumnModel);
+			return;
+		}
 		ARankColumnModel prevRankModel = currentRankColumnModel;
 		currentRankColumnModel = createDefaultFloatRankColumnModel(ranking);
 		currentRankColumnModel.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, onCollapseColumn);

@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.radial.actions;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.radial.event.GoForthInHistoryEvent;
@@ -22,7 +23,8 @@ public class GoForthInHistoryAction extends SimpleAction {
 	@Override
 	public void run() {
 		super.run();
-		GeneralManager.get().getEventPublisher()
+		
+		EventPublisher.INSTANCE
 				.triggerEvent(new GoForthInHistoryEvent());
 		setChecked(false);
 	}

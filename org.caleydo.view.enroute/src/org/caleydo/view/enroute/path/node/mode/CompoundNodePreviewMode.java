@@ -12,6 +12,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -76,7 +77,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
 		gl.glPushName(pickingManager.getPickingID(view.getID(), EPickingType.LINEARIZABLE_NODE.name(), node.hashCode()));
 		gl.glColor4fv(backgroundColor.getRGBA(), 0);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glVertex3f(leftX, bottomY, nodePosition.z());
 		gl.glVertex3f(leftX + width, bottomY, nodePosition.z());
 		gl.glVertex3f(leftX + width, bottomY + height, nodePosition.z());

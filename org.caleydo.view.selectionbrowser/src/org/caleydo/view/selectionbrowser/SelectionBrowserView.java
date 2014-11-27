@@ -20,13 +20,13 @@ import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.RedrawViewEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -223,7 +223,8 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 
 				SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent((SelectionType) event.item.getData());
 				selectionTypeEvent.setCurrent(true);
-				GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
+				
+				EventPublisher.trigger(selectionTypeEvent);
 			}
 		});
 

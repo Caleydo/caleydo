@@ -8,6 +8,7 @@ package org.caleydo.view.radial;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.radial.event.UpdateDepthSliderPositionEvent;
 
@@ -121,7 +122,8 @@ public class NavigationHistory {
 		updateDepthSliderPositionEvent.setSender(radialHierarchy);
 		updateDepthSliderPositionEvent.setDepthSliderPosition(heCurrentEntry
 				.getMaxDisplayedHierarchyDepth());
-		GeneralManager.get().getEventPublisher()
+		
+		EventPublisher.INSTANCE
 				.triggerEvent(updateDepthSliderPositionEvent);
 
 		drawingController.setDrawingState(heCurrentEntry.getDrawingState());

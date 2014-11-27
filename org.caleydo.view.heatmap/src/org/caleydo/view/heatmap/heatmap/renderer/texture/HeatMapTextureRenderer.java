@@ -14,7 +14,7 @@ import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -47,7 +47,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	/** array of textures for holding the data samples */
 	private Texture[][] textures;
 
-	private PickingManager pickingManager = GeneralManager.get().getViewManager().getPickingManager();
+	private PickingManager pickingManager = ViewManager.get().getPickingManager();
 
 	private int groupIndex = -1;
 

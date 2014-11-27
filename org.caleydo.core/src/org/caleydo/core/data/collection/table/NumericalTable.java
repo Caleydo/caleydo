@@ -21,6 +21,7 @@ import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
 import org.caleydo.core.util.function.DoubleStatistics;
+import org.caleydo.core.util.function.ExpressionFunctions.EMonoOperator;
 import org.caleydo.core.util.impute.KNNImpute;
 import org.caleydo.core.util.impute.KNNImpute.Gene;
 import org.caleydo.core.util.logging.Logger;
@@ -77,6 +78,7 @@ public class NumericalTable extends Table {
 		if (dataTransformation.equals(Table.Transformation.LINEAR)) {
 			return getMin() + normalized * (getMax() - getMin());
 		} else if (dataTransformation.equals(Transformation.LOG2)) {
+			// FIXME why is the transformation for log2 and log10 different except the base?
 			double logMin = MathHelper.log(getMin(), 2);
 			double logMax = MathHelper.log(getMax(), 2);
 			double spread = logMax - logMin;
@@ -86,7 +88,7 @@ public class NumericalTable extends Table {
 			return raw;
 			// normalized = Math.pow(2, normalized);
 		} else if (dataTransformation.equals(Transformation.LOG10)) {
-			return Math.pow(10, normalized);
+			return EMonoOperator.LOG10.unapply(normalized);
 		} else {
 			throw new IllegalStateException("Unknown transformation" + dataTransformation);
 		}

@@ -25,7 +25,6 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
-import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ZipUtils;
 import org.caleydo.core.util.collection.Pair;
@@ -41,40 +40,31 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.parser.PathwayImageMap;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.Graphs;
-import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
+
+import edu.asu.emit.qyan.alg.KShortestPathsAdapter;
 
 /**
  * The pathway manager is in charge of creating and handling the pathways. The class is implemented as a singleton.
  *
  * @author Marc Streit
  */
-public class PathwayManager extends AManager<PathwayGraph> {
+public class PathwayManager {
 	private static final Logger log = Logger.create(PathwayManager.class);
 
-	private volatile static PathwayManager pathwayManager;
+	private volatile static PathwayManager pathwayManager = new PathwayManager();
 
-	public IPathwayResourceLoader keggPathwayResourceLoader;
-	public IPathwayResourceLoader wikipathwaysResourceLoader;
+	private final Map<Integer, PathwayGraph> pathways = new HashMap<>();
+	private final Map<PathwayGraph, Boolean> hashPathwayToVisibilityState = new HashMap<PathwayGraph, Boolean>();
 
-	private Map<PathwayGraph, Boolean> hashPathwayToVisibilityState;
-
-	private Map<EPathwayDatabaseType, Map<String, PathwayGraph>> mapPathwayDBToPathways;
-
-	private Map<EPathwayDatabaseType, PathwayDatabase> hashPathwayDatabase;
+	private final Map<EPathwayDatabaseType, Map<String, PathwayGraph>> mapPathwayDBToPathways = new HashMap<>();
 
 	/**
 	 * Root pathway contains all nodes that are loaded into the system. Therefore it represents the overall topological
@@ -83,13 +73,9 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	private DirectedGraph<PathwayVertex, DefaultEdge> rootPathwayGraph = new DefaultDirectedGraph<PathwayVertex, DefaultEdge>(
 			DefaultEdge.class);
 
-	/**
-	 * Used for pathways where only images can be loaded. The image map defines the clickable regions on that pathway
-	 * image.
-	 */
-	private PathwayImageMap currentPathwayImageMap;
-
 	private boolean pathwayLoadingFinished;
+
+	private KShortestPathsAdapter<PathwayVertex, DefaultEdge> kShortestPathsAdapter;
 
 	private PathwayManager() {
 
@@ -101,46 +87,18 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	 * @return singleton PathwayManager instance
 	 */
 	public static PathwayManager get() {
-		synchronized (PathwayManager.class) {
-			if (pathwayManager == null) {
-				pathwayManager = new PathwayManager();
-				pathwayManager.init();
-			}
-		}
-
 		return pathwayManager;
-	}
-
-	private void init() {
-		mapPathwayDBToPathways = new HashMap<>();
-		hashPathwayDatabase = new HashMap<EPathwayDatabaseType, PathwayDatabase>();
-		hashPathwayToVisibilityState = new HashMap<PathwayGraph, Boolean>();
 	}
 
 	public boolean hasPathways(EPathwayDatabaseType type) {
 		return this.mapPathwayDBToPathways.containsKey(type) && !this.mapPathwayDBToPathways.get(type).isEmpty();
 	}
 
-	public PathwayDatabase createPathwayDatabase(final EPathwayDatabaseType type) {
-
-		// Check if requested pathway database is already loaded (e.g. using
-		// caching)
-		if (hashPathwayDatabase.containsKey(type))
-			return hashPathwayDatabase.get(type);
-
-		PathwayDatabase pathwayDatabase = new PathwayDatabase(type);
-
-		hashPathwayDatabase.put(type, pathwayDatabase);
-		createPathwayResourceLoader(pathwayDatabase.getType());
-
-		return pathwayDatabase;
-	}
-
 	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName, final String sTitle,
 			final File image, final String sExternalLink) {
 		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, image, sExternalLink);
 
-		registerItem(pathway);
+		this.pathways.put(pathway.getID(), pathway);
 		Map<String, PathwayGraph> mapTitleToPathway = mapPathwayDBToPathways.get(type);
 		if (mapTitleToPathway == null) {
 			mapTitleToPathway = new HashMap<>();
@@ -150,6 +108,23 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		hashPathwayToVisibilityState.put(pathway, false);
 
 		return pathway;
+	}
+
+	/**
+	 * Gets all pathways that belong to the specified {@link EPathwayDatabaseType}.
+	 *
+	 * @param pathwayDatabaseType
+	 * @return
+	 */
+	public Set<PathwayGraph> getPathwaysOfDatabase(EPathwayDatabaseType pathwayDatabaseType) {
+		Set<PathwayGraph> pathways = new HashSet<>();
+
+		Map<String, PathwayGraph> pws = mapPathwayDBToPathways.get(pathwayDatabaseType);
+		if (pws != null) {
+			pathways.addAll(pws.values());
+		}
+
+		return pathways;
 	}
 
 	public PathwayGraph getPathwayByTitle(final String pathwayTitle, EPathwayDatabaseType pathwayDatabaseType) {
@@ -207,11 +182,10 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		}
 	}
 
-	@Override
 	public Collection<PathwayGraph> getAllItems() {
 		waitUntilPathwayLoadingIsFinished();
 
-		return super.getAllItems();
+		return this.pathways.values();
 	}
 
 	public void setPathwayVisibilityState(final PathwayGraph pathway, final boolean bVisibilityState) {
@@ -234,18 +208,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		return hashPathwayToVisibilityState.get(pathway);
 	}
 
-	public void createPathwayImageMap(final String sImageLink) {
-		currentPathwayImageMap = new PathwayImageMap(sImageLink);
-	}
-
-	public PathwayImageMap getCurrentPathwayImageMap() {
-		return currentPathwayImageMap;
-	}
-
-	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type) {
-		return hashPathwayDatabase.get(type);
-	}
-
 	public void notifyPathwayLoadingFinished(boolean pathwayLoadingFinished) {
 		this.pathwayLoadingFinished = pathwayLoadingFinished;
 	}
@@ -264,52 +226,14 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		return pathwayLoadingFinished;
 	}
 
-	public void createPathwayResourceLoader(EPathwayDatabaseType type) {
-
-		IExtensionRegistry reg = Platform.getExtensionRegistry();
-		try {
-			if (type == EPathwayDatabaseType.KEGG) {
-				IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
-				IExtension ext = ep.getExtension("org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader");
-				IConfigurationElement[] ce = ext.getConfigurationElements();
-
-				keggPathwayResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
-
-			} else if (type == EPathwayDatabaseType.WIKIPATHWAYS) {
-
-				IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
-				IExtension ext = ep.getExtension("org.caleydo.data.pathway.wikipathways.WikiPathwaysResourceLoader");
-				IConfigurationElement[] ce = ext.getConfigurationElements();
-
-				wikipathwaysResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
-			} else {
-				throw new IllegalStateException("Unknown pathway database " + type);
-			}
-		} catch (Exception ex) {
-			Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Could not load " + type.getName()
-					+ " pathways."));
-		}
-	}
-
-	public IPathwayResourceLoader getPathwayResourceLoader(EPathwayDatabaseType type) {
-
-		if (type == EPathwayDatabaseType.KEGG) {
-			return keggPathwayResourceLoader;
-		} else if (type == EPathwayDatabaseType.WIKIPATHWAYS) {
-			return wikipathwaysResourceLoader;
-		}
-
-		throw new IllegalStateException("Unknown pathway database " + type);
-	}
-
 	/**
 	 * Returns all pathways where a specific gene is contained at least once.
 	 *
 	 * @param idType
 	 * @param id
-	 * @return a Set of PathwayGraphs or null if no such mapping exists
+	 * @return a Set of PathwayGraphs
 	 */
-	public Set<PathwayGraph> getPathwayGraphsByGeneID(IDType idType, int id) {
+	public Set<PathwayGraph> getPathwayGraphsByGeneID(IDType idType, Object id) {
 
 		// set to avoid duplicate pathways
 		Set<PathwayGraph> pathways = new HashSet<PathwayGraph>();
@@ -317,13 +241,42 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		IDMappingManager geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idType);
 		Set<Integer> vertexRepIDs = geneIDMappingManager.getIDAsSet(idType, PathwayVertexRep.getIdType(), id);
 		if (vertexRepIDs == null)
-			return null;
+			return pathways;
 		for (Integer vertexRepID : vertexRepIDs) {
 
 			pathways.add(PathwayItemManager.get().getPathwayVertexRep(vertexRepID).getPathway());
 		}
 
 		return pathways;
+	}
+
+	/**
+	 * Gets the subset of specified genes that is contained in the specified pathway
+	 *
+	 * @param pathway
+	 * @param geneIDs
+	 *            Gene IDs that should be looked for in the pathway
+	 * @param idType
+	 *            IDType of the specified gene IDs
+	 * @return The subset of specified Gene IDs that is contained by the pathway
+	 */
+	public static Set<Object> getContainedGenes(PathwayGraph pathway, Set<Object> geneIDs, IDType geneIDType) {
+		IDMappingManager geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(geneIDType);
+		IIDTypeMapper<Object, Integer> mapper = geneIDMappingManager.getIDTypeMapper(geneIDType,
+				PathwayVertexRep.getIdType());
+		Set<Object> result = new HashSet<>();
+		for (Object id : geneIDs) {
+			Set<Integer> vertexRepIDs = mapper.apply(id);
+			if (vertexRepIDs != null) {
+				for (Integer vertexRepID : vertexRepIDs) {
+					if (PathwayItemManager.get().getPathwayVertexRep(vertexRepID).getPathway() == pathway) {
+						result.add(id);
+						break;
+					}
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -596,79 +549,75 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 	public List<PathwayPath> getShortestPaths(final PathwayVertex from, final PathwayVertex to) {
 
+		if (kShortestPathsAdapter == null)
+			kShortestPathsAdapter = new KShortestPathsAdapter<>(getRootPathway());
+
 		Thread t = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				DirectedGraph<PathwayVertex, DefaultEdge> rootPathway = getRootPathway();
+
+				List<GraphPath<PathwayVertex, DefaultEdge>> paths = kShortestPathsAdapter.getKShortestPaths(from, to,
+						10);
+
+				int i = 1;
+				for (GraphPath<PathwayVertex, DefaultEdge> path : paths) {
+					System.out.println(i + " NEW ALGO, length: " + (path.getEdgeList().size() + 1));
+					printPath(path);
+					i++;
+				}
+
+				// DirectedGraph<PathwayVertex, DefaultEdge> rootPathway = getRootPathway();
 				// KShortestPaths<PathwayVertex, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertex, DefaultEdge>(
 				// rootPathway, from, 3, 5);
 				// List<GraphPath<PathwayVertex, DefaultEdge>> paths = pathAlgo.getPaths(to);
-				DijkstraShortestPath<PathwayVertex, DefaultEdge> pathAlgo = new DijkstraShortestPath<>(rootPathway,
-						from, to);
+				// DijkstraShortestPath<PathwayVertex, DefaultEdge> pathAlgo = new DijkstraShortestPath<>(rootPathway,
+				// from, to);
 
-				GraphPath<PathwayVertex, DefaultEdge> vertexPath = pathAlgo.getPath();
+				// Graph rootGraph = convertRootGraph();
+				// DirectedGraph<PathwayVertex, DefaultEdge> rootPathway2 = new DefaultDirectedGraph<PathwayVertex,
+				// DefaultEdge>(
+				// DefaultEdge.class);
+				// for (BaseVertex vertex : rootGraph.get_vertex_list()) {
+				// rootPathway2.addVertex(vertex.toPathwayVertex());
+				// }
+				// for (edu.asu.emit.qyan.alg.model.Pair<Integer, Integer> edge : rootGraph.getEdges()) {
+				// PathwayVertex s = rootGraph.get_vertex(edge.first()).toPathwayVertex();
+				// PathwayVertex d = rootGraph.get_vertex(edge.second()).toPathwayVertex();
+				// rootPathway2.addEdge(s, d);
+				// }
+				//
+				// DijkstraShortestPath<PathwayVertex, DefaultEdge> pathAlgo2 = new DijkstraShortestPath<>(rootPathway2,
+				// from, to);
 
-				if (vertexPath != null) {
-					PathwayPath path = new PathwayPath();
+				// System.out.println("OLD ALGO");
+				// GraphPath<PathwayVertex, DefaultEdge> vertexPath = pathAlgo.getPath();
+				// printPath(vertexPath);
 
-					// GraphPath<PathwayVertex, DefaultEdge> vertexPath = paths.get(0);
-
-					StringBuilder b = new StringBuilder();
-					PathSegment currentSegment = null;
-
-					for (DefaultEdge edge : vertexPath.getEdgeList()) {
-						PathwayVertex source = rootPathway.getEdgeSource(edge);
-						PathwayVertex target = rootPathway.getEdgeTarget(edge);
-
-						if (currentSegment == null) {
-							Pair<PathwayVertexRep, PathwayVertexRep> vertexReps = getConnectedVertexRepsFromVertices(
-									source, target, null);
-							if (vertexReps == null) {
-								Logger.log(new Status(IStatus.ERROR, "Path determination failed!",
-										"Could not find connected vertex reps."));
-								return;
-							}
-							currentSegment = new PathSegment();
-							path.add(currentSegment);
-
-							currentSegment.add(vertexReps.getFirst());
-							currentSegment.add(vertexReps.getSecond());
-
-						} else {
-							// Test if the next vertex rep is directly connected to the previous vertex rep
-							PathwayVertexRep lastVertexRep = currentSegment.get(currentSegment.size() - 1);
-							PathwayVertexRep nextVertexRep = getConnectedVertexRep(lastVertexRep, target);
-							if (nextVertexRep != null) {
-								currentSegment.add(nextVertexRep);
-							} else {
-								// Try to find an equivalent node that connects to the next one within the same pathway
-								// -> new path segment
-								currentSegment = new PathSegment();
-								path.add(currentSegment);
-								Pair<PathwayVertexRep, PathwayVertexRep> vertexReps = getConnectedVertexRepsFromVertices(
-										source, target, lastVertexRep.getPathway());
-								if (vertexReps == null) {
-									// Try to find an equivalent node that connects to the next one in any pathway
-									vertexReps = getConnectedVertexRepsFromVertices(source, target, null);
-									if (vertexReps == null) {
-										Logger.log(new Status(IStatus.ERROR, "Path determination failed!",
-												"Could not find connected vertex reps."));
-										return;
-									}
-								}
-
-								currentSegment.add(vertexReps.getFirst());
-								currentSegment.add(vertexReps.getSecond());
-							}
-						}
-
-						b.append(source.getHumanReadableName()).append(" - ").append(target.getHumanReadableName())
-								.append(" , ");
-					}
-					System.out.println(b);
-					System.out.println(path.toString());
-				}
+				// DijkstraShortestPathAlg alg = new DijkstraShortestPathAlg(rootGraph);
+				// YenTopKShortestPathsAlg alg = new YenTopKShortestPathsAlg(rootGraph);
+				// Path p = alg.get_shortest_path(rootGraph.getVertex(from), rootGraph.getVertex(to));
+				// List<Path> paths = alg.get_shortest_paths(rootGraph.getVertex(from), rootGraph.getVertex(to), 10);
+				// int k = 1;
+				// for (Path p : paths) {
+				// List<DefaultEdge> pathEdges = new ArrayList<>(p.get_vertices().size() - 1);
+				// List<BaseVertex> pathVertices = p.get_vertices();
+				// for (int i = 0; i < pathVertices.size() - 1; i++) {
+				//
+				// BaseVertex from = pathVertices.get(i);
+				// BaseVertex to = pathVertices.get(i + 1);
+				//
+				// pathEdges.add(rootPathway.getEdge(from.toPathwayVertex(), to.toPathwayVertex()));
+				//
+				// }
+				// System.out.println(k + " NEW ALGO, length: " + pathVertices.size());
+				// GraphPath<PathwayVertex, DefaultEdge> path = new GraphPathImpl<PathwayVertex, DefaultEdge>(
+				// rootPathway, pathVertices.get(0).toPathwayVertex(), pathVertices.get(
+				// pathVertices.size() - 1).toPathwayVertex(), pathEdges, 0);
+				//
+				// printPath(path);
+				// k++;
+				// }
 
 			}
 		});
@@ -676,6 +625,71 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		t.start();
 
 		return null;
+	}
+
+	protected void printPath(GraphPath<PathwayVertex, DefaultEdge> vertexPath) {
+		DirectedGraph<PathwayVertex, DefaultEdge> rootPathway = getRootPathway();
+
+		if (vertexPath != null) {
+			PathwayPath path = new PathwayPath();
+
+			// GraphPath<PathwayVertex, DefaultEdge> vertexPath = paths.get(0);
+
+			StringBuilder b = new StringBuilder();
+			PathSegment currentSegment = null;
+
+			for (DefaultEdge edge : vertexPath.getEdgeList()) {
+				PathwayVertex source = rootPathway.getEdgeSource(edge);
+				PathwayVertex target = rootPathway.getEdgeTarget(edge);
+
+				if (currentSegment == null) {
+					Pair<PathwayVertexRep, PathwayVertexRep> vertexReps = getConnectedVertexRepsFromVertices(source,
+							target, null);
+					if (vertexReps == null) {
+						Logger.log(new Status(IStatus.ERROR, "Path determination failed!",
+								"Could not find connected vertex reps."));
+						return;
+					}
+					currentSegment = new PathSegment();
+					path.add(currentSegment);
+
+					currentSegment.add(vertexReps.getFirst());
+					currentSegment.add(vertexReps.getSecond());
+
+				} else {
+					// Test if the next vertex rep is directly connected to the previous vertex rep
+					PathwayVertexRep lastVertexRep = currentSegment.get(currentSegment.size() - 1);
+					PathwayVertexRep nextVertexRep = getConnectedVertexRep(lastVertexRep, target);
+					if (nextVertexRep != null) {
+						currentSegment.add(nextVertexRep);
+					} else {
+						// Try to find an equivalent node that connects to the next one within the same pathway
+						// -> new path segment
+						currentSegment = new PathSegment();
+						path.add(currentSegment);
+						Pair<PathwayVertexRep, PathwayVertexRep> vertexReps = getConnectedVertexRepsFromVertices(
+								source, target, lastVertexRep.getPathway());
+						if (vertexReps == null) {
+							// Try to find an equivalent node that connects to the next one in any pathway
+							vertexReps = getConnectedVertexRepsFromVertices(source, target, null);
+							if (vertexReps == null) {
+								Logger.log(new Status(IStatus.ERROR, "Path determination failed!",
+										"Could not find connected vertex reps."));
+								return;
+							}
+						}
+
+						currentSegment.add(vertexReps.getFirst());
+						currentSegment.add(vertexReps.getSecond());
+					}
+				}
+
+				b.append(source.getHumanReadableName()).append(" - ").append(target.getHumanReadableName())
+						.append(" , ");
+			}
+			System.out.println(b);
+			System.out.println(path.toString());
+		}
 	}
 
 	protected Pair<PathwayVertexRep, PathwayVertexRep> getConnectedVertexRepsFromVertices(PathwayVertex from,
@@ -705,13 +719,13 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	 * @param monitor
 	 * @param wikipathways
 	 */
-	public File preparePathwayData(EPathwayDatabaseType type, IProgressMonitor monitor) {
+	public File preparePathwayData(String name, IProgressMonitor monitor) {
 		final String URL_PATTERN = GeneralManager.DATA_URL_PREFIX + "pathways/%s_%s.zip";
 		final Organism organism = GeneticMetaData.getOrganism();
 
 		URL url = null;
 		try {
-			url = new URL(String.format(URL_PATTERN, type.name().toLowerCase(), organism.name().toLowerCase()));
+			url = new URL(String.format(URL_PATTERN, name.toLowerCase(), organism.name().toLowerCase()));
 			RemoteFile zip = RemoteFile.of(url);
 
 			if (!zip.inCache(true)) {
@@ -721,7 +735,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 			}
 
 			File localZip = zip.getOrLoad(false, monitor, "Caching Pathways (this may take a while): Downloading "
-					+ type.getName() + " pathways (%2$d MB)");
+					+ name + " pathways (%2$d MB)");
 			if (localZip == null || !localZip.exists()) {
 				log.error("can't download: " + url);
 				return null;
@@ -766,5 +780,30 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		}
 
 		return ids;
+	}
+
+	/**
+	 *
+	 */
+	public static void createPathwayDatabases() {
+		for (EPathwayDatabaseType type : EPathwayDatabaseType.values()) {
+			type.load();
+		}
+	}
+
+	/**
+	 * @param pathwayID
+	 * @return
+	 */
+	public PathwayGraph getPathway(int pathwayID) {
+		return this.pathways.get(pathwayID);
+	}
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	public boolean hasPathway(int pathwayID) {
+		return this.pathways.containsKey(pathwayID);
 	}
 }

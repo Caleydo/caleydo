@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.filterpipeline.toolbar;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.filterpipeline.GLFilterPipeline;
 import org.caleydo.view.filterpipeline.listener.SetFilterTypeEvent;
@@ -47,8 +48,9 @@ public class SelectFilterTypeWidget extends ControlContribution {
 					filterType = FilterType.RECORD;
 				else if (type == "Experiments")
 					filterType = FilterType.DIMENSION;
+				
 
-				GeneralManager.get().getEventPublisher()
+				EventPublisher.INSTANCE
 						.triggerEvent(new SetFilterTypeEvent(filterType, glView.getID()));
 			}
 		});

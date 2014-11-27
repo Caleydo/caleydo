@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -126,7 +127,7 @@ public class CategoricalContentPreviewRenderer extends AContentPreviewRenderer {
 			float[] topBarColor = colorCalculator.getPrimaryColor().getRGBA();
 			float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
 
-			gl.glBegin(GL2.GL_QUADS);
+			gl.glBegin(GL2GL3.GL_QUADS);
 			gl.glColor3fv(topBarColor, 0);
 			gl.glVertex3f(0, currentPositionY, z);
 			gl.glColor3fv(bottomBarColor, 0);

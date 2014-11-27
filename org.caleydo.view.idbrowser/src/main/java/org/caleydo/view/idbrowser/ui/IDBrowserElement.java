@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.MultiSelectionManagerMixin;
@@ -34,6 +35,8 @@ import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
+import org.caleydo.datadomain.genetic.GeneActions;
 import org.caleydo.datadomain.pathway.PathwayActions;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.view.idbrowser.internal.Activator;
@@ -162,6 +165,17 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 					if (row instanceof PathwayRow) {
 						PathwayGraph pathway = ((PathwayRow) row).getPathway();
 						PathwayActions.addToContextMenu(c, pathway, this, true);
+					} else if (row instanceof PrimaryIDRow) {
+						PrimaryIDRow r = (PrimaryIDRow) row;
+						if (r.getCategory().getCategoryName().equals(EGeneIDTypes.GENE.name())) {
+							Set<Object> ids = r.get(r.getCategory().getHumanReadableIDType());
+							if (ids == null || ids.isEmpty()) {
+								GeneActions.addToContextMenu(c, r.getPrimary(), r.getPrimaryIDType(), this, false);
+							} else {
+								GeneActions.addToContextMenu(c, ids.iterator().next(), r.getCategory()
+										.getHumanReadableIDType(), this, false);
+							}
+						}
 					}
 					if (c.hasMenuItems()) {
 						context.getSWTLayer().showContextMenu(c);
@@ -172,8 +186,7 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 			}
 
 			@Override
-			public void renderRowBackground(GLGraphics g, Rect rect, boolean even, IRow row,
-					IRow selected) {
+			public void renderRowBackground(GLGraphics g, Rect rect, boolean even, IRow row, IRow selected) {
 				if (!g.isPickingPass())
 					renderRowBackgroundImpl(g, rect.x(), rect.y(), rect.width(), rect.height(), even, row, selected);
 				else
@@ -222,10 +235,10 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 	protected void onRowClickImpl(Pick pick, IRow row) {
 		if (!(row instanceof PrimaryIDRow))
 			return;
-		PrimaryIDRow r = (PrimaryIDRow)row;
+		PrimaryIDRow r = (PrimaryIDRow) row;
 		if (!(r.getPrimary() instanceof Integer))
 			return;
-		switch(pick.getPickingMode()) {
+		switch (pick.getPickingMode()) {
 		case CLICKED:
 			boolean ctrlDown = ((IMouseEvent) pick).isCtrlDown();
 			boolean shiftDown = ((IMouseEvent) pick).isShiftDown();
@@ -324,7 +337,7 @@ public class IDBrowserElement extends GLElementContainer implements ISelectionCa
 
 		GLElementContainer c = new GLElementContainer(GLLayouts.flowVertical(2));
 		c.asList().addAll(queries);
-		c.setSize(-1, queries.size()*(20+2));
+		c.setSize(-1, queries.size() * (20 + 2));
 		this.add(ScrollingDecorator.wrap(c, RenderStyle.SCROLLBAR_WIDTH).setSize(200, -1));
 	}
 

@@ -10,8 +10,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
  * Basic abstract class for all serialized view representations. A serialized
@@ -43,16 +41,6 @@ public abstract class ASerializedView {
 	 */
 	@XmlTransient
 	public abstract String getViewType();
-
-	/**
-	 * Gets the according view frustum for the view. Overwrite method in
-	 * subclass if a different frustum is needed.
-	 *
-	 * @return ViewFrustum for open-gl rendering
-	 */
-	public ViewFrustum getViewFrustum() {
-		return new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -20, 20);
-	}
 
 	/**
 	 * @return the viewLabel, see {@link #viewLabel}

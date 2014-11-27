@@ -8,6 +8,7 @@ package org.caleydo.core.startup;
 import static org.caleydo.core.manager.GeneralManager.CALEYDO_HOME_PATH;
 
 import java.io.File;
+import java.util.HashMap;
 
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.collection.table.TableUtils;
@@ -16,11 +17,11 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.DataDomainSerializationData;
 import org.caleydo.core.serialize.ISerializationAddon;
 import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.serialize.SerializationData;
+import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.serialize.ZipUtils;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
@@ -56,7 +57,7 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 			ZipUtils.unzipToDirectory(this.packedProjectLocation, this.unpackedProjectLocation);
 		}
 
-		if (!ProjectManager.checkCompatibility(this.unpackedProjectLocation)){
+		if (!ProjectManager.checkCompatibility(this.unpackedProjectLocation)) {
 			Logger.create(LoadProjectStartupProcedure.class).error(
 					"Incompatible Project: " + this.packedProjectLocation);
 			MessageDialog.openError(null, "Error Incompatible Project", "The project file:\n"
@@ -87,15 +88,22 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 
 				DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
 
-				TableUtils.loadData(tDataDomain, dataSetDescription, false, false);
+				HashMap<String, Perspective> recordPerspectives = dataSerializationData.getRecordPerspectiveMap();
+				HashMap<String, Perspective> dimensionPerspectives = dataSerializationData.getDimensionPerspectiveMap();
+				TableUtils.loadData(tDataDomain, dataSetDescription, dimensionPerspectives == null,
+						recordPerspectives == null);
 				Table table = tDataDomain.getTable();
-				for (Perspective perspective : dataSerializationData
-						.getRecordPerspectiveMap().values()) {
-					table.registerRecordPerspective(perspective);
+
+				if (recordPerspectives != null) {
+					for (Perspective perspective : recordPerspectives.values()) {
+						table.registerRecordPerspective(perspective);
+					}
 				}
-				for (Perspective perspective : dataSerializationData
-						.getDimensionPerspectiveMap().values()) {
-					table.registerDimensionPerspective(perspective);
+
+				if (dimensionPerspectives != null) {
+					for (Perspective perspective : dimensionPerspectives.values()) {
+						table.registerDimensionPerspective(perspective);
+					}
 				}
 				for (TablePerspective container : tDataDomain.getTablePerspectives().values()) {
 					container.postDesirialize();
@@ -103,8 +111,9 @@ public class LoadProjectStartupProcedure implements IStartupProcedure {
 			}
 
 		}
+		
 
-		for (ISerializationAddon addon : GeneralManager.get().getSerializationManager().getAddons())
+		for (ISerializationAddon addon : SerializationManager.get().getAddons())
 			addon.load(serializationDataList);
 
 	}

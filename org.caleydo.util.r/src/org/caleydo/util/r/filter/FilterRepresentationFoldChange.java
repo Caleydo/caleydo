@@ -17,7 +17,9 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.histogram.RcpGLHistogramView;
 import org.caleydo.view.histogram.SerializedHistogramView;
@@ -238,12 +240,13 @@ public class FilterRepresentationFoldChange extends
 				histogramView.setExternalSerializedView(serializedHistogramView);
 				histogramView.createPartControl(histoComposite);
 				((GLHistogram) (histogramView.getGLView())).setHistogram(histogram);
+				
 				// Usually the canvas is registered to the GL2 animator in the
 				// PartListener.
 				// Because the GL2 histogram is no usual RCP view we have to do
 				// it on our
 				// own
-				GeneralManager.get().getViewManager()
+				ViewManager.get()
 						.registerGLCanvasToAnimator(histogramView.getGLCanvas());
 
 			}
@@ -363,7 +366,8 @@ public class FilterRepresentationFoldChange extends
 		RemoveFilterEvent filterEvent = new RemoveFilterEvent();
 		filterEvent.setEventSpace(filter.getDataDomain().getDataDomainID());
 		filterEvent.setFilter(filter);
-		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
+		
+		EventPublisher.trigger(filterEvent);
 	}
 
 	@Override

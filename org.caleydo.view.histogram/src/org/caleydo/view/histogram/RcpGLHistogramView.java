@@ -14,7 +14,6 @@ import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.ARcpGLViewPart;
@@ -22,6 +21,7 @@ import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.MinimumSizeComposite;
 import org.caleydo.core.view.ViewManager;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -59,14 +59,15 @@ public class RcpGLHistogramView
 		baseLayout.verticalSpacing = 2;
 		histoComposite.setLayout(baseLayout);
 
-		ViewManager viewManager = GeneralManager.get().getViewManager();
+
+		ViewManager viewManager = ViewManager.get();
 		glCanvas = createGLCanvas(histoComposite);
 		parentComposite = glCanvas.asComposite();
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		viewManager.registerGLCanvasToAnimator(glCanvas);
 
-		view = new GLHistogram(glCanvas, serializedView.getViewFrustum());
+		view = new GLHistogram(glCanvas, ViewFrustum.createDefault());
 		// ((GLHistogram) view).setRenderColorBars(false);
 		initializeView();
 		initialize();

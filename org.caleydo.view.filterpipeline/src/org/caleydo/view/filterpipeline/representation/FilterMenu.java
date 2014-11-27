@@ -12,6 +12,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.view.opengl.picking.PickingManager;
@@ -70,7 +71,7 @@ public class FilterMenu extends AGLGUIElement implements IRenderable {
 
 		beginGUIElement(gl, new Vec3f());
 		gl.glPushName(filter.getPickingID());
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		{
 			gl.glColor3f(0.7f, 0.8f, 0.9f);
 			gl.glVertex3d(x - width, y, 0.85);
@@ -85,7 +86,7 @@ public class FilterMenu extends AGLGUIElement implements IRenderable {
 		for (int i = 0; i < numFilters; ++i) {
 			gl.glPushName(pickingManager.getPickingID(viewId,
 					PickingType.FILTERPIPE_SUB_FILTER, i));
-			gl.glBegin(GL2.GL_QUADS);
+			gl.glBegin(GL2GL3.GL_QUADS);
 			{
 				gl.glColor4fv(renderStyle.getFilterColor(i).getRGBA(), 0);
 

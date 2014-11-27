@@ -106,9 +106,9 @@ public class CenteredDataRenderer extends AColumnBasedDataRenderer {
 		} else {
 			throw new IllegalStateException("The value " + rawValue + " is not supported.");
 		}
-		if (value < normalizedCenter + 0.0001 && value > normalizedCenter - 0.0001) {
-			return;
-		}
+		// if (value < normalizedCenter + 0.0001 && value > normalizedCenter - 0.0001) {
+		// return;
+		// }
 		DataDescription dataDescription = contentRenderer.dataDomain.getDataSetDescription().getDataDescription();
 		// CategoricalClassDescription<?> categoryDescription = null;
 		boolean isCategorical = false;
@@ -137,7 +137,7 @@ public class CenteredDataRenderer extends AColumnBasedDataRenderer {
 		float[] color = isCategorical ? getMappingColorForItem(columnID) : (contentRenderer.parentView
 				.isUseColorMapping() ? getMappingColorForItem(columnID) : contentRenderer.dataDomain.getColor()
 				.darker().darker().getRGBA());
-		renderSingleBar(gl, 0, (normalizedCenter * range) + spacing, (value - normalizedCenter) * range, x,
+		renderSingleBar(gl, 0, (normalizedCenter * range) + spacing, (value - normalizedCenter) * range, x, y,
 				selectionTypes, color, columnID, useShading);
 
 	}

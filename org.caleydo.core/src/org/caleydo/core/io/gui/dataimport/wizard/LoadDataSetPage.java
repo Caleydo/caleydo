@@ -304,7 +304,7 @@ public class LoadDataSetPage extends AImportDataPage<DataImportWizard> implement
 			}
 		});
 
-		previewTable = new PreviewTableWidget(parentComposite, new IntegerCallback() {
+		previewTable = new PreviewTableWidget(parentComposite, true, new IntegerCallback() {
 
 			@Override
 			public void on(int data) {

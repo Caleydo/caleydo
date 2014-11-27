@@ -15,6 +15,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -135,7 +136,8 @@ public class FilterRepresentationTwoSidedTTest
 		RemoveFilterEvent filterEvent = new RemoveFilterEvent();
 		filterEvent.setEventSpace(filter.getDataDomain().getDataDomainID());
 		filterEvent.setFilter(filter);
-		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
+		
+		EventPublisher.trigger(filterEvent);
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -30,10 +31,14 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.SetMinViewSizeEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
+import org.caleydo.core.gui.util.HelpButtonWizardDialog;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedMultiTablePerspectiveBasedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
@@ -56,14 +61,19 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.IVertexRepSelectionListener;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.view.enroute.correlation.CorrelationManager;
+import org.caleydo.view.enroute.correlation.fisher.FishersExactTestWizard;
+import org.caleydo.view.enroute.correlation.wilcoxon.WilcoxonRankSumTestWizard;
 import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
+import org.caleydo.view.enroute.event.RemoveGeneEvent;
 import org.caleydo.view.enroute.event.ShowGroupSelectionDialogEvent;
 import org.caleydo.view.enroute.mappeddataview.ChooseGroupsDialog;
 import org.caleydo.view.enroute.mappeddataview.MappedDataRenderer;
@@ -72,6 +82,8 @@ import org.caleydo.view.enroute.path.SelectedPathUpdateStrategy;
 import org.caleydo.view.pathway.GLPathway;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -175,6 +187,20 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	private boolean useColorMapping = false;
 
+	private Set<IEnrouteContentUpdateListener> contentListeners = new HashSet<>();
+
+	private CorrelationManager correlationManager;
+
+	/**
+	 * Listener for changes in context perspectives or additional genes.
+	 *
+	 * @author Christian
+	 *
+	 */
+	public static interface IEnrouteContentUpdateListener {
+		public void onEnrouteContentChanged(GLEnRoutePathway enRoute);
+	}
+
 	/**
 	 * Constructor.
 	 *
@@ -206,6 +232,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		pathRenderer.setUpdateStrategy(new SelectedPathUpdateStrategy(pathRenderer,
 				GLPathway.DEFAULT_PATHWAY_PATH_EVENT_SPACE));
 		mappedDataRenderer = new MappedDataRenderer(this);
+
+		correlationManager = new CorrelationManager(this);
 	}
 
 	@Override
@@ -283,7 +311,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		}
 
 		layoutManager.render(gl);
-		if (pathRenderer.getPathNodes().isEmpty()) {
+		if (pathRenderer.getPathNodes().isEmpty() && mappedDataRenderer.getAdditionalDavidIDs().isEmpty()) {
 			if (isDisplayListDirty) {
 				renderEmptyViewInfo(gl, displayListIndex);
 				isDisplayListDirty = false;
@@ -324,7 +352,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		gl.glTranslatef(0, 0, -0.001f);
 		gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BACKGROUND.name(), 0));
 		gl.glColor4f(0, 0, 0, 0);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(0, viewFrustum.getHeight(), 0);
 		gl.glVertex3f(viewFrustum.getWidth(), viewFrustum.getHeight(), 0);
@@ -370,7 +398,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		int minMappedDataRendererWidthPixels = mappedDataRenderer.getMinWidthPixels();
 
 		adaptViewSize(minMappedDataRendererWidthPixels + pathRenderer.getMinWidthPixels() + SIDE_SPACING_MAPPED_DATA,
-				pathRenderer.getMinHeightPixels());
+				pathRenderer.getMinHeightPixels() + mappedDataRenderer.getAdditionalDavidIDs().size()
+						* pathRenderer.getSizeConfig().getRowHeight());
 
 		mappedDataRenderer.updateLayout();
 	}
@@ -476,6 +505,14 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		removeTablePerspectiveListener.setEventSpace(pathwayPathEventSpace);
 		eventPublisher.addListener(RemoveTablePerspectiveEvent.class, removeTablePerspectiveListener);
 		registerPickingListeners();
+	}
+
+	public void addEventListener(Object listener) {
+		listeners.register(listener);
+	}
+
+	public void removeEventListener(Object listener) {
+		listeners.unregister(listener);
 	}
 
 	public void registerPickingListeners() {
@@ -603,6 +640,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				// }
 				// true for contextual perspective
 				contextualTablePerspectives.add(newTablePerspective);
+				notifyContentUpdateListners();
 
 				tpIterator.remove();
 			}
@@ -626,7 +664,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+		EventPublisher.trigger(event);
 		setLayoutDirty();
 	}
 
@@ -700,6 +739,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public void removeTablePerspective(TablePerspective tablePerspective) {
 		if (contextualTablePerspectives.contains(tablePerspective)) {
 			contextualTablePerspectives.remove(tablePerspective);
+			notifyContentUpdateListners();
 		}
 
 		for (TablePerspective t : tablePerspectives) {
@@ -734,7 +774,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+		EventPublisher.trigger(event);
 
 		setLayoutDirty();
 	}
@@ -749,6 +790,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			pathRenderer.destroy(gl);
 		}
 		mappedDataRenderer.destroy(gl);
+		contentListeners.clear();
+		correlationManager.dispose();
 	}
 
 	public void setLayoutDirty() {
@@ -780,6 +823,13 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			setLayoutDirty();
 			pathRendererChanged = true;
 		}
+	}
+
+	@ListenTo
+	public void onRemoveGene(RemoveGeneEvent event) {
+		mappedDataRenderer.removeDavidID(event.getDavidID());
+		setLayoutDirty();
+		notifyContentUpdateListners();
 	}
 
 	@ListenTo
@@ -904,30 +954,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	}
 
-	// @ListenTo
-	// public void showContextSelectionDialog(final ShowContextElementSelectionDialogEvent event) {
-	//
-	// Display.getDefault().asyncExec(new Runnable() {
-	// @Override
-	// public void run() {
-	// Shell shell = new Shell();
-	// ChooseContextDataDialog dialog = new ChooseContextDataDialog(shell, event.getPerspective());
-	// dialog.create();
-	// dialog.setBlockOnOpen(true);
-	//
-	// if (dialog.open() == IStatus.OK) {
-	//
-	// // FIXME this might not be thread-safe
-	// List<Integer> selectedItems = dialog.getSelectedItems();
-	// mappedDataRenderer.setContextRowIDs(selectedItems);
-	// setLayoutDirty();
-	//
-	// }
-	// }
-	//
-	// });
-	// }
-
 	@ListenTo
 	public void showGroupSelectionDialog(final ShowGroupSelectionDialogEvent event) {
 
@@ -1011,6 +1037,19 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	}
 
+	public void addGeneID(Object id, IDType idType) {
+		IDMappingManager mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+				IDCategory.getIDCategory(EGeneIDTypes.GENE.name()));
+		Set<Object> davidIDs = mappingManager.getIDAsSet(idType, IDType.getIDType(EGeneIDTypes.DAVID.name()), id);
+		List<Integer> idList = new ArrayList<>(davidIDs.size());
+		for (Object davidID : davidIDs) {
+			idList.add((Integer) davidID);
+		}
+		mappedDataRenderer.addDavidIDs(idList);
+		setLayoutDirty();
+		notifyContentUpdateListners();
+	}
+
 	@Override
 	public Rect getPathwayBounds() {
 
@@ -1041,6 +1080,70 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	@Override
 	public float getMinHeight() {
 		return getMinPixelHeight();
+	}
+
+	public void applyFishersExactTest() {
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				openWizardDialog(new FishersExactTestWizard());
+			}
+		});
+	}
+
+	public void applyWilcoxonRankSumTest() {
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				openWizardDialog(new WilcoxonRankSumTestWizard());
+			}
+		});
+	}
+
+	private void openWizardDialog(Wizard wizard) {
+		HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(Display.getDefault().getActiveShell(), wizard) {
+			@Override
+			protected void setShellStyle(int newShellStyle) {
+				super.setShellStyle(SWT.CLOSE | SWT.MODELESS | SWT.BORDER | SWT.TITLE);
+			}
+		};
+
+		dialog.setBlockOnOpen(false);
+		dialog.open();
+	}
+
+	public void addContentUpdateListener(IEnrouteContentUpdateListener listener) {
+		contentListeners.add(listener);
+	}
+
+	public void removeContentUpdateListener(IEnrouteContentUpdateListener listener) {
+		contentListeners.remove(listener);
+	}
+
+	private void notifyContentUpdateListners() {
+		for (IEnrouteContentUpdateListener l : contentListeners) {
+			l.onEnrouteContentChanged(this);
+		}
+	}
+
+	/**
+	 * @return the contextualTablePerspectives, see {@link #contextualTablePerspectives}
+	 */
+	public List<TablePerspective> getContextualTablePerspectives() {
+		return contextualTablePerspectives;
+	}
+
+	public List<Integer> getAddedGeneIDs() {
+		return mappedDataRenderer.getAdditionalDavidIDs();
+	}
+
+	/**
+	 * @return the correlationManager, see {@link #correlationManager}
+	 */
+	public CorrelationManager getCorrelationManager() {
+		return correlationManager;
 	}
 
 }

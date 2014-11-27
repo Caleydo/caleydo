@@ -24,14 +24,13 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.genetic.GeneticMetaData;
 import org.caleydo.datadomain.genetic.Organism;
-import org.caleydo.datadomain.pathway.IPathwayParser;
+import org.caleydo.datadomain.pathway.IPathwayLoader;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
-import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -46,7 +45,7 @@ import org.pathvisio.core.model.Pathway;
 import org.pathvisio.core.model.PathwayElement;
 import org.pathvisio.core.model.PathwayImporter;
 
-public class WikiPathwaysParser implements IPathwayParser, IRunnableWithProgress {
+public class WikiPathwaysParser implements IPathwayLoader, IRunnableWithProgress {
 
 	/**
 	 * Maps wikipathway db names to idtypes in caleydo.
@@ -66,18 +65,16 @@ public class WikiPathwaysParser implements IPathwayParser, IRunnableWithProgress
 	@Override
 	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 		PathwayManager pathwayManager = PathwayManager.get();
-		pathwayManager.preparePathwayData(EPathwayDatabaseType.WIKIPATHWAYS, monitor);
+		pathwayManager.preparePathwayData("WikiPathways", monitor);
 	}
 
 	@Override
-	public void parse() {
+	public void parse(EPathwayDatabaseType type) {
 		PathwayManager pathwayManager = PathwayManager.get();
-		File baseDir = pathwayManager.preparePathwayData(EPathwayDatabaseType.WIKIPATHWAYS, new NullProgressMonitor());
+		File baseDir = pathwayManager.preparePathwayData("WikiPathways", new NullProgressMonitor());
 		Organism organism = GeneticMetaData.getOrganism();
 		if (baseDir == null)
 			throw new IllegalStateException("Cannot load pathways from organism " + organism);
-
-		PathwayDatabase pathwayDatabase = pathwayManager.getPathwayDatabaseByType(EPathwayDatabaseType.WIKIPATHWAYS);
 
 		try (BufferedReader pathwayListFile = new BufferedReader(new FileReader(new File(baseDir, "metadata.txt")))) {
 			String line = null;
@@ -87,7 +84,8 @@ public class WikiPathwaysParser implements IPathwayParser, IRunnableWithProgress
 				File pathwayFile = new File(baseDir, tokens[0]);
 				PathwayImporter importer = new GpmlFormat();
 				Pathway pathway = importer.doImport(pathwayFile);
-				createPathwayGraph(pathway, tokens[0].substring(0, tokens[0].length() - 5), Integer.valueOf(tokens[1])
+				createPathwayGraph(type, pathway, tokens[0].substring(0, tokens[0].length() - 5),
+						Integer.valueOf(tokens[1])
 						.intValue(), Integer.valueOf(tokens[2]).intValue(), baseDir);
 
 			}
@@ -115,11 +113,12 @@ public class WikiPathwaysParser implements IPathwayParser, IRunnableWithProgress
 	 *            Height of the image in pixels.
 	 * @param baseDir
 	 */
-	private void createPathwayGraph(Pathway pathway, String imageFileName, int pixelWidth, int pixelHeight, File baseDir) {
+	private void createPathwayGraph(EPathwayDatabaseType type, Pathway pathway, String imageFileName, int pixelWidth,
+			int pixelHeight, File baseDir) {
 		PathwayManager pathwayManager = PathwayManager.get();
 		PathwayItemManager pathwayItemManager = PathwayItemManager.get();
 
-		PathwayGraph pathwayGraph = pathwayManager.createPathway(EPathwayDatabaseType.WIKIPATHWAYS, imageFileName,
+		PathwayGraph pathwayGraph = pathwayManager.createPathway(type, imageFileName,
 				pathway.getMappInfo().getMapInfoName(), new File(baseDir, imageFileName + ".png"), "");
 		pathwayGraph.setWidth(pixelWidth);
 		pathwayGraph.setHeight(pixelHeight);

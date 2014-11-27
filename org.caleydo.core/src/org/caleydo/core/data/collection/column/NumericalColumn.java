@@ -11,7 +11,7 @@ import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.NumericalProperties;
-import org.caleydo.core.util.math.MathHelper;
+import org.caleydo.core.util.function.ExpressionFunctions.EMonoOperator;
 
 /**
  * INumericalDimension is a specialization of IDimension. It is meant for numerical data of a continuous range,
@@ -123,7 +123,8 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	public void log10() {
 		FloatContainer logContainer = rawContainer.log(10);
 		dataRepToContainerMap.put(NumericalTable.Transformation.LOG10,
-				logContainer.normalizeWithAtrificalExtrema(MathHelper.log(getMin(), 10), MathHelper.log(getMax(), 10)));
+				logContainer.normalizeWithAtrificalExtrema(EMonoOperator.LOG10.apply(getMin()),
+						EMonoOperator.LOG10.apply(getMax())));
 	}
 
 	/**
@@ -134,7 +135,8 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	public void log2() {
 		FloatContainer logContainer = rawContainer.log(2);
 		dataRepToContainerMap.put(NumericalTable.Transformation.LOG2,
-				logContainer.normalizeWithAtrificalExtrema(MathHelper.log(getMin(), 2), MathHelper.log(getMax(), 2)));
+				logContainer.normalizeWithAtrificalExtrema(EMonoOperator.LOG2.apply(getMin()),
+						EMonoOperator.LOG2.apply(getMax())));
 	}
 
 	@Override

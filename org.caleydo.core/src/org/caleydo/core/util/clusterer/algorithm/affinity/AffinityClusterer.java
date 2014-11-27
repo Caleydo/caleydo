@@ -6,7 +6,9 @@
 package org.caleydo.core.util.clusterer.algorithm.affinity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.util.clusterer.ClusterHelper;
@@ -16,7 +18,6 @@ import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.logging.Logger;
 
 import com.google.common.base.Stopwatch;
-import com.jogamp.common.util.IntObjectHashMap;
 
 /**
  * Affinity propagation clusterer. See <a href="http://www.psi.toronto.edu/affinitypropagation/faq.html"> affinity
@@ -52,7 +53,7 @@ public class AffinityClusterer extends ALinearClusterer {
 	private final int maxIterations = 800;
 	private final int convIterations = 100;
 
-	private IntObjectHashMap cache;
+	private Map<Integer, Object> cache;
 
 
 	public AffinityClusterer(ClusterConfiguration config, int progressMultiplier, int progressOffset) {
@@ -68,7 +69,7 @@ public class AffinityClusterer extends ALinearClusterer {
 		this.k = new int[this.nrSimilarities];
 
 		if (c.isCacheVectors())
-			cache = new IntObjectHashMap();
+			cache = new HashMap<Integer, Object>();
 		else
 			cache = null;
 	}

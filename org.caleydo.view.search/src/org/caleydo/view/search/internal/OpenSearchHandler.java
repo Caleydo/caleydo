@@ -5,7 +5,7 @@
  ******************************************************************************/
 package org.caleydo.view.search.internal;
 
-import org.caleydo.core.gui.command.AOpenViewHandler;
+import org.caleydo.core.internal.cmd.AOpenViewHandler;
 
 public class OpenSearchHandler extends AOpenViewHandler {
 	public OpenSearchHandler() {

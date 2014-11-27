@@ -8,7 +8,7 @@ package org.caleydo.view.info.dataset.impl;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.histogram.RcpGLColorMapperHistogramView;
 import org.caleydo.view.histogram.SerializedHistogramView;
@@ -21,9 +21,9 @@ import org.eclipse.swt.widgets.ExpandItem;
 
 /**
  * histogram of the current data
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class HistogramItem implements ITablePerspectiveDataSetItem {
 	private ExpandItem histogramItem;
@@ -68,11 +68,12 @@ public class HistogramItem implements ITablePerspectiveDataSetItem {
 
 				histogramView.setExternalSerializedView(serializedHistogramView);
 				histogramView.createPartControl((Composite) histogramItem.getControl());
+
 				// Usually the canvas is registered to the GL2 animator in the
 				// PartListener. Because the GL2 histogram is no usual RCP view
 				// we
 				// have to do it on our own
-				GeneralManager.get().getViewManager().registerGLCanvasToAnimator(histogramView.getGLCanvas());
+				ViewManager.get().registerGLCanvasToAnimator(histogramView.getGLCanvas());
 				((Composite) histogramItem.getControl()).layout();
 			}
 

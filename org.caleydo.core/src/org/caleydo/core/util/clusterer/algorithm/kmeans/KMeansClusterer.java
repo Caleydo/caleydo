@@ -8,15 +8,15 @@ package org.caleydo.core.util.clusterer.algorithm.kmeans;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.util.clusterer.algorithm.ALinearClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.logging.Logger;
-
-import com.jogamp.common.util.IntObjectHashMap;
 
 /**
  * KMeans clusterer similar to WEKA ones
@@ -31,7 +31,7 @@ public class KMeansClusterer extends ALinearClusterer {
 
 	private final int numberOfCluster;
 
-	private final IntObjectHashMap cache;
+	private final Map<Integer, Object> cache;
 
 	private final float[] missingValues;
 
@@ -42,7 +42,7 @@ public class KMeansClusterer extends ALinearClusterer {
 		this.numberOfCluster = kMeansClusterConfiguration.getNumberOfClusters();
 
 		if (kMeansClusterConfiguration.isCacheVectors())
-			cache = new IntObjectHashMap();
+			cache = new HashMap<Integer, Object>();
 		else
 			cache = null;
 

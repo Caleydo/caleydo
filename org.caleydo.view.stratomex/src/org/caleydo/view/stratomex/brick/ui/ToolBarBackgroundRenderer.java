@@ -10,6 +10,7 @@ package org.caleydo.view.stratomex.brick.ui;
 
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
@@ -44,7 +45,7 @@ public class ToolBarBackgroundRenderer extends ALayoutRenderer {
 				.getPickingID(brick.getStratomex().getID(), EPickingType.BRICK_PENETRATING.name(), brick.getID()));
 
 		gl.glColor3fv(Color.GRAY.getRGBA(), 0);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 
 		gl.glVertex3f(0, -spacing, DefaultBrickLayoutTemplate.BUTTON_Z - 0.02f);
 		gl.glVertex3f(x, -spacing, DefaultBrickLayoutTemplate.BUTTON_Z - 0.02f);

@@ -5,6 +5,7 @@
  ******************************************************************************/
 package org.caleydo.core.util.math;
 
+
 /**
  * @author Alexander Lex
  *
@@ -14,5 +15,9 @@ public class MathHelper {
 		if (base == 10)
 			return Math.log10(value);
 		return Math.log(value) / Math.log(base);
+	}
+
+	public static double log2(double value) {
+		return Math.log(value) / Math.log(2);
 	}
 }

@@ -216,7 +216,6 @@ public class PathwayVertexRep implements Serializable, IUniqueObject, ILabeled {
 
 		return (short) (coords.get(2).getSecond() - coords.get(1).getSecond());
 	}
-
 	@Override
 	public String toString() {
 

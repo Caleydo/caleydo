@@ -2,9 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ImageViewer View
 Bundle-SymbolicName: org.caleydo.view.imageviewer;singleton:=true
-Bundle-Version: 3.1.3
-Require-Bundle: org.caleydo.core;bundle-version="3.1.3",
- org.eclipse.swt
+Bundle-Version: 3.1.5
+Require-Bundle: org.caleydo.core;bundle-version="3.1.5",
+ org.eclipse.swt,
+ org.caleydo.ui;bundle-version="3.1.4"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy

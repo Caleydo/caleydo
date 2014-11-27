@@ -126,9 +126,11 @@ public class RowCaptionRenderer extends ALayoutRenderer {
 		float sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(8);
 		float height = pixelGLConverter.getGLHeightForPixelHeight(15);
 
-		if (rowCaption != null)
+		if (rowCaption != null) {
+			textRenderer.setColor(Color.BLACK);
 			textRenderer.renderTextInBounds(gl, rowCaption, sideSpacing, (y - height) / 2, 0.1f, x - sideSpacing,
 					height);
+		}
 
 		gl.glPopName();
 	}

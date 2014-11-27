@@ -18,6 +18,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.data.RemoveManagedSelectionTypesEvent;
 import org.caleydo.core.id.IDCategory;
@@ -693,12 +694,14 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 		addSelectionTypeListener = new SelectionTypeListener();
 
 		addSelectionTypeListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(SelectionTypeEvent.class, addSelectionTypeListener);
+		
+		EventPublisher.INSTANCE.addListener(SelectionTypeEvent.class, addSelectionTypeListener);
 
 		removeManagedSelectionTypesListener = new RemoveManagedSelectionTypesListener();
 
 		removeManagedSelectionTypesListener.setHandler(this);
-		GeneralManager.get().getEventPublisher()
+		GeneralManager r1 = GeneralManager.get();
+		EventPublisher.INSTANCE
 				.addListener(RemoveManagedSelectionTypesEvent.class, removeManagedSelectionTypesListener);
 
 	}
@@ -706,12 +709,14 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	@Override
 	public synchronized void unregisterEventListeners() {
 		if (addSelectionTypeListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(addSelectionTypeListener);
+			
+			EventPublisher.INSTANCE.removeListener(addSelectionTypeListener);
 			addSelectionTypeListener = null;
 		}
 
 		if (removeManagedSelectionTypesListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(removeManagedSelectionTypesListener);
+			
+			EventPublisher.INSTANCE.removeListener(removeManagedSelectionTypesListener);
 			removeManagedSelectionTypesListener = null;
 		}
 	}

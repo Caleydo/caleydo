@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Set;
 
+import org.caleydo.core.internal.Activator;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -45,6 +46,8 @@ public final class RemoteFile implements IRunnableWithProgress {
 	private static final int WORK_TRIGGER_FREQUENCY = 64;
 
 	private static final int CONNECT_TIMEOUT = 10 * 1000; // [ms]
+
+	private static final boolean WORK_OFFLINE = Boolean.getBoolean("org.caleydo.cache.offline");
 
 	private final URL url;
 	private final File file;
@@ -89,11 +92,15 @@ public final class RemoteFile implements IRunnableWithProgress {
 	 * @return
 	 */
 	public boolean inCache(boolean checkModificationDate) {
+		if (WORK_OFFLINE) {
+			return file.exists();
+		}
 		if (!file.exists())
 			return false;
 		if (!checkModificationDate)
 			return true;
 		long have = file.lastModified();
+		Activator.updateProxySettings(url);
 		URLConnection connection;
 		try {
 			connection = url.openConnection();
@@ -136,6 +143,9 @@ public final class RemoteFile implements IRunnableWithProgress {
 
 	public File getOrLoad(boolean checkModificationDate, IProgressMonitor monitor, String pattern) {
 		if (!inCache(checkModificationDate)) {
+			if (WORK_OFFLINE && !file.exists()) { // can't load can't download
+				return null;
+			}
 			delete();
 			run(monitor, pattern);
 			if (!file.exists())
@@ -154,6 +164,12 @@ public final class RemoteFile implements IRunnableWithProgress {
 			monitor.done();
 			return;
 		}
+		if (WORK_OFFLINE) {
+			monitor.done();
+			successful = false;
+			return;
+		}
+		Activator.updateProxySettings(url);
 		successful = false;
 		caught = null;
 		File tmp = new File(file.getAbsolutePath() + "-tmp");

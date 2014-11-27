@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.selection.SelectionCommands;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
@@ -91,7 +92,7 @@ public class BrickSpacingRenderer
 				EPickingType.BRICK_SPACER.name() + dimensionGroup.getID(), id));
 
 		gl.glColor4f(1, 1, 1, 0);
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glVertex3f(-width / 2.0f, 0, 0.1f);
 		gl.glVertex3f(width / 2.0f, 0, 0.1f);
 		gl.glVertex3f(width / 2.0f, y, 0.1f);

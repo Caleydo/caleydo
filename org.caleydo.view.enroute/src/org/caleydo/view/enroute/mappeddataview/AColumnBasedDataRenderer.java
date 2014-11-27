@@ -27,12 +27,18 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingLabelProvider;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
+import org.caleydo.view.enroute.correlation.IDataClassifier;
+import org.caleydo.view.enroute.correlation.IIDClassifier;
+import org.caleydo.view.enroute.correlation.SimpleCategory;
+import org.caleydo.view.enroute.mappeddataview.overlay.IDataCellOverlayProvider;
 
 /**
  * @author Christian
  *
  */
 public abstract class AColumnBasedDataRenderer extends ADataRenderer {
+
+	private static final Color MISSING_VALUE_COLOR = new Color(1, 1, 1, 0.3f);
 
 	/**
 	 * @param contentRenderer
@@ -71,9 +77,20 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 				}
 			}
 			if (columnID == null) {
+				renderColorColumn(gl, MISSING_VALUE_COLOR, xIncrement, y);
 				renderMissingValue(gl, xIncrement, y);
 			} else {
 				renderColumnBar(gl, columnID, xIncrement, y, selectionTypes, useShading);
+
+				if (contentRenderer.isHighlightMode) {
+					IDataCellOverlayProvider provider = contentRenderer.parentView.getCorrelationManager()
+							.getOverlayProvider(contentRenderer);
+					if (provider != null) {
+						IColumnBasedDataOverlay overlay = provider.getOverlay(this);
+						if (overlay != null)
+							overlay.render(gl, columnID, xIncrement, y);
+					}
+				}
 			}
 			gl.glTranslatef(xIncrement, 0, 0);
 
@@ -83,12 +100,12 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 
 	}
 
-	protected void renderMissingValue(GL2 gl, float x, float y) {
+	public void renderColorColumn(GL2 gl, Color color, float x, float y) {
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glBegin(GL2GL3.GL_QUADS);
 
-		gl.glColor4f(1f, 1f, 1f, 0.3f);
+		gl.glColor4fv(color.getRGBA(), 0);
 		gl.glVertex3f(0, 0, z);
 		gl.glVertex3f(x, 0, z);
 		gl.glVertex3f(x, y, z);
@@ -97,13 +114,16 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 		gl.glEnd();
 	}
 
+	protected void renderMissingValue(GL2 gl, float x, float y) {
+		renderColorColumn(gl, MISSING_VALUE_COLOR, x, y);
+	}
+
 	protected abstract void renderColumnBar(GL2 gl, int columnID, float x, float y, List<SelectionType> selectionTypes,
 			boolean useShading);
 
-	protected void renderSingleBar(GL2 gl, float x, float y, float height, float width,
+	protected void renderSingleBar(GL2 gl, float x, float y, float height, float width, float totalHeight,
 			List<SelectionType> selectionTypes, float[] baseColor, int columnID, boolean useShading) {
-		float[] topBarColor = baseColor;
-		float[] bottomBarColor = baseColor;
+
 
 		List<SelectionType> experimentSelectionTypes = contentRenderer.parent.sampleSelectionManager.getSelectionTypes(
 				contentRenderer.columnIDType, columnID);
@@ -111,39 +131,53 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 		@SuppressWarnings("unchecked")
 		List<SelectionType> sTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes, selectionTypes);
 
-		if (contentRenderer.isHighlightMode
-				&& !(sTypes.contains(SelectionType.MOUSE_OVER) || sTypes.contains(SelectionType.SELECTION))) {
-			return;
-		}
-
 		if (contentRenderer.isHighlightMode) {
+			if (!(sTypes.contains(SelectionType.MOUSE_OVER) || sTypes.contains(SelectionType.SELECTION)))
+				return;
 			colorCalculator.setBaseColor(new Color(baseColor));
 
 			colorCalculator.calculateColors(sTypes);
 
-			topBarColor = colorCalculator.getPrimaryColor().getRGBA();
-			bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
+			float[] topBarColor = colorCalculator.getPrimaryColor().transparentCopy(0.5f).getRGBA();
+			float[] bottomBarColor = colorCalculator.getSecondaryColor().transparentCopy(0.5f).getRGBA();
+
+			renderBar(gl, x, 0, width, totalHeight, bottomBarColor, topBarColor, useShading);
+
+		} else {
+
+			Integer resolvedSampleID = contentRenderer.columnIDMappingManager.getID(
+					contentRenderer.resolvedColumnIDType, contentRenderer.parent.sampleIDType, columnID);
+
+			gl.glPushName(contentRenderer.parentView.getPickingManager().getPickingID(
+					contentRenderer.parentView.getID(), EPickingType.SAMPLE.name(), resolvedSampleID));
+			gl.glPushName(contentRenderer.parentView.getPickingManager().getPickingID(
+					contentRenderer.parentView.getID(), EPickingType.SAMPLE.name() + hashCode(), columnID));
+
+			// Render whole area to be pickable, not only the bar
+			renderBar(gl, x, 0, width, totalHeight, new float[] { 0, 0, 0, 0 }, new float[] { 0, 0, 0, 0 }, useShading);
+
+			gl.glPopName();
+			gl.glPopName();
+
+			renderBar(gl, x, y, width, height, baseColor, baseColor, useShading);
+
 		}
 
-		Integer resolvedSampleID = contentRenderer.columnIDMappingManager.getID(contentRenderer.resolvedColumnIDType,
-				contentRenderer.parent.sampleIDType, columnID);
+	}
 
-		gl.glPushName(contentRenderer.parentView.getPickingManager().getPickingID(contentRenderer.parentView.getID(),
-				EPickingType.SAMPLE.name(), resolvedSampleID));
-		gl.glPushName(contentRenderer.parentView.getPickingManager().getPickingID(contentRenderer.parentView.getID(),
-				EPickingType.SAMPLE.name() + hashCode(), columnID));
-
+	private void renderBar(GL2 gl, float x, float y, float width, float height, float[] bottomBarColor,
+			float[] topBarColor, boolean useShading) {
 		gl.glBegin(GL2GL3.GL_QUADS);
 
 		gl.glColor4fv(bottomBarColor, 0);
 		gl.glVertex3f(x, y, z);
 		if (useShading) {
-			gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f);
+			gl.glColor4f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f, topBarColor[3]);
 
 		}
 		gl.glVertex3f(x + width, y, z);
 		if (useShading) {
-			gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
+			gl.glColor4f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f, topBarColor[3]);
 		} else {
 			gl.glColor4fv(topBarColor, 0);
 		}
@@ -154,9 +188,6 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 		gl.glVertex3f(x, y + height, z);
 
 		gl.glEnd();
-
-		gl.glPopName();
-		gl.glPopName();
 	}
 
 	protected float[] getMappingColorForItem(int columnID) {
@@ -242,5 +273,59 @@ public abstract class AColumnBasedDataRenderer extends ADataRenderer {
 			}
 
 		}, EPickingType.SAMPLE.name() + hashCode());
+	}
+
+	public interface IColumnBasedDataOverlay {
+		public void render(GL2 gl, int columnID, float xIncrement, float y);
+	}
+
+	public class DataClassifierOverlay implements IColumnBasedDataOverlay {
+		private final IDataClassifier classifier;
+
+		public DataClassifierOverlay(IDataClassifier classifier) {
+			this.classifier = classifier;
+		}
+
+		@Override
+		public void render(GL2 gl, int columnID, float xIncrement, float y) {
+			Object rawValue = contentRenderer.dataDomain.getRaw(contentRenderer.resolvedRowIDType,
+					contentRenderer.resolvedRowID, contentRenderer.resolvedColumnIDType, columnID);
+			SimpleCategory category = classifier.apply(rawValue);
+			if (category != null) {
+				renderColorColumn(gl, category.color.transparentCopy(0.6f), xIncrement, y);
+			}
+		}
+	}
+
+	public class IDClassifierOverlay implements IColumnBasedDataOverlay {
+		private final IIDClassifier classifier;
+
+		public IDClassifierOverlay(IIDClassifier classifier) {
+			this.classifier = classifier;
+		}
+
+		@Override
+		public void render(GL2 gl, int columnID, float xIncrement, float y) {
+			SimpleCategory category = classifier.apply(columnID, contentRenderer.resolvedColumnIDType);
+			if (category != null) {
+				renderColorColumn(gl, category.color.transparentCopy(0.6f), xIncrement, y);
+			}
+		}
+	}
+
+	public class ColorOverlay implements IColumnBasedDataOverlay {
+
+		private final Color color;
+
+		public ColorOverlay(Color color) {
+			this.color = color;
+		}
+
+		@Override
+		public void render(GL2 gl, int columnID, float xIncrement, float y) {
+			renderColorColumn(gl, color.transparentCopy(0.6f), xIncrement, y);
+
+		}
+
 	}
 }

@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -77,7 +78,7 @@ public class ContinuousContentPreviewRenderer extends AContentPreviewRenderer {
 
 		float[] color = MappedDataRenderer.EVEN_BACKGROUND_COLOR;
 
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glColor4fv(color, 0);
 		gl.glVertex3f(0, 0, z);
 		// gl.glColor3f(color[0] * 1.1f, color[1] * 1.1f, color[2] * 1.1f);
@@ -98,7 +99,7 @@ public class ContinuousContentPreviewRenderer extends AContentPreviewRenderer {
 		gl.glVertex3d(0, 0.8f * y, z);
 		gl.glEnd();
 
-		gl.glBegin(GL2.GL_QUADS);
+		gl.glBegin(GL2GL3.GL_QUADS);
 		gl.glColor4fv(topBarColor, 0);
 		gl.glVertex3f(0, 0, z);
 		gl.glColor4fv(bottomBarColor, 0);

@@ -13,12 +13,12 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Wrapper for {@link SelectionManager} that integrates all the event handling
@@ -107,7 +107,8 @@ public class EventBasedSelectionManager extends SelectionManager implements
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSelectionDelta(getDelta());
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		EventPublisher.trigger(event);
 	}
 
 }

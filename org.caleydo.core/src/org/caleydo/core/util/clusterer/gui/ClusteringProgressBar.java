@@ -8,6 +8,7 @@ package org.caleydo.core.util.clusterer.gui;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.ClusterProgressEvent;
 import org.caleydo.core.event.data.ClustererCanceledEvent;
 import org.caleydo.core.event.data.RenameProgressBarEvent;
@@ -139,7 +140,8 @@ public class ClusteringProgressBar implements Runnable {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				GeneralManager.get().getEventPublisher().triggerEvent(new ClustererCanceledEvent());
+				
+				EventPublisher.trigger(new ClustererCanceledEvent());
 				shell.close();
 			}
 		});

@@ -6,6 +6,7 @@
 package org.caleydo.view.filterpipeline;
 
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.view.filterpipeline.toolbar.SelectFilterTypeWidget;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
@@ -34,7 +35,7 @@ public class RcpGLFilterPipelineView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		view = new GLFilterPipeline(glCanvas, serializedView.getViewFrustum());
+		view = new GLFilterPipeline(glCanvas, ViewFrustum.createDefault());
 		initializeView();
 		createPartControlGL();
 	}

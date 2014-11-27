@@ -87,7 +87,7 @@ public class PathSegment extends ArrayList<PathwayVertexRep> {
 			}
 			if (prevVertex != null) {
 				DefaultEdge edge1 = pathway.getEdge(prevVertex, v);
-				DefaultEdge edge2 = pathway.getEdge(prevVertex, v);
+				DefaultEdge edge2 = pathway.getEdge(v, prevVertex);
 				if (edge1 == null && edge2 == null)
 					return false;
 

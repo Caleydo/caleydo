@@ -8,10 +8,6 @@ package org.caleydo.view.pathway;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -20,8 +16,6 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import javax.media.opengl.GL2ES2;
-import javax.media.opengl.GLException;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -35,11 +29,11 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataSetSelectedEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.ColorManager;
@@ -96,7 +90,6 @@ import org.caleydo.datadomain.pathway.listener.PathwayMappingEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.SampleMappingModeEvent;
 import org.caleydo.datadomain.pathway.listener.ShowNodeContextEvent;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
@@ -114,9 +107,6 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.GraphPathImpl;
 
 import setvis.bubbleset.BubbleSet;
-
-import com.google.common.io.CharStreams;
-import com.jogamp.opengl.util.glsl.ShaderUtil;
 
 /**
  * Single OpenGL2 pathway view
@@ -366,7 +356,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 	public void setPathway(final int iPathwayID) {
 
-		setPathway(pathwayManager.getItem(iPathwayID));
+		setPathway(pathwayManager.getPathway(iPathwayID));
 	}
 
 	@Override
@@ -399,7 +389,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		displayListIndex = gl.glGenLists(1);
 
 		// Check if pathway exists or if it's already loaded
-		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
+		if (pathway == null || !pathwayManager.hasPathway(pathway.getID()))
 			return;
 
 		initPathwayData(gl);
@@ -531,14 +521,14 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 				// Load embedded pathway
 				if (vertexRep.getType() == EPathwayVertexType.map) {
-					PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
-							EPathwayDatabaseType.KEGG);
+					PathwayGraph pathway = vertexRep.getPathway();
 
 					if (pathway != null) {
 						LoadPathwayEvent event = new LoadPathwayEvent();
 						event.setSender(this);
 						event.setPathwayID(pathway.getID());
-						GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+						EventPublisher.trigger(event);
 					}
 				}
 
@@ -559,8 +549,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 
 				if (vertexRep.getType() == EPathwayVertexType.map) {
 
-					LoadPathwaysByPathwayItem menuItem = new LoadPathwaysByPathwayItem(PathwayManager.get()
-							.getPathwayByTitle(vertexRep.getName(), EPathwayDatabaseType.KEGG));
+					LoadPathwaysByPathwayItem menuItem = new LoadPathwaysByPathwayItem(vertexRep.getPathway());
 					contextMenuCreator.addContextMenuItem(menuItem);
 
 				} else if (vertexRep.getType() == EPathwayVertexType.gene) {
@@ -718,7 +707,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			// protected void mouseOver(Pick pick) {
 			// PathwayTextureSelectionEvent event = new PathwayTextureSelectionEvent(pathway);
 			// event.setEventSpace(pathwayPathEventSpace);
-			// EventPublisher.INSTANCE.triggerEvent(event);
+			// EventPublisher.trigger(event);
 			// }
 
 		}, EPickingType.PATHWAY_TEXTURE_SELECTION.name());
@@ -728,7 +717,7 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 	public void displayLocal(final GL2 gl) {
 
 		// Check if pathway exists or if it's already loaded
-		if (pathway == null || !pathwayManager.hasItem(pathway.getID())) {
+		if (pathway == null || !pathwayManager.hasPathway(pathway.getID())) {
 			if (isDisplayListDirty) {
 				gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 				renderEmptyViewText(gl, new String[] {
@@ -804,87 +793,14 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 		// iPathwayID);
 	}
 
-	protected boolean initShader = false;
-	public int shaderProgramTextOverlay;
-
-	public void initShaders(GL2 gl) throws IOException {
-		initShader = true;
-		shaderProgramTextOverlay = -1;
-		if (!ShaderUtil.isShaderCompilerAvailable(gl)) {
-			log.error("no shader available no intelligent texture manipulation");
-			return;
-		}
-		int vs = gl.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
-		String vsrc = CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream(
-				"vsTextOverlay.glsl")));
-		gl.glShaderSource(vs, 1, new String[] { vsrc }, (int[]) null, 0);
-		gl.glCompileShader(vs);
-
-		ByteArrayOutputStream slog = new ByteArrayOutputStream();
-		PrintStream slog_print = new PrintStream(slog);
-
-		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, slog_print)) {
-			gl.glDeleteShader(vs);
-			log.error("can't compile vertex shader: " + slog.toString());
-			return;
-		} else {
-			log.debug("compiling vertex shader warnings: " + ShaderUtil.getShaderInfoLog(gl, vs));
-		}
-
-		String fsrc = CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream(
-				"fsTextOverlay.glsl")));
-		int fs = gl.glCreateShader(GL2ES2.GL_FRAGMENT_SHADER);
-		gl.glShaderSource(fs, 1, new String[] { fsrc }, (int[]) null, 0);
-		gl.glCompileShader(fs);
-		if (!ShaderUtil.isShaderStatusValid(gl, vs, GL2ES2.GL_COMPILE_STATUS, slog_print)) {
-			gl.glDeleteShader(vs);
-			gl.glDeleteShader(fs);
-			log.error("can't compile fragment shader: " + slog.toString());
-			return;
-		} else {
-			log.debug("compiling fragment shader warnings: " + ShaderUtil.getShaderInfoLog(gl, fs));
-		}
-
-		shaderProgramTextOverlay = gl.glCreateProgram();
-		gl.glAttachShader(shaderProgramTextOverlay, vs);
-		gl.glAttachShader(shaderProgramTextOverlay, fs);
-		gl.glLinkProgram(shaderProgramTextOverlay);
-		gl.glValidateProgram(shaderProgramTextOverlay);
-		if (!ShaderUtil.isProgramLinkStatusValid(gl, shaderProgramTextOverlay, slog_print)) {
-			gl.glDeleteShader(vs);
-			gl.glDeleteShader(fs);
-			gl.glDeleteProgram(shaderProgramTextOverlay);
-			shaderProgramTextOverlay = -1;
-			log.error("can't link program: " + slog.toString());
-			return;
-		} else {
-			log.debug("linking program warnings: " + ShaderUtil.getProgramInfoLog(gl, shaderProgramTextOverlay));
-		}
-
-		// gl.glUseProgram(shaderprogramTextOutline);
-
-	}
-
 	private void renderPathway(final GL2 gl, final PathwayGraph pathway) {
-
-		// //////////////////////////START 1/2 HIER NEU CHRISITIAN
-		if (!initShader) {
-			initShader = true;
-			try {
-				initShaders(gl);
-			} catch (IOException | GLException e) {
-				e.printStackTrace();
-			}
-		}
-		// //////////////////////////START 1/2 HIER NEU CHRISITIAN
-
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glPushMatrix();
 		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
 		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
 		float textureOffset = 0.0f;// to avoid z fighting
-		if (enablePathwayTexture && pathway.getType() != EPathwayDatabaseType.KEGG) {
+		if (enablePathwayTexture && pathway.getType().doRenderBackground()) {
 			float fPathwayTransparency = 1.0f;
 
 			assert pathwayTextureManager != null;
@@ -923,16 +839,14 @@ public class GLPathway extends AGLView implements IMultiTablePerspectiveBasedVie
 			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			// //////////////////////////START 2/2 HIER NEU CHRISITIAN
 			// enable shader
-			if (shaderProgramTextOverlay > 0) {
-				gl.glUseProgram(shaderProgramTextOverlay);
+			int program = pathway.getType().getShader();
+			if (program >= 0) {
+				gl.glUseProgram(program);
 				// texture
-				gl.glUniform1i(gl.glGetUniformLocation(shaderProgramTextOverlay, "pathwayTex"), 0);
-				// which type
-				gl.glUniform1i(gl.glGetUniformLocation(shaderProgramTextOverlay, "mode"), this.pathway.getType()
-						.ordinal());
+				gl.glUniform1i(gl.glGetUniformLocation(program, "pathwayTex"), 0);
 			}
 			pathwayTextureManager.get().renderPathway(gl, this, pathway, fPathwayTransparency, false);
-			if (shaderProgramTextOverlay > 0)
+			if (program >= 0)
 				gl.glUseProgram(0);
 
 			// disable shader

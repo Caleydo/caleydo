@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="org.caleydo.data.pathway.PathwayParser" name="PathwayParser" schema="schema/org.caleydo.data.pathway.PathwayParser.exsd"/>
    <extension-point id="org.caleydo.datadomain.pathway.embeddedPathway" name="Embedded Pathway" schema="schema/org.caleydo.datadomain.pathway.embeddedPathway.exsd"/>
    <extension-point id="org.caleydo.datadomain.pathway.PathwayAction" name="Pathway Action" schema="schema/org.caleydo.datadomain.pathway.PathwayAction.exsd"/>
+   <extension-point id="org.caleydo.data.pathway.Database" name="Pathway Database" schema="schema/org.caleydo.data.pathway.Database.exsd"/>
    <extension
         id="org.caleydo.datadomain.pathway"
         name="PathwayDataDomain"
@@ -16,12 +16,6 @@
       <addon
             class="org.caleydo.datadomain.pathway.internal.PathwaySerializationAddon">
       </addon>
-   </extension>
-   <extension
-         point="org.caleydo.core.CacheInitializer">
-      <initializer
-            class="org.caleydo.datadomain.pathway.parser.KEGGParser">
-      </initializer>
    </extension>
    <extension
          point="org.caleydo.datadomain.TypedIDActions">
