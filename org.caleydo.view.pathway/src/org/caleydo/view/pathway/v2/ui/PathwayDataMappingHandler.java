@@ -23,10 +23,12 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -85,7 +87,9 @@ public class PathwayDataMappingHandler implements IEventBasedSelectionManagerUse
 	public void onAddTablePerspective(AddTablePerspectivesEvent event) {
 		// if (event.getEventSpace() != null && event.getEventSpace().equals(eventSpace)) {
 		for (TablePerspective tp : event.getTablePerspectives()) {
-			addTablePerspective(tp);
+			if (tp.getDataDomain().hasIDCategory(IDCategory.getIDCategory(EGeneIDTypes.GENE.name()))) {
+				addTablePerspective(tp);
+			}
 		}
 		// }
 	}
