@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Caleydo Resources
 Bundle-SymbolicName: org.caleydo.data;singleton:=true
-Bundle-Version: 3.1.5
+Bundle-Version: 3.1.6.qualifier
 Bundle-Vendor: www.caleydo.org
 Export-Package: org.caleydo.data.loader
 Bundle-ClassPath: .,

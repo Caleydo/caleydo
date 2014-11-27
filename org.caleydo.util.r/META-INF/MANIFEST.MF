@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: R Statistics Plug-in
 Bundle-SymbolicName: org.caleydo.util.r;singleton:=true
-Bundle-Version: 3.1.5
+Bundle-Version: 3.1.6.qualifier
 Bundle-NativeCode: 
  lib/linux/x86/libjri.so;
  osname=linux;
@@ -31,8 +31,8 @@ Bundle-Vendor: www.caleydo.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .,
  lib/JRI.jar
-Require-Bundle: org.caleydo.core;bundle-version="3.1.5",
- org.caleydo.view.histogram;bundle-version="3.1.5",
+Require-Bundle: org.caleydo.core;bundle-version="3.1.6.qualifier",
+ org.caleydo.view.histogram;bundle-version="3.1.6.qualifier",
  de.walware.statet.base.core;bundle-version="2.0.1";resolution:=optional,
  de.walware.statet.base.ui;bundle-version="2.0.1";resolution:=optional,
  de.walware.statet.nico.core;bundle-version="2.0.0";resolution:=optional,
@@ -52,6 +52,6 @@ Require-Bundle: org.caleydo.core;bundle-version="3.1.5",
  de.walware.rj.eclient.graphics;bundle-version="1.0.3";resolution:=optional,
  de.walware.rj.server;bundle-version="1.0.3";resolution:=optional,
  org.eclipse.swt;bundle-version="3.102.1",
- org.caleydo.ui;bundle-version="3.1.5"
+ org.caleydo.ui;bundle-version="3.1.6.qualifier"
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.util.r.Activator
