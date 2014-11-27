@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Gleem Plug-in
 Bundle-SymbolicName: org.caleydo.util.gleem;singleton:=true
-Bundle-Version: 3.1.4.qualifier
+Bundle-Version: 3.1.5
 Export-Package: gleem,
  gleem.linalg,
  gleem.linalg.open

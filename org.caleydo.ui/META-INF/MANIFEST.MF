@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Caleydo UI Plug-in
 Bundle-SymbolicName: org.caleydo.ui;singleton:=true
-Bundle-Version: 3.1.4.qualifier
+Bundle-Version: 3.1.5
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
@@ -97,7 +97,7 @@ Export-Package: org.caleydo.core.event.view;
  org.caleydo.core.view.swt;uses:="org.caleydo.core.event,org.caleydo.core.view,org.eclipse.swt.widgets",
  org.caleydo.core.view.util,
  org.caleydo.data.loader
-Require-Bundle: org.caleydo.core;bundle-version="3.1.4.qualifier",
+Require-Bundle: org.caleydo.core;bundle-version="3.1.5",
  org.caleydo.thirdparty.jogl;bundle-version="[2.2.0,2.3.0)";visibility:=reexport,
  org.eclipse.ui;bundle-version="3.105.0";visibility:=reexport
 Bundle-Activator: org.caleydo.core.view.internal.Activator

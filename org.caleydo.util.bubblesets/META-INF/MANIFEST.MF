@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Bubblesets
 Bundle-SymbolicName: org.caleydo.util.bubblesets
-Bundle-Version: 3.1.4.qualifier
+Bundle-Version: 3.1.5
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: setvis,
  setvis.bubbleset,
@@ -10,4 +10,4 @@ Export-Package: setvis,
  setvis.gui,
  setvis.shape
 Require-Bundle: org.caleydo.thirdparty.jogl;bundle-version="[2.2.0,2.3.0)",
- org.caleydo.core;bundle-version="3.1.4.qualifier"
+ org.caleydo.core;bundle-version="3.1.5"

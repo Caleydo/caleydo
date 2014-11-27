@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Genetic Data Domain
 Bundle-SymbolicName: org.caleydo.datadomain.genetic;singleton:=true
-Bundle-Version: 3.1.4.qualifier
+Bundle-Version: 3.1.5
 Bundle-Vendor: www.caleydo.org
-Require-Bundle: org.caleydo.core;bundle-version="3.1.4.qualifier",
+Require-Bundle: org.caleydo.core;bundle-version="3.1.5",
  org.eclipse.ui;bundle-version="3.105.0",
  org.kohsuke.args4j;bundle-version="2.0.21"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
