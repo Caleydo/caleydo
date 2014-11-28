@@ -39,8 +39,7 @@ import com.google.common.collect.Sets;
  */
 public final class WilcoxonUtil {
 
-	public static class WilcoxonResult {
-		public double p;
+	public static class WilcoxonResult extends AdjustedPValue {
 		public double u;
 		public IDataClassifier classifier;
 		public SimpleIDClassifier derivedClassifier;
@@ -56,8 +55,7 @@ public final class WilcoxonUtil {
 		 * @param derivedClassifier
 		 */
 		public WilcoxonResult(double p, double u, IDataClassifier classifier, SimpleIDClassifier derivedClassifier) {
-			super();
-			this.p = p;
+			super(p);
 			this.u = u;
 			this.classifier = classifier;
 			this.derivedClassifier = derivedClassifier;
@@ -106,7 +104,6 @@ public final class WilcoxonUtil {
 		}
 		return null;
 	}
-
 
 	public static List<WilcoxonResult> calcAllWilcoxonCombinations(DataCellInfo sourceInfo, DataCellInfo targetInfo) {
 		List<WilcoxonResult> results = new ArrayList<>();
@@ -303,8 +300,7 @@ public final class WilcoxonUtil {
 				WilcoxonRankSumTestWizard.CLASSIFICATION_COLORS_2.getSecond());
 
 		return new SimpleIDClassifier(targetIDSets.get(0), targetIDSets.get(1),
-				targetInfo.columnPerspective.getIdType(), class1,
-				class2);
+				targetInfo.columnPerspective.getIdType(), class1, class2);
 	}
 
 }

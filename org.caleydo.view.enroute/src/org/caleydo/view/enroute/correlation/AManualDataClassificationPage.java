@@ -34,7 +34,6 @@ public abstract class AManualDataClassificationPage extends ASelectDataCellPage 
 	protected AClassificationWidget classificationWidget;
 	protected List<Color> categoryColors;
 
-
 	/**
 	 * @param pageName
 	 * @param title
@@ -42,8 +41,8 @@ public abstract class AManualDataClassificationPage extends ASelectDataCellPage 
 	 * @param categoryColors
 	 */
 	protected AManualDataClassificationPage(String pageName, String title, ImageDescriptor titleImage,
-			List<Color> categoryColors, String initialInstruction) {
-		super(pageName, title, titleImage, initialInstruction);
+			List<Color> categoryColors, String initialInstruction, String selectionRestrictionText) {
+		super(pageName, title, titleImage, initialInstruction, selectionRestrictionText);
 		this.categoryColors = categoryColors;
 	}
 
@@ -58,7 +57,6 @@ public abstract class AManualDataClassificationPage extends ASelectDataCellPage 
 		rightColumnComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		createInstructionsGroup(rightColumnComposite);
-
 
 	}
 
@@ -99,6 +97,8 @@ public abstract class AManualDataClassificationPage extends ASelectDataCellPage 
 			}
 			instructionsLabel
 					.setText("Define a threshold to divide the samples in this data block in two or select a different data block.");
+			if (restrictionLabel != null)
+				restrictionLabel.setVisible(false);
 
 		} else if (description instanceof CategoricalClassDescription) {
 			if (classificationWidget == null) {

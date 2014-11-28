@@ -267,10 +267,12 @@ public class PathwayManager {
 		Set<Object> result = new HashSet<>();
 		for (Object id : geneIDs) {
 			Set<Integer> vertexRepIDs = mapper.apply(id);
-			for (Integer vertexRepID : vertexRepIDs) {
-				if (PathwayItemManager.get().getPathwayVertexRep(vertexRepID).getPathway() == pathway) {
-					result.add(id);
-					break;
+			if (vertexRepIDs != null) {
+				for (Integer vertexRepID : vertexRepIDs) {
+					if (PathwayItemManager.get().getPathwayVertexRep(vertexRepID).getPathway() == pathway) {
+						result.add(id);
+						break;
+					}
 				}
 			}
 		}

@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: TourGuide Entourage Adapter
 Bundle-SymbolicName: org.caleydo.view.tourguide.entourage;singleton:=true
-Bundle-Version: 3.1.4.qualifier
-Require-Bundle: org.caleydo.view.tourguide;bundle-version="3.1.4.qualifier",
- org.caleydo.view.entourage;bundle-version="3.1.4.qualifier",
- org.caleydo.core;bundle-version="3.1.4.qualifier",
- org.caleydo.vis.lineup;bundle-version="3.1.4.qualifier",
- org.caleydo.datadomain.genetic;bundle-version="3.1.4.qualifier",
- org.caleydo.datadomain.pathway;bundle-version="3.1.4.qualifier"
+Bundle-Version: 3.1.6.qualifier
+Require-Bundle: org.caleydo.view.tourguide;bundle-version="3.1.6.qualifier",
+ org.caleydo.view.entourage;bundle-version="3.1.6.qualifier",
+ org.caleydo.core;bundle-version="3.1.6.qualifier",
+ org.caleydo.vis.lineup;bundle-version="3.1.6.qualifier",
+ org.caleydo.datadomain.genetic;bundle-version="3.1.6.qualifier",
+ org.caleydo.datadomain.pathway;bundle-version="3.1.6.qualifier"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy

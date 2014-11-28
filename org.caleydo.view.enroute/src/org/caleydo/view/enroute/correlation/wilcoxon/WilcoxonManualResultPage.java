@@ -38,7 +38,7 @@ public class WilcoxonManualResultPage extends WizardPage implements IPageChanged
 	@Override
 	public void createControl(Composite parent) {
 
-		resultsWidget = new WilcoxonResultsWidget(parent);
+		resultsWidget = new WilcoxonResultsWidget(parent, false);
 		setControl(resultsWidget);
 
 	}

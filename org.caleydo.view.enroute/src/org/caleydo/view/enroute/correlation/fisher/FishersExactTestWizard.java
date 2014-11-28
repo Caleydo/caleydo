@@ -55,12 +55,13 @@ public class FishersExactTestWizard extends Wizard {
 				null,
 				Lists.newArrayList(seq1.get(0), seq1.get(2)),
 				"With Fisher's Exact Test you can evaluate the statistical significance of a association based on a contingency table. You will divide the data by selecting two data blocks in enRoute that you want to compare, and by classifying the data in these blocks.\n\n"
-						+ "To start, click on the first data block that you want to compare now.");
+						+ "To start, click on the first data block that you want to compare now.", "");
 		// firstDataCellPage
 		// .setDescription("With Fisher's Exact Test you can evaluate the statistical significance of a correlation based on a contingency table. You will divide the data by selecting two data blocks in enRoute that you want to compare, and by setting thresholds in these blocks.\n\n"
 		// + "To start, click on the first data block that you want to compare now.");
 		secondDataCellPage = new FishersSelectDataCellPage("SecondBlock", "Select Second Data Block", null,
-				Lists.newArrayList(seq2.get(0), seq2.get(2)), "Select the second data block.");
+				Lists.newArrayList(seq2.get(0), seq2.get(2)), "Select the second data block.",
+				"Restriction: Make sure to select data blocks that have common samples with the first data block.");
 		FishersExactTestResultPage resultPage = new FishersExactTestResultPage("Result",
 				"Resulting Contingency Table and P-Values", null);
 

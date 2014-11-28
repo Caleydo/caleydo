@@ -43,16 +43,19 @@ public class WilcoxonMethodSelectionPage extends WizardPage implements IPageChan
 	public void createControl(Composite parent) {
 
 		Composite parentComposite = new Composite(parent, SWT.NONE);
-		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		parentComposite.setLayoutData(gd);
 		parentComposite.setLayout(new GridLayout(1, false));
 
 		Group descriptionGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		descriptionGroup.setText("Description:");
+		gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd.heightHint = 150;
 		descriptionGroup.setLayout(new GridLayout(1, true));
-		descriptionGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		descriptionGroup.setLayoutData(gd);
 
 		Label instructionsLabel = new Label(descriptionGroup, SWT.WRAP);
-		GridData gd = new GridData(SWT.LEFT, SWT.TOP, false, false);
+		gd = new GridData(SWT.LEFT, SWT.TOP, false, false);
 		gd.widthHint = 800;
 		instructionsLabel.setLayoutData(gd);
 		instructionsLabel
@@ -61,7 +64,9 @@ public class WilcoxonMethodSelectionPage extends WizardPage implements IPageChan
 		Group methodGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		methodGroup.setText("Method:");
 		methodGroup.setLayout(new GridLayout(1, true));
-		methodGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd.heightHint = 170;
+		methodGroup.setLayoutData(gd);
 
 		manualMethodButton = new Button(methodGroup, SWT.RADIO);
 		manualMethodButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
@@ -77,13 +82,14 @@ public class WilcoxonMethodSelectionPage extends WizardPage implements IPageChan
 		autoMethodButton = new Button(methodGroup, SWT.RADIO);
 		autoMethodButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
 		autoMethodButton.setSelection(false);
-		autoMethodButton.setText("Detect Significant Data Classifications");
+		autoMethodButton.setText("Compute All Data Classifications");
 		Label autoLabel = new Label(methodGroup, SWT.WRAP);
 		gd = new GridData(SWT.LEFT, SWT.TOP, false, false);
 		gd.horizontalIndent = 22;
+		gd.widthHint = 800;
 		autoLabel.setLayoutData(gd);
 		autoLabel
-				.setText("You only define both data blocks and Caleydo will list all possible splits, ranked by significance.");
+				.setText("You only define both data blocks and Caleydo will list all possible splits and show their significance (p-values) and adjusted p-values taking the false discovery rate into account.");
 
 		setControl(parentComposite);
 	}

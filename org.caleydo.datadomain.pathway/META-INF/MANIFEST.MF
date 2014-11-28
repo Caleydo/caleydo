@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Pathway Data Domain
 Bundle-SymbolicName: org.caleydo.datadomain.pathway;singleton:=true
-Bundle-Version: 3.1.4.qualifier
+Bundle-Version: 3.1.6.qualifier
 Bundle-Activator: org.caleydo.datadomain.pathway.Activator
 Bundle-Vendor: www.caleydo.org
-Require-Bundle: org.caleydo.core;bundle-version="3.1.4.qualifier",
- org.caleydo.datadomain.genetic;bundle-version="3.1.4.qualifier",
- org.caleydo.ui;bundle-version="3.1.4.qualifier"
+Require-Bundle: org.caleydo.core;bundle-version="3.1.6.qualifier",
+ org.caleydo.datadomain.genetic;bundle-version="3.1.6.qualifier",
+ org.caleydo.ui;bundle-version="3.1.6.qualifier"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.caleydo.datadomain.pathway,

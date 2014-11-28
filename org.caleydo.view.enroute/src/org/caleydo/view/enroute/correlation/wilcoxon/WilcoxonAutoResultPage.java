@@ -131,6 +131,9 @@ public class WilcoxonAutoResultPage extends WizardPage implements IPageChangedLi
 			case 3:
 				result = Double.compare(r1.p, r2.p);
 				break;
+			case 4:
+				result = Double.compare(r1.adjustedP, r2.adjustedP);
+				break;
 
 			default:
 				return super.compare(viewer, e1, e2);
@@ -207,7 +210,7 @@ public class WilcoxonAutoResultPage extends WizardPage implements IPageChangedLi
 
 		gd = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gd.heightHint = 200;
-		gd.widthHint = 400;
+		gd.widthHint = 550;
 		resultsList.getControl().setLayoutData(gd);
 
 		TableViewerColumn column = createColumn("Class 1", 0);
@@ -246,6 +249,15 @@ public class WilcoxonAutoResultPage extends WizardPage implements IPageChangedLi
 			}
 		});
 
+		column = createColumn("Adjusted P (FDR)", 3);
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				WilcoxonResult result = (WilcoxonResult) element;
+				return String.format(String.format(Locale.ENGLISH, "%.6e", result.adjustedP));
+			}
+		});
+
 		resultsList.addSelectionChangedListener(new ISelectionChangedListener() {
 
 			@Override
@@ -258,7 +270,7 @@ public class WilcoxonAutoResultPage extends WizardPage implements IPageChangedLi
 				WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
 
 				if (resultsWidget == null) {
-					resultsWidget = new WilcoxonResultsWidget(parentComposite);
+					resultsWidget = new WilcoxonResultsWidget(parentComposite, true);
 
 
 				}
@@ -311,7 +323,7 @@ public class WilcoxonAutoResultPage extends WizardPage implements IPageChangedLi
 		column.setText(caption);
 		column.setResizable(true);
 		column.setMoveable(false);
-		column.setWidth(100);
+		column.setWidth(110);
 		column.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -334,6 +346,8 @@ public class WilcoxonAutoResultPage extends WizardPage implements IPageChangedLi
 			}
 			WilcoxonRankSumTestWizard wizard = (WilcoxonRankSumTestWizard) getWizard();
 			results = WilcoxonUtil.calcAllWilcoxonCombinations(wizard.getSourceInfo(), wizard.getTargetInfo());
+
+			AdjustedPValue.calcAdjustedPwithFDR(results);
 
 			resultsList.setInput(results);
 			resultsList.refresh();

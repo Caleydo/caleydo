@@ -19,6 +19,9 @@ import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+
 /**
  * @author Christian
  *
@@ -34,7 +37,8 @@ public class WilcoxonManualSourceDataCellPage extends AManualDataClassificationP
 	protected WilcoxonManualSourceDataCellPage(String pageName, String title, ImageDescriptor titleImage,
 			List<Color> categoryColors) {
 		super(pageName, title, titleImage, categoryColors,
-				"Select the data block that you want to compare in the enRoute view.");
+				"Select the data block that you want to compare in the enRoute view.",
+				"Restriction: Make sure to select numerical (not categorical) data blocks.");
 	}
 
 	@Override
@@ -46,8 +50,9 @@ public class WilcoxonManualSourceDataCellPage extends AManualDataClassificationP
 			wizard.setSourceClassifier(classifier);
 
 		} else if (event.getSelectedPage() == this) {
-			UpdateDataCellSelectionValidatorEvent e = new UpdateDataCellSelectionValidatorEvent(
-					CellSelectionValidators.nonEmptyCellValidator());
+			Predicate<DataCellInfo> validator = Predicates.and(CellSelectionValidators.nonEmptyCellValidator(),
+					CellSelectionValidators.numericalValuesValidator());
+			UpdateDataCellSelectionValidatorEvent e = new UpdateDataCellSelectionValidatorEvent(validator);
 			EventPublisher.trigger(e);
 		}
 

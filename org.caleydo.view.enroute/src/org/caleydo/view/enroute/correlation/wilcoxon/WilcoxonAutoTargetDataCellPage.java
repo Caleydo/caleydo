@@ -42,7 +42,8 @@ public class WilcoxonAutoTargetDataCellPage extends ASelectDataCellPage {
 				pageName,
 				title,
 				titleImage,
-				"Select the second data block. The data of this block will be divided according to the calculated splits from the first data block.");
+				"Select the second data block. The data of this block will be divided according to the calculated splits from the first data block.",
+				"Restriction: Make sure to select numerical (not categorical) data blocks that have common samples with the first data block.");
 		this.overlayColor = overlayColor;
 	}
 
