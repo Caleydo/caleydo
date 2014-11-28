@@ -4,7 +4,7 @@ Bundle-Name: Generic Data Domain
 Bundle-SymbolicName: org.caleydo.datadomain.generic;singleton:=true
 Bundle-Version: 3.1.6.qualifier
 Require-Bundle: org.caleydo.core;bundle-version="3.1.6.qualifier",
- org.eclipse.ui;bundle-version="3.1.6.qualifier.0",
+ org.eclipse.ui;bundle-version="3.1.105",
  org.kohsuke.args4j;bundle-version="2.0.21"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
