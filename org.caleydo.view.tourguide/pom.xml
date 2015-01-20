@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.caleydo</groupId>
 		<artifactId>org.caleydo.parent</artifactId>
-		<version>3.1.4-SNAPSHOT</version>
+		<version>3.1.6-SNAPSHOT</version>
 		<relativePath>../org.caleydo.parent</relativePath>
 	</parent>
 	<artifactId>org.caleydo.view.tourguide</artifactId>

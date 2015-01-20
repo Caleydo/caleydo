@@ -9,12 +9,12 @@
 <location id="org.eclipse.emf.ecore" path="${eclipse_home}" type="Feature"/>
 <location id="org.eclipse.equinox.p2.user.ui" path="${eclipse_home}" type="Feature"/>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.caleydo.thirdparty.jogl" version="2.2.0"/>
-<unit id="org.caleydo.thirdparty.jogl-natives-linux-amd64" version="2.2.0"/>
-<unit id="org.caleydo.thirdparty.jogl-natives-linux-i586" version="2.2.0"/>
-<unit id="org.caleydo.thirdparty.jogl-natives-macosx-universal" version="2.2.0"/>
-<unit id="org.caleydo.thirdparty.jogl-natives-windows-amd64" version="2.2.0"/>
-<unit id="org.caleydo.thirdparty.jogl-natives-windows-i586" version="2.2.0"/>
+<unit id="org.caleydo.thirdparty.jogl" version="2.2.4"/>
+<unit id="org.caleydo.thirdparty.jogl-natives-linux-amd64" version="2.2.4"/>
+<unit id="org.caleydo.thirdparty.jogl-natives-linux-i586" version="2.2.4"/>
+<unit id="org.caleydo.thirdparty.jogl-natives-macosx-universal" version="2.2.4"/>
+<unit id="org.caleydo.thirdparty.jogl-natives-windows-amd64" version="2.2.4"/>
+<unit id="org.caleydo.thirdparty.jogl-natives-windows-i586" version="2.2.4"/>
 <unit id="org.caleydo.thirdparty.commons-math" version="3.3"/>
 <unit id="org.caleydo.thirdparty.jgrapht" version="0.9.0"/>
 <unit id="org.caleydo.thirdparty.pathvisio" version="31.0.0"/>
