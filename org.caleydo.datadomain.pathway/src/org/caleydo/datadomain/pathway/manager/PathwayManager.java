@@ -557,15 +557,27 @@ public class PathwayManager {
 			@Override
 			public void run() {
 
-				List<GraphPath<PathwayVertex, DefaultEdge>> paths = kShortestPathsAdapter.getKShortestPaths(from, to,
-						10);
+				// PathwayGraph targetPathway = getPathwayByTitle("Glioma", EPathwayDatabaseType.valueOf("KEGG"));
+				//
+				// Set<PathwayVertex> targetVertices = new HashSet<>();
+				//
+				// for (PathwayVertexRep vRep : targetPathway.vertexSet()) {
+				// targetVertices.addAll(vRep.getPathwayVertices());
+				// }
+				//
+				// for (PathwayVertex to : targetVertices) {
 
-				int i = 1;
-				for (GraphPath<PathwayVertex, DefaultEdge> path : paths) {
-					System.out.println(i + " NEW ALGO, length: " + (path.getEdgeList().size() + 1));
-					printPath(path);
-					i++;
-				}
+					List<GraphPath<PathwayVertex, DefaultEdge>> paths = kShortestPathsAdapter.getKShortestPaths(from,
+							to, 10);
+
+					int i = 1;
+					for (GraphPath<PathwayVertex, DefaultEdge> path : paths) {
+						System.out.println(i + " NEW ALGO, length: " + (path.getEdgeList().size() + 1));
+						printPath(path);
+						i++;
+					}
+				// }
+				// System.out.println("NumTargets: " + targetVertices.size());
 
 				// DirectedGraph<PathwayVertex, DefaultEdge> rootPathway = getRootPathway();
 				// KShortestPaths<PathwayVertex, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertex, DefaultEdge>(

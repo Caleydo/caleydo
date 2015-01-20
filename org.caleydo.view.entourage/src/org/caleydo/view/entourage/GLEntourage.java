@@ -630,8 +630,7 @@ public class GLEntourage extends AGLElementGLView implements IMultiTablePerspect
 		applyFishersTestButton.setTooltip("Apply Fisher's exact test");
 
 		applyWilcoxonTestButton.setSize(16, 16);
-		applyWilcoxonTestButton
-.setRenderer(GLRenderers.fillImage(loader
+		applyWilcoxonTestButton.setRenderer(GLRenderers.fillImage(loader
 				.getTexture("resources/icons/wilcoxon_test.png")));
 		applyWilcoxonTestButton.setSelectedRenderer(GLRenderers.pushedImage(loader
 				.getTexture("resources/icons/fishers_test.png")));
