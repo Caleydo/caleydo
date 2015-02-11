@@ -1,4 +1,4 @@
-#version 150
+#version 120
 
 varying vec2 texCoord;
 
