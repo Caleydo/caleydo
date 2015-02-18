@@ -232,7 +232,16 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 	 * @return
 	 */
 	public CategoryProperty<CATEGORY_TYPE> getCategoryProperty(Object category) {
+		if (hashCategoryToProperties.size() != categoryProperties.size()) {
+			this.populateCache();
+		}
 		return hashCategoryToProperties.get(category);
+	}
+	
+	private void populateCache() {
+		for (CategoryProperty<CATEGORY_TYPE> prop : categoryProperties) {
+			hashCategoryToProperties.put(prop.getCategory(), prop);
+		}
 	}
 
 	/**
@@ -242,7 +251,7 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 	 * @return
 	 */
 	public int indexOf(Object category) {
-		CategoryProperty<?> cProperty = hashCategoryToProperties.get(category);
+		CategoryProperty<?> cProperty = getCategoryProperty(category);
 		return categoryProperties.indexOf(cProperty);
 	}
 
@@ -269,7 +278,7 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 	 */
 	public void applyColorScheme(ColorBrewer colorScheme, CATEGORY_TYPE neutralCategory, boolean reverseColorScheme) {
 
-		CategoryProperty<CATEGORY_TYPE> neutralCategoryProperty = hashCategoryToProperties.get(neutralCategory);
+		CategoryProperty<CATEGORY_TYPE> neutralCategoryProperty = getCategoryProperty(neutralCategory);
 
 		int neutralColorIndex = -1;
 		if (neutralCategoryProperty != null) {
