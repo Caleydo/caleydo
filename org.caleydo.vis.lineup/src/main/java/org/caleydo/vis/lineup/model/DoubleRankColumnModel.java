@@ -31,8 +31,8 @@ import org.caleydo.vis.lineup.config.IRankTableUIConfig;
 import org.caleydo.vis.lineup.data.IDoubleFunction;
 import org.caleydo.vis.lineup.data.IDoubleInferrer;
 import org.caleydo.vis.lineup.event.FilterEvent;
-import org.caleydo.vis.lineup.internal.ui.FloatFilterDialog;
-import org.caleydo.vis.lineup.internal.ui.FloatFilterDialog.FilterChecked;
+import org.caleydo.vis.lineup.internal.ui.DoubleFilterDialog;
+import org.caleydo.vis.lineup.internal.ui.DoubleFilterDialog.FilterChecked;
 import org.caleydo.vis.lineup.model.mapping.IMappingFunction;
 import org.caleydo.vis.lineup.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
@@ -332,7 +332,7 @@ public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel imple
 	 * @param filterNotMappedEntries
 	 *            setter, see {@link filterNotMappedEntries}
 	 */
-	public void setFilter(FloatFilterDialog.FilterChecked checked, boolean filterGlobally,
+	public void setFilter(DoubleFilterDialog.FilterChecked checked, boolean filterGlobally,
 			boolean filterRankIndependently) {
 		if (this.filterNotMappedEntries == checked.isFilterNotMapped()
 				&& this.filterMissingEntries == checked.isFilterMissing()
@@ -363,7 +363,7 @@ public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel imple
 			@Override
 			public void run(Display display, Composite canvas) {
 				Point loc = canvas.toDisplay((int) location.x(), (int) location.y());
-				FloatFilterDialog dialog = new FloatFilterDialog(canvas.getShell(), getLabel(), summary,
+				DoubleFilterDialog dialog = new DoubleFilterDialog(canvas.getShell(), getLabel(), summary,
 						filterNotMappedEntries, filterMissingEntries, DoubleRankColumnModel.this, getTable()
 								.hasSnapshots(), loc);
 				dialog.open();

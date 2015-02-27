@@ -38,7 +38,7 @@ public interface IMultiColumnMixin extends IDoubleRankableColumnMixin, Iterable<
 		}
 
 		public double get() {
-			return repr >= 0 ? values[repr] : Float.NaN;
+			return repr >= 0 ? values[repr] : Double.NaN;
 		}
 
 		public int size() {

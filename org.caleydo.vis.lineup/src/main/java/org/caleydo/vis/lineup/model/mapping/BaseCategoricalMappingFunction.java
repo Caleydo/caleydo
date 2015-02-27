@@ -18,7 +18,7 @@ import org.caleydo.vis.lineup.data.ADoubleFunction;
 public class BaseCategoricalMappingFunction<T> extends ADoubleFunction<T> implements ICategoricalMappingFunction<T>,
 		Cloneable {
 	private final Map<T, Double> mapping = new LinkedHashMap<>();
-	private float missingValue = Float.NaN;
+	private double missingValue = Double.NaN;
 
 	public BaseCategoricalMappingFunction(Set<T> items) {
 		int i = 1;
@@ -46,7 +46,7 @@ public class BaseCategoricalMappingFunction<T> extends ADoubleFunction<T> implem
 		if (in == null)
 			return missingValue;
 		Double r = mapping.get(in);
-		return r == null ? missingValue : r.floatValue();
+		return r == null ? missingValue : r.doubleValue();
 	}
 
 	public void put(T in, double value) {

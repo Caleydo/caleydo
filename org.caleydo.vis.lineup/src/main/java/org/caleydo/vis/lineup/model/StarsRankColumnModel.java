@@ -112,10 +112,10 @@ public final class StarsRankColumnModel extends ARankColumnModel implements IDou
 		if (value == null) {
 			valueOverrides.remove(row.getIndex());
 		} else if (value.length() == 0) {
-			valueOverrides.put(row.getIndex(), Float.NaN);
+			valueOverrides.put(row.getIndex(), Double.NaN);
 		} else {
 			try {
-				valueOverrides.put(row.getIndex(), Float.parseFloat(value));
+				valueOverrides.put(row.getIndex(), Double.parseDouble(value));
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}

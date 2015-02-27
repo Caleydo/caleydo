@@ -8,7 +8,8 @@ package org.caleydo.vis.lineup.data;
 import com.google.common.base.Function;
 
 /**
- * float special version of a {@link Function} to avoid boxing primitives
+import 
+ * double special version of a {@link Function} to avoid boxing primitives
  *
  * @author Samuel Gratzl
  *

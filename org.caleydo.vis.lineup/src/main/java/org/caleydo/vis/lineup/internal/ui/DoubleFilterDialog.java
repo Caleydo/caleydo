@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Samuel Gratzl
  *
  */
-public class FloatFilterDialog extends AFilterDialog {
+public class DoubleFilterDialog extends AFilterDialog {
 
 	private Button filterNotMappedUI;
 	private Button filterMissingUI;
@@ -35,7 +35,7 @@ public class FloatFilterDialog extends AFilterDialog {
 	private final boolean filterNotMapped;
 
 
-	public FloatFilterDialog(Shell parentShell, String title, Object receiver, boolean filterNotMapped,
+	public DoubleFilterDialog(Shell parentShell, String title, Object receiver, boolean filterNotMapped,
 			boolean filterMissing, IFilterColumnMixin model, boolean hasSnapshots, Point loc) {
 		super(parentShell, "Filter " + title, receiver, model, hasSnapshots, loc);
 		this.filterMissing = filterMissing;
