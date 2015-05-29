@@ -124,7 +124,7 @@ public final class MaxRankColumnModel extends AMultiRankColumnModel implements I
 	public double applyPrimitive(IRow row) {
 		if (children.isEmpty())
 			return 0;
-		double max = Float.NEGATIVE_INFINITY;
+		double max = Double.NEGATIVE_INFINITY;
 		for (ARankColumnModel col : this) {
 			double v = ((IDoubleRankableColumnMixin) col).applyPrimitive(row);
 			if (Double.isNaN(v))

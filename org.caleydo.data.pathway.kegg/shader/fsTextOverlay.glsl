@@ -1,4 +1,4 @@
-#version 420
+#version 120
 
 uniform sampler2D pathwayTex;
 varying vec2 texCoord;

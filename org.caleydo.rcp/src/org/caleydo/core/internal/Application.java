@@ -22,6 +22,7 @@ import org.caleydo.core.startup.IStartupAddon;
 import org.caleydo.core.startup.IStartupProcedure;
 import org.caleydo.core.startup.NetAuthenticator;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.view.opengl.canvas.Units;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -80,6 +81,9 @@ public class Application implements IApplication {
 
 			// create a select the startup pro
 			Display display = PlatformUI.createDisplay();
+			
+			System.out.println(Units.dip(1)+"dip "+Units.em(1)+"em "+Units.px(1)+"px");
+			
 			for (IStartupAddon addon : startups.values()) {
 				if (addon instanceof IStartUpDocumentListener) {
 					display.addListener(SWT.OpenDocument, (IStartUpDocumentListener) addon);

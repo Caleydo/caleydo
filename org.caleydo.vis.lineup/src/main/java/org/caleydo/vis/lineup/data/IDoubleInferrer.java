@@ -15,7 +15,7 @@ import org.caleydo.core.util.function.IDoubleSizedIterator;
  */
 public interface IDoubleInferrer {
 	/**
-	 * combines the given list with the given size to a new float value
+	 * combines the given list with the given size to a new double value
 	 *
 	 * @return
 	 */

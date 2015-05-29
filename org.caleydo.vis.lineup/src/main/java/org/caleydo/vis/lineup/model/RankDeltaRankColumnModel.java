@@ -96,7 +96,7 @@ public final class RankDeltaRankColumnModel extends ACompositeRankColumnModel im
 	 * @return
 	 */
 	private static PiecewiseMapping createAbsMapping() {
-		PiecewiseMapping m = new PiecewiseMapping(Float.NaN, Float.NaN);
+		PiecewiseMapping m = new PiecewiseMapping(Double.NaN, Double.NaN);
 		return m;
 	}
 
