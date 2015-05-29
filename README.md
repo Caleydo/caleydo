@@ -12,7 +12,7 @@ Installation
 
 Caleydo uses Java, OpenGL and the Eclipse Rich Client Platform (RCP). Things you need to install before being able to run Caleydo: 
 
- * Eclipse Juno for RCP and RAP Developers, which you can get from the [eclipse download page](http://www.eclipse.org/downloads/). *Other Eclipse versions won't work*. 
+ * Eclipse Kepler for RCP and RAP Developers, which you can get from the [eclipse download page](http://www.eclipse.org/downloads/). *Other Eclipse versions won't work*. 
  * Install [EGit](http://www.eclipse.org/egit/download/) in Eclipse using software updates.
  * Java SDK >= 1.7
 
