@@ -14,7 +14,7 @@ import java.util.Set;
 
 /**
  * Multi hash map implementation using generics.
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -27,18 +27,18 @@ public class MultiHashMap<KeyType, ValueType>
 		internalMap = new HashMap<KeyType, Set<ValueType>>();
 	}
 
-	public boolean remove(KeyType key, ValueType value) {
-		Set<ValueType> tmpSet = internalMap.get(key);
-
-		if (tmpSet == null)
-			return false;
-
-		return tmpSet.remove(value);
-	}
+	// public boolean remove(KeyType key, ValueType value) {
+	// Set<ValueType> tmpSet = internalMap.get(key);
+	//
+	// if (tmpSet == null)
+	// return false;
+	//
+	// return tmpSet.remove(value);
+	// }
 
 	/**
 	 * Behaves similar to a classical hashMap but does not replace the key, it adds it instead.
-	 * 
+	 *
 	 * @return always null
 	 */
 	@Override
