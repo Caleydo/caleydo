@@ -111,6 +111,7 @@ public class RenderStyle {
 	public static final URL ICON_ADD_SCRIPTED = icon("table_scripted_add.png");
 
 	public static final URL ICON_COMPLEX_MAPPING = icon("hatching.png");
+	public static final URL ICON_NEGATIVE_RAW = icon("hatching_cross.png");
 
 	public static final URL ICON_SORT_BY_WEIGHT = icon("sortByWeight.png");
 	public static final URL ICON_EDIT_CODE = icon("script_js_edit.png");

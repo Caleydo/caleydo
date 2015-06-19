@@ -103,8 +103,29 @@ public class StackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnMo
 		g.color(RenderStyle.COLOR_STACKED_BORDER).lineWidth(RenderStyle.COLOR_STACKED_BORDER_WIDTH);
 		g.drawLine(-1, 0, -1, h).drawLine(w - 1, 0, w - 1, h);
 		g.incZ().incZ();
+
+		{// render the 0 line hint
+			double zero = this.model.zeroValue();
+			if (!Double.isNaN(zero) && isSimpleStacking()) {
+				float wf = (w - getLeftPadding() * 2) * (float) zero;
+				g.drawLine(wf, 1, wf, h - 2);
+			}
+		}
+
 		g.lineWidth(1);
+
 		super.renderImpl(g, w, h);
+	}
+
+	/**
+	 * whether the stacking is a classical stacked bar
+	 *
+	 * @return
+	 */
+	private boolean isSimpleStacking() {
+		final Alignment alignment = this.model.getAlignment();
+		final int combinedAlign = this.model.getSingleAlignment();
+		return alignment == Alignment.ORDERED || combinedAlign == 0;
 	}
 
 	@Override
