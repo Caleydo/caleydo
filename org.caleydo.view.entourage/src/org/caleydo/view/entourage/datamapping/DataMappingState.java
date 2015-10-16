@@ -198,19 +198,27 @@ public class DataMappingState {
 	// EventPublisher.trigger(e);
 	// }
 
-	private TablePerspective createTablePerspective(ATableBasedDataDomain dd, Perspective foreignRecordPerspective) {
-		if (dd == null || foreignRecordPerspective == null)
+	private TablePerspective createTablePerspective(ATableBasedDataDomain dd, Perspective foreignPerspective) {
+		if (dd == null || foreignPerspective == null)
 			return null;
-		return createTablePerspective(dd, dd.getTable().getDefaultDimensionPerspective(false), foreignRecordPerspective);
+		Perspective ownPerspective = dd.getDimensionIDCategory().equals(experimentalDataIDCategory) ? dd.getTable()
+				.getDefaultRecordPerspective(false) : dd.getTable().getDefaultDimensionPerspective(false);
+		return createTablePerspective(dd, ownPerspective, foreignPerspective);
 	}
 
-	private TablePerspective createTablePerspective(ATableBasedDataDomain dd, Perspective ownDimensionPerspective,
-			Perspective foreignRecordPerspective) {
-		if (dd == null || ownDimensionPerspective == null || foreignRecordPerspective == null)
+	private TablePerspective createTablePerspective(ATableBasedDataDomain dd, Perspective ownPerspective,
+			Perspective foreignPerspective) {
+		if (dd == null || ownPerspective == null || foreignPerspective == null)
 			return null;
-		Perspective convertedPerspective = dd.convertForeignPerspective(foreignRecordPerspective);
-		TablePerspective tablePerspective = new TablePerspective(dd, convertedPerspective, ownDimensionPerspective);
-		tablePerspective.setLabel(dd.getLabel() + " - " + foreignRecordPerspective.getLabel());
+		Perspective convertedPerspective = dd.convertForeignPerspective(foreignPerspective);
+
+		Perspective recordPerspective = dd.getRecordIDCategory().equals(
+				convertedPerspective.getIdType().getIDCategory()) ? convertedPerspective : ownPerspective;
+		Perspective dimensionPerspective = dd.getDimensionIDCategory().equals(
+				convertedPerspective.getIdType().getIDCategory()) ? convertedPerspective : ownPerspective;
+
+		TablePerspective tablePerspective = new TablePerspective(dd, recordPerspective, dimensionPerspective);
+		tablePerspective.setLabel(dd.getLabel() + " - " + foreignPerspective.getLabel());
 		return tablePerspective;
 	}
 
