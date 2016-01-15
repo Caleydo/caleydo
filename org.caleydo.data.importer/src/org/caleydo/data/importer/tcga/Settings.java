@@ -52,7 +52,7 @@ public class Settings {
 	/**
 	 * 0..run (a date), 1..tumor, 2..tumorSample (e.g. -TP), 3..pipelineName, 4..level
 	 */
-	private static final String DATAFILE_PATTERN = "gdac.broadinstitute.org_{1}.{3}.Level_{4}.{0,date,yyyyMMdd}00.0.0.tar.gz";
+	private static final String DATAFILE_PATTERN = "gdac.broadinstitute.org_{1}.{3}.Level_{4}.{0,date,yyyyMMdd}00.{5}.0.tar.gz";
 	/**
 	 * 0..run (a date), 1..tumor, 2..tumorSample (e.g -TP), 3..file
 	 */
@@ -327,9 +327,9 @@ public class Settings {
 		return cluster;
 	}
 
-	public URL getDataURL(Date run, TumorType tumor, String tumorSample, String pipelineName, int level)
+	public URL getDataURL(Date run, TumorType tumor, String tumorSample, String pipelineName, int level, int flag)
 			throws MalformedURLException {
-		String file = MessageFormat.format(dataFilePattern, run, tumor, tumorSample, pipelineName, level);
+		String file = MessageFormat.format(dataFilePattern, run, tumor, tumorSample, pipelineName, level, flag);
 		String url = MessageFormat.format(dataPattern, run, tumor, tumorSample, file);
 		return new URL(url);
 	}

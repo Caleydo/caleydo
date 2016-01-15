@@ -9,17 +9,19 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
+//import net.java.truevfs.access.TFile;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.lang.SystemUtils;
 import org.caleydo.core.util.collection.Pair;
@@ -42,7 +45,6 @@ import org.caleydo.data.importer.tcga.model.TumorType;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Table;
 import com.google.common.collect.TreeBasedTable;
-import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;
 
 public final class FirehoseProvider {
@@ -108,6 +110,10 @@ public final class FirehoseProvider {
 		return relevantDate.get(Calendar.YEAR) >= 2015;
 	}
 
+	public boolean isPost2015908() {
+		return relevantDate.get(Calendar.YEAR) >= 2015 && relevantDate.get(Calendar.MONTH) >= Calendar.AUGUST;
+	}
+
 	public boolean isPost20140416() {
 		return relevantDate.get(Calendar.YEAR) >= 2014 && relevantDate.get(Calendar.MONTH) >= Calendar.APRIL;
 	}
@@ -127,9 +133,7 @@ public final class FirehoseProvider {
 	}
 
 	private Pair<TCGAFileInfo, Boolean> findStandardSampledClusteredFile(EDataSetType type) {
-		return Pair.make(
-extractAnalysisRunFile(".expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL),
-				false);
+		return Pair.make(extractAnalysisRunFile(".expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", LEVEL), false);
 	}
 
 	public Pair<TCGAFileInfo, Boolean> findRPPAMatrixFile(boolean loadFullGenes) {
@@ -157,10 +161,9 @@ extractAnalysisRunFile(".expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", L
 	public Pair<TCGAFileInfo, Boolean> findmRNAseqMatrixFile(boolean loadFullGenes) {
 		if (loadFullGenes) {
 			TCGAFileInfo r = extractDataRunFile(".uncv2.mRNAseq_RSEM_normalized_log2.txt", "mRNAseq_Preprocess",
-					isPost20140416() ? 3 : LEVEL);
+					isPost20140416() ? LEVEL3 : LEVEL, isPost2015908() ? 1 : 0);
 			if (r == null)
-				r = extractDataRunFile(".uncv1.mRNAseq_RPKM_log2.txt",
- "mRNAseq_Preprocess", isPost20140416() ? 3
+				r = extractDataRunFile(".uncv1.mRNAseq_RPKM_log2.txt", "mRNAseq_Preprocess", isPost20140416() ? LEVEL3
 						: LEVEL);
 			if (r == null)
 				r = extractDataRunFile(".mRNAseq_RPKM_log2.txt", "mRNAseq_Preprocess", isPost20140416() ? 3 : LEVEL);
@@ -267,11 +270,9 @@ extractAnalysisRunFile(".expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", L
 	public Pair<TCGAFileInfo, Boolean> findmicroRNAseqMatrixFile(boolean loadFullGenes) {
 		if (loadFullGenes) {
 			TCGAFileInfo r = extractAnalysisRunFile(getFileName(".uncv2.miRseq_RSEM_normalized_log2.txt"),
-					"miRseq_Preprocess",
- isPost20140416() ? 3 : LEVEL);
+					"miRseq_Preprocess", isPost20140416() ? 3 : LEVEL);
 			if (r == null)
-				r = extractAnalysisRunFile(getFileName(".miRseq_RPKM_log2.txt"), "miRseq_Preprocess",
-						LEVEL);
+				r = extractAnalysisRunFile(getFileName(".miRseq_RPKM_log2.txt"), "miRseq_Preprocess", LEVEL);
 			if (r != null) {
 				r = filterColumns(r, findStandardSampledClusteredFile(EDataSetType.microRNA));
 				return Pair.make(r, true);
@@ -282,9 +283,7 @@ extractAnalysisRunFile(".expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", L
 
 	public TCGAFileInfo findHiearchicalGrouping(EDataSetType type) {
 		return extractAnalysisRunFile(isPost2015() ? "clus.membership.txt" : getFileName(".allclusters.txt"),
-				type.getTCGAAbbr()
- + "_Clustering_Consensus"
-				+ (isPost2015() ? "_Plus" : ""), LEVEL);
+				type.getTCGAAbbr() + "_Clustering_Consensus" + (isPost2015() ? "_Plus" : ""), LEVEL);
 	}
 
 	public TCGAFileInfo findCNMFGroupingFile(EDataSetType type) {
@@ -317,13 +316,10 @@ extractAnalysisRunFile(".expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", L
 		if (mutationFile == null) {
 			// TODO always the -TP version
 			TCGAFileInfo maf = null;
-			if ( !this.settings.isAwgRun() ) {
-				maf = extractAnalysisRunFile(tumor + "-TP.final_analysis_set.maf",
-						"MutSigNozzleReport2.0", LEVEL);
-			}
-			else {
-				maf = extractAnalysisRunFile(tumor + ".final_analysis_set.maf",
-						"MutSigNozzleReport2.0", LEVEL);
+			if (!this.settings.isAwgRun()) {
+				maf = extractAnalysisRunFile(tumor + "-TP.final_analysis_set.maf", "MutSigNozzleReport2.0", LEVEL);
+			} else {
+				maf = extractAnalysisRunFile(tumor + ".final_analysis_set.maf", "MutSigNozzleReport2.0", LEVEL);
 			}
 			if (maf != null) {
 				return Pair.make(
@@ -341,15 +337,19 @@ extractAnalysisRunFile(".expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", L
 	}
 
 	private TCGAFileInfo extractAnalysisRunFile(String fileName, String pipelineName, int level) {
-		return extractFile(fileName, pipelineName, level, true, false);
+		return extractFile(fileName, pipelineName, level, true, false, 0);
+	}
+
+	private TCGAFileInfo extractDataRunFile(String fileName, String pipelineName, int level, int flag) {
+		return extractFile(fileName, pipelineName, level, false, true, flag);
 	}
 
 	private TCGAFileInfo extractDataRunFile(String fileName, String pipelineName, int level) {
-		return extractFile(fileName, pipelineName, level, false, true);
+		return extractFile(fileName, pipelineName, level, false, true, 0);
 	}
 
 	private TCGAFileInfo extractFile(String fileName, String pipelineName, int level, boolean isAnalysisRun,
-			boolean hasTumor) {
+			boolean hasTumor, int flag) {
 		Date id = isAnalysisRun ? analysisRun : dataRun;
 
 		String label = "unknown";
@@ -359,7 +359,7 @@ extractAnalysisRunFile(".expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", L
 			if (isAnalysisRun)
 				url = settings.getAnalysisURL(id, tumor, tumorSample, pipelineName, level);
 			else
-				url = settings.getDataURL(id, tumor, tumorSample, pipelineName, level);
+				url = settings.getDataURL(id, tumor, tumorSample, pipelineName, level, flag);
 			String urlString = url.getPath();
 			label = urlString.substring(urlString.lastIndexOf('/') + 1, urlString.length());
 			File outputDir = new File(isAnalysisRun ? tmpAnalysisDir : tmpDataDir, label);
@@ -380,13 +380,13 @@ extractAnalysisRunFile(".expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", L
 
 		// use cached
 		if (targetFile.exists() && !settings.isCleanCache()) {
-			log.fine(inUrl+" cache hit");
-			return new TCGAFileInfo(targetFile, inUrl, fileToExtract);
+			log.fine(inUrl + " cache hit");
+			return new TCGAFileInfo(targetFile, inUrl, targetFile.getName());
 		}
 
 		File notFound = new File(outputDirectory, fileToExtract + "-notfound");
 		if (notFound.exists() && !settings.isCleanCache()) {
-			log.warning(inUrl+" marked as not found");
+			log.warning(inUrl + " marked as not found");
 			return null;
 		}
 
@@ -399,23 +399,43 @@ extractAnalysisRunFile(".expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", L
 		TarArchiveInputStream tarIn = null;
 		OutputStream out = null;
 		try {
+			// copy and buffer the whole file
 			InputStream in = new BufferedInputStream(inUrl.openStream());
-			String tmpFile = targetFile.getAbsolutePath() + ".tmp.tar.gz";
-			out = new BufferedOutputStream(new FileOutputStream(tmpFile));
-			ByteStreams.copy(in, out);
-			out.close();
 
-			// ok we have the file
-			tarIn = new TarArchiveInputStream(new GZIPInputStream(new FileInputStream(tmpFile)));
+			// CASE 1 we use the truevfs library
+			// String tmpFile = targetFile.getAbsolutePath() + ".tmp.tar.gz";
+			// out = new BufferedOutputStream(new FileOutputStream(tmpFile));
+			// ByteStreams.copy(in, out);
+			// out.close();
+
+			// TFile archive = new TFile(tmpFile);
+			// TFile act = null;
+			// outer: for (TFile member : archive.listFiles()) {
+			// for (TFile mm : member.listFiles()) {
+			// String name = member.getName() + '/' + mm.getName();
+			// System.out.println(name);
+			// if (name.endsWith(fileToExtract) || name.endsWith(alternativeName)) {
+			// act = mm;
+			// break outer;
+			// }
+			// }
+			// }
+			//
+			// if (act != null)
+			// act.cp(targetFile);
+			// if (act == null) // no entry found
+			// throw new FileNotFoundException("no entry named: " + fileToExtract + " found");
+
+			// CASE 2 we use apache commons
+
+			tarIn = new TarArchiveInputStream(new GZIPInputStream(in));
 
 			// search the correct entry
 			ArchiveEntry act = tarIn.getNextEntry();
-			System.out.println(act.getName());
 			while (act != null && !act.getName().endsWith(fileToExtract) && !act.getName().endsWith(alternativeName)) {
 				System.out.println(act.getName());
 				act = tarIn.getNextEntry();
 			}
-			System.out.println("no more entries?");
 			if (act == null) // no entry found
 				throw new FileNotFoundException("no entry named: " + fileToExtract + " found");
 
@@ -423,15 +443,15 @@ extractAnalysisRunFile(".expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", L
 			int n;
 			targetFile.getParentFile().mkdirs();
 			// use a temporary file to recognize if we have aborted between run
-			tmpFile = targetFile.getAbsolutePath() + ".tmp";
+			String tmpFile = targetFile.getAbsolutePath() + ".tmp";
 			out = new BufferedOutputStream(new FileOutputStream(tmpFile));
 			while ((n = tarIn.read(buf, 0, 4096)) > -1)
 				out.write(buf, 0, n);
 			out.close();
 			Files.move(new File(tmpFile).toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-			log.info(inUrl+" extracted "+fileToExtract);
-			return new TCGAFileInfo(targetFile, inUrl, fileToExtract);
+			log.info(inUrl + " extracted " + fileToExtract);
+			return new TCGAFileInfo(targetFile, inUrl, targetFile.getName());
 		} catch (FileNotFoundException e) {
 			log.log(Level.WARNING, inUrl + " can't extract" + fileToExtract + ": file not found", e);
 			// file was not found, create a marker to remember this for quicker checks
@@ -459,16 +479,21 @@ extractAnalysisRunFile(".expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", L
 		log.fine(maf.getAbsolutePath() + " parsing maf file");
 		final String TAB = "\t";
 
-		try (BufferedReader reader = Files.newBufferedReader(maf.toPath(), Charset.forName("UTF-8"))) {
+		CharsetDecoder decoder = StandardCharsets.UTF_8.newDecoder();
+		decoder.onMalformedInput(CodingErrorAction.IGNORE);
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(Files.newInputStream(maf.toPath()),
+				decoder))) {
 			List<String> header = Arrays.asList(reader.readLine().split(TAB));
 			int geneIndex = header.indexOf("Hugo_Symbol");
 			int sampleIndex = header.indexOf("Tumor_Sample_Barcode");
 			// gene x sample x mutated
 			Table<String, String, Boolean> mutated = TreeBasedTable.create();
 			String line = null;
+			// int i = 1;
 			while ((line = reader.readLine()) != null) {
 				String[] columns = line.split(TAB);
 				mutated.put(columns[geneIndex], columns[sampleIndex], Boolean.TRUE);
+				// System.out.println(i++);
 			}
 
 			File tmp = new File(out.getParentFile(), out.getName() + ".tmp");
@@ -520,6 +545,5 @@ extractAnalysisRunFile(".expclu.gct", type.getTCGAAbbr() + "_Clustering_CNMF", L
 		builder.append("]");
 		return builder.toString();
 	}
-
 
 }
