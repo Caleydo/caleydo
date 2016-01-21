@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -490,10 +491,14 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		assert header != null;
 		List<String> columns = Arrays.asList(header.split("\t"));
 
-		final String idColumnLabel = "patient.bcrpatientbarcode";
-		if (columns.contains(idColumnLabel)) {
-			int index = columns.indexOf(idColumnLabel);
-			log.info(id + " found id column: " + idColumnLabel + " at index " + index);
+		List<String> columns_clean = new ArrayList<String>();
+		for (String col : columns) {
+			columns_clean.add(col.replace("_", "").replace(".", "").toLowerCase());
+		}
+		final String idColumnLabel = "patientbcrpatientbarcode";
+		if (columns_clean.contains(idColumnLabel)) {
+			int index = columns_clean.indexOf(idColumnLabel);
+			log.info(id + " FOUND id column: " + idColumnLabel + " at index " + index);
 			dataSet.setColumnOfRowIds(index); // "patient.bcrpatientbarcode"
 		} else {
 			log.warning(id + " can't find column: " + idColumnLabel + " assuming ids are at column 12");
