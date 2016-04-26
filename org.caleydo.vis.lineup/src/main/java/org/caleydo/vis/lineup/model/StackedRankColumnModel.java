@@ -19,6 +19,7 @@ import org.caleydo.vis.lineup.model.mixin.ICompressColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.INegativeColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.lineup.ui.RenderStyle;
@@ -37,7 +38,7 @@ import com.jogamp.common.util.IntObjectHashMap;
  *
  */
 public final class StackedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin,
-		ICompressColumnMixin, ICollapseableColumnMixin, IFilterColumnMixin, Cloneable {
+		ICompressColumnMixin, ICollapseableColumnMixin, IFilterColumnMixin, Cloneable, INegativeColumnMixin {
 	public static final String PROP_ALIGNMENT = "alignment";
 	public static final String PROP_WEIGHTS = "weights";
 
@@ -207,6 +208,20 @@ public final class StackedRankColumnModel extends AMultiRankColumnModel implemen
 			s += fi * ws[i];
 		}
 		return s;
+	}
+
+	@Override
+	public double zeroValue() {
+		float[] weights = getWeights();
+		double acc = 0;
+		for(int i = 0; i < this.children.size(); ++i) {
+			ARankColumnModel m = this.children.get(i);
+			if (!(m instanceof INegativeColumnMixin)) {
+				return Double.NaN; //can't infer
+			}
+			acc += ((INegativeColumnMixin) m).zeroValue() * weights[i];
+		}
+		return acc;
 	}
 
 	@Override

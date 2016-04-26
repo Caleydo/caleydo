@@ -29,6 +29,7 @@ import org.caleydo.vis.lineup.model.mixin.IExplodeableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.INegativeColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankColumnModel;
 import org.caleydo.vis.lineup.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.lineup.ui.detail.ScoreBarElement;
@@ -46,7 +47,7 @@ import com.jogamp.common.util.IntIntHashMap;
  *
  */
 public final class RankDeltaRankColumnModel extends ACompositeRankColumnModel implements Cloneable, IMappedColumnMixin,
-		IExplodeableColumnMixin, IHideableColumnMixin, IDoubleRankableColumnMixin {
+		IExplodeableColumnMixin, IHideableColumnMixin, IDoubleRankableColumnMixin, INegativeColumnMixin {
 
 	private final IMappingFunction mapping;
 
@@ -78,6 +79,7 @@ public final class RankDeltaRankColumnModel extends ACompositeRankColumnModel im
 	private IntIntHashMap deltas;
 	private final HistCache cacheHist = new HistCache();
 	private boolean dirtyDataStats = true;
+	private double zeroValue = Double.NaN;
 
 	public RankDeltaRankColumnModel() {
 		this(Color.GRAY, new Color(0.95f, .95f, .95f));
@@ -179,6 +181,7 @@ public final class RankDeltaRankColumnModel extends ACompositeRankColumnModel im
 			DoubleStatistics stats = DoubleStatistics.of(asRawData().iterator());
 			mapping.setActStatistics(stats);
 			dirtyDataStats = false;
+			zeroValue = mapping.apply(0);
 		}
 	}
 
@@ -187,6 +190,12 @@ public final class RankDeltaRankColumnModel extends ACompositeRankColumnModel im
 		double value = getRaw(row);
 		checkMapping();
 		return mapping.apply(value);
+	}
+
+	@Override
+	public double zeroValue() {
+		checkMapping();
+		return zeroValue;
 	}
 
 	protected double getRaw(IRow row) {

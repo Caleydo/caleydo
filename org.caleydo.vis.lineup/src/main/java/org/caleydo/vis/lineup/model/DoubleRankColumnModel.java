@@ -39,6 +39,7 @@ import org.caleydo.vis.lineup.model.mixin.IDataBasedColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.INegativeColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.ISetableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.lineup.ui.detail.ScoreBarElement;
@@ -54,7 +55,8 @@ import org.eclipse.swt.widgets.Display;
  *
  */
 public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel implements IMappedColumnMixin,
-		IDoubleRankableColumnMixin, ISetableColumnMixin, ISnapshotableColumnMixin, IDataBasedColumnMixin {
+		IDoubleRankableColumnMixin, ISetableColumnMixin, ISnapshotableColumnMixin, IDataBasedColumnMixin,
+		INegativeColumnMixin {
 
 	private final IMappingFunction mapping;
 	private final IDoubleInferrer missingValueInferer;
@@ -82,6 +84,7 @@ public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel imple
 	private final HistCache cacheHist = new HistCache();
 	private boolean dirtyDataStats = true;
 	private double missingValue = Double.NaN;
+	private double zeroValue = Double.NaN;
 
 	private boolean filterNotMappedEntries = true;
 	private boolean filterMissingEntries = false;
@@ -200,6 +203,7 @@ public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel imple
 			mapping.setActStatistics(stats);
 			dirtyDataStats = false;
 			invalidAllFilter();
+			zeroValue = mapping.apply(0);
 		}
 	}
 
@@ -228,6 +232,12 @@ public class DoubleRankColumnModel extends ABasicFilterableRankColumnModel imple
 		if (valueOverrides.containsKey(row))
 			return valueOverrides.get(row);
 		return data.applyPrimitive(row);
+	}
+
+	@Override
+	public double zeroValue() {
+		checkMapping();
+		return zeroValue;
 	}
 
 	@Override

@@ -69,7 +69,7 @@ public class TCGARunTask extends RecursiveAction {
 			}
 		}
 		try {
-			generateJSONReport(b, analysisRun, dataRun, settings.getDataDirectory(id));
+			generateJSONReport(b, analysisRun, dataRun, settings.getDataDirectory(id), tumorTypes);
 		} catch (IOException e) {
 			log.log(Level.SEVERE, id + " can't generate json report: " + e.getMessage(), e);
 		}
@@ -77,7 +77,7 @@ public class TCGARunTask extends RecursiveAction {
 	}
 
 	protected void generateJSONReport(JsonArray detailedReports, Date analysisRun, Date dataRun,
-			String runSpecificOutputPath) throws IOException {
+			String runSpecificOutputPath, List<TumorType> tumorTypes) throws IOException {
 
 		String reportJSONOutputPath = Settings.format(analysisRun) + ".json";
 
@@ -98,5 +98,9 @@ public class TCGARunTask extends RecursiveAction {
 
 		String r = gson.toJson(report);
 		Files.write(r, new File(runSpecificOutputPath, reportJSONOutputPath), Charset.forName("UTF-8"));
+		for (TumorType t : tumorTypes) {
+			Files.write(r, new File(runSpecificOutputPath, t.getName() + '_' + reportJSONOutputPath),
+					Charset.forName("UTF-8"));
+		}
 	}
 }

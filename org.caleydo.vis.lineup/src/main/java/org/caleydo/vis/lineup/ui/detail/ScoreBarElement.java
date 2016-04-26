@@ -7,6 +7,8 @@ package org.caleydo.vis.lineup.ui.detail;
 
 
 
+import java.net.URL;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2GL3;
@@ -19,6 +21,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.lineup.model.IRow;
 import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IMappedColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.INegativeColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IRankColumnModel;
 import org.caleydo.vis.lineup.ui.IColumnRenderInfo;
 import org.caleydo.vis.lineup.ui.RenderStyle;
@@ -78,10 +81,19 @@ public class ScoreBarElement extends ValueElement {
 		} else {
 			// score bar
 			g.color(color);
-			if (useHatching(model)) {
+			final double zero = zeroValue(model);
+			if (!Double.isNaN(zero) && v < zero) { // smaller than zero
+				renderNegativeValue(g, 0, 1, w * v_f, h - 2);
+			} else if (useHatching(model)) {
 				renderHatchedValue(g, 0, 1, w * v_f, h - 2);
 			} else
 				g.fillRect(0, 1, w * v_f, h - 2);
+
+			if (v > zero && zero > 0 && zero < 1) { // not an extreme
+				// indicate the zero line
+				g.color(0, 0, 0, .5f).drawLine(w * (float) zero, 1, w * (float) zero, h - 2);
+			}
+
 			if (inferred) {
 				g.lineStippled(1, (short) 0xAAAA);
 				g.color(0, 0, 0, .5f).drawRect(0, 1, w * v_f, h - 2);
@@ -98,11 +110,19 @@ public class ScoreBarElement extends ValueElement {
 	}
 
 	private void renderHatchedValue(GLGraphics g, float x, float y, float w, float h) {
+		renderHatchedValue(g, x, y, w, h, RenderStyle.ICON_COMPLEX_MAPPING);
+	}
+
+	private void renderNegativeValue(GLGraphics g, float x, float y, float w, float h) {
+		renderHatchedValue(g, x, y, w, h, RenderStyle.ICON_NEGATIVE_RAW);
+	}
+
+	private void renderHatchedValue(GLGraphics g, float x, float y, float w, float h, URL texture) {
 		Texture tex;
 		GL2 gl = g.gl;
 		float z = g.z();
 
-		tex = g.getTexture(RenderStyle.ICON_COMPLEX_MAPPING);
+		tex = g.getTexture(texture);
 		tex.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
 
 		tex.enable(gl);
@@ -127,6 +147,11 @@ public class ScoreBarElement extends ValueElement {
 
 	private boolean useHatching(IDoubleRankableColumnMixin model) {
 		return (model instanceof IMappedColumnMixin) && ((IMappedColumnMixin) model).isComplexMapping();
+	}
+
+
+	private double zeroValue(IDoubleRankableColumnMixin model) {
+		return (model instanceof INegativeColumnMixin) ? ((INegativeColumnMixin) model).zeroValue() : Double.NaN;
 	}
 
 	protected void renderText(GLGraphics g, float w, float h, final IRow r, double v, boolean inferred) {

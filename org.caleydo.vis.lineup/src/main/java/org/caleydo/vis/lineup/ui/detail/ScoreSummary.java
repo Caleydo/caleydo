@@ -17,6 +17,7 @@ import org.caleydo.vis.lineup.model.RankTableModel;
 import org.caleydo.vis.lineup.model.SimpleHistogram;
 import org.caleydo.vis.lineup.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.lineup.model.mixin.IDoubleRankableColumnMixin;
+import org.caleydo.vis.lineup.model.mixin.INegativeColumnMixin;
 import org.caleydo.vis.lineup.ui.IColumnRenderInfo;
 import org.caleydo.vis.lineup.ui.RenderUtils;
 
@@ -68,6 +69,14 @@ public class ScoreSummary extends GLElement {
 			return;
 		SimpleHistogram hist = model.getHist(w);
 		int selectedBin = selectedRow == null ? -1 : hist.getBinOf(model.applyPrimitive(selectedRow));
+		if (model instanceof INegativeColumnMixin) {
+			double zero = ((INegativeColumnMixin) model).zeroValue();
+			if (!Double.isNaN(zero)) {
+				RenderUtils.renderNegativeAwareHist(g, hist, w, h, selectedBin, model.getColor(), model.getColor()
+						.darker(), findRenderInfo().getBarOutlineColor(), zero);
+				return;
+			}
+		}
 		RenderUtils.renderHist(g, hist, w, h, selectedBin, model.getColor(), model.getColor().darker(),
 				findRenderInfo().getBarOutlineColor());
 	}
