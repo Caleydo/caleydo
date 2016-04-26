@@ -11,7 +11,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +23,7 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.genetic.GeneticMetaData;
 import org.caleydo.datadomain.genetic.Organism;
@@ -55,9 +58,13 @@ public class WikiPathwaysParser implements IPathwayLoader, IRunnableWithProgress
 	StringBuilder idMappingErrors = new StringBuilder();
 
 	public WikiPathwaysParser() {
+
 		dbNameMap.put("Ensembl Mouse", "ENSEMBL_GENE_ID");
 		dbNameMap.put("Entrez Gene", "ENTREZ_GENE_ID");
 		dbNameMap.put("RefSeq", "REFSEQ_MRNA");
+		// FIXME: This is a hack for a specific usecase
+		dbNameMap.put("CTD Gene", "GENE_SYMBOL");
+
 		org.pathvisio.core.debug.Logger.log.setLogLevel(false, false, false, false, false, false);
 		// dbNameMap.put("EC Number", "EC_NUMBER");
 	}
@@ -85,8 +92,7 @@ public class WikiPathwaysParser implements IPathwayLoader, IRunnableWithProgress
 				PathwayImporter importer = new GpmlFormat();
 				Pathway pathway = importer.doImport(pathwayFile);
 				createPathwayGraph(type, pathway, tokens[0].substring(0, tokens[0].length() - 5),
-						Integer.valueOf(tokens[1])
-						.intValue(), Integer.valueOf(tokens[2]).intValue(), baseDir);
+						Integer.valueOf(tokens[1]).intValue(), Integer.valueOf(tokens[2]).intValue(), baseDir);
 
 			}
 			if (idMappingErrors.length() > 0) {
@@ -118,8 +124,8 @@ public class WikiPathwaysParser implements IPathwayLoader, IRunnableWithProgress
 		PathwayManager pathwayManager = PathwayManager.get();
 		PathwayItemManager pathwayItemManager = PathwayItemManager.get();
 
-		PathwayGraph pathwayGraph = pathwayManager.createPathway(type, imageFileName,
-				pathway.getMappInfo().getMapInfoName(), new File(baseDir, imageFileName + ".png"), "");
+		PathwayGraph pathwayGraph = pathwayManager.createPathway(type, imageFileName, pathway.getMappInfo()
+				.getMapInfoName(), new File(baseDir, imageFileName + ".png"), "");
 		pathwayGraph.setWidth(pixelWidth);
 		pathwayGraph.setHeight(pixelHeight);
 
@@ -184,17 +190,36 @@ public class WikiPathwaysParser implements IPathwayLoader, IRunnableWithProgress
 					if (sourceIDType != null) {
 
 						Set<Integer> davidIDs = null;
+
+						String[] ids = xref.getId().split(";");
+
 						if (sourceIDType.getDataType() == EDataType.INTEGER) {
 							try {
-								davidIDs = genomeIdManager.getIDAsSet(sourceIDType, IDType.getIDType("DAVID"),
-										Integer.valueOf(xref.getId()));
+								IIDTypeMapper<Integer, Integer> mapper = genomeIdManager.getIDTypeMapper(sourceIDType,
+										IDType.getIDType("DAVID"));
+
+								Set<Integer> sourceIds = new HashSet<Integer>();
+
+								for (String id : ids) {
+									sourceIds.add(Integer.valueOf(id));
+								}
+
+								davidIDs = mapper.apply(sourceIds);
+
+								// getIDAsSet(sourceIDType, IDType.getIDType("DAVID"),
+								// Integer.valueOf(xref.getId()));
 							} catch (NumberFormatException e) {
 								createVertexWithoutDavidID(pathwayGraph, element, vertexReps, vertexGroupReps);
 								continue;
 							}
 						} else {
-							davidIDs = genomeIdManager
-									.getIDAsSet(sourceIDType, IDType.getIDType("DAVID"), xref.getId());
+							IIDTypeMapper<String, Integer> mapper = genomeIdManager.getIDTypeMapper(sourceIDType,
+									IDType.getIDType("DAVID"));
+
+							davidIDs = mapper.apply(Arrays.asList(ids));
+
+							// genomeIdManager
+							// .getIDAsSet(sourceIDType, IDType.getIDType("DAVID"), xref.getId());
 						}
 
 						if (davidIDs == null) {
