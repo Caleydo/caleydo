@@ -32,6 +32,7 @@ public class enRouteViewCreator implements IRemoteViewCreator {
 		enRoute.addTablePerspectives(tablePerspectives);
 		enRoute.setPathwayPathEventSpace(embeddingEventSpace);
 		enRoute.initialize();
+		// enRoute.getPathRenderer().setSizeConfig(PathSizeConfiguration.ENROUTE_DEFAULT);
 		enRoute.getPathRenderer().setSizeConfig(PathSizeConfiguration.ENROUTE_COMPACT);
 
 		return enRoute;

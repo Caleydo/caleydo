@@ -123,7 +123,8 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	public void log10() {
 		FloatContainer logContainer = rawContainer.log(10);
 		dataRepToContainerMap.put(NumericalTable.Transformation.LOG10,
-				logContainer.normalizeWithAtrificalExtrema(EMonoOperator.LOG10.apply(getMin()),
+ logContainer.normalizeWithAtrificalExtrema(
+				getMin() == 0 ? 0 : EMonoOperator.LOG10.apply(getMin()),
 						EMonoOperator.LOG10.apply(getMax())));
 	}
 

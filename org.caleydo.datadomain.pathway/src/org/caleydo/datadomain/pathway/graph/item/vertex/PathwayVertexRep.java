@@ -253,7 +253,7 @@ public class PathwayVertexRep implements Serializable, IUniqueObject, ILabeled {
 	 * Returns the type of the pathway vertex underneath, assuming that alle vertex reps are of the same type
 	 */
 	public EPathwayVertexType getType() {
-		return pathwayVertices.get(0).getType();
+		return pathwayVertices.size() > 0 ? pathwayVertices.get(0).getType() : null;
 	}
 
 	/**
