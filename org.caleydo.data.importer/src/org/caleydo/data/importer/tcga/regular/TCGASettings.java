@@ -12,7 +12,7 @@ import org.kohsuke.args4j.Option;
 
 public class TCGASettings extends Settings {
 	@Option(name = "-s", aliases = { "--server" }, usage = "TCGA Server URL that hosts TCGA Caleydo project files default: \"http://compbio.med.harvard.edu/tcga/stratomex/data/\"")
-	private String tcgaServerURL = "http://data.icg.tugraz.at/caleydo/download/" + GeneralManager.VERSION + "/tcga/";
+	private String tcgaServerURL = GeneralManager.DATA_URL_PREFIX + "tcga/";
 
 	@Option(name = "-g", aliases = { "--sampledGenes" }, usage = "whether to use the sampled genes or not default: \"true\"")
 	private String sampleGenes = "true";

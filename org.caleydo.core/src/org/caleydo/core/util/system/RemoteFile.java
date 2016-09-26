@@ -154,6 +154,7 @@ public final class RemoteFile implements IRunnableWithProgress {
 		}
 		return file;
 	}
+
 	@Override
 	public void run(IProgressMonitor monitor) {
 		run(monitor, PATTERN);
@@ -184,7 +185,6 @@ public final class RemoteFile implements IRunnableWithProgress {
 			if (length < 0)
 				length = IProgressMonitor.UNKNOWN;
 			monitor.beginTask(String.format(pattern, url, length / 1024 / 1024), length);
-
 
 			try (InputStream in = new BufferedInputStream(connection.getInputStream())) {
 				byte[] data = new byte[BUFFER_SIZE];
@@ -232,8 +232,8 @@ public final class RemoteFile implements IRunnableWithProgress {
 		File f = new File(RemoteFileCache.cacheDir, "asdfas/tests.txt");
 		System.out.println(f.getAbsolutePath());
 		System.out.println(f.getName());
-		dump("http://data.icg.tugraz.at/caleydo/ download/2.2/caleydo_2.2_linux_x86-64.deb");
-		dump("http://data.icg.tugraz.at/caleydo/download/2.2/tmp.pnp?adsfa&bsbad");
+		dump("https://data.icg.tugraz.at/caleydo/ download/2.2/caleydo_2.2_linux_x86-64.deb");
+		dump("https://data.icg.tugraz.at/caleydo/download/2.2/tmp.pnp?adsfa&bsbad");
 	}
 
 	/**

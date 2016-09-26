@@ -49,10 +49,10 @@ public class GeneralManager {
 			+ File.separator;
 	public static final String CALEYDO_LOG_PATH = CALEYDO_HOME_PATH + "logs" + File.separator;
 
-	public static final String DATA_URL_PREFIX = "http://data.icg.tugraz.at/caleydo/download/" + VERSION.getMajor()
+	public static final String DATA_URL_PREFIX = "https://data.icg.tugraz.at/caleydo/download/" + VERSION.getMajor()
 			+ "." + VERSION.getMinor() + "/";
 
-	public static final String HELP_URL = "http://help.caleydo.org/" + VERSION.getMajor() + "." + VERSION.getMinor()
+	public static final String HELP_URL = "https://help.caleydo.org/" + VERSION.getMajor() + "." + VERSION.getMinor()
 			+ "/index.html#!";
 
 	/**
